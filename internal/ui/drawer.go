@@ -2,7 +2,10 @@ package ui
 
 import (
 	"log"
+	"os/exec"
+	"slices"
 	"strings"
+	"time"
 	"unsafe"
 
 	"codeberg.org/puregotk/puregotk/v4/gdk"
@@ -28,11 +31,16 @@ const drawerColumns = 4
 // drawerRevealMS matches the revealer's transition below.
 const drawerRevealMS = 220
 
+// assistantApp is the assistant's desktop entry, in the drawer when the
+// assistant is on.
+const assistantApp = "io.github.lyricat.Inua.Assistant"
+
 type drawerPanel struct {
 	win      gtk.ApplicationWindow
 	backdrop *gtk.Box // borrowed from win
 	reveal   *gtk.Revealer
 	closing  bool
+	then     func() // a shell tool to open once the drawer is gone
 }
 
 func (s *shellUI) bindDrawerHandlers() {
@@ -46,6 +54,13 @@ func (s *shellUI) bindDrawerHandlers() {
 	}
 	s.onDrawerApp = func(b gtk.Button) {
 		id := strings.TrimPrefix(b.GetName(), "drawer:")
+		if strings.HasPrefix(id, "inua:") {
+			if p := s.dockState.drawer; p != nil {
+				p.then = func() { s.drawerShellApp(id) }
+			}
+			gtkx.Post(s.closeDrawer)
+			return
+		}
 		gtkx.Post(s.closeDrawer) // the button is in the drawer
 		for _, e := range shell.LightApps(s.dockState.apps) {
 			if e.ID == id {
@@ -80,8 +95,46 @@ func (s *shellUI) bindDrawerHandlers() {
 			s.dockState.drawer = nil
 			p.win.Destroy()
 			s.hideDocksSoon()
+			if p.then != nil {
+				p.then()
+			}
 		}
 		return false
+	}
+}
+
+// drawerSections are the drawer's groups, without the assistant when it
+// is off or its program is missing (as the launcher's row).
+func (s *shellUI) drawerSections() []shell.AppGroup {
+	_, err := exec.LookPath("inua-assistant")
+	if s.cfg.Assistant.Enable && err == nil {
+		return shell.LightAppSections(s.dockState.apps)
+	}
+	var out []shell.AppGroup
+	for _, g := range shell.LightAppSections(s.dockState.apps) {
+		g.Apps = slices.DeleteFunc(g.Apps, func(e *desktop.Entry) bool { return e.ID == assistantApp })
+		if len(g.Apps) > 0 {
+			out = append(out, g)
+		}
+	}
+	return out
+}
+
+// drawerShellApp opens one of the shell's tools, the drawer gone.
+func (s *shellUI) drawerShellApp(id string) {
+	switch id {
+	case "inua:settings":
+		s.openSettings()
+	case "inua:launcher":
+		if !s.launcher.st.Open {
+			m, _ := shell.ParseMode(s.cfg.Launcher.Mode) // validated by config.Load
+			s.showLauncher(m)
+		}
+	case "inua:screenshot":
+		go func() {
+			time.Sleep(150 * time.Millisecond) // the last frame of the drawer, off the screen
+			gtkx.Post(func() { s.screenshotRequest("area") })
+		}()
 	}
 }
 
@@ -135,7 +188,7 @@ func (s *shellUI) toggleDrawer(b *bar) {
 // drawerColumns, every cell as wide as the others, so a long name wraps
 // instead of widening the row.
 func (s *shellUI) drawerContent() *gtk.Box {
-	sections := shell.LightAppSections(s.dockState.apps)
+	sections := s.drawerSections()
 	content := gtk.NewBox(gtk.OrientationVerticalValue, 0)
 	content.AddCssClass("drawer")
 	for _, g := range sections {
@@ -182,7 +235,7 @@ func (s *shellUI) drawerContent() *gtk.Box {
 		}
 		gtkx.Append(content, &grid.Widget)
 	}
-	if len(sections) == 0 {
+	if len(shell.LightApps(s.dockState.apps)) == len(shell.ShellApps) {
 		l := gtk.NewLabel("The light apps are not installed (make install).")
 		l.AddCssClass("drawer-empty")
 		gtkx.Append(content, &l.Widget)

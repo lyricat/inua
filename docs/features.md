@@ -83,7 +83,8 @@ Pinned apps and running ones, with marks that grow and change colour as
 apps start and come to the front. Click to open or cycle windows,
 right-click to pin or quit; drag to reorder (the others move aside to make
 room) or off the pinned ones to unpin; a drawer at the end slides up the
-light apps; optional autohide. Starting a light app that is open brings
+light apps, the Assistant, Settings, the launcher and Screenshot, grouped
+by kind; optional autohide. Starting a light app that is open brings
 its window to the current workspace.
 
 ## Settings

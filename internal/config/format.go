@@ -312,8 +312,8 @@ autohide = %t
 # Icon size in pixels (24 to 96).
 size = %d
 
-# A button at the dock's end that opens inua's light apps (Clock, Weather,
-# Stocks, Calculator).
+# A button at the dock's end that opens Settings, the launcher, Screenshot,
+# the Assistant and inua's light apps (Clock, Weather, Stocks, Calculator).
 drawer = %t
 
 # Apps always on the dock, by desktop ID (the .desktop file's name without

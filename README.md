@@ -25,7 +25,7 @@ and a settings window, in one calm visual language. It works with
 | **Workspace overview** | Live window previews across monitors; tap Win, or cycle with Win+Tab. Drag to move, middle click to close, / to search. Needs Hyprland 0.55 or later (its Lua interface); before that, Super+Tab switches windows in the launcher. |
 | **Control center** | Wi-Fi, Bluetooth, power saver, Focus and Tailscale tiles; brightness, volume and media; power. |
 | **Notifications** | inua is the notification server: banners, then a notification center grouped by app. |
-| **Dock** | Pinned and running apps; drag to reorder or to unpin; a drawer of the light apps. |
+| **Dock** | Pinned and running apps; drag to reorder or to unpin; a drawer of the shell's tools and the light apps. |
 | **Settings** | One window for everything, applied as you change it. |
 | **Shortcuts** | Rebind the shell's actions and your own commands by pressing keys. |
 | **Lock screen** | On the compositor's session lock: if the shell stops, the screen stays locked. |

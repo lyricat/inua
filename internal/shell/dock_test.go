@@ -152,9 +152,12 @@ func TestLightApps(t *testing.T) {
 		{ID: "io.github.lyricat.Inua.Clock", Name: "Clock"},
 		{ID: "firefox", Name: "Firefox"},
 	})
-	got := LightApps(apps)
-	if len(got) != 2 || got[0].Name != "Clock" || got[1].Name != "Calculator" {
-		t.Fatalf("LightApps = %v", got)
+	var names []string
+	for _, e := range LightApps(apps) {
+		names = append(names, e.Name)
+	}
+	if got := strings.Join(names, ","); got != "Clock,Calculator,Screenshot,Settings,Launcher" {
+		t.Fatalf("LightApps = %s", got)
 	}
 }
 
@@ -165,11 +168,13 @@ func TestLightAppSections(t *testing.T) {
 		{ID: "io.github.lyricat.Inua.Clock", Name: "Clock"},
 	})
 	got := LightAppSections(apps)
-	if len(got) != 2 || got[0].Title != "EVERYDAY" || len(got[0].Apps) != 2 || got[0].Apps[0].Name != "Clock" ||
-		got[1].Title != "TOOLS" || len(got[1].Apps) != 1 {
+	if len(got) != 3 || got[0].Title != "EVERYDAY" || len(got[0].Apps) != 2 || got[0].Apps[0].Name != "Clock" ||
+		got[1].Title != "TOOLS" || len(got[1].Apps) != 2 || got[1].Apps[0].Name != "Screenshot" ||
+		got[2].Title != "SYSTEM" || len(got[2].Apps) != 2 {
 		t.Fatalf("LightAppSections = %+v", got)
 	}
-	if got := LightAppSections(NewAppIndex(nil)); len(got) != 0 {
+	// The shell's tools are there with no light app installed.
+	if got := LightAppSections(NewAppIndex(nil)); len(got) != 2 || got[0].Title != "TOOLS" || got[1].Title != "SYSTEM" {
 		t.Errorf("none installed: %+v", got)
 	}
 }
