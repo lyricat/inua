@@ -29,6 +29,14 @@ while read -r name icon; do
 	case "$name" in '' | '#'*) continue ;; esac
 	cp "$src/assets/$weight/$icon$suffix.svg" "$dest/$name-symbolic.svg"
 done <<'LIST'
+# virtual machines (inua-vm): the mark of each system it can run, and the
+# window's own placeholder. Phosphor has no FreeBSD logo: a sailboat stands in
+vm-machine                            desktop-tower
+vm-os-android                         android-logo
+vm-os-custom                          cpu
+vm-os-freebsd                         sailboat
+vm-os-linux                           linux-logo
+vm-os-windows                         windows-logo
 # bar and control center: network
 network-offline                       globe-simple-x
 network-vpn                           shield-check

@@ -1,0 +1,1437 @@
+// Virtual machines: manages machines, one folder each. The window lists them
+// on the left and shows the chosen machine's page on the right; Go switches
+// between the pages as the machine's state changes.
+//
+//   empty        — no machine yet; New makes one from a template
+//   new          — naming a machine and picking its template
+//   unavailable  — this build has no backend for the machine's kind
+//   prereq       — some host requirement is missing; shows what and why
+//   setup        — environment is ready; nothing installed yet
+//   provisioning — first-time install (download / setup)
+//   starting     — the guest is installed and coming up
+//   stopped      — the guest is installed and off
+//   running      — the guest is up; connect or stop
+//
+// None of the pages show controls that belong to a different stage.
+using Gtk 4.0;
+
+ApplicationWindow vm {
+  styles ["settings", "vmpage"]
+  title:  _("Virtual machines");
+  default-width: 880;
+  default-height: 680;
+
+  Box {
+    orientation: horizontal;
+
+    // ── the machines, one a row ───────────────────────────────────────────
+    Box {
+      styles ["vm-index"]
+      orientation: vertical;
+      width-request: 296;
+
+      Box {
+        styles ["vm-index-head"]
+        spacing: 8;
+
+        Label {
+          styles ["vm-index-title"]
+          label:  _("Virtual machines");
+          hexpand: true;
+          xalign: 0;
+        }
+
+        // A label is not enough for a button with no text: give it one.
+        Button vm_new {
+          styles ["outlined"]
+          name: "new_machine";
+          label:  _("New");
+          tooltip-text: _("Add a machine from a template");
+        }
+      }
+
+      ScrolledWindow {
+        vexpand: true;
+        hscrollbar-policy: never;
+
+        ListBox vm_machines {
+          styles ["vm-machines"]
+          selection-mode: single;
+          activate-on-single-click: true;
+        }
+      }
+    }
+
+    Separator {
+      orientation: vertical;
+    }
+
+    // ── the machine chosen in the list ────────────────────────────────────
+    Box {
+      orientation: vertical;
+      hexpand: true;
+
+      // ── headline ─────────────────────────────────────────────────────────
+      Box {
+        styles ["vm-head"]
+        spacing: 12;
+
+        Box {
+          orientation: vertical;
+          hexpand: true;
+          valign: center;
+          spacing: 2;
+
+          Label vm_title {
+            styles ["vm-title"]
+            label:  _("Virtual machines");
+            xalign: 0;
+          }
+
+          Label vm_sub {
+            styles ["sub"]
+            xalign: 0;
+            ellipsize: end;
+          }
+        }
+      }
+
+      // ── the pages: the machine's stage, or making a new one ──────────────
+      Stack vm_stack {
+        vexpand: true;
+        transition-type: crossfade;
+        transition-duration: 140;
+
+        // ── PAGE: empty ── nothing made yet ────────────────────────────────
+        StackPage {
+          name: "empty";
+          child: Box {
+            orientation: vertical;
+            valign: center;
+            halign: center;
+            spacing: 8;
+            margin-start: 24;
+            margin-end: 24;
+
+            Image {
+              styles ["vm-empty-mark"]
+              icon-name: "computer-symbolic";
+              pixel-size: 48;
+            }
+
+            Label {
+              styles ["vm-empty-title"]
+              label:  _("No machines yet");
+            }
+
+            Label {
+              styles ["sub"]
+              label:  _("New picks an operating system; the machine's fields follow.");
+              justify: center;
+              wrap: true;
+            }
+          };
+        }
+
+        // ── PAGE: new ── a template to start from ──────────────────────────
+        StackPage {
+          name: "new";
+          child: ScrolledWindow {
+            hscrollbar-policy: never;
+
+            Box {
+              orientation: vertical;
+
+              Box {
+                styles ["section"]
+                orientation: vertical;
+
+                Box {
+                  styles ["section-head"]
+                  spacing: 10;
+
+                  Label {
+                    styles ["mark"]
+                    valign: center;
+                  }
+
+                  Label {
+                    styles ["section-label"]
+                    label:  _("[TEMPLATE]");
+                    hexpand: true;
+                    xalign: 0;
+                  }
+                }
+
+                Box {
+                  styles ["section-body"]
+                  orientation: vertical;
+
+                  // The templates scroll on their own: the name and Create
+                  // stay in reach whatever the window's height is.
+                  ScrolledWindow {
+                    hscrollbar-policy: never;
+                    vexpand: true;
+                    height-request: 272;
+
+                    // Go appends one row per template.
+                    ListBox vm_templates {
+                      styles ["rows", "vm-templates"]
+                      selection-mode: single;
+                      activate-on-single-click: true;
+                    }
+                  }
+                }
+              }
+
+              Box {
+                styles ["section"]
+                orientation: vertical;
+
+                Box {
+                  styles ["section-head"]
+                  spacing: 10;
+
+                  Label {
+                    styles ["mark"]
+                    valign: center;
+                  }
+
+                  Label {
+                    styles ["section-label"]
+                    label:  _("[NAME]");
+                    hexpand: true;
+                    xalign: 0;
+                  }
+                }
+
+                Box {
+                  styles ["section-body"]
+                  orientation: vertical;
+
+                  Box {
+                    styles ["row"]
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+                      spacing: 2;
+
+                      Label {
+                        styles ["label"]
+                        label:  _("Machine name");
+                        xalign: 0;
+                      }
+
+                      Label vm_new_note {
+                        styles ["sub"]
+                        xalign: 0;
+                        wrap: true;
+                        label:  _("The folder and the container are named after it.");
+                      }
+                    }
+
+                    Entry vm_new_name {
+                      styles ["entry"]
+                      placeholder-text: _("windows");
+                      width-chars: 18;
+                      valign: center;
+                    }
+                  }
+                }
+              }
+
+              Box {
+                styles ["section"]
+                orientation: vertical;
+
+                Box {
+                  styles ["section-body"]
+                  orientation: vertical;
+
+                  Box {
+                    styles ["row"]
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+                      spacing: 2;
+
+                      Label {
+                        styles ["label"]
+                        label:  _("Create");
+                        xalign: 0;
+                      }
+
+                      Label vm_create_note {
+                        styles ["sub"]
+                        xalign: 0;
+                        wrap: true;
+                        label:  _("Writes the machine's definition. Nothing is installed or started yet.");
+                      }
+                    }
+
+                    Button vm_create {
+                      styles ["suggested"]
+                      name: "create_machine";
+                      label:  _("Create");
+                      valign: center;
+                    }
+                  }
+                }
+              }
+            }
+          };
+        }
+
+        // ── PAGE: unavailable ── this build cannot run the machine ─────────
+        StackPage {
+          name: "unavailable";
+          child: Box {
+            orientation: vertical;
+            valign: center;
+            halign: center;
+            spacing: 8;
+            margin-start: 24;
+            margin-end: 24;
+
+            Image {
+              styles ["vm-empty-mark"]
+              icon-name: "dialog-warning-symbolic";
+              pixel-size: 48;
+            }
+
+            Label {
+              styles ["vm-empty-title"]
+              label:  _("No backend for this machine");
+            }
+
+            Label vm_na_note {
+              styles ["sub"]
+              justify: center;
+              wrap: true;
+            }
+          };
+        }
+
+        // ── PAGE: prereq ── one or more host requirements are missing ─────
+        StackPage {
+          name: "prereq";
+          child: ScrolledWindow {
+            hscrollbar-policy: never;
+
+            Box {
+              orientation: vertical;
+
+              // What is wrong and how to fix it.
+              Box vm_prereq_list {
+                styles ["section"]
+                orientation: vertical;
+
+                Box {
+                  styles ["section-head"]
+                  spacing: 10;
+
+                  Label {
+                    styles ["mark"]
+                    valign: center;
+                  }
+
+                  Label {
+                    styles ["section-label"]
+                    label:  _("[HOST]");
+                    hexpand: true;
+                    xalign: 0;
+                  }
+                }
+
+                Box {
+                  styles ["section-body"]
+                  orientation: vertical;
+
+                  // Go appends one .vm-check-row per check.
+                  Box vm_check_rows {
+                    styles ["rows", "vm-check-rows"]
+                    orientation: vertical;
+                  }
+                }
+              }
+            }
+          };
+        }
+
+        // ── PAGE: setup ── ready to install ────────────────────────────────
+        StackPage {
+          name: "setup";
+          child: ScrolledWindow {
+            hscrollbar-policy: never;
+
+            Box {
+              orientation: vertical;
+
+              // — profile section —
+              Box {
+                styles ["section"]
+                orientation: vertical;
+
+                Box {
+                  styles ["section-head"]
+                  spacing: 10;
+
+                  Label {
+                    styles ["mark"]
+                    valign: center;
+                  }
+
+                  Label {
+                    styles ["section-label"]
+                    label:  _("[GUEST]");
+                    hexpand: true;
+                    xalign: 0;
+                  }
+
+                  Label vm_setup_summary {
+                    styles ["section-meta"]
+                    xalign: 1;
+                  }
+                }
+
+                Box {
+                  styles ["section-body"]
+                  orientation: vertical;
+
+                  // Recommended profile row
+                  Box {
+                    styles ["row"]
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+                      spacing: 2;
+
+                      Label {
+                        styles ["label"]
+                        label:  _("Recommended profile");
+                        xalign: 0;
+                      }
+
+                      Label vm_profile_desc {
+                        styles ["sub"]
+                        xalign: 0;
+                        wrap: true;
+                      }
+                    }
+
+                    Button vm_accept {
+                      styles ["outlined"]
+                      name: "accept";
+                      label:  _("Use it");
+                      valign: center;
+                    }
+                  }
+
+                  // Advanced editor (collapsed)
+                  Box {
+                    styles ["row"]
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+                      spacing: 2;
+
+                      Label {
+                        styles ["label"]
+                        label:  _("Advanced configuration");
+                        xalign: 0;
+                      }
+
+                      Label {
+                        styles ["sub"]
+                        label:  _("Set memory, CPU cores and disk size yourself.");
+                        xalign: 0;
+                      }
+                    }
+
+                    Button vm_advanced_toggle {
+                      styles ["outlined"]
+                      name: "advanced_toggle";
+                      label:  _("Edit");
+                      valign: center;
+                    }
+                  }
+
+                  Revealer vm_advanced {
+                    reveal-child: false;
+                    transition-type: slide_down;
+                    transition-duration: 180;
+
+                    Box {
+                      orientation: vertical;
+
+                      Box {
+                        styles ["field"]
+
+                        Label {
+                          styles ["label"]
+                          label:  _("Memory (MiB)");
+                          hexpand: true;
+                          xalign: 0;
+                          valign: center;
+                        }
+
+                        SpinButton vm_memory {
+                          adjustment: Adjustment {
+                            lower: 2048;
+                            upper: 262144;
+                            step-increment: 1024;
+                            page-increment: 4096;
+                            value: 8192;
+                          };
+                          numeric: true;
+                          width-chars: 7;
+                          valign: center;
+                        }
+                      }
+
+                      Box {
+                        styles ["field"]
+
+                        Label {
+                          styles ["label"]
+                          label:  _("CPU cores");
+                          hexpand: true;
+                          xalign: 0;
+                          valign: center;
+                        }
+
+                        SpinButton vm_cpus {
+                          adjustment: Adjustment {
+                            lower: 1;
+                            upper: 256;
+                            step-increment: 1;
+                            page-increment: 2;
+                            value: 4;
+                          };
+                          numeric: true;
+                          width-chars: 4;
+                          valign: center;
+                        }
+                      }
+
+                      Box {
+                        styles ["field"]
+
+                        Label {
+                          styles ["label"]
+                          label:  _("Disk size (GiB)");
+                          hexpand: true;
+                          xalign: 0;
+                          valign: center;
+                        }
+
+                        SpinButton vm_disk {
+                          adjustment: Adjustment {
+                            lower: 32;
+                            upper: 2048;
+                            step-increment: 16;
+                            page-increment: 64;
+                            value: 128;
+                          };
+                          numeric: true;
+                          width-chars: 5;
+                          valign: center;
+                        }
+                      }
+
+                    }
+                  }
+                }
+              }
+
+              // — install section —
+              Box {
+                styles ["section"]
+                orientation: vertical;
+
+                Box {
+                  styles ["section-head"]
+                  spacing: 10;
+
+                  Label {
+                    styles ["mark"]
+                    valign: center;
+                  }
+
+                  Label {
+                    styles ["section-label"]
+                    label:  _("[INSTALL]");
+                    hexpand: true;
+                    xalign: 0;
+                  }
+                }
+
+                Box {
+                  styles ["section-body"]
+                  orientation: vertical;
+
+                  Box {
+                    styles ["row"]
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+                      spacing: 2;
+
+                      Label {
+                        styles ["label"]
+                        label:  _("Install Windows");
+                        xalign: 0;
+                      }
+
+                      Label vm_setup_note {
+                        styles ["sub"]
+                        label:  _("Downloads about 8 GB and installs Windows; takes 30+ minutes.");
+                        xalign: 0;
+                        wrap: true;
+                      }
+
+                      Label {
+                        styles ["sub"]
+                        label:  _("Windows needs a licence of its own.");
+                        xalign: 0;
+                        wrap: true;
+                      }
+                    }
+
+                    Button vm_install {
+                      styles ["suggested-action"]
+                      name: "install";
+                      label:  _("Install Windows");
+                      valign: center;
+                    }
+                  }
+                }
+              }
+
+              Box vm_setup_disk {
+                styles ["section"]
+                orientation: vertical;
+                visible: false;
+
+                Box {
+                  styles ["section-head"]
+                  spacing: 10;
+
+                  Label {
+                    styles ["mark"]
+                    valign: center;
+                  }
+
+                  Label {
+                    styles ["section-label"]
+                    label:  _("[DISK]");
+                    hexpand: true;
+                    xalign: 0;
+                  }
+                }
+
+                Box {
+                  styles ["section-body"]
+                  orientation: vertical;
+
+                  Box {
+                    styles ["row"]
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+                      spacing: 2;
+
+                      Label {
+                        styles ["label"]
+                        label:  _("Previous files");
+                        xalign: 0;
+                      }
+
+                      Label {
+                        styles ["sub"]
+                        label:  _("Permanently deletes leftover install files. Cannot be undone.");
+                        xalign: 0;
+                        wrap: true;
+                      }
+                    }
+
+                    Button vm_setup_remove_data {
+                      styles ["destructive-action"]
+                      name: "setup_remove_data";
+                      label:  _("Delete disk");
+                      valign: center;
+                    }
+                  }
+
+                  Box {
+                    styles ["row"]
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+                      spacing: 2;
+
+                      Label {
+                        styles ["label"]
+                        label:  _("Delete machine");
+                        xalign: 0;
+                      }
+
+                      Label {
+                        styles ["sub"]
+                        label:  _("Removes the machine and its files. Cannot be undone.");
+                        xalign: 0;
+                        wrap: true;
+                      }
+                    }
+
+                    Button vm_setup_delete {
+                      styles ["destructive-action"]
+                      name: "setup_delete";
+                      label:  _("Delete");
+                      valign: center;
+                    }
+                  }
+                }
+              }
+            }
+          };
+        }
+
+        // ── PAGE: provisioning ── downloading / first-time install ────────
+        StackPage {
+          name: "provisioning";
+          child: Box {
+            orientation: vertical;
+
+            Box {
+              styles ["section"]
+              orientation: vertical;
+
+              Box {
+                styles ["section-head"]
+                spacing: 10;
+
+                Label {
+                  styles ["mark"]
+                  valign: center;
+                }
+
+                Label {
+                  styles ["section-label"]
+                  label:  _("[PROGRESS]");
+                  hexpand: true;
+                  xalign: 0;
+                }
+              }
+
+              Box {
+                styles ["section-body"]
+                orientation: vertical;
+
+                Box {
+                  styles ["row"]
+                  orientation: vertical;
+                  spacing: 10;
+
+                  ProgressBar vm_progress {
+                    show-text: false;
+                  }
+
+                  Label vm_progress_text {
+                    styles ["sub"]
+                    xalign: 0;
+                    wrap: true;
+                  }
+                }
+
+                Box {
+                  styles ["row"]
+
+                  Box {
+                    orientation: vertical;
+                    hexpand: true;
+                    valign: center;
+                    spacing: 2;
+
+                    Label {
+                      styles ["label"]
+                      label:  _("Watch the installation");
+                      xalign: 0;
+                    }
+
+                    Label {
+                      styles ["sub"]
+                      label:  _("The installer screen is in your browser. The web console on 127.0.0.1:8006 has no login of its own.");
+                      xalign: 0;
+                      wrap: true;
+                    }
+                  }
+
+                  Button vm_console {
+                    styles ["outlined"]
+                    name: "console";
+                    label:  _("Open web console");
+                    valign: center;
+                  }
+                }
+
+                Box {
+                  styles ["row"]
+
+                  Box {
+                    orientation: vertical;
+                    hexpand: true;
+                    valign: center;
+                    spacing: 2;
+
+                    Label {
+                      styles ["label"]
+                      label:  _("Continue installation");
+                      xalign: 0;
+                    }
+
+                    Label {
+                      styles ["sub"]
+                      label:  _("Starts the container; Windows installs itself inside it.");
+                      xalign: 0;
+                      wrap: true;
+                    }
+                  }
+
+                  Button vm_prov_start {
+                    styles ["suggested-action"]
+                    name: "prov_start";
+                    label:  _("Continue");
+                    valign: center;
+                  }
+                }
+
+                Box {
+                  styles ["row"]
+
+                  Box {
+                    orientation: vertical;
+                    hexpand: true;
+                    valign: center;
+                    spacing: 2;
+
+                    Label {
+                      styles ["label"]
+                      label:  _("Stop waiting");
+                      xalign: 0;
+                    }
+
+                    Label {
+                      styles ["sub"]
+                      label:  _("Stops the container; the disk is kept. Reopen to resume.");
+                      xalign: 0;
+                      wrap: true;
+                    }
+                  }
+
+                  Button vm_prov_stop {
+                    styles ["outlined"]
+                    name: "prov_stop";
+                    label:  _("Stop");
+                    valign: center;
+                  }
+                }
+
+                Box {
+                  styles ["row"]
+
+                  Box {
+                    orientation: vertical;
+                    hexpand: true;
+                    valign: center;
+                    spacing: 2;
+
+                    Label {
+                      styles ["label"]
+                      label:  _("Abandon installation");
+                      xalign: 0;
+                    }
+
+                    Label {
+                      styles ["sub"]
+                      label:  _("Removes the project so you can start over. Downloaded files stay.");
+                      xalign: 0;
+                      wrap: true;
+                    }
+                  }
+
+                  Button vm_prov_remove {
+                    styles ["outlined"]
+                    name: "prov_remove";
+                    label:  _("Remove");
+                    valign: center;
+                  }
+                }
+              }
+            }
+          };
+        }
+
+        // ── PAGE: starting ── installed guest is coming up ───────────────
+        StackPage {
+          name: "starting";
+          child: Box {
+            orientation: vertical;
+
+            Box {
+              styles ["section"]
+              orientation: vertical;
+
+              Box {
+                styles ["section-head"]
+                spacing: 10;
+
+                Label {
+                  styles ["mark"]
+                  valign: center;
+                }
+
+                Label {
+                  styles ["section-label"]
+                  label:  _("[PROGRESS]");
+                  hexpand: true;
+                  xalign: 0;
+                }
+              }
+
+              Box {
+                styles ["section-body"]
+                orientation: vertical;
+
+                Box {
+                  styles ["row"]
+                  orientation: vertical;
+                  spacing: 10;
+
+                  ProgressBar vm_boot_progress {
+                    show-text: false;
+                  }
+
+                  Label vm_boot_progress_text {
+                    styles ["sub"]
+                    xalign: 0;
+                    wrap: true;
+                  }
+                }
+
+                Box {
+                  styles ["row"]
+
+                  Box {
+                    orientation: vertical;
+                    hexpand: true;
+                    valign: center;
+                    spacing: 2;
+
+                    Label {
+                      styles ["label"]
+                      label:  _("Web console");
+                      xalign: 0;
+                    }
+
+                    Label {
+                      styles ["sub"]
+                      label:  _("The guest screen is in your browser until RDP is ready.");
+                      xalign: 0;
+                      wrap: true;
+                    }
+                  }
+
+                  Button vm_boot_console {
+                    styles ["outlined"]
+                    name: "boot_console";
+                    label:  _("Open web console");
+                    valign: center;
+                  }
+                }
+
+                Box {
+                  styles ["row"]
+
+                  Box {
+                    orientation: vertical;
+                    hexpand: true;
+                    valign: center;
+                    spacing: 2;
+
+                    Label {
+                      styles ["label"]
+                      label:  _("Stop");
+                      xalign: 0;
+                    }
+
+                    Label {
+                      styles ["sub"]
+                      label:  _("Stops the guest; the disk is kept.");
+                      xalign: 0;
+                    }
+                  }
+
+                  Button vm_boot_stop {
+                    styles ["outlined"]
+                    name: "boot_stop";
+                    label:  _("Stop");
+                    valign: center;
+                  }
+                }
+              }
+            }
+          };
+        }
+
+        // ── PAGE: stopped ── Windows is installed and the guest is off ──
+        StackPage {
+          name: "stopped";
+          child: ScrolledWindow {
+            hscrollbar-policy: never;
+
+            Box {
+              orientation: vertical;
+
+              Box {
+                styles ["section"]
+                orientation: vertical;
+
+                Box {
+                  styles ["section-head"]
+                  spacing: 10;
+
+                  Label {
+                    styles ["mark"]
+                    valign: center;
+                  }
+
+                  Label {
+                    styles ["section-label"]
+                    label:  _("[GUEST]");
+                    hexpand: true;
+                    xalign: 0;
+                  }
+
+                  Label vm_ready_summary {
+                    styles ["section-meta"]
+                    xalign: 1;
+                  }
+                }
+
+                Box {
+                  styles ["section-body"]
+                  orientation: vertical;
+
+                  Box {
+                    styles ["field"]
+
+                    Label {
+                      styles ["label"]
+                      label:  _("Memory (MiB)");
+                      hexpand: true;
+                      xalign: 0;
+                      valign: center;
+                    }
+
+                    Box {
+                      orientation: vertical;
+                      valign: center;
+                      spacing: 2;
+
+                      SpinButton vm_ready_memory {
+                        adjustment: Adjustment {
+                          lower: 2048;
+                          upper: 262144;
+                          step-increment: 1024;
+                          page-increment: 4096;
+                          value: 8192;
+                        };
+                        numeric: true;
+                        width-chars: 7;
+                      }
+
+                      Label {
+                        styles ["sub"]
+                        label:  _("Takes effect on next start.");
+                        xalign: 1;
+                      }
+                    }
+                  }
+
+                  Box {
+                    styles ["field"]
+
+                    Label {
+                      styles ["label"]
+                      label:  _("CPU cores");
+                      hexpand: true;
+                      xalign: 0;
+                      valign: center;
+                    }
+
+                    Box {
+                      orientation: vertical;
+                      valign: center;
+                      spacing: 2;
+
+                      SpinButton vm_ready_cpus {
+                        adjustment: Adjustment {
+                          lower: 1;
+                          upper: 256;
+                          step-increment: 1;
+                          page-increment: 2;
+                          value: 4;
+                        };
+                        numeric: true;
+                        width-chars: 4;
+                      }
+
+                      Label {
+                        styles ["sub"]
+                        label:  _("Takes effect on next start.");
+                        xalign: 1;
+                      }
+                    }
+                  }
+
+                  Box {
+                    styles ["field"]
+
+                    Label {
+                      styles ["label"]
+                      label:  _("Disk size (GiB)");
+                      hexpand: true;
+                      xalign: 0;
+                      valign: center;
+                    }
+
+                    Box {
+                      orientation: vertical;
+                      valign: center;
+                      spacing: 2;
+
+                      Label vm_disk_size {
+                        styles ["readout"]
+                        xalign: 1;
+                      }
+
+                      Label {
+                        styles ["sub"]
+                        label:  _("Enlarging needs a manual partition resize inside Windows.");
+                        xalign: 1;
+                        wrap: true;
+                      }
+                    }
+                  }
+
+                  Box {
+                    styles ["row"]
+                    halign: end;
+
+                    Button vm_ready_save {
+                      styles ["outlined"]
+                      name: "ready_save";
+                      label:  _("Apply");
+                      valign: center;
+                    }
+                  }
+                }
+              }
+
+              Box {
+                styles ["section"]
+                orientation: vertical;
+
+                Box {
+                  styles ["section-head"]
+                  spacing: 10;
+
+                  Label {
+                    styles ["mark"]
+                    valign: center;
+                  }
+
+                  Label {
+                    styles ["section-label"]
+                    label:  _("[ACTIONS]");
+                    hexpand: true;
+                    xalign: 0;
+                  }
+                }
+
+                Box {
+                  styles ["section-body"]
+                  orientation: vertical;
+
+                  Box {
+                    styles ["row"]
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+                      spacing: 2;
+
+                      Label {
+                        styles ["label"]
+                        label:  _("Start");
+                        xalign: 0;
+                      }
+
+                      Label {
+                        styles ["sub"]
+                        label:  _("Starts the guest; ready in a minute or two.");
+                        xalign: 0;
+                      }
+                    }
+
+                    Button vm_start {
+                      styles ["suggested-action"]
+                      name: "start";
+                      label:  _("Start");
+                      valign: center;
+                    }
+                  }
+                }
+              }
+
+              Box {
+                styles ["section"]
+                orientation: vertical;
+
+                Box {
+                  styles ["section-head"]
+                  spacing: 10;
+
+                  Label {
+                    styles ["mark"]
+                    valign: center;
+                  }
+
+                  Label {
+                    styles ["section-label"]
+                    label:  _("[REMOVE]");
+                    hexpand: true;
+                    xalign: 0;
+                  }
+                }
+
+                Box {
+                  styles ["section-body"]
+                  orientation: vertical;
+
+                  Box {
+                    styles ["row"]
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+                      spacing: 2;
+
+                      Label {
+                        styles ["label"]
+                        label:  _("Remove VM");
+                        xalign: 0;
+                      }
+
+                      Label {
+                        styles ["sub"]
+                        label:  _("Deletes the container and project. The disk and its password stay.");
+                        xalign: 0;
+                        wrap: true;
+                      }
+                    }
+
+                    Button vm_remove {
+                      styles ["outlined"]
+                      name: "remove";
+                      label:  _("Remove");
+                      valign: center;
+                    }
+                  }
+
+                  Box {
+                    styles ["row"]
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+                      spacing: 2;
+
+                      Label {
+                        styles ["label"]
+                        label:  _("Delete disk data");
+                        xalign: 0;
+                      }
+
+                      Label {
+                        styles ["sub"]
+                        label:  _("Permanently deletes the Windows disk. Cannot be undone.");
+                        xalign: 0;
+                        wrap: true;
+                      }
+                    }
+
+                    Button vm_remove_data {
+                      styles ["destructive-action"]
+                      name: "remove_data";
+                      label:  _("Delete");
+                      valign: center;
+                    }
+                  }
+                }
+              }
+            }
+          };
+        }
+
+        // ── PAGE: running ── Windows is up ────────────────────────────────
+        StackPage {
+          name: "running";
+          child: Box {
+            orientation: vertical;
+
+            Box {
+              styles ["section"]
+              orientation: vertical;
+
+              Box {
+                styles ["section-head"]
+                spacing: 10;
+
+                Label {
+                  styles ["mark"]
+                  valign: center;
+                }
+
+                Label {
+                  styles ["section-label"]
+                  label:  _("[GUEST]");
+                  hexpand: true;
+                  xalign: 0;
+                }
+
+                Label vm_run_summary {
+                  styles ["section-meta"]
+                  xalign: 1;
+                }
+              }
+
+              Box {
+                styles ["section-body"]
+                orientation: vertical;
+
+                Box {
+                  styles ["row"]
+
+                  Box {
+                    orientation: vertical;
+                    hexpand: true;
+                    valign: center;
+                    spacing: 2;
+
+                    Label {
+                      styles ["label"]
+                      label:  _("Connect");
+                      xalign: 0;
+                    }
+
+                    Label {
+                      styles ["sub"]
+                      label:  _("Opens FreeRDP.");
+                      xalign: 0;
+                    }
+                  }
+
+                  Button vm_connect {
+                    styles ["suggested-action"]
+                    name: "connect";
+                    label:  _("Connect");
+                    valign: center;
+                  }
+                }
+
+                Box {
+                  styles ["row"]
+
+                  Box {
+                    orientation: vertical;
+                    hexpand: true;
+                    valign: center;
+                    spacing: 2;
+
+                    Label {
+                      styles ["label"]
+                      label:  _("Web console");
+                      xalign: 0;
+                    }
+
+                    Label {
+                      styles ["sub"]
+                      label:  _("The guest screen in the browser.");
+                      xalign: 0;
+                    }
+                  }
+
+                  Button vm_console_ready {
+                    styles ["outlined"]
+                    name: "console_ready";
+                    label:  _("Open web console");
+                    valign: center;
+                  }
+                }
+
+                Box {
+                  styles ["row"]
+
+                  Box {
+                    orientation: vertical;
+                    hexpand: true;
+                    valign: center;
+                    spacing: 2;
+
+                    Label {
+                      styles ["label"]
+                      label:  _("Stop");
+                      xalign: 0;
+                    }
+
+                    Label {
+                      styles ["sub"]
+                      label:  _("Stops the guest; the disk is kept.");
+                      xalign: 0;
+                    }
+                  }
+
+                  Button vm_stop {
+                    styles ["outlined"]
+                    name: "stop";
+                    label:  _("Stop");
+                    valign: center;
+                  }
+                }
+              }
+            }
+          };
+        }
+      }
+    }
+  }
+}

@@ -423,6 +423,7 @@ msgstr "雷暴"
 
 #: internal/apps/weather/weather.go:214
 #: internal/appui/sysmon.go:1075
+#: internal/vmui/window.go:1213
 msgid "Unknown"
 msgstr "未知"
 
@@ -509,9 +510,13 @@ msgstr "视频"
 #: internal/appui/pass.go:801
 #: internal/filesui/cards.go:373
 #: internal/ui/clipboard.go:459
+#: internal/vmui/window.go:991
+#: internal/vmui/window.go:1016
 #: ui/clock.ui:231
 #: ui/gpg.ui:1572
 #: ui/pass.ui:249
+#: ui/vm.ui:965
+#: ui/vm.ui:1817
 msgid "Delete"
 msgstr "删除"
 
@@ -614,6 +619,7 @@ msgstr "移除%s"
 
 #: internal/appui/clock.go:402
 #: ui/pass.ui:238
+#: ui/vm.ui:624
 msgid "Edit"
 msgstr "编辑"
 
@@ -622,6 +628,8 @@ msgstr "编辑"
 #: internal/gamesui/fortune_menu.go:174
 #: ui/clock.ui:339
 #: ui/clock.ui:406
+#: ui/vm.ui:1666
+#: ui/vm.ui:1687
 msgid "Start"
 msgstr "开始"
 
@@ -633,6 +641,11 @@ msgstr "重置"
 #: internal/appui/clock.go:496
 #: internal/assistantui/assistantui.go:431
 #: internal/ui/alarms.go:108
+#: ui/vm.ui:1174
+#: ui/vm.ui:1359
+#: ui/vm.ui:1380
+#: ui/vm.ui:1987
+#: ui/vm.ui:2008
 msgid "Stop"
 msgstr "停止"
 
@@ -1380,7 +1393,13 @@ msgstr "%s · %s"
 #: internal/ui/settings_ai.go:549
 #: internal/ui/settings_keyring.go:645
 #: internal/ui/settings_keyring.go:679
+#: internal/vmui/window.go:963
+#: internal/vmui/window.go:964
+#: internal/vmui/window.go:1008
+#: internal/vmui/window.go:1009
 #: ui/stocks.ui:292
+#: ui/vm.ui:1218
+#: ui/vm.ui:1773
 msgid "Remove"
 msgstr "移除"
 
@@ -1607,7 +1626,7 @@ msgstr "GPU"
 #: internal/appui/sysmon.go:1031
 #: internal/filesui/sidebar.go:98
 #: internal/shell/dock.go:265
-#: internal/shell/dock.go:295
+#: internal/shell/dock.go:296
 msgid "NETWORK"
 msgstr "网络"
 
@@ -2652,6 +2671,7 @@ msgid "Replace the installed %s?"
 msgstr "替换已安装的 %s？"
 
 #: internal/appui/workshop_manager.go:154
+#: internal/vmui/window.go:760
 msgid "Install"
 msgstr "安装"
 
@@ -2737,6 +2757,7 @@ msgid "Stopped."
 msgstr "停止。"
 
 #: internal/assistantui/assistantui.go:456
+#: internal/vmui/window.go:1151
 msgid "Something went wrong: %s"
 msgstr "出了点问题:%s"
 
@@ -3539,6 +3560,8 @@ msgid "smb://server/share, sftp://user@host/folder, ftp://, dav://, nfs://"
 msgstr "smb://服务器/共享, sftp://用户@主机/文件夹, ftp://, dav://, nfs://"
 
 #: internal/filesui/cards.go:503
+#: ui/vm.ui:1901
+#: ui/vm.ui:1922
 msgid "Connect"
 msgstr "连接"
 
@@ -7143,7 +7166,7 @@ msgid "SPACE PINBALL"
 msgstr "太空弹球"
 
 #: internal/hyprconf/keys.go:23
-#: internal/shell/dock.go:286
+#: internal/shell/dock.go:287
 #: ui/settings.ui:1810
 msgid "Launcher"
 msgstr "启动器"
@@ -7176,7 +7199,7 @@ msgstr "聚焦或关闭"
 
 #: internal/hyprconf/keys.go:30
 #: internal/shell/commands.go:33
-#: internal/shell/dock.go:285
+#: internal/shell/dock.go:286
 #: ui/control.ui:62
 #: ui/settings.ui:30
 msgid "Settings"
@@ -7389,7 +7412,7 @@ msgid "Press Enter again to empty the Trash"
 msgstr "再次按 Enter 清空回收站"
 
 #: internal/shell/commands.go:33
-#: internal/shell/dock.go:285
+#: internal/shell/dock.go:286
 msgid "inua's settings"
 msgstr "inua的设置"
 
@@ -7536,12 +7559,12 @@ msgid "Web search"
 msgstr "网络搜索"
 
 #: internal/shell/dock.go:246
-#: internal/shell/dock.go:295
+#: internal/shell/dock.go:296
 msgid "EVERYDAY"
 msgstr "日常"
 
 #: internal/shell/dock.go:255
-#: internal/shell/dock.go:295
+#: internal/shell/dock.go:296
 msgid "TOOLS"
 msgstr "工具"
 
@@ -7550,42 +7573,42 @@ msgid "PLAY"
 msgstr "玩"
 
 #: internal/shell/dock.go:273
-#: internal/shell/dock.go:297
+#: internal/shell/dock.go:298
 #: ui/sysmon.ui:149
 msgid "SYSTEM"
 msgstr "系统"
 
-#: internal/shell/dock.go:286
+#: internal/shell/dock.go:287
 msgid "Find apps, windows and answers"
 msgstr "查找应用程序、窗口和答案"
 
-#: internal/shell/dock.go:287
+#: internal/shell/dock.go:288
 #: internal/ui/screenshot.go:802
 #: ui/settings.ui:1770
 msgid "Screenshot"
 msgstr "截图"
 
-#: internal/shell/dock.go:287
+#: internal/shell/dock.go:288
 msgid "Capture an area, a window or a screen"
 msgstr "捕获区域、窗口或屏幕"
 
-#: internal/shell/dock.go:296
+#: internal/shell/dock.go:297
 msgid "DEVELOPMENT"
 msgstr "开发"
 
-#: internal/shell/dock.go:296
+#: internal/shell/dock.go:297
 msgid "MEDIA"
 msgstr "媒体"
 
-#: internal/shell/dock.go:296
+#: internal/shell/dock.go:297
 msgid "GAMES"
 msgstr "游戏"
 
-#: internal/shell/dock.go:297
+#: internal/shell/dock.go:298
 msgid "OTHER"
 msgstr "其他"
 
-#: internal/shell/dock.go:322
+#: internal/shell/dock.go:323
 msgid "WORKSHOP"
 msgstr "工坊"
 
@@ -9442,6 +9465,300 @@ msgstr "找不到"
 msgid "Could not open the link"
 msgstr "无法打开链接"
 
+#: internal/vmui/app.go:22
+#: internal/vmui/window.go:486
+#: internal/vmui/window.go:1179
+#: ui/vm.ui:14
+#: ui/vm.ui:38
+#: ui/vm.ui:98
+#: config/apps/io.github.lyricat.Inua.VM.desktop:3
+msgid "Virtual machines"
+msgstr "虚拟机"
+
+#: internal/vmui/window.go:479
+msgid "New machine"
+msgstr "新建虚拟机"
+
+#: internal/vmui/window.go:480
+msgid "Pick what the new machine runs."
+msgstr "选择新虚拟机运行的系统。"
+
+#: internal/vmui/window.go:487
+msgid "Machines keep running with this window closed."
+msgstr "关闭此窗口后虚拟机仍继续运行。"
+
+#: internal/vmui/window.go:494
+#: ui/vm.ui:407
+msgid "No backend for this machine"
+msgstr "此虚拟机没有可用后端"
+
+#: internal/vmui/window.go:495
+msgid "This machine needs the %s backend, which this build does not have."
+msgstr "此虚拟机需要 %s 后端，而此版本没有。"
+
+#: internal/vmui/window.go:617
+msgid "That name cannot be used: %v"
+msgstr "无法使用该名称：%v"
+
+#: internal/vmui/window.go:669
+msgid "Fix"
+msgstr "修复"
+
+#: internal/vmui/window.go:671
+msgid "Add me to %s"
+msgstr "将我添加到 %s 组"
+
+#: internal/vmui/window.go:709
+msgid "Start inua-keyring, or install a Secret Service."
+msgstr "启动 inua-keyring，或安装一个 Secret Service。"
+
+#: internal/vmui/window.go:712
+msgid "This manager needs NixOS, Ubuntu or Debian."
+msgstr "此管理器需要 NixOS、Ubuntu 或 Debian。"
+
+#: internal/vmui/window.go:756
+msgid "Add %s to your NixOS configuration."
+msgstr "把 %s 加入你的 NixOS 配置。"
+
+#: internal/vmui/window.go:768
+msgid "Operating system"
+msgstr "操作系统"
+
+#: internal/vmui/window.go:770
+msgid "Hardware virtualization (KVM)"
+msgstr "硬件虚拟化 (KVM)"
+
+#: internal/vmui/window.go:772
+msgid "Docker"
+msgstr "Docker"
+
+#: internal/vmui/window.go:774
+msgid "Docker Compose v2"
+msgstr "Docker Compose v2"
+
+#: internal/vmui/window.go:776
+msgid "FreeRDP"
+msgstr "FreeRDP"
+
+#: internal/vmui/window.go:778
+msgid "Browser opener"
+msgstr "浏览器打开程序"
+
+#: internal/vmui/window.go:780
+msgid "Disk space"
+msgstr "磁盘空间"
+
+#: internal/vmui/window.go:782
+msgid "Network device (TUN)"
+msgstr "网络设备 (TUN)"
+
+#: internal/vmui/window.go:784
+#: ui/settings.ui:3819
+msgid "Secret Service"
+msgstr "Secret Service"
+
+#: internal/vmui/window.go:788
+msgid "UEFI firmware"
+msgstr "UEFI 固件"
+
+#: internal/vmui/window.go:792
+msgid "Binder (the kernel's Android support)"
+msgstr "Binder（内核的 Android 支持）"
+
+#: internal/vmui/window.go:806
+msgid "Your user may not use Docker's socket. Joining the docker group would let anything running as you control this machine as root, so Inua will not do it for you: run `sudo gpasswd -a $USER docker` yourself if you accept that, or use rootless Docker or Podman instead."
+msgstr "你的用户不能使用 Docker 的 socket。加入 docker 组会让以你的身份运行的一切都等同 root 控制这台机器，所以 Inua 不会替你做：如果你接受这一点，可以自己运行 `sudo gpasswd -a $USER docker`，或改用 rootless Docker 或 Podman。"
+
+#: internal/vmui/window.go:810
+msgid "Not installed on this system."
+msgstr "此系统上未安装。"
+
+#: internal/vmui/window.go:812
+msgid "Installed, but your user may not use it."
+msgstr "已安装，但你的用户无权使用。"
+
+#: internal/vmui/window.go:814
+msgid "Installed, but not running."
+msgstr "已安装，但未运行。"
+
+#: internal/vmui/window.go:816
+msgid "This Linux distribution is not supported."
+msgstr "不支持此 Linux 发行版。"
+
+#: internal/vmui/window.go:818
+msgid "Could not be checked."
+msgstr "无法检查。"
+
+#: internal/vmui/window.go:842
+msgid "A balanced profile leaves memory and CPU for your system."
+msgstr "均衡配置会为你的系统保留内存与 CPU。"
+
+#: internal/vmui/window.go:844
+msgid "Files from a previous attempt are still here. Install reuses them; delete them to start over."
+msgstr "上次安装留下的文件还在。继续安装会复用它们；删除后则从头开始。"
+
+#: internal/vmui/window.go:869
+msgid "The system is installing; this takes a while."
+msgstr "正在安装系统，需要一些时间。"
+
+#: internal/vmui/window.go:871
+#: internal/vmui/window.go:911
+msgid "Stopping…"
+msgstr "正在停止…"
+
+#: internal/vmui/window.go:873
+msgid "The installation is paused. Continue to resume."
+msgstr "安装已暂停。继续即可恢复。"
+
+#: internal/vmui/window.go:913
+msgid "The system is starting; ready in a minute or two."
+msgstr "系统正在启动，一两分钟后可用。"
+
+#: internal/vmui/window.go:957
+msgid "Confirm remove"
+msgstr "确认移除"
+
+#: internal/vmui/window.go:969
+#: internal/vmui/window.go:978
+#: internal/vmui/window.go:987
+msgid "Confirm delete"
+msgstr "确认删除"
+
+#: internal/vmui/window.go:973
+#: internal/vmui/window.go:982
+#: internal/vmui/window.go:1012
+#: internal/vmui/window.go:1013
+#: ui/vm.ui:921
+msgid "Delete disk"
+msgstr "删除磁盘"
+
+#: internal/vmui/window.go:1038
+msgid "The fix did not work: %v"
+msgstr "修复失败：%v"
+
+#: internal/vmui/window.go:1043
+msgid "Done. Log out and back in for it to take effect."
+msgstr "完成。请注销并重新登录以使更改生效。"
+
+#: internal/vmui/window.go:1046
+msgid "Done."
+msgstr "完成。"
+
+#: internal/vmui/window.go:1068
+msgid "That did not work: %v"
+msgstr "没有成功：%v"
+
+#: internal/vmui/window.go:1113
+msgid "Log out to finish"
+msgstr "注销以完成"
+
+#: internal/vmui/window.go:1114
+msgid "The change takes effect the next time you log in."
+msgstr "此更改将在你下次登录时生效。"
+
+#: internal/vmui/window.go:1155
+msgid "This system is missing something the guest needs"
+msgstr "此系统缺少客户机需要的东西"
+
+#: internal/vmui/window.go:1158
+msgid "Files from a previous attempt are still here"
+msgstr "上次安装留下的文件还在"
+
+#: internal/vmui/window.go:1160
+msgid "Not installed yet"
+msgstr "尚未安装"
+
+#: internal/vmui/window.go:1163
+#: internal/vmui/window.go:1171
+#: internal/vmui/window.go:1203
+msgid "Stopping"
+msgstr "正在停止"
+
+#: internal/vmui/window.go:1166
+#: internal/vmui/window.go:1205
+msgid "Installing"
+msgstr "正在安装"
+
+#: internal/vmui/window.go:1168
+msgid "Installation paused"
+msgstr "安装已暂停"
+
+#: internal/vmui/window.go:1173
+#: internal/vmui/window.go:1207
+msgid "Starting"
+msgstr "正在启动"
+
+#: internal/vmui/window.go:1175
+#: internal/vmui/window.go:1209
+msgid "Running"
+msgstr "运行中"
+
+#: internal/vmui/window.go:1177
+#: internal/vmui/window.go:1211
+msgid "Stopped"
+msgstr "已停止"
+
+#: internal/vmui/window.go:1185
+msgid "%s · no backend in this build"
+msgstr "%s · 此版本没有后端"
+
+#: internal/vmui/window.go:1194
+msgid "Working"
+msgstr "处理中"
+
+#: internal/vmui/window.go:1198
+msgid "Needs the host"
+msgstr "需要主机支持"
+
+#: internal/vmui/window.go:1200
+msgid "Not installed"
+msgstr "未安装"
+
+#: internal/vmui/window.go:1230
+#: internal/vmui/window.go:1282
+msgid "Custom system"
+msgstr "自定义系统"
+
+#: internal/vmui/window.go:1259
+msgid "Downloads about 8 GB and installs Windows; takes 30+ minutes. Windows needs a licence."
+msgstr "下载约 8 GB 并安装 Windows，需要 30 分钟以上。Windows 需要授权。"
+
+#: internal/vmui/window.go:1261
+msgid "The guest installs from its own media, as it would on a real machine."
+msgstr "客户机像在真机上一样，从自己的安装介质安装。"
+
+#: internal/vmui/window.go:1291
+msgid "Windows 11, installed for you in a container."
+msgstr "在容器里为你安装 Windows 11。"
+
+#: internal/vmui/window.go:1293
+msgid "Windows 11 from your own ISO, with the virtio drivers."
+msgstr "用你自己的 ISO 安装 Windows 11，附 virtio 驱动。"
+
+#: internal/vmui/window.go:1295
+msgid "Ubuntu, booted with QEMU from its ISO."
+msgstr "Ubuntu，用 QEMU 从其 ISO 启动。"
+
+#: internal/vmui/window.go:1297
+msgid "Fedora, booted with QEMU from its ISO."
+msgstr "Fedora，用 QEMU 从其 ISO 启动。"
+
+#: internal/vmui/window.go:1299
+msgid "Arch Linux, booted with QEMU from its ISO."
+msgstr "Arch Linux，用 QEMU 从其 ISO 启动。"
+
+#: internal/vmui/window.go:1301
+msgid "FreeBSD, booted with QEMU from its ISO."
+msgstr "FreeBSD，用 QEMU 从其 ISO 启动。"
+
+#: internal/vmui/window.go:1303
+msgid "Android in Waydroid, with the host's display and GPU."
+msgstr "Waydroid 中的 Android，直接使用主机的显示和 GPU。"
+
+#: internal/vmui/window.go:1305
+msgid "Your own system: an ISO, a disk or a kernel, on any architecture."
+msgstr "你自己的系统：ISO、磁盘或内核，可用任意架构。"
+
 #: internal/workshop/session.go:141
 msgid "It ended before saying hello; what it wrote is below."
 msgstr "它在打招呼前就结束了；它的输出在下面。"
@@ -9847,6 +10164,8 @@ msgid "Or in a terminal:"
 msgstr "或在终端里："
 
 #: ui/gpg.ui:1488
+#: ui/vm.ui:344
+#: ui/vm.ui:366
 msgid "Create"
 msgstr "创建"
 
@@ -10822,10 +11141,6 @@ msgstr "<span alpha='55%'>[</span>钥匙环<span alpha='55%'>]</span>"
 msgid "Apps' secrets: browsers' keys, Wi-Fi passwords, API keys"
 msgstr "应用的密钥：浏览器密钥、Wi-Fi 密码、API 密钥"
 
-#: ui/settings.ui:3819
-msgid "Secret Service"
-msgstr "Secret Service"
-
 #: ui/settings.ui:3855
 msgid "Unlocked secrets"
 msgstr "已解锁的机密"
@@ -11270,6 +11585,234 @@ msgstr "详情（I）"
 msgid "Open a File…"
 msgstr "打开文件…"
 
+#: ui/vm.ui:49
+msgid "New"
+msgstr "新建"
+
+#: ui/vm.ui:50
+msgid "Add a machine from a template"
+msgstr "从模板添加虚拟机"
+
+#: ui/vm.ui:145
+msgid "No machines yet"
+msgstr "还没有虚拟机"
+
+#: ui/vm.ui:153
+msgid "New picks an operating system; the machine's fields follow."
+msgstr "“新建”先选操作系统，随后是虚拟机的各项设置。"
+
+#: ui/vm.ui:196
+msgid "[TEMPLATE]"
+msgstr "[模板]"
+
+#: ui/vm.ui:255
+msgid "[NAME]"
+msgstr "[名称]"
+
+#: ui/vm.ui:284
+msgid "Machine name"
+msgstr "虚拟机名称"
+
+#: ui/vm.ui:295
+msgid "The folder and the container are named after it."
+msgstr "文件夹和容器都以它命名。"
+
+#: ui/vm.ui:305
+msgid "windows"
+msgstr ""
+
+#: ui/vm.ui:355
+msgid "Writes the machine's definition. Nothing is installed or started yet."
+msgstr "写入虚拟机定义。尚未安装或启动任何东西。"
+
+#: ui/vm.ui:457
+msgid "[HOST]"
+msgstr "[宿主]"
+
+#: ui/vm.ui:523
+#: ui/vm.ui:1428
+#: ui/vm.ui:1864
+msgid "[GUEST]"
+msgstr "[客户机]"
+
+#: ui/vm.ui:560
+msgid "Recommended profile"
+msgstr "推荐配置"
+
+#: ui/vm.ui:581
+msgid "Use it"
+msgstr "使用"
+
+#: ui/vm.ui:603
+msgid "Advanced configuration"
+msgstr "高级配置"
+
+#: ui/vm.ui:612
+msgid "Set memory, CPU cores and disk size yourself."
+msgstr "自行设置内存、CPU 核心与磁盘大小。"
+
+#: ui/vm.ui:648
+#: ui/vm.ui:1459
+msgid "Memory (MiB)"
+msgstr "内存 (MiB)"
+
+#: ui/vm.ui:682
+#: ui/vm.ui:1508
+msgid "CPU cores"
+msgstr "CPU 核心"
+
+#: ui/vm.ui:716
+#: ui/vm.ui:1557
+msgid "Disk size (GiB)"
+msgstr "磁盘大小 (GiB)"
+
+#: ui/vm.ui:773
+msgid "[INSTALL]"
+msgstr "[安装]"
+
+#: ui/vm.ui:802
+#: ui/vm.ui:834
+msgid "Install Windows"
+msgstr "安装 Windows"
+
+#: ui/vm.ui:811
+msgid "Downloads about 8 GB and installs Windows; takes 30+ minutes."
+msgstr "下载约 8 GB 并安装 Windows；需要 30 分钟以上。"
+
+#: ui/vm.ui:821
+msgid "Windows needs a licence of its own."
+msgstr "Windows 需要它自己的许可证。"
+
+#: ui/vm.ui:870
+msgid "[DISK]"
+msgstr "[磁盘]"
+
+#: ui/vm.ui:899
+msgid "Previous files"
+msgstr "上次留下的文件"
+
+#: ui/vm.ui:908
+msgid "Permanently deletes leftover install files. Cannot be undone."
+msgstr "永久删除上次安装留下的文件，无法撤销。"
+
+#: ui/vm.ui:943
+msgid "Delete machine"
+msgstr "删除虚拟机"
+
+#: ui/vm.ui:952
+msgid "Removes the machine and its files. Cannot be undone."
+msgstr "移除虚拟机及其文件。无法撤销。"
+
+#: ui/vm.ui:1012
+#: ui/vm.ui:1263
+msgid "[PROGRESS]"
+msgstr "[进度]"
+
+#: ui/vm.ui:1064
+msgid "Watch the installation"
+msgstr "查看安装过程"
+
+#: ui/vm.ui:1073
+msgid "The installer screen is in your browser. The web console on 127.0.0.1:8006 has no login of its own."
+msgstr "安装程序的画面在浏览器中。127.0.0.1:8006 上的网页控制台没有自己的登录。"
+
+#: ui/vm.ui:1086
+#: ui/vm.ui:1337
+#: ui/vm.ui:1965
+msgid "Open web console"
+msgstr "打开网页控制台"
+
+#: ui/vm.ui:1108
+msgid "Continue installation"
+msgstr "继续安装"
+
+#: ui/vm.ui:1117
+msgid "Starts the container; Windows installs itself inside it."
+msgstr "启动容器；Windows 会在其中自行安装。"
+
+#: ui/vm.ui:1130
+msgid "Continue"
+msgstr "继续"
+
+#: ui/vm.ui:1152
+msgid "Stop waiting"
+msgstr "停止等待"
+
+#: ui/vm.ui:1161
+msgid "Stops the container; the disk is kept. Reopen to resume."
+msgstr "停止容器并保留磁盘；重新打开可继续。"
+
+#: ui/vm.ui:1196
+msgid "Abandon installation"
+msgstr "放弃安装"
+
+#: ui/vm.ui:1205
+msgid "Removes the project so you can start over. Downloaded files stay."
+msgstr "移除项目以便重新开始。已下载的文件会保留。"
+
+#: ui/vm.ui:1315
+#: ui/vm.ui:1944
+msgid "Web console"
+msgstr "网页控制台"
+
+#: ui/vm.ui:1324
+msgid "The guest screen is in your browser until RDP is ready."
+msgstr "在 RDP 就绪之前，客户机画面在浏览器中。"
+
+#: ui/vm.ui:1368
+#: ui/vm.ui:1996
+msgid "Stops the guest; the disk is kept."
+msgstr "停止客户机并保留磁盘。"
+
+#: ui/vm.ui:1490
+#: ui/vm.ui:1539
+msgid "Takes effect on next start."
+msgstr "下次启动时生效。"
+
+#: ui/vm.ui:1581
+msgid "Enlarging needs a manual partition resize inside Windows."
+msgstr "扩容需在 Windows 内手动调整分区。"
+
+#: ui/vm.ui:1602
+msgid "Apply"
+msgstr "应用"
+
+#: ui/vm.ui:1637
+msgid "[ACTIONS]"
+msgstr "[操作]"
+
+#: ui/vm.ui:1675
+msgid "Starts the guest; ready in a minute or two."
+msgstr "启动客户机，大约一两分钟后就绪。"
+
+#: ui/vm.ui:1722
+msgid "[REMOVE]"
+msgstr "[移除]"
+
+#: ui/vm.ui:1751
+msgid "Remove VM"
+msgstr "移除虚拟机"
+
+#: ui/vm.ui:1760
+msgid "Deletes the container and project. The disk and its password stay."
+msgstr "删除容器和项目。磁盘和密码会保留。"
+
+#: ui/vm.ui:1795
+msgid "Delete disk data"
+msgstr "删除磁盘数据"
+
+#: ui/vm.ui:1804
+msgid "Permanently deletes the Windows disk. Cannot be undone."
+msgstr "永久删除 Windows 磁盘，无法撤销。"
+
+#: ui/vm.ui:1910
+msgid "Opens FreeRDP."
+msgstr "打开 FreeRDP。"
+
+#: ui/vm.ui:1953
+msgid "The guest screen in the browser."
+msgstr "浏览器中的客户机画面。"
+
 #: ui/weather.ui:30
 msgid "Previous place"
 msgstr "先前地点"
@@ -11419,6 +11962,14 @@ msgstr "您的tailnet的设备、出口节点和该设备的Tailscale设置"
 #: config/apps/io.github.lyricat.Inua.Tailscale.desktop:20
 msgid "vpn;tailnet;network;exit node;taildrop;"
 msgstr "vpn;tailnet;网络;出口节点;taildrop;"
+
+#: config/apps/io.github.lyricat.Inua.VM.desktop:10
+msgid "Run other systems as machines: Windows, Linux, FreeBSD, Android, or your own"
+msgstr "把其他系统作为虚拟机运行：Windows、Linux、FreeBSD、Android 或你自己的系统"
+
+#: config/apps/io.github.lyricat.Inua.VM.desktop:20
+msgid "virtual machine;windows;linux;freebsd;android;qemu;docker;kvm;rdp;guest;"
+msgstr "虚拟机;windows;linux;freebsd;android;qemu;docker;kvm;rdp;客户机;"
 
 #: config/apps/io.github.lyricat.Inua.Video.desktop:10
 msgid "Watch videos"

@@ -423,6 +423,7 @@ msgstr "雷雨"
 
 #: internal/apps/weather/weather.go:214
 #: internal/appui/sysmon.go:1075
+#: internal/vmui/window.go:1213
 msgid "Unknown"
 msgstr "不明"
 
@@ -509,9 +510,13 @@ msgstr "ビデオ"
 #: internal/appui/pass.go:801
 #: internal/filesui/cards.go:373
 #: internal/ui/clipboard.go:459
+#: internal/vmui/window.go:991
+#: internal/vmui/window.go:1016
 #: ui/clock.ui:231
 #: ui/gpg.ui:1572
 #: ui/pass.ui:249
+#: ui/vm.ui:965
+#: ui/vm.ui:1817
 msgid "Delete"
 msgstr "削除"
 
@@ -614,6 +619,7 @@ msgstr "%sを削除します"
 
 #: internal/appui/clock.go:402
 #: ui/pass.ui:238
+#: ui/vm.ui:624
 msgid "Edit"
 msgstr "編集"
 
@@ -622,6 +628,8 @@ msgstr "編集"
 #: internal/gamesui/fortune_menu.go:174
 #: ui/clock.ui:339
 #: ui/clock.ui:406
+#: ui/vm.ui:1666
+#: ui/vm.ui:1687
 msgid "Start"
 msgstr "開始"
 
@@ -633,6 +641,11 @@ msgstr "リセット"
 #: internal/appui/clock.go:496
 #: internal/assistantui/assistantui.go:431
 #: internal/ui/alarms.go:108
+#: ui/vm.ui:1174
+#: ui/vm.ui:1359
+#: ui/vm.ui:1380
+#: ui/vm.ui:1987
+#: ui/vm.ui:2008
 msgid "Stop"
 msgstr "停止"
 
@@ -1380,7 +1393,13 @@ msgstr "%s · %s"
 #: internal/ui/settings_ai.go:549
 #: internal/ui/settings_keyring.go:645
 #: internal/ui/settings_keyring.go:679
+#: internal/vmui/window.go:963
+#: internal/vmui/window.go:964
+#: internal/vmui/window.go:1008
+#: internal/vmui/window.go:1009
 #: ui/stocks.ui:292
+#: ui/vm.ui:1218
+#: ui/vm.ui:1773
 msgid "Remove"
 msgstr "削除"
 
@@ -1607,7 +1626,7 @@ msgstr "GPU"
 #: internal/appui/sysmon.go:1031
 #: internal/filesui/sidebar.go:98
 #: internal/shell/dock.go:265
-#: internal/shell/dock.go:295
+#: internal/shell/dock.go:296
 msgid "NETWORK"
 msgstr "ネットワーク"
 
@@ -2652,6 +2671,7 @@ msgid "Replace the installed %s?"
 msgstr "インストール済みの %s を置き換えますか？"
 
 #: internal/appui/workshop_manager.go:154
+#: internal/vmui/window.go:760
 msgid "Install"
 msgstr "インストール"
 
@@ -2737,6 +2757,7 @@ msgid "Stopped."
 msgstr "停止した。"
 
 #: internal/assistantui/assistantui.go:456
+#: internal/vmui/window.go:1151
 msgid "Something went wrong: %s"
 msgstr "問題が発生しました: %s"
 
@@ -3539,6 +3560,8 @@ msgid "smb://server/share, sftp://user@host/folder, ftp://, dav://, nfs://"
 msgstr "smb://サーバー/共有, sftp://ユーザー@ホスト/フォルダー, ftp://, dav://, nfs://"
 
 #: internal/filesui/cards.go:503
+#: ui/vm.ui:1901
+#: ui/vm.ui:1922
 msgid "Connect"
 msgstr "接続"
 
@@ -7143,7 +7166,7 @@ msgid "SPACE PINBALL"
 msgstr "スペースピンボール"
 
 #: internal/hyprconf/keys.go:23
-#: internal/shell/dock.go:286
+#: internal/shell/dock.go:287
 #: ui/settings.ui:1810
 msgid "Launcher"
 msgstr "ランチャー"
@@ -7176,7 +7199,7 @@ msgstr "フォーカスのオンまたはオフ"
 
 #: internal/hyprconf/keys.go:30
 #: internal/shell/commands.go:33
-#: internal/shell/dock.go:285
+#: internal/shell/dock.go:286
 #: ui/control.ui:62
 #: ui/settings.ui:30
 msgid "Settings"
@@ -7389,7 +7412,7 @@ msgid "Press Enter again to empty the Trash"
 msgstr "もう一度 Enter を押すとゴミ箱を空にします"
 
 #: internal/shell/commands.go:33
-#: internal/shell/dock.go:285
+#: internal/shell/dock.go:286
 msgid "inua's settings"
 msgstr "inuaの設定"
 
@@ -7536,12 +7559,12 @@ msgid "Web search"
 msgstr "ウェブ検索"
 
 #: internal/shell/dock.go:246
-#: internal/shell/dock.go:295
+#: internal/shell/dock.go:296
 msgid "EVERYDAY"
 msgstr "毎日"
 
 #: internal/shell/dock.go:255
-#: internal/shell/dock.go:295
+#: internal/shell/dock.go:296
 msgid "TOOLS"
 msgstr "ツール"
 
@@ -7550,42 +7573,42 @@ msgid "PLAY"
 msgstr "遊び"
 
 #: internal/shell/dock.go:273
-#: internal/shell/dock.go:297
+#: internal/shell/dock.go:298
 #: ui/sysmon.ui:149
 msgid "SYSTEM"
 msgstr "システム"
 
-#: internal/shell/dock.go:286
+#: internal/shell/dock.go:287
 msgid "Find apps, windows and answers"
 msgstr "アプリ、ウィンドウ、および回答を見つける"
 
-#: internal/shell/dock.go:287
+#: internal/shell/dock.go:288
 #: internal/ui/screenshot.go:802
 #: ui/settings.ui:1770
 msgid "Screenshot"
 msgstr "スクリーンショット"
 
-#: internal/shell/dock.go:287
+#: internal/shell/dock.go:288
 msgid "Capture an area, a window or a screen"
 msgstr "領域、ウィンドウ、または画面をキャプチャする"
 
-#: internal/shell/dock.go:296
+#: internal/shell/dock.go:297
 msgid "DEVELOPMENT"
 msgstr "開発"
 
-#: internal/shell/dock.go:296
+#: internal/shell/dock.go:297
 msgid "MEDIA"
 msgstr "メディア"
 
-#: internal/shell/dock.go:296
+#: internal/shell/dock.go:297
 msgid "GAMES"
 msgstr "ゲーム"
 
-#: internal/shell/dock.go:297
+#: internal/shell/dock.go:298
 msgid "OTHER"
 msgstr "その他"
 
-#: internal/shell/dock.go:322
+#: internal/shell/dock.go:323
 msgid "WORKSHOP"
 msgstr "ワークショップ"
 
@@ -9442,6 +9465,300 @@ msgstr "見つかりません"
 msgid "Could not open the link"
 msgstr "リンクを開けませんでした"
 
+#: internal/vmui/app.go:22
+#: internal/vmui/window.go:486
+#: internal/vmui/window.go:1179
+#: ui/vm.ui:14
+#: ui/vm.ui:38
+#: ui/vm.ui:98
+#: config/apps/io.github.lyricat.Inua.VM.desktop:3
+msgid "Virtual machines"
+msgstr "仮想マシン"
+
+#: internal/vmui/window.go:479
+msgid "New machine"
+msgstr "新しいマシン"
+
+#: internal/vmui/window.go:480
+msgid "Pick what the new machine runs."
+msgstr "新しいマシンが何を動かすかを選びます。"
+
+#: internal/vmui/window.go:487
+msgid "Machines keep running with this window closed."
+msgstr "このウィンドウを閉じてもマシンは動き続けます。"
+
+#: internal/vmui/window.go:494
+#: ui/vm.ui:407
+msgid "No backend for this machine"
+msgstr "このマシンにはバックエンドがありません"
+
+#: internal/vmui/window.go:495
+msgid "This machine needs the %s backend, which this build does not have."
+msgstr "このマシンには %s バックエンドが必要ですが、このビルドにはありません。"
+
+#: internal/vmui/window.go:617
+msgid "That name cannot be used: %v"
+msgstr "その名前は使えません: %v"
+
+#: internal/vmui/window.go:669
+msgid "Fix"
+msgstr "修正"
+
+#: internal/vmui/window.go:671
+msgid "Add me to %s"
+msgstr "%s グループに追加"
+
+#: internal/vmui/window.go:709
+msgid "Start inua-keyring, or install a Secret Service."
+msgstr "inua-keyring を起動するか、Secret Service をインストールしてください。"
+
+#: internal/vmui/window.go:712
+msgid "This manager needs NixOS, Ubuntu or Debian."
+msgstr "このマネージャーは NixOS、Ubuntu、Debian のいずれかが必要です。"
+
+#: internal/vmui/window.go:756
+msgid "Add %s to your NixOS configuration."
+msgstr "%s を NixOS の設定に追加します。"
+
+#: internal/vmui/window.go:768
+msgid "Operating system"
+msgstr "オペレーティングシステム"
+
+#: internal/vmui/window.go:770
+msgid "Hardware virtualization (KVM)"
+msgstr "ハードウェア仮想化 (KVM)"
+
+#: internal/vmui/window.go:772
+msgid "Docker"
+msgstr "Docker"
+
+#: internal/vmui/window.go:774
+msgid "Docker Compose v2"
+msgstr "Docker Compose v2"
+
+#: internal/vmui/window.go:776
+msgid "FreeRDP"
+msgstr "FreeRDP"
+
+#: internal/vmui/window.go:778
+msgid "Browser opener"
+msgstr "ブラウザー起動コマンド"
+
+#: internal/vmui/window.go:780
+msgid "Disk space"
+msgstr "ディスク容量"
+
+#: internal/vmui/window.go:782
+msgid "Network device (TUN)"
+msgstr "ネットワークデバイス (TUN)"
+
+#: internal/vmui/window.go:784
+#: ui/settings.ui:3819
+msgid "Secret Service"
+msgstr "Secret Service"
+
+#: internal/vmui/window.go:788
+msgid "UEFI firmware"
+msgstr "UEFI ファームウェア"
+
+#: internal/vmui/window.go:792
+msgid "Binder (the kernel's Android support)"
+msgstr "Binder（カーネルの Android 対応）"
+
+#: internal/vmui/window.go:806
+msgid "Your user may not use Docker's socket. Joining the docker group would let anything running as you control this machine as root, so Inua will not do it for you: run `sudo gpasswd -a $USER docker` yourself if you accept that, or use rootless Docker or Podman instead."
+msgstr "あなたのユーザーは Docker のソケットを使えません。docker グループに加わると、あなたとして動くものすべてがこのマシンを root と同等に操作できるため、Inua は代わりに行いません。それを承知のうえでよければ `sudo gpasswd -a $USER docker` を自分で実行するか、rootless Docker や Podman を使ってください。"
+
+#: internal/vmui/window.go:810
+msgid "Not installed on this system."
+msgstr "このシステムにはインストールされていません。"
+
+#: internal/vmui/window.go:812
+msgid "Installed, but your user may not use it."
+msgstr "インストール済みですが、あなたのユーザーでは使えません。"
+
+#: internal/vmui/window.go:814
+msgid "Installed, but not running."
+msgstr "インストール済みですが、実行されていません。"
+
+#: internal/vmui/window.go:816
+msgid "This Linux distribution is not supported."
+msgstr "この Linux ディストリビューションには対応していません。"
+
+#: internal/vmui/window.go:818
+msgid "Could not be checked."
+msgstr "確認できませんでした。"
+
+#: internal/vmui/window.go:842
+msgid "A balanced profile leaves memory and CPU for your system."
+msgstr "バランスの取れた設定は、システム用にメモリと CPU を残します。"
+
+#: internal/vmui/window.go:844
+msgid "Files from a previous attempt are still here. Install reuses them; delete them to start over."
+msgstr "前回のインストールで残ったファイルがあります。インストールはそれらを使い回します。最初からやり直すには削除してください。"
+
+#: internal/vmui/window.go:869
+msgid "The system is installing; this takes a while."
+msgstr "システムをインストールしています。しばらくかかります。"
+
+#: internal/vmui/window.go:871
+#: internal/vmui/window.go:911
+msgid "Stopping…"
+msgstr "停止中…"
+
+#: internal/vmui/window.go:873
+msgid "The installation is paused. Continue to resume."
+msgstr "インストールは一時停止しています。続けると再開します。"
+
+#: internal/vmui/window.go:913
+msgid "The system is starting; ready in a minute or two."
+msgstr "システムを起動しています。1〜2 分で使えるようになります。"
+
+#: internal/vmui/window.go:957
+msgid "Confirm remove"
+msgstr "削除を確認"
+
+#: internal/vmui/window.go:969
+#: internal/vmui/window.go:978
+#: internal/vmui/window.go:987
+msgid "Confirm delete"
+msgstr "削除を確認"
+
+#: internal/vmui/window.go:973
+#: internal/vmui/window.go:982
+#: internal/vmui/window.go:1012
+#: internal/vmui/window.go:1013
+#: ui/vm.ui:921
+msgid "Delete disk"
+msgstr "ディスクを削除"
+
+#: internal/vmui/window.go:1038
+msgid "The fix did not work: %v"
+msgstr "修正できませんでした: %v"
+
+#: internal/vmui/window.go:1043
+msgid "Done. Log out and back in for it to take effect."
+msgstr "完了。変更を有効にするには、一度ログアウトしてから再度ログインしてください。"
+
+#: internal/vmui/window.go:1046
+msgid "Done."
+msgstr "完了。"
+
+#: internal/vmui/window.go:1068
+msgid "That did not work: %v"
+msgstr "うまくいきませんでした: %v"
+
+#: internal/vmui/window.go:1113
+msgid "Log out to finish"
+msgstr "完了にはログアウトが必要です"
+
+#: internal/vmui/window.go:1114
+msgid "The change takes effect the next time you log in."
+msgstr "変更は次回ログイン時に有効になります。"
+
+#: internal/vmui/window.go:1155
+msgid "This system is missing something the guest needs"
+msgstr "このシステムにはゲストに必要なものが足りません"
+
+#: internal/vmui/window.go:1158
+msgid "Files from a previous attempt are still here"
+msgstr "前回のインストールで残ったファイルがあります"
+
+#: internal/vmui/window.go:1160
+msgid "Not installed yet"
+msgstr "未インストール"
+
+#: internal/vmui/window.go:1163
+#: internal/vmui/window.go:1171
+#: internal/vmui/window.go:1203
+msgid "Stopping"
+msgstr "停止中"
+
+#: internal/vmui/window.go:1166
+#: internal/vmui/window.go:1205
+msgid "Installing"
+msgstr "インストール中"
+
+#: internal/vmui/window.go:1168
+msgid "Installation paused"
+msgstr "インストールは一時停止中"
+
+#: internal/vmui/window.go:1173
+#: internal/vmui/window.go:1207
+msgid "Starting"
+msgstr "起動中"
+
+#: internal/vmui/window.go:1175
+#: internal/vmui/window.go:1209
+msgid "Running"
+msgstr "実行中"
+
+#: internal/vmui/window.go:1177
+#: internal/vmui/window.go:1211
+msgid "Stopped"
+msgstr "停止"
+
+#: internal/vmui/window.go:1185
+msgid "%s · no backend in this build"
+msgstr "%s · このビルドにバックエンドがありません"
+
+#: internal/vmui/window.go:1194
+msgid "Working"
+msgstr "処理中"
+
+#: internal/vmui/window.go:1198
+msgid "Needs the host"
+msgstr "ホスト側の準備が必要"
+
+#: internal/vmui/window.go:1200
+msgid "Not installed"
+msgstr "未インストール"
+
+#: internal/vmui/window.go:1230
+#: internal/vmui/window.go:1282
+msgid "Custom system"
+msgstr "独自システム"
+
+#: internal/vmui/window.go:1259
+msgid "Downloads about 8 GB and installs Windows; takes 30+ minutes. Windows needs a licence."
+msgstr "約 8 GB をダウンロードして Windows をインストールします。30 分以上かかります。Windows にはライセンスが必要です。"
+
+#: internal/vmui/window.go:1261
+msgid "The guest installs from its own media, as it would on a real machine."
+msgstr "ゲストは実機と同じように、自前のメディアからインストールします。"
+
+#: internal/vmui/window.go:1291
+msgid "Windows 11, installed for you in a container."
+msgstr "コンテナーの中で Windows 11 を自動インストールします。"
+
+#: internal/vmui/window.go:1293
+msgid "Windows 11 from your own ISO, with the virtio drivers."
+msgstr "手持ちの ISO から Windows 11。virtio ドライバーを使います。"
+
+#: internal/vmui/window.go:1295
+msgid "Ubuntu, booted with QEMU from its ISO."
+msgstr "Ubuntu。ISO から QEMU で起動します。"
+
+#: internal/vmui/window.go:1297
+msgid "Fedora, booted with QEMU from its ISO."
+msgstr "Fedora。ISO から QEMU で起動します。"
+
+#: internal/vmui/window.go:1299
+msgid "Arch Linux, booted with QEMU from its ISO."
+msgstr "Arch Linux。ISO から QEMU で起動します。"
+
+#: internal/vmui/window.go:1301
+msgid "FreeBSD, booted with QEMU from its ISO."
+msgstr "FreeBSD。ISO から QEMU で起動します。"
+
+#: internal/vmui/window.go:1303
+msgid "Android in Waydroid, with the host's display and GPU."
+msgstr "Waydroid 上の Android。ホストのディスプレイと GPU を使います。"
+
+#: internal/vmui/window.go:1305
+msgid "Your own system: an ISO, a disk or a kernel, on any architecture."
+msgstr "独自のシステム: ISO、ディスク、またはカーネルを、任意のアーキテクチャーで。"
+
 #: internal/workshop/session.go:141
 msgid "It ended before saying hello; what it wrote is below."
 msgstr "あいさつの前に終了しました。出力は下にあります。"
@@ -9847,6 +10164,8 @@ msgid "Or in a terminal:"
 msgstr "またはターミナルで："
 
 #: ui/gpg.ui:1488
+#: ui/vm.ui:344
+#: ui/vm.ui:366
 msgid "Create"
 msgstr "作成"
 
@@ -10822,10 +11141,6 @@ msgstr "<span alpha='55%'>[</span>キーリング<span alpha='55%'>]</span>"
 msgid "Apps' secrets: browsers' keys, Wi-Fi passwords, API keys"
 msgstr "アプリのシークレット: ブラウザーの鍵、Wi-Fi パスワード、API キー"
 
-#: ui/settings.ui:3819
-msgid "Secret Service"
-msgstr "Secret Service"
-
 #: ui/settings.ui:3855
 msgid "Unlocked secrets"
 msgstr "ロック解除された秘密"
@@ -11270,6 +11585,234 @@ msgstr "詳細 (I)"
 msgid "Open a File…"
 msgstr "ファイルを開く…"
 
+#: ui/vm.ui:49
+msgid "New"
+msgstr "新規"
+
+#: ui/vm.ui:50
+msgid "Add a machine from a template"
+msgstr "テンプレートからマシンを追加"
+
+#: ui/vm.ui:145
+msgid "No machines yet"
+msgstr "マシンはまだありません"
+
+#: ui/vm.ui:153
+msgid "New picks an operating system; the machine's fields follow."
+msgstr "「新規」でオペレーティングシステムを選ぶと、マシンの項目が続きます。"
+
+#: ui/vm.ui:196
+msgid "[TEMPLATE]"
+msgstr "[テンプレート]"
+
+#: ui/vm.ui:255
+msgid "[NAME]"
+msgstr "[名前]"
+
+#: ui/vm.ui:284
+msgid "Machine name"
+msgstr "マシン名"
+
+#: ui/vm.ui:295
+msgid "The folder and the container are named after it."
+msgstr "フォルダーとコンテナーはこの名前になります。"
+
+#: ui/vm.ui:305
+msgid "windows"
+msgstr ""
+
+#: ui/vm.ui:355
+msgid "Writes the machine's definition. Nothing is installed or started yet."
+msgstr "マシンの定義を書き出します。インストールも起動もまだ行いません。"
+
+#: ui/vm.ui:457
+msgid "[HOST]"
+msgstr "[ホスト]"
+
+#: ui/vm.ui:523
+#: ui/vm.ui:1428
+#: ui/vm.ui:1864
+msgid "[GUEST]"
+msgstr "[ゲスト]"
+
+#: ui/vm.ui:560
+msgid "Recommended profile"
+msgstr "推奨設定"
+
+#: ui/vm.ui:581
+msgid "Use it"
+msgstr "使用する"
+
+#: ui/vm.ui:603
+msgid "Advanced configuration"
+msgstr "詳細設定"
+
+#: ui/vm.ui:612
+msgid "Set memory, CPU cores and disk size yourself."
+msgstr "メモリ、CPU コア、ディスク容量を自分で設定します。"
+
+#: ui/vm.ui:648
+#: ui/vm.ui:1459
+msgid "Memory (MiB)"
+msgstr "メモリ (MiB)"
+
+#: ui/vm.ui:682
+#: ui/vm.ui:1508
+msgid "CPU cores"
+msgstr "CPU コア"
+
+#: ui/vm.ui:716
+#: ui/vm.ui:1557
+msgid "Disk size (GiB)"
+msgstr "ディスク容量 (GiB)"
+
+#: ui/vm.ui:773
+msgid "[INSTALL]"
+msgstr "[インストール]"
+
+#: ui/vm.ui:802
+#: ui/vm.ui:834
+msgid "Install Windows"
+msgstr "Windows をインストール"
+
+#: ui/vm.ui:811
+msgid "Downloads about 8 GB and installs Windows; takes 30+ minutes."
+msgstr "約 8 GB をダウンロードして Windows をインストールします。30 分以上かかります。"
+
+#: ui/vm.ui:821
+msgid "Windows needs a licence of its own."
+msgstr "Windows には独自のライセンスが必要です。"
+
+#: ui/vm.ui:870
+msgid "[DISK]"
+msgstr "[ディスク]"
+
+#: ui/vm.ui:899
+msgid "Previous files"
+msgstr "前回のファイル"
+
+#: ui/vm.ui:908
+msgid "Permanently deletes leftover install files. Cannot be undone."
+msgstr "前回のインストールで残ったファイルを完全に削除します。元に戻せません。"
+
+#: ui/vm.ui:943
+msgid "Delete machine"
+msgstr "マシンを削除"
+
+#: ui/vm.ui:952
+msgid "Removes the machine and its files. Cannot be undone."
+msgstr "マシンとそのファイルを削除します。元に戻せません。"
+
+#: ui/vm.ui:1012
+#: ui/vm.ui:1263
+msgid "[PROGRESS]"
+msgstr "[進捗]"
+
+#: ui/vm.ui:1064
+msgid "Watch the installation"
+msgstr "インストールの様子を見る"
+
+#: ui/vm.ui:1073
+msgid "The installer screen is in your browser. The web console on 127.0.0.1:8006 has no login of its own."
+msgstr "インストーラーの画面はブラウザーに表示されます。127.0.0.1:8006 の Web コンソールにはログインがありません。"
+
+#: ui/vm.ui:1086
+#: ui/vm.ui:1337
+#: ui/vm.ui:1965
+msgid "Open web console"
+msgstr "Web コンソールを開く"
+
+#: ui/vm.ui:1108
+msgid "Continue installation"
+msgstr "インストールを続ける"
+
+#: ui/vm.ui:1117
+msgid "Starts the container; Windows installs itself inside it."
+msgstr "コンテナーを起動します。Windows はその中で自動的にインストールされます。"
+
+#: ui/vm.ui:1130
+msgid "Continue"
+msgstr "続ける"
+
+#: ui/vm.ui:1152
+msgid "Stop waiting"
+msgstr "待つのをやめる"
+
+#: ui/vm.ui:1161
+msgid "Stops the container; the disk is kept. Reopen to resume."
+msgstr "コンテナーを停止し、ディスクは残します。開き直せば続けられます。"
+
+#: ui/vm.ui:1196
+msgid "Abandon installation"
+msgstr "インストールを中止"
+
+#: ui/vm.ui:1205
+msgid "Removes the project so you can start over. Downloaded files stay."
+msgstr "プロジェクトを削除してやり直せるようにします。ダウンロード済みのファイルは残ります。"
+
+#: ui/vm.ui:1315
+#: ui/vm.ui:1944
+msgid "Web console"
+msgstr "Web コンソール"
+
+#: ui/vm.ui:1324
+msgid "The guest screen is in your browser until RDP is ready."
+msgstr "RDP の準備ができるまで、ゲスト画面はブラウザーに表示されます。"
+
+#: ui/vm.ui:1368
+#: ui/vm.ui:1996
+msgid "Stops the guest; the disk is kept."
+msgstr "ゲストを停止し、ディスクは残します。"
+
+#: ui/vm.ui:1490
+#: ui/vm.ui:1539
+msgid "Takes effect on next start."
+msgstr "次回の起動で有効になります。"
+
+#: ui/vm.ui:1581
+msgid "Enlarging needs a manual partition resize inside Windows."
+msgstr "拡張には Windows 内での手動パーティション変更が必要です。"
+
+#: ui/vm.ui:1602
+msgid "Apply"
+msgstr "適用"
+
+#: ui/vm.ui:1637
+msgid "[ACTIONS]"
+msgstr "[操作]"
+
+#: ui/vm.ui:1675
+msgid "Starts the guest; ready in a minute or two."
+msgstr "ゲストを起動します。1〜2 分で使えます。"
+
+#: ui/vm.ui:1722
+msgid "[REMOVE]"
+msgstr "[削除]"
+
+#: ui/vm.ui:1751
+msgid "Remove VM"
+msgstr "仮想マシンを削除"
+
+#: ui/vm.ui:1760
+msgid "Deletes the container and project. The disk and its password stay."
+msgstr "コンテナーとプロジェクトを削除します。ディスクとパスワードは残ります。"
+
+#: ui/vm.ui:1795
+msgid "Delete disk data"
+msgstr "ディスクデータを削除"
+
+#: ui/vm.ui:1804
+msgid "Permanently deletes the Windows disk. Cannot be undone."
+msgstr "Windows のディスクを完全に削除します。元に戻せません。"
+
+#: ui/vm.ui:1910
+msgid "Opens FreeRDP."
+msgstr "FreeRDP を開きます。"
+
+#: ui/vm.ui:1953
+msgid "The guest screen in the browser."
+msgstr "ブラウザーに表示されるゲスト画面。"
+
 #: ui/weather.ui:30
 msgid "Previous place"
 msgstr "前の場所"
@@ -11419,6 +11962,14 @@ msgstr "テールネットのデバイス、出口ノード、およびこのデ
 #: config/apps/io.github.lyricat.Inua.Tailscale.desktop:20
 msgid "vpn;tailnet;network;exit node;taildrop;"
 msgstr "VPN;テールネット;ネットワーク;出口ノード;テールドロップ;"
+
+#: config/apps/io.github.lyricat.Inua.VM.desktop:10
+msgid "Run other systems as machines: Windows, Linux, FreeBSD, Android, or your own"
+msgstr "他のシステムをマシンとして実行: Windows、Linux、FreeBSD、Android、または独自のもの"
+
+#: config/apps/io.github.lyricat.Inua.VM.desktop:20
+msgid "virtual machine;windows;linux;freebsd;android;qemu;docker;kvm;rdp;guest;"
+msgstr "仮想マシン;windows;linux;freebsd;android;qemu;docker;kvm;rdp;ゲスト;"
 
 #: config/apps/io.github.lyricat.Inua.Video.desktop:10
 msgid "Watch videos"

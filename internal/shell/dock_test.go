@@ -177,12 +177,18 @@ func TestLightAppSections(t *testing.T) {
 		{ID: "io.github.lyricat.Inua.Viewer", Name: "Viewer"},
 		{ID: "io.github.lyricat.Inua.Weather", Name: "Weather"},
 		{ID: "io.github.lyricat.Inua.Clock", Name: "Clock"},
+		{ID: "io.github.lyricat.Inua.VM", Name: "Windows VM"},
 	})
 	got := LightAppSections(apps)
 	if len(got) != 3 || got[0].Title != "EVERYDAY" || len(got[0].Apps) != 2 || got[0].Apps[0].Name != "Clock" ||
 		got[1].Title != "TOOLS" || len(got[1].Apps) != 2 || got[1].Apps[0].Name != "Screenshot" ||
-		got[2].Title != "SYSTEM" || len(got[2].Apps) != 2 {
+		got[2].Title != "SYSTEM" || len(got[2].Apps) != 3 {
 		t.Fatalf("LightAppSections = %+v", got)
+	}
+	// The Windows manager is an app of its own (docs/inua-vm.md): it sits
+	// with the shell's tools, and only once its desktop entry is installed.
+	if last := got[2].Apps[len(got[2].Apps)-1]; last.ID != "io.github.lyricat.Inua.VM" {
+		t.Errorf("the VM manager is not in SYSTEM: %+v", got[2].Apps)
 	}
 	// The shell's tools are there with no light app installed.
 	if got := LightAppSections(NewAppIndex(nil)); len(got) != 2 || got[0].Title != "TOOLS" || got[1].Title != "SYSTEM" {

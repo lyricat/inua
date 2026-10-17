@@ -5,6 +5,59 @@ inua is a desktop shell that works with Hyprland. Its logic is Go, its interface
 document follows [design.md](design.md); why this toolkit is in
 [toolkit.md](toolkit.md).
 
+## Virtual machines boundary
+
+`internal/vm` owns the machines, and none of it touches GTK. `machine.go`
+holds what a machine is — its name and `os` (windows, linux, freebsd,
+android or custom), its `backend` (qemu, dockur or waydroid), its memory,
+CPUs and disk, its `[boot]`, `[display]` and `[seamless]` sections — and
+what is wrong with it, field by field, in stable reasons a window words in the
+user's language. `store.go` is the store: one folder per machine under
+`~/.local/share/inua/vm/`, each holding a `machine.toml` beside the guest's
+own files, its runtime files in `$XDG_RUNTIME_DIR/inua-vm/NAME/`. A folder
+whose file does not hold is left out of the list and reported by the
+diagnostics, which also name the folders that are not machines.
+`templates.go` is the eight templates **New** offers, from Windows in Docker
+(Dockur) to Linux, FreeBSD, Android and a custom system. The host checks and
+the backends live beside them: this build wires the Dockur backend, the only
+one that can run a guest today, while the QEMU and Waydroid ones are the
+following steps. `report.go`'s report carries the machines now, not the
+single saved configuration (`Config` and `Persisted` survive only to adopt a
+machine from the previous version). The Linux platform detection, the
+resource recommendation and the backend contract are unchanged: KVM, the
+Docker socket, Compose v2, FreeRDP, a browser opener, TUN and disk space,
+each with the reason it failed and, when Inua can apply one itself, a remedy
+through `pkexec`, so the session's polkit agent takes the password and the
+command never runs with the caller's rights. Supported Linux hosts are NixOS,
+Ubuntu and Debian. The image is pinned to a version and digest, ports bind to
+the loopback interface, each machine reserving its own, and the guest
+password lives in the Secret Service, never in the project or the
+configuration.
+
+The manager is an app of its own — `cmd/inua-vm` and `internal/vmui`, an
+`appui` view over `ui/vm.blp` — not a part of the shell: no VM window, no
+drawer entry of its own and no `vm` control-socket target live in
+`internal/ui`. `internal/vmui` also carries the thin command line. The
+layout is the list of machines and the chosen machine's page; the page is one
+stage at a time (`internal/vm.PageFor`): no machine yet, a fresh one to name
+and give a template, a kind this build has no backend for, the host to fix,
+the guest to install, then start, wait or connect. A guest is "installed"
+only after it has come up *and* its own disk image is on disk, so a project
+that is only a download cache stays on the install page. Removing a machine
+deletes the container and the project but keeps its disk and its password, so
+a later install reuses that Windows; deleting the disk, and deleting the
+machine with its folder, are separate, confirmed actions, because losing an
+installation should take a deliberate second step. `inua-vm --list`,
+`--doctor [--json]` and `--status [--json]` (and `inua vm list|doctor|status`)
+report the machines and the host's checks, read-only, without contacting
+Docker; `--start NAME` and `--stop NAME` drive a backend from a script.
+
+Docker socket access is privileged host access, so the platform layer
+reports a socket this user cannot use as denied and offers no fix for it:
+membership in the `docker` group is as good as root on the host. The window
+explains that and points at rootless Docker, Podman or a QEMU machine; the
+`kvm` group remedy, which grants one device, stays.
+
 ## 1. Layers
 
 ```
@@ -71,6 +124,7 @@ the view uses the tricky parts of puregotk only through `gtkx`.
 | `internal/config` | `~/.config/inua/config.toml` (TOML): defaults, validation (bad values fall back with a warning), strftime clocks, the commented writer | Done, tested |
 | `internal/bootstrap` | `inua init`: writes the embedded samples without overwriting (`-force` keeps a `.bak`); checks that Hyprland starts the shell and loads `inua.conf` (or requires `inua.lua`) | Done, tested |
 | `internal/ui` | GTK4 views: bar and dock (per monitor), wallpaper, launcher, control center, notification banners and center, tray, settings window (with shortcut recording), screenshot tool, lock screen (on the session lock protocol; the screen stays locked if the shell stops, and a restarted shell takes the lock back), the Clock app's alarms, snapshots | Done |
+| `internal/vm`, `internal/vmui`, `cmd/inua-vm`, `ui/vm.blp` | Virtual machines (docs/inua-vm.md): the toolkit-free machines and their `machine.toml`, the store (one folder per machine), the templates, the Linux platform checks with their remedies, the resource profile and the backends (Docker/Dockur today; QEMU and Waydroid following); the manager window as an app of its own — the list and the chosen machine's page — and its thin command line (`--list`, `--doctor [--json]`, `--status [--json]`, `--start NAME`, `--stop NAME`) | Done, tested (an injected runner and secret store; a fake platform root) |
 | `ui/` | Blueprint layouts, generated `.ui`, `style.css`, colour themes, Phosphor icons; embedded as `ui.FS` | Done |
 | `internal/upgrade` | `inua upgrade`: the newest release's tag (from where `releases/latest` redirects), its archive checked against `checksums.txt`, the programs, launchers and icons staged next to their targets and then renamed into place | Done, tested |
 | `cmd/inua-shell` | The shell | Done |

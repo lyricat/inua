@@ -10,7 +10,7 @@ The sample configuration inua needs on a new system:
 | `inua/style.css` | `~/.config/inua/style.css` | Style overrides: the built-in colours and examples, all commented out |
 | `inua/themes/nord.css` | `~/.config/inua/themes/nord.css` | A sample theme of your own, the Nord palette (MIT): every colour token, each with what it paints. Not in use until chosen |
 | `inua/icons/phosphor-bold/` | `~/.config/inua/icons/phosphor-bold/` | A sample icon set of your own: Phosphor's bold weight (MIT), every icon the shell draws. Not in use until chosen |
-| `apps/` | `~/.local/share/applications/`, `~/.local/share/icons/hicolor/scalable/apps/` (`make install`) | Desktop entries and icons of the light apps (Clock, Weather, Stocks, Calculator, Calendar, Color Picker, System Monitor, Tailscale, Viewer; see [docs/apps.md](../docs/apps.md)). The icons' glyphs are Phosphor's (MIT) |
+| `apps/` | `~/.local/share/applications/`, `~/.local/share/icons/hicolor/scalable/apps/` (`make install`) | Desktop entries and icons of the light apps (Clock, Weather, Stocks, Calculator, Calendar, Color Picker, System Monitor, Tailscale, Viewer, Virtual machines; see [docs/apps.md](../docs/apps.md)). The icons' glyphs are Phosphor's (MIT), and, for the machines' manager, the mark of each system it can run (`vm-os-*`) and its own placeholder, in [inua-vm.md](../docs/inua-vm.md) |
 | `fcitx5/themes/` | `~/.local/share/fcitx5/themes/` (`make install-fcitx`) | Fcitx 5 themes in inua's style |
 
 ```sh

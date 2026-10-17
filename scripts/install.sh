@@ -139,8 +139,8 @@ src=$tmp/$name
 # --- the programs and launchers --------------------------------------------
 
 heading "Installing the programs"
-for bin in inua-shell inua inua-apps inua-files inua-viewer inua-games inua-pinentry inua-assistant inua-keyring; do
-    [ -f "$src/$bin" ] || continue # inua-files, inua-viewer, inua-games, inua-assistant and inua-keyring came after v0.0.2
+for bin in inua-shell inua inua-apps inua-files inua-viewer inua-vm inua-games inua-pinentry inua-assistant inua-keyring; do
+    [ -f "$src/$bin" ] || continue # inua-files, inua-viewer, inua-vm, inua-games, inua-assistant and inua-keyring came after v0.0.2
     install -Dm755 "$src/$bin" "$prefix/bin/$bin"
 done
 install -Dm644 -t "$data/applications" "$src"/config/apps/*.desktop

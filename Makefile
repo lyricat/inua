@@ -45,6 +45,7 @@ build:
 	go build -o bin/inua-apps ./cmd/inua-apps
 	go build -o bin/inua-files ./cmd/inua-files
 	go build -o bin/inua-viewer ./cmd/inua-viewer
+	go build -o bin/inua-vm ./cmd/inua-vm
 	go build -o bin/inua-games ./cmd/inua-games
 	go build -o bin/inua-pinentry ./cmd/inua-pinentry
 	go build -o bin/inua-assistant ./cmd/inua-assistant
@@ -87,7 +88,7 @@ run: build
 DATA_HOME ?= $(or $(XDG_DATA_HOME),$(HOME)/.local/share)
 
 install: build
-	install -Dm755 -t "$(PREFIX)/bin" bin/inua-shell bin/inua bin/inua-apps bin/inua-files bin/inua-viewer bin/inua-games bin/inua-pinentry bin/inua-assistant bin/inua-keyring
+	install -Dm755 -t "$(PREFIX)/bin" bin/inua-shell bin/inua bin/inua-apps bin/inua-files bin/inua-viewer bin/inua-vm bin/inua-games bin/inua-pinentry bin/inua-assistant bin/inua-keyring
 	install -Dm644 -t "$(DATA_HOME)/applications" config/apps/*.desktop
 	install -Dm644 -t "$(DATA_HOME)/icons/hicolor/scalable/apps" config/apps/*.svg
 

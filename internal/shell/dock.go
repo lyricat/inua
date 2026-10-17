@@ -273,6 +273,7 @@ var LightAppGroups = []struct {
 	{i18n.M("SYSTEM"), []string{
 		"inua:settings",
 		"inua:launcher",
+		"io.github.lyricat.Inua.VM",
 	}},
 }
 

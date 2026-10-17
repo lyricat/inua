@@ -2638,3 +2638,87 @@ window.video.video-loaded .video-empty { opacity: 0; }
   color: white;
 }
 .video-notice button.plain { color: @accent; }
+
+/* --- Windows VM ------------------------------------------------------ */
+
+/* The manager window reuses the settings window's sections, rows and fields;
+   only what is particular to it is here. Its pages sit on a stack whose
+   switcher is hidden: Go picks the page from the guest's state. */
+
+.vmpage .vm-head { padding: 14px 24px; border-bottom: 1px solid alpha(@line, 0.55); }
+.vmpage .vm-title { font-size: 17px; color: @t0; }
+
+/* The headline's status mark: filled while the guest is up, hollow when it
+   is not (as the control center's tiles and the bar's marks do it). */
+.vmpage .vm-head .mark.on { background: @accent; border-color: @accent; }
+
+/* The pages' sections carry their own margins, as the settings window's do. */
+.vmpage .section { margin: 18px 24px 22px; }
+
+/* A host check that failed: the mark is the one thing that stands out. */
+.vmpage .vm-check-rows .mark { background: @danger; border-color: @danger; }
+
+/* The installation takes a while and reports no figure, so the bar is a
+   moving indeterminate one rather than a percentage. */
+.vmpage progressbar { min-height: 3px; }
+
+.vmpage button.suggested-action { border: 1px solid @accent; background: @accent; color: @app; }
+.vmpage button.suggested-action:disabled { opacity: 0.45; }
+.vmpage spinbutton { min-width: 8em; }
+
+/* The machines sit in a column beside the one chosen, as the settings window's
+   pages do: the panel on the right is the machine, the column is the list. */
+.vmpage .vm-index { background: @panel; border-right: 1px solid alpha(@line, 0.7); }
+.vmpage .vm-index-head { padding: 16px 14px 10px 24px; }
+.vmpage .vm-index-title { font-size: 17px; color: @t0; }
+
+/* GTK frames a list as a view; here the list sits on the panel. */
+.vmpage .vm-index scrolledwindow,
+.vmpage .vm-index viewport,
+.vmpage .vm-machines,
+.vmpage .vm-templates { background: transparent; border: none; box-shadow: none; }
+.vmpage .vm-machines { padding: 0 10px 12px; }
+.vmpage .vm-machines row {
+  min-height: 48px;
+  margin-bottom: 2px;
+  padding: 6px 10px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: @t1;
+  transition: background 180ms ease-out, border-color 180ms ease-out, color 180ms ease-out;
+}
+.vmpage .vm-machines row:hover { border-color: alpha(@accent, 0.2); background: alpha(@accent, 0.06); color: @t0; }
+.vmpage .vm-machines row:selected {
+  border-color: alpha(@accent, 0.3);
+  background: mix(@surface, @primary, 0.1);
+  color: @t0;
+}
+.vmpage .vm-row-name { font-family: "IBM Plex Sans", "Zen Kaku Gothic New", sans-serif; }
+.vmpage .vm-row-sub { font-size: 12px; color: @t2; }
+.vmpage .vm-machines row:selected .vm-row-sub { color: @t1; }
+.vmpage .vm-os-mark { color: @t2; transition: color 180ms ease-out; }
+.vmpage .vm-machines row:hover .vm-os-mark { color: @t1; }
+.vmpage .vm-machines row:selected .vm-os-mark { color: @accent; }
+
+/* A template is one line of the new-machine page. */
+.vmpage .vm-templates row {
+  min-height: 42px;
+  margin-bottom: 2px;
+  padding: 6px 12px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: @t1;
+  transition: background 180ms ease-out, border-color 180ms ease-out, color 180ms ease-out;
+}
+.vmpage .vm-templates row:hover { border-color: alpha(@accent, 0.2); background: alpha(@accent, 0.06); color: @t0; }
+.vmpage .vm-templates row:selected {
+  border-color: alpha(@accent, 0.3);
+  background: mix(@surface, @primary, 0.1);
+  color: @t0;
+}
+.vmpage .vm-templates row:selected .vm-os-mark { color: @accent; }
+.vmpage .vm-template-sub { font-size: 12px; color: @t2; }
+
+/* A page that holds no machine yet: a mark, a title and a line. */
+.vmpage .vm-empty-mark { color: @t2; }
+.vmpage .vm-empty-title { font-size: 15px; color: @t0; }
