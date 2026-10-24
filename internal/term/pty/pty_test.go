@@ -140,7 +140,14 @@ func TestForegroundAndEcho(t *testing.T) {
 	}
 	defer p.Close()
 	buf := make([]byte, 64)
-	p.Read(buf)
+	var out string
+	for !strings.Contains(out, "shell") {
+		n, err := p.Read(buf)
+		if err != nil {
+			t.Fatal(err)
+		}
+		out += string(buf[:n])
+	}
 	if fg, err := p.Foreground(); err != nil || fg != p.Pid() {
 		t.Errorf("foreground %d (%v), want the shell %d", fg, err, p.Pid())
 	}
