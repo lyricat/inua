@@ -7,6 +7,9 @@ set -eu
 BLUEPRINT=${BLUEPRINT:-blueprint-compiler}
 for dir in "$@"; do
 	for blp in "$dir"/*.blp; do
-		$BLUEPRINT compile --output "${blp%.blp}.ui" "$blp"
+		out=${blp%.blp}.ui
+		$BLUEPRINT compile --output "$out" "$blp"
+		# Some blueprint-compiler releases omit the final newline.
+		python3 -c 'from pathlib import Path; import sys; p = Path(sys.argv[1]); b = p.read_bytes(); p.write_bytes(b if b.endswith(b"\n") else b + b"\n")' "$out"
 	done
 done
