@@ -316,6 +316,16 @@ drawer = true
 # .desktop), in order. Missing ones are skipped.
 pinned = ["firefox", "io.github.lyricat.Inua.Files", "kitty"]
 
+[voice]
+# Voice input, on top of the voxtype daemon (https://voxtype.io): hold the
+# voice shortcut and talk; the transcription is pasted into the focused
+# window. false turns the microphone and its shortcut off.
+enable = false
+
+# true: the shortcut's key press starts the recording and its release ends
+# it (push to talk). false: the shortcut toggles a recording on and off.
+push_to_talk = true
+
 [assistant]
 # The assistant (inua-assistant, the launcher's "Ask"): an agent with
 # inua's tools, run by Mister Morph. The shell starts it in the background;

@@ -154,6 +154,22 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
               </object>
             </child>
             <child>
+              <object class="GtkButton" id="voice">
+                <style>
+                  <class name="voice"/>
+                </style>
+                <property name="name">voice</property>
+                <property name="focusable">false</property>
+                <property name="visible">false</property>
+                <property name="tooltip-text" translatable="yes">Voice input</property>
+                <child>
+                  <object class="GtkImage" id="voice_icon">
+                    <property name="icon-name">microphone-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
               <object class="GtkButton" id="status">
                 <style>
                   <class name="status"/>

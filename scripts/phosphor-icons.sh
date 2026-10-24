@@ -61,6 +61,9 @@ bluetooth-active                      bluetooth
 bluetooth-disabled                    bluetooth-slash
 # sound and brightness
 audio-volume-muted                    speaker-x
+audio-input-microphone                FILL/microphone
+microphone-slash                      FILL/microphone-slash
+hourglass                             hourglass
 audio-volume-low                      speaker-low
 audio-volume-medium                   speaker-low
 audio-volume-high                     speaker-high

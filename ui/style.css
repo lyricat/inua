@@ -185,7 +185,7 @@ button.image-button { padding-left: 0; padding-right: 0; }
 .bar .workspaces button.urgent { background: @danger; }
 
 /* min-width: 0 too, else GTK's icon buttons are wider than the bell. */
-.bar button.status, .bar button.passwords, .bar button.clipboard, .bar button.notes, .bar button.clock-button, .bar .tray button {
+.bar button.status, .bar button.passwords, .bar button.clipboard, .bar button.notes, .bar button.voice, .bar button.clock-button, .bar .tray button {
   min-width: 0;
   min-height: 0;
   padding: 3px 8px;
@@ -198,12 +198,19 @@ button.image-button { padding-left: 0; padding-right: 0; }
 }
 /* The icon buttons among them are as tall as the others and wider, about
    0.618:1: 24px (a 16px icon, 3px padding, 1px border) by 38px. */
-.bar button.passwords, .bar button.clipboard, .bar button.notes, .bar .tray button { padding: 3px 10px; }
+.bar button.passwords, .bar button.clipboard, .bar button.notes, .bar button.voice, .bar .tray button { padding: 3px 10px; }
 /* .hover: the pointer is in a button's reach past the island (up to the
    screen's edge); see bar.endReach and clockReach. */
-.bar button.passwords:hover, .bar button.passwords.hover, .bar button.clipboard:hover, .bar button.clipboard.hover, .bar button.status:hover, .bar button.status.hover, .bar button.notes:hover, .bar button.notes.hover, .bar button.clock-button:hover, .bar button.clock-button.hover, .bar .tray button:hover { background: alpha(@accent, 0.09); }
+.bar button.passwords:hover, .bar button.passwords.hover, .bar button.clipboard:hover, .bar button.clipboard.hover, .bar button.status:hover, .bar button.status.hover, .bar button.notes:hover, .bar button.notes.hover, .bar button.voice:hover, .bar button.voice.hover, .bar button.clock-button:hover, .bar button.clock-button.hover, .bar .tray button:hover { background: alpha(@accent, 0.09); }
 /* Its panel is open: the selection style. */
 .bar button.passwords.open, .bar button.clipboard.open, .bar button.status.open, .bar button.notes.open, .bar button.clock-button.open { background: alpha(@accent, 0.09); border-color: alpha(@accent, 0.38); }
+
+/* The voice input's microphone. While it records the icon breathes
+   between its usual colour and the accent; while the words are turned
+   into text it pulses, as the recording mark does. */
+.bar button.voice.recording image { color: @accent; animation: voice-listen 1.4s ease-in-out infinite; }
+.bar button.voice.transcribing image { animation: rec-pulse 0.9s ease-in-out infinite; }
+@keyframes voice-listen { 50% { color: mix(@accent, @t1, 0.55); } }
 
 /* --- launcher -------------------------------------------------------- */
 

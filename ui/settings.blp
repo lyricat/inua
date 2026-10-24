@@ -4453,6 +4453,33 @@ ApplicationWindow settings {
         };
       }
 
+
+      StackPage {
+        name: "voice";
+        title:  _("Voice");
+
+        child: Overlay {
+          child: ScrolledWindow scroll_voice {
+            hscrollbar-policy: never;
+
+            // The voice input's enable, its shortcut's push-to-talk, the
+            // daemon's state and its models: laid out by voice.go.
+            Box voice_page {
+              styles ["page"]
+              orientation: vertical;
+            }
+          };
+
+          // The head of the section scrolled under the top edge.
+          [overlay]
+          Box sticky_voice {
+            styles ["section-head", "sticky"]
+            spacing: 10;
+            valign: start;
+            visible: false;
+          }
+        };
+      }
       StackPage {
         name: "power";
         title:  _("Power");

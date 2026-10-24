@@ -151,8 +151,11 @@ type shellUI struct {
 	onSettingsDrop         func(uintptr, uintptr, uintptr)
 	onSettingsPage         func(uintptr, uintptr, uintptr)
 	onDefaultApp           func(uintptr, uintptr, uintptr)
+	onVoiceCheck           func(gtk.Button)
 	onDisplayDrop          func(uintptr, uintptr, uintptr)
 	onPowerDrop            func(uintptr, uintptr, uintptr) // the Power page's drop-downs
+	onVoiceSwitch          func(gtk.Switch, bool) bool
+	onVoiceModel           func(gtk.Button)
 	onDisplaySwitch        func(gtk.Switch, bool) bool
 	onDisplayButton        func(gtk.Button)
 	onBluetoothSwitch      func(gtk.Switch, bool) bool
@@ -240,6 +243,7 @@ type shellUI struct {
 	onCenterKey            func(gtk.EventControllerKey, uint32, uint32, gdk.ModifierType) bool
 	onCenterGone           glib.SourceFunc
 	onNotesButton          func(gtk.Button)
+	onVoiceButton          func(gtk.Button)
 	onDockClicked          func(gtk.Button)
 	onClipboardButton      func(gtk.Button)
 	onClipboardSearch      func(gtk.SearchEntry)
@@ -408,6 +412,7 @@ func (s *shellUI) start() {
 	s.bindShotHandlers()
 	s.bindShotDrawerHandlers()
 	s.bindRecordHandlers()
+	s.bindVoiceHandlers()
 	s.bindTrayHandlers()
 	s.bindSettingsHandlers()
 	s.bindAboutHandlers()
@@ -785,7 +790,7 @@ func (s *shellUI) barNames() []string {
 //	shell    state|close|reload|restart|snapshot DIR|tray-menu N
 func (s *shellUI) request(req ipc.Request) ipc.Response {
 	if req.Op == "show" {
-		return ipc.Response{OK: true, Result: "launcher: toggle apps windows close (apps|windows QUERY…)\noverview: toggle open close\ncontrol: toggle open close\nsettings: toggle open close\nnotifications: toggle open close clear focus list dismiss invoke\nmedia: status play-pause next previous\nsystem: status set (wifi bluetooth volume mute brightness focus saver) power (suspend reboot poweroff logout)\nscreenshot: area silent-area pick-window pick-screen screen window color record stop close\nlock: now unlock state\nclipboard: toggle open close\npass: toggle open close\ndrawer: toggle open close\nshell: state close reload restart snapshot tray-menu"}
+		return ipc.Response{OK: true, Result: "launcher: toggle apps windows close (apps|windows QUERY…)\noverview: toggle open close\ncontrol: toggle open close\nsettings: toggle open close\nnotifications: toggle open close clear focus list dismiss invoke\nmedia: status play-pause next previous\nvoice: toggle start stop cancel\nsystem: status set (wifi bluetooth volume mute brightness focus saver) power (suspend reboot poweroff logout)\nscreenshot: area silent-area pick-window pick-screen screen window color record stop close\nlock: now unlock state\nclipboard: toggle open close\npass: toggle open close\ndrawer: toggle open close\nshell: state close reload restart snapshot tray-menu"}
 	}
 	if req.Op != "call" {
 		return ipc.Response{Error: "unknown op " + req.Op}
@@ -907,6 +912,8 @@ func (s *shellUI) request(req ipc.Request) ipc.Response {
 		return s.systemRequest(req.Function, req.Args)
 	case "media":
 		return s.mediaRequest(req.Function)
+	case "voice":
+		return s.voiceRequest(req.Function)
 	case "notifications":
 		switch req.Function {
 		case "list":

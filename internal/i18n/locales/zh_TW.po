@@ -288,9 +288,9 @@ msgid "%d%%, charging"
 msgstr "%d%%，正在充電"
 
 #: internal/apps/connect/service.go:519
-#: internal/ui/settings.go:291
-#: internal/ui/settings.go:685
-#: internal/ui/settings.go:756
+#: internal/ui/settings.go:292
+#: internal/ui/settings.go:688
+#: internal/ui/settings.go:760
 #: internal/ui/settings_displays.go:441
 msgid "%d%%"
 msgstr "%d%%"
@@ -1622,7 +1622,7 @@ msgid "Disconnected"
 msgstr "已斷開連接"
 
 #: internal/apps/tailscale/status.go:269
-#: internal/shell/status.go:124
+#: internal/shell/status.go:152
 msgid "Logged out"
 msgstr "已註銷"
 
@@ -1636,7 +1636,7 @@ msgstr "等待批准"
 #: internal/filesui/remotesetup.go:418
 #: internal/mailui/window.go:619
 #: internal/shell/bluetooth.go:38
-#: internal/shell/status.go:128
+#: internal/shell/status.go:156
 #: internal/shell/wifi.go:38
 #: internal/shell/wifi.go:49
 #: internal/vmui/window.go:2761
@@ -1644,7 +1644,7 @@ msgid "Connecting…"
 msgstr "正在連線…"
 
 #: internal/apps/tailscale/status.go:275
-#: internal/shell/status.go:116
+#: internal/shell/status.go:144
 msgid "Not running"
 msgstr "未運行"
 
@@ -1694,6 +1694,7 @@ msgstr "雷暴"
 
 #: internal/apps/weather/weather.go:214
 #: internal/appui/sysmon.go:1082
+#: internal/ui/voice.go:229
 #: internal/vmui/window.go:2335
 msgid "Unknown"
 msgstr "未知"
@@ -2508,8 +2509,8 @@ msgid "Top level"
 msgstr "頂層"
 
 #: internal/appui/pass.go:417
-#: internal/ui/settings.go:781
-#: internal/ui/settings.go:808
+#: internal/ui/settings.go:785
+#: internal/ui/settings.go:812
 msgid "%d entry"
 msgid_plural "%d entries"
 msgstr[0] "%d 筆"
@@ -2832,7 +2833,7 @@ msgstr "含 QR 碼的圖片"
 
 #: internal/appui/pass_otp.go:340
 #: internal/desktop/defaults.go:48
-#: internal/ui/settings.go:918
+#: internal/ui/settings.go:922
 msgid "Images"
 msgstr "影像"
 
@@ -3069,6 +3070,7 @@ msgid "User"
 msgstr "用戶"
 
 #: internal/appui/sysmon.go:785
+#: internal/ui/voice.go:142
 msgid "State"
 msgstr "狀態"
 
@@ -3229,6 +3231,7 @@ msgstr "計算機"
 #: internal/appui/sysmon.go:978
 #: internal/shell/cardterm.go:113
 #: internal/ui/settings_ai.go:494
+#: internal/ui/voice.go:146
 msgid "Model"
 msgstr "模型"
 
@@ -3251,7 +3254,7 @@ msgstr "名稱"
 #: internal/appui/tailscale.go:525
 #: internal/appui/tailscale.go:566
 #: internal/diskui/window.go:329
-#: internal/ui/settings.go:525
+#: internal/ui/settings.go:528
 #: ui/vm.ui:2977
 msgid "System"
 msgstr "系統"
@@ -3489,9 +3492,9 @@ msgid "Tailscale is not running."
 msgstr "Tailscale沒有運行。"
 
 #: internal/appui/tailscale.go:347
-#: internal/shell/status.go:69
-#: internal/shell/status.go:86
-#: internal/shell/status.go:101
+#: internal/shell/status.go:97
+#: internal/shell/status.go:114
+#: internal/shell/status.go:129
 msgid "Unavailable"
 msgstr "無法使用"
 
@@ -3790,10 +3793,10 @@ msgstr "無法播放：%s"
 #: internal/connectui/window.go:387
 #: internal/mailui/settings.go:563
 #: internal/shell/notify.go:44
-#: internal/shell/status.go:73
-#: internal/shell/status.go:88
-#: internal/shell/status.go:107
-#: internal/shell/status.go:122
+#: internal/shell/status.go:101
+#: internal/shell/status.go:116
+#: internal/shell/status.go:135
+#: internal/shell/status.go:150
 #: internal/termui/prefsweb.go:128
 #: internal/ui/settings_bluetooth.go:214
 #: internal/ui/settings_displays.go:294
@@ -4169,8 +4172,12 @@ msgid "Voice input records with pw-cat, from PipeWire (pipewire-bin on Debian an
 msgstr ""
 
 #: internal/assistantui/assistantui.go:527
+#: internal/hyprconf/keys.go:40
+#: internal/shell/status.go:48
 #: internal/ui/settings_ai.go:727
+#: internal/ui/voice.go:137
 #: ui/assistant.ui:193
+#: ui/bar.ui:164
 msgid "Voice input"
 msgstr ""
 
@@ -9180,6 +9187,7 @@ msgstr "繳交50美元保釋金"
 
 #: internal/gamesui/fortune_ai.go:80
 #: internal/ui/settings_bench.go:227
+#: internal/ui/voice.go:321
 #: internal/vmui/assistant.go:109
 msgid "inua-assistant is not installed"
 msgstr "未安裝 inua-assistant"
@@ -10401,7 +10409,7 @@ msgstr "助理閱讀並摘要它"
 #: internal/mailui/reader.go:724
 #: ui/gpg.ui:652
 #: ui/gpg.ui:896
-#: ui/settings.ui:6355
+#: ui/settings.ui:6389
 msgid "Save…"
 msgstr "儲存…"
 
@@ -11029,6 +11037,7 @@ msgid "Fetching your mail"
 msgstr "正在取得你的郵件"
 
 #: internal/mailui/welcome.go:726
+#: internal/ui/voice.go:245
 msgid "Ready"
 msgstr "就緒"
 
@@ -11106,7 +11115,7 @@ msgid "Offline: connection dropped"
 msgstr "{'es': 'Sin conexión: se cortó la conexión', 'fr': 'Hors ligne : connexion interrompue', 'ja': 'オフライン：接続が切れました', 'ko': '오프라인: 연결이 끊김', 'zh_CN': '离线：连接已断开', 'zh_TW': '離線：連線已中斷'}"
 
 #: internal/mailui/window.go:486
-#: internal/shell/status.go:47
+#: internal/shell/status.go:75
 msgid "Offline"
 msgstr "離線"
 
@@ -11490,7 +11499,7 @@ msgid "Connected, battery %d%%"
 msgstr "已連線,電量 %d%%"
 
 #: internal/shell/bluetooth.go:54
-#: internal/shell/status.go:79
+#: internal/shell/status.go:107
 msgid "Not connected"
 msgstr "未連接"
 
@@ -11613,7 +11622,7 @@ msgid "%d thr"
 msgstr "%d 執行緒"
 
 #: internal/shell/cardterm.go:136
-#: internal/ui/settings.go:523
+#: internal/ui/settings.go:525
 msgid "Desktop"
 msgstr "桌面"
 
@@ -12001,7 +12010,7 @@ msgid "Balanced"
 msgstr "平衡"
 
 #: internal/shell/power.go:14
-#: internal/shell/status.go:105
+#: internal/shell/status.go:133
 msgid "Performance"
 msgstr "性能"
 
@@ -12025,37 +12034,50 @@ msgstr "關機"
 msgid "Do nothing"
 msgstr "不執行任何動作"
 
-#: internal/shell/status.go:71
+#: internal/shell/status.go:42
+msgid "Voice input is not available"
+msgstr ""
+
+#: internal/shell/status.go:44
+msgid "Listening…"
+msgstr ""
+
+#: internal/shell/status.go:46
+#: ui/assistant.ui:172
+msgid "Transcribing…"
+msgstr ""
+
+#: internal/shell/status.go:99
 #: internal/ui/settings_wifi.go:283
 msgid "No Wi-Fi device"
 msgstr "無Wi-Fi設備"
 
-#: internal/shell/status.go:92
+#: internal/shell/status.go:120
 msgid "%d devices"
 msgstr "%d裝置"
 
-#: internal/shell/status.go:94
-#: internal/shell/status.go:103
+#: internal/shell/status.go:122
+#: internal/shell/status.go:131
 msgid "On"
 msgstr "開啟"
 
-#: internal/shell/status.go:118
+#: internal/shell/status.go:146
 msgid "via %s"
 msgstr "通過 %s"
 
-#: internal/shell/status.go:120
+#: internal/shell/status.go:148
 msgid "%d online"
 msgstr "%d在線"
 
-#: internal/shell/status.go:126
+#: internal/shell/status.go:154
 msgid "Needs approval"
 msgstr "需要批准"
 
-#: internal/shell/status.go:186
+#: internal/shell/status.go:214
 msgid "Fully charged"
 msgstr "充滿電"
 
-#: internal/shell/status.go:188
+#: internal/shell/status.go:216
 msgid "%.0f%% · Charging"
 msgstr "%.0f%%·充電中"
 
@@ -13281,11 +13303,11 @@ msgstr "為截圖已隱藏。"
 msgid "The passphrases do not match."
 msgstr "密碼短語不符。"
 
-#: internal/ui/bar.go:324
+#: internal/ui/bar.go:332
 msgid "Workspace %s"
 msgstr "工作空間%s"
 
-#: internal/ui/bar.go:337
+#: internal/ui/bar.go:345
 msgid "WORKSPACE"
 msgstr "工作區"
 
@@ -13417,7 +13439,7 @@ msgid "Searching…"
 msgstr "正在搜尋…"
 
 #: internal/ui/control_detail.go:214
-#: internal/ui/settings.go:522
+#: internal/ui/settings.go:524
 msgid "Devices"
 msgstr "裝置"
 
@@ -13452,7 +13474,7 @@ msgid "Quit (%d windows)"
 msgstr "退出(%d視窗)"
 
 #: internal/ui/drawer.go:212
-#: internal/ui/settings.go:524
+#: internal/ui/settings.go:527
 #: ui/settings.ui:2045
 msgid "Apps"
 msgstr "應用程式"
@@ -13795,88 +13817,92 @@ msgstr "螢幕截圖已複製"
 msgid "Screenshot taken"
 msgstr "截圖"
 
-#: internal/ui/settings.go:273
+#: internal/ui/settings.go:274
 msgid "Not restarted: %s"
 msgstr "未重新啟動：%s"
 
-#: internal/ui/settings.go:298
-#: internal/ui/settings.go:687
+#: internal/ui/settings.go:299
+#: internal/ui/settings.go:690
 msgid "%d px"
 msgstr "%d 像素"
 
-#: internal/ui/settings.go:521
+#: internal/ui/settings.go:523
 msgid "Connections"
 msgstr "連線"
 
-#: internal/ui/settings.go:721
+#: internal/ui/settings.go:526
+msgid "Input"
+msgstr ""
+
+#: internal/ui/settings.go:725
 #: ui/settings.ui:516
 msgid "Phosphor"
 msgstr "Phosphor"
 
-#: internal/ui/settings.go:721
-#: internal/ui/settings.go:722
+#: internal/ui/settings.go:725
+#: internal/ui/settings.go:726
 #: ui/settings.ui:517
 #: ui/settings.ui:564
 msgid "System theme"
 msgstr "系統主題"
 
-#: internal/ui/settings.go:807
+#: internal/ui/settings.go:811
 msgid "%s (%s, %s) · %s"
 msgstr "%s(%s,%s)· %s"
 
-#: internal/ui/settings.go:809
+#: internal/ui/settings.go:813
 msgid "%d text"
 msgid_plural "%d texts"
 msgstr[0] "%d 段文字"
 
-#: internal/ui/settings.go:810
+#: internal/ui/settings.go:814
 msgid "%d image"
 msgid_plural "%d images"
 msgstr[0] "%d 張圖片"
 
-#: internal/ui/settings.go:811
+#: internal/ui/settings.go:815
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: internal/ui/settings.go:890
+#: internal/ui/settings.go:894
 #: internal/ui/settings_apps.go:168
 #: internal/ui/settings_card.go:288
 msgid "Not saved: %s"
 msgstr "未儲存：%s"
 
-#: internal/ui/settings.go:916
+#: internal/ui/settings.go:920
 msgid "Choose a wallpaper"
 msgstr "選擇壁紙"
 
-#: internal/ui/settings.go:958
+#: internal/ui/settings.go:962
 msgid "Off: another notification daemon can show them"
 msgstr "關閉：另一個通知守護程式可以顯示它們"
 
-#: internal/ui/settings.go:960
+#: internal/ui/settings.go:964
 msgid "Banners, then the notification center (the bell in the bar, or Super+N)"
 msgstr "先顯示橫幅，再存入通知中心（頂欄鈴鐺或 Super+N）"
 
-#: internal/ui/settings.go:962
+#: internal/ui/settings.go:966
 msgid "Waiting: another notification daemon is running"
 msgstr "等待：另一個通知守護程式正在執行"
 
-#: internal/ui/settings.go:980
+#: internal/ui/settings.go:984
 msgid "Nothing pinned"
 msgstr "尚未釘選應用程式"
 
-#: internal/ui/settings.go:996
+#: internal/ui/settings.go:1000
 msgid "%s (not installed)"
 msgstr "%s(未安裝)"
 
-#: internal/ui/settings.go:1009
+#: internal/ui/settings.go:1013
 msgid "Move earlier"
 msgstr "向前移動"
 
-#: internal/ui/settings.go:1010
+#: internal/ui/settings.go:1014
 msgid "Move later"
 msgstr "向後移動"
 
-#: internal/ui/settings.go:1011
+#: internal/ui/settings.go:1015
 msgid "Remove from the dock"
 msgstr "從 Dock 移除"
 
@@ -14048,6 +14074,7 @@ msgid "Decision"
 msgstr "決定"
 
 #: internal/ui/settings_ai.go:517
+#: ui/settings.ui:6242
 msgid "Voice"
 msgstr ""
 
@@ -14979,7 +15006,7 @@ msgid "%s Upgrade with: inua upgrade"
 msgstr "%s 升級方式:inua 升級"
 
 #: internal/ui/updates.go:99
-#: ui/settings.ui:6501
+#: ui/settings.ui:6535
 msgid "Upgrade"
 msgstr "升級"
 
@@ -14999,6 +15026,168 @@ msgstr "inua無法升級"
 #: internal/ui/updates.go:179
 msgid "Could not upgrade: %s"
 msgstr "無法升級:%s"
+
+#: internal/ui/voice.go:136
+msgid "VOICE"
+msgstr ""
+
+#: internal/ui/voice.go:136
+msgid "Talk, and the words are typed where you are"
+msgstr ""
+
+#: internal/ui/voice.go:137
+msgid "A microphone in the bar; a shortcut holds to talk"
+msgstr ""
+
+#: internal/ui/voice.go:138
+msgid "Push to talk"
+msgstr ""
+
+#: internal/ui/voice.go:138
+msgid "The shortcut records while it is held"
+msgstr ""
+
+#: internal/ui/voice.go:141
+msgid "ENGINE"
+msgstr ""
+
+#: internal/ui/voice.go:141
+msgid "The voxtype daemon does the listening"
+msgstr ""
+
+#: internal/ui/voice.go:154
+#: internal/vmui/window.go:2467
+msgid "Download"
+msgstr "下載"
+
+#: internal/ui/voice.go:156
+msgid "Downloaded"
+msgstr ""
+
+#: internal/ui/voice.go:165
+msgid "Other models"
+msgstr ""
+
+#: internal/ui/voice.go:165
+msgid "voxtype's own setup lists more of them"
+msgstr ""
+
+#: internal/ui/voice.go:169
+msgid "Open voxtype"
+msgstr ""
+
+#: internal/ui/voice.go:174
+msgid "Fix the setup"
+msgstr ""
+
+#: internal/ui/voice.go:174
+msgid "The assistant looks at what is wrong and helps you fix it"
+msgstr ""
+
+#: internal/ui/voice.go:179
+#: internal/vmui/window.go:1192
+msgid "Fix"
+msgstr "修復"
+
+#: internal/ui/voice.go:191
+msgid "Voxtype is not installed, or its daemon is not running."
+msgstr ""
+
+#: internal/ui/voice.go:239
+msgid "Not available"
+msgstr ""
+
+#: internal/ui/voice.go:241
+msgid "Listening"
+msgstr ""
+
+#: internal/ui/voice.go:243
+msgid "Transcribing"
+msgstr ""
+
+#: internal/ui/voice.go:260
+msgid "Downloading %s…"
+msgstr ""
+
+#: internal/ui/voice.go:274
+msgid "%s is ready."
+msgstr ""
+
+#: internal/ui/voice.go:286
+msgid "Could not start voxtype's setup: %s"
+msgstr ""
+
+#: internal/ui/voice.go:326
+#: internal/ui/voice.go:336
+msgid "The assistant is looking at it."
+msgstr ""
+
+#: internal/ui/voice.go:334
+#: internal/vmui/assistant.go:112
+msgid "The assistant could not be started: %v"
+msgstr "無法啟動助手：%v"
+
+#: internal/ui/voice.go:346
+msgid "The voice input in inua (the voxtype daemon) is not fully set up: this machine is missing something it needs. Check what is wrong below read-only first, then say what you would change and carry it out, reporting item by item."
+msgstr ""
+
+#: internal/ui/voice.go:350
+#: internal/vmui/assistant.go:48
+msgid "This host: %s, distribution %s."
+msgstr "本機：%s，發行版 %s。"
+
+#: internal/ui/voice.go:355
+msgid "voxtype executable: not found in PATH."
+msgstr ""
+
+#: internal/ui/voice.go:357
+msgid "voxtype executable: %s."
+msgstr ""
+
+#: internal/ui/voice.go:363
+msgid "The daemon answers: status %s, model %s."
+msgstr ""
+
+#: internal/ui/voice.go:365
+msgid "The daemon does not answer: %s."
+msgstr ""
+
+#: internal/ui/voice.go:365
+msgid "not running"
+msgstr ""
+
+#: internal/ui/voice.go:370
+msgid "systemd user service voxtype.service: %s."
+msgstr ""
+
+#: internal/ui/voice.go:385
+msgid "Downloaded models: %s."
+msgstr ""
+
+#: internal/ui/voice.go:389
+msgid "Missing models: %s."
+msgstr ""
+
+#: internal/ui/voice.go:395
+msgid "This host is NixOS: if voxtype is installed, diagnose and fix the user service, configuration, or model files directly. If system configuration changes are required, specify what to add."
+msgstr ""
+
+#: internal/ui/voice.go:399
+msgid "First check each thing read-only - which, --version, ls, systemctl status, journalctl --user -u voxtype.service - and tell me what you actually see. Do not change anything yet."
+msgstr ""
+
+#: internal/ui/voice.go:401
+msgid "Then carry out the needed fixes directly (e.g. systemctl --user reset-failed voxtype.service, restarting the service, downloading missing models, or fixing permissions with pkexec if needed)."
+msgstr ""
+
+#: internal/ui/voice.go:403
+msgid "Finally tell me how to confirm each fix - which command, and what to look for. I will press the button again in inua once it is done."
+msgstr ""
+
+#: internal/ui/voice.go:405
+#: internal/vmui/assistant.go:75
+msgid "No keys, tokens or passwords are needed for this, and none are in this message."
+msgstr "這件事不需要任何金鑰、token 或密碼，這則訊息裡也沒有。"
 
 #: internal/viewerui/app.go:36
 #: internal/viewerui/app.go:700
@@ -15238,10 +15427,6 @@ msgstr "啟動方式：韌體 %s、架構 %s、機型 %s、加速 %s、安裝媒
 msgid "How it is seen: %s, %s."
 msgstr "顯示方式：%s、%s。"
 
-#: internal/vmui/assistant.go:48
-msgid "This host: %s, distribution %s."
-msgstr "本機：%s，發行版 %s。"
-
 #: internal/vmui/assistant.go:52
 msgid "%d checks failed:"
 msgstr "%d 項檢查未通過："
@@ -15270,17 +15455,9 @@ msgstr "這台主機是 NixOS：請告訴我該往系統設定裡加什麼（env
 msgid "Finally tell me how to confirm each fix - which command, and what to look for. I will press Check again in inua and continue the installation once the checks pass."
 msgstr "最後告訴我怎麼確認每一項修好了（跑哪條指令、看什麼）。我會在 inua 裡點「重新檢查」，檢查通過後繼續安裝。"
 
-#: internal/vmui/assistant.go:75
-msgid "No keys, tokens or passwords are needed for this, and none are in this message."
-msgstr "這件事不需要任何金鑰、token 或密碼，這則訊息裡也沒有。"
-
 #: internal/vmui/assistant.go:88
 msgid "not chosen yet"
 msgstr "尚未選擇"
-
-#: internal/vmui/assistant.go:112
-msgid "The assistant could not be started: %v"
-msgstr "無法啟動助手：%v"
 
 #: internal/vmui/window.go:637
 msgid "Does not load"
@@ -15367,10 +15544,6 @@ msgstr "無法使用該名稱：%v"
 msgid "%d thing to fix"
 msgid_plural "%d things to fix"
 msgstr[0] "%d 項待解決"
-
-#: internal/vmui/window.go:1192
-msgid "Fix"
-msgstr "修復"
 
 #: internal/vmui/window.go:1194
 msgid "Add me to %s"
@@ -15763,10 +15936,6 @@ msgstr "重試"
 msgid "Use this image"
 msgstr "使用此映像"
 
-#: internal/vmui/window.go:2467
-msgid "Download"
-msgstr "下載"
-
 #: internal/vmui/window.go:2477
 msgid "Checksum verified"
 msgstr "總和檢查碼已驗證"
@@ -15949,10 +16118,6 @@ msgstr "開啟AI設置"
 msgid "Ask, or tell me what to do"
 msgstr "詢問，或告訴我該怎麼做"
 
-#: ui/assistant.ui:172
-msgid "Transcribing…"
-msgstr ""
-
 #: ui/assistant.ui:181
 msgid "Discard the recording"
 msgstr ""
@@ -15961,7 +16126,7 @@ msgstr ""
 msgid "Stop recording"
 msgstr "停止錄製"
 
-#: ui/bar.ui:163
+#: ui/bar.ui:179
 msgid "Control Center"
 msgstr "控制中心"
 
@@ -17704,7 +17869,7 @@ msgid "Press the new shortcut. Esc cancels; Backspace turns it off."
 msgstr "按新的捷徑。 Esc 取消；退格鍵將其關閉。"
 
 #: ui/settings.ui:4773
-#: ui/settings.ui:6400
+#: ui/settings.ui:6434
 msgid "<span alpha='55%'>[</span>INUA<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>INUA<span alpha='55%'>]</span>"
 
@@ -17884,67 +18049,67 @@ msgstr "更快的滑動使指針移動得更遠"
 msgid "Stop setting the touchpad in inua"
 msgstr "停止在inua中設定觸控板"
 
-#: ui/settings.ui:6242
+#: ui/settings.ui:6276
 msgid "Power"
 msgstr "電源"
 
-#: ui/settings.ui:6276
+#: ui/settings.ui:6310
 msgid "About"
 msgstr "關於"
 
-#: ui/settings.ui:6314
+#: ui/settings.ui:6348
 msgid "<span alpha='55%'>[</span>SYSTEM<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>系統<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6322
+#: ui/settings.ui:6356
 msgid "This computer, as a card to share"
 msgstr "這台電腦，做成可分享的卡片"
 
-#: ui/settings.ui:6334
+#: ui/settings.ui:6368
 msgid "Copy image"
 msgstr "複製圖片"
 
-#: ui/settings.ui:6344
+#: ui/settings.ui:6378
 msgid "Copy text"
 msgstr "複製文字"
 
-#: ui/settings.ui:6346
+#: ui/settings.ui:6380
 msgid "As Markdown"
 msgstr "以 Markdown 格式"
 
-#: ui/settings.ui:6357
+#: ui/settings.ui:6391
 msgid "As a PNG image"
 msgstr "儲存為 PNG 圖片"
 
-#: ui/settings.ui:6408
+#: ui/settings.ui:6442
 msgid "The version, and new releases"
 msgstr "版本與新版本"
 
-#: ui/settings.ui:6438
+#: ui/settings.ui:6472
 msgid "Version"
 msgstr "版本"
 
-#: ui/settings.ui:6474
+#: ui/settings.ui:6508
 msgid "Updates"
 msgstr "更新"
 
-#: ui/settings.ui:6510
+#: ui/settings.ui:6544
 msgid "Check for updates"
 msgstr "檢查更新"
 
-#: ui/settings.ui:6536
+#: ui/settings.ui:6570
 msgid "Check every day"
 msgstr "每天檢查"
 
-#: ui/settings.ui:6545
+#: ui/settings.ui:6579
 msgid "A notification says when a new release is out, with a button to upgrade"
 msgstr "新版本發佈時會出現通知，並附有升級按鈕"
 
-#: ui/settings.ui:6590
+#: ui/settings.ui:6624
 msgid "<span alpha='55%'>[</span>CHANGELOG<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>變更日誌<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6598
+#: ui/settings.ui:6632
 msgid "What the latest release changed"
 msgstr "最新版本改變了什麼"
 

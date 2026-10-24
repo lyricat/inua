@@ -114,6 +114,21 @@ ApplicationWindow bar {
         }
       }
 
+      // The voice input's microphone: what the voxtype daemon is doing.
+      // A click toggles a recording; hidden while voice input is off.
+      Button voice {
+        styles ["voice"]
+        name: "voice";
+        focusable: false;
+        visible: false;
+        tooltip-text: _("Voice input");
+
+        Image voice_icon {
+          icon-name: "microphone-symbolic";
+        }
+      }
+
+
       // Opens the control center.
       Button status {
         styles ["status"]

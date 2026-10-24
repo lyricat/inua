@@ -27,6 +27,7 @@ var settingsIcons = map[string]string{
 	"mouse":         "input-mouse-symbolic",
 	"power":         "battery-level-80-symbolic",
 	"about":         "help-about-symbolic",
+	"voice":         "audio-input-microphone-symbolic",
 }
 
 // buildSettingsIndex lists the pages beside them, each its icon and

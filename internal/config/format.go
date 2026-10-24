@@ -28,6 +28,7 @@ func Format(c Config) string {
 		c.Notify.Enable, c.Notify.Banner, c.Notify.CriticalInFocus, c.Notify.Updates, c.Notify.History,
 		c.Clipboard.Enable, c.Clipboard.Bar, c.Clipboard.Limit, c.Clipboard.PasteOnClick, list(c.Clipboard.SensitiveSources),
 		c.Dock.Enable, q(c.Dock.Position), c.Dock.Autohide, c.Dock.Size, c.Dock.Drawer, list(c.Dock.Pinned),
+		c.Voice.Enable, c.Voice.PushToTalk,
 		c.Assistant.Enable, q(c.Assistant.Profile), list(c.Assistant.Fallback), q(c.Assistant.Decision), q(c.Assistant.Transcription),
 		list(c.Assistant.Tools), c.Assistant.AskBeforeChanges,
 		c.Assistant.ServeEnable, q(c.Assistant.ServeListen), aiProfiles(c.Assistant.Profiles),
@@ -455,6 +456,16 @@ drawer = %t
 # Apps always on the dock, by desktop ID (the .desktop file's name without
 # .desktop), in order. Missing ones are skipped.
 pinned = %s
+
+[voice]
+# Voice input, on top of the voxtype daemon (https://voxtype.io): hold the
+# voice shortcut and talk; the transcription is pasted into the focused
+# window. false turns the microphone and its shortcut off.
+enable = %t
+
+# true: the shortcut's key press starts the recording and its release ends
+# it (push to talk). false: the shortcut toggles a recording on and off.
+push_to_talk = %t
 
 [assistant]
 # The assistant (inua-assistant, the launcher's "Ask"): an agent with

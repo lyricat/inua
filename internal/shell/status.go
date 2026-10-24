@@ -18,6 +18,34 @@ type System struct {
 	Audio system.AudioState
 	DND   bool
 	TS    system.TailscaleState // read while the control center is open
+	Voice system.VoiceState
+}
+
+// VoiceIcon is the bar's microphone: idle on, red while recording, the
+// hourglass while transcribing, and off when the daemon is not there.
+func VoiceIcon(v system.VoiceState) string {
+	switch {
+	case !v.Available:
+		return "microphone-slash-symbolic"
+	case v.Status == "recording":
+		return "microphone-symbolic"
+	case v.Status == "transcribing":
+		return "hourglass-symbolic"
+	}
+	return "microphone-symbolic"
+}
+
+// VoiceTooltip is what the microphone's hover says.
+func VoiceTooltip(v system.VoiceState) string {
+	switch {
+	case !v.Available:
+		return i18n.T("Voice input is not available")
+	case v.Status == "recording":
+		return i18n.T("Listening…")
+	case v.Status == "transcribing":
+		return i18n.T("Transcribing…")
+	}
+	return i18n.T("Voice input")
 }
 
 // NetIcon is the bar's network icon.

@@ -37,6 +37,7 @@ var Actions = []Action{
 	{ID: "shot-window", Label: i18n.M("The focused window, at once"), Shot: true},
 	{ID: "shot-record", Label: i18n.M("Record the screen (again: stop)"), Shot: true},
 	{ID: "color", Label: i18n.M("Pick a colour"), Shot: true},
+	{ID: "voice", Label: i18n.M("Voice input")},
 }
 
 // Command is the shell command behind an action.
@@ -74,6 +75,8 @@ func Command(c config.Config, action string) string {
 		return "inua call screenshot window"
 	case "shot-record":
 		return "inua call screenshot record"
+	case "voice":
+		return "inua call voice toggle"
 	case "color":
 		return "inua call screenshot color"
 	}
@@ -218,6 +221,13 @@ func renderShortcuts(b *strings.Builder, c config.Config) {
 			continue
 		}
 		mods, key := splitKeys(sc.Keys)
+		// Voice push-to-talk needs the key's release, which Hyprland
+		// binds apart; the Lua path has no release binds, so it keeps
+		// the toggle.
+		if sc.Action == "voice" && c.Voice.Enable && c.Voice.PushToTalk {
+			fmt.Fprintf(b, "bind = %s, %s, exec, inua call voice start\nbindr = %s, %s, exec, inua call voice stop\n", mods, key, mods, key)
+			continue
+		}
 		// Hyprland reads # as a comment; ## is a literal #.
 		fmt.Fprintf(b, "bind = %s, %s, exec, %s\n", mods, key, strings.ReplaceAll(cmd, "#", "##"))
 	}

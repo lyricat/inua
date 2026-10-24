@@ -288,9 +288,9 @@ msgid "%d%%, charging"
 msgstr "%d %%, en charge"
 
 #: internal/apps/connect/service.go:519
-#: internal/ui/settings.go:291
-#: internal/ui/settings.go:685
-#: internal/ui/settings.go:756
+#: internal/ui/settings.go:292
+#: internal/ui/settings.go:688
+#: internal/ui/settings.go:760
 #: internal/ui/settings_displays.go:441
 msgid "%d%%"
 msgstr "%d %%"
@@ -1627,7 +1627,7 @@ msgid "Disconnected"
 msgstr "Déconnecté"
 
 #: internal/apps/tailscale/status.go:269
-#: internal/shell/status.go:124
+#: internal/shell/status.go:152
 msgid "Logged out"
 msgstr "Déconnecté"
 
@@ -1641,7 +1641,7 @@ msgstr "En attente d'approbation"
 #: internal/filesui/remotesetup.go:418
 #: internal/mailui/window.go:619
 #: internal/shell/bluetooth.go:38
-#: internal/shell/status.go:128
+#: internal/shell/status.go:156
 #: internal/shell/wifi.go:38
 #: internal/shell/wifi.go:49
 #: internal/vmui/window.go:2761
@@ -1649,7 +1649,7 @@ msgid "Connecting…"
 msgstr "Connexion…"
 
 #: internal/apps/tailscale/status.go:275
-#: internal/shell/status.go:116
+#: internal/shell/status.go:144
 msgid "Not running"
 msgstr "Ne fonctionne pas"
 
@@ -1699,6 +1699,7 @@ msgstr "Orage"
 
 #: internal/apps/weather/weather.go:214
 #: internal/appui/sysmon.go:1082
+#: internal/ui/voice.go:229
 #: internal/vmui/window.go:2335
 msgid "Unknown"
 msgstr "Inconnu"
@@ -2519,8 +2520,8 @@ msgid "Top level"
 msgstr "Niveau supérieur"
 
 #: internal/appui/pass.go:417
-#: internal/ui/settings.go:781
-#: internal/ui/settings.go:808
+#: internal/ui/settings.go:785
+#: internal/ui/settings.go:812
 msgid "%d entry"
 msgid_plural "%d entries"
 msgstr[0] "%d entrée"
@@ -2849,7 +2850,7 @@ msgstr "Une image avec un code QR"
 
 #: internal/appui/pass_otp.go:340
 #: internal/desktop/defaults.go:48
-#: internal/ui/settings.go:918
+#: internal/ui/settings.go:922
 msgid "Images"
 msgstr "Images"
 
@@ -3086,6 +3087,7 @@ msgid "User"
 msgstr "Utilisateur"
 
 #: internal/appui/sysmon.go:785
+#: internal/ui/voice.go:142
 msgid "State"
 msgstr "Etat"
 
@@ -3248,6 +3250,7 @@ msgstr "ORDINATEUR"
 #: internal/appui/sysmon.go:978
 #: internal/shell/cardterm.go:113
 #: internal/ui/settings_ai.go:494
+#: internal/ui/voice.go:146
 msgid "Model"
 msgstr "Modèle"
 
@@ -3270,7 +3273,7 @@ msgstr "Nom"
 #: internal/appui/tailscale.go:525
 #: internal/appui/tailscale.go:566
 #: internal/diskui/window.go:329
-#: internal/ui/settings.go:525
+#: internal/ui/settings.go:528
 #: ui/vm.ui:2977
 msgid "System"
 msgstr "Système"
@@ -3510,9 +3513,9 @@ msgid "Tailscale is not running."
 msgstr "Tailscale ne fonctionne pas."
 
 #: internal/appui/tailscale.go:347
-#: internal/shell/status.go:69
-#: internal/shell/status.go:86
-#: internal/shell/status.go:101
+#: internal/shell/status.go:97
+#: internal/shell/status.go:114
+#: internal/shell/status.go:129
 msgid "Unavailable"
 msgstr "Indisponible"
 
@@ -3811,10 +3814,10 @@ msgstr "Lecture impossible : %s"
 #: internal/connectui/window.go:387
 #: internal/mailui/settings.go:563
 #: internal/shell/notify.go:44
-#: internal/shell/status.go:73
-#: internal/shell/status.go:88
-#: internal/shell/status.go:107
-#: internal/shell/status.go:122
+#: internal/shell/status.go:101
+#: internal/shell/status.go:116
+#: internal/shell/status.go:135
+#: internal/shell/status.go:150
 #: internal/termui/prefsweb.go:128
 #: internal/ui/settings_bluetooth.go:214
 #: internal/ui/settings_displays.go:294
@@ -4190,8 +4193,12 @@ msgid "Voice input records with pw-cat, from PipeWire (pipewire-bin on Debian an
 msgstr ""
 
 #: internal/assistantui/assistantui.go:527
+#: internal/hyprconf/keys.go:40
+#: internal/shell/status.go:48
 #: internal/ui/settings_ai.go:727
+#: internal/ui/voice.go:137
 #: ui/assistant.ui:193
+#: ui/bar.ui:164
 msgid "Voice input"
 msgstr ""
 
@@ -9230,6 +9237,7 @@ msgstr "Payer une caution de 50 $"
 
 #: internal/gamesui/fortune_ai.go:80
 #: internal/ui/settings_bench.go:227
+#: internal/ui/voice.go:321
 #: internal/vmui/assistant.go:109
 msgid "inua-assistant is not installed"
 msgstr "inua-assistant n’est pas installé"
@@ -10457,7 +10465,7 @@ msgstr "L'assistant le lit et le résume"
 #: internal/mailui/reader.go:724
 #: ui/gpg.ui:652
 #: ui/gpg.ui:896
-#: ui/settings.ui:6355
+#: ui/settings.ui:6389
 msgid "Save…"
 msgstr "Enregistrer…"
 
@@ -11091,6 +11099,7 @@ msgid "Fetching your mail"
 msgstr "Récupération de votre courrier"
 
 #: internal/mailui/welcome.go:726
+#: internal/ui/voice.go:245
 msgid "Ready"
 msgstr "Prêt"
 
@@ -11168,7 +11177,7 @@ msgid "Offline: connection dropped"
 msgstr "{'es': 'Sin conexión: se cortó la conexión', 'fr': 'Hors ligne : connexion interrompue', 'ja': 'オフライン：接続が切れました', 'ko': '오프라인: 연결이 끊김', 'zh_CN': '离线：连接已断开', 'zh_TW': '離線：連線已中斷'}"
 
 #: internal/mailui/window.go:486
-#: internal/shell/status.go:47
+#: internal/shell/status.go:75
 msgid "Offline"
 msgstr "Hors ligne"
 
@@ -11555,7 +11564,7 @@ msgid "Connected, battery %d%%"
 msgstr "Connecté, batterie %d %%"
 
 #: internal/shell/bluetooth.go:54
-#: internal/shell/status.go:79
+#: internal/shell/status.go:107
 msgid "Not connected"
 msgstr "Non connecté"
 
@@ -11679,7 +11688,7 @@ msgid "%d thr"
 msgstr "%d threads"
 
 #: internal/shell/cardterm.go:136
-#: internal/ui/settings.go:523
+#: internal/ui/settings.go:525
 msgid "Desktop"
 msgstr "Bureau"
 
@@ -12069,7 +12078,7 @@ msgid "Balanced"
 msgstr "Équilibré"
 
 #: internal/shell/power.go:14
-#: internal/shell/status.go:105
+#: internal/shell/status.go:133
 msgid "Performance"
 msgstr "Performances"
 
@@ -12093,37 +12102,50 @@ msgstr "Éteindre"
 msgid "Do nothing"
 msgstr "Ne rien faire"
 
-#: internal/shell/status.go:71
+#: internal/shell/status.go:42
+msgid "Voice input is not available"
+msgstr ""
+
+#: internal/shell/status.go:44
+msgid "Listening…"
+msgstr ""
+
+#: internal/shell/status.go:46
+#: ui/assistant.ui:172
+msgid "Transcribing…"
+msgstr ""
+
+#: internal/shell/status.go:99
 #: internal/ui/settings_wifi.go:283
 msgid "No Wi-Fi device"
 msgstr "Pas de périphérique Wi-Fi"
 
-#: internal/shell/status.go:92
+#: internal/shell/status.go:120
 msgid "%d devices"
 msgstr "Dispositifs %d"
 
-#: internal/shell/status.go:94
-#: internal/shell/status.go:103
+#: internal/shell/status.go:122
+#: internal/shell/status.go:131
 msgid "On"
 msgstr "Activé"
 
-#: internal/shell/status.go:118
+#: internal/shell/status.go:146
 msgid "via %s"
 msgstr "via %s"
 
-#: internal/shell/status.go:120
+#: internal/shell/status.go:148
 msgid "%d online"
 msgstr "%d en ligne"
 
-#: internal/shell/status.go:126
+#: internal/shell/status.go:154
 msgid "Needs approval"
 msgstr "Nécessite une approbation"
 
-#: internal/shell/status.go:186
+#: internal/shell/status.go:214
 msgid "Fully charged"
 msgstr "Complètement chargé"
 
-#: internal/shell/status.go:188
+#: internal/shell/status.go:216
 msgid "%.0f%% · Charging"
 msgstr "%.0f%% · Chargement"
 
@@ -13357,11 +13379,11 @@ msgstr "Masqué pour la capture d’écran."
 msgid "The passphrases do not match."
 msgstr "Les phrases secrètes ne correspondent pas."
 
-#: internal/ui/bar.go:324
+#: internal/ui/bar.go:332
 msgid "Workspace %s"
 msgstr "Espace de travail %s"
 
-#: internal/ui/bar.go:337
+#: internal/ui/bar.go:345
 msgid "WORKSPACE"
 msgstr "ESPACE DE TRAVAIL"
 
@@ -13495,7 +13517,7 @@ msgid "Searching…"
 msgstr "Recherche…"
 
 #: internal/ui/control_detail.go:214
-#: internal/ui/settings.go:522
+#: internal/ui/settings.go:524
 msgid "Devices"
 msgstr "Appareils"
 
@@ -13530,7 +13552,7 @@ msgid "Quit (%d windows)"
 msgstr "Quitter (fenêtres %d)"
 
 #: internal/ui/drawer.go:212
-#: internal/ui/settings.go:524
+#: internal/ui/settings.go:527
 #: ui/settings.ui:2045
 msgid "Apps"
 msgstr "Applications"
@@ -13877,90 +13899,94 @@ msgstr "Capture d'écran copiée"
 msgid "Screenshot taken"
 msgstr "Capture d'écran prise"
 
-#: internal/ui/settings.go:273
+#: internal/ui/settings.go:274
 msgid "Not restarted: %s"
 msgstr "Non redémarré : %s"
 
-#: internal/ui/settings.go:298
-#: internal/ui/settings.go:687
+#: internal/ui/settings.go:299
+#: internal/ui/settings.go:690
 msgid "%d px"
 msgstr "%d px"
 
-#: internal/ui/settings.go:521
+#: internal/ui/settings.go:523
 msgid "Connections"
 msgstr "Connexions"
 
-#: internal/ui/settings.go:721
+#: internal/ui/settings.go:526
+msgid "Input"
+msgstr ""
+
+#: internal/ui/settings.go:725
 #: ui/settings.ui:516
 msgid "Phosphor"
 msgstr "Phosphor"
 
-#: internal/ui/settings.go:721
-#: internal/ui/settings.go:722
+#: internal/ui/settings.go:725
+#: internal/ui/settings.go:726
 #: ui/settings.ui:517
 #: ui/settings.ui:564
 msgid "System theme"
 msgstr "Thème système"
 
-#: internal/ui/settings.go:807
+#: internal/ui/settings.go:811
 msgid "%s (%s, %s) · %s"
 msgstr "%s (%s, %s) · %s"
 
-#: internal/ui/settings.go:809
+#: internal/ui/settings.go:813
 msgid "%d text"
 msgid_plural "%d texts"
 msgstr[0] "%d texte"
 msgstr[1] "%d textes"
 
-#: internal/ui/settings.go:810
+#: internal/ui/settings.go:814
 msgid "%d image"
 msgid_plural "%d images"
 msgstr[0] "%d image"
 msgstr[1] "%d images"
 
-#: internal/ui/settings.go:811
+#: internal/ui/settings.go:815
 msgid "%.1f KB"
 msgstr "%.1f Ko"
 
-#: internal/ui/settings.go:890
+#: internal/ui/settings.go:894
 #: internal/ui/settings_apps.go:168
 #: internal/ui/settings_card.go:288
 msgid "Not saved: %s"
 msgstr "Non sauvegardé : %s"
 
-#: internal/ui/settings.go:916
+#: internal/ui/settings.go:920
 msgid "Choose a wallpaper"
 msgstr "Choisir un fond d'écran"
 
-#: internal/ui/settings.go:958
+#: internal/ui/settings.go:962
 msgid "Off: another notification daemon can show them"
 msgstr "Désactivé : un autre démon de notification peut les afficher"
 
-#: internal/ui/settings.go:960
+#: internal/ui/settings.go:964
 msgid "Banners, then the notification center (the bell in the bar, or Super+N)"
 msgstr "Bannières puis centre de notifications (cloche de la barre ou Super+N)"
 
-#: internal/ui/settings.go:962
+#: internal/ui/settings.go:966
 msgid "Waiting: another notification daemon is running"
 msgstr "En attente : un autre démon de notification est en cours d'exécution"
 
-#: internal/ui/settings.go:980
+#: internal/ui/settings.go:984
 msgid "Nothing pinned"
 msgstr "Aucune application épinglée"
 
-#: internal/ui/settings.go:996
+#: internal/ui/settings.go:1000
 msgid "%s (not installed)"
 msgstr "%s (non installé)"
 
-#: internal/ui/settings.go:1009
+#: internal/ui/settings.go:1013
 msgid "Move earlier"
 msgstr "Déplacer avant"
 
-#: internal/ui/settings.go:1010
+#: internal/ui/settings.go:1014
 msgid "Move later"
 msgstr "Déplacer après"
 
-#: internal/ui/settings.go:1011
+#: internal/ui/settings.go:1015
 msgid "Remove from the dock"
 msgstr "Retirer du dock"
 
@@ -14132,6 +14158,7 @@ msgid "Decision"
 msgstr "Décision"
 
 #: internal/ui/settings_ai.go:517
+#: ui/settings.ui:6242
 msgid "Voice"
 msgstr ""
 
@@ -15068,7 +15095,7 @@ msgid "%s Upgrade with: inua upgrade"
 msgstr "Mise à niveau %s avec : mise à niveau inua"
 
 #: internal/ui/updates.go:99
-#: ui/settings.ui:6501
+#: ui/settings.ui:6535
 msgid "Upgrade"
 msgstr "Mise à niveau"
 
@@ -15088,6 +15115,168 @@ msgstr "Inua n'a pas pu mettre à niveau"
 #: internal/ui/updates.go:179
 msgid "Could not upgrade: %s"
 msgstr "Impossible de mettre à niveau : %s"
+
+#: internal/ui/voice.go:136
+msgid "VOICE"
+msgstr ""
+
+#: internal/ui/voice.go:136
+msgid "Talk, and the words are typed where you are"
+msgstr ""
+
+#: internal/ui/voice.go:137
+msgid "A microphone in the bar; a shortcut holds to talk"
+msgstr ""
+
+#: internal/ui/voice.go:138
+msgid "Push to talk"
+msgstr ""
+
+#: internal/ui/voice.go:138
+msgid "The shortcut records while it is held"
+msgstr ""
+
+#: internal/ui/voice.go:141
+msgid "ENGINE"
+msgstr ""
+
+#: internal/ui/voice.go:141
+msgid "The voxtype daemon does the listening"
+msgstr ""
+
+#: internal/ui/voice.go:154
+#: internal/vmui/window.go:2467
+msgid "Download"
+msgstr "Télécharger"
+
+#: internal/ui/voice.go:156
+msgid "Downloaded"
+msgstr ""
+
+#: internal/ui/voice.go:165
+msgid "Other models"
+msgstr ""
+
+#: internal/ui/voice.go:165
+msgid "voxtype's own setup lists more of them"
+msgstr ""
+
+#: internal/ui/voice.go:169
+msgid "Open voxtype"
+msgstr ""
+
+#: internal/ui/voice.go:174
+msgid "Fix the setup"
+msgstr ""
+
+#: internal/ui/voice.go:174
+msgid "The assistant looks at what is wrong and helps you fix it"
+msgstr ""
+
+#: internal/ui/voice.go:179
+#: internal/vmui/window.go:1192
+msgid "Fix"
+msgstr "Corriger"
+
+#: internal/ui/voice.go:191
+msgid "Voxtype is not installed, or its daemon is not running."
+msgstr ""
+
+#: internal/ui/voice.go:239
+msgid "Not available"
+msgstr ""
+
+#: internal/ui/voice.go:241
+msgid "Listening"
+msgstr ""
+
+#: internal/ui/voice.go:243
+msgid "Transcribing"
+msgstr ""
+
+#: internal/ui/voice.go:260
+msgid "Downloading %s…"
+msgstr ""
+
+#: internal/ui/voice.go:274
+msgid "%s is ready."
+msgstr ""
+
+#: internal/ui/voice.go:286
+msgid "Could not start voxtype's setup: %s"
+msgstr ""
+
+#: internal/ui/voice.go:326
+#: internal/ui/voice.go:336
+msgid "The assistant is looking at it."
+msgstr ""
+
+#: internal/ui/voice.go:334
+#: internal/vmui/assistant.go:112
+msgid "The assistant could not be started: %v"
+msgstr "L'assistant n'a pas pu démarrer : %v"
+
+#: internal/ui/voice.go:346
+msgid "The voice input in inua (the voxtype daemon) is not fully set up: this machine is missing something it needs. Check what is wrong below read-only first, then say what you would change and carry it out, reporting item by item."
+msgstr ""
+
+#: internal/ui/voice.go:350
+#: internal/vmui/assistant.go:48
+msgid "This host: %s, distribution %s."
+msgstr "Cet hôte : %s, distribution %s."
+
+#: internal/ui/voice.go:355
+msgid "voxtype executable: not found in PATH."
+msgstr ""
+
+#: internal/ui/voice.go:357
+msgid "voxtype executable: %s."
+msgstr ""
+
+#: internal/ui/voice.go:363
+msgid "The daemon answers: status %s, model %s."
+msgstr ""
+
+#: internal/ui/voice.go:365
+msgid "The daemon does not answer: %s."
+msgstr ""
+
+#: internal/ui/voice.go:365
+msgid "not running"
+msgstr ""
+
+#: internal/ui/voice.go:370
+msgid "systemd user service voxtype.service: %s."
+msgstr ""
+
+#: internal/ui/voice.go:385
+msgid "Downloaded models: %s."
+msgstr ""
+
+#: internal/ui/voice.go:389
+msgid "Missing models: %s."
+msgstr ""
+
+#: internal/ui/voice.go:395
+msgid "This host is NixOS: if voxtype is installed, diagnose and fix the user service, configuration, or model files directly. If system configuration changes are required, specify what to add."
+msgstr ""
+
+#: internal/ui/voice.go:399
+msgid "First check each thing read-only - which, --version, ls, systemctl status, journalctl --user -u voxtype.service - and tell me what you actually see. Do not change anything yet."
+msgstr ""
+
+#: internal/ui/voice.go:401
+msgid "Then carry out the needed fixes directly (e.g. systemctl --user reset-failed voxtype.service, restarting the service, downloading missing models, or fixing permissions with pkexec if needed)."
+msgstr ""
+
+#: internal/ui/voice.go:403
+msgid "Finally tell me how to confirm each fix - which command, and what to look for. I will press the button again in inua once it is done."
+msgstr ""
+
+#: internal/ui/voice.go:405
+#: internal/vmui/assistant.go:75
+msgid "No keys, tokens or passwords are needed for this, and none are in this message."
+msgstr "Aucune clé, aucun jeton et aucun mot de passe n'est nécessaire ici, et il n'y en a aucun dans ce message."
 
 #: internal/viewerui/app.go:36
 #: internal/viewerui/app.go:700
@@ -15327,10 +15516,6 @@ msgstr "Comment il démarre : micrologiciel %s, architecture %s, type de machine
 msgid "How it is seen: %s, %s."
 msgstr "Comment on le voit : %s, %s."
 
-#: internal/vmui/assistant.go:48
-msgid "This host: %s, distribution %s."
-msgstr "Cet hôte : %s, distribution %s."
-
 #: internal/vmui/assistant.go:52
 msgid "%d checks failed:"
 msgstr "%d vérifications ont échoué :"
@@ -15359,17 +15544,9 @@ msgstr "Cet hôte est NixOS : dites-moi quoi ajouter à la configuration du syst
 msgid "Finally tell me how to confirm each fix - which command, and what to look for. I will press Check again in inua and continue the installation once the checks pass."
 msgstr "Enfin, dites-moi comment vérifier chaque correction : quelle commande, et quoi regarder. Je cliquerai sur Vérifier à nouveau dans inua et je poursuivrai l'installation quand les vérifications passeront."
 
-#: internal/vmui/assistant.go:75
-msgid "No keys, tokens or passwords are needed for this, and none are in this message."
-msgstr "Aucune clé, aucun jeton et aucun mot de passe n'est nécessaire ici, et il n'y en a aucun dans ce message."
-
 #: internal/vmui/assistant.go:88
 msgid "not chosen yet"
 msgstr "pas encore choisi"
-
-#: internal/vmui/assistant.go:112
-msgid "The assistant could not be started: %v"
-msgstr "L'assistant n'a pas pu démarrer : %v"
 
 #: internal/vmui/window.go:637
 msgid "Does not load"
@@ -15457,10 +15634,6 @@ msgid "%d thing to fix"
 msgid_plural "%d things to fix"
 msgstr[0] "%d chose à corriger"
 msgstr[1] "%d choses à corriger"
-
-#: internal/vmui/window.go:1192
-msgid "Fix"
-msgstr "Corriger"
 
 #: internal/vmui/window.go:1194
 msgid "Add me to %s"
@@ -15857,10 +16030,6 @@ msgstr "Réessayer"
 msgid "Use this image"
 msgstr "Utiliser cette image"
 
-#: internal/vmui/window.go:2467
-msgid "Download"
-msgstr "Télécharger"
-
 #: internal/vmui/window.go:2477
 msgid "Checksum verified"
 msgstr "Somme de contrôle vérifiée"
@@ -16043,10 +16212,6 @@ msgstr "Ouvrir les paramètres IA"
 msgid "Ask, or tell me what to do"
 msgstr "Demandez ou dites-moi quoi faire"
 
-#: ui/assistant.ui:172
-msgid "Transcribing…"
-msgstr ""
-
 #: ui/assistant.ui:181
 msgid "Discard the recording"
 msgstr ""
@@ -16055,7 +16220,7 @@ msgstr ""
 msgid "Stop recording"
 msgstr "Arrêter l’enregistrement"
 
-#: ui/bar.ui:163
+#: ui/bar.ui:179
 msgid "Control Center"
 msgstr "Centre de contrôle"
 
@@ -17798,7 +17963,7 @@ msgid "Press the new shortcut. Esc cancels; Backspace turns it off."
 msgstr "Appuyez sur le nouveau raccourci. Esc annule ; Retour arrière le désactive."
 
 #: ui/settings.ui:4773
-#: ui/settings.ui:6400
+#: ui/settings.ui:6434
 msgid "<span alpha='55%'>[</span>INUA<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>INUA<span alpha='55%'>]</span>"
 
@@ -17978,67 +18143,67 @@ msgstr "Des balayages plus rapides déplacent le pointeur plus loin"
 msgid "Stop setting the touchpad in inua"
 msgstr "Arrêtez de configurer le pavé tactile dans Inua"
 
-#: ui/settings.ui:6242
+#: ui/settings.ui:6276
 msgid "Power"
 msgstr "Alimentation"
 
-#: ui/settings.ui:6276
+#: ui/settings.ui:6310
 msgid "About"
 msgstr "À propos"
 
-#: ui/settings.ui:6314
+#: ui/settings.ui:6348
 msgid "<span alpha='55%'>[</span>SYSTEM<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>SYSTÈME<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6322
+#: ui/settings.ui:6356
 msgid "This computer, as a card to share"
 msgstr "Cet ordinateur, en carte à partager"
 
-#: ui/settings.ui:6334
+#: ui/settings.ui:6368
 msgid "Copy image"
 msgstr "Copier l’image"
 
-#: ui/settings.ui:6344
+#: ui/settings.ui:6378
 msgid "Copy text"
 msgstr "Copier le texte"
 
-#: ui/settings.ui:6346
+#: ui/settings.ui:6380
 msgid "As Markdown"
 msgstr "En Markdown"
 
-#: ui/settings.ui:6357
+#: ui/settings.ui:6391
 msgid "As a PNG image"
 msgstr "En image PNG"
 
-#: ui/settings.ui:6408
+#: ui/settings.ui:6442
 msgid "The version, and new releases"
 msgstr "La version, et les nouveautés"
 
-#: ui/settings.ui:6438
+#: ui/settings.ui:6472
 msgid "Version"
 msgstr "Version"
 
-#: ui/settings.ui:6474
+#: ui/settings.ui:6508
 msgid "Updates"
 msgstr "Mises à jour"
 
-#: ui/settings.ui:6510
+#: ui/settings.ui:6544
 msgid "Check for updates"
 msgstr "Vérifier les mises à jour"
 
-#: ui/settings.ui:6536
+#: ui/settings.ui:6570
 msgid "Check every day"
 msgstr "Vérifier tous les jours"
 
-#: ui/settings.ui:6545
+#: ui/settings.ui:6579
 msgid "A notification says when a new release is out, with a button to upgrade"
 msgstr "Une notification indique la sortie d'une nouvelle version, avec un bouton pour mettre à niveau"
 
-#: ui/settings.ui:6590
+#: ui/settings.ui:6624
 msgid "<span alpha='55%'>[</span>CHANGELOG<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>CHANGELOG<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6598
+#: ui/settings.ui:6632
 msgid "What the latest release changed"
 msgstr "Ce que la dernière version a changé"
 

@@ -34,6 +34,8 @@ type bar struct {
 	passwords   gtk.Button
 	notes       gtk.Button
 	notesIcon   gtk.Image
+	voice       gtk.Button
+	voiceIcon   gtk.Image
 	unread      gtk.Box
 	tray        gtk.Box
 	status      gtk.Button
@@ -136,6 +138,8 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	ui.Get("rec_time", &b.recTime)
 	ui.Get("clock_button", &b.clockButton)
 	ui.Get("notes_icon", &b.notesIcon)
+	ui.Get("voice", &b.voice)
+	ui.Get("voice_icon", &b.voiceIcon)
 	ui.Get("unread", &b.unread)
 	ui.Get("tray", &b.tray)
 	ui.Get("status", &b.status)
@@ -150,6 +154,10 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	b.setDensity(s.cfg.Bar.Density)
 	b.status.ConnectClicked(&s.onControlButton)
 	b.notes.ConnectClicked(&s.onNotesButton)
+	b.voice.ConnectClicked(&s.onVoiceButton)
+	b.voice.SetVisible(s.cfg.Voice.Enable)
+	b.voiceIcon.SetFromIconName(shell.VoiceIcon(s.sys.Voice))
+	b.voiceIcon.SetTooltipText(shell.VoiceTooltip(s.sys.Voice))
 	b.clipboard.ConnectClicked(&s.onClipboardButton)
 	b.clipboard.SetVisible(s.cfg.Clipboard.Enable && s.cfg.Clipboard.Bar)
 	b.passwords.ConnectClicked(&s.onPasswordsButton)

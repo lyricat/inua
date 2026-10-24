@@ -86,6 +86,7 @@ type settings struct {
 	displays displaysSettings  // the Displays page
 	bt       bluetoothSettings // the Bluetooth page
 	wifi     wifiSettings      // the Wi-Fi page
+	voice    voiceSettings     // the Voice page
 	power    powerSettings     // the Power page
 	search   settingsSearch    // the search over the index
 
@@ -473,6 +474,7 @@ func (s *shellUI) openSettings() {
 	s.getWifiSettings(ui)
 	s.getBluetoothSettings(ui)
 	s.getPowerSettings(ui)
+	s.getVoiceSettings(ui)
 	s.buildSettingsIndex()
 	s.getSettingsSearch(ui)
 	ui.Close()
@@ -521,6 +523,7 @@ var settingsGroups = []struct {
 	{i18n.M("Connections"), []string{"wifi", "bluetooth"}},
 	{i18n.M("Devices"), []string{"displays", "keyboard", "mouse"}},
 	{i18n.M("Desktop"), []string{"appearance", "bar", "launcher", "notifications", "shortcuts"}},
+	{i18n.M("Input"), []string{"voice"}},
 	{i18n.M("Apps"), []string{"apps", "ai", "clipboard", "keyring"}},
 	{i18n.M("System"), []string{"power", "about"}},
 }
@@ -694,6 +697,7 @@ func (s *shellUI) showSettings() {
 	s.showWifi()
 	s.showBluetooth()
 	s.showPower()
+	s.fillVoiceSettings()
 	s.showDisplays()
 	s.showNotifySettings()
 	s.showDockSettings()
