@@ -1103,6 +1103,11 @@ int inua_vt_key(inua_vt *t, uint32_t keysym, uint32_t xkb, uint32_t mods, uint32
     if ((flags & GHOSTTY_KITTY_KEY_REPORT_EVENTS) == 0) return GHOSTTY_SUCCESS;
   }
   ghostty_key_encoder_setopt_from_terminal(t->keys, t->term);
+  /* Alt is Alt: on macOS the encoder would otherwise take Option for
+   * composing characters and drop it. A client that composes with Option
+   * sends the composed text without Alt. */
+  GhosttyOptionAsAlt alt = GHOSTTY_OPTION_AS_ALT_TRUE;
+  ghostty_key_encoder_setopt(t->keys, GHOSTTY_KEY_ENCODER_OPT_MACOS_OPTION_AS_ALT, &alt);
   ghostty_key_event_set_action(t->key, (GhosttyKeyAction)action);
   GhosttyKey k = key_for_keysym(keysym);
   if (k == GHOSTTY_KEY_UNIDENTIFIED) k = key_for_xkb(xkb);

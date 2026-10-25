@@ -140,7 +140,14 @@ func TestForegroundAndEcho(t *testing.T) {
 	}
 	defer p.Close()
 	buf := make([]byte, 64)
-	p.Read(buf)
+	var out string
+	for !strings.Contains(out, "shell") {
+		n, err := p.Read(buf)
+		if err != nil {
+			t.Fatal(err)
+		}
+		out += string(buf[:n])
+	}
 	if fg, err := p.Foreground(); err != nil || fg != p.Pid() {
 		t.Errorf("foreground %d (%v), want the shell %d", fg, err, p.Pid())
 	}
@@ -163,6 +170,11 @@ func TestForegroundAndEcho(t *testing.T) {
 		time.Sleep(10 * time.Millisecond)
 	}
 	p.Write([]byte("secret\n"))
+	// Read what it printed: macOS ends the program only once its
+	// terminal's output is read.
+	if got := output(t, p); !strings.Contains(got, "hidden") {
+		t.Errorf("output %q", got)
+	}
 	p.Wait()
 }
 
@@ -192,6 +204,9 @@ func TestInterruptHelper(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer p.Close()
+	// macOS ends a program only once its terminal's output (the echoed ^C)
+	// is read.
+	go io.Copy(io.Discard, p)
 	// Ctrl+C once sleep runs: before, the shell would take it itself.
 	for deadline := time.Now().Add(5 * time.Second); ; time.Sleep(10 * time.Millisecond) {
 		if procName(p.Pid()) == "sleep" {

@@ -576,8 +576,9 @@ func TestRemember(t *testing.T) {
 	if len(panes) != 2 {
 		t.Fatalf("panes %v", panes)
 	}
+	real, _ := filepath.EvalSymlinks(work) // macOS's temporary folders are behind /var → /private/var
 	for _, p := range st.Panes {
-		if !p.Restored || p.Dir != work {
+		if !p.Restored || (p.Dir != work && p.Dir != real) {
 			t.Errorf("pane %+v", p)
 		}
 	}

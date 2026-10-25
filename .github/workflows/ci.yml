@@ -88,5 +88,9 @@ jobs:
         run: scripts/libghostty.sh
       - name: Build inua-termd
         run: go build -o bin/inua-termd ./cmd/inua-termd
+      # macOS's own bash is 3.2, without PS0, which the shell
+      # integration marks a command's start with.
+      - name: A newer bash
+        run: brew install bash
       - name: The host's tests
         run: go test ./cmd/inua-termd ./internal/term/agent ./internal/term/host ./internal/term/layout ./internal/term/model ./internal/term/pty ./internal/term/settings ./internal/term/shellint ./internal/term/vt ./internal/term/web ./internal/term/webterm
