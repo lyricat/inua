@@ -5,6 +5,44 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
+#: cmd/inua-askpass/main.go:69
+#: cmd/inua-askpass/main.go:73
+msgid "Yes"
+msgstr "예"
+
+#: cmd/inua-askpass/main.go:69
+#: cmd/inua-askpass/main.go:73
+#: internal/term/web/strings.go:67
+msgid "No"
+msgstr "아니요"
+
+#: cmd/inua-askpass/main.go:80
+msgid "User Name Required"
+msgstr "사용자 이름 필요"
+
+#: cmd/inua-askpass/main.go:80
+#: internal/mailui/welcome.go:579
+msgid "User name"
+msgstr "사용자 이름"
+
+#: cmd/inua-askpass/main.go:83
+msgid "Password Required"
+msgstr "암호 필요"
+
+#: cmd/inua-askpass/main.go:83
+#: internal/filesui/archive.go:163
+#: internal/filesui/archive.go:320
+#: internal/filesui/remote.go:178
+#: internal/filesui/remotesetup.go:46
+#: internal/filesui/remotesetup.go:55
+#: internal/filesui/remotesetup.go:61
+#: internal/filesui/remotesetup.go:67
+#: internal/mailui/welcome.go:571
+#: ui/lock.ui:76
+#: ui/polkit.ui:690
+msgid "Password"
+msgstr "비밀번호"
+
 #: cmd/inua-assistant/answer.go:36
 #: cmd/inua-assistant/transcribe.go:40
 #: internal/assistantui/assistantui.go:323
@@ -67,18 +105,6 @@ msgstr "%s이(가) 비밀을 읽었습니다"
 #: cmd/inua-keyring/main.go:155
 msgid "“%s” · %s"
 msgstr "“%s” · %s"
-
-#: cmd/inua-pinentry/main.go:142
-msgid "%s asks for your passphrase"
-msgstr ""
-
-#: cmd/inua-pinentry/main.go:144
-msgid "%s asks"
-msgstr ""
-
-#: cmd/inua-pinentry/main.go:147
-msgid "inua-keyring asks for your passphrase, for %s"
-msgstr ""
 
 #: internal/apps/calendar/calendar.go:69
 #: internal/appui/clock.go:218
@@ -2031,10 +2057,10 @@ msgstr "%s 생성"
 #: internal/appui/gpg.go:602
 #: internal/appui/gpg.go:624
 #: internal/shell/notify.go:32
-#: internal/ui/askpass.go:390
-#: internal/ui/askpass.go:458
-#: internal/ui/askpass.go:462
-#: internal/ui/askpass.go:464
+#: internal/ui/askpass.go:398
+#: internal/ui/askpass.go:466
+#: internal/ui/askpass.go:470
+#: internal/ui/askpass.go:472
 #: internal/ui/settings_about.go:233
 #: internal/ui/settings_keyring.go:640
 #: internal/ui/settings_keyring.go:674
@@ -2202,7 +2228,7 @@ msgstr "삭제…"
 #: internal/diskui/details.go:578
 #: internal/mailui/welcome.go:480
 #: internal/term/web/strings.go:35
-#: internal/ui/askpass.go:547
+#: internal/ui/askpass.go:555
 #: internal/viewerui/app.go:548
 #: internal/vmui/window.go:893
 msgid "Copied"
@@ -2595,7 +2621,7 @@ msgstr "숨기기"
 #: internal/term/settings/settings.go:116
 #: internal/term/web/strings.go:36
 #: internal/termui/prefsweb.go:90
-#: internal/ui/askpass.go:213
+#: internal/ui/askpass.go:216
 #: internal/ui/passwords.go:627
 #: internal/vmui/window.go:896
 #: ui/disk.ui:697
@@ -2716,7 +2742,7 @@ msgid "None: an app reading it is asked about first."
 msgstr "없음: 읽으려는 앱은 먼저 묻습니다."
 
 #: internal/appui/pass.go:1190
-#: internal/ui/askpass.go:381
+#: internal/ui/askpass.go:389
 #: internal/ui/settings_keyring.go:624
 msgid "Flatpak: %s"
 msgstr "Flatpak: %s"
@@ -3950,9 +3976,9 @@ msgstr "알 수 없는 블록 %q"
 #: internal/termui/paste.go:295
 #: internal/termui/restart.go:42
 #: internal/termui/wsmenu.go:149
-#: internal/ui/askpass.go:280
-#: internal/ui/askpass.go:422
-#: internal/ui/askpass.go:426
+#: internal/ui/askpass.go:285
+#: internal/ui/askpass.go:430
+#: internal/ui/askpass.go:434
 #: internal/ui/settings_bluetooth.go:402
 #: internal/ui/settings_bluetooth.go:405
 #: internal/ui/settings_bluetooth.go:411
@@ -3968,7 +3994,7 @@ msgstr "알 수 없는 블록 %q"
 #: ui/pass.ui:495
 #: ui/pass.ui:631
 #: ui/pass.ui:862
-#: ui/polkit.ui:733
+#: ui/polkit.ui:741
 #: ui/remote.ui:1044
 #: ui/vm.ui:3264
 msgid "Cancel"
@@ -3976,7 +4002,7 @@ msgstr "취소"
 
 #: internal/appui/workshop.go:995
 #: internal/term/web/strings.go:73
-#: internal/ui/askpass.go:279
+#: internal/ui/askpass.go:284
 #: internal/ui/settings_card.go:624
 msgid "OK"
 msgstr "OK"
@@ -4211,7 +4237,7 @@ msgid "Don't"
 msgstr "거부"
 
 #: internal/assistantui/assistantui.go:688
-#: internal/ui/askpass.go:417
+#: internal/ui/askpass.go:425
 #: internal/ui/settings_bluetooth.go:407
 #: internal/workshop/session.go:406
 msgid "Allow"
@@ -5308,19 +5334,6 @@ msgstr "보통"
 #: internal/filesui/archive.go:131
 msgid "Smallest"
 msgstr "가장 작게"
-
-#: internal/filesui/archive.go:163
-#: internal/filesui/archive.go:320
-#: internal/filesui/remote.go:178
-#: internal/filesui/remotesetup.go:46
-#: internal/filesui/remotesetup.go:55
-#: internal/filesui/remotesetup.go:61
-#: internal/filesui/remotesetup.go:67
-#: internal/mailui/welcome.go:571
-#: ui/lock.ui:76
-#: ui/polkit.ui:690
-msgid "Password"
-msgstr "비밀번호"
 
 #: internal/filesui/archive.go:164
 #: internal/termui/search.go:109
@@ -10970,10 +10983,6 @@ msgstr "IMAP 서버"
 msgid "SMTP server"
 msgstr "SMTP 서버"
 
-#: internal/mailui/welcome.go:579
-msgid "User name"
-msgstr "사용자 이름"
-
 #: internal/mailui/welcome.go:589
 #: internal/ui/voice_page.go:227
 #: internal/ui/voice_page.go:263
@@ -11280,6 +11289,18 @@ msgstr "검색하거나 문장으로 묻기"
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d분 전"
+
+#: internal/passask/passask.go:102
+msgid "%s asks for your passphrase"
+msgstr ""
+
+#: internal/passask/passask.go:104
+msgid "%s asks"
+msgstr ""
+
+#: internal/passask/passask.go:107
+msgid "inua-keyring asks for your passphrase, for %s"
+msgstr ""
 
 #: internal/remoteui/app.go:20
 #: ui/remote.ui:14
@@ -12508,10 +12529,6 @@ msgstr ""
 msgid "New workspace, in the folder"
 msgstr ""
 
-#: internal/term/web/strings.go:67
-msgid "No"
-msgstr ""
-
 #: internal/term/web/strings.go:68
 msgid "No agent is running."
 msgstr "실행 중인 에이전트가 없습니다."
@@ -13150,197 +13167,197 @@ msgstr "알람 · %02d:%02d"
 msgid "Snooze"
 msgstr "다시 알림"
 
-#: internal/ui/askpass.go:75
+#: internal/ui/askpass.go:76
 msgid "password: want one JSON request"
 msgstr "비밀번호: 하나의 JSON 요청을 원합니다."
 
-#: internal/ui/askpass.go:124
+#: internal/ui/askpass.go:126
 msgid "not ok"
 msgstr "안 괜찮아"
 
-#: internal/ui/askpass.go:239
+#: internal/ui/askpass.go:242
 msgid "Passphrase Required"
 msgstr "암호가 필요함"
 
-#: internal/ui/askpass.go:239
+#: internal/ui/askpass.go:242
 msgid "Confirm"
 msgstr "확인하다"
 
-#: internal/ui/askpass.go:239
+#: internal/ui/askpass.go:242
 msgid "Message"
 msgstr "메시지"
 
-#: internal/ui/askpass.go:241
+#: internal/ui/askpass.go:244
 msgid "Unlock OpenPGP Key"
 msgstr "OpenPGP 키 잠금 해제"
 
-#: internal/ui/askpass.go:257
+#: internal/ui/askpass.go:260
 msgid "Passphrase"
 msgstr "암호문"
 
-#: internal/ui/askpass.go:340
-#: internal/ui/askpass.go:343
+#: internal/ui/askpass.go:348
+#: internal/ui/askpass.go:351
 #: internal/workshop/session.go:406
 msgid "Let %s do this?"
 msgstr "%s이(가) 이 작업을 하도록 허용할까요?"
 
-#: internal/ui/askpass.go:341
+#: internal/ui/askpass.go:349
 msgid "The assistant needs this to answer you. Deny, and it will say it could not."
 msgstr "어시스턴트가 답하는 데 필요합니다. 거부하면 할 수 없었다고 말합니다."
 
-#: internal/ui/askpass.go:344
+#: internal/ui/askpass.go:352
 msgid "An AI agent asks to use inua's tools on your desktop. Allow it once, or for the rest of its session."
 msgstr "AI 에이전트가 데스크톱에서 inua의 도구를 쓰려고 합니다. 한 번만, 또는 이 세션 동안 허용할 수 있습니다."
 
-#: internal/ui/askpass.go:346
+#: internal/ui/askpass.go:354
 msgid "Let programs at this path read every secret?"
 msgstr "이 경로의 프로그램이 모든 비밀을 읽도록 허용할까요?"
 
-#: internal/ui/askpass.go:347
+#: internal/ui/askpass.go:355
 msgid "Any program at this path will read every secret without asking, even after it changes. Allow only if you just added it in Settings or with inua keyring allow, and only for a place you trust."
 msgstr "이 경로의 모든 프로그램은 바뀐 뒤에도 묻지 않고 모든 비밀을 읽습니다. 설정이나 inua keyring allow로 방금 추가했고 믿을 수 있는 위치일 때만 허용하세요."
 
-#: internal/ui/askpass.go:349
+#: internal/ui/askpass.go:357
 msgid "Trust the list of apps again?"
 msgstr "앱 목록을 다시 신뢰할까요?"
 
-#: internal/ui/askpass.go:350
+#: internal/ui/askpass.go:358
 msgid "The list of apps trusted with your secrets was changed outside inua-keyring. Trust it again only if you just asked for it in Settings: it lets %d app read secrets without asking."
 msgid_plural "The list of apps trusted with your secrets was changed outside inua-keyring. Trust it again only if you just asked for it in Settings: it lets %d apps read secrets without asking."
 msgstr[0] "비밀을 신뢰하는 앱 목록이 inua-keyring 밖에서 바뀌었습니다. 방금 설정에서 요청한 경우에만 다시 신뢰하세요. 앱 %d개가 묻지 않고 비밀을 읽게 됩니다."
 
-#: internal/ui/askpass.go:353
+#: internal/ui/askpass.go:361
 msgid "%s has changed since you allowed it"
 msgstr "%s이(가) 허용한 뒤로 바뀌었습니다"
 
-#: internal/ui/askpass.go:354
+#: internal/ui/askpass.go:362
 msgid "Its program is not the one you allowed. If you did not update it, deny."
 msgstr "프로그램이 허용한 것과 다릅니다. 업데이트하지 않았다면 거부하세요."
 
-#: internal/ui/askpass.go:356
+#: internal/ui/askpass.go:364
 msgid "Allow %s to read a secret?"
 msgstr "%s이(가) 비밀을 읽도록 허용할까요?"
 
-#: internal/ui/askpass.go:357
+#: internal/ui/askpass.go:365
 msgid "It is not trusted with this secret yet. Always allow lets it read the secret from now on without asking."
 msgstr "아직 이 비밀에 대해 신뢰되지 않았습니다. ‘항상 허용’하면 이제부터 묻지 않고 읽을 수 있습니다."
 
-#: internal/ui/askpass.go:360
+#: internal/ui/askpass.go:368
 msgid "It can only be allowed once: %s."
 msgstr "한 번만 허용할 수 있습니다: %s."
 
-#: internal/ui/askpass.go:370
+#: internal/ui/askpass.go:378
 msgid "<span alpha='55%'>[</span>PATH<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>경로<span alpha='55%'>]</span>"
 
-#: internal/ui/askpass.go:371
+#: internal/ui/askpass.go:379
 msgid "PATH"
 msgstr "경로"
 
-#: internal/ui/askpass.go:389
+#: internal/ui/askpass.go:397
 msgid "Changed since you allowed it"
 msgstr "허용한 뒤로 바뀜"
 
-#: internal/ui/askpass.go:392
+#: internal/ui/askpass.go:400
 msgid "%s · as %s"
 msgstr "%s · %s(으)로"
 
-#: internal/ui/askpass.go:411
+#: internal/ui/askpass.go:419
 #: internal/ui/settings_bluetooth.go:408
 msgid "Deny"
 msgstr "거부"
 
-#: internal/ui/askpass.go:412
-#: internal/ui/askpass.go:430
+#: internal/ui/askpass.go:420
+#: internal/ui/askpass.go:438
 msgid "Allow once"
 msgstr "한 번 허용"
 
-#: internal/ui/askpass.go:413
+#: internal/ui/askpass.go:421
 msgid "Always allow"
 msgstr "항상 허용"
 
-#: internal/ui/askpass.go:420
+#: internal/ui/askpass.go:428
 msgid "Allow for this session"
 msgstr "이 세션 동안 허용"
 
-#: internal/ui/askpass.go:423
+#: internal/ui/askpass.go:431
 msgid "Trust"
 msgstr "신뢰"
 
-#: internal/ui/askpass.go:427
+#: internal/ui/askpass.go:435
 msgid "Allow every secret"
 msgstr "모든 비밀 허용"
 
-#: internal/ui/askpass.go:446
+#: internal/ui/askpass.go:454
 msgid "Enter the passphrase so inua-keyring can give %s its secret."
 msgstr "inua-keyring이 %s에 비밀을 전달할 수 있도록 암호 문구를 입력하세요."
 
-#: internal/ui/askpass.go:448
+#: internal/ui/askpass.go:456
 msgid "Enter the passphrase so %s can use this key."
 msgstr "%s이(가) 이 키를 사용할 수 있도록 암호 문구를 입력하세요."
 
-#: internal/ui/askpass.go:450
+#: internal/ui/askpass.go:458
 msgid "Enter the passphrase to use this key."
 msgstr "이 키를 사용하려면 암호 문구를 입력하세요."
 
-#: internal/ui/askpass.go:462
+#: internal/ui/askpass.go:470
 msgid "%s · expired %s"
 msgstr "%s · %s 만료됨"
 
-#: internal/ui/askpass.go:464
+#: internal/ui/askpass.go:472
 msgid "%s · expires %s"
 msgstr "%s · %s 만료"
 
-#: internal/ui/askpass.go:479
+#: internal/ui/askpass.go:487
 #: ui/polkit.ui:566
 msgid "FOR"
 msgstr "대상"
 
-#: internal/ui/askpass.go:481
+#: internal/ui/askpass.go:489
 msgid "SECRET"
 msgstr "비밀"
 
-#: internal/ui/askpass.go:484
+#: internal/ui/askpass.go:492
 msgid "ACTION"
 msgstr "작업"
 
-#: internal/ui/askpass.go:566
+#: internal/ui/askpass.go:574
 msgid "Encryption subkey"
 msgstr "암호화 하위 키"
 
-#: internal/ui/askpass.go:568
+#: internal/ui/askpass.go:576
 msgid "Signing subkey"
 msgstr "서명 하위 키"
 
-#: internal/ui/askpass.go:570
+#: internal/ui/askpass.go:578
 msgid "Authentication subkey"
 msgstr "인증 하위 키"
 
-#: internal/ui/askpass.go:572
+#: internal/ui/askpass.go:580
 msgid "Subkey"
 msgstr "하위 키"
 
-#: internal/ui/askpass.go:574
+#: internal/ui/askpass.go:582
 msgid "Primary key"
 msgstr "기본 키"
 
-#: internal/ui/askpass.go:621
+#: internal/ui/askpass.go:629
 msgid "Show the private details (Ctrl+H)"
 msgstr "개인 정보 표시 (Ctrl+H)"
 
-#: internal/ui/askpass.go:624
+#: internal/ui/askpass.go:632
 msgid "Hide the private details: the key's owner, its fingerprint and the pass entry (Ctrl+H)"
 msgstr "개인 정보 숨기기: 키 소유자, 지문, pass 항목 (Ctrl+H)"
 
-#: internal/ui/askpass.go:683
+#: internal/ui/askpass.go:691
 msgid "Hidden while the screen is being recorded or shared."
 msgstr "화면을 녹화하거나 공유하는 동안 숨겨집니다."
 
-#: internal/ui/askpass.go:686
+#: internal/ui/askpass.go:694
 msgid "Hidden for the screenshot."
 msgstr "스크린샷을 위해 숨겨집니다."
 
-#: internal/ui/askpass.go:733
+#: internal/ui/askpass.go:745
 msgid "The passphrases do not match."
 msgstr "암호 문구가 일치하지 않습니다."
 
@@ -17142,7 +17159,7 @@ msgstr "그대로"
 msgid "Another user"
 msgstr "다른 사용자"
 
-#: ui/polkit.ui:741
+#: ui/polkit.ui:749
 msgid "Authenticate"
 msgstr "인증하다"
 

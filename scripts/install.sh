@@ -141,8 +141,8 @@ src=$tmp/$name
 # --- the programs and launchers --------------------------------------------
 
 heading "Installing the programs"
-for bin in inua-shell inua inua-apps inua-files inua-viewer inua-vm inua-remote inua-connect inua-disk-usage inua-mail inua-games inua-pinentry inua-assistant inua-keyring inua-term inua-termd; do
-    [ -f "$src/$bin" ] || continue # inua-files, inua-viewer, inua-vm, inua-remote, inua-connect, inua-disk-usage, inua-mail, inua-games, inua-assistant, inua-keyring, inua-term and inua-termd came after v0.0.2
+for bin in inua-shell inua inua-apps inua-files inua-viewer inua-vm inua-remote inua-connect inua-disk-usage inua-mail inua-games inua-pinentry inua-askpass inua-assistant inua-keyring inua-term inua-termd; do
+    [ -f "$src/$bin" ] || continue # inua-files, inua-viewer, inua-vm, inua-remote, inua-connect, inua-disk-usage, inua-mail, inua-games, inua-askpass, inua-assistant, inua-keyring, inua-term and inua-termd came after v0.0.2
     install -Dm755 "$src/$bin" "$prefix/bin/$bin"
 done
 # inua-term's engine, beside the programs (PREFIX/lib/inua)

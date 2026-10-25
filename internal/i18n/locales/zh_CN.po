@@ -5,6 +5,44 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
+#: cmd/inua-askpass/main.go:69
+#: cmd/inua-askpass/main.go:73
+msgid "Yes"
+msgstr "是"
+
+#: cmd/inua-askpass/main.go:69
+#: cmd/inua-askpass/main.go:73
+#: internal/term/web/strings.go:67
+msgid "No"
+msgstr "否"
+
+#: cmd/inua-askpass/main.go:80
+msgid "User Name Required"
+msgstr "需要用户名"
+
+#: cmd/inua-askpass/main.go:80
+#: internal/mailui/welcome.go:579
+msgid "User name"
+msgstr "用户名"
+
+#: cmd/inua-askpass/main.go:83
+msgid "Password Required"
+msgstr "需要密码"
+
+#: cmd/inua-askpass/main.go:83
+#: internal/filesui/archive.go:163
+#: internal/filesui/archive.go:320
+#: internal/filesui/remote.go:178
+#: internal/filesui/remotesetup.go:46
+#: internal/filesui/remotesetup.go:55
+#: internal/filesui/remotesetup.go:61
+#: internal/filesui/remotesetup.go:67
+#: internal/mailui/welcome.go:571
+#: ui/lock.ui:76
+#: ui/polkit.ui:690
+msgid "Password"
+msgstr "密码"
+
 #: cmd/inua-assistant/answer.go:36
 #: cmd/inua-assistant/transcribe.go:40
 #: internal/assistantui/assistantui.go:323
@@ -67,18 +105,6 @@ msgstr "%s 读取了一个密钥"
 #: cmd/inua-keyring/main.go:155
 msgid "“%s” · %s"
 msgstr "“%s” · %s"
-
-#: cmd/inua-pinentry/main.go:142
-msgid "%s asks for your passphrase"
-msgstr ""
-
-#: cmd/inua-pinentry/main.go:144
-msgid "%s asks"
-msgstr ""
-
-#: cmd/inua-pinentry/main.go:147
-msgid "inua-keyring asks for your passphrase, for %s"
-msgstr ""
 
 #: internal/apps/calendar/calendar.go:69
 #: internal/appui/clock.go:218
@@ -2031,10 +2057,10 @@ msgstr "创建于 %s"
 #: internal/appui/gpg.go:602
 #: internal/appui/gpg.go:624
 #: internal/shell/notify.go:32
-#: internal/ui/askpass.go:390
-#: internal/ui/askpass.go:458
-#: internal/ui/askpass.go:462
-#: internal/ui/askpass.go:464
+#: internal/ui/askpass.go:398
+#: internal/ui/askpass.go:466
+#: internal/ui/askpass.go:470
+#: internal/ui/askpass.go:472
 #: internal/ui/settings_about.go:233
 #: internal/ui/settings_keyring.go:640
 #: internal/ui/settings_keyring.go:674
@@ -2202,7 +2228,7 @@ msgstr "删除…"
 #: internal/diskui/details.go:578
 #: internal/mailui/welcome.go:480
 #: internal/term/web/strings.go:35
-#: internal/ui/askpass.go:547
+#: internal/ui/askpass.go:555
 #: internal/viewerui/app.go:548
 #: internal/vmui/window.go:893
 msgid "Copied"
@@ -2595,7 +2621,7 @@ msgstr "隐藏"
 #: internal/term/settings/settings.go:116
 #: internal/term/web/strings.go:36
 #: internal/termui/prefsweb.go:90
-#: internal/ui/askpass.go:213
+#: internal/ui/askpass.go:216
 #: internal/ui/passwords.go:627
 #: internal/vmui/window.go:896
 #: ui/disk.ui:697
@@ -2716,7 +2742,7 @@ msgid "None: an app reading it is asked about first."
 msgstr "无：读取它的应用会先询问。"
 
 #: internal/appui/pass.go:1190
-#: internal/ui/askpass.go:381
+#: internal/ui/askpass.go:389
 #: internal/ui/settings_keyring.go:624
 msgid "Flatpak: %s"
 msgstr "Flatpak：%s"
@@ -3950,9 +3976,9 @@ msgstr "未知的组件 %q"
 #: internal/termui/paste.go:295
 #: internal/termui/restart.go:42
 #: internal/termui/wsmenu.go:149
-#: internal/ui/askpass.go:280
-#: internal/ui/askpass.go:422
-#: internal/ui/askpass.go:426
+#: internal/ui/askpass.go:285
+#: internal/ui/askpass.go:430
+#: internal/ui/askpass.go:434
 #: internal/ui/settings_bluetooth.go:402
 #: internal/ui/settings_bluetooth.go:405
 #: internal/ui/settings_bluetooth.go:411
@@ -3968,7 +3994,7 @@ msgstr "未知的组件 %q"
 #: ui/pass.ui:495
 #: ui/pass.ui:631
 #: ui/pass.ui:862
-#: ui/polkit.ui:733
+#: ui/polkit.ui:741
 #: ui/remote.ui:1044
 #: ui/vm.ui:3264
 msgid "Cancel"
@@ -3976,7 +4002,7 @@ msgstr "取消"
 
 #: internal/appui/workshop.go:995
 #: internal/term/web/strings.go:73
-#: internal/ui/askpass.go:279
+#: internal/ui/askpass.go:284
 #: internal/ui/settings_card.go:624
 msgid "OK"
 msgstr "好的"
@@ -4211,7 +4237,7 @@ msgid "Don't"
 msgstr "拒绝"
 
 #: internal/assistantui/assistantui.go:688
-#: internal/ui/askpass.go:417
+#: internal/ui/askpass.go:425
 #: internal/ui/settings_bluetooth.go:407
 #: internal/workshop/session.go:406
 msgid "Allow"
@@ -5308,19 +5334,6 @@ msgstr "标准"
 #: internal/filesui/archive.go:131
 msgid "Smallest"
 msgstr "最小"
-
-#: internal/filesui/archive.go:163
-#: internal/filesui/archive.go:320
-#: internal/filesui/remote.go:178
-#: internal/filesui/remotesetup.go:46
-#: internal/filesui/remotesetup.go:55
-#: internal/filesui/remotesetup.go:61
-#: internal/filesui/remotesetup.go:67
-#: internal/mailui/welcome.go:571
-#: ui/lock.ui:76
-#: ui/polkit.ui:690
-msgid "Password"
-msgstr "密码"
 
 #: internal/filesui/archive.go:164
 #: internal/termui/search.go:109
@@ -10970,10 +10983,6 @@ msgstr "IMAP 服务器"
 msgid "SMTP server"
 msgstr "SMTP 服务器"
 
-#: internal/mailui/welcome.go:579
-msgid "User name"
-msgstr "用户名"
-
 #: internal/mailui/welcome.go:589
 #: internal/ui/voice_page.go:227
 #: internal/ui/voice_page.go:263
@@ -11280,6 +11289,18 @@ msgstr "搜索，或用一句话提问"
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d 分钟前"
+
+#: internal/passask/passask.go:102
+msgid "%s asks for your passphrase"
+msgstr ""
+
+#: internal/passask/passask.go:104
+msgid "%s asks"
+msgstr ""
+
+#: internal/passask/passask.go:107
+msgid "inua-keyring asks for your passphrase, for %s"
+msgstr ""
 
 #: internal/remoteui/app.go:20
 #: ui/remote.ui:14
@@ -12508,10 +12529,6 @@ msgstr ""
 msgid "New workspace, in the folder"
 msgstr ""
 
-#: internal/term/web/strings.go:67
-msgid "No"
-msgstr ""
-
 #: internal/term/web/strings.go:68
 msgid "No agent is running."
 msgstr "没有正在运行的智能体。"
@@ -13150,197 +13167,197 @@ msgstr "闹钟 · %02d:%02d"
 msgid "Snooze"
 msgstr "稍后提醒"
 
-#: internal/ui/askpass.go:75
+#: internal/ui/askpass.go:76
 msgid "password: want one JSON request"
 msgstr "密码：想要一个JSON请求"
 
-#: internal/ui/askpass.go:124
+#: internal/ui/askpass.go:126
 msgid "not ok"
 msgstr "不行"
 
-#: internal/ui/askpass.go:239
+#: internal/ui/askpass.go:242
 msgid "Passphrase Required"
 msgstr "需要密码"
 
-#: internal/ui/askpass.go:239
+#: internal/ui/askpass.go:242
 msgid "Confirm"
 msgstr "确认"
 
-#: internal/ui/askpass.go:239
+#: internal/ui/askpass.go:242
 msgid "Message"
 msgstr "留言"
 
-#: internal/ui/askpass.go:241
+#: internal/ui/askpass.go:244
 msgid "Unlock OpenPGP Key"
 msgstr "解锁 OpenPGP 密钥"
 
-#: internal/ui/askpass.go:257
+#: internal/ui/askpass.go:260
 msgid "Passphrase"
 msgstr "密码"
 
-#: internal/ui/askpass.go:340
-#: internal/ui/askpass.go:343
+#: internal/ui/askpass.go:348
+#: internal/ui/askpass.go:351
 #: internal/workshop/session.go:406
 msgid "Let %s do this?"
 msgstr "允许 %s 这样做？"
 
-#: internal/ui/askpass.go:341
+#: internal/ui/askpass.go:349
 msgid "The assistant needs this to answer you. Deny, and it will say it could not."
 msgstr "助手需要这样做才能回答你。拒绝的话，它会说明没能做到。"
 
-#: internal/ui/askpass.go:344
+#: internal/ui/askpass.go:352
 msgid "An AI agent asks to use inua's tools on your desktop. Allow it once, or for the rest of its session."
 msgstr "一个 AI 代理请求在你的桌面上使用 inua 的工具。可以允许一次，或在它本次会话期间一直允许。"
 
-#: internal/ui/askpass.go:346
+#: internal/ui/askpass.go:354
 msgid "Let programs at this path read every secret?"
 msgstr "允许此路径下的程序读取所有密钥？"
 
-#: internal/ui/askpass.go:347
+#: internal/ui/askpass.go:355
 msgid "Any program at this path will read every secret without asking, even after it changes. Allow only if you just added it in Settings or with inua keyring allow, and only for a place you trust."
 msgstr "此路径下的任何程序都会不经询问读取所有密钥，即使程序更新之后也是如此。只有在你刚刚于“设置”中或用 inua keyring allow 添加它，并且信任这个位置时才允许。"
 
-#: internal/ui/askpass.go:349
+#: internal/ui/askpass.go:357
 msgid "Trust the list of apps again?"
 msgstr "再次信任这份应用列表？"
 
-#: internal/ui/askpass.go:350
+#: internal/ui/askpass.go:358
 msgid "The list of apps trusted with your secrets was changed outside inua-keyring. Trust it again only if you just asked for it in Settings: it lets %d app read secrets without asking."
 msgid_plural "The list of apps trusted with your secrets was changed outside inua-keyring. Trust it again only if you just asked for it in Settings: it lets %d apps read secrets without asking."
 msgstr[0] "受信任读取机密的应用列表在 inua-keyring 之外被修改。只有在你刚刚于设置中请求时才再次信任它：它让 %d 个应用无需询问即可读取机密。"
 
-#: internal/ui/askpass.go:353
+#: internal/ui/askpass.go:361
 msgid "%s has changed since you allowed it"
 msgstr "%s 自你允许后已改变"
 
-#: internal/ui/askpass.go:354
+#: internal/ui/askpass.go:362
 msgid "Its program is not the one you allowed. If you did not update it, deny."
 msgstr "它的程序不是你允许的那个。如果你没有更新它，请拒绝。"
 
-#: internal/ui/askpass.go:356
+#: internal/ui/askpass.go:364
 msgid "Allow %s to read a secret?"
 msgstr "允许 %s 读取一个机密？"
 
-#: internal/ui/askpass.go:357
+#: internal/ui/askpass.go:365
 msgid "It is not trusted with this secret yet. Always allow lets it read the secret from now on without asking."
 msgstr "它尚未获准读取这个机密。“始终允许”让它今后无需询问即可读取。"
 
-#: internal/ui/askpass.go:360
+#: internal/ui/askpass.go:368
 msgid "It can only be allowed once: %s."
 msgstr "只能允许一次：%s。"
 
-#: internal/ui/askpass.go:370
+#: internal/ui/askpass.go:378
 msgid "<span alpha='55%'>[</span>PATH<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>路径<span alpha='55%'>]</span>"
 
-#: internal/ui/askpass.go:371
+#: internal/ui/askpass.go:379
 msgid "PATH"
 msgstr "路径"
 
-#: internal/ui/askpass.go:389
+#: internal/ui/askpass.go:397
 msgid "Changed since you allowed it"
 msgstr "自你允许后已改变"
 
-#: internal/ui/askpass.go:392
+#: internal/ui/askpass.go:400
 msgid "%s · as %s"
 msgstr "%s · 当时为 %s"
 
-#: internal/ui/askpass.go:411
+#: internal/ui/askpass.go:419
 #: internal/ui/settings_bluetooth.go:408
 msgid "Deny"
 msgstr "拒绝"
 
-#: internal/ui/askpass.go:412
-#: internal/ui/askpass.go:430
+#: internal/ui/askpass.go:420
+#: internal/ui/askpass.go:438
 msgid "Allow once"
 msgstr "允许一次"
 
-#: internal/ui/askpass.go:413
+#: internal/ui/askpass.go:421
 msgid "Always allow"
 msgstr "始终允许"
 
-#: internal/ui/askpass.go:420
+#: internal/ui/askpass.go:428
 msgid "Allow for this session"
 msgstr "本次会话内允许"
 
-#: internal/ui/askpass.go:423
+#: internal/ui/askpass.go:431
 msgid "Trust"
 msgstr "信任"
 
-#: internal/ui/askpass.go:427
+#: internal/ui/askpass.go:435
 msgid "Allow every secret"
 msgstr "允许读取所有密钥"
 
-#: internal/ui/askpass.go:446
+#: internal/ui/askpass.go:454
 msgid "Enter the passphrase so inua-keyring can give %s its secret."
 msgstr "输入密码短语，让 inua-keyring 把密钥项交给 %s。"
 
-#: internal/ui/askpass.go:448
+#: internal/ui/askpass.go:456
 msgid "Enter the passphrase so %s can use this key."
 msgstr "输入密码短语，让 %s 使用此密钥。"
 
-#: internal/ui/askpass.go:450
+#: internal/ui/askpass.go:458
 msgid "Enter the passphrase to use this key."
 msgstr "输入密码短语以使用此密钥。"
 
-#: internal/ui/askpass.go:462
+#: internal/ui/askpass.go:470
 msgid "%s · expired %s"
 msgstr "%s · 已于 %s 过期"
 
-#: internal/ui/askpass.go:464
+#: internal/ui/askpass.go:472
 msgid "%s · expires %s"
 msgstr "%s · %s 过期"
 
-#: internal/ui/askpass.go:479
+#: internal/ui/askpass.go:487
 #: ui/polkit.ui:566
 msgid "FOR"
 msgstr "用于"
 
-#: internal/ui/askpass.go:481
+#: internal/ui/askpass.go:489
 msgid "SECRET"
 msgstr "密钥项"
 
-#: internal/ui/askpass.go:484
+#: internal/ui/askpass.go:492
 msgid "ACTION"
 msgstr "操作"
 
-#: internal/ui/askpass.go:566
+#: internal/ui/askpass.go:574
 msgid "Encryption subkey"
 msgstr "加密子密钥"
 
-#: internal/ui/askpass.go:568
+#: internal/ui/askpass.go:576
 msgid "Signing subkey"
 msgstr "签名子密钥"
 
-#: internal/ui/askpass.go:570
+#: internal/ui/askpass.go:578
 msgid "Authentication subkey"
 msgstr "认证子密钥"
 
-#: internal/ui/askpass.go:572
+#: internal/ui/askpass.go:580
 msgid "Subkey"
 msgstr "子密钥"
 
-#: internal/ui/askpass.go:574
+#: internal/ui/askpass.go:582
 msgid "Primary key"
 msgstr "主密钥"
 
-#: internal/ui/askpass.go:621
+#: internal/ui/askpass.go:629
 msgid "Show the private details (Ctrl+H)"
 msgstr "显示隐私信息（Ctrl+H）"
 
-#: internal/ui/askpass.go:624
+#: internal/ui/askpass.go:632
 msgid "Hide the private details: the key's owner, its fingerprint and the pass entry (Ctrl+H)"
 msgstr "隐藏隐私信息：密钥所有者、指纹和 pass 条目（Ctrl+H）"
 
-#: internal/ui/askpass.go:683
+#: internal/ui/askpass.go:691
 msgid "Hidden while the screen is being recorded or shared."
 msgstr "屏幕正在录制或共享，已隐藏。"
 
-#: internal/ui/askpass.go:686
+#: internal/ui/askpass.go:694
 msgid "Hidden for the screenshot."
 msgstr "为截图已隐藏。"
 
-#: internal/ui/askpass.go:733
+#: internal/ui/askpass.go:745
 msgid "The passphrases do not match."
 msgstr "密码短语不匹配。"
 
@@ -17142,7 +17159,7 @@ msgstr "AS"
 msgid "Another user"
 msgstr "另一用户"
 
-#: ui/polkit.ui:741
+#: ui/polkit.ui:749
 msgid "Authenticate"
 msgstr "认证"
 

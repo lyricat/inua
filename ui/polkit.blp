@@ -4,7 +4,8 @@
 // messages. Go fills it (internal/ui/polkit.go). gpg's pinentry asks in
 // it too (internal/ui/askpass.go), without the user row, with the key
 // and who asks for it, a button hiding what is private, a second field
-// for a new passphrase and a third button for some questions; and
+// for a new passphrase, a plain field for a user name (inua-askpass) and
+// a third button for some questions; and
 // inua-keyring, whether an app may read a secret, with the app.
 using Gtk 4.0;
 
@@ -493,6 +494,12 @@ Window polkit_dialog {
       PasswordEntry password2 {
         styles ["polkit-password"]
         show-peek-icon: true;
+        visible: false;
+      }
+
+      // An answer seen as it is typed: a user name git asks for.
+      Entry text {
+        styles ["polkit-password"]
         visible: false;
       }
 

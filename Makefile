@@ -4,7 +4,8 @@
 #                  bin/inua-apps (light apps), bin/inua-files (the file
 #                  manager), bin/inua-viewer (images, PDFs, Markdown and
 #                  text), bin/inua-games (light games),
-#                  bin/inua-pinentry (gpg's prompt), bin/inua-assistant (the
+#                  bin/inua-pinentry (gpg's prompt), bin/inua-askpass (ssh's,
+#                  sudo's and git's), bin/inua-assistant (the
 #                  assistant), bin/inua-keyring (the Secret Service kept in
 #                  pass), bin/inua-term (the terminal), bin/inua-termd (its
 #                  host) and bin/inua-mail (mail)
@@ -59,6 +60,7 @@ build:
 	go build -ldflags "-X github.com/lyricat/inua/internal/apps/mail.GoogleClientSecret=$(INUA_GOOGLE_CLIENT_SECRET)" -o bin/inua-mail ./cmd/inua-mail
 	go build -o bin/inua-games ./cmd/inua-games
 	go build -o bin/inua-pinentry ./cmd/inua-pinentry
+	go build -o bin/inua-askpass ./cmd/inua-askpass
 	go build -o bin/inua-assistant ./cmd/inua-assistant
 	go build -o bin/inua-keyring ./cmd/inua-keyring
 	go build -o bin/inua-term ./cmd/inua-term
@@ -104,7 +106,7 @@ run: build
 DATA_HOME ?= $(or $(XDG_DATA_HOME),$(HOME)/.local/share)
 
 install: build
-	install -Dm755 -t "$(PREFIX)/bin" bin/inua-shell bin/inua bin/inua-apps bin/inua-files bin/inua-viewer bin/inua-vm bin/inua-remote bin/inua-connect bin/inua-disk-usage bin/inua-mail bin/inua-games bin/inua-pinentry bin/inua-assistant bin/inua-keyring bin/inua-term bin/inua-termd
+	install -Dm755 -t "$(PREFIX)/bin" bin/inua-shell bin/inua bin/inua-apps bin/inua-files bin/inua-viewer bin/inua-vm bin/inua-remote bin/inua-connect bin/inua-disk-usage bin/inua-mail bin/inua-games bin/inua-pinentry bin/inua-askpass bin/inua-assistant bin/inua-keyring bin/inua-term bin/inua-termd
 	# inua-term's engine, when built (make term-engine)
 	if [ -f bin/libinua-vt.so ]; then install -Dm644 -t "$(PREFIX)/lib/inua" bin/libinua-vt.so; fi
 	install -Dm644 -t "$(DATA_HOME)/applications" config/apps/*.desktop

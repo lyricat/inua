@@ -701,6 +701,14 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
               </object>
             </child>
             <child>
+              <object class="GtkEntry" id="text">
+                <style>
+                  <class name="polkit-password"/>
+                </style>
+                <property name="visible">false</property>
+              </object>
+            </child>
+            <child>
               <object class="GtkLabel" id="info">
                 <style>
                   <class name="polkit-info"/>

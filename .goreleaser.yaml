@@ -69,6 +69,10 @@ builds:
     main: ./cmd/inua-pinentry
     binary: inua-pinentry
   - <<: *build
+    id: inua-askpass
+    main: ./cmd/inua-askpass
+    binary: inua-askpass
+  - <<: *build
     id: inua-assistant
     main: ./cmd/inua-assistant
     binary: inua-assistant

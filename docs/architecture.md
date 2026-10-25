@@ -62,6 +62,7 @@ the view uses the tricky parts of puregotk only through `gtkx`.
 | `internal/keyring`, `cmd/inua-keyring` | The Secret Service (`org.freedesktop.secrets`) kept in pass: each item a pass entry under `inua-keyring/`, labels and attributes in an index beside them (re-read when changed, written under a lock); sessions `plain` and `dh-ietf1024-sha256-aes128-cbc-pkcs7`; collections, aliases, the in-memory session collection; a client for importing from gnome-keyring and for the assistant's keys; started by D-Bus activation; the secrets kept unlocked in memory of their own (`memfd_secret`, else mlock) until locked; the apps trusted with each secret (who a process is: its program or script and SHA-256, root-owned or not, Flatpak, LD_PRELOAD), in a list sealed with an HMAC whose key is in pass; the user asked in the shell's dialog; `Lock`, `State`, `Untrust`, `Reseal` on its own interface | Done, tested (fake and real pass, libsecret, private dbus-daemon, a fake /proc) |
 | `internal/emoji` | The launcher's emoji and symbols: Unicode's emoji list and CLDR's English names and keywords (`scripts/emoji.py` rebuilds the table), searched by name and keyword | Done, tested |
 | `internal/pinentry` | gpg-agent's pinentry protocol (Assuan) for `inua-pinentry`: the requests, the answers and gpg's error codes | Done, tested |
+| `internal/passask`, `cmd/inua-askpass` | Asking `inua-pinentry`'s and `inua-askpass`'s questions in the shell's dialog and on the web terminal's pages, the first answer winning, and running another program to ask without a shell; `inua-askpass`, the askpass of ssh, sudo and git: the question from its argument and `SSH_ASKPASS_PROMPT`, the answer on its output | Done, tested |
 | `internal/polkit` | The session's polkit authentication agent: registering with polkitd for the shell's login session, `BeginAuthentication`/`CancelAuthentication`, and the conversation with polkit's helper (its socket, else the setuid program) that checks the password through PAM | Done, tested (private dbus-daemon, fake helper) |
 | `internal/notify` | Notifications: the `org.freedesktop.Notifications` server (queues behind another daemon), markup cleaning, the notification center model (banner decisions, grouping by app, Focus, unread, saved to `$XDG_STATE_HOME/inua/notifications.json`) | Done, tested (private dbus-daemon) |
 | `internal/system` | The control center's system state and actions: network, Wi-Fi networks (read while a list shows them; join with a password, disconnect, forget, scan), the About page's system summary (from `/proc`, `/sys`, `/etc`), Bluetooth (devices, searching, pairing, and BlueZ's pairing agent, `org.bluez.Agent1`, asking through the settings window), battery, power profile, media, volume, brightness, mako's Do Not Disturb | Done, tested (fake services on a private dbus-daemon) |
@@ -283,7 +284,9 @@ windows to PNG files for checking layouts without a screenshot tool.
   `pinentry-program` in `~/.gnupg/gpg-agent.conf`) speaks the pinentry
   protocol (`internal/pinentry`) and asks the shell over its control
   socket (`call password getpin|confirm|message`); with no shell running
-  it runs the usual pinentry instead.
+  it runs the usual pinentry instead. `inua-askpass` asks there too for
+  ssh, sudo and git when they have no terminal (`SSH_ASKPASS`,
+  `SUDO_ASKPASS`, `GIT_ASKPASS`).
 
 ## 12. Settings
 

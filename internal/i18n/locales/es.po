@@ -5,6 +5,44 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: cmd/inua-askpass/main.go:69
+#: cmd/inua-askpass/main.go:73
+msgid "Yes"
+msgstr "Sí"
+
+#: cmd/inua-askpass/main.go:69
+#: cmd/inua-askpass/main.go:73
+#: internal/term/web/strings.go:67
+msgid "No"
+msgstr "No"
+
+#: cmd/inua-askpass/main.go:80
+msgid "User Name Required"
+msgstr "Se requiere nombre de usuario"
+
+#: cmd/inua-askpass/main.go:80
+#: internal/mailui/welcome.go:579
+msgid "User name"
+msgstr "Nombre de usuario"
+
+#: cmd/inua-askpass/main.go:83
+msgid "Password Required"
+msgstr "Se requiere contraseña"
+
+#: cmd/inua-askpass/main.go:83
+#: internal/filesui/archive.go:163
+#: internal/filesui/archive.go:320
+#: internal/filesui/remote.go:178
+#: internal/filesui/remotesetup.go:46
+#: internal/filesui/remotesetup.go:55
+#: internal/filesui/remotesetup.go:61
+#: internal/filesui/remotesetup.go:67
+#: internal/mailui/welcome.go:571
+#: ui/lock.ui:76
+#: ui/polkit.ui:690
+msgid "Password"
+msgstr "Contraseña"
+
 #: cmd/inua-assistant/answer.go:36
 #: cmd/inua-assistant/transcribe.go:40
 #: internal/assistantui/assistantui.go:323
@@ -67,18 +105,6 @@ msgstr "%s leyó un secreto"
 #: cmd/inua-keyring/main.go:155
 msgid "“%s” · %s"
 msgstr "«%s» · %s"
-
-#: cmd/inua-pinentry/main.go:142
-msgid "%s asks for your passphrase"
-msgstr ""
-
-#: cmd/inua-pinentry/main.go:144
-msgid "%s asks"
-msgstr ""
-
-#: cmd/inua-pinentry/main.go:147
-msgid "inua-keyring asks for your passphrase, for %s"
-msgstr ""
 
 #: internal/apps/calendar/calendar.go:69
 #: internal/appui/clock.go:218
@@ -2036,10 +2062,10 @@ msgstr "creada el %s"
 #: internal/appui/gpg.go:602
 #: internal/appui/gpg.go:624
 #: internal/shell/notify.go:32
-#: internal/ui/askpass.go:390
-#: internal/ui/askpass.go:458
-#: internal/ui/askpass.go:462
-#: internal/ui/askpass.go:464
+#: internal/ui/askpass.go:398
+#: internal/ui/askpass.go:466
+#: internal/ui/askpass.go:470
+#: internal/ui/askpass.go:472
 #: internal/ui/settings_about.go:233
 #: internal/ui/settings_keyring.go:640
 #: internal/ui/settings_keyring.go:674
@@ -2210,7 +2236,7 @@ msgstr "Eliminar…"
 #: internal/diskui/details.go:578
 #: internal/mailui/welcome.go:480
 #: internal/term/web/strings.go:35
-#: internal/ui/askpass.go:547
+#: internal/ui/askpass.go:555
 #: internal/viewerui/app.go:548
 #: internal/vmui/window.go:893
 msgid "Copied"
@@ -2608,7 +2634,7 @@ msgstr "Ocultar"
 #: internal/term/settings/settings.go:116
 #: internal/term/web/strings.go:36
 #: internal/termui/prefsweb.go:90
-#: internal/ui/askpass.go:213
+#: internal/ui/askpass.go:216
 #: internal/ui/passwords.go:627
 #: internal/vmui/window.go:896
 #: ui/disk.ui:697
@@ -2732,7 +2758,7 @@ msgid "None: an app reading it is asked about first."
 msgstr "Ninguna: por una app que lo lea se pregunta antes."
 
 #: internal/appui/pass.go:1190
-#: internal/ui/askpass.go:381
+#: internal/ui/askpass.go:389
 #: internal/ui/settings_keyring.go:624
 msgid "Flatpak: %s"
 msgstr "Flatpak: %s"
@@ -3971,9 +3997,9 @@ msgstr "Bloque desconocido %q"
 #: internal/termui/paste.go:295
 #: internal/termui/restart.go:42
 #: internal/termui/wsmenu.go:149
-#: internal/ui/askpass.go:280
-#: internal/ui/askpass.go:422
-#: internal/ui/askpass.go:426
+#: internal/ui/askpass.go:285
+#: internal/ui/askpass.go:430
+#: internal/ui/askpass.go:434
 #: internal/ui/settings_bluetooth.go:402
 #: internal/ui/settings_bluetooth.go:405
 #: internal/ui/settings_bluetooth.go:411
@@ -3989,7 +4015,7 @@ msgstr "Bloque desconocido %q"
 #: ui/pass.ui:495
 #: ui/pass.ui:631
 #: ui/pass.ui:862
-#: ui/polkit.ui:733
+#: ui/polkit.ui:741
 #: ui/remote.ui:1044
 #: ui/vm.ui:3264
 msgid "Cancel"
@@ -3997,7 +4023,7 @@ msgstr "Cancelar"
 
 #: internal/appui/workshop.go:995
 #: internal/term/web/strings.go:73
-#: internal/ui/askpass.go:279
+#: internal/ui/askpass.go:284
 #: internal/ui/settings_card.go:624
 msgid "OK"
 msgstr "OK"
@@ -4232,7 +4258,7 @@ msgid "Don't"
 msgstr "No permitir"
 
 #: internal/assistantui/assistantui.go:688
-#: internal/ui/askpass.go:417
+#: internal/ui/askpass.go:425
 #: internal/ui/settings_bluetooth.go:407
 #: internal/workshop/session.go:406
 msgid "Allow"
@@ -5335,19 +5361,6 @@ msgstr "Normal"
 #: internal/filesui/archive.go:131
 msgid "Smallest"
 msgstr "Más pequeña"
-
-#: internal/filesui/archive.go:163
-#: internal/filesui/archive.go:320
-#: internal/filesui/remote.go:178
-#: internal/filesui/remotesetup.go:46
-#: internal/filesui/remotesetup.go:55
-#: internal/filesui/remotesetup.go:61
-#: internal/filesui/remotesetup.go:67
-#: internal/mailui/welcome.go:571
-#: ui/lock.ui:76
-#: ui/polkit.ui:690
-msgid "Password"
-msgstr "Contraseña"
 
 #: internal/filesui/archive.go:164
 #: internal/termui/search.go:109
@@ -11029,10 +11042,6 @@ msgstr "Servidor IMAP"
 msgid "SMTP server"
 msgstr "Servidor SMTP"
 
-#: internal/mailui/welcome.go:579
-msgid "User name"
-msgstr "Nombre de usuario"
-
 #: internal/mailui/welcome.go:589
 #: internal/ui/voice_page.go:227
 #: internal/ui/voice_page.go:263
@@ -11345,6 +11354,18 @@ msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "hace %d minuto"
 msgstr[1] "hace %d minutos"
+
+#: internal/passask/passask.go:102
+msgid "%s asks for your passphrase"
+msgstr ""
+
+#: internal/passask/passask.go:104
+msgid "%s asks"
+msgstr ""
+
+#: internal/passask/passask.go:107
+msgid "inua-keyring asks for your passphrase, for %s"
+msgstr ""
 
 #: internal/remoteui/app.go:20
 #: ui/remote.ui:14
@@ -12576,10 +12597,6 @@ msgstr ""
 msgid "New workspace, in the folder"
 msgstr ""
 
-#: internal/term/web/strings.go:67
-msgid "No"
-msgstr ""
-
 #: internal/term/web/strings.go:68
 msgid "No agent is running."
 msgstr "No hay ningún agente en marcha."
@@ -13225,198 +13242,198 @@ msgstr "Alarma · %02d:%02d"
 msgid "Snooze"
 msgstr "Posponer"
 
-#: internal/ui/askpass.go:75
+#: internal/ui/askpass.go:76
 msgid "password: want one JSON request"
 msgstr "contraseña: quiero una solicitud JSON"
 
-#: internal/ui/askpass.go:124
+#: internal/ui/askpass.go:126
 msgid "not ok"
 msgstr "no está bien"
 
-#: internal/ui/askpass.go:239
+#: internal/ui/askpass.go:242
 msgid "Passphrase Required"
 msgstr "Frase de contraseña requerida"
 
-#: internal/ui/askpass.go:239
+#: internal/ui/askpass.go:242
 msgid "Confirm"
 msgstr "Confirmar"
 
-#: internal/ui/askpass.go:239
+#: internal/ui/askpass.go:242
 msgid "Message"
 msgstr "Mensaje"
 
-#: internal/ui/askpass.go:241
+#: internal/ui/askpass.go:244
 msgid "Unlock OpenPGP Key"
 msgstr "Desbloquear la clave OpenPGP"
 
-#: internal/ui/askpass.go:257
+#: internal/ui/askpass.go:260
 msgid "Passphrase"
 msgstr "Frase de contraseña"
 
-#: internal/ui/askpass.go:340
-#: internal/ui/askpass.go:343
+#: internal/ui/askpass.go:348
+#: internal/ui/askpass.go:351
 #: internal/workshop/session.go:406
 msgid "Let %s do this?"
 msgstr "¿Dejar que %s haga esto?"
 
-#: internal/ui/askpass.go:341
+#: internal/ui/askpass.go:349
 msgid "The assistant needs this to answer you. Deny, and it will say it could not."
 msgstr "El asistente lo necesita para responderte. Si lo deniegas, dirá que no pudo."
 
-#: internal/ui/askpass.go:344
+#: internal/ui/askpass.go:352
 msgid "An AI agent asks to use inua's tools on your desktop. Allow it once, or for the rest of its session."
 msgstr "Un agente de IA pide usar las herramientas de inua en tu escritorio. Permítelo una vez o durante el resto de su sesión."
 
-#: internal/ui/askpass.go:346
+#: internal/ui/askpass.go:354
 msgid "Let programs at this path read every secret?"
 msgstr "¿Dejar que los programas de esta ruta lean todos los secretos?"
 
-#: internal/ui/askpass.go:347
+#: internal/ui/askpass.go:355
 msgid "Any program at this path will read every secret without asking, even after it changes. Allow only if you just added it in Settings or with inua keyring allow, and only for a place you trust."
 msgstr "Cualquier programa de esta ruta leerá todos los secretos sin preguntar, incluso después de cambiar. Permítelo solo si acabas de añadirla en Configuración o con inua keyring allow, y solo para un lugar en el que confíes."
 
-#: internal/ui/askpass.go:349
+#: internal/ui/askpass.go:357
 msgid "Trust the list of apps again?"
 msgstr "¿Confiar de nuevo en la lista de apps?"
 
-#: internal/ui/askpass.go:350
+#: internal/ui/askpass.go:358
 msgid "The list of apps trusted with your secrets was changed outside inua-keyring. Trust it again only if you just asked for it in Settings: it lets %d app read secrets without asking."
 msgid_plural "The list of apps trusted with your secrets was changed outside inua-keyring. Trust it again only if you just asked for it in Settings: it lets %d apps read secrets without asking."
 msgstr[0] "La lista de apps de confianza para tus secretos se cambió fuera de inua-keyring. Confía de nuevo solo si acabas de pedirlo en Ajustes: deja que %d app lea secretos sin preguntar."
 msgstr[1] "La lista de apps de confianza para tus secretos se cambió fuera de inua-keyring. Confía de nuevo solo si acabas de pedirlo en Ajustes: deja que %d apps lean secretos sin preguntar."
 
-#: internal/ui/askpass.go:353
+#: internal/ui/askpass.go:361
 msgid "%s has changed since you allowed it"
 msgstr "%s cambió desde que lo permitiste"
 
-#: internal/ui/askpass.go:354
+#: internal/ui/askpass.go:362
 msgid "Its program is not the one you allowed. If you did not update it, deny."
 msgstr "Su programa no es el que permitiste. Si no lo actualizaste, deniégalo."
 
-#: internal/ui/askpass.go:356
+#: internal/ui/askpass.go:364
 msgid "Allow %s to read a secret?"
 msgstr "¿Dejar que %s lea un secreto?"
 
-#: internal/ui/askpass.go:357
+#: internal/ui/askpass.go:365
 msgid "It is not trusted with this secret yet. Always allow lets it read the secret from now on without asking."
 msgstr "Aún no tiene la confianza para este secreto. «Permitir siempre» le deja leerlo desde ahora sin preguntar."
 
-#: internal/ui/askpass.go:360
+#: internal/ui/askpass.go:368
 msgid "It can only be allowed once: %s."
 msgstr "Solo se puede permitir una vez: %s."
 
-#: internal/ui/askpass.go:370
+#: internal/ui/askpass.go:378
 msgid "<span alpha='55%'>[</span>PATH<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>RUTA<span alpha='55%'>]</span>"
 
-#: internal/ui/askpass.go:371
+#: internal/ui/askpass.go:379
 msgid "PATH"
 msgstr "RUTA"
 
-#: internal/ui/askpass.go:389
+#: internal/ui/askpass.go:397
 msgid "Changed since you allowed it"
 msgstr "Cambió desde que lo permitiste"
 
-#: internal/ui/askpass.go:392
+#: internal/ui/askpass.go:400
 msgid "%s · as %s"
 msgstr "%s · como %s"
 
-#: internal/ui/askpass.go:411
+#: internal/ui/askpass.go:419
 #: internal/ui/settings_bluetooth.go:408
 msgid "Deny"
 msgstr "Denegar"
 
-#: internal/ui/askpass.go:412
-#: internal/ui/askpass.go:430
+#: internal/ui/askpass.go:420
+#: internal/ui/askpass.go:438
 msgid "Allow once"
 msgstr "Permitir una vez"
 
-#: internal/ui/askpass.go:413
+#: internal/ui/askpass.go:421
 msgid "Always allow"
 msgstr "Permitir siempre"
 
-#: internal/ui/askpass.go:420
+#: internal/ui/askpass.go:428
 msgid "Allow for this session"
 msgstr "Permitir en esta sesión"
 
-#: internal/ui/askpass.go:423
+#: internal/ui/askpass.go:431
 msgid "Trust"
 msgstr "Confiar"
 
-#: internal/ui/askpass.go:427
+#: internal/ui/askpass.go:435
 msgid "Allow every secret"
 msgstr "Permitir todos los secretos"
 
-#: internal/ui/askpass.go:446
+#: internal/ui/askpass.go:454
 msgid "Enter the passphrase so inua-keyring can give %s its secret."
 msgstr "Introduce la frase de paso para que inua-keyring pueda dar a %s su secreto."
 
-#: internal/ui/askpass.go:448
+#: internal/ui/askpass.go:456
 msgid "Enter the passphrase so %s can use this key."
 msgstr "Introduce la frase de paso para que %s pueda usar esta clave."
 
-#: internal/ui/askpass.go:450
+#: internal/ui/askpass.go:458
 msgid "Enter the passphrase to use this key."
 msgstr "Introduce la frase de paso para usar esta clave."
 
-#: internal/ui/askpass.go:462
+#: internal/ui/askpass.go:470
 msgid "%s · expired %s"
 msgstr "%s · caducó el %s"
 
-#: internal/ui/askpass.go:464
+#: internal/ui/askpass.go:472
 msgid "%s · expires %s"
 msgstr "%s · caduca el %s"
 
-#: internal/ui/askpass.go:479
+#: internal/ui/askpass.go:487
 #: ui/polkit.ui:566
 msgid "FOR"
 msgstr "PARA"
 
-#: internal/ui/askpass.go:481
+#: internal/ui/askpass.go:489
 msgid "SECRET"
 msgstr "SECRETO"
 
-#: internal/ui/askpass.go:484
+#: internal/ui/askpass.go:492
 msgid "ACTION"
 msgstr "ACCIÓN"
 
-#: internal/ui/askpass.go:566
+#: internal/ui/askpass.go:574
 msgid "Encryption subkey"
 msgstr "Subclave de cifrado"
 
-#: internal/ui/askpass.go:568
+#: internal/ui/askpass.go:576
 msgid "Signing subkey"
 msgstr "Subclave de firma"
 
-#: internal/ui/askpass.go:570
+#: internal/ui/askpass.go:578
 msgid "Authentication subkey"
 msgstr "Subclave de autenticación"
 
-#: internal/ui/askpass.go:572
+#: internal/ui/askpass.go:580
 msgid "Subkey"
 msgstr "Subclave"
 
-#: internal/ui/askpass.go:574
+#: internal/ui/askpass.go:582
 msgid "Primary key"
 msgstr "Clave principal"
 
-#: internal/ui/askpass.go:621
+#: internal/ui/askpass.go:629
 msgid "Show the private details (Ctrl+H)"
 msgstr "Mostrar los datos privados (Ctrl+H)"
 
-#: internal/ui/askpass.go:624
+#: internal/ui/askpass.go:632
 msgid "Hide the private details: the key's owner, its fingerprint and the pass entry (Ctrl+H)"
 msgstr "Ocultar los datos privados: el titular de la clave, su huella y la entrada de pass (Ctrl+H)"
 
-#: internal/ui/askpass.go:683
+#: internal/ui/askpass.go:691
 msgid "Hidden while the screen is being recorded or shared."
 msgstr "Oculto mientras se graba o comparte la pantalla."
 
-#: internal/ui/askpass.go:686
+#: internal/ui/askpass.go:694
 msgid "Hidden for the screenshot."
 msgstr "Oculto para la captura de pantalla."
 
-#: internal/ui/askpass.go:733
+#: internal/ui/askpass.go:745
 msgid "The passphrases do not match."
 msgstr "Las frases de contraseña no coinciden."
 
@@ -17237,7 +17254,7 @@ msgstr "COMO"
 msgid "Another user"
 msgstr "Otro usuario"
 
-#: ui/polkit.ui:741
+#: ui/polkit.ui:749
 msgid "Authenticate"
 msgstr "Autenticar"
 

@@ -46,6 +46,7 @@ type passDialog struct {
 	win                          gtk.Window
 	title, message, prompt, info gtk.Label
 	password, password2          gtk.PasswordEntry
+	text                         gtk.Entry // an answer seen as typed (q.Visible)
 	refs                         gtkx.Scope
 	closed                       bool
 
@@ -114,6 +115,7 @@ func (s *shellUI) bindPassHandlers() {
 		}
 		later(s.answerPass)
 	}
+	s.onPassTextActivate = func(gtk.Entry) { later(s.answerPass) }
 	s.onPassCancel = func(gtk.Button) {
 		if d := s.pass.cur; d != nil {
 			later(func() { s.finishPass(d, ipc.Response{Error: "cancelled"}) })
@@ -175,6 +177,7 @@ func (s *shellUI) openPass(d *passDialog) {
 	ui.Get("prompt", &d.prompt)
 	ui.Get("password", &d.password)
 	ui.Get("password2", &d.password2)
+	ui.Get("text", &d.text)
 	ui.Get("info", &d.info)
 	ui.Get("ok", &ok)
 	ui.Get("cancel", &cancel)
@@ -261,6 +264,7 @@ func (s *shellUI) openPass(d *passDialog) {
 		v.Init(gobject.TypeStringVal)
 		v.SetString(prompt)
 		d.password.SetProperty("placeholder-text", &v)
+		d.text.SetPlaceholderText(prompt)
 		v.Unset()
 		if q.Repeat != "" {
 			v.Init(gobject.TypeStringVal)
@@ -272,8 +276,9 @@ func (s *shellUI) openPass(d *passDialog) {
 		d.prompt.SetText(strings.TrimSpace(q.Prompt))
 		d.prompt.SetVisible(getpin)
 	}
-	d.password.SetVisible(getpin)
-	d.password2.SetVisible(getpin && q.Repeat != "")
+	d.password.SetVisible(getpin && !q.Visible)
+	d.password2.SetVisible(getpin && !q.Visible && q.Repeat != "")
+	d.text.SetVisible(getpin && q.Visible)
 	s.showPassInfo(d, q.Error, true)
 
 	ok.SetLabel(labelOr(q.OK, i18n.T("OK")))
@@ -289,6 +294,7 @@ func (s *shellUI) openPass(d *passDialog) {
 	notok.ConnectClicked(&s.onPassNotOK)
 	d.password.ConnectActivate(&s.onPassActivate)
 	d.password2.ConnectActivate(&s.onPassActivate)
+	d.text.ConnectActivate(&s.onPassTextActivate)
 	keys := gtk.NewEventControllerKey()
 	keys.ConnectKeyPressed(&s.onPassKey)
 	d.win.AddController(&keys.EventController)
@@ -314,6 +320,8 @@ func (s *shellUI) openPass(d *passDialog) {
 	s.lockPassSize(d)
 	d.win.Present()
 	switch {
+	case getpin && q.Visible:
+		d.text.GrabFocus()
 	case getpin:
 		d.password.GrabFocus()
 	case q.Mode == pinentry.Approve:
@@ -726,6 +734,10 @@ func (s *shellUI) answerPass() {
 		s.finishPass(d, ipc.Response{OK: true})
 		return
 	}
+	if d.q.Visible {
+		s.finishPass(d, ipc.Response{OK: true, Result: d.text.GetText()})
+		return
+	}
 	pin := d.password.GetText()
 	if d.q.Repeat != "" && pin != d.password2.GetText() {
 		d.password.SetText("")
@@ -747,6 +759,7 @@ func (s *shellUI) finishPass(d *passDialog, r ipc.Response) {
 	}
 	d.password.SetText("")
 	d.password2.SetText("")
+	d.text.SetText("")
 	d.win.Destroy()
 	d.refs.Release()
 	d.done <- r

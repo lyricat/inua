@@ -238,6 +238,7 @@ type shellUI struct {
 	onPassCancel           func(gtk.Button)
 	onPassNotOK            func(gtk.Button)
 	onPassActivate         func(gtk.PasswordEntry)
+	onPassTextActivate     func(gtk.Entry)
 	onPassKey              func(gtk.EventControllerKey, uint32, uint32, gdk.ModifierType) bool
 	onPassMask             func(gtk.Button)
 	onPassRow              func(gtk.Button)

@@ -39,6 +39,9 @@ type Request struct {
 	Repeat  string `json:"repeat,omitempty"` // ask twice (a new passphrase): the second field's prompt
 	NoMatch string `json:"nomatch,omitempty"`
 	Timeout int    `json:"timeout,omitempty"` // seconds; 0 for none
+	// Visible shows the answer as it is typed: a user name, not a secret
+	// (inua-askpass).
+	Visible bool `json:"visible,omitempty"`
 
 	// Owner is the process gpg-agent asks for (OPTION owner=PID/UID
 	// HOST): gpg, run by whatever wants the key; 0 when it did not say.

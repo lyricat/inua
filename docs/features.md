@@ -295,6 +295,28 @@ the first answer, the phone's or the desktop's, goes to gpg; the other
 closes. A new passphrase (asked twice) and inua-keyring's approvals are
 asked at the desk only.
 
+ssh, sudo and git ask in the same dialog through `inua-askpass` when they
+have no terminal to ask on: a git GUI or an editor pushing over ssh,
+Ansible, `sudo -A`. It is their askpass program, named in the session's
+environment; the sample `hyprland.conf` sets ssh's:
+
+```
+env = SSH_ASKPASS, inua-askpass
+env = SUDO_ASKPASS, /usr/local/bin/inua-askpass   # its full path (which inua-askpass): sudo does not search PATH
+env = GIT_ASKPASS, inua-askpass                   # HTTPS user names and passwords
+```
+
+ssh uses it only without a terminal and with a display (`DISPLAY`, which
+XWayland sets); `SSH_ASKPASS_REQUIRE=prefer` asks in the dialog from a
+terminal too. A passphrase, a password and a PIN are asked hidden, a git
+user name as it is typed (at the desk only); ssh's question whether to
+trust a host's key and `ssh-add -c`'s whether to use one are Yes and No;
+a security key's "touch it" is a note, closed when ssh is done. Without an
+agent, ssh asks again for each connection (ControlPersist keeps one
+open; gpg-agent's `enable-ssh-support` asks through `inua-pinentry`).
+With no shell running, it runs another askpass (ksshaskpass,
+lxqt-openssh-askpass, ssh-askpass).
+
 ## Clipboard history
 
 The clipboard button in the top bar (or a shortcut set for "Clipboard
