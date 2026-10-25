@@ -319,9 +319,9 @@ msgid "%d%%, charging"
 msgstr "%d %%, en charge"
 
 #: internal/apps/connect/service.go:519
-#: internal/ui/settings.go:292
-#: internal/ui/settings.go:687
-#: internal/ui/settings.go:759
+#: internal/ui/settings.go:293
+#: internal/ui/settings.go:690
+#: internal/ui/settings.go:763
 #: internal/ui/settings_displays.go:441
 msgid "%d%%"
 msgstr "%d %%"
@@ -1937,7 +1937,7 @@ msgstr "Modifier"
 #: internal/games/fortune.go:65
 #: internal/gamesui/fortune_menu.go:174
 #: internal/termui/guide.go:161
-#: internal/ui/voice_page.go:216
+#: internal/ui/voice_page.go:190
 #: ui/clock.ui:339
 #: ui/clock.ui:406
 #: ui/vm.ui:684
@@ -2551,8 +2551,8 @@ msgid "Top level"
 msgstr "Niveau supérieur"
 
 #: internal/appui/pass.go:417
-#: internal/ui/settings.go:784
-#: internal/ui/settings.go:811
+#: internal/ui/settings.go:788
+#: internal/ui/settings.go:815
 msgid "%d entry"
 msgid_plural "%d entries"
 msgstr[0] "%d entrée"
@@ -2881,7 +2881,7 @@ msgstr "Une image avec un code QR"
 
 #: internal/appui/pass_otp.go:340
 #: internal/desktop/defaults.go:48
-#: internal/ui/settings.go:921
+#: internal/ui/settings.go:925
 msgid "Images"
 msgstr "Images"
 
@@ -3303,7 +3303,7 @@ msgstr "Nom"
 #: internal/appui/tailscale.go:525
 #: internal/appui/tailscale.go:566
 #: internal/diskui/window.go:329
-#: internal/ui/settings.go:527
+#: internal/ui/settings.go:529
 #: ui/vm.ui:2977
 msgid "System"
 msgstr "Système"
@@ -3394,7 +3394,7 @@ msgid "GRAPHICS"
 msgstr "GRAPHIQUES"
 
 #: internal/appui/sysmon.go:1004
-#: internal/ui/voice_page.go:230
+#: internal/ui/voice_page.go:204
 msgid "Card"
 msgstr "Carte"
 
@@ -3708,7 +3708,7 @@ msgstr "EN UTILISATION"
 #: internal/ui/settings_ai.go:271
 #: internal/ui/settings_keyring.go:572
 #: internal/ui/shortcuts.go:150
-#: internal/ui/voice_page.go:347
+#: internal/ui/voice_page.go:314
 msgid "None"
 msgstr "Aucun"
 
@@ -4127,7 +4127,7 @@ msgid "Replace the installed %s?"
 msgstr "Remplacer %s installée ?"
 
 #: internal/appui/workshop_manager.go:154
-#: internal/ui/voice_page.go:215
+#: internal/ui/voice_page.go:189
 #: ui/vm.ui:1279
 msgid "Install"
 msgstr "Installer"
@@ -9757,7 +9757,7 @@ msgid "Pick a colour"
 msgstr "Choisissez une couleur"
 
 #: internal/hyprconf/keys.go:40
-#: internal/ui/voice_page.go:199
+#: internal/ui/voice_page.go:173
 #: ui/bar.ui:164
 #: ui/settings.ui:6285
 msgid "Dictation"
@@ -10488,7 +10488,7 @@ msgstr "L'assistant le lit et le résume"
 #: internal/mailui/reader.go:724
 #: ui/gpg.ui:652
 #: ui/gpg.ui:896
-#: ui/settings.ui:6432
+#: ui/settings.ui:6466
 msgid "Save…"
 msgstr "Enregistrer…"
 
@@ -11043,8 +11043,8 @@ msgid "SMTP server"
 msgstr "Serveur SMTP"
 
 #: internal/mailui/welcome.go:589
-#: internal/ui/voice_page.go:227
-#: internal/ui/voice_page.go:263
+#: internal/ui/voice_page.go:201
+#: internal/ui/voice_page.go:230
 msgid "Change"
 msgstr "Modifier"
 
@@ -11120,7 +11120,7 @@ msgid "Fetching your mail"
 msgstr "Récupération de votre courrier"
 
 #: internal/mailui/welcome.go:726
-#: internal/ui/voice_page.go:416
+#: internal/ui/voice_page.go:383
 msgid "Ready"
 msgstr "Prêt"
 
@@ -11720,7 +11720,7 @@ msgid "%d thr"
 msgstr "%d threads"
 
 #: internal/shell/cardterm.go:136
-#: internal/ui/settings.go:525
+#: internal/ui/settings.go:527
 msgid "Desktop"
 msgstr "Bureau"
 
@@ -12152,7 +12152,7 @@ msgstr "À l'écoute… Cliquez pour arrêter"
 
 #: internal/shell/status.go:48
 #: internal/ui/dictation.go:156
-#: internal/ui/voice_page.go:414
+#: internal/ui/voice_page.go:381
 #: ui/assistant.ui:172
 msgid "Transcribing…"
 msgstr "Transcription…"
@@ -13575,7 +13575,7 @@ msgid "Searching…"
 msgstr "Recherche…"
 
 #: internal/ui/control_detail.go:214
-#: internal/ui/settings.go:524
+#: internal/ui/settings.go:526
 msgid "Devices"
 msgstr "Appareils"
 
@@ -13610,7 +13610,7 @@ msgid "Quit (%d windows)"
 msgstr "Quitter (fenêtres %d)"
 
 #: internal/ui/drawer.go:212
-#: internal/ui/settings.go:526
+#: internal/ui/settings.go:528
 #: ui/settings.ui:2045
 msgid "Apps"
 msgstr "Applications"
@@ -13957,90 +13957,90 @@ msgstr "Capture d'écran copiée"
 msgid "Screenshot taken"
 msgstr "Capture d'écran prise"
 
-#: internal/ui/settings.go:274
+#: internal/ui/settings.go:275
 msgid "Not restarted: %s"
 msgstr "Non redémarré : %s"
 
-#: internal/ui/settings.go:299
-#: internal/ui/settings.go:689
+#: internal/ui/settings.go:300
+#: internal/ui/settings.go:692
 msgid "%d px"
 msgstr "%d px"
 
-#: internal/ui/settings.go:523
+#: internal/ui/settings.go:525
 msgid "Connections"
 msgstr "Connexions"
 
-#: internal/ui/settings.go:724
+#: internal/ui/settings.go:728
 #: ui/settings.ui:516
 msgid "Phosphor"
 msgstr "Phosphor"
 
-#: internal/ui/settings.go:724
-#: internal/ui/settings.go:725
+#: internal/ui/settings.go:728
+#: internal/ui/settings.go:729
 #: ui/settings.ui:517
 #: ui/settings.ui:564
 msgid "System theme"
 msgstr "Thème système"
 
-#: internal/ui/settings.go:810
+#: internal/ui/settings.go:814
 msgid "%s (%s, %s) · %s"
 msgstr "%s (%s, %s) · %s"
 
-#: internal/ui/settings.go:812
+#: internal/ui/settings.go:816
 msgid "%d text"
 msgid_plural "%d texts"
 msgstr[0] "%d texte"
 msgstr[1] "%d textes"
 
-#: internal/ui/settings.go:813
+#: internal/ui/settings.go:817
 msgid "%d image"
 msgid_plural "%d images"
 msgstr[0] "%d image"
 msgstr[1] "%d images"
 
-#: internal/ui/settings.go:814
+#: internal/ui/settings.go:818
 msgid "%.1f KB"
 msgstr "%.1f Ko"
 
-#: internal/ui/settings.go:893
+#: internal/ui/settings.go:897
 #: internal/ui/settings_apps.go:168
 #: internal/ui/settings_card.go:288
 msgid "Not saved: %s"
 msgstr "Non sauvegardé : %s"
 
-#: internal/ui/settings.go:919
+#: internal/ui/settings.go:923
 msgid "Choose a wallpaper"
 msgstr "Choisir un fond d'écran"
 
-#: internal/ui/settings.go:961
+#: internal/ui/settings.go:965
 msgid "Off: another notification daemon can show them"
 msgstr "Désactivé : un autre démon de notification peut les afficher"
 
-#: internal/ui/settings.go:963
+#: internal/ui/settings.go:967
 msgid "Banners, then the notification center (the bell in the bar, or Super+N)"
 msgstr "Bannières puis centre de notifications (cloche de la barre ou Super+N)"
 
-#: internal/ui/settings.go:965
+#: internal/ui/settings.go:969
 msgid "Waiting: another notification daemon is running"
 msgstr "En attente : un autre démon de notification est en cours d'exécution"
 
-#: internal/ui/settings.go:983
+#: internal/ui/settings.go:987
 msgid "Nothing pinned"
 msgstr "Aucune application épinglée"
 
-#: internal/ui/settings.go:999
+#: internal/ui/settings.go:1003
 msgid "%s (not installed)"
 msgstr "%s (non installé)"
 
-#: internal/ui/settings.go:1012
+#: internal/ui/settings.go:1016
 msgid "Move earlier"
 msgstr "Déplacer avant"
 
-#: internal/ui/settings.go:1013
+#: internal/ui/settings.go:1017
 msgid "Move later"
 msgstr "Déplacer après"
 
-#: internal/ui/settings.go:1014
+#: internal/ui/settings.go:1018
 msgid "Remove from the dock"
 msgstr "Retirer du dock"
 
@@ -14826,7 +14826,7 @@ msgid "the dialog could not be shown"
 msgstr "la boîte de dialogue n’a pas pu s’afficher"
 
 #: internal/ui/settings_keyring.go:383
-#: internal/ui/voice_page.go:410
+#: internal/ui/voice_page.go:377
 msgid "Looking…"
 msgstr "Vérification…"
 
@@ -15027,6 +15027,91 @@ msgstr "Inchangé : le mot de passe administrateur n’a pas été donné."
 msgid "Page"
 msgstr "Page"
 
+#: internal/ui/settings_sound.go:85
+msgid "OUTPUT"
+msgstr "SORTIE"
+
+#: internal/ui/settings_sound.go:85
+msgid "Where sound plays"
+msgstr "Où le son est joué"
+
+#: internal/ui/settings_sound.go:86
+msgid "Output"
+msgstr "Sortie"
+
+#: internal/ui/settings_sound.go:89
+#: internal/ui/settings_sound.go:318
+msgid "Test"
+msgstr "Tester"
+
+#: internal/ui/settings_sound.go:94
+msgid "INPUT"
+msgstr "ENTRÉE"
+
+#: internal/ui/settings_sound.go:94
+msgid "What apps record"
+msgstr "Ce que les apps enregistrent"
+
+#: internal/ui/settings_sound.go:95
+#: internal/ui/voice_page.go:212
+msgid "Microphone"
+msgstr "Micro"
+
+#: internal/ui/settings_sound.go:115
+#: ui/music.ui:215
+msgid "Volume"
+msgstr "Volume"
+
+#: internal/ui/settings_sound.go:154
+msgid "PipeWire has no output"
+msgstr "PipeWire n'a aucune sortie"
+
+#: internal/ui/settings_sound.go:156
+msgid "Playing on the left, then on the right…"
+msgstr "Lecture à gauche, puis à droite…"
+
+#: internal/ui/settings_sound.go:158
+msgid "Test plays a sound on the left, then on the right"
+msgstr "Tester joue un son à gauche, puis à droite"
+
+#: internal/ui/settings_sound.go:167
+#: internal/ui/voice_page.go:458
+msgid "PipeWire has no microphone"
+msgstr "PipeWire n'a pas de micro"
+
+#: internal/ui/settings_sound.go:169
+msgid "The one apps and dictation record from; Test, and say something"
+msgstr "Celui que les apps et la dictée enregistrent ; Tester, puis dites quelque chose"
+
+#: internal/ui/settings_sound.go:179
+msgid "Sound is set with WirePlumber's wpctl, which is not installed: %s"
+msgstr "Le son se règle avec wpctl de WirePlumber, qui n'est pas installé : %s"
+
+#: internal/ui/settings_sound.go:194
+msgid "Unmute"
+msgstr "Réactiver le son"
+
+#: internal/ui/settings_sound.go:196
+#: ui/control.ui:698
+msgid "Mute"
+msgstr "Muet"
+
+#: internal/ui/settings_sound.go:259
+msgid "Not changed: %s"
+msgstr "Non modifié : %s"
+
+#: internal/ui/settings_sound.go:337
+msgid "Say something…"
+msgstr "Dites quelque chose…"
+
+#: internal/ui/settings_sound.go:357
+msgid "It hears you."
+msgstr "Il vous entend."
+
+#: internal/ui/settings_sound.go:359
+msgid "It heard nothing: is it the right one, or muted?"
+msgstr "Il n'a rien entendu : est-ce le bon, ou est-il coupé ?"
+
 #: internal/ui/settings_wifi.go:281
 msgid "NetworkManager is not running"
 msgstr "NetworkManager n’est pas lancé"
@@ -15149,7 +15234,7 @@ msgid "%s Upgrade with: inua upgrade"
 msgstr "Mise à niveau %s avec : mise à niveau inua"
 
 #: internal/ui/updates.go:99
-#: ui/settings.ui:6578
+#: ui/settings.ui:6612
 msgid "Upgrade"
 msgstr "Mise à niveau"
 
@@ -15267,7 +15352,7 @@ msgstr[1] "%d langues"
 
 #: internal/ui/voice_models.go:237
 #: internal/ui/voice_models.go:266
-#: internal/ui/voice_page.go:566
+#: internal/ui/voice_page.go:471
 msgid "Downloading…"
 msgstr "Téléchargement…"
 
@@ -15283,215 +15368,187 @@ msgstr "%s n'est pas utilisé : %s"
 msgid "voxtype's other engines did not come: %s"
 msgstr "Les autres moteurs de voxtype ne sont pas venus : %s"
 
-#: internal/ui/voice_page.go:82
+#: internal/ui/voice_page.go:74
 msgid "At the top of your window"
 msgstr "En haut de votre fenêtre"
 
-#: internal/ui/voice_page.go:82
+#: internal/ui/voice_page.go:74
 msgid "In the screen's corner"
 msgstr "Dans le coin de l'écran"
 
-#: internal/ui/voice_page.go:82
+#: internal/ui/voice_page.go:74
 msgid "Off: the bar's microphone alone"
 msgstr "Désactivée : le micro de la barre seul"
 
-#: internal/ui/voice_page.go:140
-msgid "Not changed: %s"
-msgstr "Non modifié : %s"
-
-#: internal/ui/voice_page.go:198
+#: internal/ui/voice_page.go:172
 msgid "DICTATION"
 msgstr "DICTÉE"
 
-#: internal/ui/voice_page.go:198
+#: internal/ui/voice_page.go:172
 msgid "Talk, and the words are typed where you are"
 msgstr "Parlez, et les mots sont tapés là où vous êtes"
 
-#: internal/ui/voice_page.go:199
+#: internal/ui/voice_page.go:173
 msgid "A microphone in the bar, and a shortcut to talk"
 msgstr "Un micro dans la barre, et un raccourci pour parler"
 
-#: internal/ui/voice_page.go:214
+#: internal/ui/voice_page.go:188
 msgid "voxtype.io"
 msgstr "voxtype.io"
 
-#: internal/ui/voice_page.go:217
+#: internal/ui/voice_page.go:191
 msgid "AI Settings"
 msgstr "Paramètres de l'IA"
 
-#: internal/ui/voice_page.go:220
+#: internal/ui/voice_page.go:194
 msgid "Shortcut"
 msgstr "Raccourci"
 
-#: internal/ui/voice_page.go:225
+#: internal/ui/voice_page.go:199
 msgid "Hold"
 msgstr "Maintenir"
 
-#: internal/ui/voice_page.go:225
+#: internal/ui/voice_page.go:199
 msgid "Press"
 msgstr "Appuyer"
 
-#: internal/ui/voice_page.go:230
+#: internal/ui/voice_page.go:204
 msgid "The waveform as you talk, then the words"
 msgstr "La forme d'onde pendant que vous parlez, puis les mots"
 
-#: internal/ui/voice_page.go:238
-msgid "Microphone"
-msgstr "Micro"
-
-#: internal/ui/voice_page.go:250
-msgid "Test"
-msgstr "Tester"
-
-#: internal/ui/voice_page.go:254
+#: internal/ui/voice_page.go:221
 msgid "ENGINE"
 msgstr "MOTEUR"
 
-#: internal/ui/voice_page.go:254
+#: internal/ui/voice_page.go:221
 msgid "What turns your speech into text"
 msgstr "Ce qui transforme votre voix en texte"
 
-#: internal/ui/voice_page.go:256
+#: internal/ui/voice_page.go:223
 msgid "Runs"
 msgstr "Fonctionne"
 
-#: internal/ui/voice_page.go:258
+#: internal/ui/voice_page.go:225
 msgid "On this computer"
 msgstr "Sur cet ordinateur"
 
-#: internal/ui/voice_page.go:258
+#: internal/ui/voice_page.go:225
 msgid "With an AI profile"
 msgstr "Avec un profil d'IA"
 
-#: internal/ui/voice_page.go:261
+#: internal/ui/voice_page.go:228
 msgid "Profile"
 msgstr "Profil"
 
-#: internal/ui/voice_page.go:266
+#: internal/ui/voice_page.go:233
 msgid "Typing"
 msgstr "Saisie"
 
-#: internal/ui/voice_page.go:356
+#: internal/ui/voice_page.go:323
 msgid "Hold it to talk; Escape drops what you said"
 msgstr "Maintenez-le pour parler ; Échap abandonne ce que vous avez dit"
 
-#: internal/ui/voice_page.go:358
+#: internal/ui/voice_page.go:325
 msgid "Press it to start and again to end; Escape drops what you said"
 msgstr "Appuyez pour commencer et de nouveau pour finir ; Échap abandonne ce que vous avez dit"
 
-#: internal/ui/voice_page.go:365
+#: internal/ui/voice_page.go:332
 msgid "The recording goes to the AI profile's provider"
 msgstr "L'enregistrement part chez le fournisseur du profil d'IA"
 
-#: internal/ui/voice_page.go:367
+#: internal/ui/voice_page.go:334
 msgid "voxtype turns it into text here; the recording stays on this computer"
 msgstr "voxtype le transforme en texte ici ; l'enregistrement reste sur cet ordinateur"
 
-#: internal/ui/voice_page.go:378
+#: internal/ui/voice_page.go:345
 msgid "The words are typed where you are"
 msgstr "Les mots sont tapés là où vous êtes"
 
-#: internal/ui/voice_page.go:381
+#: internal/ui/voice_page.go:348
 msgid "The words are pasted where you are, and your clipboard put back; to have them typed, install wtype:"
 msgstr "Les mots sont collés là où vous êtes, et le presse-papiers remis ; pour qu'ils soient tapés, installez wtype :"
 
-#: internal/ui/voice_page.go:397
+#: internal/ui/voice_page.go:364
 msgid "Installing voxtype…"
 msgstr "Installation de voxtype…"
 
-#: internal/ui/voice_page.go:399
+#: internal/ui/voice_page.go:366
 msgid "No AI profile turns speech into text"
 msgstr "Aucun profil d'IA ne transforme la voix en texte"
 
-#: internal/ui/voice_page.go:400
+#: internal/ui/voice_page.go:367
 msgid "Turn on Voice for a profile in Settings → AI, and choose it for Voice input"
 msgstr "Activez Voix pour un profil dans Paramètres → AI, et choisissez-le pour Saisie vocale"
 
-#: internal/ui/voice_page.go:402
+#: internal/ui/voice_page.go:369
 msgid "pw-cat is not installed"
 msgstr "pw-cat n'est pas installé"
 
-#: internal/ui/voice_page.go:403
+#: internal/ui/voice_page.go:370
 msgid "Dictation records with PipeWire's pw-cat: %s"
 msgstr "La dictée enregistre avec pw-cat, de PipeWire : %s"
 
-#: internal/ui/voice_page.go:405
+#: internal/ui/voice_page.go:372
 msgid "voxtype is not installed"
 msgstr "voxtype n'est pas installé"
 
-#: internal/ui/voice_page.go:406
+#: internal/ui/voice_page.go:373
 msgid "Install downloads voxtype %s and a speech model for your language from GitHub, about %d MB, and checks them before they run"
 msgstr "Installer télécharge voxtype %s et un modèle vocal pour votre langue depuis GitHub, environ %d Mo, et les vérifie avant qu'ils ne tournent"
 
-#: internal/ui/voice_page.go:408
+#: internal/ui/voice_page.go:375
 msgid "voxtype is not running"
 msgstr "voxtype ne tourne pas"
 
-#: internal/ui/voice_page.go:408
+#: internal/ui/voice_page.go:375
 msgid "It is installed; its service is stopped"
 msgstr "Il est installé ; son service est arrêté"
 
-#: internal/ui/voice_page.go:412
+#: internal/ui/voice_page.go:379
 msgid "Listening…"
 msgstr "À l'écoute…"
 
-#: internal/ui/voice_page.go:412
+#: internal/ui/voice_page.go:379
 msgid "Escape drops what you said"
 msgstr "Échap abandonne ce que vous avez dit"
 
-#: internal/ui/voice_page.go:420
+#: internal/ui/voice_page.go:387
 msgid "Click the microphone in the bar, and talk"
 msgstr "Cliquez sur le micro de la barre, et parlez"
 
-#: internal/ui/voice_page.go:422
+#: internal/ui/voice_page.go:389
 msgid "Hold %s, or click the microphone in the bar, and talk"
 msgstr "Maintenez %s, ou cliquez sur le micro de la barre, et parlez"
 
-#: internal/ui/voice_page.go:424
+#: internal/ui/voice_page.go:391
 msgid "Press %s, or click the microphone in the bar, and talk"
 msgstr "Appuyez sur %s, ou cliquez sur le micro de la barre, et parlez"
 
-#: internal/ui/voice_page.go:490
-msgid "PipeWire has no microphone"
-msgstr "PipeWire n'a pas de micro"
-
-#: internal/ui/voice_page.go:509
+#: internal/ui/voice_page.go:460
 msgid "The system's input, which dictation records from"
 msgstr "L'entrée du système, d'où la dictée enregistre"
 
-#: internal/ui/voice_page.go:531
-msgid "Say something…"
-msgstr "Dites quelque chose…"
-
-#: internal/ui/voice_page.go:552
-msgid "It hears you."
-msgstr "Il vous entend."
-
-#: internal/ui/voice_page.go:554
-msgid "It heard nothing: is it the right one, or muted?"
-msgstr "Il n'a rien entendu : est-ce le bon, ou est-il coupé ?"
-
-#: internal/ui/voice_page.go:575
+#: internal/ui/voice_page.go:480
 msgid "Downloading voxtype %s… %s"
 msgstr "Téléchargement de voxtype %s… %s"
 
-#: internal/ui/voice_page.go:577
+#: internal/ui/voice_page.go:482
 msgid "Downloading a speech model… %s"
 msgstr "Téléchargement d'un modèle vocal… %s"
 
-#: internal/ui/voice_page.go:579
+#: internal/ui/voice_page.go:484
 msgid "Downloading a speech model…"
 msgstr "Téléchargement d'un modèle vocal…"
 
-#: internal/ui/voice_page.go:581
+#: internal/ui/voice_page.go:486
 msgid "Starting its service…"
 msgstr "Démarrage de son service…"
 
-#: internal/ui/voice_page.go:591
+#: internal/ui/voice_page.go:496
 msgid "voxtype was not installed: %s"
 msgstr "voxtype n'a pas été installé : %s"
 
-#: internal/ui/voice_page.go:609
+#: internal/ui/voice_page.go:514
 msgid "voxtype did not start: %s"
 msgstr "voxtype n'a pas démarré : %s"
 
@@ -16689,12 +16746,9 @@ msgid "Display"
 msgstr "Affichage"
 
 #: ui/control.ui:670
+#: ui/settings.ui:6319
 msgid "Sound"
 msgstr "Son"
-
-#: ui/control.ui:698
-msgid "Mute"
-msgstr "Muet"
 
 #: ui/control.ui:738
 msgid "Now playing"
@@ -17073,10 +17127,6 @@ msgstr "Suivant (B)"
 #: ui/music.ui:191
 msgid "Open files (Ctrl+O)"
 msgstr "Ouvrir des fichiers (Ctrl+O)"
-
-#: ui/music.ui:215
-msgid "Volume"
-msgstr "Volume"
 
 #: ui/music.ui:230
 msgid "BAL"
@@ -18212,7 +18262,7 @@ msgid "Press the new shortcut. Esc cancels; Backspace turns it off."
 msgstr "Appuyez sur le nouveau raccourci. Esc annule ; Retour arrière le désactive."
 
 #: ui/settings.ui:4816
-#: ui/settings.ui:6477
+#: ui/settings.ui:6511
 msgid "<span alpha='55%'>[</span>INUA<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>INUA<span alpha='55%'>]</span>"
 
@@ -18392,67 +18442,67 @@ msgstr "Des balayages plus rapides déplacent le pointeur plus loin"
 msgid "Stop setting the touchpad in inua"
 msgstr "Arrêtez de configurer le pavé tactile dans Inua"
 
-#: ui/settings.ui:6319
+#: ui/settings.ui:6353
 msgid "Power"
 msgstr "Alimentation"
 
-#: ui/settings.ui:6353
+#: ui/settings.ui:6387
 msgid "About"
 msgstr "À propos"
 
-#: ui/settings.ui:6391
+#: ui/settings.ui:6425
 msgid "<span alpha='55%'>[</span>SYSTEM<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>SYSTÈME<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6399
+#: ui/settings.ui:6433
 msgid "This computer, as a card to share"
 msgstr "Cet ordinateur, en carte à partager"
 
-#: ui/settings.ui:6411
+#: ui/settings.ui:6445
 msgid "Copy image"
 msgstr "Copier l’image"
 
-#: ui/settings.ui:6421
+#: ui/settings.ui:6455
 msgid "Copy text"
 msgstr "Copier le texte"
 
-#: ui/settings.ui:6423
+#: ui/settings.ui:6457
 msgid "As Markdown"
 msgstr "En Markdown"
 
-#: ui/settings.ui:6434
+#: ui/settings.ui:6468
 msgid "As a PNG image"
 msgstr "En image PNG"
 
-#: ui/settings.ui:6485
+#: ui/settings.ui:6519
 msgid "The version, and new releases"
 msgstr "La version, et les nouveautés"
 
-#: ui/settings.ui:6515
+#: ui/settings.ui:6549
 msgid "Version"
 msgstr "Version"
 
-#: ui/settings.ui:6551
+#: ui/settings.ui:6585
 msgid "Updates"
 msgstr "Mises à jour"
 
-#: ui/settings.ui:6587
+#: ui/settings.ui:6621
 msgid "Check for updates"
 msgstr "Vérifier les mises à jour"
 
-#: ui/settings.ui:6613
+#: ui/settings.ui:6647
 msgid "Check every day"
 msgstr "Vérifier tous les jours"
 
-#: ui/settings.ui:6622
+#: ui/settings.ui:6656
 msgid "A notification says when a new release is out, with a button to upgrade"
 msgstr "Une notification indique la sortie d'une nouvelle version, avec un bouton pour mettre à niveau"
 
-#: ui/settings.ui:6667
+#: ui/settings.ui:6701
 msgid "<span alpha='55%'>[</span>CHANGELOG<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>CHANGELOG<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6675
+#: ui/settings.ui:6709
 msgid "What the latest release changed"
 msgstr "Ce que la dernière version a changé"
 

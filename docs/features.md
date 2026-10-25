@@ -199,7 +199,7 @@ its window to the current workspace.
 
 A two-column settings window for everything, its index grouped by what is
 most often looked for: Connections (Wi-Fi, Bluetooth), Devices (displays,
-keyboard, mouse and touchpad), Desktop (appearance and wallpaper, the bar
+keyboard, mouse and touchpad, sound, dictation), Desktop (appearance and wallpaper, the bar
 and dock, the launcher, notifications, shortcuts), Apps (default apps, AI
 for the assistant's models, clipboard, keyring) and System (power, About).
 Changes apply as you make them.
@@ -513,6 +513,17 @@ works without the shell running; the shell also applies it when a
 display is plugged in or out, and `inua-session` before Hyprland starts,
 so logging in with the lid closed keeps the panel off from the first
 frame.
+
+## Sound
+
+The output and the input PipeWire has: choose the device sound plays on
+and the microphone apps record from (each becomes the default, through
+`wpctl set-default`), set their volume or mute them. Test on the output
+plays a soft tone on the left, then a higher one on the right; Test on
+the input records a few seconds and draws how loud it hears you. The
+page follows PipeWire as it changes: a headset plugged in, the volume
+keys, another app choosing the default. The microphone is the same one
+Settings → Dictation shows.
 
 ## Keyboard and touchpad
 

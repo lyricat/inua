@@ -13,17 +13,32 @@ import (
 	"time"
 )
 
-const sink = "@DEFAULT_AUDIO_SINK@"
+const (
+	sink = "@DEFAULT_AUDIO_SINK@"
+	mic  = "@DEFAULT_AUDIO_SOURCE@"
+)
 
-// AudioState is the default output's volume.
+// AudioState is the default output's volume, the default input's, and
+// the outputs and inputs to choose from.
 type AudioState struct {
 	Available bool
 	Volume    float64 // 0-1; wpctl's scale, as the volume keys use
 	Muted     bool
+	In        VolumeState // the default input's
+
+	Outputs, Inputs []AudioDevice
+	Output, Input   string // the defaults' node names
+}
+
+// VolumeState is a device's volume.
+type VolumeState struct {
+	Available bool
+	Volume    float64 // 0-1, as the output's
+	Muted     bool
 }
 
 // Audio follows PipeWire. `pw-dump -m` says when the graph changes and wpctl
-// reads and sets the volume, so the numbers match the volume keys exactly.
+// reads and sets the volumes, so the numbers match the volume keys exactly.
 type Audio struct{}
 
 func NewAudio() *Audio { return &Audio{} }
@@ -31,13 +46,7 @@ func NewAudio() *Audio { return &Audio{} }
 // Run reports the state until ctx ends.
 func (a *Audio) Run(ctx context.Context, onChange func(AudioState)) {
 	e := &emitter[AudioState]{f: onChange}
-	read := func() {
-		s, err := readVolume(ctx)
-		if err != nil {
-			s = AudioState{}
-		}
-		e.emit(s)
-	}
+	read := func() { e.emit(readAudio(ctx)) }
 	backoff := time.Second
 	for ctx.Err() == nil {
 		start := time.Now()
@@ -136,39 +145,65 @@ func watchDump(r io.Reader, changed func()) error {
 	}
 }
 
-func readVolume(ctx context.Context) (AudioState, error) {
+// readAudio reads the volumes and the devices; what fails to read is not
+// there.
+func readAudio(ctx context.Context) AudioState {
+	var s AudioState
+	if out, err := readVolume(ctx, sink); err == nil {
+		s.Available, s.Volume, s.Muted = true, out.Volume, out.Muted
+	}
+	if in, err := readVolume(ctx, mic); err == nil {
+		s.In = in
+	}
+	if g, err := audioDevices(ctx); err == nil {
+		s.Outputs, s.Inputs, s.Output, s.Input = g.outputs, g.inputs, g.output, g.input
+	}
+	return s
+}
+
+func readVolume(ctx context.Context, node string) (VolumeState, error) {
 	ctx, cancel := context.WithTimeout(ctx, callLimit)
 	defer cancel()
-	out, err := exec.CommandContext(ctx, "wpctl", "get-volume", sink).Output()
+	out, err := exec.CommandContext(ctx, "wpctl", "get-volume", node).Output()
 	if err != nil {
-		return AudioState{}, err
+		return VolumeState{}, err
 	}
 	return parseVolume(string(out))
 }
 
 // parseVolume parses `wpctl get-volume`: "Volume: 0.40" or "Volume: 0.40 [MUTED]".
-func parseVolume(s string) (AudioState, error) {
+func parseVolume(s string) (VolumeState, error) {
 	f := strings.Fields(s)
 	if len(f) < 2 || f[0] != "Volume:" {
-		return AudioState{}, fmt.Errorf("system: unexpected wpctl output %q", s)
+		return VolumeState{}, fmt.Errorf("system: unexpected wpctl output %q", s)
 	}
 	v, err := strconv.ParseFloat(f[1], 64)
 	if err != nil {
-		return AudioState{}, err
+		return VolumeState{}, err
 	}
-	return AudioState{Available: true, Volume: v, Muted: strings.Contains(s, "[MUTED]")}, nil
+	return VolumeState{Available: true, Volume: v, Muted: strings.Contains(s, "[MUTED]")}, nil
 }
 
 // SetVolume sets the output volume, 0-1, and unmutes.
-func (a *Audio) SetVolume(v float64) error {
-	v = max(0, min(v, 1))
-	if err := exec.Command("wpctl", "set-volume", sink, strconv.FormatFloat(v, 'f', 3, 64)).Run(); err != nil {
-		return err
-	}
-	return exec.Command("wpctl", "set-mute", sink, "0").Run()
-}
+func (a *Audio) SetVolume(v float64) error { return setVolume(sink, v) }
 
 // ToggleMute mutes or unmutes the output.
 func (a *Audio) ToggleMute() error {
 	return exec.Command("wpctl", "set-mute", sink, "toggle").Run()
+}
+
+// SetInputVolume sets the input volume, 0-1, and unmutes.
+func (a *Audio) SetInputVolume(v float64) error { return setVolume(mic, v) }
+
+// ToggleInputMute mutes or unmutes the input.
+func (a *Audio) ToggleInputMute() error {
+	return exec.Command("wpctl", "set-mute", mic, "toggle").Run()
+}
+
+func setVolume(node string, v float64) error {
+	v = max(0, min(v, 1))
+	if err := exec.Command("wpctl", "set-volume", node, strconv.FormatFloat(v, 'f', 3, 64)).Run(); err != nil {
+		return err
+	}
+	return exec.Command("wpctl", "set-mute", node, "0").Run()
 }

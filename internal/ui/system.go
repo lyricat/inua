@@ -35,7 +35,8 @@ type services struct {
 	voxtypeQuiet time.Time
 	inSubmap     bool // hyprconf.DictationSubmap, while it records
 
-	volume     *shell.Setter
+	volume     *shell.Setter // the output's
+	inVolume   *shell.Setter // the input's
 	brightness *shell.Setter
 }
 
@@ -52,6 +53,7 @@ func (s *shellUI) startSystem() {
 	v.ts = system.NewTailscale("")
 	v.voice = system.NewVoice("")
 	v.volume = shell.NewSetter(func(f float64) { logErr("volume", v.audio.SetVolume(f)) })
+	v.inVolume = shell.NewSetter(func(f float64) { logErr("input volume", v.audio.SetInputVolume(f)) })
 	if b, err := system.FindBacklight(system.BacklightDir, system.SystemBus); err == nil {
 		v.backlight = b
 		v.brightness = shell.NewSetter(func(f float64) { logErr("brightness", b.SetPercent(f)) })
@@ -86,7 +88,8 @@ func (s *shellUI) update(f func(*shell.System)) {
 		}
 		s.showBluetooth()
 		s.showWifi()
-		s.showPower()      // the battery, the power mode
+		s.showPower() // the battery, the power mode
+		s.showSound()
 		s.checkOSD(&s.sys) // Wi-Fi and Bluetooth, as a card
 		if s.wantWifi() {
 			s.readWifiList() // connected, or off, meanwhile

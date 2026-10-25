@@ -319,9 +319,9 @@ msgid "%d%%, charging"
 msgstr "%d%%，正在充电"
 
 #: internal/apps/connect/service.go:519
-#: internal/ui/settings.go:292
-#: internal/ui/settings.go:687
-#: internal/ui/settings.go:759
+#: internal/ui/settings.go:293
+#: internal/ui/settings.go:690
+#: internal/ui/settings.go:763
 #: internal/ui/settings_displays.go:441
 msgid "%d%%"
 msgstr "%d%%"
@@ -1932,7 +1932,7 @@ msgstr "编辑"
 #: internal/games/fortune.go:65
 #: internal/gamesui/fortune_menu.go:174
 #: internal/termui/guide.go:161
-#: internal/ui/voice_page.go:216
+#: internal/ui/voice_page.go:190
 #: ui/clock.ui:339
 #: ui/clock.ui:406
 #: ui/vm.ui:684
@@ -2540,8 +2540,8 @@ msgid "Top level"
 msgstr "顶层"
 
 #: internal/appui/pass.go:417
-#: internal/ui/settings.go:784
-#: internal/ui/settings.go:811
+#: internal/ui/settings.go:788
+#: internal/ui/settings.go:815
 msgid "%d entry"
 msgid_plural "%d entries"
 msgstr[0] "%d 条"
@@ -2864,7 +2864,7 @@ msgstr "含二维码的图片"
 
 #: internal/appui/pass_otp.go:340
 #: internal/desktop/defaults.go:48
-#: internal/ui/settings.go:921
+#: internal/ui/settings.go:925
 msgid "Images"
 msgstr "图像"
 
@@ -3284,7 +3284,7 @@ msgstr "名称"
 #: internal/appui/tailscale.go:525
 #: internal/appui/tailscale.go:566
 #: internal/diskui/window.go:329
-#: internal/ui/settings.go:527
+#: internal/ui/settings.go:529
 #: ui/vm.ui:2977
 msgid "System"
 msgstr "系统"
@@ -3373,7 +3373,7 @@ msgid "GRAPHICS"
 msgstr "显卡"
 
 #: internal/appui/sysmon.go:1004
-#: internal/ui/voice_page.go:230
+#: internal/ui/voice_page.go:204
 msgid "Card"
 msgstr "显卡"
 
@@ -3687,7 +3687,7 @@ msgstr "使用中"
 #: internal/ui/settings_ai.go:271
 #: internal/ui/settings_keyring.go:572
 #: internal/ui/shortcuts.go:150
-#: internal/ui/voice_page.go:347
+#: internal/ui/voice_page.go:314
 msgid "None"
 msgstr "无"
 
@@ -4106,7 +4106,7 @@ msgid "Replace the installed %s?"
 msgstr "替换已安装的 %s？"
 
 #: internal/appui/workshop_manager.go:154
-#: internal/ui/voice_page.go:215
+#: internal/ui/voice_page.go:189
 #: ui/vm.ui:1279
 msgid "Install"
 msgstr "安装"
@@ -9706,7 +9706,7 @@ msgid "Pick a colour"
 msgstr "选择颜色"
 
 #: internal/hyprconf/keys.go:40
-#: internal/ui/voice_page.go:199
+#: internal/ui/voice_page.go:173
 #: ui/bar.ui:164
 #: ui/settings.ui:6285
 msgid "Dictation"
@@ -10432,7 +10432,7 @@ msgstr "助手阅读并总结它"
 #: internal/mailui/reader.go:724
 #: ui/gpg.ui:652
 #: ui/gpg.ui:896
-#: ui/settings.ui:6432
+#: ui/settings.ui:6466
 msgid "Save…"
 msgstr "保存…"
 
@@ -10984,8 +10984,8 @@ msgid "SMTP server"
 msgstr "SMTP 服务器"
 
 #: internal/mailui/welcome.go:589
-#: internal/ui/voice_page.go:227
-#: internal/ui/voice_page.go:263
+#: internal/ui/voice_page.go:201
+#: internal/ui/voice_page.go:230
 msgid "Change"
 msgstr "更改"
 
@@ -11058,7 +11058,7 @@ msgid "Fetching your mail"
 msgstr "正在获取你的邮件"
 
 #: internal/mailui/welcome.go:726
-#: internal/ui/voice_page.go:416
+#: internal/ui/voice_page.go:383
 msgid "Ready"
 msgstr "就绪"
 
@@ -11654,7 +11654,7 @@ msgid "%d thr"
 msgstr "%d 线程"
 
 #: internal/shell/cardterm.go:136
-#: internal/ui/settings.go:525
+#: internal/ui/settings.go:527
 msgid "Desktop"
 msgstr "桌面"
 
@@ -12084,7 +12084,7 @@ msgstr "正在听… 点击停止"
 
 #: internal/shell/status.go:48
 #: internal/ui/dictation.go:156
-#: internal/ui/voice_page.go:414
+#: internal/ui/voice_page.go:381
 #: ui/assistant.ui:172
 msgid "Transcribing…"
 msgstr "正在转为文字…"
@@ -13497,7 +13497,7 @@ msgid "Searching…"
 msgstr "正在搜索…"
 
 #: internal/ui/control_detail.go:214
-#: internal/ui/settings.go:524
+#: internal/ui/settings.go:526
 msgid "Devices"
 msgstr "设备"
 
@@ -13532,7 +13532,7 @@ msgid "Quit (%d windows)"
 msgstr "退出(%d窗口)"
 
 #: internal/ui/drawer.go:212
-#: internal/ui/settings.go:526
+#: internal/ui/settings.go:528
 #: ui/settings.ui:2045
 msgid "Apps"
 msgstr "应用程序"
@@ -13875,88 +13875,88 @@ msgstr "截图已复制"
 msgid "Screenshot taken"
 msgstr "截图"
 
-#: internal/ui/settings.go:274
+#: internal/ui/settings.go:275
 msgid "Not restarted: %s"
 msgstr "未重新启动：%s"
 
-#: internal/ui/settings.go:299
-#: internal/ui/settings.go:689
+#: internal/ui/settings.go:300
+#: internal/ui/settings.go:692
 msgid "%d px"
 msgstr "%d 像素"
 
-#: internal/ui/settings.go:523
+#: internal/ui/settings.go:525
 msgid "Connections"
 msgstr "连接"
 
-#: internal/ui/settings.go:724
+#: internal/ui/settings.go:728
 #: ui/settings.ui:516
 msgid "Phosphor"
 msgstr "Phosphor"
 
-#: internal/ui/settings.go:724
-#: internal/ui/settings.go:725
+#: internal/ui/settings.go:728
+#: internal/ui/settings.go:729
 #: ui/settings.ui:517
 #: ui/settings.ui:564
 msgid "System theme"
 msgstr "系统主题"
 
-#: internal/ui/settings.go:810
+#: internal/ui/settings.go:814
 msgid "%s (%s, %s) · %s"
 msgstr "%s(%s,%s)· %s"
 
-#: internal/ui/settings.go:812
+#: internal/ui/settings.go:816
 msgid "%d text"
 msgid_plural "%d texts"
 msgstr[0] "%d 段文字"
 
-#: internal/ui/settings.go:813
+#: internal/ui/settings.go:817
 msgid "%d image"
 msgid_plural "%d images"
 msgstr[0] "%d 张图片"
 
-#: internal/ui/settings.go:814
+#: internal/ui/settings.go:818
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: internal/ui/settings.go:893
+#: internal/ui/settings.go:897
 #: internal/ui/settings_apps.go:168
 #: internal/ui/settings_card.go:288
 msgid "Not saved: %s"
 msgstr "未保存：%s"
 
-#: internal/ui/settings.go:919
+#: internal/ui/settings.go:923
 msgid "Choose a wallpaper"
 msgstr "选择壁纸"
 
-#: internal/ui/settings.go:961
+#: internal/ui/settings.go:965
 msgid "Off: another notification daemon can show them"
 msgstr "关闭：另一个通知守护进程可以显示它们"
 
-#: internal/ui/settings.go:963
+#: internal/ui/settings.go:967
 msgid "Banners, then the notification center (the bell in the bar, or Super+N)"
 msgstr "先显示横幅，再收进通知中心（顶栏铃铛或 Super+N）"
 
-#: internal/ui/settings.go:965
+#: internal/ui/settings.go:969
 msgid "Waiting: another notification daemon is running"
 msgstr "等待：另一个通知守护进程正在运行"
 
-#: internal/ui/settings.go:983
+#: internal/ui/settings.go:987
 msgid "Nothing pinned"
 msgstr "尚未固定应用"
 
-#: internal/ui/settings.go:999
+#: internal/ui/settings.go:1003
 msgid "%s (not installed)"
 msgstr "%s(未安装)"
 
-#: internal/ui/settings.go:1012
+#: internal/ui/settings.go:1016
 msgid "Move earlier"
 msgstr "向前移动"
 
-#: internal/ui/settings.go:1013
+#: internal/ui/settings.go:1017
 msgid "Move later"
 msgstr "向后移动"
 
-#: internal/ui/settings.go:1014
+#: internal/ui/settings.go:1018
 msgid "Remove from the dock"
 msgstr "从程序坞移除"
 
@@ -14741,7 +14741,7 @@ msgid "the dialog could not be shown"
 msgstr "无法显示对话框"
 
 #: internal/ui/settings_keyring.go:383
-#: internal/ui/voice_page.go:410
+#: internal/ui/voice_page.go:377
 msgid "Looking…"
 msgstr "正在查看…"
 
@@ -14938,6 +14938,91 @@ msgstr "未更改：未提供管理员密码。"
 msgid "Page"
 msgstr "页面"
 
+#: internal/ui/settings_sound.go:85
+msgid "OUTPUT"
+msgstr "输出"
+
+#: internal/ui/settings_sound.go:85
+msgid "Where sound plays"
+msgstr "声音从哪里播放"
+
+#: internal/ui/settings_sound.go:86
+msgid "Output"
+msgstr "输出"
+
+#: internal/ui/settings_sound.go:89
+#: internal/ui/settings_sound.go:318
+msgid "Test"
+msgstr "测试"
+
+#: internal/ui/settings_sound.go:94
+msgid "INPUT"
+msgstr "输入"
+
+#: internal/ui/settings_sound.go:94
+msgid "What apps record"
+msgstr "应用录音所用的设备"
+
+#: internal/ui/settings_sound.go:95
+#: internal/ui/voice_page.go:212
+msgid "Microphone"
+msgstr "麦克风"
+
+#: internal/ui/settings_sound.go:115
+#: ui/music.ui:215
+msgid "Volume"
+msgstr "音量"
+
+#: internal/ui/settings_sound.go:154
+msgid "PipeWire has no output"
+msgstr "PipeWire 没有输出设备"
+
+#: internal/ui/settings_sound.go:156
+msgid "Playing on the left, then on the right…"
+msgstr "正在左侧播放，然后右侧……"
+
+#: internal/ui/settings_sound.go:158
+msgid "Test plays a sound on the left, then on the right"
+msgstr "“测试”会先在左侧、再在右侧播放一个声音"
+
+#: internal/ui/settings_sound.go:167
+#: internal/ui/voice_page.go:458
+msgid "PipeWire has no microphone"
+msgstr "PipeWire 没有麦克风"
+
+#: internal/ui/settings_sound.go:169
+msgid "The one apps and dictation record from; Test, and say something"
+msgstr "应用和听写从这里录音；点“测试”，然后说点什么"
+
+#: internal/ui/settings_sound.go:179
+msgid "Sound is set with WirePlumber's wpctl, which is not installed: %s"
+msgstr "声音通过 WirePlumber 的 wpctl 设置，但它没有安装：%s"
+
+#: internal/ui/settings_sound.go:194
+msgid "Unmute"
+msgstr "取消静音"
+
+#: internal/ui/settings_sound.go:196
+#: ui/control.ui:698
+msgid "Mute"
+msgstr "静音"
+
+#: internal/ui/settings_sound.go:259
+msgid "Not changed: %s"
+msgstr "没有更改：%s"
+
+#: internal/ui/settings_sound.go:337
+msgid "Say something…"
+msgstr "说点什么…"
+
+#: internal/ui/settings_sound.go:357
+msgid "It hears you."
+msgstr "它听得到你。"
+
+#: internal/ui/settings_sound.go:359
+msgid "It heard nothing: is it the right one, or muted?"
+msgstr "它什么也没听到：选对了吗？是不是静音了？"
+
 #: internal/ui/settings_wifi.go:281
 msgid "NetworkManager is not running"
 msgstr "NetworkManager 未运行"
@@ -15060,7 +15145,7 @@ msgid "%s Upgrade with: inua upgrade"
 msgstr "%s 升级方式:inua 升级"
 
 #: internal/ui/updates.go:99
-#: ui/settings.ui:6578
+#: ui/settings.ui:6612
 msgid "Upgrade"
 msgstr "升级"
 
@@ -15177,7 +15262,7 @@ msgstr[0] "%d 种语言"
 
 #: internal/ui/voice_models.go:237
 #: internal/ui/voice_models.go:266
-#: internal/ui/voice_page.go:566
+#: internal/ui/voice_page.go:471
 msgid "Downloading…"
 msgstr "正在下载…"
 
@@ -15193,215 +15278,187 @@ msgstr "%s 没有启用：%s"
 msgid "voxtype's other engines did not come: %s"
 msgstr "没能获取 voxtype 的其他引擎：%s"
 
-#: internal/ui/voice_page.go:82
+#: internal/ui/voice_page.go:74
 msgid "At the top of your window"
 msgstr "在你窗口的顶部"
 
-#: internal/ui/voice_page.go:82
+#: internal/ui/voice_page.go:74
 msgid "In the screen's corner"
 msgstr "在屏幕角落"
 
-#: internal/ui/voice_page.go:82
+#: internal/ui/voice_page.go:74
 msgid "Off: the bar's microphone alone"
 msgstr "关闭：只用顶栏的麦克风"
 
-#: internal/ui/voice_page.go:140
-msgid "Not changed: %s"
-msgstr "没有更改：%s"
-
-#: internal/ui/voice_page.go:198
+#: internal/ui/voice_page.go:172
 msgid "DICTATION"
 msgstr "听写"
 
-#: internal/ui/voice_page.go:198
+#: internal/ui/voice_page.go:172
 msgid "Talk, and the words are typed where you are"
 msgstr "说话，文字就会输入到你所在的位置"
 
-#: internal/ui/voice_page.go:199
+#: internal/ui/voice_page.go:173
 msgid "A microphone in the bar, and a shortcut to talk"
 msgstr "顶栏中的麦克风，以及用来说话的快捷键"
 
-#: internal/ui/voice_page.go:214
+#: internal/ui/voice_page.go:188
 msgid "voxtype.io"
 msgstr "voxtype.io"
 
-#: internal/ui/voice_page.go:217
+#: internal/ui/voice_page.go:191
 msgid "AI Settings"
 msgstr "AI 设置"
 
-#: internal/ui/voice_page.go:220
+#: internal/ui/voice_page.go:194
 msgid "Shortcut"
 msgstr "快捷键"
 
-#: internal/ui/voice_page.go:225
+#: internal/ui/voice_page.go:199
 msgid "Hold"
 msgstr "按住"
 
-#: internal/ui/voice_page.go:225
+#: internal/ui/voice_page.go:199
 msgid "Press"
 msgstr "按下"
 
-#: internal/ui/voice_page.go:230
+#: internal/ui/voice_page.go:204
 msgid "The waveform as you talk, then the words"
 msgstr "说话时显示波形，然后显示文字"
 
-#: internal/ui/voice_page.go:238
-msgid "Microphone"
-msgstr "麦克风"
-
-#: internal/ui/voice_page.go:250
-msgid "Test"
-msgstr "测试"
-
-#: internal/ui/voice_page.go:254
+#: internal/ui/voice_page.go:221
 msgid "ENGINE"
 msgstr "引擎"
 
-#: internal/ui/voice_page.go:254
+#: internal/ui/voice_page.go:221
 msgid "What turns your speech into text"
 msgstr "把你的语音转为文字的方式"
 
-#: internal/ui/voice_page.go:256
+#: internal/ui/voice_page.go:223
 msgid "Runs"
 msgstr "运行于"
 
-#: internal/ui/voice_page.go:258
+#: internal/ui/voice_page.go:225
 msgid "On this computer"
 msgstr "在这台电脑上"
 
-#: internal/ui/voice_page.go:258
+#: internal/ui/voice_page.go:225
 msgid "With an AI profile"
 msgstr "用 AI 配置文件"
 
-#: internal/ui/voice_page.go:261
+#: internal/ui/voice_page.go:228
 msgid "Profile"
 msgstr "配置文件"
 
-#: internal/ui/voice_page.go:266
+#: internal/ui/voice_page.go:233
 msgid "Typing"
 msgstr "输入方式"
 
-#: internal/ui/voice_page.go:356
+#: internal/ui/voice_page.go:323
 msgid "Hold it to talk; Escape drops what you said"
 msgstr "按住说话；按 Esc 放弃所说内容"
 
-#: internal/ui/voice_page.go:358
+#: internal/ui/voice_page.go:325
 msgid "Press it to start and again to end; Escape drops what you said"
 msgstr "按一次开始，再按一次结束；按 Esc 放弃所说内容"
 
-#: internal/ui/voice_page.go:365
+#: internal/ui/voice_page.go:332
 msgid "The recording goes to the AI profile's provider"
 msgstr "录音会发送给 AI 配置文件的服务商"
 
-#: internal/ui/voice_page.go:367
+#: internal/ui/voice_page.go:334
 msgid "voxtype turns it into text here; the recording stays on this computer"
 msgstr "voxtype 在本机把它转为文字；录音留在这台电脑上"
 
-#: internal/ui/voice_page.go:378
+#: internal/ui/voice_page.go:345
 msgid "The words are typed where you are"
 msgstr "文字会输入到你所在的位置"
 
-#: internal/ui/voice_page.go:381
+#: internal/ui/voice_page.go:348
 msgid "The words are pasted where you are, and your clipboard put back; to have them typed, install wtype:"
 msgstr "文字会粘贴到你所在的位置，剪贴板随后复原；若要直接输入，请安装 wtype："
 
-#: internal/ui/voice_page.go:397
+#: internal/ui/voice_page.go:364
 msgid "Installing voxtype…"
 msgstr "正在安装 voxtype…"
 
-#: internal/ui/voice_page.go:399
+#: internal/ui/voice_page.go:366
 msgid "No AI profile turns speech into text"
 msgstr "没有能把语音转为文字的 AI 配置文件"
 
-#: internal/ui/voice_page.go:400
+#: internal/ui/voice_page.go:367
 msgid "Turn on Voice for a profile in Settings → AI, and choose it for Voice input"
 msgstr "在“设置”→“AI”中为一个配置文件打开“语音”，并在“语音输入”中选择它"
 
-#: internal/ui/voice_page.go:402
+#: internal/ui/voice_page.go:369
 msgid "pw-cat is not installed"
 msgstr "pw-cat 没有安装"
 
-#: internal/ui/voice_page.go:403
+#: internal/ui/voice_page.go:370
 msgid "Dictation records with PipeWire's pw-cat: %s"
 msgstr "听写用 PipeWire 的 pw-cat 录音：%s"
 
-#: internal/ui/voice_page.go:405
+#: internal/ui/voice_page.go:372
 msgid "voxtype is not installed"
 msgstr "voxtype 没有安装"
 
-#: internal/ui/voice_page.go:406
+#: internal/ui/voice_page.go:373
 msgid "Install downloads voxtype %s and a speech model for your language from GitHub, about %d MB, and checks them before they run"
 msgstr "“安装”会从 GitHub 下载 voxtype %s 和适合你语言的语音模型，约 %d MB，并在运行前校验"
 
-#: internal/ui/voice_page.go:408
+#: internal/ui/voice_page.go:375
 msgid "voxtype is not running"
 msgstr "voxtype 没有运行"
 
-#: internal/ui/voice_page.go:408
+#: internal/ui/voice_page.go:375
 msgid "It is installed; its service is stopped"
 msgstr "它已安装；它的服务已停止"
 
-#: internal/ui/voice_page.go:412
+#: internal/ui/voice_page.go:379
 msgid "Listening…"
 msgstr "正在听…"
 
-#: internal/ui/voice_page.go:412
+#: internal/ui/voice_page.go:379
 msgid "Escape drops what you said"
 msgstr "按 Esc 放弃所说内容"
 
-#: internal/ui/voice_page.go:420
+#: internal/ui/voice_page.go:387
 msgid "Click the microphone in the bar, and talk"
 msgstr "点击顶栏中的麦克风，然后说话"
 
-#: internal/ui/voice_page.go:422
+#: internal/ui/voice_page.go:389
 msgid "Hold %s, or click the microphone in the bar, and talk"
 msgstr "按住 %s，或点击顶栏中的麦克风，然后说话"
 
-#: internal/ui/voice_page.go:424
+#: internal/ui/voice_page.go:391
 msgid "Press %s, or click the microphone in the bar, and talk"
 msgstr "按 %s，或点击顶栏中的麦克风，然后说话"
 
-#: internal/ui/voice_page.go:490
-msgid "PipeWire has no microphone"
-msgstr "PipeWire 没有麦克风"
-
-#: internal/ui/voice_page.go:509
+#: internal/ui/voice_page.go:460
 msgid "The system's input, which dictation records from"
 msgstr "系统的输入设备，听写从这里录音"
 
-#: internal/ui/voice_page.go:531
-msgid "Say something…"
-msgstr "说点什么…"
-
-#: internal/ui/voice_page.go:552
-msgid "It hears you."
-msgstr "它听得到你。"
-
-#: internal/ui/voice_page.go:554
-msgid "It heard nothing: is it the right one, or muted?"
-msgstr "它什么也没听到：选对了吗？是不是静音了？"
-
-#: internal/ui/voice_page.go:575
+#: internal/ui/voice_page.go:480
 msgid "Downloading voxtype %s… %s"
 msgstr "正在下载 voxtype %s… %s"
 
-#: internal/ui/voice_page.go:577
+#: internal/ui/voice_page.go:482
 msgid "Downloading a speech model… %s"
 msgstr "正在下载语音模型… %s"
 
-#: internal/ui/voice_page.go:579
+#: internal/ui/voice_page.go:484
 msgid "Downloading a speech model…"
 msgstr "正在下载语音模型…"
 
-#: internal/ui/voice_page.go:581
+#: internal/ui/voice_page.go:486
 msgid "Starting its service…"
 msgstr "正在启动它的服务…"
 
-#: internal/ui/voice_page.go:591
+#: internal/ui/voice_page.go:496
 msgid "voxtype was not installed: %s"
 msgstr "voxtype 没有安装成功：%s"
 
-#: internal/ui/voice_page.go:609
+#: internal/ui/voice_page.go:514
 msgid "voxtype did not start: %s"
 msgstr "voxtype 没有启动：%s"
 
@@ -16594,12 +16651,9 @@ msgid "Display"
 msgstr "显示"
 
 #: ui/control.ui:670
+#: ui/settings.ui:6319
 msgid "Sound"
 msgstr "声音"
-
-#: ui/control.ui:698
-msgid "Mute"
-msgstr "静音"
 
 #: ui/control.ui:738
 msgid "Now playing"
@@ -16978,10 +17032,6 @@ msgstr "下一首 (B)"
 #: ui/music.ui:191
 msgid "Open files (Ctrl+O)"
 msgstr "打开文件 (Ctrl+O)"
-
-#: ui/music.ui:215
-msgid "Volume"
-msgstr "音量"
 
 #: ui/music.ui:230
 msgid "BAL"
@@ -18117,7 +18167,7 @@ msgid "Press the new shortcut. Esc cancels; Backspace turns it off."
 msgstr "按新的快捷方式。 Esc 取消；退格键将其关闭。"
 
 #: ui/settings.ui:4816
-#: ui/settings.ui:6477
+#: ui/settings.ui:6511
 msgid "<span alpha='55%'>[</span>INUA<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>INUA<span alpha='55%'>]</span>"
 
@@ -18297,67 +18347,67 @@ msgstr "更快的滑动使指针移动得更远"
 msgid "Stop setting the touchpad in inua"
 msgstr "停止在inua中设置触摸板"
 
-#: ui/settings.ui:6319
+#: ui/settings.ui:6353
 msgid "Power"
 msgstr "电源"
 
-#: ui/settings.ui:6353
+#: ui/settings.ui:6387
 msgid "About"
 msgstr "关于"
 
-#: ui/settings.ui:6391
+#: ui/settings.ui:6425
 msgid "<span alpha='55%'>[</span>SYSTEM<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>系统<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6399
+#: ui/settings.ui:6433
 msgid "This computer, as a card to share"
 msgstr "这台电脑，做成可分享的卡片"
 
-#: ui/settings.ui:6411
+#: ui/settings.ui:6445
 msgid "Copy image"
 msgstr "复制图片"
 
-#: ui/settings.ui:6421
+#: ui/settings.ui:6455
 msgid "Copy text"
 msgstr "复制文字"
 
-#: ui/settings.ui:6423
+#: ui/settings.ui:6457
 msgid "As Markdown"
 msgstr "以 Markdown 格式"
 
-#: ui/settings.ui:6434
+#: ui/settings.ui:6468
 msgid "As a PNG image"
 msgstr "保存为 PNG 图片"
 
-#: ui/settings.ui:6485
+#: ui/settings.ui:6519
 msgid "The version, and new releases"
 msgstr "版本及新版本"
 
-#: ui/settings.ui:6515
+#: ui/settings.ui:6549
 msgid "Version"
 msgstr "版本"
 
-#: ui/settings.ui:6551
+#: ui/settings.ui:6585
 msgid "Updates"
 msgstr "更新"
 
-#: ui/settings.ui:6587
+#: ui/settings.ui:6621
 msgid "Check for updates"
 msgstr "检查更新"
 
-#: ui/settings.ui:6613
+#: ui/settings.ui:6647
 msgid "Check every day"
 msgstr "每天检查"
 
-#: ui/settings.ui:6622
+#: ui/settings.ui:6656
 msgid "A notification says when a new release is out, with a button to upgrade"
 msgstr "当新版本发布时会出现通知，并带有升级按钮"
 
-#: ui/settings.ui:6667
+#: ui/settings.ui:6701
 msgid "<span alpha='55%'>[</span>CHANGELOG<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>变更日志<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6675
+#: ui/settings.ui:6709
 msgid "What the latest release changed"
 msgstr "最新版本改变了什么"
 

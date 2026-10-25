@@ -14,7 +14,7 @@ import (
 )
 
 func TestParseVolume(t *testing.T) {
-	for in, want := range map[string]AudioState{
+	for in, want := range map[string]VolumeState{
 		"Volume: 0.40\n":         {Available: true, Volume: 0.40},
 		"Volume: 1.00 [MUTED]\n": {Available: true, Volume: 1, Muted: true},
 		"Volume: 0.00":           {Available: true},

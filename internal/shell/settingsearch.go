@@ -33,6 +33,7 @@ var SettingsKeywords = map[string][]string{
 	"displays":      {"monitor", "screen", "resolution", "scale", "refresh rate", "lid", "mirror"},
 	"keyboard":      {"layout", "caps lock", "ctrl", "swap", "repeat"},
 	"mouse":         {"touchpad", "trackpad", "pointer", "speed", "scroll", "acceleration"},
+	"sound":         {"audio", "volume", "speaker", "speakers", "headphones", "output", "microphone", "mic", "input", "mute", "pipewire"},
 	"about":         {"version", "update", "upgrade", "system", "fastfetch", "neofetch", "manifest", "card", "share", "qr", "cpu", "memory", "kernel", "changelog"},
 }
 

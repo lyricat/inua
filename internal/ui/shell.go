@@ -158,9 +158,9 @@ type shellUI struct {
 	onVoiceMode            func(gtk.ToggleButton)
 	onVoiceRuns            func(gtk.ToggleButton)
 	onVoiceShow            func(uintptr, uintptr, uintptr)
-	onVoiceMic             func(uintptr, uintptr, uintptr)
-	onVoiceMicTest         func(gtk.Button)
-	onVoiceMicTick         glib.SourceFunc
+	onSoundSlider          func(gtk.Range, gtk.ScrollType, float64) bool
+	onSoundMute            func(gtk.Button)
+	onSoundPlay            func(gtk.Button)
 	onVoiceKeys            func(gtk.Button)
 	onVoiceSetup           func(gtk.Button)
 	onVoiceInstall         func(gtk.Button)

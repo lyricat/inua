@@ -4514,6 +4514,32 @@ ApplicationWindow settings {
         };
       }
       StackPage {
+        name: "sound";
+        title:  _("Sound");
+
+        child: Overlay {
+          child: ScrolledWindow scroll_sound {
+            hscrollbar-policy: never;
+
+            // The output and the input, each its device and volume: laid
+            // out by settings_sound.go.
+            Box sound_page {
+              styles ["page"]
+              orientation: vertical;
+            }
+          };
+
+          // The head of the section scrolled under the top edge.
+          [overlay]
+          Box sticky_sound {
+            styles ["section-head", "sticky"]
+            spacing: 10;
+            valign: start;
+            visible: false;
+          }
+        };
+      }
+      StackPage {
         name: "power";
         title:  _("Power");
 

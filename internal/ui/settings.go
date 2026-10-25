@@ -87,6 +87,7 @@ type settings struct {
 	bt       bluetoothSettings // the Bluetooth page
 	wifi     wifiSettings      // the Wi-Fi page
 	voice    voiceSettings     // the Voice page
+	sound    soundSettings     // the Sound page
 	power    powerSettings     // the Power page
 	search   settingsSearch    // the search over the index
 
@@ -475,6 +476,7 @@ func (s *shellUI) openSettings() {
 	s.getBluetoothSettings(ui)
 	s.getPowerSettings(ui)
 	s.getVoiceSettings(ui)
+	s.getSoundSettings(ui)
 	s.buildSettingsIndex()
 	s.getSettingsSearch(ui)
 	ui.Close()
@@ -521,7 +523,7 @@ var settingsGroups = []struct {
 	pages []string
 }{
 	{i18n.M("Connections"), []string{"wifi", "bluetooth"}},
-	{i18n.M("Devices"), []string{"displays", "keyboard", "mouse", "voice"}},
+	{i18n.M("Devices"), []string{"displays", "keyboard", "mouse", "sound", "voice"}},
 	{i18n.M("Desktop"), []string{"appearance", "bar", "launcher", "notifications", "shortcuts"}},
 	{i18n.M("Apps"), []string{"apps", "ai", "clipboard", "keyring"}},
 	{i18n.M("System"), []string{"power", "about"}},
@@ -541,6 +543,7 @@ var settingsPages = func() []string {
 var settingsPageAliases = map[string]string{
 	"wallpaper": "appearance", "dock": "bar", "control": "bar", "touchpad": "mouse",
 	"network": "wifi", "wi-fi": "wifi",
+	"audio": "sound", "volume": "sound", "microphone": "sound",
 	"battery": "power", "lid": "power", "idle": "power", "sleep": "power", "suspend": "power",
 }
 
@@ -697,6 +700,7 @@ func (s *shellUI) showSettings() {
 	s.showBluetooth()
 	s.showPower()
 	s.fillVoiceSettings()
+	s.showSound()
 	s.showDisplays()
 	s.showNotifySettings()
 	s.showDockSettings()

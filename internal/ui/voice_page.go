@@ -6,12 +6,9 @@ import (
 	"os/exec"
 	"slices"
 	"strings"
-	"time"
 
-	"codeberg.org/puregotk/puregotk/v4/glib"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
-	"github.com/lyricat/inua/internal/assistant/record"
 	"github.com/lyricat/inua/internal/config"
 	"github.com/lyricat/inua/internal/desktop"
 	"github.com/lyricat/inua/internal/gtkx"
@@ -55,13 +52,8 @@ type voiceSettings struct {
 	showDrop    gtk.DropDown
 	micRow      gtk.Box
 	micSub      gtk.Label
-	micDrop     gtk.DropDown
-	micTest     gtk.Button
-	micWave     *gtkx.Wave
-	mics        []system.Microphone
-	micRec      *record.Recorder // while testing
-	micPeak     float64
-	micUntil    time.Time
+	micPick     devicePicker
+	mic         micTest
 
 	engine          gtk.Box // the ENGINE section, while dictation is on
 	local, ai       gtk.ToggleButton
@@ -127,24 +119,6 @@ func (s *shellUI) bindVoicePage() {
 		c.Voice.Show = config.VoiceShows[i]
 		s.changeSettings(c)
 	}
-	s.onVoiceMic = func(uintptr, uintptr, uintptr) {
-		i := int(v.micDrop.GetSelected())
-		if s.settings.filling || v.filling || i < 0 || i >= len(v.mics) {
-			return
-		}
-		id := v.mics[i].ID
-		go func() {
-			err := system.SetMicrophone(context.Background(), id)
-			gtkx.Post(func() {
-				if err != nil {
-					v.micSub.SetText(i18n.Tf("Not changed: %s", err.Error()))
-				}
-				s.loadMicrophones()
-			})
-		}()
-	}
-	s.onVoiceMicTest = func(gtk.Button) { s.testMicrophone() }
-	s.onVoiceMicTick = func(uintptr) bool { return s.micTick() }
 	s.onVoiceKeys = func(gtk.Button) { s.showSettingsPage("shortcuts") }
 	s.onVoiceSetup = func(gtk.Button) { s.showSettingsPage("ai") }
 	s.onVoiceAI = func(gtk.Button) { s.showSettingsPage("ai") }
@@ -237,17 +211,10 @@ func (s *shellUI) getVoiceSettings(ui *gtkx.Builder) {
 
 	row, micSub := displayRow(i18n.T("Microphone"), " ")
 	v.micRow, v.micSub = *row, *micSub
-	v.micWave = gtkx.NewWave(18)
-	v.micWave.Widget.AddCssClass("dictation-wave")
-	v.micWave.Widget.SetSizeRequest(120, 18)
-	v.micWave.Widget.SetValign(gtk.AlignCenterValue)
-	v.micWave.Widget.SetVisible(false)
-	row.Append(v.micWave.Widget) // a canvas: floating, the box takes it
-	v.micDrop = *gtk.NewDropDownFromStrings(nil)
-	v.micDrop.SetValign(gtk.AlignCenterValue)
-	gtkx.ConnectNotify(&v.micDrop, "selected", &s.onVoiceMic)
-	gtkx.Append(row, &v.micDrop.Widget)
-	v.micTest = voiceButton(row, i18n.T("Test"), &s.onVoiceMicTest)
+	v.mic.addWave(row)
+	v.micPick.build(row, func(text string) { v.micSub.SetText(text) }, &v.filling)
+	v.mic.addButton(row, v.micSub)
+	v.mic.busy = func() bool { return s.sys.Voice.Status == "recording" }
 	gtkx.Append(body, &row.Widget)
 	gtkx.Append(&v.page, &sec.Widget)
 
@@ -307,7 +274,6 @@ func (s *shellUI) fillVoiceSettings() {
 	if s.settings.voice.page.GoPointer() == 0 {
 		return
 	}
-	s.loadMicrophones()
 	s.showVoice()
 }
 
@@ -338,6 +304,7 @@ func (s *shellUI) showVoice() {
 		return
 	}
 	s.showVoiceStatus(st, ai)
+	s.showVoiceMic()
 
 	keys := s.voiceKeys()
 	for c := v.keycaps.GetFirstChild(); c != nil; c = v.keycaps.GetFirstChild() {
@@ -478,82 +445,20 @@ func installCommand(pkg string) string {
 	return pkg
 }
 
-// loadMicrophones fills the microphone drop-down from PipeWire.
-func (s *shellUI) loadMicrophones() {
+// showVoiceMic fills the microphone row from the audio service, while
+// showVoice fills the page.
+func (s *shellUI) showVoiceMic() {
 	v := &s.settings.voice
-	go func() {
-		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-		defer cancel()
-		mics, def, err := system.Microphones(ctx)
-		gtkx.Post(func() {
-			if err != nil || len(mics) == 0 {
-				v.micSub.SetText(i18n.T("PipeWire has no microphone"))
-				v.micDrop.SetVisible(false)
-				v.micTest.SetVisible(false)
-				return
-			}
-			v.mics = mics
-			titles := make([]string, len(mics))
-			for i, m := range mics {
-				titles[i] = m.Title
-			}
-			v.filling = true
-			list := gtk.NewStringList(titles)
-			v.micDrop.SetModel(list)
-			list.Unref()
-			v.micDrop.SetSelected(uint32(max(0, slices.IndexFunc(mics, func(m system.Microphone) bool { return m.Name == def }))))
-			v.filling = false
-			v.micDrop.SetVisible(true)
-			v.micTest.SetVisible(true)
-			if v.micRec == nil {
-				v.micSub.SetText(i18n.T("The system's input, which dictation records from"))
-			}
-		})
-	}()
-}
-
-// testMicrophone records for a few seconds, drawing how loud it is in the
-// row, then says whether it heard anything.
-func (s *shellUI) testMicrophone() {
-	v := &s.settings.voice
-	if v.micRec != nil || s.sys.Voice.Status == "recording" {
-		return
+	a := s.sys.Audio
+	v.micPick.fill(a.Inputs, a.Input)
+	v.mic.button.SetVisible(len(a.Inputs) > 0)
+	switch {
+	case v.mic.testing():
+	case len(a.Inputs) == 0:
+		v.micSub.SetText(i18n.T("PipeWire has no microphone"))
+	default:
+		v.micSub.SetText(i18n.T("The system's input, which dictation records from"))
 	}
-	r, err := record.Start()
-	if err != nil {
-		v.micSub.SetText(err.Error())
-		return
-	}
-	v.micRec, v.micPeak, v.micUntil = r, 0, time.Now().Add(4*time.Second)
-	v.micWave.Clear()
-	v.micWave.Widget.SetVisible(true)
-	v.micTest.SetSensitive(false)
-	v.micSub.SetText(i18n.T("Say something…"))
-	glib.TimeoutAdd(dictationTick, &s.onVoiceMicTick, 0)
-}
-
-// micTick draws the test's level, and ends it.
-func (s *shellUI) micTick() bool {
-	v := &s.settings.voice
-	r := v.micRec
-	if r == nil {
-		return false
-	}
-	l := r.Level()
-	v.micPeak = max(v.micPeak, l)
-	v.micWave.Add(l)
-	if time.Now().Before(v.micUntil) && !r.Full() {
-		return true
-	}
-	r.Cancel()
-	v.micRec = nil
-	v.micTest.SetSensitive(true)
-	if v.micPeak > 0.35 {
-		v.micSub.SetText(i18n.T("It hears you."))
-	} else {
-		v.micSub.SetText(i18n.T("It heard nothing: is it the right one, or muted?"))
-	}
-	return false
 }
 
 // voiceInstall installs voxtype (system.InstallVoxtype), saying each step

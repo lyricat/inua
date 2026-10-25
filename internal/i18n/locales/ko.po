@@ -319,9 +319,9 @@ msgid "%d%%, charging"
 msgstr "%d%%, 충전 중"
 
 #: internal/apps/connect/service.go:519
-#: internal/ui/settings.go:292
-#: internal/ui/settings.go:687
-#: internal/ui/settings.go:759
+#: internal/ui/settings.go:293
+#: internal/ui/settings.go:690
+#: internal/ui/settings.go:763
 #: internal/ui/settings_displays.go:441
 msgid "%d%%"
 msgstr "%d%%"
@@ -1932,7 +1932,7 @@ msgstr "편집하다"
 #: internal/games/fortune.go:65
 #: internal/gamesui/fortune_menu.go:174
 #: internal/termui/guide.go:161
-#: internal/ui/voice_page.go:216
+#: internal/ui/voice_page.go:190
 #: ui/clock.ui:339
 #: ui/clock.ui:406
 #: ui/vm.ui:684
@@ -2540,8 +2540,8 @@ msgid "Top level"
 msgstr "최상위"
 
 #: internal/appui/pass.go:417
-#: internal/ui/settings.go:784
-#: internal/ui/settings.go:811
+#: internal/ui/settings.go:788
+#: internal/ui/settings.go:815
 msgid "%d entry"
 msgid_plural "%d entries"
 msgstr[0] "%d개"
@@ -2864,7 +2864,7 @@ msgstr "QR 코드가 있는 이미지"
 
 #: internal/appui/pass_otp.go:340
 #: internal/desktop/defaults.go:48
-#: internal/ui/settings.go:921
+#: internal/ui/settings.go:925
 msgid "Images"
 msgstr "이미지"
 
@@ -3284,7 +3284,7 @@ msgstr "이름"
 #: internal/appui/tailscale.go:525
 #: internal/appui/tailscale.go:566
 #: internal/diskui/window.go:329
-#: internal/ui/settings.go:527
+#: internal/ui/settings.go:529
 #: ui/vm.ui:2977
 msgid "System"
 msgstr "시스템"
@@ -3373,7 +3373,7 @@ msgid "GRAPHICS"
 msgstr "그래픽"
 
 #: internal/appui/sysmon.go:1004
-#: internal/ui/voice_page.go:230
+#: internal/ui/voice_page.go:204
 msgid "Card"
 msgstr "카드"
 
@@ -3687,7 +3687,7 @@ msgstr "사용 중"
 #: internal/ui/settings_ai.go:271
 #: internal/ui/settings_keyring.go:572
 #: internal/ui/shortcuts.go:150
-#: internal/ui/voice_page.go:347
+#: internal/ui/voice_page.go:314
 msgid "None"
 msgstr "없음"
 
@@ -4106,7 +4106,7 @@ msgid "Replace the installed %s?"
 msgstr "설치된 %s을(를) 바꿀까요?"
 
 #: internal/appui/workshop_manager.go:154
-#: internal/ui/voice_page.go:215
+#: internal/ui/voice_page.go:189
 #: ui/vm.ui:1279
 msgid "Install"
 msgstr "설치"
@@ -9706,7 +9706,7 @@ msgid "Pick a colour"
 msgstr "색상을 선택하세요"
 
 #: internal/hyprconf/keys.go:40
-#: internal/ui/voice_page.go:199
+#: internal/ui/voice_page.go:173
 #: ui/bar.ui:164
 #: ui/settings.ui:6285
 msgid "Dictation"
@@ -10432,7 +10432,7 @@ msgstr "어시스턴트가 읽고 요약합니다"
 #: internal/mailui/reader.go:724
 #: ui/gpg.ui:652
 #: ui/gpg.ui:896
-#: ui/settings.ui:6432
+#: ui/settings.ui:6466
 msgid "Save…"
 msgstr "저장…"
 
@@ -10984,8 +10984,8 @@ msgid "SMTP server"
 msgstr "SMTP 서버"
 
 #: internal/mailui/welcome.go:589
-#: internal/ui/voice_page.go:227
-#: internal/ui/voice_page.go:263
+#: internal/ui/voice_page.go:201
+#: internal/ui/voice_page.go:230
 msgid "Change"
 msgstr "변경"
 
@@ -11058,7 +11058,7 @@ msgid "Fetching your mail"
 msgstr "메일을 가져오는 중"
 
 #: internal/mailui/welcome.go:726
-#: internal/ui/voice_page.go:416
+#: internal/ui/voice_page.go:383
 msgid "Ready"
 msgstr "준비됨"
 
@@ -11654,7 +11654,7 @@ msgid "%d thr"
 msgstr "%d 스레드"
 
 #: internal/shell/cardterm.go:136
-#: internal/ui/settings.go:525
+#: internal/ui/settings.go:527
 msgid "Desktop"
 msgstr "데스크톱"
 
@@ -12084,7 +12084,7 @@ msgstr "듣는 중… 클릭하면 멈춥니다"
 
 #: internal/shell/status.go:48
 #: internal/ui/dictation.go:156
-#: internal/ui/voice_page.go:414
+#: internal/ui/voice_page.go:381
 #: ui/assistant.ui:172
 msgid "Transcribing…"
 msgstr "텍스트로 변환 중…"
@@ -13497,7 +13497,7 @@ msgid "Searching…"
 msgstr "검색 중…"
 
 #: internal/ui/control_detail.go:214
-#: internal/ui/settings.go:524
+#: internal/ui/settings.go:526
 msgid "Devices"
 msgstr "기기"
 
@@ -13532,7 +13532,7 @@ msgid "Quit (%d windows)"
 msgstr "종료(%d 창)"
 
 #: internal/ui/drawer.go:212
-#: internal/ui/settings.go:526
+#: internal/ui/settings.go:528
 #: ui/settings.ui:2045
 msgid "Apps"
 msgstr "앱"
@@ -13875,88 +13875,88 @@ msgstr "스크린샷이 복사되었습니다."
 msgid "Screenshot taken"
 msgstr "촬영된 스크린샷"
 
-#: internal/ui/settings.go:274
+#: internal/ui/settings.go:275
 msgid "Not restarted: %s"
 msgstr "다시 시작하지 못함: %s"
 
-#: internal/ui/settings.go:299
-#: internal/ui/settings.go:689
+#: internal/ui/settings.go:300
+#: internal/ui/settings.go:692
 msgid "%d px"
 msgstr "%d px"
 
-#: internal/ui/settings.go:523
+#: internal/ui/settings.go:525
 msgid "Connections"
 msgstr "연결"
 
-#: internal/ui/settings.go:724
+#: internal/ui/settings.go:728
 #: ui/settings.ui:516
 msgid "Phosphor"
 msgstr "Phosphor"
 
-#: internal/ui/settings.go:724
-#: internal/ui/settings.go:725
+#: internal/ui/settings.go:728
+#: internal/ui/settings.go:729
 #: ui/settings.ui:517
 #: ui/settings.ui:564
 msgid "System theme"
 msgstr "시스템 테마"
 
-#: internal/ui/settings.go:810
+#: internal/ui/settings.go:814
 msgid "%s (%s, %s) · %s"
 msgstr "%s (%s, %s) · %s"
 
-#: internal/ui/settings.go:812
+#: internal/ui/settings.go:816
 msgid "%d text"
 msgid_plural "%d texts"
 msgstr[0] "텍스트 %d개"
 
-#: internal/ui/settings.go:813
+#: internal/ui/settings.go:817
 msgid "%d image"
 msgid_plural "%d images"
 msgstr[0] "이미지 %d개"
 
-#: internal/ui/settings.go:814
+#: internal/ui/settings.go:818
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: internal/ui/settings.go:893
+#: internal/ui/settings.go:897
 #: internal/ui/settings_apps.go:168
 #: internal/ui/settings_card.go:288
 msgid "Not saved: %s"
 msgstr "저장되지 않음: %s"
 
-#: internal/ui/settings.go:919
+#: internal/ui/settings.go:923
 msgid "Choose a wallpaper"
 msgstr "배경화면을 선택하세요"
 
-#: internal/ui/settings.go:961
+#: internal/ui/settings.go:965
 msgid "Off: another notification daemon can show them"
 msgstr "꺼짐: 다른 알림 데몬이 이를 표시할 수 있습니다."
 
-#: internal/ui/settings.go:963
+#: internal/ui/settings.go:967
 msgid "Banners, then the notification center (the bell in the bar, or Super+N)"
 msgstr "배너를 표시한 후 알림 센터에 보관(표시줄의 종 또는 Super+N)"
 
-#: internal/ui/settings.go:965
+#: internal/ui/settings.go:969
 msgid "Waiting: another notification daemon is running"
 msgstr "대기 중: 다른 알림 데몬이 실행 중입니다."
 
-#: internal/ui/settings.go:983
+#: internal/ui/settings.go:987
 msgid "Nothing pinned"
 msgstr "고정된 앱 없음"
 
-#: internal/ui/settings.go:999
+#: internal/ui/settings.go:1003
 msgid "%s (not installed)"
 msgstr "%s(설치되지 않음)"
 
-#: internal/ui/settings.go:1012
+#: internal/ui/settings.go:1016
 msgid "Move earlier"
 msgstr "앞으로 이동"
 
-#: internal/ui/settings.go:1013
+#: internal/ui/settings.go:1017
 msgid "Move later"
 msgstr "뒤로 이동"
 
-#: internal/ui/settings.go:1014
+#: internal/ui/settings.go:1018
 msgid "Remove from the dock"
 msgstr "독에서 제거"
 
@@ -14741,7 +14741,7 @@ msgid "the dialog could not be shown"
 msgstr "대화 상자를 표시할 수 없음"
 
 #: internal/ui/settings_keyring.go:383
-#: internal/ui/voice_page.go:410
+#: internal/ui/voice_page.go:377
 msgid "Looking…"
 msgstr "확인하는 중…"
 
@@ -14938,6 +14938,91 @@ msgstr "바뀌지 않았습니다: 관리자 암호를 입력하지 않았습니
 msgid "Page"
 msgstr "페이지"
 
+#: internal/ui/settings_sound.go:85
+msgid "OUTPUT"
+msgstr "출력"
+
+#: internal/ui/settings_sound.go:85
+msgid "Where sound plays"
+msgstr "소리가 나오는 곳"
+
+#: internal/ui/settings_sound.go:86
+msgid "Output"
+msgstr "출력"
+
+#: internal/ui/settings_sound.go:89
+#: internal/ui/settings_sound.go:318
+msgid "Test"
+msgstr "테스트"
+
+#: internal/ui/settings_sound.go:94
+msgid "INPUT"
+msgstr "입력"
+
+#: internal/ui/settings_sound.go:94
+msgid "What apps record"
+msgstr "앱이 녹음하는 장치"
+
+#: internal/ui/settings_sound.go:95
+#: internal/ui/voice_page.go:212
+msgid "Microphone"
+msgstr "마이크"
+
+#: internal/ui/settings_sound.go:115
+#: ui/music.ui:215
+msgid "Volume"
+msgstr "음량"
+
+#: internal/ui/settings_sound.go:154
+msgid "PipeWire has no output"
+msgstr "PipeWire에 출력 장치가 없습니다"
+
+#: internal/ui/settings_sound.go:156
+msgid "Playing on the left, then on the right…"
+msgstr "왼쪽에서, 이어서 오른쪽에서 재생 중…"
+
+#: internal/ui/settings_sound.go:158
+msgid "Test plays a sound on the left, then on the right"
+msgstr "'테스트'는 왼쪽, 이어서 오른쪽에서 소리를 재생합니다"
+
+#: internal/ui/settings_sound.go:167
+#: internal/ui/voice_page.go:458
+msgid "PipeWire has no microphone"
+msgstr "PipeWire에 마이크가 없습니다"
+
+#: internal/ui/settings_sound.go:169
+msgid "The one apps and dictation record from; Test, and say something"
+msgstr "앱과 받아쓰기가 녹음하는 마이크입니다. '테스트'를 누르고 말해 보세요"
+
+#: internal/ui/settings_sound.go:179
+msgid "Sound is set with WirePlumber's wpctl, which is not installed: %s"
+msgstr "소리는 WirePlumber의 wpctl로 설정하는데, 설치되어 있지 않습니다: %s"
+
+#: internal/ui/settings_sound.go:194
+msgid "Unmute"
+msgstr "음소거 해제"
+
+#: internal/ui/settings_sound.go:196
+#: ui/control.ui:698
+msgid "Mute"
+msgstr "음소거"
+
+#: internal/ui/settings_sound.go:259
+msgid "Not changed: %s"
+msgstr "바뀌지 않았습니다: %s"
+
+#: internal/ui/settings_sound.go:337
+msgid "Say something…"
+msgstr "무언가 말해 보세요…"
+
+#: internal/ui/settings_sound.go:357
+msgid "It hears you."
+msgstr "잘 들립니다."
+
+#: internal/ui/settings_sound.go:359
+msgid "It heard nothing: is it the right one, or muted?"
+msgstr "아무것도 들리지 않았습니다. 맞는 마이크인가요, 음소거되어 있나요?"
+
 #: internal/ui/settings_wifi.go:281
 msgid "NetworkManager is not running"
 msgstr "NetworkManager가 실행 중이 아닙니다"
@@ -15060,7 +15145,7 @@ msgid "%s Upgrade with: inua upgrade"
 msgstr "%s 업그레이드: inua 업그레이드"
 
 #: internal/ui/updates.go:99
-#: ui/settings.ui:6578
+#: ui/settings.ui:6612
 msgid "Upgrade"
 msgstr "업그레이드"
 
@@ -15177,7 +15262,7 @@ msgstr[0] "%d개 언어"
 
 #: internal/ui/voice_models.go:237
 #: internal/ui/voice_models.go:266
-#: internal/ui/voice_page.go:566
+#: internal/ui/voice_page.go:471
 msgid "Downloading…"
 msgstr "다운로드 중…"
 
@@ -15193,215 +15278,187 @@ msgstr "%s을(를) 사용하지 않습니다: %s"
 msgid "voxtype's other engines did not come: %s"
 msgstr "voxtype의 다른 엔진을 받지 못했습니다: %s"
 
-#: internal/ui/voice_page.go:82
+#: internal/ui/voice_page.go:74
 msgid "At the top of your window"
 msgstr "창의 위쪽"
 
-#: internal/ui/voice_page.go:82
+#: internal/ui/voice_page.go:74
 msgid "In the screen's corner"
 msgstr "화면 모서리"
 
-#: internal/ui/voice_page.go:82
+#: internal/ui/voice_page.go:74
 msgid "Off: the bar's microphone alone"
 msgstr "끔: 바의 마이크만"
 
-#: internal/ui/voice_page.go:140
-msgid "Not changed: %s"
-msgstr "바뀌지 않았습니다: %s"
-
-#: internal/ui/voice_page.go:198
+#: internal/ui/voice_page.go:172
 msgid "DICTATION"
 msgstr "받아쓰기"
 
-#: internal/ui/voice_page.go:198
+#: internal/ui/voice_page.go:172
 msgid "Talk, and the words are typed where you are"
 msgstr "말하면 지금 있는 곳에 글자가 입력됩니다"
 
-#: internal/ui/voice_page.go:199
+#: internal/ui/voice_page.go:173
 msgid "A microphone in the bar, and a shortcut to talk"
 msgstr "바의 마이크와 말하기 단축키"
 
-#: internal/ui/voice_page.go:214
+#: internal/ui/voice_page.go:188
 msgid "voxtype.io"
 msgstr "voxtype.io"
 
-#: internal/ui/voice_page.go:217
+#: internal/ui/voice_page.go:191
 msgid "AI Settings"
 msgstr "AI 설정"
 
-#: internal/ui/voice_page.go:220
+#: internal/ui/voice_page.go:194
 msgid "Shortcut"
 msgstr "단축키"
 
-#: internal/ui/voice_page.go:225
+#: internal/ui/voice_page.go:199
 msgid "Hold"
 msgstr "길게 누르기"
 
-#: internal/ui/voice_page.go:225
+#: internal/ui/voice_page.go:199
 msgid "Press"
 msgstr "누르기"
 
-#: internal/ui/voice_page.go:230
+#: internal/ui/voice_page.go:204
 msgid "The waveform as you talk, then the words"
 msgstr "말하는 동안 파형, 그다음 글자"
 
-#: internal/ui/voice_page.go:238
-msgid "Microphone"
-msgstr "마이크"
-
-#: internal/ui/voice_page.go:250
-msgid "Test"
-msgstr "테스트"
-
-#: internal/ui/voice_page.go:254
+#: internal/ui/voice_page.go:221
 msgid "ENGINE"
 msgstr "엔진"
 
-#: internal/ui/voice_page.go:254
+#: internal/ui/voice_page.go:221
 msgid "What turns your speech into text"
 msgstr "음성을 텍스트로 바꾸는 것"
 
-#: internal/ui/voice_page.go:256
+#: internal/ui/voice_page.go:223
 msgid "Runs"
 msgstr "실행 위치"
 
-#: internal/ui/voice_page.go:258
+#: internal/ui/voice_page.go:225
 msgid "On this computer"
 msgstr "이 컴퓨터에서"
 
-#: internal/ui/voice_page.go:258
+#: internal/ui/voice_page.go:225
 msgid "With an AI profile"
 msgstr "AI 프로필로"
 
-#: internal/ui/voice_page.go:261
+#: internal/ui/voice_page.go:228
 msgid "Profile"
 msgstr "프로필"
 
-#: internal/ui/voice_page.go:266
+#: internal/ui/voice_page.go:233
 msgid "Typing"
 msgstr "입력"
 
-#: internal/ui/voice_page.go:356
+#: internal/ui/voice_page.go:323
 msgid "Hold it to talk; Escape drops what you said"
 msgstr "누르고 있는 동안 말하기. Esc로 말한 내용을 버립니다"
 
-#: internal/ui/voice_page.go:358
+#: internal/ui/voice_page.go:325
 msgid "Press it to start and again to end; Escape drops what you said"
 msgstr "눌러서 시작하고 다시 눌러 끝냅니다. Esc로 말한 내용을 버립니다"
 
-#: internal/ui/voice_page.go:365
+#: internal/ui/voice_page.go:332
 msgid "The recording goes to the AI profile's provider"
 msgstr "녹음은 AI 프로필의 제공자에게 보내집니다"
 
-#: internal/ui/voice_page.go:367
+#: internal/ui/voice_page.go:334
 msgid "voxtype turns it into text here; the recording stays on this computer"
 msgstr "voxtype가 여기서 텍스트로 바꿉니다. 녹음은 이 컴퓨터에 남습니다"
 
-#: internal/ui/voice_page.go:378
+#: internal/ui/voice_page.go:345
 msgid "The words are typed where you are"
 msgstr "글자가 지금 있는 곳에 입력됩니다"
 
-#: internal/ui/voice_page.go:381
+#: internal/ui/voice_page.go:348
 msgid "The words are pasted where you are, and your clipboard put back; to have them typed, install wtype:"
 msgstr "글자는 지금 있는 곳에 붙여 넣고 클립보드는 되돌려 놓습니다. 직접 입력하려면 wtype을 설치하세요:"
 
-#: internal/ui/voice_page.go:397
+#: internal/ui/voice_page.go:364
 msgid "Installing voxtype…"
 msgstr "voxtype 설치 중…"
 
-#: internal/ui/voice_page.go:399
+#: internal/ui/voice_page.go:366
 msgid "No AI profile turns speech into text"
 msgstr "음성을 텍스트로 바꾸는 AI 프로필이 없습니다"
 
-#: internal/ui/voice_page.go:400
+#: internal/ui/voice_page.go:367
 msgid "Turn on Voice for a profile in Settings → AI, and choose it for Voice input"
 msgstr "설정 → AI에서 프로필의 '음성'을 켜고 '음성 입력'으로 고르세요"
 
-#: internal/ui/voice_page.go:402
+#: internal/ui/voice_page.go:369
 msgid "pw-cat is not installed"
 msgstr "pw-cat가 설치되어 있지 않습니다"
 
-#: internal/ui/voice_page.go:403
+#: internal/ui/voice_page.go:370
 msgid "Dictation records with PipeWire's pw-cat: %s"
 msgstr "받아쓰기는 PipeWire의 pw-cat으로 녹음합니다: %s"
 
-#: internal/ui/voice_page.go:405
+#: internal/ui/voice_page.go:372
 msgid "voxtype is not installed"
 msgstr "voxtype가 설치되어 있지 않습니다"
 
-#: internal/ui/voice_page.go:406
+#: internal/ui/voice_page.go:373
 msgid "Install downloads voxtype %s and a speech model for your language from GitHub, about %d MB, and checks them before they run"
 msgstr "'설치'는 GitHub에서 voxtype %s과 사용하는 언어의 음성 모델을 내려받고(약 %d MB) 실행하기 전에 확인합니다"
 
-#: internal/ui/voice_page.go:408
+#: internal/ui/voice_page.go:375
 msgid "voxtype is not running"
 msgstr "voxtype가 실행 중이 아닙니다"
 
-#: internal/ui/voice_page.go:408
+#: internal/ui/voice_page.go:375
 msgid "It is installed; its service is stopped"
 msgstr "설치되어 있지만 서비스가 멈춰 있습니다"
 
-#: internal/ui/voice_page.go:412
+#: internal/ui/voice_page.go:379
 msgid "Listening…"
 msgstr "듣는 중…"
 
-#: internal/ui/voice_page.go:412
+#: internal/ui/voice_page.go:379
 msgid "Escape drops what you said"
 msgstr "Esc로 말한 내용을 버립니다"
 
-#: internal/ui/voice_page.go:420
+#: internal/ui/voice_page.go:387
 msgid "Click the microphone in the bar, and talk"
 msgstr "바의 마이크를 클릭하고 말하세요"
 
-#: internal/ui/voice_page.go:422
+#: internal/ui/voice_page.go:389
 msgid "Hold %s, or click the microphone in the bar, and talk"
 msgstr "%s 키를 누르고 있거나 바의 마이크를 클릭하고 말하세요"
 
-#: internal/ui/voice_page.go:424
+#: internal/ui/voice_page.go:391
 msgid "Press %s, or click the microphone in the bar, and talk"
 msgstr "%s 키를 누르거나 바의 마이크를 클릭하고 말하세요"
 
-#: internal/ui/voice_page.go:490
-msgid "PipeWire has no microphone"
-msgstr "PipeWire에 마이크가 없습니다"
-
-#: internal/ui/voice_page.go:509
+#: internal/ui/voice_page.go:460
 msgid "The system's input, which dictation records from"
 msgstr "시스템의 입력 장치로, 받아쓰기가 여기서 녹음합니다"
 
-#: internal/ui/voice_page.go:531
-msgid "Say something…"
-msgstr "무언가 말해 보세요…"
-
-#: internal/ui/voice_page.go:552
-msgid "It hears you."
-msgstr "잘 들립니다."
-
-#: internal/ui/voice_page.go:554
-msgid "It heard nothing: is it the right one, or muted?"
-msgstr "아무것도 들리지 않았습니다. 맞는 마이크인가요, 음소거되어 있나요?"
-
-#: internal/ui/voice_page.go:575
+#: internal/ui/voice_page.go:480
 msgid "Downloading voxtype %s… %s"
 msgstr "voxtype %s 다운로드 중… %s"
 
-#: internal/ui/voice_page.go:577
+#: internal/ui/voice_page.go:482
 msgid "Downloading a speech model… %s"
 msgstr "음성 모델 다운로드 중… %s"
 
-#: internal/ui/voice_page.go:579
+#: internal/ui/voice_page.go:484
 msgid "Downloading a speech model…"
 msgstr "음성 모델 다운로드 중…"
 
-#: internal/ui/voice_page.go:581
+#: internal/ui/voice_page.go:486
 msgid "Starting its service…"
 msgstr "서비스를 시작하는 중…"
 
-#: internal/ui/voice_page.go:591
+#: internal/ui/voice_page.go:496
 msgid "voxtype was not installed: %s"
 msgstr "voxtype을 설치하지 못했습니다: %s"
 
-#: internal/ui/voice_page.go:609
+#: internal/ui/voice_page.go:514
 msgid "voxtype did not start: %s"
 msgstr "voxtype이 시작되지 않았습니다: %s"
 
@@ -16594,12 +16651,9 @@ msgid "Display"
 msgstr "디스플레이"
 
 #: ui/control.ui:670
+#: ui/settings.ui:6319
 msgid "Sound"
 msgstr "소리"
-
-#: ui/control.ui:698
-msgid "Mute"
-msgstr "음소거"
 
 #: ui/control.ui:738
 msgid "Now playing"
@@ -16978,10 +17032,6 @@ msgstr "다음 (B)"
 #: ui/music.ui:191
 msgid "Open files (Ctrl+O)"
 msgstr "파일 열기 (Ctrl+O)"
-
-#: ui/music.ui:215
-msgid "Volume"
-msgstr "음량"
 
 #: ui/music.ui:230
 msgid "BAL"
@@ -18117,7 +18167,7 @@ msgid "Press the new shortcut. Esc cancels; Backspace turns it off."
 msgstr "새로운 단축키를 누른다. Esc는 취소합니다. 백스페이스는 이 기능을 끕니다."
 
 #: ui/settings.ui:4816
-#: ui/settings.ui:6477
+#: ui/settings.ui:6511
 msgid "<span alpha='55%'>[</span>INUA<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>INUA<span alpha='55%'>]</span>"
 
@@ -18297,67 +18347,67 @@ msgstr "더 빠르게 스와이프하면 포인터가 더 멀리 이동합니다
 msgid "Stop setting the touchpad in inua"
 msgstr "inua에서 터치패드 설정을 중지합니다."
 
-#: ui/settings.ui:6319
+#: ui/settings.ui:6353
 msgid "Power"
 msgstr "전원"
 
-#: ui/settings.ui:6353
+#: ui/settings.ui:6387
 msgid "About"
 msgstr "소개"
 
-#: ui/settings.ui:6391
+#: ui/settings.ui:6425
 msgid "<span alpha='55%'>[</span>SYSTEM<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>시스템<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6399
+#: ui/settings.ui:6433
 msgid "This computer, as a card to share"
 msgstr "이 컴퓨터를 공유용 카드로"
 
-#: ui/settings.ui:6411
+#: ui/settings.ui:6445
 msgid "Copy image"
 msgstr "이미지 복사"
 
-#: ui/settings.ui:6421
+#: ui/settings.ui:6455
 msgid "Copy text"
 msgstr "텍스트 복사"
 
-#: ui/settings.ui:6423
+#: ui/settings.ui:6457
 msgid "As Markdown"
 msgstr "Markdown으로"
 
-#: ui/settings.ui:6434
+#: ui/settings.ui:6468
 msgid "As a PNG image"
 msgstr "PNG 이미지로"
 
-#: ui/settings.ui:6485
+#: ui/settings.ui:6519
 msgid "The version, and new releases"
 msgstr "버전 및 새 릴리스"
 
-#: ui/settings.ui:6515
+#: ui/settings.ui:6549
 msgid "Version"
 msgstr "버전"
 
-#: ui/settings.ui:6551
+#: ui/settings.ui:6585
 msgid "Updates"
 msgstr "업데이트"
 
-#: ui/settings.ui:6587
+#: ui/settings.ui:6621
 msgid "Check for updates"
 msgstr "업데이트 확인"
 
-#: ui/settings.ui:6613
+#: ui/settings.ui:6647
 msgid "Check every day"
 msgstr "매일 확인"
 
-#: ui/settings.ui:6622
+#: ui/settings.ui:6656
 msgid "A notification says when a new release is out, with a button to upgrade"
 msgstr "새 릴리스가 출시되면 업그레이드 버튼과 함께 알림이 표시됩니다."
 
-#: ui/settings.ui:6667
+#: ui/settings.ui:6701
 msgid "<span alpha='55%'>[</span>CHANGELOG<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>CHANGELOG<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6675
+#: ui/settings.ui:6709
 msgid "What the latest release changed"
 msgstr "최신 릴리스에서 변경된 사항"
 
