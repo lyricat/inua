@@ -164,7 +164,12 @@ ISO.
 - It runs as the user, outside inua-vm: `systemd-run --user --unit
   inua-vm-NAME --collect …` (the name escaped as `systemd-escape` does, so
   `my fedora` is `inua-vm-my\x20fedora`), so a machine keeps running with the window
-  closed and stops with the session. The state comes from QMP
+  closed and stops with the session. The unit's memory is fenced on the
+  host, from `memory_mib`: `MemoryHigh` at it plus 1 GiB for QEMU (the
+  kernel reclaims, the guest slows), `MemoryMax` 1 GiB above that with
+  `OOMPolicy=kill` (the machine is killed, not the host), and
+  `MemorySwapMax=1024M`, so a guest that fills its RAM cannot drag the
+  host into swap thrashing. The state comes from QMP
   (`query-status`), Stop sends `system_powerdown` and, after a timeout,
   `quit`: 90 seconds, or 10 while the install image is attached, since
   installers often ignore the power button.

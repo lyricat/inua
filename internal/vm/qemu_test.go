@@ -579,14 +579,16 @@ func TestQEMUSSHPortsAreReservedPerMachine(t *testing.T) {
 }
 
 // Start hands the whole line to a transient systemd user unit, so the machine
-// outlives the window and dies with the session, and returns at once.
+// outlives the window and dies with the session, and returns at once; the
+// unit's memory is fenced, so a full guest slows or is killed, not the host.
 func TestQEMUStartRunsUnderASystemdUnit(t *testing.T) {
 	b, m, runner := newQEMUTestBackend(t, nil)
 	withDisk(t, b, m)
 	if err := b.Start(ctxT(t), m); err != nil {
 		t.Fatalf("start: %v", err)
 	}
-	want := "systemd-run --user --unit inua-vm-ubuntu --collect qemu-system-x86_64 -m 4096 -smp 4"
+	// Fenced on the host: the guest's 4 GiB and QEMU's overhead, then killed.
+	want := "systemd-run --user --unit inua-vm-ubuntu --collect --property=MemoryHigh=5120M --property=MemoryMax=6144M --property=MemorySwapMax=1024M --property=OOMPolicy=kill qemu-system-x86_64 -m 4096 -smp 4"
 	if !runner.ran(want) {
 		t.Fatalf("no %q:\n%v", want, runner.calls)
 	}

@@ -438,6 +438,25 @@ func onOff(on bool) string {
 	return "off"
 }
 
+// qemuOverheadMiB is what QEMU takes besides the guest's RAM: its devices,
+// and with virgl the GL buffers, often hundreds of MB.
+const qemuOverheadMiB = 1024
+
+// memoryFence is the unit's memory on the host, for a guest of memMiB:
+// slowed past its RAM and QEMU's overhead (MemoryHigh, the kernel
+// reclaims), killed at another overhead's more (MemoryMax, the unit alone,
+// OOMPolicy=kill), and no more host swap than one overhead. Without it a
+// guest that fills its RAM pushes the host into swap thrashing, where
+// nothing answers, not even a TTY (#44).
+func memoryFence(memMiB int) []string {
+	return []string{
+		fmt.Sprintf("--property=MemoryHigh=%dM", memMiB+qemuOverheadMiB),
+		fmt.Sprintf("--property=MemoryMax=%dM", memMiB+2*qemuOverheadMiB),
+		fmt.Sprintf("--property=MemorySwapMax=%dM", qemuOverheadMiB),
+		"--property=OOMPolicy=kill",
+	}
+}
+
 // Start puts the machine under a transient systemd user unit, so it outlives
 // the window that started it and dies with the session, and returns as soon as
 // the unit is handed over: a first install is tens of minutes, and readiness
@@ -455,8 +474,10 @@ func (b *QEMUBackend) Start(ctx context.Context, m Machine) error {
 	}
 	// --collect takes the unit away when the guest exits, so a machine starts
 	// again without anyone running `systemctl reset-failed`; --unit pins the
-	// name, so a second Start cannot make a second machine.
-	args := append([]string{"--user", "--unit", b.UnitName(m), "--collect"}, argv...)
+	// name, so a second Start cannot make a second machine. The memory fence
+	// keeps a guest that fills its RAM from dragging the host into swap.
+	args := append([]string{"--user", "--unit", b.UnitName(m), "--collect"}, memoryFence(m.MemoryMiB)...)
+	args = append(args, argv...)
 	if _, err := b.runner().Run(ctx, "systemd-run", args...); err != nil {
 		return vmError("start", ErrorBackend, err)
 	}
