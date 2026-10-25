@@ -2922,7 +2922,7 @@ msgstr "검색할 수 없습니다: %s"
 
 #: internal/appui/sysmon.go:52
 #: internal/appui/sysmon.go:52
-#: internal/ui/dock.go:459
+#: internal/ui/dock.go:486
 msgid "Quit"
 msgstr "종료"
 
@@ -13361,11 +13361,11 @@ msgstr "스크린샷을 위해 숨겨집니다."
 msgid "The passphrases do not match."
 msgstr "암호 문구가 일치하지 않습니다."
 
-#: internal/ui/bar.go:332
+#: internal/ui/bar.go:357
 msgid "Workspace %s"
 msgstr "작업공간 %s"
 
-#: internal/ui/bar.go:345
+#: internal/ui/bar.go:370
 msgid "WORKSPACE"
 msgstr "작업 공간"
 
@@ -13515,19 +13515,19 @@ msgstr "블루투스가 꺼져 있습니다."
 msgid "No devices paired yet"
 msgstr "아직 페어링된 기기가 없습니다"
 
-#: internal/ui/dock.go:450
+#: internal/ui/dock.go:477
 msgid "New Window"
 msgstr "새 창"
 
-#: internal/ui/dock.go:453
+#: internal/ui/dock.go:480
 msgid "Remove from Dock"
 msgstr "도크에서 제거"
 
-#: internal/ui/dock.go:455
+#: internal/ui/dock.go:482
 msgid "Keep in Dock"
 msgstr "독에 고정"
 
-#: internal/ui/dock.go:461
+#: internal/ui/dock.go:488
 msgid "Quit (%d windows)"
 msgstr "종료(%d 창)"
 

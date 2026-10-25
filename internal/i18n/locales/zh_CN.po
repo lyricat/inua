@@ -2922,7 +2922,7 @@ msgstr "无法搜索:%s"
 
 #: internal/appui/sysmon.go:52
 #: internal/appui/sysmon.go:52
-#: internal/ui/dock.go:459
+#: internal/ui/dock.go:486
 msgid "Quit"
 msgstr "退出"
 
@@ -13361,11 +13361,11 @@ msgstr "为截图已隐藏。"
 msgid "The passphrases do not match."
 msgstr "密码短语不匹配。"
 
-#: internal/ui/bar.go:332
+#: internal/ui/bar.go:357
 msgid "Workspace %s"
 msgstr "工作空间%s"
 
-#: internal/ui/bar.go:345
+#: internal/ui/bar.go:370
 msgid "WORKSPACE"
 msgstr "工作区"
 
@@ -13515,19 +13515,19 @@ msgstr "蓝牙已关闭。"
 msgid "No devices paired yet"
 msgstr "还没有配对的设备"
 
-#: internal/ui/dock.go:450
+#: internal/ui/dock.go:477
 msgid "New Window"
 msgstr "新窗口"
 
-#: internal/ui/dock.go:453
+#: internal/ui/dock.go:480
 msgid "Remove from Dock"
 msgstr "从扩展坞中移除"
 
-#: internal/ui/dock.go:455
+#: internal/ui/dock.go:482
 msgid "Keep in Dock"
 msgstr "固定到程序坞"
 
-#: internal/ui/dock.go:461
+#: internal/ui/dock.go:488
 msgid "Quit (%d windows)"
 msgstr "退出(%d窗口)"
 

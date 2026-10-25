@@ -2939,7 +2939,7 @@ msgstr "Impossible de rechercher : %s"
 
 #: internal/appui/sysmon.go:52
 #: internal/appui/sysmon.go:52
-#: internal/ui/dock.go:459
+#: internal/ui/dock.go:486
 msgid "Quit"
 msgstr "Quitter"
 
@@ -13437,11 +13437,11 @@ msgstr "Masqué pour la capture d’écran."
 msgid "The passphrases do not match."
 msgstr "Les phrases secrètes ne correspondent pas."
 
-#: internal/ui/bar.go:332
+#: internal/ui/bar.go:357
 msgid "Workspace %s"
 msgstr "Espace de travail %s"
 
-#: internal/ui/bar.go:345
+#: internal/ui/bar.go:370
 msgid "WORKSPACE"
 msgstr "ESPACE DE TRAVAIL"
 
@@ -13593,19 +13593,19 @@ msgstr "Le Bluetooth est désactivé."
 msgid "No devices paired yet"
 msgstr "Aucun appareil associé pour l’instant"
 
-#: internal/ui/dock.go:450
+#: internal/ui/dock.go:477
 msgid "New Window"
 msgstr "Nouvelle fenêtre"
 
-#: internal/ui/dock.go:453
+#: internal/ui/dock.go:480
 msgid "Remove from Dock"
 msgstr "Supprimer du Dock"
 
-#: internal/ui/dock.go:455
+#: internal/ui/dock.go:482
 msgid "Keep in Dock"
 msgstr "Épingler au dock"
 
-#: internal/ui/dock.go:461
+#: internal/ui/dock.go:488
 msgid "Quit (%d windows)"
 msgstr "Quitter (fenêtres %d)"
 

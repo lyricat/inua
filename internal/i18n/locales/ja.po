@@ -2922,7 +2922,7 @@ msgstr "検索できませんでした: %s"
 
 #: internal/appui/sysmon.go:52
 #: internal/appui/sysmon.go:52
-#: internal/ui/dock.go:459
+#: internal/ui/dock.go:486
 msgid "Quit"
 msgstr "やめる"
 
@@ -13361,11 +13361,11 @@ msgstr "スクリーンショットのため隠しています。"
 msgid "The passphrases do not match."
 msgstr "パスフレーズが一致しません。"
 
-#: internal/ui/bar.go:332
+#: internal/ui/bar.go:357
 msgid "Workspace %s"
 msgstr "ワークスペース%s"
 
-#: internal/ui/bar.go:345
+#: internal/ui/bar.go:370
 msgid "WORKSPACE"
 msgstr "ワークスペース"
 
@@ -13515,19 +13515,19 @@ msgstr "Bluetooth はオフです。"
 msgid "No devices paired yet"
 msgstr "ペアリング済みのデバイスはまだありません"
 
-#: internal/ui/dock.go:450
+#: internal/ui/dock.go:477
 msgid "New Window"
 msgstr "新しい窓"
 
-#: internal/ui/dock.go:453
+#: internal/ui/dock.go:480
 msgid "Remove from Dock"
 msgstr "ドックから取り外す"
 
-#: internal/ui/dock.go:455
+#: internal/ui/dock.go:482
 msgid "Keep in Dock"
 msgstr "ドックに固定"
 
-#: internal/ui/dock.go:461
+#: internal/ui/dock.go:488
 msgid "Quit (%d windows)"
 msgstr "終了 (%d Windows)"
 

@@ -2939,7 +2939,7 @@ msgstr "No se pudo buscar: %s"
 
 #: internal/appui/sysmon.go:52
 #: internal/appui/sysmon.go:52
-#: internal/ui/dock.go:459
+#: internal/ui/dock.go:486
 msgid "Quit"
 msgstr "Salir"
 
@@ -13437,11 +13437,11 @@ msgstr "Oculto para la captura de pantalla."
 msgid "The passphrases do not match."
 msgstr "Las frases de contraseña no coinciden."
 
-#: internal/ui/bar.go:332
+#: internal/ui/bar.go:357
 msgid "Workspace %s"
 msgstr "Espacio de trabajo %s"
 
-#: internal/ui/bar.go:345
+#: internal/ui/bar.go:370
 msgid "WORKSPACE"
 msgstr "ESPACIO DE TRABAJO"
 
@@ -13593,19 +13593,19 @@ msgstr "El Bluetooth está apagado."
 msgid "No devices paired yet"
 msgstr "Aún no hay dispositivos emparejados"
 
-#: internal/ui/dock.go:450
+#: internal/ui/dock.go:477
 msgid "New Window"
 msgstr "Nueva ventana"
 
-#: internal/ui/dock.go:453
+#: internal/ui/dock.go:480
 msgid "Remove from Dock"
 msgstr "Quitar del muelle"
 
-#: internal/ui/dock.go:455
+#: internal/ui/dock.go:482
 msgid "Keep in Dock"
 msgstr "Fijar en el dock"
 
-#: internal/ui/dock.go:461
+#: internal/ui/dock.go:488
 msgid "Quit (%d windows)"
 msgstr "Salir (ventanas %d)"
 
