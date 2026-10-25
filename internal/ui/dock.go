@@ -185,6 +185,9 @@ func (s *shellUI) newDock(b *bar) *dock {
 	drop.ConnectLeave(&s.onDockDropLeave)
 	drop.ConnectDrop(&s.onDockDrop)
 	d.items.AddController(&drop.EventController)
+	wheel := gtk.NewEventControllerScroll(gtk.EventControllerScrollVerticalValue | gtk.EventControllerScrollDiscreteValue)
+	wheel.ConnectScroll(&s.onDockScroll)
+	d.items.AddController(&wheel.EventController)
 	d.win.SetApplication(s.app)
 	w := d.win.GoPointer()
 	layershell.InitForWindow(w)
@@ -415,6 +418,30 @@ func (s *shellUI) updateDockButton(db *dockButton, it shell.DockItem) {
 	toggle(&db.img.Widget, "launching", s.dockState.launching[it.Key])
 }
 
+// scrollDock goes n notches' way (down the next, up the previous) through
+// the running apps in the dock's order, bringing the app's latest window
+// forward as a click on its icon does.
+func (s *shellUI) scrollDock(n int) {
+	var keys []string
+	current := ""
+	for _, it := range s.dockState.items {
+		if len(it.Windows) == 0 {
+			continue
+		}
+		keys = append(keys, it.Key)
+		if it.Active {
+			current = it.Key
+		}
+	}
+	key, ok := s.dockWheel.Next(keys, current, n, time.Now())
+	if !ok {
+		return
+	}
+	if it, ok := s.dockItem(key); ok {
+		s.focusWindowHere(it.Windows[0].Address)
+	}
+}
+
 func (s *shellUI) dockItem(key string) (shell.DockItem, bool) {
 	for _, it := range s.dockState.items {
 		if it.Key == key {
@@ -495,6 +522,10 @@ func (s *shellUI) bindDockHandlers() {
 		case addr != "":
 			s.focusWindowHere(addr)
 		}
+	}
+	s.onDockScroll = func(_ gtk.EventControllerScroll, _, dy float64) bool {
+		s.scrollDock(int(dy))
+		return true
 	}
 	s.onDockMenu = func(g gtk.GestureClick, _ int32, _, _ float64) {
 		w := g.GetWidget()

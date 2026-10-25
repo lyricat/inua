@@ -129,6 +129,9 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	overviewClick.SetPropagationPhase(gtk.PhaseCaptureValue)
 	overviewClick.ConnectPressed(&s.onWorkspaceOverview)
 	b.workspaces.AddController(&overviewClick.EventController)
+	wheel := gtk.NewEventControllerScroll(gtk.EventControllerScrollVerticalValue | gtk.EventControllerScrollDiscreteValue)
+	wheel.ConnectScroll(&s.onWorkspaceScroll)
+	b.workspaces.AddController(&wheel.EventController)
 	ui.Get("title", &b.title)
 	ui.Get("clock", &b.clock)
 	ui.Get("notes", &b.notes)
@@ -305,6 +308,28 @@ func (b *bar) setHypr(s *shellUI, snap hypr.Snapshot) {
 	order := s.overview.st
 	order.MRU = s.cfg.Overview.MRU
 	b.setWorkspaces(s, order.BarWorkspaces(snap, name, s.cfg.Bar.Workspaces == "all"))
+}
+
+// scrollWorkspaces goes n notches' way (down the next, up the previous)
+// through the workspaces the bar shows, from the one its monitor shows
+// (with every workspace on the bar, the focused one).
+func (s *shellUI) scrollWorkspaces(b *bar, n int) {
+	current := 0
+	for _, mon := range s.snap.Monitors {
+		if mon.Name == b.connector() {
+			current = mon.ActiveWorkspaceID
+		}
+	}
+	ids := make([]string, len(b.shown))
+	for i, w := range b.shown {
+		ids[i] = fmt.Sprint(w.ID)
+		if w.Focused && s.cfg.Bar.Workspaces == "all" {
+			current = w.ID
+		}
+	}
+	if id, ok := s.workspaceWheel.Next(ids, fmt.Sprint(current), n, time.Now()); ok {
+		s.switchWorkspace(id)
+	}
 }
 
 // setWorkspaces adds and removes workspace buttons in place. Buttons that

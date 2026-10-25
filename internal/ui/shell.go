@@ -82,6 +82,8 @@ type shellUI struct {
 	notes     notes
 	dockState dockState
 	icons     icons
+	// The wheel over the bars' workspaces, and over the docks.
+	workspaceWheel, dockWheel shell.WheelStep
 
 	bars      map[uintptr]*bar // by GdkMonitor
 	styles    styles
@@ -133,6 +135,8 @@ type shellUI struct {
 	onBarLeave             func(gtk.EventControllerMotion)
 	onBarReleased          func(gtk.GestureClick, int32, float64, float64)
 	onBarScroll            func(gtk.EventControllerScroll, float64, float64) bool
+	onWorkspaceScroll      func(gtk.EventControllerScroll, float64, float64) bool
+	onDockScroll           func(gtk.EventControllerScroll, float64, float64) bool
 	onSlider               func(gtk.Range, gtk.ScrollType, float64) bool
 	onBackdropPressed      func(gtk.GestureClick, int32, float64, float64)
 	onControlKey           func(gtk.EventControllerKey, uint32, uint32, gdk.ModifierType) bool
@@ -556,6 +560,17 @@ func (s *shellUI) bindHandlers() {
 			log.Printf("bar: monitor is %q", b.connector())
 			b.setHypr(s, s.snap)
 		}
+	}
+	// The wheel over a bar's workspaces goes to the next or the previous
+	// one the bar shows.
+	s.onWorkspaceScroll = func(c gtk.EventControllerScroll, _, dy float64) bool {
+		for _, b := range s.bars {
+			if w := c.GetWidget(); w != nil && w.GoPointer() == b.workspaces.GoPointer() {
+				s.scrollWorkspaces(b, int(dy))
+				return true
+			}
+		}
+		return false
 	}
 	s.onWorkspaceClicked = func(b gtk.Button) {
 		// Hyprland answers an error for switching to the current workspace.
