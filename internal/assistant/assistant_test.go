@@ -387,5 +387,8 @@ func TestElevatedCommands(t *testing.T) {
 		if has := bytes.Contains(sent, []byte(`"elevated"`)); has != c.want {
 			t.Errorf("elevated %v, tools %v: offered %v", c.elevated, c.tools, has)
 		}
+		if told := bytes.Contains(sent, []byte("administrator rights ]]")); told != c.want {
+			t.Errorf("elevated %v, tools %v: told %v", c.elevated, c.tools, told)
+		}
 	}
 }

@@ -5,31 +5,32 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: cmd/inua-askpass/main.go:69
-#: cmd/inua-askpass/main.go:73
+#: cmd/inua-askpass/main.go:85
+#: cmd/inua-askpass/main.go:89
 msgid "Yes"
 msgstr "是"
 
-#: cmd/inua-askpass/main.go:69
-#: cmd/inua-askpass/main.go:73
+#: cmd/inua-askpass/main.go:85
+#: cmd/inua-askpass/main.go:89
 #: internal/term/web/strings.go:67
 msgid "No"
 msgstr "否"
 
-#: cmd/inua-askpass/main.go:80
+#: cmd/inua-askpass/main.go:96
 msgid "User Name Required"
 msgstr "需要用户名"
 
-#: cmd/inua-askpass/main.go:80
+#: cmd/inua-askpass/main.go:96
 #: internal/mailui/welcome.go:579
 msgid "User name"
 msgstr "用户名"
 
-#: cmd/inua-askpass/main.go:83
+#: cmd/inua-askpass/main.go:99
 msgid "Password Required"
 msgstr "需要密码"
 
-#: cmd/inua-askpass/main.go:83
+#: cmd/inua-askpass/main.go:99
+#: cmd/inua-askpass/main.go:168
 #: internal/filesui/archive.go:163
 #: internal/filesui/archive.go:320
 #: internal/filesui/remote.go:178
@@ -42,6 +43,22 @@ msgstr "需要密码"
 #: ui/polkit.ui:690
 msgid "Password"
 msgstr "密码"
+
+#: cmd/inua-askpass/main.go:166
+msgid "Run as Administrator?"
+msgstr "以管理员身份运行？"
+
+#: cmd/inua-askpass/main.go:167
+msgid "Enter your password to run this command as administrator:\n\n%s"
+msgstr "输入你的密码，以管理员身份运行这条命令：\n\n%s"
+
+#: cmd/inua-askpass/main.go:168
+#: internal/assistantui/assistantui.go:688
+#: internal/ui/askpass.go:425
+#: internal/ui/settings_bluetooth.go:407
+#: internal/workshop/session.go:406
+msgid "Allow"
+msgstr "允许"
 
 #: cmd/inua-assistant/answer.go:36
 #: cmd/inua-assistant/transcribe.go:40
@@ -4132,7 +4149,7 @@ msgstr "无法读取控制台令牌：%s"
 msgid "No API key for %s (%s): type one in Settings → AI."
 msgstr "%[1]s (%[2]s) 没有 API 密钥:在“设置”→“AI”中键入一个。"
 
-#: internal/assistant/assistant.go:629
+#: internal/assistant/assistant.go:642
 msgid "Remote Console: %s"
 msgstr "远程控制台:%s"
 
@@ -4235,13 +4252,6 @@ msgstr "没有听到说话。"
 #: internal/assistantui/assistantui.go:688
 msgid "Don't"
 msgstr "拒绝"
-
-#: internal/assistantui/assistantui.go:688
-#: internal/ui/askpass.go:425
-#: internal/ui/settings_bluetooth.go:407
-#: internal/workshop/session.go:406
-msgid "Allow"
-msgstr "允许"
 
 #: internal/assistantui/assistantui.go:709
 msgid "Not allowed"

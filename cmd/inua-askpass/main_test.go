@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"strings"
 	"testing"
 
 	"github.com/lyricat/inua/internal/keyring"
@@ -63,6 +64,50 @@ func TestAnswer(t *testing.T) {
 	} {
 		if out, exit0 := answer(tc.q, tc.yesNo, tc.r); out != tc.out || exit0 != tc.exit0 {
 			t.Errorf("%s: %q, exit 0 %v", tc.name, out, exit0)
+		}
+	}
+}
+
+// For sudo, the dialog shows the command it runs as root, without sudo's
+// own options.
+func TestSudoCommand(t *testing.T) {
+	for _, tc := range []struct {
+		name string
+		args []string
+		want string
+		ok   bool
+	}{
+		{"sudo", []string{"/usr/bin/sudo", "-k", "-A", "apt", "install", "wtype"}, "apt install wtype", true},
+		{"sudo", []string{"sudo", "-k", "-A", "-u", "postgres", "psql", "-l"}, "psql -l", true},
+		{"sudo-rs", []string{"sudo", "--user=root", "-p", "", "--", "bash", "-c", "uname"}, "bash -c uname", true},
+		{"sudo", []string{"sudo", "-v"}, "", false},
+		{"ssh", []string{"ssh", "host"}, "", false},
+	} {
+		if got, ok := sudoCommand(tc.name, tc.args); got != tc.want || ok != tc.ok {
+			t.Errorf("%s %v: %q %v", tc.name, tc.args, got, ok)
+		}
+	}
+	var q pinentry.Request
+	asRoot(&q, "apt install wtype")
+	if q.Mode != pinentry.GetPin || q.Visible || !strings.Contains(q.Desc, "apt install wtype") {
+		t.Errorf("%+v", q)
+	}
+}
+
+// Through Mister Morph, a command not approved says why in its helper's
+// words, which tell the assistant a declined command from a failed one.
+func TestMorphMarker(t *testing.T) {
+	for _, tc := range []struct {
+		late bool
+		r    passask.Reply
+		want string
+	}{
+		{false, passask.Reply{Result: keyring.Cancelled}, "mistermorph: administrator approval was declined"},
+		{true, passask.Reply{Result: keyring.Failed}, "mistermorph: administrator approval timed out"},
+		{false, passask.Reply{Result: keyring.Failed, Err: errors.New("no shell")}, "mistermorph: the approval dialog failed: no shell"},
+	} {
+		if got := morphMarker(tc.late, tc.r); got != tc.want {
+			t.Errorf("%v %+v: %q", tc.late, tc.r, got)
 		}
 	}
 }

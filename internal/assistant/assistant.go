@@ -230,6 +230,13 @@ asks from the launcher or your window; answer in their language, briefly, in pla
 - Some tools ask the user first. If they decline, say so and do not try another way.
 - Read only what the question needs; say which device or window you mean by its name.`
 
+// elevatedPrompt is added while bash may run a command as root: sudo has no
+// terminal here to ask for a password, so sudo itself always fails.
+const elevatedPrompt = `[[ inua: administrator rights ]]
+- A command that needs root runs through the bash tool with elevated: true, written without
+  sudo; the user approves it in a dialog showing it. Never run sudo yourself: it has no
+  terminal here and fails. Use it only when the user's request needs root.`
+
 // New makes a conversation with inua's tools (own) added to the built-ins
 // the settings name.
 func New(set Settings, own []desk.Tool, approve Approver) (*Assistant, error) {
@@ -298,8 +305,11 @@ func New(set Settings, own []desk.Tool, approve Approver) (*Assistant, error) {
 	// Mister Morph registers plan_create only when it is turned on (off by
 	// default since v0.3.61), whatever the tools listed.
 	cfg.Set("tools.plan_create.enabled", len(set.Tools) > 0)
-	// A command as root, once approved in a dialog showing it: inua's
-	// pinentry when it is beside this program, else the system's.
+	// A command as root, once approved in a dialog showing it: sudo starts
+	// this program for the password, which hands over to inua-askpass
+	// (inua-assistant's askpassInstead). The pinentry named here is the
+	// dialog Mister Morph checks for, and asks with when inua-askpass is
+	// not there.
 	elevated := set.Elevated && slices.Contains(set.Tools, "bash")
 	cfg.Set("tools.bash.elevation.enabled", elevated)
 	if p := pinentryBeside(); elevated && p != "" {
@@ -319,6 +329,9 @@ func New(set Settings, own []desk.Tool, approve Approver) (*Assistant, error) {
 		}})
 	}
 	cfg.AddPromptBlock(prompt)
+	if elevated {
+		cfg.AddPromptBlock(elevatedPrompt)
+	}
 	rt, err := integration.NewChecked(cfg)
 	if err != nil {
 		return nil, fmt.Errorf("assistant: %w", err)

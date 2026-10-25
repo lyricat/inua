@@ -3,31 +3,32 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 
-#: cmd/inua-askpass/main.go:69
-#: cmd/inua-askpass/main.go:73
+#: cmd/inua-askpass/main.go:85
+#: cmd/inua-askpass/main.go:89
 msgid "Yes"
 msgstr ""
 
-#: cmd/inua-askpass/main.go:69
-#: cmd/inua-askpass/main.go:73
+#: cmd/inua-askpass/main.go:85
+#: cmd/inua-askpass/main.go:89
 #: internal/term/web/strings.go:67
 msgid "No"
 msgstr ""
 
-#: cmd/inua-askpass/main.go:80
+#: cmd/inua-askpass/main.go:96
 msgid "User Name Required"
 msgstr ""
 
-#: cmd/inua-askpass/main.go:80
+#: cmd/inua-askpass/main.go:96
 #: internal/mailui/welcome.go:579
 msgid "User name"
 msgstr ""
 
-#: cmd/inua-askpass/main.go:83
+#: cmd/inua-askpass/main.go:99
 msgid "Password Required"
 msgstr ""
 
-#: cmd/inua-askpass/main.go:83
+#: cmd/inua-askpass/main.go:99
+#: cmd/inua-askpass/main.go:168
 #: internal/filesui/archive.go:163
 #: internal/filesui/archive.go:320
 #: internal/filesui/remote.go:178
@@ -39,6 +40,22 @@ msgstr ""
 #: ui/lock.ui:76
 #: ui/polkit.ui:690
 msgid "Password"
+msgstr ""
+
+#: cmd/inua-askpass/main.go:166
+msgid "Run as Administrator?"
+msgstr ""
+
+#: cmd/inua-askpass/main.go:167
+msgid "Enter your password to run this command as administrator:\n\n%s"
+msgstr ""
+
+#: cmd/inua-askpass/main.go:168
+#: internal/assistantui/assistantui.go:688
+#: internal/ui/askpass.go:425
+#: internal/ui/settings_bluetooth.go:407
+#: internal/workshop/session.go:406
+msgid "Allow"
 msgstr ""
 
 #: cmd/inua-assistant/answer.go:36
@@ -4151,7 +4168,7 @@ msgstr ""
 msgid "No API key for %s (%s): type one in Settings → AI."
 msgstr ""
 
-#: internal/assistant/assistant.go:629
+#: internal/assistant/assistant.go:642
 msgid "Remote Console: %s"
 msgstr ""
 
@@ -4253,13 +4270,6 @@ msgstr ""
 
 #: internal/assistantui/assistantui.go:688
 msgid "Don't"
-msgstr ""
-
-#: internal/assistantui/assistantui.go:688
-#: internal/ui/askpass.go:425
-#: internal/ui/settings_bluetooth.go:407
-#: internal/workshop/session.go:406
-msgid "Allow"
 msgstr ""
 
 #: internal/assistantui/assistantui.go:709
