@@ -1,0 +1,36 @@
+# How the factory works on inua. The workflow and the item format are in
+# the factory skill (SKILL.md and references/workflow-guide.html).
+
+base = "master"
+remote = "origin"
+
+# Names whose "## name · time" sections count as the owner's.
+owners = ["lyric"]
+
+# Must pass before an item reaches ready/: the Python session tests,
+# go vet and the Go tests with the race detector (needs a C compiler).
+test = "make test"
+
+# Layouts compile to .ui files, and the catalogs record each string's
+# file and line, so CI fails when they are stale.
+after_change = ["make generate", "make i18n"]
+
+read = ["AGENTS.md", "docs/architecture.md", "design/ui.md"]
+
+never = [".github/workflows/", ".factory/factory.toml"]
+
+rules = [
+  "Run make i18n before every commit that touches a .go or .blp file, and commit po/inua.pot and the catalogs with it.",
+  "After changing a .blp layout, run make generate and commit the .ui file with it.",
+  "Stage explicit paths; never git add -A or git add .",
+  "Scripted tests and nested sessions get a throwaway HOME; apps that delete or move files never see the real one.",
+  "Never toggle the live Wi-Fi or NetworkManager connection; Wi-Fi work is tested against a fake NetworkManager.",
+  "Never write or delete $XDG_RUNTIME_DIR/voxtype: it belongs to the running voxtype daemon.",
+  "Never restart, stop or send input to the user's running inua-shell, inua-termd or other windows; test in a nested Hyprland.",
+  "Never open or run tools over key, certificate or credential files.",
+  "A UI change is not checked by eye here: say so in the result.",
+]
+
+max_rounds = 3
+
+notify = "notify-send -a factory -i git-pull-request {title} {text}"
