@@ -8,7 +8,9 @@ process = ["mistermorph", "morph"] # as built from source, it is morph
 state = "blocked"
 any = ["! Approval · ", "y approve · n deny"]
 
+# Working: its footer's hint, "Esc/Ctrl+C stop", or "Ctrl+C stop" alone
+# where the footer is too narrow for the whole hint.
 [[state]]
 state = "working"
 lines = 3
-any = ["Esc/Ctrl+C stop"]
+any = ["Ctrl+C stop"]

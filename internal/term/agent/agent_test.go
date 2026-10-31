@@ -105,6 +105,7 @@ func TestScreenStateOthers(t *testing.T) {
 		{"pi", []string{"─────────", "", " Trust this folder?", "", "→ Yes", "  No", "", " ↑↓ navigate  enter select  esc cancel", "", "─────────"}, Blocked, "Trust this folder?"},
 		{"pi", []string{"Working tree clean.", "─────────", "> ", "─────────", "~/src/app"}, "", ""},
 		{"mistermorph", []string{"", "⠙ Running · waiting for model · 4s", "", "> ", "", "  Enter steer · Ctrl+J newline · Esc/Ctrl+C stop"}, Working, ""},
+		{"mistermorph", []string{"", "⠙ Running · waiting for model · 1:27", "", "> ", "", "qwen3 · lyric · ctx 3% · hi   Enter steer · Ctrl+C stop"}, Working, ""}, // a narrow footer
 		{"mistermorph", []string{"", "! Approval · bash", "  $ rm -rf build", "", "  y approve · n deny · Esc stop"}, Blocked, "! Approval · bash"},
 		{"mistermorph", []string{"✓ bash · ls", "", "> ", "", "gpt-5 · app · ctx 3%     Ctrl+J newline · / commands"}, "", ""},
 	} {
