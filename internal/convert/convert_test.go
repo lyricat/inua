@@ -49,14 +49,24 @@ func TestNotQuestions(t *testing.T) {
 	}
 }
 
-// rateServers serves the ECB's rates at /ecb and Coinbase's at /cb, each
-// failing when its flag is set.
+// rateServers serves the ECB's rates at /ecb, the Bank of England's at
+// /boe and Coinbase's at /cb, each failing when its flag is set (the Bank
+// of England's with the ECB's unless boeUp is set).
 func rateServers(t *testing.T, ecbDown, cbDown *bool) *httptest.Server {
+	return rateServersWithBoE(t, ecbDown, cbDown, new(bool))
+}
+
+func rateServersWithBoE(t *testing.T, ecbDown, cbDown, boeUp *bool) *httptest.Server {
 	t.Helper()
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case r.URL.Path == "/ecb" && !*ecbDown:
 			w.Write([]byte(`{"amount":1.0,"base":"EUR","date":"2026-10-09","rates":{"USD":1.1,"JPY":165.0}}`))
+		case r.URL.Path == "/boe" && (!*ecbDown || *boeUp):
+			w.Write([]byte(`{"bank":"boe","rate_date":"2026-10-08","rates":[` +
+				`{"base":"GBP","quote":"USD","type":"reference","value":1.25},` +
+				`{"base":"EUR","quote":"GBP","type":"reference","value":0.8},` +
+				`{"base":"GBP","quote":"JPY","type":"buy","value":190.0}]}`))
 		case r.URL.Path == "/cb" && !*cbDown:
 			w.Write([]byte(`{"data":{"currency":"USD","rates":{"USD":"1","EUR":"0.9090909","BTC":"0.00001","ETH":"0.0004","DOGE":"10","CUP":"24","BAD":"x"}}}`))
 		default:
@@ -64,10 +74,46 @@ func rateServers(t *testing.T, ecbDown, cbDown *bool) *httptest.Server {
 		}
 	}))
 	t.Cleanup(srv.Close)
-	oldR, oldM := RatesURL, MoreURL
-	RatesURL, MoreURL = srv.URL+"/ecb", srv.URL+"/cb"
-	t.Cleanup(func() { RatesURL, MoreURL = oldR, oldM })
+	oldR, oldF, oldM := RatesURL, FallbackURL, MoreURL
+	RatesURL, FallbackURL, MoreURL = srv.URL+"/ecb", srv.URL+"/boe", srv.URL+"/cb"
+	t.Cleanup(func() { RatesURL, FallbackURL, MoreURL = oldR, oldF, oldM })
 	return srv
+}
+
+func TestBankOfEnglandFallback(t *testing.T) {
+	var ecbDown, cbDown, boeUp bool
+	srv := rateServersWithBoE(t, &ecbDown, &cbDown, &boeUp)
+	// With the ECB's rates the Bank of England's are not asked for.
+	r, err := FetchRates(context.Background(), srv.Client())
+	if err != nil || r.Base != "EUR" {
+		t.Fatalf("%+v %v", r, err)
+	}
+	// Without them, the Bank of England's, brought to the pound: both
+	// orientations, reference rates only.
+	ecbDown, boeUp = true, true
+	r, err = FetchRates(context.Background(), srv.Client())
+	if err != nil || r.Base != "GBP" || r.Date != "2026-10-08" || len(r.Rates) != 2 {
+		t.Fatalf("without the ECB: %+v %v", r, err)
+	}
+	for q, want := range map[string]string{
+		"10 eur to usd": "10.00 USD", // 10 EUR = 8 GBP = 10 USD
+		"1 gbp to eur":  "1.25 EUR",
+		"1 btc in eur":  "", // Coinbase's dollar, which the Bank of England's table has, then the pound
+	} {
+		a, ok := Evaluate(q, r)
+		if q == "1 btc in eur" {
+			if !ok || !strings.HasSuffix(a.Text, " EUR") {
+				t.Errorf("Evaluate(%q) = %+v", q, a)
+			}
+			continue
+		}
+		if got := map[bool]string{true: a.Text}[ok]; got != want {
+			t.Errorf("Evaluate(%q) = %q, want %q", q, got, want)
+		}
+	}
+	if a, _ := Evaluate("1 usd to gbp", r); !strings.Contains(a.Detail, "rates of 2026-10-08") {
+		t.Errorf("fiat detail %q", a.Detail)
+	}
 }
 
 func TestCrypto(t *testing.T) {

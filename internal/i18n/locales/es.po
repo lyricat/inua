@@ -2257,259 +2257,259 @@ msgstr "Lo que ejecuta: systemctl suspend"
 msgid "Remove"
 msgstr "Quitar"
 
-#: internal/convert/convert.go:97
+#: internal/convert/convert.go:99
 msgid "millimetres"
 msgstr "milímetros"
 
-#: internal/convert/convert.go:98
+#: internal/convert/convert.go:100
 msgid "centimetres"
 msgstr "centímetros"
 
-#: internal/convert/convert.go:99
+#: internal/convert/convert.go:101
 msgid "metres"
 msgstr "metros"
 
-#: internal/convert/convert.go:100
+#: internal/convert/convert.go:102
 msgid "kilometres"
 msgstr "kilómetros"
 
-#: internal/convert/convert.go:101
+#: internal/convert/convert.go:103
 msgid "inches"
 msgstr "pulgadas"
 
-#: internal/convert/convert.go:102
+#: internal/convert/convert.go:104
 msgid "feet"
 msgstr "pies"
 
-#: internal/convert/convert.go:103
+#: internal/convert/convert.go:105
 msgid "yards"
 msgstr "yardas"
 
-#: internal/convert/convert.go:104
+#: internal/convert/convert.go:106
 msgid "miles"
 msgstr "millas"
 
-#: internal/convert/convert.go:105
+#: internal/convert/convert.go:107
 msgid "nautical miles"
 msgstr "millas náuticas"
 
-#: internal/convert/convert.go:107
+#: internal/convert/convert.go:109
 msgid "milligrams"
 msgstr "miligramos"
 
-#: internal/convert/convert.go:108
+#: internal/convert/convert.go:110
 msgid "grams"
 msgstr "gramos"
 
-#: internal/convert/convert.go:109
+#: internal/convert/convert.go:111
 msgid "kilograms"
 msgstr "kilogramos"
 
-#: internal/convert/convert.go:110
+#: internal/convert/convert.go:112
 msgid "tonnes"
 msgstr "toneladas"
 
-#: internal/convert/convert.go:111
+#: internal/convert/convert.go:113
 msgid "ounces"
 msgstr "onzas"
 
-#: internal/convert/convert.go:112
+#: internal/convert/convert.go:114
 msgid "pounds"
 msgstr "libras"
 
-#: internal/convert/convert.go:113
+#: internal/convert/convert.go:115
 msgid "stone"
 msgstr "stone"
 
-#: internal/convert/convert.go:115
+#: internal/convert/convert.go:117
 msgid "millilitres"
 msgstr "mililitros"
 
-#: internal/convert/convert.go:116
+#: internal/convert/convert.go:118
 msgid "litres"
 msgstr "litros"
 
-#: internal/convert/convert.go:117
+#: internal/convert/convert.go:119
 msgid "cubic metres"
 msgstr "metros cúbicos"
 
-#: internal/convert/convert.go:118
+#: internal/convert/convert.go:120
 msgid "US gallons"
 msgstr "Galones estadounidenses"
 
-#: internal/convert/convert.go:119
+#: internal/convert/convert.go:121
 msgid "US quarts"
 msgstr "cuartos estadounidenses"
 
-#: internal/convert/convert.go:120
+#: internal/convert/convert.go:122
 msgid "US pints"
 msgstr "pintas estadounidenses"
 
-#: internal/convert/convert.go:121
+#: internal/convert/convert.go:123
 msgid "US cups"
 msgstr "tazas estadounidenses"
 
-#: internal/convert/convert.go:122
+#: internal/convert/convert.go:124
 msgid "US fluid ounces"
 msgstr "Onzas líquidas estadounidenses"
 
-#: internal/convert/convert.go:123
+#: internal/convert/convert.go:125
 msgid "tablespoons"
 msgstr "cucharadas"
 
-#: internal/convert/convert.go:124
+#: internal/convert/convert.go:126
 msgid "teaspoons"
 msgstr "cucharaditas"
 
-#: internal/convert/convert.go:126
+#: internal/convert/convert.go:128
 msgid "square metres"
 msgstr "metros cuadrados"
 
-#: internal/convert/convert.go:127
+#: internal/convert/convert.go:129
 msgid "square kilometres"
 msgstr "kilómetros cuadrados"
 
-#: internal/convert/convert.go:128
+#: internal/convert/convert.go:130
 msgid "hectares"
 msgstr "hectáreas"
 
-#: internal/convert/convert.go:129
+#: internal/convert/convert.go:131
 msgid "acres"
 msgstr "acres"
 
-#: internal/convert/convert.go:130
+#: internal/convert/convert.go:132
 msgid "square feet"
 msgstr "pies cuadrados"
 
-#: internal/convert/convert.go:131
+#: internal/convert/convert.go:133
 msgid "square miles"
 msgstr "millas cuadradas"
 
-#: internal/convert/convert.go:133
+#: internal/convert/convert.go:135
 msgid "metres per second"
 msgstr "metros por segundo"
 
-#: internal/convert/convert.go:134
+#: internal/convert/convert.go:136
 msgid "kilometres per hour"
 msgstr "kilómetros por hora"
 
-#: internal/convert/convert.go:135
+#: internal/convert/convert.go:137
 msgid "miles per hour"
 msgstr "millas por hora"
 
-#: internal/convert/convert.go:136
+#: internal/convert/convert.go:138
 msgid "knots"
 msgstr "nudos"
 
-#: internal/convert/convert.go:137
+#: internal/convert/convert.go:139
 msgid "feet per second"
 msgstr "pies por segundo"
 
-#: internal/convert/convert.go:139
+#: internal/convert/convert.go:141
 msgid "bytes"
 msgstr "bytes"
 
-#: internal/convert/convert.go:140
+#: internal/convert/convert.go:142
 msgid "kilobytes"
 msgstr "kilobytes"
 
-#: internal/convert/convert.go:141
+#: internal/convert/convert.go:143
 msgid "megabytes"
 msgstr "megabytes"
 
-#: internal/convert/convert.go:142
+#: internal/convert/convert.go:144
 msgid "gigabytes"
 msgstr "gigabytes"
 
-#: internal/convert/convert.go:143
+#: internal/convert/convert.go:145
 msgid "terabytes"
 msgstr "terabytes"
 
-#: internal/convert/convert.go:144
+#: internal/convert/convert.go:146
 msgid "kibibytes"
 msgstr "kibibytes"
 
-#: internal/convert/convert.go:145
+#: internal/convert/convert.go:147
 msgid "mebibytes"
 msgstr "mebibytes"
 
-#: internal/convert/convert.go:146
+#: internal/convert/convert.go:148
 msgid "gibibytes"
 msgstr "gibibytes"
 
-#: internal/convert/convert.go:147
+#: internal/convert/convert.go:149
 msgid "tebibytes"
 msgstr "tebibytes"
 
-#: internal/convert/convert.go:148
+#: internal/convert/convert.go:150
 msgid "bits"
 msgstr "bits"
 
-#: internal/convert/convert.go:149
+#: internal/convert/convert.go:151
 msgid "kilobits"
 msgstr "kilobits"
 
-#: internal/convert/convert.go:150
+#: internal/convert/convert.go:152
 msgid "megabits"
 msgstr "megabits"
 
-#: internal/convert/convert.go:151
+#: internal/convert/convert.go:153
 msgid "gigabits"
 msgstr "gigabits"
 
-#: internal/convert/convert.go:153
+#: internal/convert/convert.go:155
 msgid "milliseconds"
 msgstr "milisegundos"
 
-#: internal/convert/convert.go:154
+#: internal/convert/convert.go:156
 msgid "seconds"
 msgstr "segundos"
 
-#: internal/convert/convert.go:155
+#: internal/convert/convert.go:157
 msgid "minutes"
 msgstr "minutos"
 
-#: internal/convert/convert.go:156
+#: internal/convert/convert.go:158
 msgid "hours"
 msgstr "horas"
 
-#: internal/convert/convert.go:157
+#: internal/convert/convert.go:159
 msgid "days"
 msgstr "días"
 
-#: internal/convert/convert.go:158
+#: internal/convert/convert.go:160
 msgid "weeks"
 msgstr "semanas"
 
-#: internal/convert/convert.go:159
+#: internal/convert/convert.go:161
 msgid "years"
 msgstr "años"
 
-#: internal/convert/convert.go:166
+#: internal/convert/convert.go:168
 msgid "degrees Celsius"
 msgstr "grados Celsius"
 
-#: internal/convert/convert.go:167
+#: internal/convert/convert.go:169
 msgid "degrees Fahrenheit"
 msgstr "grados Fahrenheit"
 
-#: internal/convert/convert.go:168
+#: internal/convert/convert.go:170
 msgid "kelvin"
 msgstr "kelvin"
 
-#: internal/convert/convert.go:277
+#: internal/convert/convert.go:279
 msgid "%s %s in %s"
 msgstr "%[1]s %[2]s en %[3]s"
 
-#: internal/convert/convert.go:309
+#: internal/convert/convert.go:311
 msgid "rates of %s"
 msgstr "tipos de cambio de %s"
 
-#: internal/convert/convert.go:311
+#: internal/convert/convert.go:313
 msgid "prices from Coinbase · %s"
 msgstr "precios de Coinbase · %s"
 
-#: internal/convert/convert.go:315
+#: internal/convert/convert.go:317
 msgid "%s %s in %s · %s"
 msgstr "%[1]s %[2]s en %[3]s · %[4]s"
 
