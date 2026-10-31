@@ -2252,259 +2252,259 @@ msgstr "実行するもの: systemctl suspend"
 msgid "Remove"
 msgstr "削除"
 
-#: internal/convert/convert.go:97
+#: internal/convert/convert.go:99
 msgid "millimetres"
 msgstr "[0000ミリメートル]"
 
-#: internal/convert/convert.go:98
+#: internal/convert/convert.go:100
 msgid "centimetres"
 msgstr "センチメートル"
 
-#: internal/convert/convert.go:99
+#: internal/convert/convert.go:101
 msgid "metres"
 msgstr "メートル"
 
-#: internal/convert/convert.go:100
+#: internal/convert/convert.go:102
 msgid "kilometres"
 msgstr "[0000キロメートル]"
 
-#: internal/convert/convert.go:101
+#: internal/convert/convert.go:103
 msgid "inches"
 msgstr "インチ"
 
-#: internal/convert/convert.go:102
+#: internal/convert/convert.go:104
 msgid "feet"
 msgstr "フィート"
 
-#: internal/convert/convert.go:103
+#: internal/convert/convert.go:105
 msgid "yards"
 msgstr "ヤード"
 
-#: internal/convert/convert.go:104
+#: internal/convert/convert.go:106
 msgid "miles"
 msgstr "マイル"
 
-#: internal/convert/convert.go:105
+#: internal/convert/convert.go:107
 msgid "nautical miles"
 msgstr "[0000海里]"
 
-#: internal/convert/convert.go:107
+#: internal/convert/convert.go:109
 msgid "milligrams"
 msgstr "[0000ミリグラム]"
 
-#: internal/convert/convert.go:108
+#: internal/convert/convert.go:110
 msgid "grams"
 msgstr "[0000グラム]"
 
-#: internal/convert/convert.go:109
+#: internal/convert/convert.go:111
 msgid "kilograms"
 msgstr "[0000キログラム]"
 
-#: internal/convert/convert.go:110
+#: internal/convert/convert.go:112
 msgid "tonnes"
 msgstr "[0000トン]"
 
-#: internal/convert/convert.go:111
+#: internal/convert/convert.go:113
 msgid "ounces"
 msgstr "[0000オンス]"
 
-#: internal/convert/convert.go:112
+#: internal/convert/convert.go:114
 msgid "pounds"
 msgstr "[0000ポンド]"
 
-#: internal/convert/convert.go:113
+#: internal/convert/convert.go:115
 msgid "stone"
 msgstr "ストーン"
 
-#: internal/convert/convert.go:115
+#: internal/convert/convert.go:117
 msgid "millilitres"
 msgstr "[0000ミリリットル]"
 
-#: internal/convert/convert.go:116
+#: internal/convert/convert.go:118
 msgid "litres"
 msgstr "[0000リットル]"
 
-#: internal/convert/convert.go:117
+#: internal/convert/convert.go:119
 msgid "cubic metres"
 msgstr "[0000立方メートル]"
 
-#: internal/convert/convert.go:118
+#: internal/convert/convert.go:120
 msgid "US gallons"
 msgstr "[0000 米ガロン]"
 
-#: internal/convert/convert.go:119
+#: internal/convert/convert.go:121
 msgid "US quarts"
 msgstr "[0000米国クォート]"
 
-#: internal/convert/convert.go:120
+#: internal/convert/convert.go:122
 msgid "US pints"
 msgstr "[0000 米国パイント]"
 
-#: internal/convert/convert.go:121
+#: internal/convert/convert.go:123
 msgid "US cups"
 msgstr "[0000 US カップ]"
 
-#: internal/convert/convert.go:122
+#: internal/convert/convert.go:124
 msgid "US fluid ounces"
 msgstr "[0000 米国液量オンス]"
 
-#: internal/convert/convert.go:123
+#: internal/convert/convert.go:125
 msgid "tablespoons"
 msgstr "大さじ"
 
-#: internal/convert/convert.go:124
+#: internal/convert/convert.go:126
 msgid "teaspoons"
 msgstr "ティースプーン"
 
-#: internal/convert/convert.go:126
+#: internal/convert/convert.go:128
 msgid "square metres"
 msgstr "[0000平方メートル]"
 
-#: internal/convert/convert.go:127
+#: internal/convert/convert.go:129
 msgid "square kilometres"
 msgstr "[0000平方キロメートル]"
 
-#: internal/convert/convert.go:128
+#: internal/convert/convert.go:130
 msgid "hectares"
 msgstr "[0000ヘクタール]"
 
-#: internal/convert/convert.go:129
+#: internal/convert/convert.go:131
 msgid "acres"
 msgstr "[0000エーカー]"
 
-#: internal/convert/convert.go:130
+#: internal/convert/convert.go:132
 msgid "square feet"
 msgstr "[0000平方フィート]"
 
-#: internal/convert/convert.go:131
+#: internal/convert/convert.go:133
 msgid "square miles"
 msgstr "[0000平方マイル]"
 
-#: internal/convert/convert.go:133
+#: internal/convert/convert.go:135
 msgid "metres per second"
 msgstr "[0000 メートル/秒]"
 
-#: internal/convert/convert.go:134
+#: internal/convert/convert.go:136
 msgid "kilometres per hour"
 msgstr "[0000キロメートル/時]"
 
-#: internal/convert/convert.go:135
+#: internal/convert/convert.go:137
 msgid "miles per hour"
 msgstr "[0000マイル/時]"
 
-#: internal/convert/convert.go:136
+#: internal/convert/convert.go:138
 msgid "knots"
 msgstr "ノット"
 
-#: internal/convert/convert.go:137
+#: internal/convert/convert.go:139
 msgid "feet per second"
 msgstr "[0000 フィート/秒]"
 
-#: internal/convert/convert.go:139
+#: internal/convert/convert.go:141
 msgid "bytes"
 msgstr "バイト"
 
-#: internal/convert/convert.go:140
+#: internal/convert/convert.go:142
 msgid "kilobytes"
 msgstr "[0000キロバイト]"
 
-#: internal/convert/convert.go:141
+#: internal/convert/convert.go:143
 msgid "megabytes"
 msgstr "[0000メガバイト]"
 
-#: internal/convert/convert.go:142
+#: internal/convert/convert.go:144
 msgid "gigabytes"
 msgstr "[0000ギガバイト]"
 
-#: internal/convert/convert.go:143
+#: internal/convert/convert.go:145
 msgid "terabytes"
 msgstr "[0000テラバイト]"
 
-#: internal/convert/convert.go:144
+#: internal/convert/convert.go:146
 msgid "kibibytes"
 msgstr "[0000キビバイト]"
 
-#: internal/convert/convert.go:145
+#: internal/convert/convert.go:147
 msgid "mebibytes"
 msgstr "[0000 メビバイト]"
 
-#: internal/convert/convert.go:146
+#: internal/convert/convert.go:148
 msgid "gibibytes"
 msgstr "[0000ギビバイト]"
 
-#: internal/convert/convert.go:147
+#: internal/convert/convert.go:149
 msgid "tebibytes"
 msgstr "テビバイト"
 
-#: internal/convert/convert.go:148
+#: internal/convert/convert.go:150
 msgid "bits"
 msgstr "ビット"
 
-#: internal/convert/convert.go:149
+#: internal/convert/convert.go:151
 msgid "kilobits"
 msgstr "[0000キロビット]"
 
-#: internal/convert/convert.go:150
+#: internal/convert/convert.go:152
 msgid "megabits"
 msgstr "[0000メガビット]"
 
-#: internal/convert/convert.go:151
+#: internal/convert/convert.go:153
 msgid "gigabits"
 msgstr "ギガビット"
 
-#: internal/convert/convert.go:153
+#: internal/convert/convert.go:155
 msgid "milliseconds"
 msgstr "ミリ秒"
 
-#: internal/convert/convert.go:154
+#: internal/convert/convert.go:156
 msgid "seconds"
 msgstr "秒"
 
-#: internal/convert/convert.go:155
+#: internal/convert/convert.go:157
 msgid "minutes"
 msgstr "分"
 
-#: internal/convert/convert.go:156
+#: internal/convert/convert.go:158
 msgid "hours"
 msgstr "時間"
 
-#: internal/convert/convert.go:157
+#: internal/convert/convert.go:159
 msgid "days"
 msgstr "日"
 
-#: internal/convert/convert.go:158
+#: internal/convert/convert.go:160
 msgid "weeks"
 msgstr "週間"
 
-#: internal/convert/convert.go:159
+#: internal/convert/convert.go:161
 msgid "years"
 msgstr "年"
 
-#: internal/convert/convert.go:166
+#: internal/convert/convert.go:168
 msgid "degrees Celsius"
 msgstr "摂氏"
 
-#: internal/convert/convert.go:167
+#: internal/convert/convert.go:169
 msgid "degrees Fahrenheit"
 msgstr "華氏"
 
-#: internal/convert/convert.go:168
+#: internal/convert/convert.go:170
 msgid "kelvin"
 msgstr "ケルビン"
 
-#: internal/convert/convert.go:277
+#: internal/convert/convert.go:279
 msgid "%s %s in %s"
 msgstr "%[1]s %[2]s で %[3]s"
 
-#: internal/convert/convert.go:309
+#: internal/convert/convert.go:311
 msgid "rates of %s"
 msgstr "%s 時点の為替レート"
 
-#: internal/convert/convert.go:311
+#: internal/convert/convert.go:313
 msgid "prices from Coinbase · %s"
 msgstr "Coinbase からの  価格 · %s"
 
-#: internal/convert/convert.go:315
+#: internal/convert/convert.go:317
 msgid "%s %s in %s · %s"
 msgstr "%[1]s %[2]s で %[3]s · %[4]s"
 

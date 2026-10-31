@@ -1,7 +1,9 @@
 // Package convert answers the launcher's quick questions: arithmetic
 // ("2^10 + 3"), units ("10 km to mi", "32 f in c", "5 kg") and currencies
 // ("100 usd to jpy"), with exchange rates from frankfurter.app (the
-// European Central Bank's reference rates, free and without a key).
+// European Central Bank's reference rates, free and without a key) or,
+// when it cannot be reached, the Bank of England's from allratestoday.com
+// (also free and without a key).
 package convert
 
 import (
@@ -363,10 +365,13 @@ func money(v float64) string {
 
 // The exchange rate services; tests point them elsewhere. Frankfurter has
 // the European Central Bank's rates for about thirty currencies, once a
-// working day; Coinbase's public rates add the cryptocurrencies.
+// working day; when it is down, allratestoday.com serves the Bank of
+// England's daily rates for about twenty, published independently of the
+// ECB; Coinbase's public rates add the cryptocurrencies.
 var (
-	RatesURL = "https://api.frankfurter.app/latest"
-	MoreURL  = "https://api.coinbase.com/v2/exchange-rates?currency=USD"
+	RatesURL    = "https://api.frankfurter.app/latest"
+	FallbackURL = "https://allratestoday.com/api/open/central-bank/boe"
+	MoreURL     = "https://api.coinbase.com/v2/exchange-rates?currency=USD"
 )
 
 // How long cached rates are used before fetching again: the ECB's change
@@ -377,9 +382,17 @@ const (
 )
 
 // FetchRates reads the latest rates from both services. One of them is
-// enough: without the ECB's, Coinbase's dollar rates stand in.
+// enough: without the ECB's, the Bank of England's or, failing those too,
+// Coinbase's dollar rates stand in.
 func FetchRates(ctx context.Context, c *http.Client) (*Rates, error) {
 	r, err := fetchECB(ctx, c)
+	if err != nil {
+		if r2, err2 := fetchBoE(ctx, c); err2 == nil {
+			r, err = r2, nil
+		} else {
+			err = errors.Join(err, err2)
+		}
+	}
 	more, merr := fetchCoinbase(ctx, c)
 	switch {
 	case err != nil && merr != nil:
@@ -451,6 +464,51 @@ func fetchECB(ctx context.Context, c *http.Client) (*Rates, error) {
 	}
 	r.Got = time.Now()
 	return &r, nil
+}
+
+// fetchBoE reads the Bank of England's rates from allratestoday.com, whose
+// table lists each pair as "1 base = value quote", and brings them to one
+// pound sterling.
+func fetchBoE(ctx context.Context, c *http.Client) (*Rates, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, FallbackURL, nil)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := c.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("%s: %s", req.URL.Host, resp.Status)
+	}
+	var body struct {
+		Date  string `json:"rate_date"`
+		Rates []struct {
+			Base, Quote, Type string
+			Value             float64
+		} `json:"rates"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
+		return nil, err
+	}
+	const home = "GBP"
+	r := &Rates{Base: home, Date: body.Date, Rates: map[string]float64{}, Got: time.Now()}
+	for _, q := range body.Rates {
+		if q.Type != "reference" || q.Value <= 0 {
+			continue
+		}
+		switch {
+		case q.Base == home && q.Quote != home:
+			r.Rates[q.Quote] = q.Value
+		case q.Quote == home && q.Base != home:
+			r.Rates[q.Base] = 1 / q.Value
+		}
+	}
+	if body.Date == "" || len(r.Rates) == 0 {
+		return nil, fmt.Errorf("%s: no rates", req.URL.Host)
+	}
+	return r, nil
 }
 
 // CachePath is where rates are kept between runs.
