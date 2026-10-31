@@ -21,11 +21,13 @@ import re
 import subprocess
 import sys
 import tomllib
+from zoneinfo import ZoneInfo
 
 FOLDERS = ["new", "blocked", "building", "review", "ready", "done", "stop"]
 ITEM = re.compile(r"^(\d{4})-([a-z0-9]+(?:-[a-z0-9]+)*)\.md$")
 SECTION = re.compile(r"^## (.+?) · (?:(plan) · )?(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\s*$")
 DONE_SHOWN = 12
+TZ = None  # factory.toml's timezone; the machine's own when unset
 
 
 def git(repo, *args):
@@ -117,7 +119,7 @@ def branch_link(repo, remote, base, branch):
 
 
 def when(t):
-    return dt.datetime.fromtimestamp(t).strftime("%Y-%m-%d %H:%M") if t else ""
+    return dt.datetime.fromtimestamp(t, TZ).strftime("%Y-%m-%d %H:%M") if t else ""
 
 
 def body_html(text):
@@ -131,6 +133,9 @@ def load(repo):
     cfg_path = os.path.join(repo, ".factory", "factory.toml")
     with open(cfg_path, "rb") as f:
         cfg = tomllib.load(f)
+    global TZ
+    if cfg.get("timezone"):
+        TZ = ZoneInfo(cfg["timezone"])
     owners = set(cfg.get("owners", []))
     base, remote = cfg.get("base", "master"), cfg.get("remote", "origin")
     items = []
@@ -212,7 +217,7 @@ a{color:var(--accent)}
 
 def render(cfg, name, items):
     owners = set(cfg.get("owners", []))
-    now = dt.datetime.now().strftime("%Y-%m-%d %H:%M")
+    now = dt.datetime.now(TZ).strftime("%Y-%m-%d %H:%M")
     by = {f: [] for f in FOLDERS}
     for it in items:
         by[it["folder"]].append(it)

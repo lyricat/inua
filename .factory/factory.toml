@@ -34,3 +34,6 @@ rules = [
 max_rounds = 3
 
 notify = "notify-send -a factory -i git-pull-request {title} {text}"
+
+# Section times and the board page (CI runs in UTC).
+timezone = "Asia/Tokyo"
