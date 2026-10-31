@@ -4682,20 +4682,21 @@ window.mail button.mail-assist-action:disabled image { color: @t2; }
    shadow (design/ui.md, Menus). The panel holds no fill of its own, so the
    card and each submenu's card stand as the separate menus they are. */
 .menu-panel {
-  padding: 0;
-  background: transparent;
-}
-.menu-col {
-  min-width: 232px;
   padding: 5px;
   border: 1px solid alpha(@line, 0.9);
   border-radius: 4px;
   background: @glass;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.32);
 }
-/* A submenu stands beside the menu it came from, with a gap as wide as the
-   cards' shadow, as a menu's submenu does. */
-.menu-col.menu-sub { margin-left: 10px; }
+/* One card holds the whole menu, its submenus included: a submenu is a
+   column of that card, separated by a hairline, not a second card with a
+   shadow of its own. */
+.menu-col { min-width: 232px; }
+.menu-col.menu-sub {
+  margin-left: 6px;
+  padding-left: 6px;
+  border-left: 1px solid alpha(@line, 0.6);
+}
 /* Items, as every menu's (design/ui.md): running text at 13.5 px, at least
    32 px tall, clear until the pointer is over them. */
 .menu-item {
@@ -4708,7 +4709,9 @@ window.mail button.mail-assist-action:disabled image { color: @t2; }
   box-shadow: none;
   color: @t0;
 }
-.menu-item label { font-size: 13.5px; font-weight: 400; }
+/* The bar names the application at 13 px; its menu is the same size,
+   or the menu reads as larger than the thing that opened it. */
+.menu-item label { font-size: 13px; font-weight: 400; }
 .menu-item:hover, .menu-item:focus-visible {
   border-color: alpha(@accent, 0.25);
   background: alpha(@accent, 0.07);

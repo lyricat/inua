@@ -392,11 +392,12 @@ func (d *drop) allocate(_ *gtk.Widget, _, _ int) {
 		d.x = d.right - 1 - d.w
 	} else {
 		room := d.radius + d.corner // the arc's
-		// Centred under the button; a card that is wider than the screen
-		// has room for starts at the button's left edge instead, so it
-		// hangs from the thing that opened it rather than at the screen's
-		// corner.
-		d.x = math.Round(max(d.left+room, min(d.at, min(d.under-d.w/2, d.right-room-d.w))))
+		// Centred under what opened it, inside the bar's island: the card
+		// only gives way when it would run off the island's end, and then
+		// it stops at the edge rather than at the button's own left side -
+		// a card that jumped to the button's left edge looked dropped at
+		// the screen's corner whenever the button sat far right.
+		d.x = math.Round(max(d.left+room, min(d.under-d.w/2, d.right-room-d.w)))
 	}
 	n := d.now()
 	at := d.anchor()
