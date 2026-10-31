@@ -14,11 +14,14 @@ any = ["Do you want to proceed?", "Do you want to make this edit", "Do you want 
 
 # Its spinner's row, over the todo list, the queued messages, the prompt
 # (as many rows as is typed), its mode and a status line: far up at
-# times. The row goes when the turn ends.
+# times. The row goes when the turn ends ("✻ Worked for 8m 7s", no "…").
+# A narrow pane cuts "esc to interrupt" off, so the row itself counts too:
+# a spinner mark, a word ending in "…", its timer.
 [[state]]
 state = "working"
 lines = 40
 any = ["esc to interrupt"]
+match = ['^[·✢✳✶✻✽*] \S+… \(\d']
 
 # Its turn over, waiting on agents it started in the background: their
 # count by the mode, under the prompt ("1 local agent", "3 background

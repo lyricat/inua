@@ -151,6 +151,7 @@ any = ["Do you want to proceed?", "❯ 1. Yes"]
 state = "working"
 lines = 40                       # its spinner may be far up, over its todos
 any = ["esc to interrupt"]
+match = ['^[·✢✳✶✻✽*] \S+… \(\d']   # regular expressions, for a row with no fixed text
 ```
 
 A wrapper can name its agent with `INUA_TERM_AGENT=<type>`.

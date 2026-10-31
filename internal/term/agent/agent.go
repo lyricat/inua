@@ -43,11 +43,14 @@ type Manifest struct {
 }
 
 // Rule is a state shown on the last Lines rows of the screen: when any of
-// Any appears there.
+// Any appears there, or a row matches any of Match (regular expressions,
+// for a row with no fixed text, such as a spinner's).
 type Rule struct {
 	State State    `toml:"state"`
 	Lines int      `toml:"lines"`
 	Any   []string `toml:"any"`
+	Match []string `toml:"match"`
+	match []*regexp.Regexp
 }
 
 //go:embed manifests/*.toml
@@ -117,6 +120,15 @@ func (s *Set) add(name string, b []byte) error {
 		}
 		if m.Color != "" && !colorRe.MatchString(m.Color) {
 			return fmt.Errorf("%s: %s: color %q: want #rrggbb", name, m.Type, m.Color)
+		}
+		for i := range m.States {
+			for _, expr := range m.States[i].Match {
+				re, err := regexp.Compile(expr)
+				if err != nil {
+					return fmt.Errorf("%s: %s: match %q: %w", name, m.Type, expr, err)
+				}
+				m.States[i].match = append(m.States[i].match, re)
+			}
 		}
 		if i := slices.IndexFunc(s.list, func(o Manifest) bool { return o.Type == m.Type }); i >= 0 {
 			s.list[i] = m
@@ -196,6 +208,11 @@ func (m *Manifest) State(screen []string) (State, string) {
 		for i, line := range rows {
 			for _, a := range r.Any {
 				if strings.Contains(line, a) {
+					return r.State, question(rows[:i+1])
+				}
+			}
+			for _, re := range r.match {
+				if re.MatchString(line) {
 					return r.State, question(rows[:i+1])
 				}
 			}

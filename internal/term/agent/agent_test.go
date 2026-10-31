@@ -62,6 +62,20 @@ func TestScreenState(t *testing.T) {
 	if st, _ := m.State(todos); st != Working {
 		t.Errorf("working screen with todos: %q", st)
 	}
+	// A narrow pane: the mode line's "esc to interrupt" is cut off; the
+	// spinner's row is all that says it works. Its row once the turn
+	// ended, and a tool's line with a timer, do not count.
+	narrow := []string{"  t/test.duckdb -parquet t/parquet… (15s)", "  (ctrl+b to run in background)", "",
+		"✻ Embellishing… (8m 7s · ↓ 48.9k tokens)", "  ⎿  Tip: Run tasks in the cloud", "", "────────────", "❯ ", "────────────",
+		"  ⏵⏵ auto mode on (shift+tab to cycle) · …"}
+	if st, _ := m.State(narrow); st != Working {
+		t.Errorf("working in a narrow pane: %q", st)
+	}
+	over := []string{"  t/test.duckdb -parquet t/parquet… (15s)", "", "✻ Worked for 8m 7s", "", "────────────", "❯ ", "────────────",
+		"  ⏵⏵ auto mode on (shift+tab to cycle)"}
+	if st, _ := m.State(over); st != "" {
+		t.Errorf("the turn over: %q", st)
+	}
 	blocked := []string{"╭──────────────────────────╮", "│ Bash command              │", "│   rm -rf build            │", "│ Do you want to proceed?   │", "│ ❯ 1. Yes                  │", "│   2. No                   │", "╰──────────────────────────╯"}
 	st, ask := m.State(blocked)
 	if st != Blocked || ask != "Do you want to proceed?" {
