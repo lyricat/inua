@@ -1,0 +1,41 @@
+# Publishes the factory board (.factory/, see .factory/factory.toml) as a
+# page on GitHub Pages whenever the board changes on master: a column per
+# folder, a card per item, and each item's thread and moves from git.
+# scripts/factory-board.py renders it; it needs only Python and git.
+name: Factory board
+
+on:
+  push:
+    branches: [master]
+    paths: [".factory/**", "scripts/factory-board.py", ".github/workflows/factory-board.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: factory-board
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # each item's moves come from the history
+      - name: Board
+        run: |
+          mkdir _site
+          python3 scripts/factory-board.py . -o _site/index.html
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deploy
+        uses: actions/deploy-pages@v4
