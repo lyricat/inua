@@ -5051,7 +5051,7 @@ msgstr "カードショップ"
 #: internal/gamesui/fortune_menu.go:172
 #: internal/lightui/clock.go:493
 #: internal/termui/guide.go:161
-#: internal/ui/voice_page.go:186
+#: internal/ui/voice_page.go:189
 #: ui/clock.ui:339
 #: ui/clock.ui:406
 #: ui/vm.ui:686
@@ -8463,7 +8463,7 @@ msgid "Pick a colour"
 msgstr "色を選ぶ"
 
 #: internal/hyprconf/keys.go:40
-#: internal/ui/voice_page.go:169
+#: internal/ui/voice_page.go:172
 #: ui/bar.ui:209
 #: ui/settings.ui:6335
 msgid "Dictation"
@@ -10028,7 +10028,7 @@ msgid "GRAPHICS"
 msgstr "グラフィックス"
 
 #: internal/lightui/sysmon.go:1005
-#: internal/ui/voice_page.go:200
+#: internal/ui/voice_page.go:203
 msgid "Card"
 msgstr "カード"
 
@@ -10342,7 +10342,7 @@ msgstr "使用中"
 #: internal/ui/settings_ai.go:272
 #: internal/ui/settings_keyring.go:572
 #: internal/ui/shortcuts.go:150
-#: internal/ui/voice_page.go:302
+#: internal/ui/voice_page.go:313
 msgid "None"
 msgstr "なし"
 
@@ -10694,7 +10694,7 @@ msgid "Replace the installed %s?"
 msgstr "インストール済みの %s を置き換えますか？"
 
 #: internal/lightui/workshop_manager.go:154
-#: internal/ui/voice_page.go:185
+#: internal/ui/voice_page.go:188
 #: ui/vm.ui:1283
 msgid "Install"
 msgstr "インストール"
@@ -11976,8 +11976,8 @@ msgid "SMTP server"
 msgstr "SMTP サーバー"
 
 #: internal/mailui/welcome.go:589
-#: internal/ui/voice_page.go:197
-#: internal/ui/voice_page.go:226
+#: internal/ui/voice_page.go:200
+#: internal/ui/voice_page.go:229
 msgid "Change"
 msgstr "変更"
 
@@ -12050,7 +12050,7 @@ msgid "Fetching your mail"
 msgstr "メールを取得しています"
 
 #: internal/mailui/welcome.go:726
-#: internal/ui/voice_page.go:363
+#: internal/ui/voice_page.go:377
 msgid "Ready"
 msgstr "準備完了"
 
@@ -13130,7 +13130,7 @@ msgstr "聞いています… クリックで停止"
 
 #: internal/shell/status.go:48
 #: internal/ui/dictation.go:156
-#: internal/ui/voice_page.go:361
+#: internal/ui/voice_page.go:375
 #: ui/assistant.ui:172
 msgid "Transcribing…"
 msgstr "文字にしています…"
@@ -16006,7 +16006,7 @@ msgid "the dialog could not be shown"
 msgstr "ダイアログを表示できませんでした"
 
 #: internal/ui/settings_keyring.go:383
-#: internal/ui/voice_page.go:357
+#: internal/ui/voice_page.go:371
 msgid "Looking…"
 msgstr "確認中…"
 
@@ -16265,7 +16265,7 @@ msgid "What apps record"
 msgstr "アプリが録音するもの"
 
 #: internal/ui/settings_sound.go:95
-#: internal/ui/voice_page.go:208
+#: internal/ui/voice_page.go:211
 msgid "Microphone"
 msgstr "マイク"
 
@@ -16287,7 +16287,7 @@ msgid "Test plays a sound on the left, then on the right"
 msgstr "「テスト」で左、次に右で音を鳴らします"
 
 #: internal/ui/settings_sound.go:167
-#: internal/ui/voice_page.go:438
+#: internal/ui/voice_page.go:452
 msgid "PipeWire has no microphone"
 msgstr "PipeWire にマイクがありません"
 
@@ -16585,7 +16585,7 @@ msgstr[0] "%d の言語"
 
 #: internal/ui/voice_models.go:237
 #: internal/ui/voice_models.go:266
-#: internal/ui/voice_page.go:451
+#: internal/ui/voice_page.go:465
 msgid "Downloading…"
 msgstr "ダウンロード中…"
 
@@ -16601,175 +16601,183 @@ msgstr "%s は使われていません: %s"
 msgid "voxtype's other engines did not come: %s"
 msgstr "voxtype のほかのエンジンを入手できませんでした: %s"
 
-#: internal/ui/voice_page.go:70
+#: internal/ui/voice_page.go:73
 msgid "At the top of your window"
 msgstr "ウィンドウの上部"
 
-#: internal/ui/voice_page.go:70
+#: internal/ui/voice_page.go:73
 msgid "In the screen's corner"
 msgstr "画面の隅"
 
-#: internal/ui/voice_page.go:70
+#: internal/ui/voice_page.go:73
 msgid "Off: the bar's microphone alone"
 msgstr "オフ: バーのマイクだけ"
 
-#: internal/ui/voice_page.go:168
+#: internal/ui/voice_page.go:171
 msgid "DICTATION"
 msgstr "ディクテーション"
 
-#: internal/ui/voice_page.go:168
+#: internal/ui/voice_page.go:171
 msgid "Talk, and the words are typed where you are"
 msgstr "話すと、その言葉がいる場所に入力されます"
 
-#: internal/ui/voice_page.go:169
+#: internal/ui/voice_page.go:172
 msgid "A microphone in the bar, and a shortcut to talk"
 msgstr "バーのマイクと、話すためのショートカット"
 
-#: internal/ui/voice_page.go:184
+#: internal/ui/voice_page.go:187
 msgid "voxtype.io"
 msgstr "voxtype.io"
 
-#: internal/ui/voice_page.go:187
+#: internal/ui/voice_page.go:190
 msgid "AI Settings"
 msgstr "AI 設定"
 
-#: internal/ui/voice_page.go:190
+#: internal/ui/voice_page.go:193
 msgid "Shortcut"
 msgstr "ショートカット"
 
-#: internal/ui/voice_page.go:195
+#: internal/ui/voice_page.go:198
 msgid "Hold"
 msgstr "長押し"
 
-#: internal/ui/voice_page.go:195
+#: internal/ui/voice_page.go:198
 msgid "Press"
 msgstr "押す"
 
-#: internal/ui/voice_page.go:200
+#: internal/ui/voice_page.go:203
 msgid "The waveform as you talk, then the words"
 msgstr "話している間は波形、そのあと言葉"
 
-#: internal/ui/voice_page.go:217
+#: internal/ui/voice_page.go:220
 msgid "ENGINE"
 msgstr "エンジン"
 
-#: internal/ui/voice_page.go:217
+#: internal/ui/voice_page.go:220
 msgid "What turns your speech into text"
 msgstr "あなたの声を文字にするもの"
 
-#: internal/ui/voice_page.go:219
+#: internal/ui/voice_page.go:222
 msgid "Runs"
 msgstr "実行場所"
 
-#: internal/ui/voice_page.go:221
+#: internal/ui/voice_page.go:224
 msgid "On this computer"
 msgstr "このコンピューターで"
 
-#: internal/ui/voice_page.go:221
+#: internal/ui/voice_page.go:224
 msgid "With an AI profile"
 msgstr "AI プロファイルで"
 
-#: internal/ui/voice_page.go:224
+#: internal/ui/voice_page.go:227
 msgid "Profile"
 msgstr "プロファイル"
 
-#: internal/ui/voice_page.go:311
+#: internal/ui/voice_page.go:232
+msgid "Typing"
+msgstr ""
+
+#: internal/ui/voice_page.go:322
 msgid "Hold it to talk; Escape drops what you said"
 msgstr "押している間に話す。Esc で話した内容を取り消し"
 
-#: internal/ui/voice_page.go:313
+#: internal/ui/voice_page.go:324
 msgid "Press it to start and again to end; Escape drops what you said"
 msgstr "押して開始、もう一度押して終了。Esc で話した内容を取り消し"
 
-#: internal/ui/voice_page.go:320
+#: internal/ui/voice_page.go:331
 msgid "The recording goes to the AI profile's provider"
 msgstr "録音は AI プロファイルのプロバイダーに送られます"
 
-#: internal/ui/voice_page.go:322
+#: internal/ui/voice_page.go:333
 msgid "voxtype turns it into text here; the recording stays on this computer"
 msgstr "voxtype がここで文字にします。録音はこのコンピューターから出ません"
 
-#: internal/ui/voice_page.go:344
+#: internal/ui/voice_page.go:343
+msgid "The words are pasted where you are, and your clipboard put back"
+msgstr ""
+
+#: internal/ui/voice_page.go:358
 msgid "Installing voxtype…"
 msgstr "voxtype をインストール中…"
 
-#: internal/ui/voice_page.go:346
+#: internal/ui/voice_page.go:360
 msgid "No AI profile turns speech into text"
 msgstr "音声を文字にする AI プロファイルがありません"
 
-#: internal/ui/voice_page.go:347
+#: internal/ui/voice_page.go:361
 msgid "Turn on Voice for a profile in Settings → AI, and choose it for Voice input"
 msgstr "「設定」→「AI」でプロファイルの「音声」をオンにし、「音声入力」に選んでください"
 
-#: internal/ui/voice_page.go:349
+#: internal/ui/voice_page.go:363
 msgid "pw-cat is not installed"
 msgstr "pw-cat がインストールされていません"
 
-#: internal/ui/voice_page.go:350
+#: internal/ui/voice_page.go:364
 msgid "Dictation records with PipeWire's pw-cat: %s"
 msgstr "ディクテーションは PipeWire の pw-cat で録音します: %s"
 
-#: internal/ui/voice_page.go:352
+#: internal/ui/voice_page.go:366
 msgid "voxtype is not installed"
 msgstr "voxtype がインストールされていません"
 
-#: internal/ui/voice_page.go:353
+#: internal/ui/voice_page.go:367
 msgid "Install downloads voxtype %s and a speech model for your language from GitHub, about %d MB, and checks them before they run"
 msgstr "「インストール」は voxtype %s とあなたの言語の音声モデルを GitHub からダウンロードし（約 %d MB）、実行前に確認します"
 
-#: internal/ui/voice_page.go:355
+#: internal/ui/voice_page.go:369
 msgid "voxtype is not running"
 msgstr "voxtype が動いていません"
 
-#: internal/ui/voice_page.go:355
+#: internal/ui/voice_page.go:369
 msgid "It is installed; its service is stopped"
 msgstr "インストールされています。サービスは停止中です"
 
-#: internal/ui/voice_page.go:359
+#: internal/ui/voice_page.go:373
 msgid "Listening…"
 msgstr "聞いています…"
 
-#: internal/ui/voice_page.go:359
+#: internal/ui/voice_page.go:373
 msgid "Escape drops what you said"
 msgstr "Esc で話した内容を取り消し"
 
-#: internal/ui/voice_page.go:367
+#: internal/ui/voice_page.go:381
 msgid "Click the microphone in the bar, and talk"
 msgstr "バーのマイクをクリックして話す"
 
-#: internal/ui/voice_page.go:369
+#: internal/ui/voice_page.go:383
 msgid "Hold %s, or click the microphone in the bar, and talk"
 msgstr "%s を押したまま、またはバーのマイクをクリックして話す"
 
-#: internal/ui/voice_page.go:371
+#: internal/ui/voice_page.go:385
 msgid "Press %s, or click the microphone in the bar, and talk"
 msgstr "%s を押すか、バーのマイクをクリックして話す"
 
-#: internal/ui/voice_page.go:440
+#: internal/ui/voice_page.go:454
 msgid "The system's input, which dictation records from"
 msgstr "システムの入力。ディクテーションはここから録音します"
 
-#: internal/ui/voice_page.go:460
+#: internal/ui/voice_page.go:474
 msgid "Downloading voxtype %s… %s"
 msgstr "voxtype %s をダウンロード中… %s"
 
-#: internal/ui/voice_page.go:462
+#: internal/ui/voice_page.go:476
 msgid "Downloading a speech model… %s"
 msgstr "音声モデルをダウンロード中… %s"
 
-#: internal/ui/voice_page.go:464
+#: internal/ui/voice_page.go:478
 msgid "Downloading a speech model…"
 msgstr "音声モデルをダウンロード中…"
 
-#: internal/ui/voice_page.go:466
+#: internal/ui/voice_page.go:480
 msgid "Starting its service…"
 msgstr "サービスを起動中…"
 
-#: internal/ui/voice_page.go:476
+#: internal/ui/voice_page.go:490
 msgid "voxtype was not installed: %s"
 msgstr "voxtype をインストールできませんでした: %s"
 
-#: internal/ui/voice_page.go:494
+#: internal/ui/voice_page.go:508
 msgid "voxtype did not start: %s"
 msgstr "voxtype が起動しませんでした: %s"
 

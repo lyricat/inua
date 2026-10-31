@@ -15,7 +15,7 @@ import (
 func Format(c Config) string {
 	return fmt.Sprintf(template,
 		q(c.Language),
-		c.Bar.Enable, q(c.Bar.Density), q(c.Bar.Clock), q(c.Bar.Workspaces), c.Bar.Title, c.Bar.Tray, c.Bar.Pass, c.Bar.Menu, list(c.Bar.MenuOff), list(c.Bar.MenuOn),
+		c.Bar.Enable, q(c.Bar.Density), q(c.Bar.Clock), q(c.Bar.Workspaces), c.Bar.Title, c.Bar.Tray, c.Bar.Pass, c.Bar.Menu,
 		q(c.Launcher.Mode), q(c.Launcher.Terminal), q(c.Launcher.Search), quicklinks(c.Launcher.Quicklinks), c.Overview.MRU, c.Overview.PerMonitor,
 		q(c.Control.Lock), q(c.Control.Screenshot),
 		q(c.Screenshot.Folder), c.Screenshot.Copy, q(c.Screenshot.Recordings),
@@ -240,12 +240,6 @@ pass = %t
 # the bar's right end while this is on.
 menu = %t
 
-# Per application: the ones whose menu the bar leaves alone, and the ones it
-# still shows while menu is off. A desktop ID ("org.mozilla.firefox") or a
-# window class ("firefox").
-menu_off = %s
-menu_on = %s
-
 [launcher]
 # What `+"`inua call launcher toggle`"+` opens: "apps" or "windows".
 # (`+"`launcher apps`"+` and `+"`launcher windows`"+` open a mode directly.)
@@ -308,10 +302,10 @@ position = %s
 # built-in theme it names.
 theme = %s
 
-# The apps' colour theme, one of the above: inua's apps (the settings,
-# Files, the terminal, the viewer …) and whether other apps are asked to be
-# light or dark. "" (the default) follows theme; the bar, dock, launcher
-# and control center keep theme.
+# The apps' colour theme, one of the above: inua's apps (Files, the
+# terminal, the viewer …) and whether other apps are asked to be light or
+# dark. "" (the default) follows theme; the bar, dock, launcher, control
+# center and settings keep theme.
 app_theme = %s
 
 # How inua draws apps: inua's own and the others it draws, each as the

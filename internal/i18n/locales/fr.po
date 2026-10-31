@@ -5082,7 +5082,7 @@ msgstr "Boutique de cartes"
 #: internal/gamesui/fortune_menu.go:172
 #: internal/lightui/clock.go:493
 #: internal/termui/guide.go:161
-#: internal/ui/voice_page.go:186
+#: internal/ui/voice_page.go:189
 #: ui/clock.ui:339
 #: ui/clock.ui:406
 #: ui/vm.ui:686
@@ -8500,7 +8500,7 @@ msgid "Pick a colour"
 msgstr "Choisissez une couleur"
 
 #: internal/hyprconf/keys.go:40
-#: internal/ui/voice_page.go:169
+#: internal/ui/voice_page.go:172
 #: ui/bar.ui:209
 #: ui/settings.ui:6335
 msgid "Dictation"
@@ -10081,7 +10081,7 @@ msgid "GRAPHICS"
 msgstr "GRAPHIQUES"
 
 #: internal/lightui/sysmon.go:1005
-#: internal/ui/voice_page.go:200
+#: internal/ui/voice_page.go:203
 msgid "Card"
 msgstr "Carte"
 
@@ -10395,7 +10395,7 @@ msgstr "EN UTILISATION"
 #: internal/ui/settings_ai.go:272
 #: internal/ui/settings_keyring.go:572
 #: internal/ui/shortcuts.go:150
-#: internal/ui/voice_page.go:302
+#: internal/ui/voice_page.go:313
 msgid "None"
 msgstr "Aucun"
 
@@ -10747,7 +10747,7 @@ msgid "Replace the installed %s?"
 msgstr "Remplacer %s installée ?"
 
 #: internal/lightui/workshop_manager.go:154
-#: internal/ui/voice_page.go:185
+#: internal/ui/voice_page.go:188
 #: ui/vm.ui:1283
 msgid "Install"
 msgstr "Installer"
@@ -12038,8 +12038,8 @@ msgid "SMTP server"
 msgstr "Serveur SMTP"
 
 #: internal/mailui/welcome.go:589
-#: internal/ui/voice_page.go:197
-#: internal/ui/voice_page.go:226
+#: internal/ui/voice_page.go:200
+#: internal/ui/voice_page.go:229
 msgid "Change"
 msgstr "Modifier"
 
@@ -12115,7 +12115,7 @@ msgid "Fetching your mail"
 msgstr "Récupération de votre courrier"
 
 #: internal/mailui/welcome.go:726
-#: internal/ui/voice_page.go:363
+#: internal/ui/voice_page.go:377
 msgid "Ready"
 msgstr "Prêt"
 
@@ -13201,7 +13201,7 @@ msgstr "À l'écoute… Cliquez pour arrêter"
 
 #: internal/shell/status.go:48
 #: internal/ui/dictation.go:156
-#: internal/ui/voice_page.go:361
+#: internal/ui/voice_page.go:375
 #: ui/assistant.ui:172
 msgid "Transcribing…"
 msgstr "Transcription…"
@@ -16094,7 +16094,7 @@ msgid "the dialog could not be shown"
 msgstr "la boîte de dialogue n’a pas pu s’afficher"
 
 #: internal/ui/settings_keyring.go:383
-#: internal/ui/voice_page.go:357
+#: internal/ui/voice_page.go:371
 msgid "Looking…"
 msgstr "Vérification…"
 
@@ -16357,7 +16357,7 @@ msgid "What apps record"
 msgstr "Ce que les apps enregistrent"
 
 #: internal/ui/settings_sound.go:95
-#: internal/ui/voice_page.go:208
+#: internal/ui/voice_page.go:211
 msgid "Microphone"
 msgstr "Micro"
 
@@ -16379,7 +16379,7 @@ msgid "Test plays a sound on the left, then on the right"
 msgstr "Tester joue un son à gauche, puis à droite"
 
 #: internal/ui/settings_sound.go:167
-#: internal/ui/voice_page.go:438
+#: internal/ui/voice_page.go:452
 msgid "PipeWire has no microphone"
 msgstr "PipeWire n'a pas de micro"
 
@@ -16680,7 +16680,7 @@ msgstr[1] "%d langues"
 
 #: internal/ui/voice_models.go:237
 #: internal/ui/voice_models.go:266
-#: internal/ui/voice_page.go:451
+#: internal/ui/voice_page.go:465
 msgid "Downloading…"
 msgstr "Téléchargement…"
 
@@ -16696,175 +16696,183 @@ msgstr "%s n'est pas utilisé : %s"
 msgid "voxtype's other engines did not come: %s"
 msgstr "Les autres moteurs de voxtype ne sont pas venus : %s"
 
-#: internal/ui/voice_page.go:70
+#: internal/ui/voice_page.go:73
 msgid "At the top of your window"
 msgstr "En haut de votre fenêtre"
 
-#: internal/ui/voice_page.go:70
+#: internal/ui/voice_page.go:73
 msgid "In the screen's corner"
 msgstr "Dans le coin de l'écran"
 
-#: internal/ui/voice_page.go:70
+#: internal/ui/voice_page.go:73
 msgid "Off: the bar's microphone alone"
 msgstr "Désactivée : le micro de la barre seul"
 
-#: internal/ui/voice_page.go:168
+#: internal/ui/voice_page.go:171
 msgid "DICTATION"
 msgstr "DICTÉE"
 
-#: internal/ui/voice_page.go:168
+#: internal/ui/voice_page.go:171
 msgid "Talk, and the words are typed where you are"
 msgstr "Parlez, et les mots sont tapés là où vous êtes"
 
-#: internal/ui/voice_page.go:169
+#: internal/ui/voice_page.go:172
 msgid "A microphone in the bar, and a shortcut to talk"
 msgstr "Un micro dans la barre, et un raccourci pour parler"
 
-#: internal/ui/voice_page.go:184
+#: internal/ui/voice_page.go:187
 msgid "voxtype.io"
 msgstr "voxtype.io"
 
-#: internal/ui/voice_page.go:187
+#: internal/ui/voice_page.go:190
 msgid "AI Settings"
 msgstr "Paramètres de l'IA"
 
-#: internal/ui/voice_page.go:190
+#: internal/ui/voice_page.go:193
 msgid "Shortcut"
 msgstr "Raccourci"
 
-#: internal/ui/voice_page.go:195
+#: internal/ui/voice_page.go:198
 msgid "Hold"
 msgstr "Maintenir"
 
-#: internal/ui/voice_page.go:195
+#: internal/ui/voice_page.go:198
 msgid "Press"
 msgstr "Appuyer"
 
-#: internal/ui/voice_page.go:200
+#: internal/ui/voice_page.go:203
 msgid "The waveform as you talk, then the words"
 msgstr "La forme d'onde pendant que vous parlez, puis les mots"
 
-#: internal/ui/voice_page.go:217
+#: internal/ui/voice_page.go:220
 msgid "ENGINE"
 msgstr "MOTEUR"
 
-#: internal/ui/voice_page.go:217
+#: internal/ui/voice_page.go:220
 msgid "What turns your speech into text"
 msgstr "Ce qui transforme votre voix en texte"
 
-#: internal/ui/voice_page.go:219
+#: internal/ui/voice_page.go:222
 msgid "Runs"
 msgstr "Fonctionne"
 
-#: internal/ui/voice_page.go:221
+#: internal/ui/voice_page.go:224
 msgid "On this computer"
 msgstr "Sur cet ordinateur"
 
-#: internal/ui/voice_page.go:221
+#: internal/ui/voice_page.go:224
 msgid "With an AI profile"
 msgstr "Avec un profil d'IA"
 
-#: internal/ui/voice_page.go:224
+#: internal/ui/voice_page.go:227
 msgid "Profile"
 msgstr "Profil"
 
-#: internal/ui/voice_page.go:311
+#: internal/ui/voice_page.go:232
+msgid "Typing"
+msgstr ""
+
+#: internal/ui/voice_page.go:322
 msgid "Hold it to talk; Escape drops what you said"
 msgstr "Maintenez-le pour parler ; Échap abandonne ce que vous avez dit"
 
-#: internal/ui/voice_page.go:313
+#: internal/ui/voice_page.go:324
 msgid "Press it to start and again to end; Escape drops what you said"
 msgstr "Appuyez pour commencer et de nouveau pour finir ; Échap abandonne ce que vous avez dit"
 
-#: internal/ui/voice_page.go:320
+#: internal/ui/voice_page.go:331
 msgid "The recording goes to the AI profile's provider"
 msgstr "L'enregistrement part chez le fournisseur du profil d'IA"
 
-#: internal/ui/voice_page.go:322
+#: internal/ui/voice_page.go:333
 msgid "voxtype turns it into text here; the recording stays on this computer"
 msgstr "voxtype le transforme en texte ici ; l'enregistrement reste sur cet ordinateur"
 
-#: internal/ui/voice_page.go:344
+#: internal/ui/voice_page.go:343
+msgid "The words are pasted where you are, and your clipboard put back"
+msgstr ""
+
+#: internal/ui/voice_page.go:358
 msgid "Installing voxtype…"
 msgstr "Installation de voxtype…"
 
-#: internal/ui/voice_page.go:346
+#: internal/ui/voice_page.go:360
 msgid "No AI profile turns speech into text"
 msgstr "Aucun profil d'IA ne transforme la voix en texte"
 
-#: internal/ui/voice_page.go:347
+#: internal/ui/voice_page.go:361
 msgid "Turn on Voice for a profile in Settings → AI, and choose it for Voice input"
 msgstr "Activez Voix pour un profil dans Paramètres → AI, et choisissez-le pour Saisie vocale"
 
-#: internal/ui/voice_page.go:349
+#: internal/ui/voice_page.go:363
 msgid "pw-cat is not installed"
 msgstr "pw-cat n'est pas installé"
 
-#: internal/ui/voice_page.go:350
+#: internal/ui/voice_page.go:364
 msgid "Dictation records with PipeWire's pw-cat: %s"
 msgstr "La dictée enregistre avec pw-cat, de PipeWire : %s"
 
-#: internal/ui/voice_page.go:352
+#: internal/ui/voice_page.go:366
 msgid "voxtype is not installed"
 msgstr "voxtype n'est pas installé"
 
-#: internal/ui/voice_page.go:353
+#: internal/ui/voice_page.go:367
 msgid "Install downloads voxtype %s and a speech model for your language from GitHub, about %d MB, and checks them before they run"
 msgstr "Installer télécharge voxtype %s et un modèle vocal pour votre langue depuis GitHub, environ %d Mo, et les vérifie avant qu'ils ne tournent"
 
-#: internal/ui/voice_page.go:355
+#: internal/ui/voice_page.go:369
 msgid "voxtype is not running"
 msgstr "voxtype ne tourne pas"
 
-#: internal/ui/voice_page.go:355
+#: internal/ui/voice_page.go:369
 msgid "It is installed; its service is stopped"
 msgstr "Il est installé ; son service est arrêté"
 
-#: internal/ui/voice_page.go:359
+#: internal/ui/voice_page.go:373
 msgid "Listening…"
 msgstr "À l'écoute…"
 
-#: internal/ui/voice_page.go:359
+#: internal/ui/voice_page.go:373
 msgid "Escape drops what you said"
 msgstr "Échap abandonne ce que vous avez dit"
 
-#: internal/ui/voice_page.go:367
+#: internal/ui/voice_page.go:381
 msgid "Click the microphone in the bar, and talk"
 msgstr "Cliquez sur le micro de la barre, et parlez"
 
-#: internal/ui/voice_page.go:369
+#: internal/ui/voice_page.go:383
 msgid "Hold %s, or click the microphone in the bar, and talk"
 msgstr "Maintenez %s, ou cliquez sur le micro de la barre, et parlez"
 
-#: internal/ui/voice_page.go:371
+#: internal/ui/voice_page.go:385
 msgid "Press %s, or click the microphone in the bar, and talk"
 msgstr "Appuyez sur %s, ou cliquez sur le micro de la barre, et parlez"
 
-#: internal/ui/voice_page.go:440
+#: internal/ui/voice_page.go:454
 msgid "The system's input, which dictation records from"
 msgstr "L'entrée du système, d'où la dictée enregistre"
 
-#: internal/ui/voice_page.go:460
+#: internal/ui/voice_page.go:474
 msgid "Downloading voxtype %s… %s"
 msgstr "Téléchargement de voxtype %s… %s"
 
-#: internal/ui/voice_page.go:462
+#: internal/ui/voice_page.go:476
 msgid "Downloading a speech model… %s"
 msgstr "Téléchargement d'un modèle vocal… %s"
 
-#: internal/ui/voice_page.go:464
+#: internal/ui/voice_page.go:478
 msgid "Downloading a speech model…"
 msgstr "Téléchargement d'un modèle vocal…"
 
-#: internal/ui/voice_page.go:466
+#: internal/ui/voice_page.go:480
 msgid "Starting its service…"
 msgstr "Démarrage de son service…"
 
-#: internal/ui/voice_page.go:476
+#: internal/ui/voice_page.go:490
 msgid "voxtype was not installed: %s"
 msgstr "voxtype n'a pas été installé : %s"
 
-#: internal/ui/voice_page.go:494
+#: internal/ui/voice_page.go:508
 msgid "voxtype did not start: %s"
 msgstr "voxtype n'a pas démarré : %s"
 
