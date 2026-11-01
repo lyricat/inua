@@ -1,6 +1,6 @@
 ---
 branch: factory/52-boe-rate-fallback
-round: 0
+round: 1
 ---
 # Bank of England rates when Frankfurter is down
 
@@ -50,3 +50,6 @@ Built on factory/52-boe-rate-fallback: PR #52's commit taken over by cherry-pick
 
 Not checked: the launcher by eye with Frankfurter blocked.
 For review: the fallback is allratestoday.com's open endpoint, and the PR's author works there; the README and privacy page name it.
+
+## factory · 2026-11-01 15:39
+Round 1, from the owner's review: 417c682 gives each rate request its own 5 s limit (ServiceTimeout), so a Frankfurter that hangs no longer uses up the launcher's 15 s before the Bank of England and Coinbase are asked. New test: TestHangingService. make test passes.
