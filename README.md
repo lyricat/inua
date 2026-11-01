@@ -178,8 +178,9 @@ the terminal's agent marks from [LobeHub](https://github.com/lobehub/lobe-icons)
 (MIT, `ui/icons/LICENSE-lobehub`; the marks remain their owners' trademarks).
 Terminal engine: [libghostty-vt](https://github.com/ghostty-org/ghostty) (MIT).
 Emoji names from Unicode's data and CLDR (`internal/emoji/LICENSE-UNICODE`).
-Exchange rates from the European Central Bank (through Frankfurter) and
-Coinbase. Built on [Hyprland](https://hypr.land), [GTK](https://gtk.org),
+Exchange rates from the European Central Bank (through Frankfurter), the
+Bank of England (through [AllRatesToday](https://allratestoday.com), when
+Frankfurter is down) and Coinbase. Built on [Hyprland](https://hypr.land), [GTK](https://gtk.org),
 [puregotk](https://codeberg.org/puregotk/puregotk),
 [gtk4-layer-shell](https://github.com/wmww/gtk4-layer-shell) and
 [godbus](https://github.com/godbus/dbus).
