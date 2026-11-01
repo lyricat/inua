@@ -573,6 +573,9 @@ func (s *shellUI) bindDockHandlers() {
 		if !ok {
 			return
 		}
+		if s.overview.st.Open {
+			s.closeOverview(false)
+		}
 		launch, addr := shell.DockTarget(it)
 		switch {
 		case launch:
