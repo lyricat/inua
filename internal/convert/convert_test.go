@@ -147,6 +147,23 @@ func TestHangingService(t *testing.T) {
 	}
 }
 
+func TestSkipServices(t *testing.T) {
+	var ecbDown, cbDown, boeUp bool
+	srv := rateServersWithBoE(t, &ecbDown, &cbDown, &boeUp)
+	boeUp = true
+	for skip, base := range map[string]string{"": "EUR", "ecb": "GBP", "ecb, boe": "USD"} {
+		t.Setenv("INUA_RATES_SKIP", skip)
+		r, err := FetchRates(context.Background(), srv.Client())
+		if err != nil || r.Base != base {
+			t.Errorf("INUA_RATES_SKIP=%q: %+v %v", skip, r, err)
+		}
+	}
+	t.Setenv("INUA_RATES_SKIP", "ecb,boe,coinbase")
+	if _, err := FetchRates(context.Background(), srv.Client()); err == nil {
+		t.Error("every service skipped: no error")
+	}
+}
+
 func TestCrypto(t *testing.T) {
 	var ecbDown, cbDown bool
 	srv := rateServers(t, &ecbDown, &cbDown)

@@ -415,8 +415,23 @@ func FetchRates(ctx context.Context, c *http.Client) (*Rates, error) {
 	return r, nil
 }
 
+// skipped fails a service named in $INUA_RATES_SKIP ("ecb", "boe",
+// "coinbase", comma-separated), to try the fallbacks without taking the
+// network away.
+func skipped(service string) error {
+	for _, s := range strings.Split(os.Getenv("INUA_RATES_SKIP"), ",") {
+		if strings.TrimSpace(s) == service {
+			return fmt.Errorf("%s: skipped by INUA_RATES_SKIP", service)
+		}
+	}
+	return nil
+}
+
 // fetchCoinbase reads Coinbase's rates per US dollar.
 func fetchCoinbase(ctx context.Context, c *http.Client) (map[string]float64, error) {
+	if err := skipped("coinbase"); err != nil {
+		return nil, err
+	}
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, MoreURL, nil)
 	if err != nil {
 		return nil, err
@@ -452,6 +467,9 @@ func fetchCoinbase(ctx context.Context, c *http.Client) (map[string]float64, err
 
 // fetchECB reads the European Central Bank's rates (from Frankfurter).
 func fetchECB(ctx context.Context, c *http.Client) (*Rates, error) {
+	if err := skipped("ecb"); err != nil {
+		return nil, err
+	}
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, RatesURL, nil)
 	if err != nil {
 		return nil, err
@@ -479,6 +497,9 @@ func fetchECB(ctx context.Context, c *http.Client) (*Rates, error) {
 // table lists each pair as "1 base = value quote", and brings them to one
 // pound sterling.
 func fetchBoE(ctx context.Context, c *http.Client) (*Rates, error) {
+	if err := skipped("boe"); err != nil {
+		return nil, err
+	}
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, FallbackURL, nil)
 	if err != nil {
 		return nil, err
