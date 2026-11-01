@@ -238,9 +238,19 @@ func (c *Client) Quit() error {
 // (Message.Cols and Rows in an event), in the output's order.
 func (c *Client) TellsSizes() bool { return c.sizes }
 
-// ClosePane ends a pane's program and forgets the pane.
+// ClosePane closes an idle shell or exited pane. Running or unknown
+// programs return ErrCloseConfirmation without changing the pane.
 func (c *Client) ClosePane(pane int) error {
-	_, err := c.call(Message{Type: MsgClose, Pane: pane})
+	r, err := c.call(Message{Type: MsgClose, Pane: pane})
+	if r.Error == ErrCloseConfirmation.Error() {
+		return ErrCloseConfirmation
+	}
+	return err
+}
+
+// ConfirmClosePane closes a pane after explicit user confirmation.
+func (c *Client) ConfirmClosePane(pane int) error {
+	_, err := c.call(Message{Type: MsgClose, Pane: pane, Confirm: true})
 	return err
 }
 
