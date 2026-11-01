@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"math"
 	"slices"
 	"strings"
 	"sync"
@@ -36,7 +37,10 @@ type BluetoothDevice struct {
 	Paired    bool
 	Trusted   bool
 	Connected bool
-	Battery   int // percent, -1 for none reported
+	// Battery is the level in percent, from BlueZ or else from the UPower
+	// device with the device's address (a HID device's, which the kernel
+	// reports); -1 for none reported.
+	Battery int
 }
 
 // BluetoothPrompt is what BlueZ asks the user while pairing, through the
@@ -103,23 +107,36 @@ const (
 	pairLimit    = 90 * time.Second
 )
 
+// upowerDevices is where UPower's devices are.
+const upowerDevices = dbus.ObjectPath("/org/freedesktop/UPower/devices")
+
 func NewBluetooth(dial Dialer) *Bluetooth {
-	b := &Bluetooth{src: source{dial: dial, name: bluezName, ignore: signalOnly, matches: [][]dbus.MatchOption{
+	b := &Bluetooth{src: source{dial: dial, name: bluezName, ignore: unshown, matches: [][]dbus.MatchOption{
 		{dbus.WithMatchSender(bluezName), dbus.WithMatchInterface(propsIface)},
 		{dbus.WithMatchSender(bluezName), dbus.WithMatchInterface("org.freedesktop.DBus.ObjectManager")},
+		// UPower's devices, for the levels BlueZ does not have.
+		{dbus.WithMatchSender(upowerName), dbus.WithMatchPathNamespace(upowerDevices), dbus.WithMatchInterface(propsIface)},
+		{dbus.WithMatchSender(upowerName), dbus.WithMatchInterface(upowerName)},
+		{dbus.WithMatchSender("org.freedesktop.DBus"), dbus.WithMatchMember("NameOwnerChanged"), dbus.WithMatchArg(0, upowerName)},
 	}}}
 	b.agent.b = b
 	return b
 }
 
-// signalOnly reports a change of a device's signal alone: while searching
-// it changes every moment, and nothing shown depends on it.
-func signalOnly(sig *dbus.Signal) bool {
+// unshown reports a change nothing shown depends on: a device's signal
+// alone, which changes every moment while searching, or a UPower device's
+// properties other than its level (a laptop battery's every few seconds).
+func unshown(sig *dbus.Signal) bool {
 	if sig.Name != propsIface+".PropertiesChanged" || len(sig.Body) < 3 {
 		return false
 	}
 	changed, _ := sig.Body[1].(map[string]dbus.Variant)
 	invalidated, _ := sig.Body[2].([]string)
+	if iface, _ := sig.Body[0].(string); iface == upowerName+".Device" {
+		_, level := changed["Percentage"]
+		_, serial := changed["Serial"]
+		return !level && !serial && !slices.Contains(invalidated, "Percentage") && !slices.Contains(invalidated, "Serial")
+	}
 	for name := range changed {
 		if name != "RSSI" && name != "TxPower" && name != "ManufacturerData" && name != "ServiceData" {
 			return false
@@ -205,6 +222,21 @@ func readBluetooth(ctx context.Context, conn *dbus.Conn) (BluetoothState, dbus.O
 			s.Connected = append(s.Connected, value[string](d, "Alias"))
 		}
 	}
+	// The connected devices without BlueZ's level take UPower's.
+	var levels map[string]int
+	for i, dev := range s.Devices {
+		if !dev.Connected || dev.Battery >= 0 {
+			continue
+		}
+		if levels == nil {
+			levels = upowerLevels(ctx, conn)
+		}
+		if l, ok := levels[strings.ToLower(dev.Address)]; ok {
+			s.Devices[i].Battery = l
+			dev.Battery = l
+			devices[dbus.ObjectPath(dev.Path)] = dev
+		}
+	}
 	slices.Sort(s.Connected)
 	slices.SortStableFunc(s.Devices, func(a, b BluetoothDevice) int {
 		if a.Paired != b.Paired {
@@ -216,6 +248,28 @@ func readBluetooth(ctx context.Context, conn *dbus.Conn) (BluetoothState, dbus.O
 		return strings.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))
 	})
 	return s, adapter, devices
+}
+
+// upowerLevels are the levels of UPower's devices by serial, lower case:
+// a Bluetooth HID device's serial is its address. Empty without UPower.
+func upowerLevels(ctx context.Context, conn *dbus.Conn) map[string]int {
+	levels := map[string]int{}
+	var paths []dbus.ObjectPath
+	if err := conn.Object(upowerName, "/org/freedesktop/UPower").CallWithContext(ctx, upowerName+".EnumerateDevices", 0).Store(&paths); err != nil {
+		return levels
+	}
+	for _, p := range paths {
+		props, err := getAll(ctx, conn.Object(upowerName, p), upowerName+".Device")
+		if err != nil {
+			continue
+		}
+		serial := strings.ToLower(value[string](props, "Serial"))
+		if _, ok := props["Percentage"]; !ok || serial == "" {
+			continue
+		}
+		levels[serial] = int(math.Round(value[float64](props, "Percentage")))
+	}
+	return levels
 }
 
 // adapterPath is the adapter, or an error without one.
