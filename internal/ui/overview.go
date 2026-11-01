@@ -910,7 +910,6 @@ func (s *shellUI) buildOverview(o *workspaceOverview) {
 	o.content.SetHexpand(true)
 	o.content.SetVexpand(true)
 	gtkx.Append(&o.root, &o.content.Widget)
-	o.content.Unref()
 	toolbar := gtk.NewBox(gtk.OrientationHorizontalValue, 12)
 	toolbar.SetHalign(gtk.AlignCenterValue)
 	toolbar.AddCssClass("overview-toolbar")

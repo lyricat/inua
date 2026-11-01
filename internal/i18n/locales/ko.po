@@ -14882,19 +14882,19 @@ msgstr "일치하는 항목이 없습니다."
 msgid "＋  New workspace"
 msgstr "＋  새 작업 공간"
 
-#: internal/ui/overview.go:928
+#: internal/ui/overview.go:927
 msgid "Filter by window title or app"
 msgstr "창 제목 또는 앱으로 필터링"
 
-#: internal/ui/overview.go:944
+#: internal/ui/overview.go:943
 msgid "TYPE TO FILTER WINDOWS"
 msgstr "입력하여 창 필터링"
 
-#: internal/ui/overview.go:957
+#: internal/ui/overview.go:956
 msgid "Type or / to filter windows   Esc · clear / close   Arrows / Tab · select   Middle click · close   Ctrl+Shift+X · kill   Drag · move"
 msgstr "또는 /를 입력하여 창 필터링 Esc · 지우기 / 닫기 화살표 / Tab · 선택 가운데 클릭 · 닫기 Ctrl+Shift+X · 종료 드래그 · 이동"
 
-#: internal/ui/overview.go:1001
+#: internal/ui/overview.go:1000
 msgid "inua overview"
 msgstr "이누아 개요"
 

@@ -14964,19 +14964,19 @@ msgstr "Aucune correspondance"
 msgid "＋  New workspace"
 msgstr "＋  Nouvel espace de travail"
 
-#: internal/ui/overview.go:928
+#: internal/ui/overview.go:927
 msgid "Filter by window title or app"
 msgstr "Filtrer par titre de fenêtre ou application"
 
-#: internal/ui/overview.go:944
+#: internal/ui/overview.go:943
 msgid "TYPE TO FILTER WINDOWS"
 msgstr "SAISISSEZ POUR FILTRER LES FENÊTRES"
 
-#: internal/ui/overview.go:957
+#: internal/ui/overview.go:956
 msgid "Type or / to filter windows   Esc · clear / close   Arrows / Tab · select   Middle click · close   Ctrl+Shift+X · kill   Drag · move"
 msgstr "Tapez ou / pour filtrer les fenêtres Esc · effacer / fermer Flèches / Tabulation · sélectionner Clic central · fermer Ctrl+Shift+X · tuer Glisser · déplacer"
 
-#: internal/ui/overview.go:1001
+#: internal/ui/overview.go:1000
 msgid "inua overview"
 msgstr "Aperçu d'Inua"
 
