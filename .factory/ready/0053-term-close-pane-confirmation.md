@@ -68,3 +68,17 @@ Verification:
 
 Review remains open with the environment limitations above. The item has not
 entered ready and has not been merged. Item 0047 is unchanged.
+
+## factory · 2026-11-01 20:23
+Owner decision in Console: “这两问题不构成问题，可以进入下一阶段”.
+The owner considers both reported review findings non-blocking: new-client /
+old-host close-confirmation compatibility, and foreground children sharing
+the shell process group when job control is disabled. No implementation
+changes are requested for these findings.
+
+Move to ready (awaiting owner merge) on the owner's explicit acceptance,
+not on a claim that all automated or manual verification passed. The
+previously recorded full-suite 7z dependency failure and unverified Wayland
+interaction remain outstanding; no tests were rerun for this status change.
+Implementation branch: `factory/0053-term-close-pane-confirmation`, reviewed
+commit: `88be4a3`. No implementation files changed and no merge performed.
