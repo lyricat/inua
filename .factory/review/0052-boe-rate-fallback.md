@@ -44,3 +44,9 @@ PR #52's commit as it is (internal/convert, README credits, website/privacy.html
 - The PR's TestBankOfEnglandFallback, and the whole make test.
 - The live endpoint's shape was read once (2026-10-29 rates, GBP base, "reference" rows), matching the parser.
 - Not checked: the launcher by eye with Frankfurter blocked.
+
+## factory · 2026-11-01 15:23
+Built on factory/52-boe-rate-fallback: PR #52's commit taken over by cherry-pick (00d98af, the author's), applied cleanly on master. make generate and make i18n change nothing; make test passes, internal/convert included.
+
+Not checked: the launcher by eye with Frankfurter blocked.
+For review: the fallback is allratestoday.com's open endpoint, and the PR's author works there; the README and privacy page name it.
