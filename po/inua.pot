@@ -14950,31 +14950,31 @@ msgid_plural "%d RESULTS"
 msgstr[0] ""
 msgstr[1] ""
 
-#: internal/ui/overview.go:474
+#: internal/ui/overview.go:479
 msgid "No workspaces"
 msgstr ""
 
-#: internal/ui/overview.go:476
+#: internal/ui/overview.go:481
 msgid "No matches"
 msgstr ""
 
-#: internal/ui/overview.go:595
+#: internal/ui/overview.go:601
 msgid "＋  New workspace"
 msgstr ""
 
-#: internal/ui/overview.go:897
+#: internal/ui/overview.go:928
 msgid "Filter by window title or app"
 msgstr ""
 
-#: internal/ui/overview.go:913
+#: internal/ui/overview.go:944
 msgid "TYPE TO FILTER WINDOWS"
 msgstr ""
 
-#: internal/ui/overview.go:926
+#: internal/ui/overview.go:957
 msgid "Type or / to filter windows   Esc · clear / close   Arrows / Tab · select   Middle click · close   Ctrl+Shift+X · kill   Drag · move"
 msgstr ""
 
-#: internal/ui/overview.go:970
+#: internal/ui/overview.go:1001
 msgid "inua overview"
 msgstr ""
 

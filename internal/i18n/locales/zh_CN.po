@@ -14870,31 +14870,31 @@ msgid "%d RESULT"
 msgid_plural "%d RESULTS"
 msgstr[0] "%d 个结果"
 
-#: internal/ui/overview.go:474
+#: internal/ui/overview.go:479
 msgid "No workspaces"
 msgstr "没有工作区"
 
-#: internal/ui/overview.go:476
+#: internal/ui/overview.go:481
 msgid "No matches"
 msgstr "没有匹配项"
 
-#: internal/ui/overview.go:595
+#: internal/ui/overview.go:601
 msgid "＋  New workspace"
 msgstr "＋  新工作区"
 
-#: internal/ui/overview.go:897
+#: internal/ui/overview.go:928
 msgid "Filter by window title or app"
 msgstr "按窗口标题或应用程序过滤"
 
-#: internal/ui/overview.go:913
+#: internal/ui/overview.go:944
 msgid "TYPE TO FILTER WINDOWS"
 msgstr "输入以筛选窗口"
 
-#: internal/ui/overview.go:926
+#: internal/ui/overview.go:957
 msgid "Type or / to filter windows   Esc · clear / close   Arrows / Tab · select   Middle click · close   Ctrl+Shift+X · kill   Drag · move"
 msgstr "键入 或 / 来过滤窗口 Esc · 清除/关闭箭头/ Tab · 选择中键单击 · 关闭 Ctrl+Shift+X · 删除 拖动 · 移动"
 
-#: internal/ui/overview.go:970
+#: internal/ui/overview.go:1001
 msgid "inua overview"
 msgstr "inua概述"
 
