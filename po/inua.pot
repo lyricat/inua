@@ -14954,19 +14954,19 @@ msgstr ""
 msgid "＋  New workspace"
 msgstr ""
 
-#: internal/ui/overview.go:928
+#: internal/ui/overview.go:927
 msgid "Filter by window title or app"
 msgstr ""
 
-#: internal/ui/overview.go:944
+#: internal/ui/overview.go:943
 msgid "TYPE TO FILTER WINDOWS"
 msgstr ""
 
-#: internal/ui/overview.go:957
+#: internal/ui/overview.go:956
 msgid "Type or / to filter windows   Esc · clear / close   Arrows / Tab · select   Middle click · close   Ctrl+Shift+X · kill   Drag · move"
 msgstr ""
 
-#: internal/ui/overview.go:1001
+#: internal/ui/overview.go:1000
 msgid "inua overview"
 msgstr ""
 
