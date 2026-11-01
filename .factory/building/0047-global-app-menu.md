@@ -32,3 +32,6 @@ Before building, these decide the work:
 5. inua's own apps (Files, Mail, …) exporting their menus too: left out of this item. Default: yes, a later item.
 
 The menus reuse the tray's dbusmenu reading (internal/sni/menu.go).
+
+## factory · 2026-11-01 15:23
+The owner says iamcheyan is working on this; moved to building/ by the owner's word. The questions above stay open for that work.
