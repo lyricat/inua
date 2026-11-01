@@ -40,12 +40,13 @@ type App struct {
 	mu   sync.Mutex
 	live map[int]*termPane
 
-	cols   columns
-	stage  *gtk.Overlay
-	sheets *gtk.Overlay // the whole window, for the sheets
-	tilesW *gtk.Box
-	tiling tiling
-	sheet  *gtk.Box // the sheet up, while it asks
+	cols         columns
+	stage        *gtk.Overlay
+	sheets       *gtk.Overlay // the whole window, for the sheets
+	tilesW       *gtk.Box
+	tiling       tiling
+	sheet        *gtk.Box // the sheet up, while it asks
+	closePending bool     // a close decision is being fetched
 	// swapping is set after Ctrl+Shift+X, until the arrow.
 	swapping bool
 	// fold is the columns the user folded; peek those shown anyway while

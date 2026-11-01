@@ -1,12 +1,15 @@
 package termui
 
 import (
+	"errors"
+	"log"
 	"strings"
 
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/gio"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
+	"github.com/lyricat/inua/internal/gtkx"
 	"github.com/lyricat/inua/internal/i18n"
 	"github.com/lyricat/inua/internal/term/agent"
 	"github.com/lyricat/inua/internal/term/host"
@@ -240,25 +243,47 @@ func (a *App) split(sp layout.Split) {
 	})
 }
 
-// closeFocused ends the focused pane's program and closes it; an agent
-// working or waiting for you is asked about first.
+// closeFocused checks current host process state before offering to close.
 func (a *App) closeFocused() {
+	if a.sheet != nil || a.closePending || a.client == nil {
+		return
+	}
 	s := a.shown()
 	if s == nil {
 		return
 	}
-	pane := s.Focus
-	close := func() { a.ask("close", func(c *host.Client) error { return c.ClosePane(pane) }) }
+	pane, client := s.Focus, a.client
+	a.closePending = true
+	go func() {
+		err := client.ClosePane(pane)
+		gtkx.Post(func() {
+			a.closePending = false
+			if errors.Is(err, host.ErrCloseConfirmation) {
+				// Another sheet may have opened while the host inspected the process.
+				if a.sheet == nil {
+					a.confirmClosePane(pane)
+				}
+			} else if err != nil {
+				log.Printf("term: close: %v", err)
+			}
+		})
+	}()
+}
+
+func (a *App) confirmClosePane(pane int) {
 	info := a.info[pane]
-	if st := agent.State(info.State); info.Agent == "" || (st != agent.Working && st != agent.Blocked) || a.sheet != nil {
-		close()
-		return
+	title := i18n.T("Close pane?")
+	message := i18n.T("A program may still be running. Closing the pane ends it.")
+	if st := agent.State(info.State); info.Agent != "" && (st == agent.Working || st == agent.Blocked) {
+		title = i18n.Tf("Close %s?", info.AgentName)
+		message = i18n.Tf("It is working on “%s”; closing the pane ends it.", paneTitle(info))
+		if st == agent.Blocked {
+			message = i18n.Tf("It is waiting for you: %s. Closing the pane ends it.", info.Ask)
+		}
 	}
-	sheet, done := a.sheetFrame(i18n.Tf("Close %s?", info.AgentName), 420)
-	why := gtk.NewLabel(i18n.Tf("It is working on “%s”; closing the pane ends it.", paneTitle(info)))
-	if agent.State(info.State) == agent.Blocked {
-		why.SetText(i18n.Tf("It is waiting for you: %s. Closing the pane ends it.", info.Ask))
-	}
+
+	sheet, done := a.sheetFrame(title, 420)
+	why := gtk.NewLabel(message)
 	why.AddCssClass("term-sheet-why")
 	why.SetXalign(0)
 	why.SetWrap(true)
@@ -275,7 +300,7 @@ func (a *App) closeFocused() {
 	a.onCloseCancel = func(gtk.Button) { done() }
 	a.onCloseOK = func(gtk.Button) {
 		done()
-		close()
+		a.ask("close", func(c *host.Client) error { return c.ConfirmClosePane(pane) })
 	}
 	cancel.ConnectClicked(&a.onCloseCancel)
 	ok.ConnectClicked(&a.onCloseOK)

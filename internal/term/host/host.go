@@ -422,6 +422,10 @@ func (h *Host) handle(c *client, m Message) {
 			p.wants[c] = want{m.Cols, m.Rows, m.CellW, m.CellH, wantSeq.Add(1)}
 			p.mu.Unlock()
 		case MsgClose:
+			if !m.Confirm && p.closeNeedsConfirmation() {
+				fail(ErrCloseConfirmation)
+				return
+			}
 			last := h.closePane(p)
 			h.forgetPane(p.id)
 			if last && h.ExitWhenEmpty {
