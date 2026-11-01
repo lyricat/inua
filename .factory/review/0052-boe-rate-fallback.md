@@ -53,3 +53,7 @@ For review: the fallback is allratestoday.com's open endpoint, and the PR's auth
 
 ## factory · 2026-11-01 15:39
 Round 1, from the owner's review: 417c682 gives each rate request its own 5 s limit (ServiceTimeout), so a Frankfurter that hangs no longer uses up the launcher's 15 s before the Bank of England and Coinbase are asked. New test: TestHangingService. make test passes.
+
+## factory · 2026-11-01 16:12
+From the owner: 9887902 adds INUA_RATES_SKIP (ecb, boe, coinbase, comma-separated) to try the fallbacks without changing system files; documented in docs/features.md, tested in TestSkipServices. make test passes.
+Live check with it: none skipped → EUR, 29 rates; ecb → GBP, 23 rates (2026-10-29); ecb,boe → Coinbase alone; all three → an error naming each. 100 USD in JPY: 15,725 / 15,782 / 15,759.
