@@ -372,6 +372,10 @@ var (
 	RatesURL    = "https://api.frankfurter.app/latest"
 	FallbackURL = "https://allratestoday.com/api/open/central-bank/boe"
 	MoreURL     = "https://api.coinbase.com/v2/exchange-rates?currency=USD"
+
+	// ServiceTimeout bounds each service's answer, so one that hangs
+	// leaves time to ask the others.
+	ServiceTimeout = 5 * time.Second
 )
 
 // How long cached rates are used before fetching again: the ECB's change
@@ -385,6 +389,11 @@ const (
 // enough: without the ECB's, the Bank of England's or, failing those too,
 // Coinbase's dollar rates stand in.
 func FetchRates(ctx context.Context, c *http.Client) (*Rates, error) {
+	if c.Timeout == 0 || c.Timeout > ServiceTimeout {
+		limited := *c
+		limited.Timeout = ServiceTimeout // per request
+		c = &limited
+	}
 	r, err := fetchECB(ctx, c)
 	if err != nil {
 		if r2, err2 := fetchBoE(ctx, c); err2 == nil {

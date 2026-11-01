@@ -116,6 +116,37 @@ func TestBankOfEnglandFallback(t *testing.T) {
 	}
 }
 
+// A Frankfurter that hangs gives up after ServiceTimeout, leaving time for
+// the Bank of England's and Coinbase's rates.
+func TestHangingService(t *testing.T) {
+	hang := make(chan struct{})
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case "/ecb":
+			select {
+			case <-hang:
+			case <-r.Context().Done():
+			}
+		case "/boe":
+			w.Write([]byte(`{"rate_date":"2026-10-08","rates":[{"base":"GBP","quote":"USD","type":"reference","value":1.25}]}`))
+		case "/cb":
+			w.Write([]byte(`{"data":{"currency":"USD","rates":{"BTC":"0.00001"}}}`))
+		}
+	}))
+	t.Cleanup(srv.Close)
+	t.Cleanup(func() { close(hang) })
+	oldR, oldF, oldM, oldT := RatesURL, FallbackURL, MoreURL, ServiceTimeout
+	RatesURL, FallbackURL, MoreURL, ServiceTimeout = srv.URL+"/ecb", srv.URL+"/boe", srv.URL+"/cb", 100*time.Millisecond
+	t.Cleanup(func() { RatesURL, FallbackURL, MoreURL, ServiceTimeout = oldR, oldF, oldM, oldT })
+
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+	r, err := FetchRates(ctx, srv.Client())
+	if err != nil || r.Base != "GBP" || r.More["BTC"] == 0 {
+		t.Fatalf("%+v %v", r, err)
+	}
+}
+
 func TestCrypto(t *testing.T) {
 	var ecbDown, cbDown bool
 	srv := rateServers(t, &ecbDown, &cbDown)
