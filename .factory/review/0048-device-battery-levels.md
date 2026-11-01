@@ -38,3 +38,14 @@ BlueZ and a fake UPower: a device with only a UPower level shows it, one
 with both shows BlueZ's, an unmatched UPower device changes nothing, and
 a UPower change updates the level. By hand: the Bluetooth page lists the
 Magic Trackpad with its percentage.
+
+## factory · 2026-11-01 12:58
+Built on factory/48-device-battery-levels (be5a4e8): a connected device
+with no BlueZ level takes the level of the UPower device with its
+address, and the list follows UPower's changes. BlueZ's level wins when
+both have one. make test passes; new tests on a fake BlueZ and a fake
+UPower cover a UPower-only level, BlueZ winning, an unmatched UPower
+device, a level change and a device added later.
+Not checked: the Bluetooth page by eye in a nested session, a real Magic
+Trackpad, and the WHOOP 5.0, which was not connected; it shows a level
+only if BlueZ or a kernel driver reports one.
