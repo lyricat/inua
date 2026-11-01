@@ -256,6 +256,7 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	}
 	s.syncWallpaper(b)
 	s.syncDock(b)
+	s.syncOverviewDock(b)
 	return b
 }
 

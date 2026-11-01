@@ -133,6 +133,7 @@ func (s *shellUI) showOverview() {
 		}
 	}
 	s.renderOverview()
+	s.syncOverviewDocks()
 	s.guardOverviewMouse(true)
 	log.Printf("overview: open (%d workspaces) wallpaper=%q", len(s.overview.st.Cards), s.cfg.ImagePath())
 }
@@ -173,6 +174,7 @@ func (s *shellUI) closeOverview(restore bool) {
 		o.win.Unref()
 		o.win = nil
 	}
+	s.syncOverviewDocks()
 	o.targets = nil
 	o.cardWidgets = nil
 	o.windowWidgets = nil

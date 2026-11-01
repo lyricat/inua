@@ -16,7 +16,7 @@ func Format(c Config) string {
 	return fmt.Sprintf(template,
 		q(c.Language),
 		c.Bar.Enable, q(c.Bar.Density), q(c.Bar.Clock), q(c.Bar.Workspaces), c.Bar.Title, c.Bar.Tray, c.Bar.Pass,
-		q(c.Launcher.Mode), q(c.Launcher.Terminal), q(c.Launcher.Search), quicklinks(c.Launcher.Quicklinks), c.Overview.MRU, c.Overview.PerMonitor,
+		q(c.Launcher.Mode), q(c.Launcher.Terminal), q(c.Launcher.Search), quicklinks(c.Launcher.Quicklinks), c.Overview.MRU, c.Overview.PerMonitor, c.Overview.ShowDock,
 		q(c.Control.Lock), q(c.Control.Screenshot),
 		q(c.Screenshot.Folder), c.Screenshot.Copy, q(c.Screenshot.Recordings),
 		c.OSD.Enable, q(c.OSD.Position),
@@ -256,6 +256,8 @@ search = %s
 mru = %t
 # Show each display's workspaces on its own overview surface.
 per_monitor = %t
+# Show the dock above the workspace overview while it is open.
+show_dock = %t
 
 [control]
 # Shell commands run by the control center's buttons.

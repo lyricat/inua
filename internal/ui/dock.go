@@ -43,24 +43,26 @@ const (
 )
 
 type dock struct {
-	win      gtk.ApplicationWindow
-	root     gtk.Box
-	reveal   gtk.Revealer
-	island   gtk.Box
-	items    gtk.Box
-	edge     gtk.Box
-	refs     gtkx.Scope
-	shown    string                 // the apps and icons shown (dockSignature)
-	buttons  map[string]*dockButton // by app, borrowed from items
-	size     int
-	position string
-	gaps     bool // style.edge_gaps
-	vertical bool // apps stack along a vertical screen edge
-	hide     bool // autohide
-	hover    bool
-	hideGen  uintptr
-	drawer   *gtk.Button // the drawer's button, borrowed from items; nil without one
-	workshop *gtk.Button // the workshop drawer's, there while workshop apps are installed
+	win                 gtk.ApplicationWindow
+	root                gtk.Box
+	reveal              gtk.Revealer
+	island              gtk.Box
+	items               gtk.Box
+	edge                gtk.Box
+	refs                gtkx.Scope
+	shown               string                 // the apps and icons shown (dockSignature)
+	buttons             map[string]*dockButton // by app, borrowed from items
+	size                int
+	position            string
+	gaps                bool // style.edge_gaps
+	vertical            bool // apps stack along a vertical screen edge
+	hide                bool // autohide
+	hover               bool
+	hideGen             uintptr
+	overviewShown       bool
+	overviewWasRevealed bool
+	drawer              *gtk.Button // the drawer's button, borrowed from items; nil without one
+	workshop            *gtk.Button // the workshop drawer's, there while workshop apps are installed
 
 	// Dragging an app: its button is hidden while it is away, and the
 	// others move aside to leave a gap where it would land (see setGap).
@@ -107,6 +109,40 @@ func (s *shellUI) syncDock(b *bar) {
 	}
 	if b.dock != nil {
 		s.renderDock(b)
+	}
+}
+
+// syncOverviewDock temporarily raises the dock above the workspace overview.
+// Autohide state is restored when the overview closes.
+func (s *shellUI) syncOverviewDocks() {
+	for _, b := range s.bars {
+		s.syncOverviewDock(b)
+	}
+}
+
+func (s *shellUI) syncOverviewDock(b *bar) {
+	d := b.dock
+	if d == nil {
+		return
+	}
+	want := s.overview.st.Open && s.cfg.Overview.ShowDock
+	if want == d.overviewShown {
+		return
+	}
+	d.overviewShown = want
+	if want {
+		d.overviewWasRevealed = d.reveal.GetRevealChild()
+		layershell.SetLayer(d.win.GoPointer(), layershell.LayerOverlay)
+		if d.hide {
+			d.reveal.SetRevealChild(true)
+			fitDock(d)
+		}
+		return
+	}
+	layershell.SetLayer(d.win.GoPointer(), layershell.LayerTop)
+	if d.hide {
+		d.reveal.SetRevealChild(d.overviewWasRevealed || d.hover)
+		fitDock(d)
 	}
 }
 
@@ -701,7 +737,7 @@ func (s *shellUI) bindDockHandlers() {
 	}
 	s.onDockHide = func(gen uintptr) bool {
 		for _, b := range s.bars {
-			if d := b.dock; d != nil && d.hide && !d.hover && gen == d.hideGen && s.dockState.drawer == nil {
+			if d := b.dock; d != nil && d.hide && !d.hover && !d.overviewShown && gen == d.hideGen && s.dockState.drawer == nil {
 				d.reveal.SetRevealChild(false)
 			}
 		}

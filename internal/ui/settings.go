@@ -53,28 +53,28 @@ type settings struct {
 	setThemes map[string]*gtk.IconTheme
 	themeMenu string // the theme of yours a right click opened a menu for
 
-	bgGenerate, title, tray, barPass, tpAccel, notifyOn, critFocus gtk.Switch
-	noteHistory                                                    gtk.Switch
-	bgOwn                                                          gtk.Box // the image's rows, hidden while inua draws
-	bgAnother                                                      gtk.Button
-	barOn, dockOn, dockHide, dockDrawer, dockFlushBar              gtk.Switch
-	clipEnable, clipBar, clipPaste                                 gtk.Switch
-	dockSize, dockPosition, barDensity                             gtk.DropDown
-	dockPinned                                                     gtk.Box
-	bgImage, bgColor, clock, terminal, lock, screenshot            gtk.Entry
-	clipSensitive                                                  gtk.Entry
-	bgFit, ws, launchMode, swap, caps, icons, appIcons, banner     gtk.DropDown
-	clipLimit                                                      gtk.DropDown
-	clipLimits                                                     []int // clipLimit's choices
-	textScale                                                      gtk.DropDown
-	textScales                                                     []int    // textScale's choices
-	iconSets                                                       []string // icons' choices
-	appIconSets                                                    []string // appIcons' choices
-	appTheme                                                       gtk.DropDown
-	appThemes, appThemeLabels                                      []string // appTheme's choices, "" first
-	tpSpeed, transparency, radius                                  gtk.Scale
-	transparencyVal, radiusVal, clipStats                          gtk.Label
-	clipClear, clipReveal                                          gtk.Button
+	bgGenerate, title, tray, barPass, tpAccel, notifyOn, critFocus  gtk.Switch
+	noteHistory                                                     gtk.Switch
+	bgOwn                                                           gtk.Box // the image's rows, hidden while inua draws
+	bgAnother                                                       gtk.Button
+	barOn, dockOn, dockHide, dockDrawer, dockFlushBar, overviewDock gtk.Switch
+	clipEnable, clipBar, clipPaste                                  gtk.Switch
+	dockSize, dockPosition, barDensity                              gtk.DropDown
+	dockPinned                                                      gtk.Box
+	bgImage, bgColor, clock, terminal, lock, screenshot             gtk.Entry
+	clipSensitive                                                   gtk.Entry
+	bgFit, ws, launchMode, swap, caps, icons, appIcons, banner      gtk.DropDown
+	clipLimit                                                       gtk.DropDown
+	clipLimits                                                      []int // clipLimit's choices
+	textScale                                                       gtk.DropDown
+	textScales                                                      []int    // textScale's choices
+	iconSets                                                        []string // icons' choices
+	appIconSets                                                     []string // appIcons' choices
+	appTheme                                                        gtk.DropDown
+	appThemes, appThemeLabels                                       []string // appTheme's choices, "" first
+	tpSpeed, transparency, radius                                   gtk.Scale
+	transparencyVal, radiusVal, clipStats                           gtk.Label
+	clipClear, clipReveal                                           gtk.Button
 
 	// Keyboard and touchpad: where the settings come from, and why they
 	// would do nothing.
@@ -154,6 +154,8 @@ func (s *shellUI) bindSettingsHandlers() {
 			c.Bar.Enable = on
 		case "dock_enable":
 			c.Dock.Enable = on
+		case "overview_dock":
+			c.Overview.ShowDock = on
 		case "dock_drawer":
 			c.Dock.Drawer = on
 		case "dock_autohide":
@@ -456,6 +458,7 @@ func (s *shellUI) openSettings() {
 	ui.Get("banner", &st.banner)
 	ui.Get("bar_enable", &st.barOn)
 	ui.Get("dock_enable", &st.dockOn)
+	ui.Get("overview_dock", &st.overviewDock)
 	ui.Get("dock_autohide", &st.dockHide)
 	ui.Get("dock_flush_bar", &st.dockFlushBar)
 	ui.Get("dock_drawer", &st.dockDrawer)
@@ -533,7 +536,7 @@ func (s *shellUI) openSettings() {
 		st.drops[d.GoPointer()] = d
 		gtkx.ConnectNotify(d, "selected", &s.onSettingsDrop)
 	}
-	for _, sw := range []*gtk.Switch{&st.bgGenerate, &st.title, &st.tray, &st.barPass, &st.tpAccel, &st.notifyOn, &st.critFocus, &st.noteHistory, &st.barOn, &st.dockOn, &st.dockHide, &st.dockDrawer, &st.dockFlushBar, &st.clipEnable, &st.clipBar, &st.clipPaste, &st.displays.lidOff} {
+	for _, sw := range []*gtk.Switch{&st.bgGenerate, &st.title, &st.tray, &st.barPass, &st.tpAccel, &st.notifyOn, &st.critFocus, &st.noteHistory, &st.barOn, &st.dockOn, &st.dockHide, &st.dockDrawer, &st.dockFlushBar, &st.overviewDock, &st.clipEnable, &st.clipBar, &st.clipPaste, &st.displays.lidOff} {
 		sw.ConnectStateSet(&s.onSettingsSwitch)
 	}
 	for _, b := range []*gtk.Button{&choose, &clearImage, &st.bgAnother, &iconPreview, &stylePreview, &st.kbReset, &st.tpReset, &st.langRestart, &st.clipClear, &st.clipReveal} {
@@ -1091,6 +1094,7 @@ func (s *shellUI) showDockSettings() {
 	c := s.cfg
 	st.barOn.SetActive(c.Bar.Enable)
 	st.dockOn.SetActive(c.Dock.Enable)
+	st.overviewDock.SetActive(c.Overview.ShowDock)
 	st.dockHide.SetActive(c.Dock.Autohide)
 	st.dockFlushBar.SetActive(!c.Style.EdgeGaps)
 	st.dockDrawer.SetActive(c.Dock.Drawer)

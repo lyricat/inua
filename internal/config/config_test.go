@@ -63,6 +63,9 @@ tray = false
 
 [launcher]
 terminal = "foot --app-id term"
+
+[overview]
+show_dock = false
 `)
 	c, w, err := Load(path)
 	if err != nil || len(w) != 0 {
@@ -71,8 +74,13 @@ terminal = "foot --app-id term"
 	want := withDir(Default(), filepath.Dir(path))
 	want.Bar.Clock, want.Bar.Workspaces, want.Bar.Tray = "%H:%M:%S", "all", false
 	want.Launcher.Terminal = "foot --app-id term"
+	want.Overview.ShowDock = false
 	if !reflect.DeepEqual(c, want) {
 		t.Errorf("got %+v\nwant %+v", c, want)
+	}
+	saved, warnings, err := Load(write(t, Format(c)))
+	if err != nil || len(warnings) != 0 || saved.Overview.ShowDock {
+		t.Errorf("show_dock did not survive a save: value=%v warnings=%v err=%v", saved.Overview.ShowDock, warnings, err)
 	}
 	if got := c.TerminalCommand(); !reflect.DeepEqual(got, []string{"foot", "--app-id", "term"}) {
 		t.Errorf("terminal = %q", got)
