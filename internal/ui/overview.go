@@ -41,7 +41,7 @@ type workspaceOverview struct {
 	views                map[string]*workspaceOverview
 	st                   shell.Overview
 	win                  *gtk.ApplicationWindow
-	root, cards          gtk.Box
+	root, content, cards gtk.Box
 	query                gtk.Entry
 	queryClear           gtk.Button
 	searchStatus         gtk.Label
@@ -446,7 +446,12 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 		o.searchStatus.SetText(i18n.Nf("%d RESULT", "%d RESULTS", matching, matching))
 	}
 	o.queryClear.SetVisible(o.st.Query != "")
-	key := overviewLayoutKey(o.st.Cards, s.snap.Monitors, s.cfg.Overview.PerMonitor, o.monitor, int(o.root.GetScaleFactor()), o.st.Query != "")
+	topInset, bottomInset, startInset, endInset := s.overviewDockInsets()
+	o.content.SetMarginTop(int32(topInset))
+	o.content.SetMarginBottom(int32(bottomInset))
+	o.content.SetMarginStart(int32(startInset))
+	o.content.SetMarginEnd(int32(endInset))
+	key := overviewLayoutKey(o.st.Cards, s.snap.Monitors, s.cfg.Overview.PerMonitor, o.monitor, int(o.root.GetScaleFactor()), o.st.Query != "", topInset, bottomInset, startInset, endInset)
 	if o.layoutKey == key {
 		s.updateOverviewWidgets(o)
 		return
@@ -489,7 +494,8 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 			viewportW, viewportH = float64(mon.Width)/scale, float64(mon.Height)/scale
 		}
 	}
-	availableW, availableH := viewportW-120, viewportH-180
+	availableW := viewportW - 120 - float64(startInset+endInset)
+	availableH := viewportH - 180 - float64(topInset+bottomInset)
 	groups := []string{}
 	counts := map[string]int{}
 	aspect := 9.0 / 16.0
@@ -874,12 +880,37 @@ func (s *shellUI) dispatchOverview(action, expression string) {
 	}()
 }
 
+// overviewDockInsets reserves the dock's footprint when it is layered above
+// the overview, leaving the workspace chooser centered in the remaining area.
+func (s *shellUI) overviewDockInsets() (top, bottom, start, end int) {
+	if !s.layer || !s.cfg.Overview.ShowDock || !s.cfg.Dock.Enable {
+		return 0, 0, 0, 0
+	}
+	inset := s.cfg.Dock.Size + 16 // icon size plus the dock island's padding and border
+	switch s.cfg.Dock.Position {
+	case "top":
+		top = inset
+	case "left":
+		start = inset
+	case "right":
+		end = inset
+	default:
+		bottom = inset
+	}
+	return top, bottom, start, end
+}
+
 func (s *shellUI) buildOverview(o *workspaceOverview) {
 	o.win = gtk.NewApplicationWindow(s.app)
 	o.win.AddCssClass("overview")
 	o.root = *gtk.NewBox(gtk.OrientationVerticalValue, 10)
 	o.root.AddCssClass("overview-scrim")
 	o.root.SetFocusable(true)
+	o.content = *gtk.NewBox(gtk.OrientationVerticalValue, 10)
+	o.content.SetHexpand(true)
+	o.content.SetVexpand(true)
+	gtkx.Append(&o.root, &o.content.Widget)
+	o.content.Unref()
 	toolbar := gtk.NewBox(gtk.OrientationHorizontalValue, 12)
 	toolbar.SetHalign(gtk.AlignCenterValue)
 	toolbar.AddCssClass("overview-toolbar")
@@ -913,7 +944,7 @@ func (s *shellUI) buildOverview(o *workspaceOverview) {
 	o.searchStatus = *gtk.NewLabel(i18n.T("TYPE TO FILTER WINDOWS"))
 	o.searchStatus.AddCssClass("overview-search-status")
 	gtkx.Append(toolbar, &o.searchStatus.Widget)
-	gtkx.Append(&o.root, &toolbar.Widget)
+	gtkx.Append(&o.content, &toolbar.Widget)
 	o.cards = *gtk.NewBox(gtk.OrientationVerticalValue, 24)
 	o.cards.SetHalign(gtk.AlignCenterValue)
 	o.cards.SetValign(gtk.AlignCenterValue)
@@ -922,11 +953,11 @@ func (s *shellUI) buildOverview(o *workspaceOverview) {
 	scroll.SetVexpand(true)
 	scroll.SetChild(&o.cards.Widget)
 	o.cards.Unref()
-	gtkx.Append(&o.root, &scroll.Widget)
+	gtkx.Append(&o.content, &scroll.Widget)
 	hint := gtk.NewLabel(i18n.T("Type or / to filter windows   Esc · clear / close   Arrows / Tab · select   Middle click · close   Ctrl+Shift+X · kill   Drag · move"))
 	o.hint = hint
 	hint.AddCssClass("overview-hint")
-	gtkx.Append(&o.root, &hint.Widget)
+	gtkx.Append(&o.content, &hint.Widget)
 	stage := gtk.NewOverlay()
 	stage.SetChild(&o.root.Widget)
 	o.root.Unref()

@@ -14944,31 +14944,31 @@ msgid_plural "%d RESULTS"
 msgstr[0] "%d RÉSULTAT"
 msgstr[1] "%d RÉSULTATS"
 
-#: internal/ui/overview.go:474
+#: internal/ui/overview.go:479
 msgid "No workspaces"
 msgstr "Aucun espace de travail"
 
-#: internal/ui/overview.go:476
+#: internal/ui/overview.go:481
 msgid "No matches"
 msgstr "Aucune correspondance"
 
-#: internal/ui/overview.go:595
+#: internal/ui/overview.go:601
 msgid "＋  New workspace"
 msgstr "＋  Nouvel espace de travail"
 
-#: internal/ui/overview.go:897
+#: internal/ui/overview.go:928
 msgid "Filter by window title or app"
 msgstr "Filtrer par titre de fenêtre ou application"
 
-#: internal/ui/overview.go:913
+#: internal/ui/overview.go:944
 msgid "TYPE TO FILTER WINDOWS"
 msgstr "SAISISSEZ POUR FILTRER LES FENÊTRES"
 
-#: internal/ui/overview.go:926
+#: internal/ui/overview.go:957
 msgid "Type or / to filter windows   Esc · clear / close   Arrows / Tab · select   Middle click · close   Ctrl+Shift+X · kill   Drag · move"
 msgstr "Tapez ou / pour filtrer les fenêtres Esc · effacer / fermer Flèches / Tabulation · sélectionner Clic central · fermer Ctrl+Shift+X · tuer Glisser · déplacer"
 
-#: internal/ui/overview.go:970
+#: internal/ui/overview.go:1001
 msgid "inua overview"
 msgstr "Aperçu d'Inua"
 
