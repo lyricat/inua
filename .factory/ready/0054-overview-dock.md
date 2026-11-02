@@ -41,3 +41,14 @@ does not claim that the Dock autohide concern was fixed, that make generate
 passed, or that visual interaction was verified. The previous testing notes
 and limitations are retained unchanged. No tests were rerun, implementation
 changed, or code merged for this status change.
+
+## factory · 2026-11-02 15:05
+Progress reconciliation: origin/factory/54-overview-dock remains at
+6d10352 and is not an ancestor of origin/master (c42ac4e). Source PR #53
+remains open. Keep ready/ under the previously recorded owner decision;
+this is factory item 0054, not GitHub issue #54.
+
+No implementation, merge or test run was performed in this board-only
+migration. Previous test results, the Dock autohide concern and visual
+verification limitations remain unchanged. The old testing section is
+preserved verbatim as historical evidence.

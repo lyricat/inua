@@ -1,3 +1,7 @@
+---
+branch: factory/0053-term-close-pane-confirmation
+round: 0
+---
 # Confirm before closing a terminal pane with a running program
 
 ## owner · 2026-11-01
@@ -82,3 +86,18 @@ previously recorded full-suite 7z dependency failure and unverified Wayland
 interaction remain outstanding; no tests were rerun for this status change.
 Implementation branch: `factory/0053-term-close-pane-confirmation`, reviewed
 commit: `88be4a3`. No implementation files changed and no merge performed.
+
+## factory · question · 2026-11-02 15:05
+Progress reconciliation against origin/master at c42ac4e:
+all non-board paths changed by implementation commit 88be4a3 are identical
+to master. The implementation is present through commit 3d6783f, but 88be4a3
+is not an ancestor of master. This is not an ancestry-detected merge.
+
+The existing branch name is retained unchanged, including its legacy
+zero-padded number. round: 0 records no recorded factory fix rounds.
+Earlier sections retain their legacy headings as historical records; they
+have not been rewritten. No tests were rerun for this board migration.
+
+1. Please move this item to done/ as the owner once accepting the
+   non-ancestry merge. Default: retain ready/ and wait; the factory must not
+   automatically mark a cherry-picked/squashed/rebased branch as merged.

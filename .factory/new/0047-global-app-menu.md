@@ -35,3 +35,13 @@ The menus reuse the tray's dbusmenu reading (internal/sni/menu.go).
 
 ## factory · 2026-11-01 15:23
 The owner says iamcheyan is working on this; moved to building/ by the owner's word. The questions above stay open for that work.
+
+## factory · question · 2026-11-02 15:05
+Board migration: building/ is no longer a stage in the current factory.
+Returned to new/ without starting another implementation. The earlier owner
+report that iamcheyan is working on this remains in force; do not duplicate
+that work. The earlier scope questions remain unresolved.
+
+1. When the contributor's work is available, please provide its branch or PR
+   and settle the scope questions above. Default: wait for the contributor;
+   do not start a factory build in parallel.
