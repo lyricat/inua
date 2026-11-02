@@ -7,6 +7,7 @@ import (
 
 	"github.com/godbus/dbus/v5"
 
+	"github.com/lyricat/inua/internal/dbusexport"
 	"github.com/lyricat/inua/internal/dbustest"
 )
 
@@ -30,7 +31,7 @@ func TestNotify(t *testing.T) {
 	t.Setenv("DBUS_SESSION_BUS_ADDRESS", addr)
 	server := dbustest.Conn(t, addr)
 	notes := &fakeNotes{}
-	server.Export(notes, "/org/freedesktop/Notifications", "org.freedesktop.Notifications")
+	dbusexport.Export(server, notes, "/org/freedesktop/Notifications", "org.freedesktop.Notifications")
 	if r, err := server.RequestName("org.freedesktop.Notifications", dbus.NameFlagDoNotQueue); err != nil || r != dbus.RequestNameReplyPrimaryOwner {
 		t.Fatalf("name: %v %v", r, err)
 	}

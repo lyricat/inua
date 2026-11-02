@@ -9,6 +9,7 @@ import (
 
 	"github.com/godbus/dbus/v5"
 
+	"github.com/lyricat/inua/internal/dbusexport"
 	"github.com/lyricat/inua/internal/dbustest"
 	"github.com/lyricat/inua/internal/proc"
 )
@@ -45,7 +46,7 @@ func TestInhibit(t *testing.T) {
 	addr := dbustest.Start(t)
 	idle := &fakeScreenSaver{held: map[uint32]string{}}
 	ssConn := dbustest.Conn(t, addr)
-	ssConn.Export(idle, "/org/freedesktop/ScreenSaver", "org.freedesktop.ScreenSaver")
+	dbusexport.Export(ssConn, idle, "/org/freedesktop/ScreenSaver", "org.freedesktop.ScreenSaver")
 	if _, err := ssConn.RequestName("org.freedesktop.ScreenSaver", 0); err != nil {
 		t.Fatal(err)
 	}

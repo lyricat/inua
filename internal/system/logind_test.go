@@ -8,6 +8,7 @@ import (
 	"github.com/godbus/dbus/v5"
 	"github.com/godbus/dbus/v5/prop"
 
+	"github.com/lyricat/inua/internal/dbusexport"
 	"github.com/lyricat/inua/internal/dbustest"
 )
 
@@ -28,7 +29,7 @@ func TestCanHibernate(t *testing.T) {
 	addr := dbustest.Start(t)
 	l := &logind{}
 	conn := service(t, addr, "org.freedesktop.login1")
-	if err := conn.Export(l, "/org/freedesktop/login1", "org.freedesktop.login1.Manager"); err != nil {
+	if err := dbusexport.Export(conn, l, "/org/freedesktop/login1", "org.freedesktop.login1.Manager"); err != nil {
 		t.Fatal(err)
 	}
 	for answer, want := range map[string]bool{"yes": true, "challenge": true, "no": false, "na": false} {

@@ -276,7 +276,7 @@ msgstr ""
 msgid "Reply"
 msgstr ""
 
-#: internal/apps/connect/service.go:246
+#: internal/apps/connect/service.go:247
 #: internal/apps/connect/share.go:213
 #: internal/apps/connect/share.go:219
 #: internal/connectui/app.go:20
@@ -286,15 +286,15 @@ msgstr ""
 msgid "Mobile Link"
 msgstr ""
 
-#: internal/apps/connect/service.go:248
+#: internal/apps/connect/service.go:249
 msgid "%s wants to pair"
 msgstr ""
 
-#: internal/apps/connect/service.go:249
+#: internal/apps/connect/service.go:250
 msgid "Pair only if %s shows the key %s."
 msgstr ""
 
-#: internal/apps/connect/service.go:250
+#: internal/apps/connect/service.go:251
 #: internal/connectui/window.go:425
 #: internal/connectui/window.go:434
 #: internal/remoteui/window.go:618
@@ -306,45 +306,45 @@ msgstr ""
 msgid "Pair"
 msgstr ""
 
-#: internal/apps/connect/service.go:250
+#: internal/apps/connect/service.go:251
 #: internal/connectui/window.go:426
 msgid "Refuse"
 msgstr ""
 
-#: internal/apps/connect/service.go:292
+#: internal/apps/connect/service.go:293
 msgid "Ping!"
 msgstr ""
 
-#: internal/apps/connect/service.go:505
+#: internal/apps/connect/service.go:506
 msgid "Wants to pair"
 msgstr ""
 
-#: internal/apps/connect/service.go:507
+#: internal/apps/connect/service.go:508
 #: internal/shell/bluetooth.go:42
 msgid "Pairing…"
 msgstr ""
 
-#: internal/apps/connect/service.go:509
+#: internal/apps/connect/service.go:510
 #: internal/apps/tailscale/status.go:265
 #: internal/remoteui/window.go:331
 #: internal/shell/bluetooth.go:52
 msgid "Connected"
 msgstr ""
 
-#: internal/apps/connect/service.go:511
+#: internal/apps/connect/service.go:512
 msgid "Away"
 msgstr ""
 
-#: internal/apps/connect/service.go:513
+#: internal/apps/connect/service.go:514
 #: internal/remoteui/window.go:326
 msgid "Not paired"
 msgstr ""
 
-#: internal/apps/connect/service.go:517
+#: internal/apps/connect/service.go:518
 msgid "%d%%, charging"
 msgstr ""
 
-#: internal/apps/connect/service.go:519
+#: internal/apps/connect/service.go:520
 #: internal/ui/settings.go:338
 #: internal/ui/settings.go:776
 #: internal/ui/settings.go:880

@@ -11,6 +11,7 @@ import (
 	"github.com/godbus/dbus/v5"
 	"github.com/godbus/dbus/v5/prop"
 
+	"github.com/lyricat/inua/internal/dbusexport"
 	"github.com/lyricat/inua/internal/dbustest"
 )
 
@@ -133,15 +134,15 @@ func newFakeBlueZ(t *testing.T, addr string) *fakeBlueZ {
 		"Discovering":  emitted(false),
 		"Alias":        {Value: "laptop"},
 	}})
-	if err := f.conn.Export(fakeAdapter{f}, hci0, bluezName+".Adapter1"); err != nil {
+	if err := dbusexport.Export(f.conn, fakeAdapter{f}, hci0, bluezName+".Adapter1"); err != nil {
 		t.Fatal(err)
 	}
-	if err := f.conn.Export(fakeAgentManager{f}, "/org/bluez", bluezName+".AgentManager1"); err != nil {
+	if err := dbusexport.Export(f.conn, fakeAgentManager{f}, "/org/bluez", bluezName+".AgentManager1"); err != nil {
 		t.Fatal(err)
 	}
 	f.add("/org/bluez/hci0/dev_AA", map[string]any{"Alias": "Headphones", "Name": "Headphones", "Icon": "audio-headphones", "Paired": true, "Connected": true}, -1)
 	f.add("/org/bluez/hci0/dev_BB", map[string]any{"Alias": "Keyboard", "Name": "Keyboard", "Icon": "input-keyboard", "Paired": true, "Connected": false}, 70)
-	if err := f.conn.Export(objectManager{f}, "/", "org.freedesktop.DBus.ObjectManager"); err != nil {
+	if err := dbusexport.Export(f.conn, objectManager{f}, "/", "org.freedesktop.DBus.ObjectManager"); err != nil {
 		t.Fatal(err)
 	}
 	return f
@@ -169,7 +170,7 @@ func (f *fakeBlueZ) add(path dbus.ObjectPath, props map[string]any, battery int)
 		m[bluezName+".Battery1"] = map[string]*prop.Prop{"Percentage": {Value: byte(battery)}}
 	}
 	d := &fakeDevice{props: export(f.t, f.conn, path, m), battery: battery >= 0}
-	if err := f.conn.Export(fakeDeviceMethods{f, path}, path, bluezName+".Device1"); err != nil {
+	if err := dbusexport.Export(f.conn, fakeDeviceMethods{f, path}, path, bluezName+".Device1"); err != nil {
 		f.t.Fatal(err)
 	}
 	f.mu.Lock()
@@ -378,7 +379,7 @@ func (u *fakeUPower) EnumerateDevices() ([]dbus.ObjectPath, *dbus.Error) {
 
 func newFakeUPower(t *testing.T, addr string) *fakeUPower {
 	u := &fakeUPower{t: t, conn: service(t, addr, upowerName), devices: map[dbus.ObjectPath]*prop.Properties{}}
-	if err := u.conn.ExportMethodTable(map[string]any{"EnumerateDevices": u.EnumerateDevices}, "/org/freedesktop/UPower", upowerName); err != nil {
+	if err := dbusexport.ExportMethodTable(u.conn, map[string]any{"EnumerateDevices": u.EnumerateDevices}, "/org/freedesktop/UPower", upowerName); err != nil {
 		t.Fatal(err)
 	}
 	return u
@@ -444,7 +445,7 @@ func TestBluetoothUPowerLevels(t *testing.T) {
 func TestBluetoothWithoutAdapter(t *testing.T) {
 	addr := dbustest.Start(t)
 	conn := service(t, addr, bluezName)
-	if err := conn.Export(emptyManager{}, "/", "org.freedesktop.DBus.ObjectManager"); err != nil {
+	if err := dbusexport.Export(conn, emptyManager{}, "/", "org.freedesktop.DBus.ObjectManager"); err != nil {
 		t.Fatal(err)
 	}
 	b := NewBluetooth(dialer(addr))

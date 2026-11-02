@@ -11,6 +11,8 @@ import (
 	"github.com/godbus/dbus/v5"
 	"github.com/godbus/dbus/v5/introspect"
 	"github.com/godbus/dbus/v5/prop"
+
+	"github.com/lyricat/inua/internal/dbusexport"
 )
 
 const (
@@ -54,25 +56,25 @@ func Export(conn *dbus.Conn, ifaces ...Interface) (func(), error) {
 	node := `<node>`
 	for _, ifc := range ifaces {
 		name := Prefix + ifc.Name
-		if err := conn.Export(ifc.Methods, Path, name); err != nil {
+		if err := dbusexport.Export(conn, ifc.Methods, Path, name); err != nil {
 			unexport()
 			return nil, err
 		}
-		undo = append(undo, func() { conn.Export(nil, Path, name) })
+		undo = append(undo, func() { dbusexport.Export(conn, nil, Path, name) })
 		props[name] = map[string]*prop.Prop{"version": {Value: ifc.Version, Emit: prop.EmitFalse}}
 		node += fmt.Sprintf(`<interface name="%s">%s<property name="version" type="u" access="read"/></interface>`, name, ifc.XML)
 	}
-	if _, err := prop.Export(conn, Path, props); err != nil {
+	if _, err := dbusexport.Properties(conn, Path, props); err != nil {
 		unexport()
 		return nil, err
 	}
-	undo = append(undo, func() { conn.Export(nil, Path, "org.freedesktop.DBus.Properties") })
+	undo = append(undo, func() { dbusexport.Export(conn, nil, Path, "org.freedesktop.DBus.Properties") })
 	node += introspect.IntrospectDeclarationString + prop.IntrospectDataString + `</node>`
-	if err := conn.Export(introspect.Introspectable(node), Path, "org.freedesktop.DBus.Introspectable"); err != nil {
+	if err := dbusexport.Export(conn, introspect.Introspectable(node), Path, "org.freedesktop.DBus.Introspectable"); err != nil {
 		unexport()
 		return nil, err
 	}
-	undo = append(undo, func() { conn.Export(nil, Path, "org.freedesktop.DBus.Introspectable") })
+	undo = append(undo, func() { dbusexport.Export(conn, nil, Path, "org.freedesktop.DBus.Introspectable") })
 	return unexport, nil
 }
 
@@ -103,10 +105,10 @@ const requestXML = `<node><interface name="org.freedesktop.impl.portal.Request">
 // NewRequest exports the Request object at handle; End takes it away.
 func NewRequest(conn *dbus.Conn, handle dbus.ObjectPath) (*Request, error) {
 	r := &Request{conn: conn, handle: handle, done: make(chan struct{})}
-	if err := conn.Export(requestObj{r}, handle, Prefix+"Request"); err != nil {
+	if err := dbusexport.Export(conn, requestObj{r}, handle, Prefix+"Request"); err != nil {
 		return nil, err
 	}
-	conn.Export(introspect.Introspectable(requestXML), handle, "org.freedesktop.DBus.Introspectable")
+	dbusexport.Export(conn, introspect.Introspectable(requestXML), handle, "org.freedesktop.DBus.Introspectable")
 	return r, nil
 }
 
@@ -115,8 +117,8 @@ func (r *Request) Done() <-chan struct{} { return r.done }
 
 // End takes the Request object away, once the request is answered.
 func (r *Request) End() {
-	r.conn.Export(nil, r.handle, Prefix+"Request")
-	r.conn.Export(nil, r.handle, "org.freedesktop.DBus.Introspectable")
+	dbusexport.Export(r.conn, nil, r.handle, Prefix+"Request")
+	dbusexport.Export(r.conn, nil, r.handle, "org.freedesktop.DBus.Introspectable")
 }
 
 type requestObj struct{ r *Request }

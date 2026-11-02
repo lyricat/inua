@@ -12,6 +12,8 @@ import (
 	"time"
 
 	"github.com/godbus/dbus/v5"
+
+	"github.com/lyricat/inua/internal/dbusexport"
 )
 
 const bluezName = "org.bluez"
@@ -440,7 +442,7 @@ func (a *agent) register(ctx context.Context, conn *dbus.Conn) {
 	if same {
 		return
 	}
-	if err := conn.Export(agentMethods{a}, agentPath, bluezName+".Agent1"); err != nil {
+	if err := dbusexport.Export(conn, agentMethods{a}, agentPath, bluezName+".Agent1"); err != nil {
 		log.Printf("system: bluetooth agent: %v", err)
 		return
 	}

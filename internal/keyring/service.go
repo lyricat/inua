@@ -14,6 +14,7 @@ import (
 	"github.com/godbus/dbus/v5"
 	"github.com/godbus/dbus/v5/introspect"
 
+	"github.com/lyricat/inua/internal/dbusexport"
 	"github.com/lyricat/inua/internal/portal"
 	"github.com/lyricat/inua/internal/proc"
 )
@@ -121,19 +122,19 @@ func (s *Service) Serve(ctx context.Context) error {
 		ifService: serviceObj{s}, ifCollection: collectionObj{s}, ifItem: itemObj{s},
 		ifSession: sessionObj{s}, ifProps: propsObj{s}, ifIntrospect: introspectObj{s},
 	} {
-		if err := s.conn.ExportSubtree(v, basePath, iface); err != nil {
+		if err := dbusexport.ExportSubtree(s.conn, v, basePath, iface); err != nil {
 			return err
 		}
-		defer s.conn.ExportSubtree(nil, basePath, iface)
+		defer dbusexport.ExportSubtree(s.conn, nil, basePath, iface)
 	}
 	if !s.foreign {
-		if err := s.conn.Export(ownObj{s}, ownPath, ownIface); err != nil {
+		if err := dbusexport.Export(s.conn, ownObj{s}, ownPath, ownIface); err != nil {
 			return err
 		}
-		defer s.conn.Export(nil, ownPath, ownIface)
+		defer dbusexport.Export(s.conn, nil, ownPath, ownIface)
 		node := introspect.Node{Name: string(ownPath)}
-		if err := s.conn.Export(introspect.NewIntrospectable(&node), ownPath, ifIntrospect); err == nil {
-			defer s.conn.Export(nil, ownPath, ifIntrospect)
+		if err := dbusexport.Export(s.conn, introspect.NewIntrospectable(&node), ownPath, ifIntrospect); err == nil {
+			defer dbusexport.Export(s.conn, nil, ownPath, ifIntrospect)
 		}
 	}
 	// Sessions end with the clients that opened them.

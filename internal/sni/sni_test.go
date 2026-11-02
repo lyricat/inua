@@ -10,6 +10,7 @@ import (
 	"github.com/godbus/dbus/v5"
 	"github.com/godbus/dbus/v5/prop"
 
+	"github.com/lyricat/inua/internal/dbusexport"
 	"github.com/lyricat/inua/internal/dbustest"
 )
 
@@ -97,17 +98,17 @@ func (m menuMethods) AboutToShow(id int32) (bool, *dbus.Error) { return false, n
 func newFakeItem(t *testing.T, addr string, path dbus.ObjectPath) *fakeItem {
 	t.Helper()
 	f := &fakeItem{conn: dbustest.Conn(t, addr), path: path}
-	if err := f.conn.Export(itemMethods{f}, path, itemIface); err != nil {
+	if err := dbusexport.Export(f.conn, itemMethods{f}, path, itemIface); err != nil {
 		t.Fatal(err)
 	}
-	if err := f.conn.Export(menuMethods{f}, "/Menu", menuIface); err != nil {
+	if err := dbusexport.Export(f.conn, menuMethods{f}, "/Menu", menuIface); err != nil {
 		t.Fatal(err)
 	}
 	pixmap := []struct {
 		W, H int32
 		Data []byte
 	}{{1, 1, []byte{0xff, 0x10, 0x20, 0x30}}}
-	props, err := prop.Export(f.conn, path, prop.Map{itemIface: {
+	props, err := dbusexport.Properties(f.conn, path, prop.Map{itemIface: {
 		"Id":            {Value: "fake"},
 		"Title":         {Value: "Fake App"},
 		"Status":        {Value: "Active"},

@@ -13,6 +13,7 @@ import (
 
 	"github.com/godbus/dbus/v5"
 
+	"github.com/lyricat/inua/internal/dbusexport"
 	"github.com/lyricat/inua/internal/dbustest"
 	"github.com/lyricat/inua/internal/kdeconnect"
 )
@@ -115,7 +116,7 @@ func setup(t *testing.T) (*Service, *phone, *fakeNotes, *dbus.Conn, *clipLog) {
 
 	notes := &fakeNotes{}
 	server := dbustest.Conn(t, addr)
-	server.Export(notes, notesPath, notesIface)
+	dbusexport.Export(server, notes, notesPath, notesIface)
 	if _, err := server.RequestName(notesName, dbus.NameFlagDoNotQueue); err != nil {
 		t.Fatal(err)
 	}

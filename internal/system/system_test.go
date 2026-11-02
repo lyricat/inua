@@ -10,6 +10,7 @@ import (
 	"github.com/godbus/dbus/v5"
 	"github.com/godbus/dbus/v5/prop"
 
+	"github.com/lyricat/inua/internal/dbusexport"
 	"github.com/lyricat/inua/internal/dbustest"
 )
 
@@ -59,7 +60,7 @@ func service(t *testing.T, addr, name string) *dbus.Conn {
 
 func export(t *testing.T, conn *dbus.Conn, path dbus.ObjectPath, props prop.Map) *prop.Properties {
 	t.Helper()
-	p, err := prop.Export(conn, path, props)
+	p, err := dbusexport.Properties(conn, path, props)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -221,7 +222,7 @@ func (m playerMethods) Previous() *dbus.Error  { return m.rec("Previous") }
 
 func newFakePlayer(t *testing.T, addr, name, identity, status, title string) *fakePlayer {
 	f := &fakePlayer{conn: service(t, addr, mprisPrefix+name)}
-	if err := f.conn.Export(playerMethods{f}, mprisPath, mprisPlayer); err != nil {
+	if err := dbusexport.Export(f.conn, playerMethods{f}, mprisPath, mprisPlayer); err != nil {
 		t.Fatal(err)
 	}
 	f.props = export(t, f.conn, mprisPath, prop.Map{

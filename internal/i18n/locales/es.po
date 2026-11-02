@@ -278,7 +278,7 @@ msgstr "Encontrado"
 msgid "Reply"
 msgstr "Responder"
 
-#: internal/apps/connect/service.go:246
+#: internal/apps/connect/service.go:247
 #: internal/apps/connect/share.go:213
 #: internal/apps/connect/share.go:219
 #: internal/connectui/app.go:20
@@ -288,15 +288,15 @@ msgstr "Responder"
 msgid "Mobile Link"
 msgstr "Mobile Link"
 
-#: internal/apps/connect/service.go:248
+#: internal/apps/connect/service.go:249
 msgid "%s wants to pair"
 msgstr "%s quiere emparejarse"
 
-#: internal/apps/connect/service.go:249
+#: internal/apps/connect/service.go:250
 msgid "Pair only if %s shows the key %s."
 msgstr "Empareja solo si %s muestra la clave %s."
 
-#: internal/apps/connect/service.go:250
+#: internal/apps/connect/service.go:251
 #: internal/connectui/window.go:425
 #: internal/connectui/window.go:434
 #: internal/remoteui/window.go:618
@@ -308,45 +308,45 @@ msgstr "Empareja solo si %s muestra la clave %s."
 msgid "Pair"
 msgstr "Emparejar"
 
-#: internal/apps/connect/service.go:250
+#: internal/apps/connect/service.go:251
 #: internal/connectui/window.go:426
 msgid "Refuse"
 msgstr "Rechazar"
 
-#: internal/apps/connect/service.go:292
+#: internal/apps/connect/service.go:293
 msgid "Ping!"
 msgstr "¡Ping!"
 
-#: internal/apps/connect/service.go:505
+#: internal/apps/connect/service.go:506
 msgid "Wants to pair"
 msgstr "Quiere emparejarse"
 
-#: internal/apps/connect/service.go:507
+#: internal/apps/connect/service.go:508
 #: internal/shell/bluetooth.go:42
 msgid "Pairing…"
 msgstr "Emparejando…"
 
-#: internal/apps/connect/service.go:509
+#: internal/apps/connect/service.go:510
 #: internal/apps/tailscale/status.go:265
 #: internal/remoteui/window.go:331
 #: internal/shell/bluetooth.go:52
 msgid "Connected"
 msgstr "Conectado"
 
-#: internal/apps/connect/service.go:511
+#: internal/apps/connect/service.go:512
 msgid "Away"
 msgstr "Fuera de alcance"
 
-#: internal/apps/connect/service.go:513
+#: internal/apps/connect/service.go:514
 #: internal/remoteui/window.go:326
 msgid "Not paired"
 msgstr "Sin emparejar"
 
-#: internal/apps/connect/service.go:517
+#: internal/apps/connect/service.go:518
 msgid "%d%%, charging"
 msgstr "%d%%, cargando"
 
-#: internal/apps/connect/service.go:519
+#: internal/apps/connect/service.go:520
 #: internal/ui/settings.go:338
 #: internal/ui/settings.go:776
 #: internal/ui/settings.go:880
