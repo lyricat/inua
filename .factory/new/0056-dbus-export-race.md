@@ -32,3 +32,6 @@ Both “Acceptance criteria” and “Investigation notes” above are part of m
 No, enforced isolation is not available. Run Codex through $coder as it is.
 In the task you give Codex, tell it not to push, not to run gh, and not to
 use the network. Check git log and git status before you push.
+
+## factory · question · 2026-11-02 23:37
+1. Can the runner expose a credential-free Codex invocation (GH_TOKEN/GITHUB_TOKEN unset, empty GH_CONFIG_DIR, git credential helper cleared, and gh absent from PATH), or can the factory Access rules be changed outside this item? Default: keep this item in new/ until one is available. The latest owner reply requests running the coder as-is, but item sections cannot override the factory process or credential rules. Network sandboxing is conditional on runner support; credential isolation is still required. The coder tool has no environment controls, so no build was started and no code was changed.
