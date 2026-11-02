@@ -1,3 +1,7 @@
+---
+branch: factory/0056-dbus-export-race
+round: 0
+---
 # D-Bus exports must not crash on concurrent calls
 
 ## lyric · 2026-11-02 16:40
@@ -37,3 +41,17 @@ Codex reports the negative control reproduces PathExists/unexport races without 
 1. No. Do not vendor, replace or patch godbus.
 
 Keep the export serialization, the migrated call sites, the property protection and the source audit: they fix the crash in #56. Subtree exports are set up only before the bus name is owned and removed only after it is released, as the keyring does; they never change while calls arrive. Change the subtree part of the regression test to that pattern instead of exporting and removing subtrees during calls, and keep the concurrent export test as it is. Treat the subtree and introspection reads inside godbus as out of scope here; they are reported upstream in https://github.com/godbus/dbus/pull/460 and come with a later godbus release.
+
+## factory · plan · 2026-11-03 08:45
+**Behaviour:** Serialize exports and removals per connection without changing served paths, interfaces or errors. Subtree tests export before acquiring the service name, keep interfaces stable while calls arrive, drain replies and release the name before removal.
+
+**Scope:** Retain shared export serialization, migrated call sites, property protection, source audit and the unchanged concurrent export regression. Adjust subtree semantics coverage only; no UI or dependency changes.
+
+**Decisions:** Follow the owner's clarification: do not vendor, replace or patch godbus. Its internal subtree/introspection races outside this lifecycle remain out of scope pending an upstream release.
+
+**Checking:** Run make i18n and make test (Python tests, go vet, Go race tests), plus repeated focused dbusexport race coverage.
+
+## factory · 2026-11-03 08:45
+Resumed the existing build after the owner's answer. Codex committed f5139f1 on top of 3ad1146; both were verified and pushed to factory/0056-dbus-export-race. Subtree coverage now follows service-name ownership and checks removal and the surviving interface. The concurrent export regression remains unchanged.
+
+Factory independently ran make i18n and make test successfully with a throwaway HOME; tracked files remained clean and no forbidden paths changed. Codex also reports ten passing focused race-test runs. No godbus dependency changes. No UI changed; the real desktop session was not checked or touched. Moved to review/ for merge-result verification in the next pass.
