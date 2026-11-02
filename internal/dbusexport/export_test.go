@@ -112,6 +112,10 @@ func TestConcurrentExportsAndCalls(t *testing.T) {
 }
 
 func TestExportSemantics(t *testing.T) {
+	// Subtrees follow the keyring lifecycle: export before owning the name,
+	// serve calls with stable interfaces, then release the name and drain calls
+	// before removal. Concurrent subtree mutation and introspection reads inside
+	// godbus are outside this regression's scope (godbus/dbus#460).
 	addr := dbustest.Start(t)
 	server, client := dbustest.Conn(t, addr), dbustest.Conn(t, addr)
 	for _, tc := range []struct {
@@ -161,12 +165,18 @@ func TestExportSemantics(t *testing.T) {
 				t.Fatal(err)
 			}
 			callPath := path
+			destination := server.Names()[0]
 			if tc.subtree {
 				callPath += "/child"
+				destination = testIface
+				if reply, err := server.RequestName(destination, dbus.NameFlagDoNotQueue); err != nil || reply != dbus.RequestNameReplyPrimaryOwner {
+					t.Fatalf("own subtree name: %v, %v", reply, err)
+				}
+				t.Cleanup(func() { server.ReleaseName(destination) })
 			}
 			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 			defer cancel()
-			obj := client.Object(server.Names()[0], callPath)
+			obj := client.Object(destination, callPath)
 			var got string
 			if err := obj.CallWithContext(ctx, testIface+"."+tc.method, 0, "hello").Store(&got); err != nil || got != "hello" {
 				t.Fatalf("method reply = %q, %v", got, err)
@@ -176,14 +186,44 @@ func TestExportSemantics(t *testing.T) {
 					t.Error("original mapped name still exported")
 				}
 			}
+			if tc.subtree {
+				var calls sync.WaitGroup
+				for range 4 {
+					calls.Go(func() {
+						for range 25 {
+							var got string
+							if err := obj.CallWithContext(ctx, testIface+"."+tc.method, 0, "hello").Store(&got); err != nil || got != "hello" {
+								t.Errorf("subtree reply = %q, %v", got, err)
+								return
+							}
+						}
+					})
+				}
+				calls.Wait()
+				if reply, err := server.ReleaseName(destination); err != nil || reply != dbus.ReleaseNameReplyReleased {
+					t.Fatalf("release subtree name: %v, %v", reply, err)
+				}
+			}
 			if err := tc.export(nil, path, testIface); err != nil {
 				t.Fatal(err)
+			}
+			if tc.subtree {
+				// Start serving again to check removal while the remaining
+				// interfaces stay unchanged for the whole call phase.
+				if reply, err := server.RequestName(destination, dbus.NameFlagDoNotQueue); err != nil || reply != dbus.RequestNameReplyPrimaryOwner {
+					t.Fatalf("reclaim subtree name: %v, %v", reply, err)
+				}
 			}
 			if err := obj.CallWithContext(ctx, testIface+"."+tc.method, 0, "hello").Err; err == nil {
 				t.Error("removed interface still callable")
 			}
-			if err := client.Object(server.Names()[0], path).CallWithContext(ctx, testIface+".Other.Echo", 0, "kept").Store(&got); err != nil || got != "kept" {
+			if err := client.Object(destination, path).CallWithContext(ctx, testIface+".Other.Echo", 0, "kept").Store(&got); err != nil || got != "kept" {
 				t.Fatalf("other interface lost: %q, %v", got, err)
+			}
+			if tc.subtree {
+				if reply, err := server.ReleaseName(destination); err != nil || reply != dbus.ReleaseNameReplyReleased {
+					t.Fatalf("release subtree name: %v, %v", reply, err)
+				}
 			}
 			if err := Export(server, nil, path, testIface+".Other"); err != nil {
 				t.Fatal(err)
