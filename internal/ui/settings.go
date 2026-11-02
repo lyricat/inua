@@ -26,6 +26,7 @@ import (
 	"github.com/lyricat/inua/internal/i18n"
 	"github.com/lyricat/inua/internal/shell"
 	"github.com/lyricat/inua/internal/system"
+	"github.com/lyricat/inua/internal/uikit"
 )
 
 // settings is the settings window (settings.ui), a normal toplevel built
@@ -557,6 +558,9 @@ func (s *shellUI) openSettings() {
 	st.win.ConnectCloseRequest(&s.onSettingsClose)
 
 	st.win.SetApplication(s.app)
+	if desktop.Wayfire() {
+		uikit.AddTitlebar(&st.win.Window)
+	}
 	s.showSettings()
 	s.setStatus("", false)
 	st.win.Present()

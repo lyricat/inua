@@ -11,6 +11,35 @@
    Translucent surfaces get Hyprland's blur through layer rules (namespaces
    inua-bar, inua-control, inua-launcher). */
 
+.window-titlebar {
+  min-height: 38px;
+  padding: 0 8px;
+  border: none;
+  border-bottom: 1px solid alpha(@line, 0.7);
+  border-radius: 0;
+  background: @panel;
+  color: @t0;
+  box-shadow: none;
+}
+.window-titlebar .title {
+  color: @t1;
+  font-family: "IBM Plex Sans", "Zen Kaku Gothic New", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+}
+.window-titlebar button {
+  min-width: 30px;
+  min-height: 30px;
+  padding: 0;
+  border: none;
+  border-radius: 2px;
+  background: transparent;
+  box-shadow: none;
+  color: @t1;
+}
+.window-titlebar button:hover { background: alpha(@accent, 0.09); color: @t0; }
+.window-titlebar button.close:hover { background: alpha(@danger, 0.12); color: @danger; }
+
 window.bar, window.control, window.agenda, window.banners, window.osd, window.center, window.dock-window, window.shot-drawer-win, window.drawer-overlay, window.clipboard-panel { background: transparent; }
 window.overview, window.widgets { background: transparent; }
 /* The launcher's catcher of clicks outside it: a surface wholly clear

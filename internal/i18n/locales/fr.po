@@ -347,9 +347,9 @@ msgid "%d%%, charging"
 msgstr "%d %%, en charge"
 
 #: internal/apps/connect/service.go:519
-#: internal/ui/settings.go:338
-#: internal/ui/settings.go:776
-#: internal/ui/settings.go:880
+#: internal/ui/settings.go:339
+#: internal/ui/settings.go:780
+#: internal/ui/settings.go:884
 #: internal/ui/settings_displays.go:418
 msgid "%d%%"
 msgstr "%d %%"
@@ -2842,7 +2842,7 @@ msgstr "Ouvre les fichiers vidéo"
 
 #: internal/desktop/defaults.go:48
 #: internal/lightui/pass_otp.go:340
-#: internal/ui/settings.go:1042
+#: internal/ui/settings.go:1046
 msgid "Images"
 msgstr "Images"
 
@@ -3122,7 +3122,7 @@ msgstr "Dossier personnel"
 #: internal/lightui/sysmon.go:967
 #: internal/lightui/tailscale.go:526
 #: internal/lightui/tailscale.go:567
-#: internal/ui/settings.go:576
+#: internal/ui/settings.go:580
 #: ui/vm.ui:2981
 msgid "System"
 msgstr "Système"
@@ -9350,8 +9350,8 @@ msgid "Top level"
 msgstr "Niveau supérieur"
 
 #: internal/lightui/pass.go:419
-#: internal/ui/settings.go:905
-#: internal/ui/settings.go:932
+#: internal/ui/settings.go:909
+#: internal/ui/settings.go:936
 msgid "%d entry"
 msgid_plural "%d entries"
 msgstr[0] "%d entrée"
@@ -12735,7 +12735,7 @@ msgid "%d thr"
 msgstr "%d threads"
 
 #: internal/shell/cardterm.go:136
-#: internal/ui/settings.go:574
+#: internal/ui/settings.go:578
 msgid "Desktop"
 msgstr "Bureau"
 
@@ -14774,7 +14774,7 @@ msgid "Searching…"
 msgstr "Recherche…"
 
 #: internal/ui/control_detail.go:214
-#: internal/ui/settings.go:573
+#: internal/ui/settings.go:577
 msgid "Devices"
 msgstr "Appareils"
 
@@ -14793,7 +14793,7 @@ msgid "No devices paired yet"
 msgstr "Aucun appareil associé pour l’instant"
 
 #: internal/ui/drawer.go:217
-#: internal/ui/settings.go:575
+#: internal/ui/settings.go:579
 #: internal/ui/widgets.go:591
 #: ui/settings.ui:181
 #: ui/settings.ui:2054
@@ -15174,121 +15174,121 @@ msgstr "Capture d'écran copiée"
 msgid "Screenshot taken"
 msgstr "Capture d'écran prise"
 
-#: internal/ui/settings.go:320
+#: internal/ui/settings.go:321
 msgid "Not restarted: %s"
 msgstr "Non redémarré : %s"
 
-#: internal/ui/settings.go:345
-#: internal/ui/settings.go:778
+#: internal/ui/settings.go:346
+#: internal/ui/settings.go:782
 msgid "%d px"
 msgstr "%d px"
 
-#: internal/ui/settings.go:572
+#: internal/ui/settings.go:576
 msgid "Connections"
 msgstr "Connexions"
 
-#: internal/ui/settings.go:684
+#: internal/ui/settings.go:688
 msgid "%s · yours: right-click for more"
 msgstr "%s · le vôtre : clic droit pour plus"
 
-#: internal/ui/settings.go:701
+#: internal/ui/settings.go:705
 msgid "A CSS file of @define-color lines, kept in themes beside config.toml"
 msgstr "Un fichier CSS de lignes @define-color, rangé dans themes à côté de config.toml"
 
-#: internal/ui/settings.go:710
+#: internal/ui/settings.go:714
 msgid "Add Theme…"
 msgstr "Ajouter un thème…"
 
-#: internal/ui/settings.go:810
+#: internal/ui/settings.go:814
 msgid "As the bar (%s)"
 msgstr "Comme la barre (%s)"
 
-#: internal/ui/settings.go:827
+#: internal/ui/settings.go:831
 msgid "inua objects"
 msgstr "inua objects"
 
-#: internal/ui/settings.go:828
+#: internal/ui/settings.go:832
 msgid "inua objects soft"
 msgstr "inua objects soft"
 
-#: internal/ui/settings.go:829
+#: internal/ui/settings.go:833
 msgid "inua objects flat"
 msgstr "inua objects flat"
 
-#: internal/ui/settings.go:837
+#: internal/ui/settings.go:841
 msgid "Phosphor"
 msgstr "Phosphor"
 
-#: internal/ui/settings.go:837
-#: internal/ui/settings.go:838
+#: internal/ui/settings.go:841
+#: internal/ui/settings.go:842
 msgid "System theme"
 msgstr "Thème système"
 
-#: internal/ui/settings.go:838
+#: internal/ui/settings.go:842
 #: ui/settings.ui:545
 msgid "As the app style"
 msgstr "Comme le style des apps"
 
-#: internal/ui/settings.go:931
+#: internal/ui/settings.go:935
 msgid "%s (%s, %s) · %s"
 msgstr "%s (%s, %s) · %s"
 
-#: internal/ui/settings.go:933
+#: internal/ui/settings.go:937
 msgid "%d text"
 msgid_plural "%d texts"
 msgstr[0] "%d texte"
 msgstr[1] "%d textes"
 
-#: internal/ui/settings.go:934
+#: internal/ui/settings.go:938
 msgid "%d image"
 msgid_plural "%d images"
 msgstr[0] "%d image"
 msgstr[1] "%d images"
 
-#: internal/ui/settings.go:935
+#: internal/ui/settings.go:939
 msgid "%.1f KB"
 msgstr "%.1f Ko"
 
-#: internal/ui/settings.go:1014
+#: internal/ui/settings.go:1018
 #: internal/ui/settings_apps.go:168
 #: internal/ui/settings_card.go:288
 #: internal/ui/settings_portals.go:177
 msgid "Not saved: %s"
 msgstr "Non sauvegardé : %s"
 
-#: internal/ui/settings.go:1040
+#: internal/ui/settings.go:1044
 msgid "Choose a wallpaper"
 msgstr "Choisir un fond d'écran"
 
-#: internal/ui/settings.go:1082
+#: internal/ui/settings.go:1086
 msgid "Off: another notification daemon can show them"
 msgstr "Désactivé : un autre démon de notification peut les afficher"
 
-#: internal/ui/settings.go:1084
+#: internal/ui/settings.go:1088
 msgid "Banners, then the notification center (the bell in the bar, or Super+N)"
 msgstr "Bannières puis centre de notifications (cloche de la barre ou Super+N)"
 
-#: internal/ui/settings.go:1086
+#: internal/ui/settings.go:1090
 msgid "Waiting: another notification daemon is running"
 msgstr "En attente : un autre démon de notification est en cours d'exécution"
 
-#: internal/ui/settings.go:1105
+#: internal/ui/settings.go:1109
 msgid "Nothing pinned"
 msgstr "Aucune application épinglée"
 
-#: internal/ui/settings.go:1121
+#: internal/ui/settings.go:1125
 msgid "%s (not installed)"
 msgstr "%s (non installé)"
 
-#: internal/ui/settings.go:1134
+#: internal/ui/settings.go:1138
 msgid "Move earlier"
 msgstr "Déplacer avant"
 
-#: internal/ui/settings.go:1135
+#: internal/ui/settings.go:1139
 msgid "Move later"
 msgstr "Déplacer après"
 
-#: internal/ui/settings.go:1136
+#: internal/ui/settings.go:1140
 msgid "Remove from the dock"
 msgstr "Retirer du dock"
 

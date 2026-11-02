@@ -19,6 +19,8 @@ fi
 # Give the Wayfire shell its own control socket. The socket listener rejects
 # a second launcher attempt that is still active for this session.
 instance=wayfire
+XDG_CURRENT_DESKTOP=Wayfire:Inua
+export XDG_CURRENT_DESKTOP
 INUA_INSTANCE=$instance export INUA_INSTANCE
 inua-shell -n "$instance" &
 shell_pid=$!

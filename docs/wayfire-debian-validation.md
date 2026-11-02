@@ -54,6 +54,21 @@ The shell starts the foreign-toplevel reader, enumerates Wayfire IPC methods, su
 | Output capture | `zwlr_screencopy_manager_v1`, `grim` | Three distinct full-output screenshots captured, hashed and variance-checked |
 | Resize / workspace creation / shortcut listing / lock | Not implemented | Unsupported |
 
+## Inua application windows
+
+Wayfire 0.9's `decoration` plugin supplies server-side decorations for
+Xwayland windows, not native GTK4 Wayland toplevels. The Inua session therefore
+adds GTK's standard headerbar to each built-in app window while running under
+Wayfire. GTK draws the title and minimize, maximize and close buttons; the
+compositor still owns window placement and resizing. The shell's Settings
+window uses the same headerbar. Other sessions keep their existing windows.
+
+The shared app UI covers Files, Viewer, Mail, Terminal, Mobile Link, Remote
+Desktop, Disk Usage, Virtual Machines, the Assistant, Games and registered
+light apps. The application window-added hook also gives app-owned dialogs a
+titlebar. The session exports `XDG_CURRENT_DESKTOP=Wayfire:Inua`, so this works
+for the shell started before Wayfire publishes its client environment.
+
 ## Remaining runtime acceptance
 
 **BLOCKED:** Implement and verify Wayfire overview state integration and card output capture, then capture an overview-open screenshot and verify open/close behavior. The other measured runtime evidence and screenshots are committed.

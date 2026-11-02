@@ -29,6 +29,7 @@ import (
 	"github.com/godbus/dbus/v5"
 
 	"github.com/lyricat/inua/internal/config"
+	"github.com/lyricat/inua/internal/desktop"
 	"github.com/lyricat/inua/internal/gtkx"
 	"github.com/lyricat/inua/internal/hypr"
 	"github.com/lyricat/inua/internal/i18n"
@@ -122,9 +123,10 @@ type Ctx struct {
 	onTick    glib.SourceFunc
 	open      func(gio.Application, uintptr, int32, string)
 	activate  func(gio.Application)
-	iconTheme string // the apps' icon theme in use, "" before loadIcons
-	gtkIcons  string // GTK's icon theme, the desktop's, before loadIcons set the apps'
-	desktop   string // DesktopIcons, once asked
+	added     func(gtk.Application, uintptr) // window-added: the Wayfire titlebar
+	iconTheme string                         // the apps' icon theme in use, "" before loadIcons
+	gtkIcons  string                         // GTK's icon theme, the desktop's, before loadIcons set the apps'
+	desktop   string                         // DesktopIcons, once asked
 }
 
 // Run runs the named app until its window closes. A second start of the
@@ -199,6 +201,9 @@ func run(name, appID, title string, v View, many bool, args []string, uiDir stri
 		c.win.AddCssClass("app")
 		c.win.AddCssClass("settings") // the settings window's controls and sections
 		c.win.AddCssClass(name)
+		if desktop.Wayfire() {
+			uikit.AddTitlebar(&c.win.Window)
+		}
 		if !c.StartHidden {
 			c.win.Present()
 		}
@@ -213,6 +218,14 @@ func run(name, appID, title string, v View, many bool, args []string, uiDir stri
 		}
 		glib.TimeoutAdd(2000, &c.onTick, 0)
 	}
+	// Wayfire puts no titlebar on GTK's Wayland windows: every window the
+	// app opens for itself gets one, the main window included.
+	c.added = func(_ gtk.Application, ptr uintptr) {
+		if desktop.Wayfire() {
+			uikit.AddTitlebar(gtk.WindowNewFromInternalPtr(ptr))
+		}
+	}
+	app.ConnectWindowAdded(&c.added)
 	app.ConnectActivate(&c.activate)
 	argv := []string{os.Args[0]}
 	if files {

@@ -99,6 +99,17 @@ func CurrentDesktops() []string {
 	return out
 }
 
+// Wayfire reports whether this is a Wayfire session: the apps Wayfire
+// starts carry its socket, and the session's desktop names Wayfire.
+func Wayfire() bool {
+	if os.Getenv("WAYFIRE_SOCKET") != "" || os.Getenv("_WAYFIRE_SOCKET") != "" {
+		return true
+	}
+	return slices.ContainsFunc(CurrentDesktops(), func(d string) bool {
+		return strings.Contains(d, "wayfire")
+	})
+}
+
 // UserMimeApps is the user's own mimeapps.list, where choices are written.
 func UserMimeApps() string { return filepath.Join(configHome(), "mimeapps.list") }
 

@@ -143,3 +143,23 @@ func TestTerminalArgv(t *testing.T) {
 	check(nil, "alacritty", true)
 	check([]string{"kitty", "--single-instance"}, "kitty --single-instance", true)
 }
+
+// A Wayfire session is named by the desktop or by the socket Wayfire gives
+// the apps it starts; another session is not.
+func TestWayfire(t *testing.T) {
+	t.Setenv("WAYFIRE_SOCKET", "")
+	t.Setenv("_WAYFIRE_SOCKET", "")
+	t.Setenv("XDG_CURRENT_DESKTOP", "Hyprland")
+	if Wayfire() {
+		t.Error("Hyprland reported as Wayfire")
+	}
+	t.Setenv("XDG_CURRENT_DESKTOP", "Wayfire:Inua")
+	if !Wayfire() {
+		t.Error("the desktop name was not seen")
+	}
+	t.Setenv("XDG_CURRENT_DESKTOP", "")
+	t.Setenv("_WAYFIRE_SOCKET", "/run/user/1000/wayfire-wayland-1.socket")
+	if !Wayfire() {
+		t.Error("the socket was not seen")
+	}
+}
