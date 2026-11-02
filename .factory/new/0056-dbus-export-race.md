@@ -32,3 +32,8 @@ The build and one verification retry stopped before pushing code. Local branch f
 Codex reports the negative control reproduces PathExists/unexport races without serialization; the protected export concurrency test passes. make i18n, 15 Python tests and go vet passed. Factory independently ran make test: it fails with races in godbus defaultHandler.LookupObject during subtree dispatch. Export-only serialization cannot protect that internal reader. The retry confirmed that LookupObject traverses the interface map without its object lock, while AddInterface/DeleteInterface write under that lock; introspectPath also reads the objects map without locking. Existing regression tests remain intact. No UI changed and no real desktop session was checked.
 
 1. May we vendor godbus v5.2.2 under third_party and use go.mod replace for minimal internal locking fixes, retaining the shared export protection and regression tests? Recommended default: yes, so subtree dispatch and introspection can be protected as well as export operations.
+
+## lyric · 2026-11-03 08:40
+1. No. Do not vendor, replace or patch godbus.
+
+Keep the export serialization, the migrated call sites, the property protection and the source audit: they fix the crash in #56. Subtree exports are set up only before the bus name is owned and removed only after it is released, as the keyring does; they never change while calls arrive. Change the subtree part of the regression test to that pattern instead of exporting and removing subtrees during calls, and keep the concurrent export test as it is. Treat the subtree and introspection reads inside godbus as out of scope here; they are reported upstream in https://github.com/godbus/dbus/pull/460 and come with a later godbus release.
