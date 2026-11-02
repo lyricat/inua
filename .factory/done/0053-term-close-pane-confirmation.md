@@ -101,3 +101,11 @@ have not been rewritten. No tests were rerun for this board migration.
 1. Please move this item to done/ as the owner once accepting the
    non-ancestry merge. Default: retain ready/ and wait; the factory must not
    automatically mark a cherry-picked/squashed/rebased branch as merged.
+
+## factory · 2026-11-02 15:46
+Owner explicitly approved moving this item to done in Console: “53 也可以去 done”.
+Implementation commit 3d6783f is an ancestor of master. This closes the
+previous question about the non-ancestry merge of the original branch;
+the move is by owner approval, not automatic branch ancestry detection.
+No implementation changes or test reruns for this status update. Earlier
+verification limitations remain recorded above.
