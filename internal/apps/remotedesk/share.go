@@ -27,6 +27,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"slices"
+	"strconv"
 	"strings"
 	"time"
 
@@ -45,13 +46,14 @@ const APIPort = 47990
 // Sharing shares this desktop: Sunshine, run with a configuration inua
 // writes in Dir, driven through its web API with credentials inua made.
 type Sharing struct {
-	Dir      string
-	LookPath func(string) (string, error)
-	Run      func(ctx context.Context, name string, args ...string) ([]byte, error)
-	Getenv   func(string) string
-	Access   func(path string) error // whether the user can write path
-	API      string                  // https://127.0.0.1:47990
-	Hostname func() (string, error)
+	Dir        string
+	LookPath   func(string) (string, error)
+	Run        func(ctx context.Context, name string, args ...string) ([]byte, error)
+	RunSystemd func(ctx context.Context, name string, args ...string) ([]byte, error)
+	Getenv     func(string) string
+	Access     func(path string) error // whether the user can write path
+	API        string                  // https://127.0.0.1:47990
+	Hostname   func() (string, error)
 	// Instance is the Hyprland running for this user, for a command run
 	// outside the session (over SSH).
 	Instance func() (hypr.Instance, error)
@@ -60,7 +62,7 @@ type Sharing struct {
 // NewSharing is the sharing of the user's session.
 func NewSharing() *Sharing {
 	return &Sharing{
-		Dir: filepath.Join(configHome(), "inua", "sharing"), LookPath: exec.LookPath, Run: run, Getenv: os.Getenv,
+		Dir: filepath.Join(configHome(), "inua", "sharing"), LookPath: exec.LookPath, Run: run, RunSystemd: runSystemd, Getenv: os.Getenv,
 		Access: func(p string) error { return unix.Access(p, unix.W_OK) },
 		API:    fmt.Sprintf("https://127.0.0.1:%d", APIPort), Hostname: os.Hostname,
 		Instance: func() (hypr.Instance, error) { return hypr.FindInstance(os.Getenv("XDG_RUNTIME_DIR")) },
@@ -82,6 +84,39 @@ func run(ctx context.Context, name string, args ...string) ([]byte, error) {
 	}
 	return out, nil
 }
+
+// runSystemd addresses the user's systemd manager through the standard runtime
+// directory. Desktop sessions may use a private XDG_RUNTIME_DIR for compositor
+// sockets, which is not where the user bus lives.
+func runSystemd(ctx context.Context, name string, args ...string) ([]byte, error) {
+	cmd := exec.CommandContext(ctx, name, args...)
+	env := os.Environ()
+	for _, key := range []string{"XDG_RUNTIME_DIR", "DBUS_SESSION_BUS_ADDRESS"} {
+		prefix := key + "="
+		filtered := env[:0]
+		for _, value := range env {
+			if !strings.HasPrefix(value, prefix) {
+				filtered = append(filtered, value)
+			}
+		}
+		env = filtered
+	}
+	cmd.Env = append(env, "XDG_RUNTIME_DIR="+userRuntimeDir(), "DBUS_SESSION_BUS_ADDRESS=unix:path="+filepath.Join(userRuntimeDir(), "bus"))
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		return out, fmt.Errorf("%s: %w: %s", filepath.Base(name), err, bytes.TrimSpace(out))
+	}
+	return out, nil
+}
+
+func (s *Sharing) systemd(ctx context.Context, name string, args ...string) ([]byte, error) {
+	if s.RunSystemd != nil {
+		return s.RunSystemd(ctx, name, args...)
+	}
+	return s.Run(ctx, name, args...)
+}
+
+func userRuntimeDir() string { return filepath.Join("/run/user", strconv.Itoa(os.Getuid())) }
 
 // Need is something sharing needs that is not there.
 type Need int
@@ -300,6 +335,26 @@ func (s *Sharing) session() (map[string]string, error) {
 	return env, nil
 }
 
+// serviceEnv is the environment Sunshine is started with: the session's,
+// with the user manager's runtime directory, where its bus and its
+// services live. A session that keeps its compositor in a runtime
+// directory of its own gets the screen's path made absolute, so Sunshine
+// still finds it.
+func serviceEnv(env map[string]string) map[string]string {
+	out := make(map[string]string, len(env))
+	for k, v := range env {
+		out[k] = v
+	}
+	if display := out["WAYLAND_DISPLAY"]; display != "" && !filepath.IsAbs(display) {
+		if runtime := out["XDG_RUNTIME_DIR"]; runtime != "" && runtime != userRuntimeDir() {
+			out["WAYLAND_DISPLAY"] = filepath.Join(runtime, display)
+		}
+	}
+	out["XDG_RUNTIME_DIR"] = userRuntimeDir()
+	out["DBUS_SESSION_BUS_ADDRESS"] = "unix:path=" + filepath.Join(userRuntimeDir(), "bus")
+	return out
+}
+
 // StartTimeout is how long Sunshine may take to start: it tries the
 // encoders on the screen first, which took most of a minute on one
 // computer.
@@ -308,7 +363,7 @@ const StartTimeout = 120 * time.Second
 // unitState is the unit's state as systemctl names it: active,
 // activating, failed, inactive…
 func (s *Sharing) unitState(ctx context.Context) string {
-	out, _ := s.Run(ctx, "systemctl", "--user", "is-active", Unit)
+	out, _ := s.systemd(ctx, "systemctl", "--user", "is-active", Unit)
 	return strings.TrimSpace(string(out))
 }
 
@@ -330,21 +385,22 @@ func (s *Sharing) Start(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+	service := serviceEnv(env)
 	if !running(s.unitState(ctx)) {
 		if err := s.prepare(env); err != nil {
 			return err
 		}
-		s.Run(ctx, "systemctl", "--user", "reset-failed", Unit)
+		s.systemd(ctx, "systemctl", "--user", "reset-failed", Unit)
 		args := []string{"--user", "--unit=" + Unit, "--description=inua desktop sharing (Sunshine)", "--collect", "--quiet",
 			"--property=Restart=on-failure", "--property=RestartSec=3"}
 		// The unit starts in the user manager's environment, not the session's.
 		for _, k := range sessionEnv {
-			if v := env[k]; v != "" {
+			if v := service[k]; v != "" {
 				args = append(args, "--setenv="+k+"="+v)
 			}
 		}
 		args = append(args, "--", bin, s.file("sunshine.conf"))
-		if _, err := s.Run(ctx, "systemd-run", args...); err != nil {
+		if _, err := s.systemd(ctx, "systemd-run", args...); err != nil {
 			return err
 		}
 	}
@@ -365,7 +421,7 @@ func (s *Sharing) Start(ctx context.Context) error {
 
 // Stop ends the sharing: Sunshine stops, and what is connected with it.
 func (s *Sharing) Stop(ctx context.Context) error {
-	out, err := s.Run(ctx, "systemctl", "--user", "stop", Unit)
+	out, err := s.systemd(ctx, "systemctl", "--user", "stop", Unit)
 	if err != nil && !strings.Contains(string(out), "not loaded") {
 		return err
 	}
