@@ -67,8 +67,10 @@ Firefox's New Private Window, a new window of it, keeping it in the
 dock, quitting it; closing, floating or centring a window), Esc returns focus where it
 was. It also answers: arithmetic (`2^10 + 3`),
 units (`10 km to mi`, `32 f in c`) and currencies (`100 usd to jpy`, ECB
-rates) and crypto (`1 eth to usd`, `100 usd to btc`, Coinbase's prices);
-Enter copies the answer.
+rates, or the Bank of England's when Frankfurter is down) and crypto
+(`1 eth to usd`, `100 usd to btc`, Coinbase's prices);
+Enter copies the answer. `INUA_RATES_SKIP=ecb` (or `ecb,boe`) in the
+shell's environment treats those services as down, to try the fallbacks.
 
 Apps show as a grid of their icons, six to a line, which scrolls, the next
 apps showing at the foot, blurred more the lower. Answers, commands, the

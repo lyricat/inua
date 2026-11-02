@@ -433,3 +433,22 @@ its output goes to `~/Library/Logs/inua-term-web.log`.
   has it).
 - Reading the clipboard through OSC 52, allowed per workspace, and
   notifications turned off per workspace.
+
+### Closing a pane
+
+The Close pane shortcut and action ask before ending a foreground program,
+including programs started directly in a pane. Cancel or Escape keeps the
+pane and its program running. Repeating the action does not confirm it.
+An idle interactive shell closes directly. Working and blocked agents keep
+their specific warnings.
+
+The host checks the current foreground process group and the shell process's
+arguments when closing. If inspection fails, it requires confirmation.
+Background jobs in separate process groups are not detected; an otherwise
+idle shell can close with those jobs still running. Process state can change
+between inspection and closing.
+
+Host clients receive `ErrCloseConfirmation` from `ClosePane` when consent is
+needed. They must obtain explicit consent before calling `ConfirmClosePane`
+(the `close` protocol request with `confirm: true`); repeating `ClosePane`
+never grants consent.
