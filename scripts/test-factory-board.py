@@ -28,6 +28,16 @@ class BoardTest(unittest.TestCase):
         self.assertEqual(problems, [])
         self.assertEqual(board.turn("new", sections, {"owner"}), "agent")
 
+    def test_review_section(self):
+        _, _, sections, problems = board.parse(
+            "# Request\n\n## reviewer · review · 2026-11-02 20:00\n"
+            "head: abc123\nverdict: pass\n")
+        self.assertEqual(problems, [])
+        self.assertEqual(sections, [{
+            "who": "reviewer", "kind": "review", "time": "2026-11-02 20:00",
+            "body": "head: abc123\nverdict: pass",
+        }])
+
     def test_formats_and_visible_folders(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp) / ".factory"

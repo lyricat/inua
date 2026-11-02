@@ -28,7 +28,7 @@ FOLDERS = ["new", "review", "ready", "done"]  # stop/ is parked: not shown
 # new/<slug>.md; the factory numbers it. Prefixes are capitals and slugs are
 # lower case, so a slug can't be read as a number.
 ITEM = re.compile(r"^(?:(?:[A-Z]+(\d+)|(\d{4}))-)?([a-z0-9]+(?:-[a-z0-9]+)*)\.md$")
-SECTION = re.compile(r"^## (.+?) · (?:(plan|question) · )?(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\s*$")
+SECTION = re.compile(r"^## (.+?) · (?:(plan|question|review) · )?(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\s*$")
 DONE_SHOWN = 12
 TZ = None  # factory.toml's timezone; the machine's own when unset
 
