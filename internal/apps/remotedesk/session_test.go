@@ -37,7 +37,7 @@ func systemdRun(calls []string) string {
 
 func TestSharingOverSSHTakesTheSessionsDisplay(t *testing.T) {
 	s, _, calls := newSharing(t)
-	overSSH(t, s, "/run/user/1000")
+	overSSH(t, s, userRuntimeDir())
 	if st := s.Status(t.Context()); st.Need != NeedNothing {
 		t.Errorf("a session is running: need = %v", st.Need)
 	}
@@ -45,9 +45,9 @@ func TestSharingOverSSHTakesTheSessionsDisplay(t *testing.T) {
 		t.Fatal(err)
 	}
 	run := systemdRun(*calls)
-	for _, want := range []string{"--setenv=WAYLAND_DISPLAY=wayland-1", "--setenv=XDG_RUNTIME_DIR=/run/user/1000",
+	for _, want := range []string{"--setenv=WAYLAND_DISPLAY=wayland-1", "--setenv=XDG_RUNTIME_DIR=" + userRuntimeDir(),
 		"--setenv=HYPRLAND_INSTANCE_SIGNATURE=abc_1800000000_1", "--setenv=XDG_SESSION_TYPE=wayland",
-		"--setenv=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus"} {
+		"--setenv=DBUS_SESSION_BUS_ADDRESS=unix:path=" + userRuntimeDir() + "/bus"} {
 		if !strings.Contains(run, want) {
 			t.Errorf("no %q in %q", want, run)
 		}
@@ -56,7 +56,7 @@ func TestSharingOverSSHTakesTheSessionsDisplay(t *testing.T) {
 
 func TestSharingWithoutASessionIsRefused(t *testing.T) {
 	s, _, calls := newSharing(t)
-	overSSH(t, s, "/run/user/1000")
+	overSSH(t, s, userRuntimeDir())
 	s.Instance = func() (hypr.Instance, error) { return hypr.Instance{}, hypr.ErrNoInstance }
 	if st := s.Status(t.Context()); st.Need != NeedDisplay {
 		t.Errorf("no session: need = %v, want NeedDisplay", st.Need)
@@ -175,7 +175,7 @@ func TestSyncVirtualMakesTheScreenAndRestartsSunshine(t *testing.T) {
 
 func TestSyncVirtualWithoutASession(t *testing.T) {
 	s, _, _ := newSharing(t)
-	overSSH(t, s, "/run/user/1000")
+	overSSH(t, s, userRuntimeDir())
 	s.Instance = func() (hypr.Instance, error) { return hypr.Instance{}, hypr.ErrNoInstance }
 	if err := s.SyncVirtual(t.Context()); !errors.Is(err, ErrNoSession) {
 		t.Fatalf("SyncVirtual = %v, want ErrNoSession", err)
