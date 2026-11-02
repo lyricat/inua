@@ -16,3 +16,19 @@ inua-shell quit with `fatal error: concurrent map read and map write` in godbus,
 - Likely fix: one mutex per connection held around every export, in a small shared package; upgrading godbus does not help. Exports done at start-up, before calls arrive, should still go through it for consistency.
 - Runtime exports: `internal/portal/inhibit.go` and `portal.go` (Request/Session handles), `internal/keyring/service.go`, `internal/polkit/agent.go`, `internal/system/bluetooth.go`, `internal/sni/watcher.go`.
 - Follow repository generation, translation and test requirements. Do not restart or touch the user's running shell to verify.
+
+## factory · plan · 2026-11-03 08:22
+**Behaviour:** Serialize exports and removals per D-Bus connection, including startup and method-handler exports, while preserving paths, interfaces and errors. Dispatch and method execution must not hold the export lock; handlers can themselves export objects.
+
+**Scope:** Add shared export protection, migrate all connection exports under internal/ and cmd/ (including tests), protect property exports, and add private-bus race regression coverage. No UI or live-session changes.
+
+**Decisions:** Reference-count active/waiting export operations so idle connections are not permanently retained. Cover export variants and audit source for unprotected calls. Dependency patches were not part of the initial implementation plan.
+
+**Checking:** Run make i18n and make test; demonstrate that the concurrency regression fails without protection. Check subtree and mapping semantics as well as concurrent method traffic.
+
+## factory · question · 2026-11-03 08:22
+The build and one verification retry stopped before pushing code. Local branch factory/0056-dbus-export-race holds commit 3ad1146 with export serialization, migrated call sites, property protection and regression tests. The item remains in new/.
+
+Codex reports the negative control reproduces PathExists/unexport races without serialization; the protected export concurrency test passes. make i18n, 15 Python tests and go vet passed. Factory independently ran make test: it fails with races in godbus defaultHandler.LookupObject during subtree dispatch. Export-only serialization cannot protect that internal reader. The retry confirmed that LookupObject traverses the interface map without its object lock, while AddInterface/DeleteInterface write under that lock; introspectPath also reads the objects map without locking. Existing regression tests remain intact. No UI changed and no real desktop session was checked.
+
+1. May we vendor godbus v5.2.2 under third_party and use go.mod replace for minimal internal locking fixes, retaining the shared export protection and regression tests? Recommended default: yes, so subtree dispatch and introspection can be protected as well as export operations.
