@@ -37,7 +37,7 @@ func systemdRun(calls []string) string {
 
 func TestSharingOverSSHTakesTheSessionsDisplay(t *testing.T) {
 	s, _, calls := newSharing(t)
-	overSSH(t, s, "/run/user/1000")
+	overSSH(t, s, userRuntimeDir())
 	if st := s.Status(t.Context()); st.Need != NeedNothing {
 		t.Errorf("a session is running: need = %v", st.Need)
 	}
@@ -45,9 +45,9 @@ func TestSharingOverSSHTakesTheSessionsDisplay(t *testing.T) {
 		t.Fatal(err)
 	}
 	run := systemdRun(*calls)
-	for _, want := range []string{"--setenv=WAYLAND_DISPLAY=wayland-1", "--setenv=XDG_RUNTIME_DIR=/run/user/1000",
+	for _, want := range []string{"--setenv=WAYLAND_DISPLAY=wayland-1", "--setenv=XDG_RUNTIME_DIR=" + userRuntimeDir(),
 		"--setenv=HYPRLAND_INSTANCE_SIGNATURE=abc_1800000000_1", "--setenv=XDG_SESSION_TYPE=wayland",
-		"--setenv=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus"} {
+		"--setenv=DBUS_SESSION_BUS_ADDRESS=unix:path=" + userRuntimeDir() + "/bus"} {
 		if !strings.Contains(run, want) {
 			t.Errorf("no %q in %q", want, run)
 		}
@@ -56,7 +56,7 @@ func TestSharingOverSSHTakesTheSessionsDisplay(t *testing.T) {
 
 func TestSharingWithoutASessionIsRefused(t *testing.T) {
 	s, _, calls := newSharing(t)
-	overSSH(t, s, "/run/user/1000")
+	overSSH(t, s, userRuntimeDir())
 	s.Instance = func() (hypr.Instance, error) { return hypr.Instance{}, hypr.ErrNoInstance }
 	if st := s.Status(t.Context()); st.Need != NeedDisplay {
 		t.Errorf("no session: need = %v, want NeedDisplay", st.Need)
@@ -175,7 +175,7 @@ func TestSyncVirtualMakesTheScreenAndRestartsSunshine(t *testing.T) {
 
 func TestSyncVirtualWithoutASession(t *testing.T) {
 	s, _, _ := newSharing(t)
-	overSSH(t, s, "/run/user/1000")
+	overSSH(t, s, userRuntimeDir())
 	s.Instance = func() (hypr.Instance, error) { return hypr.Instance{}, hypr.ErrNoInstance }
 	if err := s.SyncVirtual(t.Context()); !errors.Is(err, ErrNoSession) {
 		t.Fatalf("SyncVirtual = %v, want ErrNoSession", err)
@@ -226,5 +226,55 @@ func TestVirtualAtStartGivesUp(t *testing.T) {
 	defer cancel()
 	if err := s.VirtualAtStart(ctx, os.Getppid()); err == nil {
 		t.Fatal("no Hyprland started, and no error")
+	}
+}
+
+// A session that keeps its compositor in a runtime directory of its own (a
+// headless Wayfire, say): Sunshine still gets the screen, by its absolute
+// path, and the user manager's directory, where its bus is.
+func TestASessionWithItsOwnRuntimeDirectory(t *testing.T) {
+	s, _, calls := newSharing(t)
+	runtime := t.TempDir()
+	s.Getenv = func(k string) string {
+		return map[string]string{"WAYLAND_DISPLAY": "wayland-1", "XDG_RUNTIME_DIR": runtime, "PATH": "/usr/bin"}[k]
+	}
+	if err := s.Start(t.Context()); err != nil {
+		t.Fatal(err)
+	}
+	run := systemdRun(*calls)
+	for _, want := range []string{"--setenv=WAYLAND_DISPLAY=" + filepath.Join(runtime, "wayland-1"),
+		"--setenv=XDG_RUNTIME_DIR=" + userRuntimeDir(),
+		"--setenv=DBUS_SESSION_BUS_ADDRESS=unix:path=" + filepath.Join(userRuntimeDir(), "bus")} {
+		if !strings.Contains(run, want) {
+			t.Errorf("no %q in %q", want, run)
+		}
+	}
+}
+
+// systemctl and systemd-run address the user manager, not the session's
+// private runtime directory.
+func TestSystemdIsAddressedThroughTheUserManagersDirectory(t *testing.T) {
+	s, _, calls := newSharing(t)
+	s.Getenv = func(k string) string {
+		return map[string]string{"WAYLAND_DISPLAY": "wayland-1", "XDG_RUNTIME_DIR": t.TempDir(), "PATH": "/usr/bin"}[k]
+	}
+	var used []string
+	s.RunSystemd = func(ctx context.Context, name string, args ...string) ([]byte, error) {
+		used = append(used, name+" "+strings.Join(args, " "))
+		if name == "systemctl" && args[1] == "is-active" {
+			return []byte("active\n"), nil
+		}
+		return nil, nil
+	}
+	if st := s.Status(t.Context()); !st.Running || st.Need != NeedNothing {
+		t.Errorf("status = %+v", st)
+	}
+	if !slices.Contains(used, "systemctl --user is-active "+Unit) {
+		t.Errorf("asked %q", used)
+	}
+	for _, c := range *calls {
+		if strings.HasPrefix(c, "systemctl ") || strings.HasPrefix(c, "systemd-run ") {
+			t.Errorf("systemd called without the user manager's directory: %q", c)
+		}
 	}
 }
