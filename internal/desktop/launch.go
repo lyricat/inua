@@ -32,12 +32,28 @@ func LaunchWith(e *Entry, terminal []string) error {
 func Spawn(argv []string, dir string) error {
 	cmd := exec.Command(argv[0], argv[1:]...)
 	cmd.Dir = dir
+	cmd.Env = spawnEnv(os.Environ())
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setsid: true}
 	if err := cmd.Start(); err != nil {
 		return err
 	}
 	go cmd.Wait()
 	return nil
+}
+
+// spawnEnv is what a started app gets: this process's environment without
+// LD_PRELOAD. A Wayfire session starts inua-shell with inua's layer-shell
+// preload, which the shell needs and other programs do not; when they inherit
+// it, some Wayland clients lose their own client-side decorations (kitty's
+// titlebar, for one).
+func spawnEnv(env []string) []string {
+	out := make([]string, 0, len(env))
+	for _, kv := range env {
+		if !strings.HasPrefix(kv, "LD_PRELOAD=") {
+			out = append(out, kv)
+		}
+	}
+	return out
 }
 
 // ReapInherited waits for the children this process already has when it

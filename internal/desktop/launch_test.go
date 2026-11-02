@@ -32,3 +32,12 @@ func TestReapInherited(t *testing.T) {
 	}
 	t.Fatalf("child %d was not reaped", pid)
 }
+
+// Apps the shell starts do not inherit its layer-shell preload.
+func TestSpawnEnv(t *testing.T) {
+	env := []string{"HOME=/home/x", "LD_PRELOAD=/opt/layer-shell.so", "PATH=/bin"}
+	got := spawnEnv(env)
+	if len(got) != 2 || got[0] != env[0] || got[1] != env[2] {
+		t.Fatalf("spawnEnv = %q", got)
+	}
+}
