@@ -24,3 +24,6 @@ inua-shell quit with `fatal error: concurrent map read and map write` in godbus,
 Treat both as part of my request.
 
 Both “Acceptance criteria” and “Investigation notes” above are part of my original request, without changing their meaning.
+
+## factory · question · 2026-11-02 22:54
+1. Can the runner provide a Codex coder invocation with enforced no-network sandboxing, a credential-free environment and gh removed from PATH? Default: keep this item in new/ until that isolation is available. The exposed coder tool runs with approvals bypassed and offers only coder, cwd and task parameters; it does not expose sandbox or environment controls. Passing these restrictions as prompt text would not enforce the required isolation, so no coding agent was started. Your clarification is accepted: the acceptance criteria and investigation notes are part of the request.
