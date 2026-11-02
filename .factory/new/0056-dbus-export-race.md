@@ -27,3 +27,8 @@ Both “Acceptance criteria” and “Investigation notes” above are part of m
 
 ## factory · question · 2026-11-02 22:54
 1. Can the runner provide a Codex coder invocation with enforced no-network sandboxing, a credential-free environment and gh removed from PATH? Default: keep this item in new/ until that isolation is available. The exposed coder tool runs with approvals bypassed and offers only coder, cwd and task parameters; it does not expose sandbox or environment controls. Passing these restrictions as prompt text would not enforce the required isolation, so no coding agent was started. Your clarification is accepted: the acceptance criteria and investigation notes are part of the request.
+
+## lyric · 2026-11-02 23:34
+No, enforced isolation is not available. Run Codex through $coder as it is.
+In the task you give Codex, tell it not to push, not to run gh, and not to
+use the network. Check git log and git status before you push.
