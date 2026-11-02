@@ -85,6 +85,7 @@ type Launcher struct {
 type Overview struct {
 	MRU        bool `toml:"mru"`
 	PerMonitor bool `toml:"per_monitor"`
+	ShowDock   bool `toml:"show_dock"`
 }
 
 // Quicklink is a site the launcher searches by keyword.
@@ -896,7 +897,7 @@ func Default() Config {
 			Pass:       true,
 		},
 		Launcher: Launcher{Mode: "apps", Search: "https://www.google.com/search?q=%s", Quicklinks: slices.Clone(DefaultQuicklinks)},
-		Overview: Overview{MRU: false, PerMonitor: true},
+		Overview: Overview{MRU: false, PerMonitor: true, ShowDock: true},
 		Control: Control{
 			Lock:       "inua call lock now",
 			Screenshot: "inua call screenshot area",

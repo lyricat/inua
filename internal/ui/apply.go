@@ -224,6 +224,7 @@ func (s *shellUI) applyConfig(c config.Config) {
 			b.win.SetVisible(c.Bar.Enable)
 		}
 		s.syncDock(b)
+		s.syncOverviewDock(b)
 		b.title.SetVisible(c.Bar.Title)
 		b.tray.SetVisible(c.Bar.Tray)
 		b.clipboard.SetVisible(c.Clipboard.Enable && c.Clipboard.Bar)

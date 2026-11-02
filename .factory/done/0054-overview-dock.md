@@ -52,3 +52,11 @@ No implementation, merge or test run was performed in this board-only
 migration. Previous test results, the Dock autohide concern and visual
 verification limitations remain unchanged. The old testing section is
 preserved verbatim as historical evidence.
+
+## Morta · 2026-11-02 15:43 JST
+Owner explicitly requested merging item 0054 and pushing master in Console.
+Merged `factory/54-overview-dock` (`6d10352`) into master, preserving the author's commits; moved this item to done as part of that merge.
+
+Validation on the merge result: `make test`, `make generate`, `make i18n`, and `CGO_ENABLED=0 go build ./cmd/inua-shell` passed. Tests and the build used a throwaway HOME and private XDG_RUNTIME_DIR. Generation and translation extraction produced no additional changes.
+
+No nested graphical session was exercised. The previously recorded Dock autohide concern has not been fixed or graphically reproduced by this merge; the owner's merge decision does not assert otherwise.
