@@ -16,3 +16,6 @@ inua-shell quit with `fatal error: concurrent map read and map write` in godbus,
 - Likely fix: one mutex per connection held around every export, in a small shared package; upgrading godbus does not help. Exports done at start-up, before calls arrive, should still go through it for consistency.
 - Runtime exports: `internal/portal/inhibit.go` and `portal.go` (Request/Session handles), `internal/keyring/service.go`, `internal/polkit/agent.go`, `internal/system/bluetooth.go`, `internal/sni/watcher.go`.
 - Follow repository generation, translation and test requirements. Do not restart or touch the user's running shell to verify.
+
+## factory · question · 2026-11-02 21:58
+1. Can you change `## Acceptance criteria` and `## Investigation notes` to `###` subheadings inside lyric's section, or confirm their contents in a new timestamped lyric section? Default: treat both as part of your original request, without changing their meaning. The factory thread format reserves `##` for signed, timestamped sections; these two headings do not parse, so this item is waiting before a build. No owner text has been edited.
