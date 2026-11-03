@@ -417,6 +417,10 @@ func (s *shellUI) newDockButton(it shell.DockItem, size int) *dockButton {
 	btn.SetChild(&box.Widget)
 	box.Unref()
 	btn.ConnectClicked(&s.onDockClicked)
+	hover := gtk.NewEventControllerMotion()
+	hover.ConnectEnter(&s.onDockHover)
+	hover.ConnectLeave(&s.onDockHoverLeave)
+	btn.AddController(&hover.EventController)
 	if it.Entry != nil {
 		// Drag to reorder (or pin): the drag carries the app's key.
 		var v gobject.Value
@@ -584,6 +588,19 @@ func (s *shellUI) bindDockHandlers() {
 		case addr != "":
 			s.focusWindowHere(addr)
 		}
+	}
+	s.onDockHover = func(c gtk.EventControllerMotion, _, _ float64) {
+		w := c.GetWidget()
+		if w == nil {
+			return
+		}
+		key := strings.TrimPrefix(w.GetName(), "dock:")
+		if it, ok := s.dockItem(key); ok {
+			s.showDockPreview(key, w, it)
+		}
+	}
+	s.onDockHoverLeave = func(gtk.EventControllerMotion) {
+		s.closeDockPreview()
 	}
 	s.onDockScroll = func(_ gtk.EventControllerScroll, _, dy float64) bool {
 		s.scrollDock(int(dy))
@@ -996,4 +1013,59 @@ func (s *shellUI) nextPinned(key string) string {
 		found = it.Key == key
 	}
 	return ""
+}
+
+// showDockPreview shows the app's latest window as a thumbnail above the dock.
+func (s *shellUI) showDockPreview(key string, at *gtk.Widget, it shell.DockItem) {
+	if s.wayfire == nil || len(it.Windows) == 0 || s.dockPreviewKey == key {
+		return
+	}
+	s.closeDockPreview()
+	pop := gtk.NewPopover()
+	pop.SetParent(at)
+	pop.SetHasArrow(true)
+	pop.SetAutohide(false)
+	box := gtk.NewBox(gtk.OrientationVerticalValue, 6)
+	title := gtk.NewLabel(it.Name)
+	title.SetXalign(0)
+	picture := gtk.NewPicture()
+	picture.SetSizeRequest(360, 203)
+	picture.SetContentFit(gtk.ContentFitContainValue)
+	gtkx.Append(box, &title.Widget)
+	gtkx.Append(box, &picture.Widget)
+	pop.SetChild(&box.Widget)
+	box.Unref()
+	s.dockPreview, s.dockPreviewKey = pop, key
+	s.dockPreviewGen++
+	gen := s.dockPreviewGen
+	pop.Popup()
+
+	snapshot := s.snap
+	address := it.Windows[0].Address
+	go func() {
+		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+		defer cancel()
+		path, err := s.windowThumbnail(ctx, snapshot, address)
+		if err != nil {
+			log.Printf("dock preview: %v", err)
+			return
+		}
+		gtkx.Post(func() {
+			if s.dockPreviewGen != gen || s.dockPreview == nil {
+				return
+			}
+			setPictureFile(picture, path)
+		})
+	}()
+}
+
+func (s *shellUI) closeDockPreview() {
+	if s.dockPreview == nil {
+		return
+	}
+	s.dockPreviewGen++
+	pop := s.dockPreview
+	s.dockPreview, s.dockPreviewKey = nil, ""
+	pop.Popdown()
+	pop.Unparent()
 }

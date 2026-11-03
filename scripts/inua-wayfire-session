@@ -33,4 +33,6 @@ XDG_CURRENT_DESKTOP=Wayfire:Inua
 export XDG_CURRENT_DESKTOP
 INUA_INSTANCE=wayfire
 export INUA_INSTANCE
+QT_QPA_PLATFORMTHEME=kde
+export QT_QPA_PLATFORMTHEME
 exec wayfire -c "$config_file"

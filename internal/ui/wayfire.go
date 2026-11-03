@@ -77,7 +77,9 @@ func wayfireSnapshot(snapshot compositor.Snapshot) hypr.Snapshot {
 		ActiveToplevel: snapshot.ActiveToplevel,
 		FocusedMonitor: snapshot.FocusedMonitor,
 	}
+	origins := map[string][2]float64{}
 	for _, monitor := range snapshot.Monitors {
+		origins[monitor.Name] = [2]float64{float64(monitor.X), float64(monitor.Y)}
 		out.Monitors = append(out.Monitors, hypr.Monitor{
 			ID: monitor.ID, Name: monitor.Name, Description: monitor.Description,
 			X: monitor.X, Y: monitor.Y, Width: monitor.Width, Height: monitor.Height,
@@ -112,11 +114,16 @@ func wayfireSnapshot(snapshot compositor.Snapshot) hypr.Snapshot {
 				out.ActiveToplevel = toplevel.Address
 			}
 		}
+		origin := origins[toplevel.Monitor]
 		out.Toplevels = append(out.Toplevels, hypr.Toplevel{
 			Address: toplevel.Address, PID: toplevel.PID, Title: toplevel.Title,
 			Class: toplevel.Class, WorkspaceID: toplevel.WorkspaceID, Monitor: toplevel.Monitor,
 			Activated: active(toplevel),
-			Raw:       map[string]any{"focusHistoryID": float64(history)},
+			Raw: map[string]any{
+				"focusHistoryID": float64(history),
+				"at":             []any{origin[0] + float64(toplevel.GeometryX), origin[1] + float64(toplevel.GeometryY)},
+				"size":           []any{float64(toplevel.GeometryWidth), float64(toplevel.GeometryHeight)},
+			},
 		})
 	}
 	return out

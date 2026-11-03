@@ -84,11 +84,14 @@ type shellUI struct {
 	// hyprLua: Hyprland runs Lua (0.55 and later; probeLua). The overview
 	// needs it, and focusing and switching use its dispatchers when there,
 	// the classic ones otherwise.
-	hyprLua   bool
-	hyprApply hyprApply // writing hypr/inua.conf; see applyHyprland
-	notes     notes
-	dockState dockState
-	icons     icons
+	hyprLua        bool
+	hyprApply      hyprApply // writing hypr/inua.conf; see applyHyprland
+	notes          notes
+	dockState      dockState
+	dockPreview    *gtk.Popover
+	dockPreviewKey string
+	dockPreviewGen uint64
+	icons          icons
 	// The wheel over the bars' workspaces, and over the docks.
 	workspaceWheel, dockWheel shell.WheelStep
 
@@ -166,6 +169,8 @@ type shellUI struct {
 	onBarScroll            func(gtk.EventControllerScroll, float64, float64) bool
 	onWorkspaceScroll      func(gtk.EventControllerScroll, float64, float64) bool
 	onDockScroll           func(gtk.EventControllerScroll, float64, float64) bool
+	onDockHover            func(gtk.EventControllerMotion, float64, float64)
+	onDockHoverLeave       func(gtk.EventControllerMotion)
 	onSlider               func(gtk.Range, gtk.ScrollType, float64) bool
 	onBackdropPressed      func(gtk.GestureClick, int32, float64, float64)
 	onControlKey           func(gtk.EventControllerKey, uint32, uint32, gdk.ModifierType) bool

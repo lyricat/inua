@@ -47,6 +47,8 @@ type workspaceOverview struct {
 	searchStatus         gtk.Label
 	mru                  gtk.Button
 	images               map[string]*gtk.Picture
+	thumbPaths           map[string]string
+	thumbStarted         map[string]bool
 	layoutKey            string
 	cardWidgets          map[int]*overviewCardWidgets
 	windowWidgets        map[string]*overviewWindowWidgets
@@ -120,6 +122,8 @@ func (s *shellUI) showOverview() {
 	if s.overview.textures == nil {
 		s.overview.textures = map[string]*gdk.MemoryTexture{}
 	}
+	s.overview.thumbPaths = map[string]string{}
+	s.overview.thumbStarted = map[string]bool{}
 	// Keep the most recent frame for each live window while the overview is
 	// closed. The next open can paint these immediately while capture refreshes.
 	live := make(map[string]bool, len(s.snap.Toplevels))
@@ -133,6 +137,12 @@ func (s *shellUI) showOverview() {
 		}
 	}
 	s.renderOverview()
+	if s.wayfire != nil {
+		s.fillOverviewThumbnails(&s.overview, s.snap, s.overview.activation)
+		for _, view := range s.overview.views {
+			s.fillOverviewThumbnails(view, s.snap, s.overview.activation)
+		}
+	}
 	s.syncOverviewDocks()
 	s.guardOverviewMouse(true)
 	log.Printf("overview: open (%d workspaces) wallpaper=%q", len(s.overview.st.Cards), s.cfg.ImagePath())
@@ -630,6 +640,8 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 			preview.AddCssClass("overview-preview")
 			if texture := o.textures[w.Address]; texture != nil {
 				preview.SetPaintable(texture)
+			} else if path := o.thumbPaths[w.Address]; path != "" {
+				setPictureFile(preview, path)
 			}
 			windowLayer := gtk.NewOverlay()
 			windowLayer.SetOverflow(gtk.OverflowHiddenValue)
@@ -694,6 +706,35 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 		grid.Attach(&canvas.Widget, int32(slot%columns), int32(slot/columns), 1, 1)
 		canvas.Unref()
 		slot++
+	}
+}
+
+// fillOverviewThumbnails captures each card's window once through the
+// Wayfire thumbnail path and paints it when it arrives.
+func (s *shellUI) fillOverviewThumbnails(o *workspaceOverview, snap hypr.Snapshot, gen uint64) {
+	for address := range o.images {
+		if o.thumbStarted[address] {
+			continue
+		}
+		o.thumbStarted[address] = true
+		go func(address string) {
+			ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+			defer cancel()
+			path, err := s.windowThumbnail(ctx, snap, address)
+			if err != nil {
+				log.Printf("overview thumbnail: %v", err)
+				return
+			}
+			gtkx.Post(func() {
+				if s.overview.activation != gen || !s.overview.st.Open {
+					return
+				}
+				o.thumbPaths[address] = path
+				if picture := o.images[address]; picture != nil {
+					setPictureFile(picture, path)
+				}
+			})
+		}(address)
 	}
 }
 

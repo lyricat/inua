@@ -367,6 +367,8 @@ func (c *Client) Windows(ctx context.Context) (compositor.Snapshot, error) {
 		snapshot.Toplevels = append(snapshot.Toplevels, compositor.Toplevel{
 			Address: address, PID: view.PID, Title: view.Title, Class: view.AppID,
 			Monitor: view.OutputName, Activated: view.Activated,
+			GeometryX: view.Geometry.X, GeometryY: view.Geometry.Y,
+			GeometryWidth: view.Geometry.Width, GeometryHeight: view.Geometry.Height,
 		})
 		if view.Activated {
 			snapshot.ActiveToplevel = address
