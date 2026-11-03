@@ -55,3 +55,6 @@ Keep the export serialization, the migrated call sites, the property protection 
 Resumed the existing build after the owner's answer. Codex committed f5139f1 on top of 3ad1146; both were verified and pushed to factory/0056-dbus-export-race. Subtree coverage now follows service-name ownership and checks removal and the surviving interface. The concurrent export regression remains unchanged.
 
 Factory independently ran make i18n and make test successfully with a throwaway HOME; tracked files remained clean and no forbidden paths changed. Codex also reports ten passing focused race-test runs. No godbus dependency changes. No UI changed; the real desktop session was not checked or touched. Moved to review/ for merge-result verification in the next pass.
+
+## factory · 2026-11-03 09:27
+Merge result tested: factory/0056-dbus-export-race (f5139f1) merges cleanly with master (53d1cb5's successors up to 12d3b1b); make generate and make i18n change nothing; make test passes, internal/dbusexport included, no data races. No dependency or workflow changes. Not checked: a real desktop session.
