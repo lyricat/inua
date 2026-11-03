@@ -253,7 +253,25 @@ button.plain.tight, button.image-button.tight { min-width: 20px; min-height: 20p
 .bar.compact .island button.clock-button,
 .bar.compact .island .tray button { min-height: 0; padding: 1px 6px; margin: 1px 0; }
 .bar.compact .island .tray button { padding-left: 4px; padding-right: 4px; }
-.bar .island .title { color: @t1; }
+/* The focused application, always the same way: its icon, its name, then
+   its menus (app_menu). The icon is the app's own, quiet beside the name;
+   the name is a title, not the window's, so it stays the same while the
+   window's changes. */
+/* The application's name is a button (its own menu opens from it): the
+   island's own look, no frame, clear until the pointer is over it. */
+.bar .island button.app {
+  min-width: 0;
+  padding: 0 4px;
+  border: none;
+  background: none;
+  box-shadow: none;
+}
+.bar .island button.app:hover { background: alpha(@t0, 0.06); border-radius: 3px; }
+.bar .island .app { min-width: 0; }
+.bar .island .app .app-icon { color: @t1; -gtk-icon-size: 16px; }
+.bar .island .title { color: @t0; font-family: "IBM Plex Sans", "Zen Kaku Gothic New", sans-serif; font-size: 13px; }
+.bar.compact .island .app .app-icon { -gtk-icon-size: 14px; }
+.bar.compact .island .title { font-size: 12px; }
 .bar .island .clock {
   color: @t0; /* not the button's colour it sits in */
   font-size: 12px;
@@ -315,6 +333,10 @@ button.plain.tight, button.image-button.tight { min-width: 20px; min-height: 20p
 .bar .island .workspaces button.widgets-mark:hover { border-color: @t1; background: transparent; }
 .bar .island .workspaces button.widgets-mark.open { min-width: 16px; background: @accent; border-color: @accent; }
 .bar .island .workspaces.under-page button.focused { min-width: 6px; background: @t1; }
+
+.bar .island .app-menu { margin-left: 2px; }
+.bar .island .app-menu button { min-height: 24px; min-width: 0; padding: 0 5px; color: @t1; }
+.bar .island .app-menu button:hover { color: @t0; }
 
 /* min-width: 0 too, else GTK's icon buttons are wider than the bell. */
 .bar .island button.status, .bar .island button.passwords, .bar .island button.clipboard, .bar .island button.notes, .bar .island button.voice, .bar .island button.clock-button, .bar .island .tray button {
@@ -1410,6 +1432,7 @@ button.shot-mode:checked image { color: @accent; }
 .shot-picker-body { padding: 64px 96px 150px; }
 .shot-pick-head { margin: 30px 2px 12px; animation: shot-pick-rise 420ms cubic-bezier(0.2, 0.9, 0.25, 1.1) backwards; }
 .shot-picker-body > .shot-pick-head:first-child { margin-top: 0; }
+
 .shot-pick-title {
   font-family: "Geist Mono", "IBM Plex Mono", monospace;
   font-size: 11px;
@@ -3490,6 +3513,7 @@ popover.term-menu .term-menu-state.s-warn { color: @warn; }
 window.term-prefs .index list { padding-top: 26px; }
 window.term .term-prefs-note { padding: 0 16px 16px; }
 /* Column 1's toggle, framed as Files' and Mail's. */
+
 window.term .term-sessions { padding: 12px 14px 0; }
 /* After the last session, a new one: a dashed placeholder, quiet until
    hovered. */
@@ -4677,3 +4701,66 @@ window.mail .mail-assist-actions { padding-bottom: 4px; }
 window.mail button.mail-assist-action { min-height: 34px; padding: 0 8px; font-size: 13px; }
 window.mail button.mail-assist-action image { color: @accent; }
 window.mail button.mail-assist-action:disabled image { color: @t2; }
+
+/* The application menu, hung under the bar as its own overlay surface
+   (appmenu_panel.go). One card: the bar's glass, a hairline round it and the
+   floating card's shadow (design/ui.md, Menus). Inside it, a submenu is a
+   column beside its item, as a Mac's is: no second card, just a hairline
+   opening between columns. */
+/* The card: the bar's glass, a hairline round it and the floating card's
+   shadow (design/ui.md, Menus). The panel holds no fill of its own, so the
+   card and each submenu's card stand as the separate menus they are. */
+.menu-panel {
+  padding: 5px;
+  border: 1px solid alpha(@line, 0.9);
+  border-radius: 4px;
+  background: @glass;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.32);
+}
+/* One card holds the whole menu, its submenus included: a submenu is a
+   column of that card, separated by a hairline, not a second card with a
+   shadow of its own. */
+.menu-col { min-width: 232px; }
+.menu-col.menu-sub {
+  margin-left: 6px;
+  padding-left: 6px;
+  border-left: 1px solid alpha(@line, 0.6);
+}
+/* Items, as every menu's (design/ui.md): running text at 13.5 px, at least
+   32 px tall, clear until the pointer is over them. */
+.menu-item {
+  min-height: 32px;
+  min-width: 0;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  box-shadow: none;
+  color: @t0;
+}
+/* The bar names the application at 13 px; its menu is the same size,
+   or the menu reads as larger than the thing that opened it. */
+.menu-item label { font-size: 13px; font-weight: 400; }
+.menu-item:hover, .menu-item:focus-visible {
+  border-color: alpha(@accent, 0.25);
+  background: alpha(@accent, 0.07);
+}
+.menu-item:disabled { color: @t2; }
+.menu-item:disabled label { color: @t2; }
+.menu-mark { color: @t2; font-size: 12px; }
+/* A hairline between groups: the line's own width, inset in the column. */
+.menu-col separator.menu-line {
+  min-height: 1px;
+  margin: 4px 8px;
+  background: alpha(@line, 0.6);
+}
+
+/* About an application: a small card of the shell's own (appmenu.go), so
+   every application gets one, whatever its toolkit. */
+window.about { background: @surface; }
+.about-body { padding: 22px 22px 18px; }
+.about-icon { margin-bottom: 2px; }
+.about-name { font-size: 16px; color: @t0; }
+.about-window { font-size: 12.5px; color: @t1; }
+.about-process { font-family: "Geist Mono", "IBM Plex Mono", monospace; font-size: 11px; color: @t2; }
+.about-close { margin-top: 8px; min-height: 32px; border: 1px solid @line; border-radius: 2px; background: @surface; }

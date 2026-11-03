@@ -107,7 +107,7 @@ func (s *shellUI) bindAgendaHandlers() {
 	s.onAgendaGone = func(uintptr) bool {
 		a := &s.agenda
 		a.drop.detach()
-		a.win.Destroy()
+		destroyPanel(&a.win.Window)
 		a.refs.Release()
 		a.open, a.closing = false, false
 		return false

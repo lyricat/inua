@@ -50,25 +50,25 @@ DM ?= greetd
 all: build
 
 build:
-	go build -o bin/inua-shell ./cmd/inua-shell
-	go build -o bin/inua ./cmd/inua
-	go build -o bin/inua-apps ./cmd/inua-apps
-	go build -o bin/inua-files ./cmd/inua-files
-	go build -o bin/inua-viewer ./cmd/inua-viewer
-	go build -o bin/inua-vm ./cmd/inua-vm
-	go build -o bin/inua-remote ./cmd/inua-remote
-	go build -o bin/inua-connect ./cmd/inua-connect
-	go build -o bin/inua-disk-usage ./cmd/inua-disk-usage
-	go build -ldflags "-X github.com/lyricat/inua/internal/apps/mail.GoogleClientSecret=$(INUA_GOOGLE_CLIENT_SECRET)" -o bin/inua-mail ./cmd/inua-mail
-	go build -o bin/inua-games ./cmd/inua-games
-	go build -o bin/inua-game-lobby ./cmd/inua-game-lobby
-	go build -o bin/inua-pinentry ./cmd/inua-pinentry
-	go build -o bin/inua-askpass ./cmd/inua-askpass
-	go build -o bin/inua-share-picker ./cmd/inua-share-picker
-	go build -o bin/inua-assistant ./cmd/inua-assistant
-	go build -o bin/inua-keyring ./cmd/inua-keyring
-	go build -o bin/inua-term ./cmd/inua-term
-	go build -o bin/inua-termd ./cmd/inua-termd
+	go build -buildvcs=false -o bin/inua-shell ./cmd/inua-shell
+	go build -buildvcs=false -o bin/inua ./cmd/inua
+	go build -buildvcs=false -o bin/inua-apps ./cmd/inua-apps
+	go build -buildvcs=false -o bin/inua-files ./cmd/inua-files
+	go build -buildvcs=false -o bin/inua-viewer ./cmd/inua-viewer
+	go build -buildvcs=false -o bin/inua-vm ./cmd/inua-vm
+	go build -buildvcs=false -o bin/inua-remote ./cmd/inua-remote
+	go build -buildvcs=false -o bin/inua-connect ./cmd/inua-connect
+	go build -buildvcs=false -o bin/inua-disk-usage ./cmd/inua-disk-usage
+	go build -buildvcs=false -ldflags "-X github.com/lyricat/inua/internal/apps/mail.GoogleClientSecret=$(INUA_GOOGLE_CLIENT_SECRET)" -o bin/inua-mail ./cmd/inua-mail
+	go build -buildvcs=false -o bin/inua-games ./cmd/inua-games
+	go build -buildvcs=false -o bin/inua-game-lobby ./cmd/inua-game-lobby
+	go build -buildvcs=false -o bin/inua-pinentry ./cmd/inua-pinentry
+	go build -buildvcs=false -o bin/inua-askpass ./cmd/inua-askpass
+	go build -buildvcs=false -o bin/inua-share-picker ./cmd/inua-share-picker
+	go build -buildvcs=false -o bin/inua-assistant ./cmd/inua-assistant
+	go build -buildvcs=false -o bin/inua-keyring ./cmd/inua-keyring
+	go build -buildvcs=false -o bin/inua-term ./cmd/inua-term
+	go build -buildvcs=false -o bin/inua-termd ./cmd/inua-termd
 
 term-engine:
 	scripts/libghostty.sh

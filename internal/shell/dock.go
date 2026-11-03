@@ -143,7 +143,7 @@ func Dock(pinned []string, apps AppIndex, snap hypr.Snapshot, skip func(hypr.Top
 		if _, dup := at[e.ID]; dup {
 			continue
 		}
-		add(DockItem{Key: e.ID, Name: dockName(e), Icon: e.Icon, Entry: e, Pinned: true})
+		add(DockItem{Key: e.ID, Name: AppName(e), Icon: e.Icon, Entry: e, Pinned: true})
 	}
 	for _, t := range snap.Toplevels {
 		if t.Class == "" {
@@ -158,7 +158,7 @@ func Dock(pinned []string, apps AppIndex, snap hypr.Snapshot, skip func(hypr.Top
 		}
 		key, item := t.Class, DockItem{Key: t.Class, Name: cmpOr(t.Title, t.Class), Icon: t.Class}
 		if entry != nil {
-			key, item = entry.ID, DockItem{Key: entry.ID, Name: dockName(entry), Icon: entry.Icon, Entry: entry}
+			key, item = entry.ID, DockItem{Key: entry.ID, Name: AppName(entry), Icon: entry.Icon, Entry: entry}
 		}
 		j, ok := at[key]
 		if !ok {
@@ -180,8 +180,8 @@ func Dock(pinned []string, apps AppIndex, snap hypr.Snapshot, skip func(hypr.Top
 	return items
 }
 
-// dockName is an entry's name; the shell's own are translated here.
-func dockName(e *desktop.Entry) string {
+// AppName is an entry's name; the shell's own are translated here.
+func AppName(e *desktop.Entry) string {
 	if strings.HasPrefix(e.ID, "inua:") {
 		return i18n.T(e.Name)
 	}

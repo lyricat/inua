@@ -28,6 +28,7 @@ import (
 //	■ [ENGINE]     What turns your speech into text
 //	Runs      the recording stays here    [On this computer|An AI profile]
 //	Speech models (voxtype) / Profile (the AI's)
+//	Typing    pasted where you are, your clipboard put back
 type voiceSettings struct {
 	page    gtk.Box
 	filling bool // the page's controls being set, not changed
@@ -53,13 +54,15 @@ type voiceSettings struct {
 	micPick     devicePicker
 	mic         micTest
 
-	engine     gtk.Box // the ENGINE section, while dictation is on
-	local, ai  gtk.ToggleButton
-	runsSub    gtk.Label
-	profileRow gtk.Box
-	profile    gtk.Label
-	models     voxtypeModels
-	status     gtk.Label // the engine's errors, under its rows
+	engine          gtk.Box // the ENGINE section, while dictation is on
+	local, ai       gtk.ToggleButton
+	runsSub         gtk.Label
+	profileRow      gtk.Box
+	profile         gtk.Label
+	models          voxtypeModels
+	typingRow       gtk.Box
+	typing, typeCmd gtk.Label
+	status          gtk.Label // the engine's errors, under its rows
 }
 
 // voxtypeSite is voxtype's own page.
@@ -226,6 +229,14 @@ func (s *shellUI) getVoiceSettings(ui *gtkx.Builder) {
 	voiceButton(row, i18n.T("Change"), &s.onVoiceSetup)
 	gtkx.Append(body, &row.Widget)
 	s.buildVoxtypeModels(body)
+	row, typing := displayRow(i18n.T("Typing"), " ")
+	v.typingRow, v.typing = *row, *typing
+	v.typeCmd = *gtk.NewLabel("")
+	v.typeCmd.AddCssClass("mono-sub")
+	v.typeCmd.SetSelectable(true)
+	v.typeCmd.SetValign(gtk.AlignCenterValue)
+	gtkx.Append(row, &v.typeCmd.Widget)
+	gtkx.Append(body, &row.Widget)
 	v.status = *gtk.NewLabel("")
 	v.status.AddCssClass("row-error")
 	v.status.AddCssClass("flush")
@@ -328,6 +339,9 @@ func (s *shellUI) showVoice() {
 	v.profile.SetText(st.Model)
 	s.showVoxtypeModels(!ai && st.Available)
 
+	v.typingRow.SetVisible(st.Available)
+	v.typing.SetText(i18n.T("The words are pasted where you are, and your clipboard put back"))
+	v.typeCmd.SetText("")
 	if st.Available {
 		v.setStatus("")
 	}

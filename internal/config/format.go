@@ -15,7 +15,7 @@ import (
 func Format(c Config) string {
 	return fmt.Sprintf(template,
 		q(c.Language),
-		c.Bar.Enable, q(c.Bar.Density), q(c.Bar.Clock), q(c.Bar.Workspaces), c.Bar.Title, c.Bar.Tray, c.Bar.Pass,
+		c.Bar.Enable, q(c.Bar.Density), q(c.Bar.Clock), q(c.Bar.Workspaces), c.Bar.Title, c.Bar.Tray, c.Bar.Pass, c.Bar.Menu,
 		q(c.Launcher.Mode), q(c.Launcher.Terminal), q(c.Launcher.Search), quicklinks(c.Launcher.Quicklinks), c.Overview.MRU, c.Overview.PerMonitor, c.Overview.ShowDock,
 		q(c.Control.Lock), q(c.Control.Screenshot),
 		q(c.Screenshot.Folder), c.Screenshot.Copy, q(c.Screenshot.Recordings),
@@ -234,6 +234,12 @@ tray = %t
 # when there is a store. `+"`inua call pass toggle`"+` opens it too.
 pass = %t
 
+# Show the focused application's menu in the bar (macOS style): inua's own
+# apps, and applications that publish one through the AppMenu registrar.
+# Click elsewhere, or the same title again, to close it. The clock moves to
+# the bar's right end while this is on.
+menu = %t
+
 [launcher]
 # What `+"`inua call launcher toggle`"+` opens: "apps" or "windows".
 # (`+"`launcher apps`"+` and `+"`launcher windows`"+` open a mode directly.)
@@ -298,10 +304,10 @@ position = %s
 # built-in theme it names.
 theme = %s
 
-# The apps' colour theme, one of the above: inua's apps (the settings,
-# Files, the terminal, the viewer …) and whether other apps are asked to be
-# light or dark. "" (the default) follows theme; the bar, dock, launcher
-# and control center keep theme.
+# The apps' colour theme, one of the above: inua's apps (Files, the
+# terminal, the viewer …) and whether other apps are asked to be light or
+# dark. "" (the default) follows theme; the bar, dock, launcher, control
+# center and settings keep theme.
 app_theme = %s
 
 # How inua draws apps: inua's own and the others it draws, each as the

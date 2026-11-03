@@ -369,6 +369,14 @@ func TestRenderPopupBlur(t *testing.T) {
 			}
 		}
 	}
+	// The bar is arranged before the dock, so it spans the screen's top
+	// edge whole: a side dock reserves its width first, and the bar laid
+	// out after it would start at the dock's edge, not the screen's.
+	for _, out := range []string{got, RenderLua(config.Default(), Devices{})} {
+		if !strings.Contains(out, "order = 10") {
+			t.Errorf("the bar is not arranged before the dock:\n%s", out)
+		}
+	}
 }
 
 // inua.lua for a Lua config sets the same as inua.conf, in Hyprland

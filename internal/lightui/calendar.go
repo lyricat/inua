@@ -1,6 +1,7 @@
 package lightui
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gio"
 	"log"
 	"strconv"
 	"strings"
@@ -89,6 +90,11 @@ func (a *calendarApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	a.shown = time.Date(a.today.Year(), a.today.Month(), 1, 0, 0, 0, 0, time.Local)
 	a.showMonth()
 	glib.TimeoutAdd(30000, &a.onMidnight, 0)
+	menuWindow(c, win, []appui.MenuGroup{{Title: "View", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{{Name: "calendar-today", Label: "Today", Activate: func(gio.SimpleAction, uintptr) {
+		a.selected = dayOf(time.Now())
+		a.shown = time.Date(a.selected.Year(), a.selected.Month(), 1, 0, 0, 0, 0, time.Local)
+		a.showMonth()
+	}}}}}}})
 	return win
 }
 

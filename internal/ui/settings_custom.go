@@ -25,7 +25,6 @@ func (s *shellUI) customButton(name string) bool {
 	switch name {
 	case "theme_add":
 		s.chooseTheme()
-
 	default:
 		return false
 	}

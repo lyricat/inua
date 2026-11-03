@@ -114,10 +114,16 @@ windowrule {
 # hangs inside the bar's surface, which grows down over the screen while
 # it does: animated, Hyprland would stretch the bar's last frame over the
 # change.
+#
+# The bar is arranged before anything else that reserves space, so it spans
+# the screen's top edge whole, from the top-left corner to the top-right:
+# a side dock reserves its width for windows, and the bar laid out after it
+# would start at the dock's edge instead of the screen's.
 layerrule {
     name = inua-bar-still
     match:namespace = ^inua-bar$
     no_anim = on
+    order = 10
 }
 
 # The menus the bar and the dock open (the tray's, an app's in the dock)
@@ -392,10 +398,16 @@ hl.window_rule({
 -- hangs inside the bar's surface, which grows down over the screen while
 -- it does: animated, Hyprland would stretch the bar's last frame over the
 -- change.
+--
+-- The bar is arranged before anything else that reserves space, so it spans
+-- the screen's top edge whole, from the top-left corner to the top-right:
+-- a side dock reserves its width for windows, and the bar laid out after it
+-- would start at the dock's edge instead of the screen's.
 hl.layer_rule({
     name = "inua-bar-still",
     match = { namespace = "^inua-bar$" },
     no_anim = true,
+    order = 10,
 })
 
 -- The menus the bar and the dock open (the tray's, an app's in the dock)

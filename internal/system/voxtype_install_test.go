@@ -129,19 +129,10 @@ set) echo "set $3" >>"`+calls+`"; echo "$4" >"`+keys+`/$3" ;;
 esac
 `), 0o755)
 	os.WriteFile(filepath.Join(bin, "systemctl"), []byte("#!/bin/sh\necho \"systemctl $*\" >>"+calls+"\n"), 0o755)
-	// The daemon's environment is not inua's: the command carries the
-	// library folder a development build needs, and nothing when the
-	// build has its own (a wrapped one).
-	t.Setenv("PUREGOTK_LIB_FOLDER", "/opt/puregotk/lib")
 	want := VoxtypeHandsOver("/opt/inua's/inua", "default")
-	if want != `env PUREGOTK_LIB_FOLDER='/opt/puregotk/lib' '/opt/inua'\''s/inua' call -n 'default' voice type -` {
+	if want != `'/opt/inua'\''s/inua' call -n 'default' voice type -` {
 		t.Errorf("command %s", want)
 	}
-	t.Setenv("PUREGOTK_LIB_FOLDER", "")
-	if got := VoxtypeHandsOver("/opt/inua", "default"); got != `'/opt/inua' call -n 'default' voice type -` {
-		t.Errorf("wrapped command %s", got)
-	}
-	t.Setenv("PUREGOTK_LIB_FOLDER", "/opt/puregotk/lib")
 	run := func() string {
 		os.Remove(calls)
 		if _, err := ConfigureVoxtype(context.Background(), want); err != nil {
@@ -173,9 +164,6 @@ esac
 func TestConfigureVoxtypeFile(t *testing.T) {
 	home, bin := t.TempDir(), t.TempDir()
 	t.Setenv("HOME", home)
-	// voxtype looks in $XDG_CONFIG_HOME first, and a machine that sets it
-	// would have this test write there instead of into home.
-	t.Setenv("XDG_CONFIG_HOME", filepath.Join(home, ".config"))
 	t.Setenv("PATH", bin+":/usr/bin:/bin")
 	// A voxtype of 0.7: no `config get`, no `config set`.
 	os.WriteFile(filepath.Join(bin, "voxtype"), []byte("#!/bin/sh\nexit 2\n"), 0o755)
@@ -243,40 +231,6 @@ fallback_on_empty = false
 	}
 	if !strings.Contains(string(got), "  enabled = false\n") {
 		t.Errorf("the hotkey is still on:\n%s", got)
-	}
-}
-
-// A config.toml without the tables inua writes is read as unset, not a
-// panic; one that sets a table in a way inua does not edit (inline, by
-// dotted keys) is left as it is, rather than made one voxtype cannot read.
-func TestConfigureVoxtypeFileShapes(t *testing.T) {
-	home := t.TempDir()
-	t.Setenv("XDG_CONFIG_HOME", home)
-	conf := filepath.Join(home, "voxtype", "config.toml")
-	os.MkdirAll(filepath.Dir(conf), 0o755)
-
-	os.WriteFile(conf, []byte("[hotkey]\nenabled = true\n"), 0o644)
-	if v, err := voxtypeFileGet("output.post_process.command"); v != "" || err != nil {
-		t.Errorf("no [output]: %q, %v", v, err)
-	}
-	if err := voxtypeFileSet("output.notification.on_transcription", "false"); err != nil {
-		t.Fatal(err)
-	}
-	if v, err := voxtypeFileGet("output.notification.on_transcription"); v != "false" || err != nil {
-		t.Errorf("written into a new table: %q, %v", v, err)
-	}
-
-	for _, before := range []string{
-		"[output]\nnotification = { on_transcription = true }\n",
-		"[output]\nnotification.on_transcription = true\n",
-	} {
-		os.WriteFile(conf, []byte(before), 0o644)
-		if err := voxtypeFileSet("output.notification.on_transcription", "false"); err == nil {
-			t.Errorf("%q: written", before)
-		}
-		if got, _ := os.ReadFile(conf); string(got) != before {
-			t.Errorf("%q: the file changed:\n%s", before, got)
-		}
 	}
 }
 

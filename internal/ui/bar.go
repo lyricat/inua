@@ -12,6 +12,7 @@ import (
 	"codeberg.org/puregotk/puregotk/v4/graphene"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
+	"github.com/lyricat/inua/internal/appmenu"
 	"github.com/lyricat/inua/internal/config"
 	"github.com/lyricat/inua/internal/gtkx"
 	"github.com/lyricat/inua/internal/hypr"
@@ -29,31 +30,45 @@ type bar struct {
 	frame       gtk.Overlay // the island, and the panel hanging from it
 	island      gtk.CenterBox
 	workspaces  gtk.Box
-	widgetsMark gtk.Button // the widget page's place, before the workspaces
-	title       gtk.Label
-	clock       gtk.Label
-	clipboard   gtk.Button
-	passwords   gtk.Button
-	notes       gtk.Button
-	notesIcon   gtk.Image
-	voice       gtk.Button
-	voiceIcon   gtk.Image
-	unread      gtk.Box
-	tray        gtk.Box
-	status      gtk.Button
-	netIcon     gtk.Image
-	btIcon      gtk.Image
-	volIcon     gtk.Image
-	battery     gtk.Box
-	batIcon     gtk.Image
-	batLabel    gtk.Label
-	rec         gtk.Button
-	clockButton gtk.Button // opens the calendar panel
-	recTime     gtk.Label
-	refs        gtkx.Scope
-	edgeGaps    bool
-	compact     bool
-	height      int32 // the window's, by its density
+	app         gtk.Button // the application's name, which opens its own menu
+	appIcon     gtk.Image
+	appClass    string // the focused window's class
+	appName     string // the application the bar names, and its icon
+	appIconName string
+	appMenu     gtk.Box
+	appMenuGen  uint64
+	appMenuPID  int
+	// appMenuTargets is this bar's own menu buttons, by name. Each bar shows
+	// the menu of the application it names, so two bars can hold different
+	// menus at once (appmenu.go).
+	appMenuTargets map[string]appMenuTarget
+	appMenuEntries []appmenu.Entry // the menu this bar read, for the app's own button
+	widgetsMark    gtk.Button      // the widget page's place, before the workspaces
+	title          gtk.Label
+	clock          gtk.Label
+	end            gtk.Box
+	clipboard      gtk.Button
+	passwords      gtk.Button
+	notes          gtk.Button
+	notesIcon      gtk.Image
+	voice          gtk.Button
+	voiceIcon      gtk.Image
+	unread         gtk.Box
+	tray           gtk.Box
+	status         gtk.Button
+	netIcon        gtk.Image
+	btIcon         gtk.Image
+	volIcon        gtk.Image
+	battery        gtk.Box
+	batIcon        gtk.Image
+	batLabel       gtk.Label
+	rec            gtk.Button
+	clockButton    gtk.Button // opens the calendar panel
+	recTime        gtk.Label
+	refs           gtkx.Scope
+	edgeGaps       bool
+	compact        bool
+	height         int32 // the window's, by its density
 
 	// held counts the panels hanging from the bar (drop.go), whose
 	// window is grown down over the monitor meanwhile; pressHeld is
@@ -144,6 +159,7 @@ func (s *shellUI) dropBar(b *bar) {
 		}
 	}
 	delete(s.bars, b.mon.GoPointer())
+	b.clockButton.Unref() // the reference newBar took
 	dropWallpaper(b)
 	dropDock(b)
 	b.win.Destroy()
@@ -158,6 +174,10 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	ui.Get("frame", &b.frame)
 	ui.Get("island", &b.island)
 	ui.Get("workspaces", &b.workspaces)
+	ui.Get("app", &b.app)
+	ui.Get("app_icon", &b.appIcon)
+	ui.Get("app_menu", &b.appMenu)
+	ui.Get("end", &b.end)
 	ui.Get("widgets", &b.widgetsMark)
 	overviewClick := gtk.NewGestureClick()
 	overviewClick.SetButton(3)
@@ -175,6 +195,8 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	ui.Get("rec", &b.rec)
 	ui.Get("rec_time", &b.recTime)
 	ui.Get("clock_button", &b.clockButton)
+	b.clockButton.Ref() // ours: it moves between the island's middle and its end, and a
+	// box drops the reference it held when the widget leaves it
 	ui.Get("notes_icon", &b.notesIcon)
 	ui.Get("voice", &b.voice)
 	ui.Get("voice_icon", &b.voiceIcon)
@@ -190,6 +212,7 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	ui.Close()
 	b.setEdgeGap(s.cfg.Style.EdgeGaps)
 	b.setDensity(s.cfg.Bar.Density)
+	b.setClockAtEnd(s.cfg.Bar.Menu)
 	b.status.ConnectClicked(&s.onControlButton)
 	b.notes.ConnectClicked(&s.onNotesButton)
 	b.voice.ConnectClicked(&s.onVoiceButton)
@@ -208,6 +231,7 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	}
 	b.rec.ConnectClicked(&s.onRecButton)
 	b.clockButton.ConnectClicked(&s.onClockButton)
+	b.app.ConnectClicked(&s.onAppButton)
 	s.showNotesButton(b)
 	// The buttons reach to the screen's edges: the bar's margin around and
 	// between them hovers, clicks and scrolls as the button (endReach,
@@ -231,7 +255,7 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	b.setStatus(&s.sys)
 	b.setHypr(s, s.snap)
 	b.setClock(s, time.Now())
-	b.title.SetVisible(s.cfg.Bar.Title)
+	b.app.SetVisible(s.cfg.Bar.Title)
 	b.tray.SetVisible(s.cfg.Bar.Tray)
 	s.renderTray(b)
 
@@ -323,11 +347,11 @@ func (b *bar) setDensity(density string) {
 // hold grows the bar's window down over its monitor for a panel to hang
 // in, on layer and with the keyboard, the space it keeps from windows
 // as it was.
-func (b *bar) hold(layer layershell.Layer) {
+func (b *bar) hold(layer layershell.Layer, keyboard layershell.KeyboardMode) {
 	b.held++
 	w := b.win.GoPointer()
 	layershell.SetLayer(w, layer)
-	layershell.SetKeyboardMode(w, layershell.KeyboardExclusive)
+	layershell.SetKeyboardMode(w, keyboard)
 	if b.held > 1 {
 		return
 	}
@@ -375,8 +399,51 @@ func (b *bar) release() {
 	}
 }
 
+// clockAtEnd reports whether the clock is at the bar's right end.
+func (b *bar) clockAtEnd() bool {
+	if w := b.island.GetCenterWidget(); w != nil {
+		w.Unref() // GetCenterWidget takes a reference
+		return false
+	}
+	return true
+}
+
+// setClockAtEnd puts the clock at the bar's right end while the bar shows the
+// focused application's menu, and in the middle otherwise: the menu's titles
+// take the left of the bar, and its card hangs under them.
+func (b *bar) setClockAtEnd(atEnd bool) {
+	if b.clockAtEnd() == atEnd {
+		return
+	}
+	if atEnd {
+		b.island.SetCenterWidget(nil)
+		gtkx.Append(&b.end, &b.clockButton.Widget)
+		return
+	}
+	b.end.Remove(&b.clockButton.Widget)
+	b.island.SetCenterWidget(&b.clockButton.Widget)
+}
+
 func (b *bar) setClock(s *shellUI, now time.Time) {
 	b.clock.SetText(config.Strftime(s.cfg.Bar.Clock, now))
+}
+
+// setApp names the window in the bar: its application's icon and name, the
+// same way for every application, its own title not with them. A window of
+// an app with no desktop entry is named by its class.
+func (b *bar) setApp(s *shellUI, t hypr.Toplevel) {
+	name, icon := t.Class, t.Class
+	b.appClass = t.Class
+	if e := s.dockState.apps.ForClass(t.Class); e != nil {
+		name, icon = shell.AppName(e), e.Icon
+	}
+	if b.appName == name && b.appIconName == icon {
+		return
+	}
+	b.appName, b.appIconName = name, icon
+	b.title.SetText(name)
+	setIcon(&b.appIcon, icon)
+	b.appIcon.SetVisible(icon != "")
 }
 
 func (b *bar) setHypr(s *shellUI, snap hypr.Snapshot) {
@@ -402,10 +469,13 @@ func (b *bar) setHypr(s *shellUI, snap hypr.Snapshot) {
 		b.win.RemoveCssClass("occupied")
 		b.win.AddCssClass("empty")
 	}
-	b.title.SetText(shell.BarTitle(snap, name))
+	b.setApp(s, shell.BarWindow(snap, name))
 	order := s.overview.st
 	order.MRU = s.cfg.Overview.MRU
 	b.setWorkspaces(s, order.BarWorkspaces(snap, name, s.cfg.Bar.Workspaces == "all"))
+	if name == snap.FocusedMonitor {
+		s.syncAppMenu()
+	}
 }
 
 // scrollWorkspaces goes n notches' way (down the next, up the previous)

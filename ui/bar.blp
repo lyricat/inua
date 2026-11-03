@@ -35,10 +35,37 @@ ApplicationWindow bar {
           }
         }
 
-        Label title {
-          styles ["title"]
-          ellipsize: end;
-          max-width-chars: 48;
+        // The focused application, always the same way: its icon, its name,
+        // then its menus (appmenu.go). The name is a button: it opens the
+        // application's own menu, the one every application has (About,
+        // Close, Quit), as a Mac's does. Hidden with bar.title = false.
+        Button app {
+          styles ["app"]
+          name: "app";
+          has-frame: false;
+          focusable: false;
+
+          Box {
+            spacing: 8;
+
+            Image app_icon {
+              styles ["app-icon"]
+              valign: center;
+            }
+
+            Label title {
+              styles ["title"]
+              ellipsize: end;
+              max-width-chars: 32;
+              valign: center;
+            }
+          }
+        }
+
+        // The focused application's menus (appmenu.go); Go fills it.
+        Box app_menu {
+          styles ["app-menu"]
+          spacing: 2;
         }
       };
 
@@ -54,7 +81,7 @@ ApplicationWindow bar {
         }
       };
 
-      end-widget: Box {
+      end-widget: Box end {
         spacing: 6;
 
         Box tray {

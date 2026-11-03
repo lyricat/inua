@@ -1,6 +1,7 @@
 package lightui
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gio"
 	"context"
 	"fmt"
 	"log"
@@ -131,6 +132,7 @@ func (a *weatherApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 		a.placesToggle.SetActive(true)
 	}
 	glib.TimeoutAdd(30000, &a.onTick, 0)
+	menuWindow(c, win, []appui.MenuGroup{{Title: "View", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{{Name: "weather-refresh", Label: "Refresh", Activate: func(gio.SimpleAction, uintptr) { a.refresh() }}, {Name: "weather-places", Label: "Places", Activate: func(gio.SimpleAction, uintptr) { a.placesToggle.SetActive(true); a.placeSearch.GrabFocus() }}}}}}})
 	return win
 }
 

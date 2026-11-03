@@ -151,6 +151,7 @@ func (a *calcApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	keys.ConnectKeyPressed(&a.onKeyPress)
 	win.AddController(&keys.EventController)
 	a.show()
+	menuWindow(c, win, []appui.MenuGroup{{Title: "Edit", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{{Name: "calc-copy", Label: "Copy result", Activate: func(gio.SimpleAction, uintptr) { a.copy() }}, {Name: "calc-history", Label: "History", Activate: func(gio.SimpleAction, uintptr) { a.historyReveal.SetRevealChild(true) }}}}}}})
 	return win
 }
 

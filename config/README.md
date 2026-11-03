@@ -11,6 +11,7 @@ The sample configuration inua needs on a new system:
 | `inua/themes/nord.css` | `~/.config/inua/themes/nord.css` | A sample theme of your own, the Nord palette (MIT): every colour token, each with what it paints. Not in use until chosen |
 | `inua/icons/phosphor-bold/` | `~/.config/inua/icons/phosphor-bold/` | A sample icon set of your own: Phosphor's bold weight (MIT), every icon the shell draws. Not in use until chosen |
 | `apps/` | `~/.local/share/applications/`, `~/.local/share/icons/hicolor/scalable/apps/` (`make install`) | Desktop entries and icons of the light apps (Clock, Weather, Stocks, Calculator, Calendar, Color Picker, System Monitor, Tailscale, Viewer, Windows VM, Remote Desktop, Disk Usage, Mail; see [docs/apps.md](../docs/apps.md)). The icons' glyphs are Phosphor's (MIT), except the Windows guest's own mark in [inua-vm.md](../docs/inua-vm.md) |
+| `firefox/policies.json` | `/etc/firefox/policies/policies.json` (root; merge with any policy already there) | Makes Firefox publish its menu through the AppMenu registrar on Wayland (`widget.gtk.global-menu.enabled`), which is what puts its menus in the bar. Optional: without it Firefox shows no menu in the bar, and every other application is unaffected |
 | `fcitx5/themes/` | `~/.local/share/fcitx5/themes/` (`make install-fcitx`) | Fcitx 5 themes in inua's style |
 
 ```sh

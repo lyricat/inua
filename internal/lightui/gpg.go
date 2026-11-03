@@ -293,6 +293,7 @@ func (a *gpgApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	dlgKeys.ConnectKeyPressed(&a.onDlgKey)
 	a.dlg.AddController(&dlgKeys.EventController)
 	a.loadKeys()
+	menuWindow(c, a.win, []appui.MenuGroup{{Title: "View", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{{Name: "gpg-encrypt", Label: "Encrypt", Activate: func(gio.SimpleAction, uintptr) { a.ShowPage("encrypt") }}, {Name: "gpg-decrypt", Label: "Decrypt", Activate: func(gio.SimpleAction, uintptr) { a.ShowPage("decrypt") }}, {Name: "gpg-keys", Label: "Keys", Activate: func(gio.SimpleAction, uintptr) { a.ShowPage("keys") }}}}}}})
 	return a.win
 }
 

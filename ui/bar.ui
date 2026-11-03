@@ -45,12 +45,44 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
                   </object>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="title">
+                  <object class="GtkButton" id="app">
                     <style>
-                      <class name="title"/>
+                      <class name="app"/>
                     </style>
-                    <property name="ellipsize">3</property>
-                    <property name="max-width-chars">48</property>
+                    <property name="name">app</property>
+                    <property name="has-frame">false</property>
+                    <property name="focusable">false</property>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="spacing">8</property>
+                        <child>
+                          <object class="GtkImage" id="app_icon">
+                            <style>
+                              <class name="app-icon"/>
+                            </style>
+                            <property name="valign">3</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="title">
+                            <style>
+                              <class name="title"/>
+                            </style>
+                            <property name="ellipsize">3</property>
+                            <property name="max-width-chars">32</property>
+                            <property name="valign">3</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox" id="app_menu">
+                    <style>
+                      <class name="app-menu"/>
+                    </style>
+                    <property name="spacing">2</property>
                   </object>
                 </child>
               </object>
@@ -73,7 +105,7 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
               </object>
             </property>
             <property name="end-widget">
-              <object class="GtkBox">
+              <object class="GtkBox" id="end">
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkBox" id="tray">

@@ -130,7 +130,7 @@ func (s *shellUI) bindControlHandlers() {
 	s.onControlGone = func(uintptr) bool {
 		c := &s.control
 		c.drop.detach()
-		c.win.Destroy()
+		destroyPanel(&c.win.Window)
 		c.refs.Release()
 		c.open, c.closing = false, false
 		return false

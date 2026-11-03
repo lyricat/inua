@@ -200,17 +200,8 @@ func activateModel(ctx context.Context, bin, engine, name, arg string) error {
 // VoxtypeHandsOver is voxtype's post-process command that hands each
 // transcription to inua (`inua call voice type -`), which types it as it
 // types the AI engine's; the daemon then outputs nothing itself.
-//
-// The command carries PUREGOTK_LIB_FOLDER when this process has it: inua
-// links puregotk (through the VM command's view), and a build without the
-// wrapper that sets the folder at start-up (a development one) finds no
-// library in the daemon's environment, which none of inua's is.
 func VoxtypeHandsOver(inua, instance string) string {
-	cmd := shellQuote(inua) + " call -n " + shellQuote(instance) + " voice type -"
-	if dir := os.Getenv("PUREGOTK_LIB_FOLDER"); dir != "" {
-		cmd = "env PUREGOTK_LIB_FOLDER=" + shellQuote(dir) + " " + cmd
-	}
-	return cmd
+	return shellQuote(inua) + " call -n " + shellQuote(instance) + " voice type -"
 }
 
 // ConfigureVoxtype has voxtype hand its transcriptions to inua (command,
@@ -323,27 +314,17 @@ func voxtypeFileGet(key string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	v, err := voxtypeLookup(string(data), key)
-	if err != nil {
+	var cfg map[string]any
+	if err := toml.Unmarshal(data, &cfg); err != nil {
 		return "", fmt.Errorf("%s: %w", path, err)
 	}
-	return v, nil
-}
-
-// voxtypeLookup is the setting key of the TOML in text, as voxtypeFileGet
-// gives it; "" when a table on its way is not there.
-func voxtypeLookup(text, key string) (string, error) {
-	var cfg map[string]any
-	if err := toml.Unmarshal([]byte(text), &cfg); err != nil {
-		return "", err
-	}
 	var v any = cfg
-	for _, part := range strings.Split(key, ".") {
-		m, ok := v.(map[string]any)
-		if !ok {
-			return "", nil
-		}
-		v = m[part]
+	table, name := voxtypeTable(key)
+	for _, part := range table {
+		v, _ = v.(map[string]any)[part]
+	}
+	if m, ok := v.(map[string]any); ok {
+		v = m[name]
 	}
 	switch v := v.(type) {
 	case nil:
@@ -376,12 +357,6 @@ func voxtypeFileSet(key, value string) error {
 	}
 	table, name := voxtypeTable(key)
 	text := voxtypePut(string(data), strings.Join(table, "."), name, voxtypeValue(value))
-	// voxtypePut edits [table] headers and key = value lines; a table the
-	// file sets otherwise (inline, or by dotted keys) it would define twice.
-	// The file is left as it is then, rather than made one voxtype cannot read.
-	if v, err := voxtypeLookup(text, key); err != nil || v != value {
-		return fmt.Errorf("%s sets [%s] in a way inua does not edit: set %s = %s there", path, strings.Join(table, "."), name, voxtypeValue(value))
-	}
 	dir := filepath.Dir(path)
 	if err := os.MkdirAll(dir, 0o700); err != nil {
 		return err

@@ -167,6 +167,7 @@ func (a *clockApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	a.showAlarms()
 	a.showLaps()
 	a.tick()
+	menuWindow(c, win, []appui.MenuGroup{{Title: "View", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{{Name: "clock-world", Label: "World clocks", Activate: func(gio.SimpleAction, uintptr) { a.pages.SetVisibleChildName("world") }}, {Name: "clock-alarms", Label: "Alarms", Activate: func(gio.SimpleAction, uintptr) { a.pages.SetVisibleChildName("alarms") }}, {Name: "clock-stopwatch", Label: "Stopwatch", Activate: func(gio.SimpleAction, uintptr) { a.pages.SetVisibleChildName("stopwatch") }}, {Name: "clock-timer", Label: "Timer", Activate: func(gio.SimpleAction, uintptr) { a.pages.SetVisibleChildName("timer") }}}}}}})
 	glib.TimeoutAdd(50, &a.onTick, 0)
 	return win
 }

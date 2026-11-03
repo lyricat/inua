@@ -25,7 +25,7 @@ func TestGlass(t *testing.T) {
 // The default 4 keeps style.css's corners: 4px, and 6px for the dock.
 func TestCorners(t *testing.T) {
 	for _, c := range []struct{ radius, surface, dock int }{{4, 4, 6}, {0, 0, 0}, {20, 20, 30}} {
-		want := fmt.Sprintf(".bar .island, .launcher, .widget-page, .agenda .card, .control .card, .note, .osd-card, .center .card, .clipboard-panel .clipboard-card, popover.glass-menu.gtk-frame > contents { border-radius: %dpx; }\n.dock { border-radius: %dpx; }\n", c.surface, c.dock)
+		want := fmt.Sprintf(".bar .island, .launcher, .widget-page, .agenda .card, .control .card, .note, .osd-card, .center .card, .clipboard-panel .clipboard-card, popover.menu > contents, popover.glass-menu.gtk-frame > contents, popover.term-menu > contents { border-radius: %dpx; }\n.dock { border-radius: %dpx; }\n", c.surface, c.dock)
 		if got := Corners(c.radius); got != want {
 			t.Errorf("Corners(%d) = %q, want %q", c.radius, got, want)
 		}

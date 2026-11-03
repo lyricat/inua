@@ -221,6 +221,7 @@ func (a *tailscaleApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	win.AddController(&keys.EventController)
 
 	a.fetch()
+	menuWindow(c, win, []appui.MenuGroup{{Title: "View", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{{Name: "tailscale-refresh", Label: "Refresh", Activate: func(gio.SimpleAction, uintptr) { a.fetch() }}, {Name: "tailscale-devices", Label: "Devices", Activate: func(gio.SimpleAction, uintptr) { a.pages.SetVisibleChildName("devices") }}, {Name: "tailscale-settings", Label: "This device", Activate: func(gio.SimpleAction, uintptr) { a.pages.SetVisibleChildName("this-device") }}}}}}})
 	glib.TimeoutAdd(3000, &a.onTick, 0)
 	return win
 }

@@ -21,12 +21,14 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"unsafe"
 
 	"codeberg.org/puregotk/purego"
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/gio"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"codeberg.org/puregotk/puregotk/v4/gobject"
+	"codeberg.org/puregotk/puregotk/v4/graphene"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
 	"github.com/lyricat/inua/internal/config"
@@ -106,6 +108,8 @@ type shellUI struct {
 	alarms    alarms
 	settings  settings
 	wifi      wifiState // the networks, while a list shows them
+	appmenu   appMenuState
+	menu      menuPanel // the bar's application menu, when open
 	tray      tray
 	osd       osd
 	dictation dictationCard // dictation as it goes
@@ -118,6 +122,14 @@ type shellUI struct {
 	onWorkspaceClicked     func(gtk.Button)
 	onWorkspaceSettle      glib.SourceFunc
 	onClock                glib.SourceFunc
+	onAppMenuClicked       func(gtk.Button)
+	onAppButton            func(gtk.Button) // the application's name: opens its own menu
+	onAppMenuMeasure       glib.SourceFunc
+	onMenuRow              func(gtk.Button)
+	onMenuHover            func(gtk.EventControllerMotion, float64, float64)
+	onMenuLayout           glib.SourceFunc
+	onMenuBackdrop         func(gtk.GestureClick, int32, float64, float64)
+	onMenuKey              func(gtk.EventControllerKey, uint32, uint32, gdk.ModifierType) bool
 	onKey                  func(gtk.EventControllerKey, uint32, uint32, gdk.ModifierType) bool
 	onLauncherPick         func(gtk.GestureClick, int32, float64, float64)
 	onLauncherCatch        func(gtk.GestureClick, int32, float64, float64)
@@ -473,6 +485,8 @@ func (s *shellUI) start() {
 	s.bindVoiceHandlers()
 	s.bindTrayHandlers()
 	s.bindSettingsHandlers()
+	s.bindAppMenuHandlers()
+	s.bindMenuHandlers()
 	s.bindAboutHandlers()
 	s.bindCardHandlers()
 	s.bindWifiHandlers()
@@ -510,6 +524,7 @@ func (s *shellUI) start() {
 		s.startPolkit()
 	}
 	s.startPortals()
+	s.startAppMenu() // no-op unless [bar] menu is on
 	if s.cfg.Bar.Tray {
 		s.startTray()
 	}
@@ -555,6 +570,13 @@ func (s *shellUI) barClick(b *bar, x, y float64) bool {
 	case clock:
 		s.toggleAgenda()
 	default:
+		if s.appMenuBarAt(b, x, y) {
+			// A section of the bar's own menu: it opens, the open one
+			// giving way (openAppMenu switches in place). Nothing else
+			// closes here, so the menu never blinks shut first.
+			return true
+		}
+		s.closeMenu()
 		s.closeControl()
 		s.closeAgenda()
 		s.closePasswords()
@@ -563,6 +585,37 @@ func (s *shellUI) barClick(b *bar, x, y float64) bool {
 		s.closeDrawer()
 	}
 	return true
+}
+
+// appMenuBarAt answers the bar's menu buttons at x, y of a panel's window
+// over the bar: the button there is pressed, as if the bar's own window had
+// taken it. A panel covers the bar while a menu hangs from it, so without
+// this a press on another section would only close the open menu.
+func (s *shellUI) appMenuBarAt(b *bar, x, y float64) bool {
+	if b == nil || b.appMenu.GetFirstChild() == nil {
+		return false
+	}
+	var r graphene.Rect
+	if !b.appMenu.ComputeBounds(&b.win.Widget, &r) {
+		return false
+	}
+	box := *(*[4]float32)(unsafe.Pointer(&r))
+	px, py := float32(x), float32(y)
+	if px < box[0] || px >= box[0]+box[2] || py < box[1] || py >= box[1]+box[3] {
+		return false
+	}
+	for w := b.appMenu.GetFirstChild(); w != nil; w = w.GetNextSibling() {
+		var br graphene.Rect
+		if !w.ComputeBounds(&b.win.Widget, &br) {
+			continue
+		}
+		bb := *(*[4]float32)(unsafe.Pointer(&br))
+		if px >= bb[0] && px < bb[0]+bb[2] && py >= bb[1] && py < bb[1]+bb[3] {
+			(*gtk.Button)(unsafe.Pointer(w)).Activate()
+			return true
+		}
+	}
+	return false
 }
 
 // barUnder is the bar of the monitor w's window is on.
@@ -619,9 +672,7 @@ func (s *shellUI) bindHandlers() {
 	// A panel over the whole monitor, the bar too, passes the pointer on
 	// to the bar under it (barClick).
 	s.onPanelMotion = func(c gtk.EventControllerMotion, x, y float64) {
-		if b := s.barUnder(c.GetWidget()); b != nil {
-			b.hover(x, y)
-		}
+		s.hoverAt(s.barUnder(c.GetWidget()), x, y)
 	}
 	s.onPanelLeave = func(c gtk.EventControllerMotion) {
 		if b := s.barUnder(c.GetWidget()); b != nil {
@@ -782,7 +833,14 @@ func (h hyprHandler) OnConnection(up bool, err error) {
 }
 
 func (s *shellUI) apply(snap hypr.Snapshot) {
+	oldPID := focusedPID(s.snap)
 	s.snap = snap
+	if s.menu.open && s.menu.pid != focusedPID(snap) {
+		s.closeMenu()
+	}
+	if oldPID != focusedPID(snap) {
+		s.syncAppMenu()
+	}
 	s.overview.st.SetSnapshot(snap)
 	for _, b := range s.bars {
 		b.setHypr(s, snap)
@@ -941,7 +999,7 @@ func (s *shellUI) barNames() []string {
 //	shell    state|close|reload|restart|snapshot DIR|tray-menu N
 func (s *shellUI) request(req ipc.Request) ipc.Response {
 	if req.Op == "show" {
-		return ipc.Response{OK: true, Result: "launcher: toggle apps windows close (apps|windows QUERY…)\noverview: toggle open close\ncontrol: toggle open close\nsettings: toggle open close\nnotifications: toggle open close clear focus list dismiss invoke\nmedia: status play-pause next previous\nvoice: toggle start stop cancel\nsystem: status set (wifi bluetooth volume mute brightness focus saver) power (suspend reboot poweroff logout)\nscreenshot: area silent-area pick-window pick-screen screen window color record stop close\nlock: now unlock state\nclipboard: toggle open close\npass: toggle open close\ndrawer: toggle open close\nwidgets: toggle open close right left\nshell: state close reload restart snapshot tray-menu"}
+		return ipc.Response{OK: true, Result: "launcher: toggle apps windows close (apps|windows QUERY…)\noverview: toggle open close\ncontrol: toggle open close\nsettings: toggle open close\nnotifications: toggle open close clear focus list dismiss invoke\nbar: appmenu closemenu\nmedia: status play-pause next previous\nvoice: toggle start stop cancel\nsystem: status set (wifi bluetooth volume mute brightness focus saver) power (suspend reboot poweroff logout)\nscreenshot: area silent-area pick-window pick-screen screen window color record stop close\nlock: now unlock state\nclipboard: toggle open close\npass: toggle open close\ndrawer: toggle open close\nwidgets: toggle open close right left\nshell: state close reload restart snapshot tray-menu"}
 	}
 	if req.Op != "call" {
 		return ipc.Response{Error: "unknown op " + req.Op}
@@ -973,6 +1031,38 @@ func (s *shellUI) request(req ipc.Request) ipc.Response {
 				s.launcher.query.SetPosition(-1)
 			}
 		}
+	case "bar":
+		switch req.Function {
+		case "appmenu":
+			if err := s.openAppMenuOn(); err != nil {
+				return ipc.Response{Error: err.Error()}
+			}
+			return ipc.Response{OK: true}
+		case "closemenu":
+			s.closeMenu()
+			return ipc.Response{OK: true}
+		case "state":
+			// What the bar's menu shows now, for a test: the section, its
+			// item count and the card's box - read from the shell, so no
+			// pointer and no focus are needed.
+			m := &s.menu
+			return ipc.Response{OK: true, Result: fmt.Sprintf("open=%v pid=%d section=%q items=%d x=%.0f y=%.0f w=%.0f h=%.0f",
+				m.open && !m.closing, m.pid, m.section, len(m.entries), m.drop.x, m.drop.y, m.drop.w, m.drop.h)}
+		case "hover":
+			// The pointer's path along the bar, for a test: the same work a
+			// real motion event does, at bar coordinates.
+			if len(req.Args) != 2 {
+				return bad
+			}
+			x, errX := strconv.ParseFloat(req.Args[0], 64)
+			y, errY := strconv.ParseFloat(req.Args[1], 64)
+			if errX != nil || errY != nil {
+				return bad
+			}
+			s.hoverAt(s.barByName(s.snap.FocusedMonitor), x, y)
+			return ipc.Response{OK: true}
+		}
+		return bad
 	case "overview":
 		switch req.Function {
 		case "toggle":
@@ -1201,6 +1291,14 @@ func (s *shellUI) scanApps() {
 			s.apps = entries
 			s.launcher.st.SetApps(entries)
 			s.dockApps(entries)
+			// The bar names the focused app: with its entry read now, its
+			// name and icon can be the application's, not its class.
+			for _, b := range s.bars {
+				if b.appClass != "" {
+					b.appName, b.appIconName = "", ""
+					b.setApp(s, shell.BarWindow(s.snap, b.connector()))
+				}
+			}
 			s.notes.apps = map[string]*desktop.Entry{}
 			for _, e := range entries {
 				s.notes.apps[e.ID] = e
@@ -1219,4 +1317,55 @@ func (s *shellUI) freshenApps() {
 	if desktop.Stamp(desktop.DataDirs()) != s.appsStamp {
 		s.scanApps()
 	}
+}
+
+// appMenuHover moves the open menu to the bar's section under the pointer,
+// as a Mac's menus do: the panel follows the pointer along the bar rather
+// than waiting for a click. The common shape of a menu bar is that the
+// pointer's section is the one shown, so this is what makes the bar feel
+// like one.
+func (s *shellUI) appMenuHover(b *bar, x, y float64) {
+	m := &s.menu
+	if !m.open || m.closing || m.pid == 0 || b != m.drop.host {
+		return
+	}
+	if !b.overIsland(y) {
+		return
+	}
+	button, target, ok := b.appMenuButtonAt(x, y)
+	if !ok || target.entry.Label == m.section {
+		return
+	}
+	// A section with no items is one the application builds only by opening
+	// its own menu, and pressing that over AT-SPI is what crashes Firefox.
+	// A pointer passing over it is no request to open anything: the hover
+	// changes sections only among those that already have their items.
+	if len(target.entry.Children) == 0 {
+		return
+	}
+	m.pid, m.section = target.pid, target.entry.Label
+	m.entries, m.stack = target.entry.Children, nil
+	s.fillMenu()
+	s.dropToButton(&m.drop, b, button)
+}
+
+// hoverAt is what a pointer over the bar (or over a panel covering it) does
+// at x, y: the bar's own hover marks, and the open menu following the
+// pointer along the bar.
+func (s *shellUI) hoverAt(b *bar, x, y float64) {
+	if b == nil {
+		return
+	}
+	b.hover(x, y)
+	s.appMenuHover(b, x, y)
+}
+
+// barByName is the bar of a monitor, by connector.
+func (s *shellUI) barByName(connector string) *bar {
+	for _, b := range s.bars {
+		if b.connector() == connector {
+			return b
+		}
+	}
+	return nil
 }

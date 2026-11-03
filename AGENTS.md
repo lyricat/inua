@@ -52,6 +52,10 @@ Use the Go standard library's `testing`; name test functions `TestXxx`. Add beha
 
 Documentation, wording, simple logging, and visual or interaction changes to the UI do not get new automated tests. Check UI changes by hand in a nested session and note the steps. Do not verify an implementation by connecting to a database or starting a PostgreSQL container.
 
+**Never test in the user's own session.** The session someone is working in is not a test bed: no restarting its shell, no moving its workspaces, no stopping or restarting its applications, and no reading its windows to check a change. A test that needs a running desktop uses one of its own - a VM, a nested compositor, or a machine set aside for it - and the user is told its address and how to watch it. Killing or restarting an application in the user's session loses their tabs and their work, and "I will put it back" does not restore it. When no separate desktop is available, ask before touching theirs, and say exactly what will happen.
+
+Two more things follow from that: a change is not verified until it has been exercised somewhere, and that somewhere is never the user's screen; and the checks that read the shell's own state (`bar state`, `bar appmenu`, `bar hover` over the control socket) are how a UI change is verified, so a test does not depend on a pointer, on focus, or on a screenshot.
+
 ## Commits and Pull Requests
 
 History uses both `fix(dock): ...`, `feat: ...`, `docs: ...` and "Component: what changed". A commit title says briefly what behaviour changed; keep each commit to one topic.

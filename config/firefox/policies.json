@@ -1,0 +1,14 @@
+{
+  "policies": {
+    "Preferences": {
+      "widget.gtk.global-menu.enabled": {
+        "Value": true,
+        "Status": "default"
+      },
+      "widget.gtk.global-menu.wayland.enabled": {
+        "Value": true,
+        "Status": "default"
+      }
+    }
+  }
+}
