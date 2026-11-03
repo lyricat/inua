@@ -31,4 +31,6 @@ fi
 # The autostart entry starts Inua after Wayfire has created its display and IPC socket.
 XDG_CURRENT_DESKTOP=Wayfire:Inua
 export XDG_CURRENT_DESKTOP
+INUA_INSTANCE=wayfire
+export INUA_INSTANCE
 exec wayfire -c "$config_file"
