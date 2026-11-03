@@ -85,7 +85,7 @@ type shellUI struct {
 	// needs it, and focusing and switching use its dispatchers when there,
 	// the classic ones otherwise.
 	hyprLua        bool
-	hyprApply      hyprApply // writing hypr/inua.conf; see applyHyprland
+	settingsApply compositorSettingsApply
 	notes          notes
 	dockState      dockState
 	dockPreview    *gtk.Popover

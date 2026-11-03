@@ -13,18 +13,18 @@ import (
 
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
-	"github.com/lyricat/inua/internal/config"
-	"github.com/lyricat/inua/internal/display"
-	"github.com/lyricat/inua/internal/gtkx"
-	"github.com/lyricat/inua/internal/i18n"
-	"github.com/lyricat/inua/internal/uikit"
+ 	"github.com/lyricat/inua/internal/config"
+ 	"github.com/lyricat/inua/internal/desktop"
+ 	"github.com/lyricat/inua/internal/display"
+ 	"github.com/lyricat/inua/internal/gtkx"
+ 	"github.com/lyricat/inua/internal/i18n"
+ 	"github.com/lyricat/inua/internal/uikit"
+ 	"github.com/lyricat/inua/internal/wayfire"
 )
 
-// displaysSettings is the Displays page: the lid's switch on a laptop,
-// then a section a display Hyprland has, on or off, each with its mode,
-// scale, position and mirror. A change becomes a monitor rule in
-// [displays], which Hyprland applies from inua.conf. The sections are laid
-// out again as displays come and go and as Hyprland applies the rules.
+// displaysSettings is the Displays page: a section for each connected output.
+// Hyprland supplies its modes and layout through IPC; Wayfire supplies its
+// outputs through IPC and reads selected settings from wayfire.ini.
 type displaysSettings struct {
 	page     gtk.Box // the page; the displays' sections follow its own
 	lid      gtk.Box // the lid's section
@@ -132,19 +132,47 @@ func (s *shellUI) showDisplays() {
 	}
 	s.settings.filling = true
 	d.lidOff.SetActive(s.cfg.Displays.LidOff)
+	d.lidOff.SetSensitive(!desktop.Wayfire())
+	if desktop.Wayfire() {
+		d.lidOff.SetTooltipText(i18n.T("Wayfire does not expose a lid switch binding that can disable and restore this output"))
+	} else {
+		d.lidOff.SetTooltipText("")
+	}
 	s.settings.filling = false
 	d.gen++
 	gen, client, lidOff := d.gen, s.client, s.cfg.Displays.LidOff
+	configured := slices.Clone(s.cfg.Displays.Monitors)
 	go func() {
 		var outputs []display.Output
 		var err error
-		if client != nil {
+		if desktop.Wayfire() {
+			wf, connectErr := wayfire.FromEnv()
+			err = connectErr
+			if err == nil {
+				ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+				outputs, err = wf.SettingsOutputs(ctx)
+				cancel()
+			}
+		} else if client != nil {
 			ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 			var reply []byte
 			if reply, err = client.Request(ctx, "j/monitors all"); err == nil {
 				outputs, err = display.Outputs(reply)
 			}
 			cancel()
+		}
+		if desktop.Wayfire() {
+			for _, monitor := range configured {
+				if !monitor.Disabled || slices.ContainsFunc(outputs, func(output display.Output) bool { return output.Name == monitor.Output }) {
+					continue
+				}
+				output := display.Output{Name: monitor.Output, Disabled: true}
+				if width, height, refresh, ok := display.ParseMode(monitor.Mode); ok {
+					output.Width, output.Height, output.Refresh = width, height, refresh
+					output.Modes = []string{monitor.Mode}
+				}
+				outputs = append(outputs, output)
+			}
 		}
 		if err != nil {
 			log.Printf("settings: displays: %v", err)
@@ -183,7 +211,15 @@ func (s *shellUI) layOutDisplays(outputs []display.Output, off []string) {
 	clear(d.controls)
 	if len(outputs) == 0 {
 		sec, body := displaySection("", i18n.T("No displays"))
-		row, _ := displayRow(i18n.T("Hyprland lists no displays"), i18n.T("Is the shell connected to Hyprland?"))
+		question := i18n.T("Is the shell connected to Hyprland?")
+		if desktop.Wayfire() {
+			question = i18n.T("Is Wayfire's IPC plugin enabled and connected?")
+		}
+		title := i18n.T("Hyprland lists no displays")
+		if desktop.Wayfire() {
+			title = i18n.T("Wayfire lists no displays")
+		}
+		row, _ := displayRow(title, question)
 		gtkx.Append(body, &row.Widget)
 		s.addDisplaySection(sec)
 		return
@@ -222,7 +258,10 @@ func (s *shellUI) outputSection(o display.Output, outputs []display.Output, on i
 	sw.SetValign(gtk.AlignCenterValue)
 	sw.SetActive(!o.Disabled || lidOff)
 	// The last display on stays on; one off for the lid follows the lid.
-	sw.SetSensitive(!lidOff && (o.Disabled || on > 1))
+	sw.SetSensitive(!desktop.Wayfire() && !lidOff && (o.Disabled || on > 1))
+	if desktop.Wayfire() {
+		sw.SetTooltipText(i18n.T("Inua has no verified Wayfire output enable or disable option"))
+	}
 	d.controls[sw.GoPointer()] = displayControl{output: o, kind: "on"}
 	sw.ConnectStateSet(&s.onDisplaySwitch)
 	gtkx.Append(row, &sw.Widget)
@@ -262,8 +301,8 @@ func (s *shellUI) outputSection(o display.Output, outputs []display.Output, on i
 	labels = nil
 	for _, f := range scales {
 		values = append(values, strconv.FormatFloat(f, 'f', -1, 64))
-		if valid := display.ValidScale(w, h, f); valid != f {
-			labels = append(labels, i18n.Tf("%s (Hyprland uses %s)", scaleLabel(f), scaleLabel(valid)))
+		if !desktop.Wayfire() && display.ValidScale(w, h, f) != f {
+			labels = append(labels, i18n.Tf("%s (Hyprland uses %s)", scaleLabel(f), scaleLabel(display.ValidScale(w, h, f))))
 		} else {
 			labels = append(labels, scaleLabel(f))
 		}
@@ -277,7 +316,40 @@ func (s *shellUI) outputSection(o display.Output, outputs []display.Output, on i
 	}
 	values, labels = nil, nil
 	for _, p := range displayPositions {
+		if desktop.Wayfire() && p.value != "auto" {
+			continue
+		}
 		values, labels = append(values, p.value), append(labels, i18n.T(p.label))
+	}
+	if desktop.Wayfire() {
+		outputScale := o.Scale
+		if outputScale <= 0 {
+			outputScale = 1
+		}
+		width, height := int(math.Round(float64(o.Width)/outputScale)), int(math.Round(float64(o.Height)/outputScale))
+		for _, other := range outputs {
+			if other.Name == o.Name {
+				continue
+			}
+			otherScale := other.Scale
+			if otherScale <= 0 {
+				otherScale = 1
+			}
+			otherWidth := int(math.Round(float64(other.Width) / otherScale))
+			otherHeight := int(math.Round(float64(other.Height) / otherScale))
+			choices := []struct{ x, y int; label string }{
+				{other.X - width, other.Y, i18n.Tf("Left of %s", outputTitle(other))},
+				{other.X + otherWidth, other.Y, i18n.Tf("Right of %s", outputTitle(other))},
+				{other.X, other.Y - height, i18n.Tf("Above %s", outputTitle(other))},
+				{other.X, other.Y + otherHeight, i18n.Tf("Below %s", outputTitle(other))},
+			}
+			for _, choice := range choices {
+				value := fmt.Sprintf("%dx%d", choice.x, choice.y)
+				if !slices.Contains(values, value) {
+					values, labels = append(values, value), append(labels, choice.label)
+				}
+			}
+		}
 	}
 	if !slices.Contains(values, pos) {
 		x, y, _ := strings.Cut(pos, "x")
@@ -300,18 +372,26 @@ func (s *shellUI) outputSection(o display.Output, outputs []display.Output, on i
 		if !slices.Contains(values, mirror) {
 			values, labels = append(values, mirror), append(labels, i18n.Tf("Same picture as %s", mirror))
 		}
-		s.displayDrop(body, i18n.T("Mirror"), "", o, "mirror", values, labels, mirror, usable)
+		sub := ""
+		if desktop.Wayfire() {
+			sub = i18n.T("Wayfire does not support output mirroring")
+		}
+		s.displayDrop(body, i18n.T("Mirror"), sub, o, "mirror", values, labels, mirror, usable && !desktop.Wayfire())
 	}
 
 	// Where the settings come from.
 	gtkx.Append(body, &gtk.NewSeparator(gtk.OrientationHorizontalValue).Widget)
 	source := i18n.T("Set in hyprland.conf")
+	resetLabel := i18n.T("Use hyprland.conf")
+	if desktop.Wayfire() {
+		source = i18n.T("Set in wayfire.ini")
+		resetLabel = i18n.T("Use Wayfire's output settings")
+	}
 	if ruled {
 		source = i18n.T("Set by inua")
 	}
 	row, _ = displayRow(source, "")
-	reset := gtk.NewButtonWithLabel(i18n.T("Use hyprland.conf"))
-	reset.AddCssClass("outlined")
+	reset := gtk.NewButtonWithLabel(resetLabel)
 	reset.SetValign(gtk.AlignCenterValue)
 	reset.SetTooltipText(i18n.T("Stop setting this display in inua"))
 	reset.SetSensitive(ruled)

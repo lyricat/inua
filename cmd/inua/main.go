@@ -5,8 +5,7 @@
 //	inua show [-n instance]                                  list what call accepts
 //	inua hypr dump | watch                           inspect Hyprland state
 //	inua config check [path] | path                  check the settings file
-//	inua config hyprland [path]                      check that Hyprland starts inua-shell and sources inua.conf
-//	inua config apply                                write hypr/inua.conf from [input], [displays] and [[shortcuts]] (the built-in display as the lid is now) and reload Hyprland
+//	inua config apply                                write compositor settings from [input], [displays] and [[shortcuts]]
 //	inua init [-force] [-pinentry ask|replace|keep] [-dir dir]  write the sample configuration
 //	inua keyring status|import|enable|disable|replace|lock|paths|allow|disallow  the Secret Service kept in pass
 //	inua portals status|enable|disable [interface...]  inua's backends of xdg-desktop-portal
@@ -44,6 +43,7 @@ import (
 	"github.com/lyricat/inua/internal/hypr"
 	"github.com/lyricat/inua/internal/hyprconf"
 	"github.com/lyricat/inua/internal/ipc"
+	"github.com/lyricat/inua/internal/wayfireconf"
 )
 
 // version is the release, set by the release build (-X main.version).
@@ -276,7 +276,7 @@ func cmdConfig(args []string) error {
 		}
 		return checkHyprland(hypr)
 	case args[0] == "apply" && len(args) == 1:
-		return applyHyprland(path)
+		return applyCompositorSettings(path)
 	default:
 		usage()
 	}
@@ -351,15 +351,27 @@ func checkSource(path, target string) {
 	}
 }
 
-// applyHyprland writes hypr/inua.conf (inua.lua for hyprland.lua) from the settings file and has
-// Hyprland reload it, as the settings window does when it saves.
-func applyHyprland(path string) error {
+// applyCompositorSettings writes compositor settings from the shared config.
+func applyCompositorSettings(path string) error {
 	c, warnings, err := config.Load(path)
 	if err != nil {
 		return err
 	}
 	for _, w := range warnings {
 		fmt.Printf("%s: %s\n", path, w)
+	}
+	if desktop.Wayfire() {
+		target := wayfireconf.Path(path)
+		changed, err := wayfireconf.Apply(target, c)
+		switch {
+		case err != nil:
+			return err
+		case !changed:
+			fmt.Printf("%s: up to date\n", target)
+		default:
+			fmt.Printf("%s: written; restart Wayfire to apply\n", target)
+		}
+		return nil
 	}
 	var client *hypr.Client
 	if paths, err := hypr.PathsFromEnv(); err == nil {
