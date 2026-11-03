@@ -12,6 +12,7 @@ import (
 	"github.com/godbus/dbus/v5"
 	"github.com/godbus/dbus/v5/prop"
 
+	"github.com/lyricat/inua/internal/dbusexport"
 	"github.com/lyricat/inua/internal/dbustest"
 )
 
@@ -56,7 +57,7 @@ func newFakeWifi(t *testing.T, addr string) *fakeWifi {
 		"PrimaryConnection": {Value: dbus.ObjectPath("/org/freedesktop/NetworkManager/ActiveConnection/1")},
 		"Devices":           {Value: []dbus.ObjectPath{wifiDev}},
 	}})
-	f.conn.Export(fakeNMMethods{f}, nmPath, nmName)
+	dbusexport.Export(f.conn, fakeNMMethods{f}, nmPath, nmName)
 	f.dev = export(t, f.conn, wifiDev, prop.Map{
 		nmName + ".Device": {
 			"DeviceType":       {Value: uint32(2)},
@@ -74,8 +75,8 @@ func newFakeWifi(t *testing.T, addr string) *fakeWifi {
 			}},
 		},
 	})
-	f.conn.Export(fakeWifiDeviceMethods{f}, wifiDev, nmName+".Device")
-	f.conn.Export(fakeWirelessMethods{f}, wifiDev, nmName+".Device.Wireless")
+	dbusexport.Export(f.conn, fakeWifiDeviceMethods{f}, wifiDev, nmName+".Device")
+	dbusexport.Export(f.conn, fakeWirelessMethods{f}, wifiDev, nmName+".Device.Wireless")
 	for i, ap := range []struct {
 		ssid                  string
 		strength              byte
@@ -100,7 +101,7 @@ func newFakeWifi(t *testing.T, addr string) *fakeWifi {
 		}},
 	}})
 	f.addActive(1, "/org/freedesktop/NetworkManager/Settings/1", 2)
-	f.conn.Export(fakeSettingsMethods{f}, nmSet, nmName+".Settings")
+	dbusexport.Export(f.conn, fakeSettingsMethods{f}, nmSet, nmName+".Settings")
 	f.save("/org/freedesktop/NetworkManager/Settings/1", wifiConn("Home", "wpa-psk", 200))
 	f.save("/org/freedesktop/NetworkManager/Settings/2", wifiConn("Home", "wpa-psk", 100)) // an older one for the same name
 	f.save("/org/freedesktop/NetworkManager/Settings/3", wifiConn("Attic", "", 50))
@@ -124,7 +125,7 @@ func (f *fakeWifi) save(path dbus.ObjectPath, s map[string]map[string]dbus.Varia
 	f.saved[path] = s
 	f.order = append(f.order, path)
 	f.mu.Unlock()
-	f.conn.Export(fakeConnMethods{f, path}, path, nmName+".Settings.Connection")
+	dbusexport.Export(f.conn, fakeConnMethods{f, path}, path, nmName+".Settings.Connection")
 }
 
 // activate brings a connection up, or fails it when its password is "wrong".

@@ -11,6 +11,7 @@ import (
 
 	"github.com/godbus/dbus/v5"
 
+	"github.com/lyricat/inua/internal/dbusexport"
 	"github.com/lyricat/inua/internal/dbustest"
 )
 
@@ -168,15 +169,15 @@ func startFake(t *testing.T) (*fakeUDisks, *Client) {
 		data1: {ifBlock: block(nvme, "/dev/nvme0n1p3", "filesystem", "ext4", "data", false), ifFS: fsIf()},
 		swap:  {ifBlock: block(nvme, "/dev/nvme0n1p4", "other", "swap", "", true)},
 	}}
-	if err := srv.Export(f, root, ifObjects); err != nil {
+	if err := dbusexport.Export(srv, f, root, ifObjects); err != nil {
 		t.Fatal(err)
 	}
 	for _, p := range []dbus.ObjectPath{sdb1, root1, data1, dm0} {
-		srv.Export(fsObj{f, p}, p, ifFS)
+		dbusexport.Export(srv, fsObj{f, p}, p, ifFS)
 	}
-	srv.Export(cryptObj{f, sdb2}, sdb2, ifCrypt)
+	dbusexport.Export(srv, cryptObj{f, sdb2}, sdb2, ifCrypt)
 	for _, p := range []dbus.ObjectPath{stick, nvme} {
-		srv.Export(driveObj{f, p}, p, ifDrive)
+		dbusexport.Export(srv, driveObj{f, p}, p, ifDrive)
 	}
 	if _, err := srv.RequestName(service, dbus.NameFlagDoNotQueue); err != nil {
 		t.Fatal(err)

@@ -13,6 +13,8 @@ import (
 	"github.com/godbus/dbus/v5"
 	"github.com/godbus/dbus/v5/introspect"
 	"github.com/godbus/dbus/v5/prop"
+
+	"github.com/lyricat/inua/internal/dbusexport"
 )
 
 const (
@@ -54,15 +56,15 @@ type watcher struct {
 // when that process leaves.
 func ServeWatcher(ctx context.Context, conn *dbus.Conn) error {
 	w := &watcher{conn: conn, hosts: map[string]bool{}}
-	if err := conn.Export(w, WatcherPath, WatcherName); err != nil {
+	if err := dbusexport.Export(conn, w, WatcherPath, WatcherName); err != nil {
 		return err
 	}
-	defer conn.Export(nil, WatcherPath, WatcherName)
-	if err := conn.Export(introspect.Introspectable(watcherXML), WatcherPath, "org.freedesktop.DBus.Introspectable"); err != nil {
+	defer dbusexport.Export(conn, nil, WatcherPath, WatcherName)
+	if err := dbusexport.Export(conn, introspect.Introspectable(watcherXML), WatcherPath, "org.freedesktop.DBus.Introspectable"); err != nil {
 		return err
 	}
-	defer conn.Export(nil, WatcherPath, "org.freedesktop.DBus.Introspectable")
-	props, err := prop.Export(conn, WatcherPath, prop.Map{WatcherName: {
+	defer dbusexport.Export(conn, nil, WatcherPath, "org.freedesktop.DBus.Introspectable")
+	props, err := dbusexport.Properties(conn, WatcherPath, prop.Map{WatcherName: {
 		"RegisteredStatusNotifierItems":  {Value: []string{}, Emit: prop.EmitTrue},
 		"IsStatusNotifierHostRegistered": {Value: false, Emit: prop.EmitTrue},
 		"ProtocolVersion":                {Value: int32(0)},
@@ -70,7 +72,7 @@ func ServeWatcher(ctx context.Context, conn *dbus.Conn) error {
 	if err != nil {
 		return err
 	}
-	defer conn.Export(nil, WatcherPath, "org.freedesktop.DBus.Properties")
+	defer dbusexport.Export(conn, nil, WatcherPath, "org.freedesktop.DBus.Properties")
 	w.props = props
 
 	sigs := make(chan *dbus.Signal, 32)

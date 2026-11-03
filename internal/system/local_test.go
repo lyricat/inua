@@ -10,6 +10,7 @@ import (
 
 	"github.com/godbus/dbus/v5"
 
+	"github.com/lyricat/inua/internal/dbusexport"
 	"github.com/lyricat/inua/internal/dbustest"
 )
 
@@ -68,7 +69,7 @@ func TestBacklight(t *testing.T) {
 	addr := dbustest.Start(t)
 	logind := &fakeLogind{}
 	conn := service(t, addr, "org.freedesktop.login1")
-	if err := conn.Export(logind, "/org/freedesktop/login1/session/auto", "org.freedesktop.login1.Session"); err != nil {
+	if err := dbusexport.Export(conn, logind, "/org/freedesktop/login1/session/auto", "org.freedesktop.login1.Session"); err != nil {
 		t.Fatal(err)
 	}
 

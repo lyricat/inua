@@ -10,6 +10,7 @@ import (
 	"github.com/godbus/dbus/v5"
 	"github.com/godbus/dbus/v5/introspect"
 
+	"github.com/lyricat/inua/internal/dbusexport"
 	"github.com/lyricat/inua/internal/proc"
 )
 
@@ -184,20 +185,20 @@ func (o inhibitObj) Inhibit(handle dbus.ObjectPath, appID, window string, flags 
 	n.mu.Lock()
 	n.held[handle] = h
 	n.mu.Unlock()
-	if err := n.conn.Export(inhibitRequest{n, handle}, handle, Prefix+"Request"); err != nil {
+	if err := dbusexport.Export(n.conn, inhibitRequest{n, handle}, handle, Prefix+"Request"); err != nil {
 		n.release(handle)
 		return dbus.MakeFailedError(err)
 	}
-	n.conn.Export(introspect.Introspectable(requestXML), handle, "org.freedesktop.DBus.Introspectable")
+	dbusexport.Export(n.conn, introspect.Introspectable(requestXML), handle, "org.freedesktop.DBus.Introspectable")
 	return nil
 }
 
 func (o inhibitObj) CreateMonitor(handle, session dbus.ObjectPath, appID, window string) (uint32, *dbus.Error) {
 	n := o.n
-	if err := n.conn.Export(monitorSession{n, session}, session, Prefix+"Session"); err != nil {
+	if err := dbusexport.Export(n.conn, monitorSession{n, session}, session, Prefix+"Session"); err != nil {
 		return Ended, nil
 	}
-	n.conn.Export(introspect.Introspectable(sessionXML), session, "org.freedesktop.DBus.Introspectable")
+	dbusexport.Export(n.conn, introspect.Introspectable(sessionXML), session, "org.freedesktop.DBus.Introspectable")
 	n.mu.Lock()
 	n.monitors[session] = true
 	n.mu.Unlock()
@@ -216,8 +217,8 @@ type inhibitRequest struct {
 
 func (r inhibitRequest) Close() *dbus.Error {
 	r.n.release(r.handle)
-	r.n.conn.Export(nil, r.handle, Prefix+"Request")
-	r.n.conn.Export(nil, r.handle, "org.freedesktop.DBus.Introspectable")
+	dbusexport.Export(r.n.conn, nil, r.handle, Prefix+"Request")
+	dbusexport.Export(r.n.conn, nil, r.handle, "org.freedesktop.DBus.Introspectable")
 	return nil
 }
 
@@ -233,7 +234,7 @@ func (m monitorSession) Close() *dbus.Error {
 	m.n.mu.Lock()
 	delete(m.n.monitors, m.session)
 	m.n.mu.Unlock()
-	m.n.conn.Export(nil, m.session, Prefix+"Session")
-	m.n.conn.Export(nil, m.session, "org.freedesktop.DBus.Introspectable")
+	dbusexport.Export(m.n.conn, nil, m.session, Prefix+"Session")
+	dbusexport.Export(m.n.conn, nil, m.session, "org.freedesktop.DBus.Introspectable")
 	return nil
 }

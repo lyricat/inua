@@ -278,7 +278,7 @@ msgstr "찾았습니다"
 msgid "Reply"
 msgstr "답장"
 
-#: internal/apps/connect/service.go:246
+#: internal/apps/connect/service.go:247
 #: internal/apps/connect/share.go:213
 #: internal/apps/connect/share.go:219
 #: internal/connectui/app.go:20
@@ -288,15 +288,15 @@ msgstr "답장"
 msgid "Mobile Link"
 msgstr "모바일 링크"
 
-#: internal/apps/connect/service.go:248
+#: internal/apps/connect/service.go:249
 msgid "%s wants to pair"
 msgstr "%s에서 페어링을 요청합니다"
 
-#: internal/apps/connect/service.go:249
+#: internal/apps/connect/service.go:250
 msgid "Pair only if %s shows the key %s."
 msgstr "%s에 키 %s가 표시될 때만 페어링하세요."
 
-#: internal/apps/connect/service.go:250
+#: internal/apps/connect/service.go:251
 #: internal/connectui/window.go:425
 #: internal/connectui/window.go:434
 #: internal/remoteui/window.go:618
@@ -308,45 +308,45 @@ msgstr "%s에 키 %s가 표시될 때만 페어링하세요."
 msgid "Pair"
 msgstr "페어링"
 
-#: internal/apps/connect/service.go:250
+#: internal/apps/connect/service.go:251
 #: internal/connectui/window.go:426
 msgid "Refuse"
 msgstr "거부"
 
-#: internal/apps/connect/service.go:292
+#: internal/apps/connect/service.go:293
 msgid "Ping!"
 msgstr "핑!"
 
-#: internal/apps/connect/service.go:505
+#: internal/apps/connect/service.go:506
 msgid "Wants to pair"
 msgstr "페어링 요청"
 
-#: internal/apps/connect/service.go:507
+#: internal/apps/connect/service.go:508
 #: internal/shell/bluetooth.go:42
 msgid "Pairing…"
 msgstr "페어링하는 중…"
 
-#: internal/apps/connect/service.go:509
+#: internal/apps/connect/service.go:510
 #: internal/apps/tailscale/status.go:265
 #: internal/remoteui/window.go:331
 #: internal/shell/bluetooth.go:52
 msgid "Connected"
 msgstr "연결됨"
 
-#: internal/apps/connect/service.go:511
+#: internal/apps/connect/service.go:512
 msgid "Away"
 msgstr "연결 안 됨"
 
-#: internal/apps/connect/service.go:513
+#: internal/apps/connect/service.go:514
 #: internal/remoteui/window.go:326
 msgid "Not paired"
 msgstr "페어링 안 됨"
 
-#: internal/apps/connect/service.go:517
+#: internal/apps/connect/service.go:518
 msgid "%d%%, charging"
 msgstr "%d%%, 충전 중"
 
-#: internal/apps/connect/service.go:519
+#: internal/apps/connect/service.go:520
 #: internal/ui/settings.go:338
 #: internal/ui/settings.go:776
 #: internal/ui/settings.go:880

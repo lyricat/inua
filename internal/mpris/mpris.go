@@ -10,6 +10,8 @@ import (
 
 	"github.com/godbus/dbus/v5"
 	"github.com/godbus/dbus/v5/introspect"
+
+	"github.com/lyricat/inua/internal/dbusexport"
 )
 
 const (
@@ -60,11 +62,11 @@ func Serve(conn *dbus.Conn, name, identity, desktopEntry string, h Handler) (*Se
 	s := &Server{conn: conn, name: "org.mpris.MediaPlayer2." + name, identity: identity, desktop: desktopEntry, h: h,
 		st: State{Status: "Stopped", Volume: 1}}
 	for iface, v := range map[string]any{rootIface: root{s}, playerIface: player{s}, propsIface: props{s}} {
-		if err := conn.ExportWithMap(v, map[string]string{"SeekBy": "Seek"}, path, iface); err != nil {
+		if err := dbusexport.ExportWithMap(conn, v, map[string]string{"SeekBy": "Seek"}, path, iface); err != nil {
 			return nil, err
 		}
 	}
-	if err := conn.Export(introspect.Introspectable(introspection), path, "org.freedesktop.DBus.Introspectable"); err != nil {
+	if err := dbusexport.Export(conn, introspect.Introspectable(introspection), path, "org.freedesktop.DBus.Introspectable"); err != nil {
 		return nil, err
 	}
 	if _, err := conn.RequestName(s.name, dbus.NameFlagDoNotQueue); err != nil {
@@ -77,7 +79,7 @@ func Serve(conn *dbus.Conn, name, identity, desktopEntry string, h Handler) (*Se
 func (s *Server) Close() {
 	s.conn.ReleaseName(s.name)
 	for _, iface := range []string{rootIface, playerIface, propsIface, "org.freedesktop.DBus.Introspectable"} {
-		s.conn.Export(nil, path, iface)
+		dbusexport.Export(s.conn, nil, path, iface)
 	}
 }
 

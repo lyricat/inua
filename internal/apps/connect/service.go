@@ -21,6 +21,7 @@ import (
 	"github.com/godbus/dbus/v5"
 
 	"github.com/lyricat/inua/internal/apps/store"
+	"github.com/lyricat/inua/internal/dbusexport"
 	"github.com/lyricat/inua/internal/i18n"
 	"github.com/lyricat/inua/internal/kdeconnect"
 	"github.com/lyricat/inua/internal/system"
@@ -180,7 +181,7 @@ func (s *Service) Run(ctx context.Context) error {
 		return err
 	}
 	// Asked once it is all there.
-	if err := bus.Export(api{s}, BusPath, BusIface); err != nil {
+	if err := dbusexport.Export(bus, api{s}, BusPath, BusIface); err != nil {
 		return err
 	}
 	if s.watch {

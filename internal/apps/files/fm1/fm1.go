@@ -14,6 +14,7 @@ import (
 	"github.com/godbus/dbus/v5/introspect"
 
 	"github.com/lyricat/inua/internal/apps/files"
+	"github.com/lyricat/inua/internal/dbusexport"
 )
 
 const (
@@ -63,7 +64,7 @@ const introspection = `<interface name="org.freedesktop.FileManager1">
 // name it also asks for the standard one, queued behind a file manager
 // that holds it (Nautilus), so it takes over when that one leaves.
 func Claim(conn *dbus.Conn, h Handler) (bool, error) {
-	if err := conn.Export(object{h}, Path, Iface); err != nil {
+	if err := dbusexport.Export(conn, object{h}, Path, Iface); err != nil {
 		return false, err
 	}
 	node := &introspect.Node{
@@ -74,13 +75,13 @@ func Claim(conn *dbus.Conn, h Handler) (bool, error) {
 	if err := xml.Unmarshal([]byte("<node>"+introspection+"</node>"), &described); err == nil {
 		node.Interfaces = append(node.Interfaces, described.Interfaces...)
 	}
-	conn.Export(introspect.NewIntrospectable(node), Path, "org.freedesktop.DBus.Introspectable")
+	dbusexport.Export(conn, introspect.NewIntrospectable(node), Path, "org.freedesktop.DBus.Introspectable")
 	reply, err := conn.RequestName(Name, dbus.NameFlagDoNotQueue)
 	if err != nil {
 		return false, err
 	}
 	if reply != dbus.RequestNameReplyPrimaryOwner && reply != dbus.RequestNameReplyAlreadyOwner {
-		conn.Export(nil, Path, Iface)
+		dbusexport.Export(conn, nil, Path, Iface)
 		return false, nil
 	}
 	conn.RequestName(Standard, 0)

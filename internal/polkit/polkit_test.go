@@ -16,6 +16,7 @@ import (
 
 	"github.com/godbus/dbus/v5"
 
+	"github.com/lyricat/inua/internal/dbusexport"
 	"github.com/lyricat/inua/internal/dbustest"
 )
 
@@ -170,7 +171,7 @@ func TestAgent(t *testing.T) {
 		t.Fatal(err)
 	}
 	fa := fakeAuthority{make(chan string, 4)}
-	polkitd.Export(fa, authorityPath, authorityIface)
+	dbusexport.Export(polkitd, fa, authorityPath, authorityIface)
 
 	shell := dbustest.Conn(t, addr)
 	requests := make(chan Request, 2)

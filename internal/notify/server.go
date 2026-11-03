@@ -9,6 +9,8 @@ import (
 
 	"github.com/godbus/dbus/v5"
 	"github.com/godbus/dbus/v5/introspect"
+
+	"github.com/lyricat/inua/internal/dbusexport"
 )
 
 const (
@@ -97,14 +99,14 @@ func (s *Server) Owner() bool {
 // process owns the name, it waits in the bus queue and takes over when that
 // process leaves; owner is called whenever that changes.
 func (s *Server) Serve(ctx context.Context, owner func(bool)) error {
-	if err := s.conn.Export(methods{s}, Path, iface); err != nil {
+	if err := dbusexport.Export(s.conn, methods{s}, Path, iface); err != nil {
 		return err
 	}
-	defer s.conn.Export(nil, Path, iface)
-	if err := s.conn.Export(introspect.Introspectable(serverXML), Path, "org.freedesktop.DBus.Introspectable"); err != nil {
+	defer dbusexport.Export(s.conn, nil, Path, iface)
+	if err := dbusexport.Export(s.conn, introspect.Introspectable(serverXML), Path, "org.freedesktop.DBus.Introspectable"); err != nil {
 		return err
 	}
-	defer s.conn.Export(nil, Path, "org.freedesktop.DBus.Introspectable")
+	defer dbusexport.Export(s.conn, nil, Path, "org.freedesktop.DBus.Introspectable")
 
 	sigs := make(chan *dbus.Signal, 16)
 	s.conn.Signal(sigs)

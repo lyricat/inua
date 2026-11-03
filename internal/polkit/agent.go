@@ -24,6 +24,8 @@ import (
 
 	"github.com/godbus/dbus/v5"
 	"github.com/godbus/dbus/v5/introspect"
+
+	"github.com/lyricat/inua/internal/dbusexport"
 )
 
 const (
@@ -101,14 +103,14 @@ type subject struct {
 // Serve registers the agent for a login session and answers polkitd until
 // ctx ends. Registering fails when another agent serves the session.
 func (a *Agent) Serve(ctx context.Context, session string) error {
-	if err := a.conn.Export(methods{a}, Path, agentIface); err != nil {
+	if err := dbusexport.Export(a.conn, methods{a}, Path, agentIface); err != nil {
 		return err
 	}
-	defer a.conn.Export(nil, Path, agentIface)
-	if err := a.conn.Export(introspect.Introspectable(agentXML), Path, "org.freedesktop.DBus.Introspectable"); err != nil {
+	defer dbusexport.Export(a.conn, nil, Path, agentIface)
+	if err := dbusexport.Export(a.conn, introspect.Introspectable(agentXML), Path, "org.freedesktop.DBus.Introspectable"); err != nil {
 		return err
 	}
-	defer a.conn.Export(nil, Path, "org.freedesktop.DBus.Introspectable")
+	defer dbusexport.Export(a.conn, nil, Path, "org.freedesktop.DBus.Introspectable")
 
 	subj := subject{"unix-session", map[string]dbus.Variant{"session-id": dbus.MakeVariant(session)}}
 	authority := a.conn.Object(authorityName, authorityPath)
