@@ -712,6 +712,12 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 // fillOverviewThumbnails captures each card's window once through the
 // Wayfire thumbnail path and paints it when it arrives.
 func (s *shellUI) fillOverviewThumbnails(o *workspaceOverview, snap hypr.Snapshot, gen uint64) {
+	if o.thumbStarted == nil {
+		o.thumbStarted = map[string]bool{}
+	}
+	if o.thumbPaths == nil {
+		o.thumbPaths = map[string]string{}
+	}
 	for address := range o.images {
 		if o.thumbStarted[address] {
 			continue
