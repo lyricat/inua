@@ -128,38 +128,49 @@ func (o *Overview) refresh(snap hypr.Snapshot) {
 	o.settleMoves(snap, time.Now())
 	workspaces, toplevels := o.projected(snap)
 	o.AllCards = nil
-	for _, ws := range workspaces {
-		if ws.ID <= 0 || ws.Monitor == "" {
-			continue
-		}
-		card := OverviewCard{Workspace: ws}
-		for _, w := range toplevels {
-			if w.WorkspaceID == ws.ID {
-				card.Windows = append(card.Windows, w)
+	if len(workspaces) == 0 && len(toplevels) > 0 {
+		// Wayfire: no tiling workspaces to group by, so one card per window.
+		for i, window := range toplevels {
+			workspace := hypr.Workspace{
+				ID: i + 1, Name: strconv.Itoa(i + 1), Monitor: window.Monitor,
+				Active: window.Activated, Focused: window.Activated,
 			}
+			o.AllCards = append(o.AllCards, OverviewCard{Workspace: workspace, Windows: []hypr.Toplevel{window}})
 		}
-		slices.SortFunc(card.Windows, func(a, b hypr.Toplevel) int {
-			if a.Activated != b.Activated {
-				if a.Activated {
+	} else {
+		for _, ws := range workspaces {
+			if ws.ID <= 0 || ws.Monitor == "" {
+				continue
+			}
+			card := OverviewCard{Workspace: ws}
+			for _, w := range toplevels {
+				if w.WorkspaceID == ws.ID {
+					card.Windows = append(card.Windows, w)
+				}
+			}
+			slices.SortFunc(card.Windows, func(a, b hypr.Toplevel) int {
+				if a.Activated != b.Activated {
+					if a.Activated {
+						return -1
+					}
+					return 1
+				}
+				if a.Title < b.Title {
 					return -1
 				}
-				return 1
+				if a.Title > b.Title {
+					return 1
+				}
+				return 0
+			})
+			if len(card.Windows) > 0 {
+				o.AllCards = append(o.AllCards, card)
 			}
-			if a.Title < b.Title {
-				return -1
-			}
-			if a.Title > b.Title {
-				return 1
-			}
-			return 0
-		})
-		if len(card.Windows) > 0 {
-			o.AllCards = append(o.AllCards, card)
 		}
-	}
 
-	for _, mon := range snap.Monitors {
-		o.AllCards = append(o.AllCards, OverviewCard{Workspace: hypr.Workspace{Monitor: mon.Name}, New: true})
+		for _, mon := range snap.Monitors {
+			o.AllCards = append(o.AllCards, OverviewCard{Workspace: hypr.Workspace{Monitor: mon.Name}, New: true})
+		}
 	}
 	slices.SortFunc(o.AllCards, func(a, b OverviewCard) int {
 		if a.Workspace.Monitor != b.Workspace.Monitor {

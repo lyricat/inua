@@ -291,3 +291,24 @@ func TestOverviewNumberSlotsStayOnFocusedMonitorWithMRUOff(t *testing.T) {
 		}
 	}
 }
+
+func TestOverviewShowsOneCardPerWindowWithoutWorkspaces(t *testing.T) {
+	snap := hypr.Snapshot{
+		Toplevels: []hypr.Toplevel{
+			{Address: "wf:3", Class: "files", Title: "Files A", Monitor: "HDMI-A-1"},
+			{Address: "wf:5", Class: "files", Title: "Files B", Monitor: "HDMI-A-1", Activated: true},
+		},
+		ActiveToplevel: "wf:5", FocusedMonitor: "HDMI-A-1",
+	}
+	var o Overview
+	o.Show(snap)
+	if len(o.Cards) != 2 || len(o.Cards[0].Windows) != 1 || len(o.Cards[1].Windows) != 1 {
+		t.Fatalf("cards = %+v", o.Cards)
+	}
+	if o.Cards[o.Selected].Windows[0].Address != "wf:5" {
+		t.Fatalf("selected = %+v", o.Cards[o.Selected])
+	}
+	if o.SelectedAddress() != "wf:5" {
+		t.Fatalf("selected address = %q", o.SelectedAddress())
+	}
+}

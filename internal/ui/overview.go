@@ -92,7 +92,7 @@ func (s *shellUI) showOverview() {
 		s.closeOverview(false)
 		return
 	}
-	if !s.hyprLua {
+	if !s.hyprLua && s.wayfire == nil {
 		// Hyprland without Lua (before 0.55): the launcher's windows
 		// instead, what Super+Tab opened before the overview.
 		s.showLauncher(shell.Windows)
@@ -293,6 +293,11 @@ func (s *shellUI) bindOverviewHandlers() {
 		}
 		if strings.HasPrefix(key, "window:") {
 			addr := strings.TrimPrefix(key, "window:")
+			if s.wayfire != nil {
+				s.closeOverview(false)
+				s.focusWindow(addr)
+				return
+			}
 			if s.overview.killMode {
 				s.dispatchOverview(i18n.T("kill window"), fmt.Sprintf(`hl.dsp.window.kill({ window = %q })`, "address:"+addr))
 				s.setOverviewKillMode(false)
@@ -695,6 +700,9 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 func (s *shellUI) updateOverviewCapture() {
 	o := &s.overview
 	if !o.st.Open {
+		return
+	}
+	if s.client == nil {
 		return
 	}
 	if o.captureFailed {

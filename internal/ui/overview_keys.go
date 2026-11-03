@@ -234,6 +234,13 @@ func (s *shellUI) overviewEvent(e hypr.Event) {
 }
 
 func (s *shellUI) commitOverview() {
+	if s.wayfire != nil {
+		if address := s.overview.st.SelectedAddress(); address != "" {
+			s.closeOverview(false)
+			s.focusWindow(address)
+		}
+		return
+	}
 	o := &s.overview.st
 	ws, _, ok := o.Select(o.Selected)
 	if !ok {
