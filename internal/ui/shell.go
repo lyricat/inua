@@ -38,6 +38,7 @@ import (
 	"github.com/lyricat/inua/internal/layershell"
 	"github.com/lyricat/inua/internal/portalconf"
 	"github.com/lyricat/inua/internal/shell"
+	"github.com/lyricat/inua/internal/wayfire"
 	layouts "github.com/lyricat/inua/ui"
 )
 
@@ -70,9 +71,11 @@ type shellUI struct {
 	appsStamp string           // the applications folders as last scanned (desktop.Stamp)
 	apps      []*desktop.Entry // the desktop entries as last scanned
 
-	client    *hypr.Client
-	snap      hypr.Snapshot
-	connected bool
+	client     *hypr.Client
+	wayfire    *wayfire.Client
+	snap       hypr.Snapshot // Hyprland-only state for workspace and overview features
+	windowSnap hypr.Snapshot // shared window list for the Dock and launcher
+	connected  bool
 	// virtual asks for the virtual screen to follow the monitors again
 	// (syncVirtual); a request already waiting covers a new one.
 	virtual chan struct{}
@@ -514,7 +517,9 @@ func (s *shellUI) start() {
 		s.startTray()
 	}
 
-	if paths, err := hypr.PathsFromEnv(); err != nil {
+	if desktop.Wayfire() {
+		s.startWayfire()
+	} else if paths, err := hypr.PathsFromEnv(); err != nil {
 		log.Printf("hyprland: %v", err)
 	} else {
 		s.client = hypr.NewClient(paths)
@@ -787,9 +792,9 @@ func (s *shellUI) apply(snap hypr.Snapshot) {
 	for _, b := range s.bars {
 		b.setHypr(s, snap)
 	}
+	s.windowSnap = snap
 	s.renderDocks()
-	s.launcher.st.SetSnapshot(snap)
-	s.syncLauncher()
+	s.launcher.st.SetSnapshot(s.windowSnap)
 	s.syncPortalApps()
 	s.followWidgets()
 	if !s.overview.st.Open {
@@ -889,8 +894,12 @@ func (s *shellUI) dispatchEither(classic, lua string) {
 	}()
 }
 
-// focusWindow focuses a window by address ("0x…").
+// focusWindow focuses a window by address from the active compositor.
 func (s *shellUI) focusWindow(addr string) {
+	if s.wayfire != nil {
+		s.focusWayfireWindow(addr)
+		return
+	}
 	s.dispatchEither("focuswindow address:"+addr, fmt.Sprintf(`hl.dsp.focus({window=%q})`, "address:"+addr))
 }
 

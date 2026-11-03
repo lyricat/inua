@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Inua on Wayfire
+Comment=Inua desktop shell on Wayfire
+Exec=inua-wayfire-session
+TryExec=inua-wayfire-session
+Type=Application
+DesktopNames=Wayfire;Inua;
