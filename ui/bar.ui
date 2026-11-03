@@ -106,7 +106,7 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
             </property>
             <property name="end-widget">
               <object class="GtkBox" id="end">
-                <property name="spacing">6</property>
+                <property name="spacing">2</property>
                 <child>
                   <object class="GtkBox" id="tray">
                     <style>
@@ -156,7 +156,11 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
                     <property name="focusable">false</property>
                     <property name="visible">false</property>
                     <property name="tooltip-text" translatable="yes">Passwords</property>
-                    <property name="icon-name">dialog-password-symbolic</property>
+                    <child>
+                      <object class="GtkImage" id="password_icon">
+                        <property name="icon-name">dialog-password-symbolic</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
                 <child>
@@ -166,7 +170,11 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
                     </style>
                     <property name="focusable">false</property>
                     <property name="tooltip-text" translatable="yes">Clipboard history</property>
-                    <property name="icon-name">edit-paste-symbolic</property>
+                    <child>
+                      <object class="GtkImage" id="clipboard_icon">
+                        <property name="icon-name">edit-paste-symbolic</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
                 <child>
@@ -223,8 +231,8 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
                     <property name="focusable">false</property>
                     <property name="tooltip-text" translatable="yes">Control Center</property>
                     <child>
-                      <object class="GtkBox">
-                        <property name="spacing">9</property>
+                      <object class="GtkBox" id="status_icons">
+                        <property name="spacing">4</property>
                         <child>
                           <object class="GtkImage" id="net_icon">
                             <property name="icon-name">network-offline-symbolic</property>

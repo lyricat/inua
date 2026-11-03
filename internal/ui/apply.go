@@ -229,6 +229,10 @@ func (s *shellUI) applyConfig(c config.Config) {
 		b.setClockAtEnd(c.Bar.Menu)
 		b.tray.SetVisible(c.Bar.Tray)
 		b.clipboard.SetVisible(c.Clipboard.Enable && c.Clipboard.Bar)
+		if old.Bar.IconSize != c.Bar.IconSize || old.Bar.IconSpacing != c.Bar.IconSpacing {
+			b.setIconMetrics(c.Bar.IconSize, c.Bar.IconSpacing)
+			s.renderTray(b)
+		}
 		b.passwords.SetVisible(c.Bar.Pass && s.passwords.hasStore)
 		b.widgetsMark.SetVisible(c.Widgets.Enable)
 		b.setHypr(s, s.snap)

@@ -861,6 +861,80 @@ ApplicationWindow settings {
                   Separator {}
 
                   Box {
+                    styles ["row"]
+                    spacing: 16;
+
+                    Box {
+                      orientation: vertical;
+                      width-request: 260;
+                      valign: center;
+
+                      Label {
+                        styles ["title"]
+                        label:  _("Icon size");
+                        xalign: 0;
+                      }
+                      Label bar_icon_size_val {
+                        styles ["readout"]
+                        xalign: 0;
+                      }
+                    }
+
+                    Scale bar_icon_size {
+                      name: "bar_icon_size";
+                      hexpand: true;
+                      valign: center;
+                      draw-value: false;
+
+                      adjustment: Adjustment {
+                        lower: 12;
+                        upper: 24;
+                        step-increment: 1;
+                        page-increment: 4;
+                      };
+                    }
+                  }
+
+                  Separator {}
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
+
+                    Box {
+                      orientation: vertical;
+                      width-request: 260;
+                      valign: center;
+
+                      Label {
+                        styles ["title"]
+                        label:  _("Icon spacing");
+                        xalign: 0;
+                      }
+                      Label bar_icon_spacing_val {
+                        styles ["readout"]
+                        xalign: 0;
+                      }
+                    }
+
+                    Scale bar_icon_spacing {
+                      name: "bar_icon_spacing";
+                      hexpand: true;
+                      valign: center;
+                      draw-value: false;
+
+                      adjustment: Adjustment {
+                        lower: 2;
+                        upper: 12;
+                        step-increment: 1;
+                        page-increment: 2;
+                      };
+                    }
+                  }
+
+                  Separator {}
+
+                  Box {
                     styles ["field"]
                     orientation: vertical;
                     spacing: 6;

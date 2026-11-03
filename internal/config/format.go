@@ -15,7 +15,7 @@ import (
 func Format(c Config) string {
 	return fmt.Sprintf(template,
 		q(c.Language),
-		c.Bar.Enable, q(c.Bar.Density), q(c.Bar.Clock), q(c.Bar.Workspaces), c.Bar.Title, c.Bar.Tray, c.Bar.Pass, c.Bar.Menu,
+		c.Bar.Enable, q(c.Bar.Density), c.Bar.IconSize, c.Bar.IconSpacing, q(c.Bar.Clock), q(c.Bar.Workspaces), c.Bar.Title, c.Bar.Tray, c.Bar.Pass, c.Bar.Menu,
 		q(c.Launcher.Mode), q(c.Launcher.Terminal), q(c.Launcher.Search), quicklinks(c.Launcher.Quicklinks), c.Overview.MRU, c.Overview.PerMonitor, c.Overview.ShowDock,
 		q(c.Control.Lock), q(c.Control.Screenshot),
 		q(c.Screenshot.Folder), c.Screenshot.Copy, q(c.Screenshot.Recordings),
@@ -212,6 +212,11 @@ enable = %t
 
 # Bar density: "default" or "compact". Compact saves vertical screen space.
 density = %s
+
+# Right-side bar icon size, in pixels (12 to 24).
+icon_size = %d
+# The gap between right-side bar icons, in pixels (2 to 12).
+icon_spacing = %d
 
 # Clock, in strftime format: %%a %%A weekday, %%b %%B month, %%d %%e day, %%m month,
 # %%Y year, %%H %%I hour (24h/12h), %%M minute, %%S second, %%p AM/PM.

@@ -250,9 +250,9 @@ button.plain.tight, button.image-button.tight { min-width: 20px; min-height: 20p
 .bar.compact .island button.clipboard,
 .bar.compact .island button.passwords,
 .bar.compact .island button.notes,
+.bar.compact .island button.voice,
 .bar.compact .island button.clock-button,
-.bar.compact .island .tray button { min-height: 0; padding: 1px 6px; margin: 1px 0; }
-.bar.compact .island .tray button { padding-left: 4px; padding-right: 4px; }
+.bar.compact .island .tray button { min-height: 0; padding: 1px 0; margin: 1px 0; }
 /* The focused application, always the same way: its icon, its name, then
    its menus (app_menu). The icon is the app's own, quiet beside the name;
    the name is a title, not the window's, so it stays the same while the
@@ -342,7 +342,7 @@ button.plain.tight, button.image-button.tight { min-width: 20px; min-height: 20p
 .bar .island button.status, .bar .island button.passwords, .bar .island button.clipboard, .bar .island button.notes, .bar .island button.voice, .bar .island button.clock-button, .bar .island .tray button {
   min-width: 0;
   min-height: 0;
-  padding: 3px 8px;
+  padding: 3px 0;
   margin: 3px 0;
   border: 1px solid transparent;
   border-radius: 2px;
@@ -350,9 +350,7 @@ button.plain.tight, button.image-button.tight { min-width: 20px; min-height: 20p
   background: transparent;
   transition: background 120ms ease-out, border-color 120ms ease-out;
 }
-/* The icon buttons among them are as tall as the others and wider, about
-   0.618:1: 24px (a 16px icon, 3px padding, 1px border) by 38px. */
-.bar .island button.passwords, .bar .island button.clipboard, .bar .island button.notes, .bar .island button.voice, .bar .island .tray button { padding: 3px 10px; }
+/* Button borders are included in the configured icon gap. */
 /* .hover: the pointer is in a button's reach past the island (up to the
    screen's edge); see bar.endReach and clockReach. */
 .bar .island button.passwords:hover, .bar .island button.passwords.hover, .bar .island button.clipboard:hover, .bar .island button.clipboard.hover, .bar .island button.status:hover, .bar .island button.status.hover, .bar .island button.notes:hover, .bar .island button.notes.hover, .bar .island button.voice:hover, .bar .island button.voice.hover, .bar .island button.clock-button:hover, .bar .island button.clock-button.hover, .bar .island .tray button:hover { background: alpha(@accent, 0.09); }

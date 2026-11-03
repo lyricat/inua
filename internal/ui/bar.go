@@ -48,7 +48,9 @@ type bar struct {
 	clock          gtk.Label
 	end            gtk.Box
 	clipboard      gtk.Button
+	clipboardIcon  gtk.Image
 	passwords      gtk.Button
+	passwordIcon   gtk.Image
 	notes          gtk.Button
 	notesIcon      gtk.Image
 	voice          gtk.Button
@@ -56,6 +58,7 @@ type bar struct {
 	unread         gtk.Box
 	tray           gtk.Box
 	status         gtk.Button
+	statusIcons    gtk.Box
 	netIcon        gtk.Image
 	btIcon         gtk.Image
 	volIcon        gtk.Image
@@ -191,6 +194,8 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	ui.Get("clock", &b.clock)
 	ui.Get("notes", &b.notes)
 	ui.Get("clipboard", &b.clipboard)
+	ui.Get("password_icon", &b.passwordIcon)
+	ui.Get("clipboard_icon", &b.clipboardIcon)
 	ui.Get("passwords", &b.passwords)
 	ui.Get("rec", &b.rec)
 	ui.Get("rec_time", &b.recTime)
@@ -203,6 +208,7 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	ui.Get("unread", &b.unread)
 	ui.Get("tray", &b.tray)
 	ui.Get("status", &b.status)
+	ui.Get("status_icons", &b.statusIcons)
 	ui.Get("net_icon", &b.netIcon)
 	ui.Get("bt_icon", &b.btIcon)
 	ui.Get("vol_icon", &b.volIcon)
@@ -258,6 +264,7 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	b.app.SetVisible(s.cfg.Bar.Title)
 	b.tray.SetVisible(s.cfg.Bar.Tray)
 	s.renderTray(b)
+	b.setIconMetrics(s.cfg.Bar.IconSize, s.cfg.Bar.IconSpacing)
 
 	b.win.SetApplication(s.app)
 	w := b.win.GoPointer()
@@ -342,6 +349,22 @@ func (b *bar) setDensity(density string) {
 		b.win.SetDefaultSize(-1, height)
 	}
 	b.win.QueueResize()
+}
+
+// setIconMetrics keeps the icons and the visual gap between them uniform on
+// the bar's right side. Each adjacent button contributes one 1 px border.
+func (b *bar) setIconMetrics(size, gap int) {
+	outerGap := int32(gap - 2)
+	b.end.SetSpacing(outerGap)
+	b.tray.SetSpacing(outerGap)
+	b.statusIcons.SetSpacing(int32(gap))
+	px := int32(size)
+	for _, img := range []*gtk.Image{
+		&b.passwordIcon, &b.clipboardIcon, &b.notesIcon, &b.voiceIcon,
+		&b.netIcon, &b.btIcon, &b.volIcon, &b.batIcon,
+	} {
+		img.SetPixelSize(px)
+	}
 }
 
 // hold grows the bar's window down over its monitor for a panel to hang

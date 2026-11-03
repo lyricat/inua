@@ -22,6 +22,11 @@ enable = true
 # Bar density: "default" or "compact". Compact saves vertical screen space.
 density = "default"
 
+# Right-side bar icon size, in pixels (12 to 24).
+icon_size = 16
+# The gap between right-side bar icons, in pixels (2 to 12).
+icon_spacing = 4
+
 # Clock, in strftime format: %a %A weekday, %b %B month, %d %e day, %m month,
 # %Y year, %H %I hour (24h/12h), %M minute, %S second, %p AM/PM.
 # A '-' drops zero padding (%-d, %-H). With seconds, the clock ticks every
