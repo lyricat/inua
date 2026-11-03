@@ -188,7 +188,7 @@ func TestWindowsUseIPCViewIDs(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if snapshot.ActiveToplevel != "wf:12" || len(snapshot.Toplevels) != 3 {
+	if snapshot.ActiveToplevel != "wf:12" || len(snapshot.Toplevels) != 2 {
 		t.Fatalf("snapshot = %#v", snapshot)
 	}
 	first := snapshot.Toplevels[0]

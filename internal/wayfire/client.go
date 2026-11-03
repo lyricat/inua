@@ -363,6 +363,9 @@ func (c *Client) Windows(ctx context.Context) (compositor.Snapshot, error) {
 	}
 	snapshot := compositor.Snapshot{}
 	for _, view := range views {
+		if view.WorkspaceID < 0 || view.AppID == "" {
+			continue
+		}
 		address := fmt.Sprintf("wf:%d", view.ID)
 		snapshot.Toplevels = append(snapshot.Toplevels, compositor.Toplevel{
 			Address: address, PID: view.PID, Title: view.Title, Class: view.AppID,
