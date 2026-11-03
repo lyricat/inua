@@ -121,8 +121,7 @@ func wayfireSnapshot(snapshot compositor.Snapshot) hypr.Snapshot {
 			Activated: active(toplevel),
 			Raw: map[string]any{
 				"focusHistoryID": float64(history),
-				"at":             []any{origin[0] + float64(toplevel.GeometryX), origin[1] + float64(toplevel.GeometryY)},
-				"size":           []any{float64(toplevel.GeometryWidth), float64(toplevel.GeometryHeight)},
+				"geometry":       []any{origin[0] + float64(toplevel.GeometryX), origin[1] + float64(toplevel.GeometryY), float64(toplevel.GeometryWidth), float64(toplevel.GeometryHeight)},
 			},
 		})
 	}

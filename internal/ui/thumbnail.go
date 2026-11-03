@@ -51,8 +51,16 @@ func (s *shellUI) windowThumbnail(ctx context.Context, snap hypr.Snapshot, addre
 	if err != nil {
 		return "", err
 	}
-	x, y := overviewPair(window.Raw["at"], 0, 0)
-	w, h := overviewPair(window.Raw["size"], 0, 0)
+	x, y, w, h := 0.0, 0.0, 0.0, 0.0
+	if geometry, ok := window.Raw["geometry"].([]any); ok && len(geometry) >= 4 {
+		x, _ = geometry[0].(float64)
+		y, _ = geometry[1].(float64)
+		w, _ = geometry[2].(float64)
+		h, _ = geometry[3].(float64)
+	} else {
+		x, y = overviewPair(window.Raw["at"], 0, 0)
+		w, h = overviewPair(window.Raw["size"], 0, 0)
+	}
 	// at is global; grim captures this output alone.
 	x -= float64(monitor.X)
 	y -= float64(monitor.Y)
