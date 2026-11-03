@@ -95,8 +95,8 @@ func TestRenderWritesWayfirePushToTalkBindings(t *testing.T) {
 	}
 	command := parsed.Section("command")
 	for key, want := range map[string]string{
-		"binding_inua_voice": "<super> <shift> KEY_V",
-		"command_inua_voice": "inua call voice start",
+		"binding_inua_voice":                 "<super> <shift> KEY_V",
+		"command_inua_voice":                 "inua call voice start",
 		"release_binding_inua_voice_release": "<super> <shift> KEY_V",
 		"release_command_inua_voice_release": "inua call voice stop",
 	} {

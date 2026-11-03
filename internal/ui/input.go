@@ -16,13 +16,13 @@ import (
 
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
- 	"github.com/lyricat/inua/internal/bootstrap"
- 	"github.com/lyricat/inua/internal/desktop"
- 	"github.com/lyricat/inua/internal/gtkx"
- 	"github.com/lyricat/inua/internal/hyprconf"
- 	"github.com/lyricat/inua/internal/i18n"
- 	"github.com/lyricat/inua/internal/shell"
- 	"github.com/lyricat/inua/internal/wayfireconf"
+	"github.com/lyricat/inua/internal/bootstrap"
+	"github.com/lyricat/inua/internal/desktop"
+	"github.com/lyricat/inua/internal/gtkx"
+	"github.com/lyricat/inua/internal/hyprconf"
+	"github.com/lyricat/inua/internal/i18n"
+	"github.com/lyricat/inua/internal/shell"
+	"github.com/lyricat/inua/internal/wayfireconf"
 )
 
 // The keyboard, touchpad, displays and shortcuts live in config.toml.

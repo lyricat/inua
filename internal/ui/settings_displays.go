@@ -13,13 +13,13 @@ import (
 
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
- 	"github.com/lyricat/inua/internal/config"
- 	"github.com/lyricat/inua/internal/desktop"
- 	"github.com/lyricat/inua/internal/display"
- 	"github.com/lyricat/inua/internal/gtkx"
- 	"github.com/lyricat/inua/internal/i18n"
- 	"github.com/lyricat/inua/internal/uikit"
- 	"github.com/lyricat/inua/internal/wayfire"
+	"github.com/lyricat/inua/internal/config"
+	"github.com/lyricat/inua/internal/desktop"
+	"github.com/lyricat/inua/internal/display"
+	"github.com/lyricat/inua/internal/gtkx"
+	"github.com/lyricat/inua/internal/i18n"
+	"github.com/lyricat/inua/internal/uikit"
+	"github.com/lyricat/inua/internal/wayfire"
 )
 
 // displaysSettings is the Displays page: a section for each connected output.
@@ -337,7 +337,10 @@ func (s *shellUI) outputSection(o display.Output, outputs []display.Output, on i
 			}
 			otherWidth := int(math.Round(float64(other.Width) / otherScale))
 			otherHeight := int(math.Round(float64(other.Height) / otherScale))
-			choices := []struct{ x, y int; label string }{
+			choices := []struct {
+				x, y  int
+				label string
+			}{
 				{other.X - width, other.Y, i18n.Tf("Left of %s", outputTitle(other))},
 				{other.X + otherWidth, other.Y, i18n.Tf("Right of %s", outputTitle(other))},
 				{other.X, other.Y - height, i18n.Tf("Above %s", outputTitle(other))},

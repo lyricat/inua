@@ -350,7 +350,7 @@ msgstr "%d%%, cargando"
 #: internal/ui/settings.go:347
 #: internal/ui/settings.go:814
 #: internal/ui/settings.go:918
-#: internal/ui/settings_displays.go:418
+#: internal/ui/settings_displays.go:501
 msgid "%d%%"
 msgstr "%d %%"
 
@@ -395,7 +395,7 @@ msgstr "Abrir"
 
 #: internal/apps/connect/share.go:129
 #: internal/ui/record.go:157
-#: internal/ui/screenshot.go:1140
+#: internal/ui/screenshot.go:1151
 #: internal/ui/settings_custom.go:40
 msgid "Show in Folder"
 msgstr "Mostrar en carpeta"
@@ -2122,8 +2122,8 @@ msgstr "El servicio se está iniciando."
 #: internal/termui/headmenu.go:164
 #: internal/termui/prefsweb.go:130
 #: internal/ui/settings_bluetooth.go:214
-#: internal/ui/settings_displays.go:294
-#: internal/ui/settings_displays.go:389
+#: internal/ui/settings_displays.go:369
+#: internal/ui/settings_displays.go:472
 #: internal/ui/settings_wifi.go:285
 #: ui/remote.ui:359
 #: ui/settings.ui:6030
@@ -9687,7 +9687,7 @@ msgstr "No se pudo buscar: %s"
 #: internal/lightui/sysmon.go:55
 #: internal/shell/launcher_actions.go:45
 #: internal/termui/menubar.go:34
-#: internal/ui/dock.go:532
+#: internal/ui/dock.go:536
 #: internal/ui/portal_ask.go:80
 msgid "Quit"
 msgstr "Salir"
@@ -10394,7 +10394,7 @@ msgstr "EN USO"
 #: internal/termui/prefs.go:345
 #: internal/ui/settings_ai.go:272
 #: internal/ui/settings_keyring.go:572
-#: internal/ui/shortcuts.go:150
+#: internal/ui/shortcuts.go:151
 #: internal/ui/voice_page.go:313
 msgid "None"
 msgstr "Ninguno"
@@ -12810,7 +12810,7 @@ msgid "Screenshot Area"
 msgstr "Área de captura de pantalla"
 
 #: internal/shell/commands.go:34
-#: internal/ui/screenshot.go:590
+#: internal/ui/screenshot.go:594
 msgid "Drag out an area"
 msgstr "Arrastrar un área"
 
@@ -12819,7 +12819,7 @@ msgid "Screenshot Window"
 msgstr "Ventana de captura de pantalla"
 
 #: internal/shell/commands.go:35
-#: internal/ui/screenshot.go:591
+#: internal/ui/screenshot.go:595
 #: ui/screenshot.ui:169
 msgid "Click a window"
 msgstr "Haga clic en una ventana"
@@ -12829,7 +12829,7 @@ msgid "Screenshot Screen"
 msgstr "Pantalla de captura de pantalla"
 
 #: internal/shell/commands.go:36
-#: internal/ui/screenshot.go:592
+#: internal/ui/screenshot.go:596
 #: ui/screenshot.ui:194
 msgid "Click a screen"
 msgstr "Haga clic en una pantalla"
@@ -12988,7 +12988,7 @@ msgid "Find apps, windows and answers"
 msgstr "Encuentra aplicaciones, ventanas y respuestas"
 
 #: internal/shell/dock.go:313
-#: internal/ui/screenshot.go:1134
+#: internal/ui/screenshot.go:1145
 #: ui/settings.ui:2060
 msgid "Screenshot"
 msgstr "Captura de pantalla"
@@ -13096,22 +13096,22 @@ msgid "%s · workspace %s"
 msgstr "%[1]s · espacio de trabajo %[2]s"
 
 #: internal/shell/launcher_actions.go:33
-#: internal/ui/dock.go:523
+#: internal/ui/dock.go:527
 msgid "New Window"
 msgstr "Nueva ventana"
 
 #: internal/shell/launcher_actions.go:39
-#: internal/ui/dock.go:526
+#: internal/ui/dock.go:530
 msgid "Remove from Dock"
 msgstr "Quitar del muelle"
 
 #: internal/shell/launcher_actions.go:41
-#: internal/ui/dock.go:528
+#: internal/ui/dock.go:532
 msgid "Keep in Dock"
 msgstr "Fijar en el dock"
 
 #: internal/shell/launcher_actions.go:47
-#: internal/ui/dock.go:534
+#: internal/ui/dock.go:538
 msgid "Quit (%d windows)"
 msgstr "Salir (ventanas %d)"
 
@@ -14279,7 +14279,7 @@ msgid "Click a key, then press the new one; Backspace frees it"
 msgstr "Pulsa una tecla y luego la nueva; Retroceso la libera"
 
 #: internal/termui/prefs.go:357
-#: internal/ui/shortcuts.go:197
+#: internal/ui/shortcuts.go:202
 msgid "Press keys…"
 msgstr "Pulsar las teclas…"
 
@@ -14823,43 +14823,65 @@ msgstr "Apps del taller"
 msgid "The light apps are not installed (make install)."
 msgstr "Las aplicaciones ligeras no están instaladas (realizar instalación)."
 
-#: internal/ui/input.go:55
+#: internal/ui/input.go:60
 msgid "Not applied to Hyprland: %s"
 msgstr "No se aplica a Hyprland: %s"
 
-#: internal/ui/input.go:113
-#: internal/ui/input.go:130
-#: internal/ui/settings_displays.go:310
+#: internal/ui/input.go:82
+msgid "Not saved to Wayfire: %s"
+msgstr ""
+
+#: internal/ui/input.go:85
+msgid "Saved in wayfire.ini; restart Wayfire to apply these settings"
+msgstr ""
+
+#: internal/ui/input.go:164
+#: internal/ui/input.go:185
+#: internal/ui/settings_displays.go:394
 msgid "Set by inua"
 msgstr "Establecido por inua"
 
-#: internal/ui/input.go:115
-#: internal/ui/input.go:132
-#: internal/ui/settings_displays.go:308
+#: internal/ui/input.go:166
+#: internal/ui/input.go:187
+#: internal/ui/settings_displays.go:390
+msgid "Set in wayfire.ini"
+msgstr ""
+
+#: internal/ui/input.go:168
+#: internal/ui/input.go:189
+#: internal/ui/settings_displays.go:387
 msgid "Set in hyprland.conf"
 msgstr "Establecido en hyprland.conf"
 
-#: internal/ui/input.go:117
+#: internal/ui/input.go:170
 msgid "no XKB options"
 msgstr "no hay opciones XKB"
 
-#: internal/ui/input.go:125
+#: internal/ui/input.go:178
+msgid "From wayfire.ini"
+msgstr ""
+
+#: internal/ui/input.go:180
 msgid "From hyprland.conf"
 msgstr "De hyprland.conf"
 
-#: internal/ui/input.go:153
+#: internal/ui/input.go:207
+msgid "Wayfire settings use wayfire.ini. Inua supports XKB options, touchpad speed and acceleration, output modes, positions and scales, and recorded command shortcuts. Wayfire does not report alternate output modes, so the resolution menu only offers the current mode and preferred; configure other values in config.toml. Wayfire requires connector names; Hyprland desc: output identifiers do not apply. Inua has no verified Wayfire equivalent for display enable/disable, mirroring, automatic relative positions, or lid-triggered output switching. Existing Wayfire shortcuts cannot be listed here."
+msgstr ""
+
+#: internal/ui/input.go:213
 msgid "hyprland.lua does not load inua.lua, so these settings do nothing yet. Add this as its last line: %s"
 msgstr "hyprland.lua no carga inua.lua, así que estos ajustes aún no hacen nada. Añade esto como última línea: %s"
 
-#: internal/ui/input.go:155
+#: internal/ui/input.go:215
 msgid "hyprland.conf does not load inua.conf, so these settings do nothing yet. Add this as its last line: source = ./%s"
 msgstr "hyprland.conf no carga inua.conf, por lo que estas configuraciones no hacen nada todavía. Agregue esto como última línea: fuente = ./%s"
 
-#: internal/ui/input.go:159
+#: internal/ui/input.go:219
 msgid "hyprland.lua sets these again after loading inua.lua, which wins over inua: %s. Move the require line below them."
 msgstr "hyprland.lua vuelve a definir esto después de cargar inua.lua, y se impone a inua: %s. Mueve la línea require debajo."
 
-#: internal/ui/input.go:161
+#: internal/ui/input.go:221
 msgid "hyprland.conf sets these again after loading inua.conf, which wins over inua: %s. Move the source line below them."
 msgstr "hyprland.conf los establece nuevamente después de cargar inua.conf, que gana a inua: %s. Mueva la línea de origen debajo de ellos."
 
@@ -14929,69 +14951,69 @@ msgstr ""
 msgid "Bluetooth off"
 msgstr ""
 
-#: internal/ui/overview.go:186
+#: internal/ui/overview.go:196
 msgid "restore focus"
 msgstr "restaurar el enfoque"
 
-#: internal/ui/overview.go:297
+#: internal/ui/overview.go:312
 msgid "kill window"
 msgstr "ventana de eliminación"
 
-#: internal/ui/overview.go:432
+#: internal/ui/overview.go:447
 msgid "MRU: ON"
 msgstr "MRU: ENCENDIDO"
 
-#: internal/ui/overview.go:432
+#: internal/ui/overview.go:447
 msgid "MRU: OFF"
 msgstr "MRU: APAGADO"
 
-#: internal/ui/overview.go:433
+#: internal/ui/overview.go:448
 msgid "This monitor"
 msgstr "Este monitor"
 
-#: internal/ui/overview.go:433
+#: internal/ui/overview.go:448
 msgid "All monitors"
 msgstr "Todos los monitores"
 
-#: internal/ui/overview.go:442
+#: internal/ui/overview.go:457
 msgid "FILTER"
 msgstr "FILTRAR"
 
-#: internal/ui/overview.go:444
+#: internal/ui/overview.go:459
 msgid "NO MATCHES"
 msgstr "SIN RESULTADOS"
 
-#: internal/ui/overview.go:446
+#: internal/ui/overview.go:461
 msgid "%d RESULT"
 msgid_plural "%d RESULTS"
 msgstr[0] "%d RESULTADO"
 msgstr[1] "%d RESULTADOS"
 
-#: internal/ui/overview.go:474
+#: internal/ui/overview.go:489
 msgid "No workspaces"
 msgstr "Sin espacios de trabajo"
 
-#: internal/ui/overview.go:476
+#: internal/ui/overview.go:491
 msgid "No matches"
 msgstr "No hay coincidencias"
 
-#: internal/ui/overview.go:595
+#: internal/ui/overview.go:610
 msgid "＋  New workspace"
 msgstr "＋  Nuevo espacio de trabajo"
 
-#: internal/ui/overview.go:897
+#: internal/ui/overview.go:952
 msgid "Filter by window title or app"
 msgstr "Filtrar por título de ventana o aplicación"
 
-#: internal/ui/overview.go:913
+#: internal/ui/overview.go:968
 msgid "TYPE TO FILTER WINDOWS"
 msgstr "ESCRIBE PARA FILTRAR VENTANAS"
 
-#: internal/ui/overview.go:926
+#: internal/ui/overview.go:981
 msgid "Type or / to filter windows   Esc · clear / close   Arrows / Tab · select   Middle click · close   Ctrl+Shift+X · kill   Drag · move"
 msgstr "Escriba o / para filtrar ventanas Esc · borrar / cerrar Flechas / Tabulador · seleccionar Clic central · cerrar Ctrl+Shift+X · matar Arrastrar · mover"
 
-#: internal/ui/overview.go:970
+#: internal/ui/overview.go:1025
 msgid "inua overview"
 msgstr "descripción general de inua"
 
@@ -15145,47 +15167,47 @@ msgstr "Grabación guardada"
 msgid "Screen recording"
 msgstr "Grabación de pantalla"
 
-#: internal/ui/screenshot.go:572
+#: internal/ui/screenshot.go:576
 msgid "inua screenshot"
 msgstr "captura de pantalla de inua"
 
-#: internal/ui/screenshot.go:593
+#: internal/ui/screenshot.go:597
 msgid "Click to copy a colour"
 msgstr "Haga clic para copiar un color"
 
-#: internal/ui/screenshot.go:597
+#: internal/ui/screenshot.go:601
 msgid "Drag out an area to record"
 msgstr "Arrastra un área para grabarla"
 
-#: internal/ui/screenshot.go:598
+#: internal/ui/screenshot.go:602
 msgid "Click a window to record"
 msgstr "Haga clic en una ventana para grabar"
 
-#: internal/ui/screenshot.go:599
+#: internal/ui/screenshot.go:603
 msgid "Click a screen to record"
 msgstr "Haga clic en una pantalla para grabar"
 
-#: internal/ui/screenshot.go:644
+#: internal/ui/screenshot.go:648
 msgid "Drag to adjust · click inside to take"
 msgstr "Arrastra para ajustar · haz clic dentro para capturar"
 
-#: internal/ui/screenshot.go:646
+#: internal/ui/screenshot.go:650
 msgid "Drag to adjust · click inside to record"
 msgstr "Arrastra para ajustar · haz clic dentro para grabar"
 
-#: internal/ui/screenshot.go:1128
+#: internal/ui/screenshot.go:1139
 msgid "Screenshot saved and copied"
 msgstr "Captura de pantalla guardada y copiada"
 
-#: internal/ui/screenshot.go:1129
+#: internal/ui/screenshot.go:1140
 msgid "Screenshot saved"
 msgstr "Captura de pantalla guardada"
 
-#: internal/ui/screenshot.go:1130
+#: internal/ui/screenshot.go:1141
 msgid "Screenshot copied"
 msgstr "Captura de pantalla copiada"
 
-#: internal/ui/screenshot.go:1131
+#: internal/ui/screenshot.go:1142
 msgid "Screenshot taken"
 msgstr "Captura de pantalla tomada"
 
@@ -15870,7 +15892,7 @@ msgid "Not added: %s"
 msgstr "No se añadió: %s"
 
 #: internal/ui/settings_displays.go:51
-#: internal/ui/settings_displays.go:416
+#: internal/ui/settings_displays.go:499
 msgid "Automatic"
 msgstr "Automático"
 
@@ -15890,93 +15912,133 @@ msgstr "Encima de las demás"
 msgid "Below the others"
 msgstr "Debajo de las demás"
 
-#: internal/ui/settings_displays.go:185
+#: internal/ui/settings_displays.go:137
+msgid "Wayfire does not expose a lid switch binding that can disable and restore this output"
+msgstr ""
+
+#: internal/ui/settings_displays.go:213
 msgid "No displays"
 msgstr "Sin pantallas"
 
-#: internal/ui/settings_displays.go:186
-msgid "Hyprland lists no displays"
-msgstr "Hyprland no muestra ninguna pantalla"
-
-#: internal/ui/settings_displays.go:186
+#: internal/ui/settings_displays.go:214
 msgid "Is the shell connected to Hyprland?"
 msgstr "¿Está el shell conectado a Hyprland?"
 
+#: internal/ui/settings_displays.go:216
+msgid "Is Wayfire's IPC plugin enabled and connected?"
+msgstr ""
+
+#: internal/ui/settings_displays.go:218
+msgid "Hyprland lists no displays"
+msgstr "Hyprland no muestra ninguna pantalla"
+
 #: internal/ui/settings_displays.go:220
+msgid "Wayfire lists no displays"
+msgstr ""
+
+#: internal/ui/settings_displays.go:256
 msgid "Use this display"
 msgstr "Usar esta pantalla"
 
-#: internal/ui/settings_displays.go:234
+#: internal/ui/settings_displays.go:263
+msgid "Inua has no verified Wayfire output enable or disable option"
+msgstr ""
+
+#: internal/ui/settings_displays.go:273
 msgid "Preferred"
 msgstr "Preferida"
 
-#: internal/ui/settings_displays.go:245
+#: internal/ui/settings_displays.go:284
 #: ui/remote.ui:760
 msgid "Resolution"
 msgstr "Resolución"
 
-#: internal/ui/settings_displays.go:266
+#: internal/ui/settings_displays.go:305
 msgid "%s (Hyprland uses %s)"
 msgstr "%s (Hyprland usa %s)"
 
-#: internal/ui/settings_displays.go:271
+#: internal/ui/settings_displays.go:310
 msgid "Scale"
 msgstr "Escala"
 
-#: internal/ui/settings_displays.go:271
+#: internal/ui/settings_displays.go:310
 msgid "Text and windows larger or smaller"
 msgstr "Texto y ventanas más grandes o más pequeños"
 
-#: internal/ui/settings_displays.go:284
+#: internal/ui/settings_displays.go:344
+msgid "Left of %s"
+msgstr ""
+
+#: internal/ui/settings_displays.go:345
+msgid "Right of %s"
+msgstr ""
+
+#: internal/ui/settings_displays.go:346
+msgid "Above %s"
+msgstr ""
+
+#: internal/ui/settings_displays.go:347
+msgid "Below %s"
+msgstr ""
+
+#: internal/ui/settings_displays.go:359
 msgid "Where it is (%s, %s)"
 msgstr "Donde está (%s, %s)"
 
-#: internal/ui/settings_displays.go:286
+#: internal/ui/settings_displays.go:361
 #: ui/settings.ui:1750
 msgid "Position"
 msgstr "Posición"
 
-#: internal/ui/settings_displays.go:297
-#: internal/ui/settings_displays.go:301
+#: internal/ui/settings_displays.go:372
+#: internal/ui/settings_displays.go:376
 msgid "Same picture as %s"
 msgstr "La misma imagen que %s"
 
-#: internal/ui/settings_displays.go:303
+#: internal/ui/settings_displays.go:380
+msgid "Wayfire does not support output mirroring"
+msgstr ""
+
+#: internal/ui/settings_displays.go:382
 msgid "Mirror"
 msgstr "Duplicar"
 
-#: internal/ui/settings_displays.go:313
+#: internal/ui/settings_displays.go:388
 #: ui/settings.ui:6181
 #: ui/settings.ui:6448
 msgid "Use hyprland.conf"
 msgstr "Utilice hyprland.conf"
 
-#: internal/ui/settings_displays.go:316
+#: internal/ui/settings_displays.go:391
+msgid "Use Wayfire's output settings"
+msgstr ""
+
+#: internal/ui/settings_displays.go:399
 msgid "Stop setting this display in inua"
 msgstr "Dejar de configurar esta pantalla en inua"
 
-#: internal/ui/settings_displays.go:374
+#: internal/ui/settings_displays.go:457
 msgid "Built-in display"
 msgstr "Pantalla integrada"
 
-#: internal/ui/settings_displays.go:387
+#: internal/ui/settings_displays.go:470
 msgid "Off while the lid is closed"
 msgstr "Apagada mientras la tapa está cerrada"
 
-#: internal/ui/settings_displays.go:393
-#: internal/ui/settings_displays.go:396
+#: internal/ui/settings_displays.go:476
+#: internal/ui/settings_displays.go:479
 msgid "Shows the same picture as %s"
 msgstr "Muestra la misma imagen que %s"
 
-#: internal/ui/settings_displays.go:398
+#: internal/ui/settings_displays.go:481
 msgid "%s, at %s"
 msgstr "%s, al %s"
 
-#: internal/ui/settings_displays.go:408
+#: internal/ui/settings_displays.go:491
 msgid "%d × %d"
 msgstr "%d × %d"
 
-#: internal/ui/settings_displays.go:410
+#: internal/ui/settings_displays.go:493
 msgid "%d × %d, %s Hz"
 msgstr "%d × %d, %s Hz"
 
@@ -16492,39 +16554,47 @@ msgstr "DNS"
 msgid "Hardware address"
 msgstr "Dirección física"
 
-#: internal/ui/shortcuts.go:88
+#: internal/ui/shortcuts.go:89
 msgid "Set in inua"
 msgstr "Ambientado en inua"
 
-#: internal/ui/shortcuts.go:90
+#: internal/ui/shortcuts.go:91
 msgid "Turned off in inua"
 msgstr "Apagado en inua"
 
-#: internal/ui/shortcuts.go:93
+#: internal/ui/shortcuts.go:94
 msgid "From Hyprland"
 msgstr "De Hyprland"
 
-#: internal/ui/shortcuts.go:134
+#: internal/ui/shortcuts.go:135
 msgid "Lua function"
 msgstr "Función Lua"
 
-#: internal/ui/shortcuts.go:192
+#: internal/ui/shortcuts.go:153
+msgid "Existing Wayfire shortcuts are not listed"
+msgstr ""
+
+#: internal/ui/shortcuts.go:197
 msgid "Click, then press the new shortcut"
 msgstr "Haga clic y luego presione el nuevo acceso directo"
 
-#: internal/ui/shortcuts.go:201
+#: internal/ui/shortcuts.go:206
 msgid "Not set"
 msgstr "No establecido"
 
-#: internal/ui/shortcuts.go:227
+#: internal/ui/shortcuts.go:232
 msgid "Remove this command"
 msgstr "Eliminar este comando"
 
-#: internal/ui/shortcuts.go:229
+#: internal/ui/shortcuts.go:234
 msgid "Use hyprland.conf's shortcut again"
 msgstr "Utilice el acceso directo de hyprland.conf nuevamente"
 
-#: internal/ui/shortcuts.go:231
+#: internal/ui/shortcuts.go:236
+msgid "Use Wayfire's shortcut again"
+msgstr ""
+
+#: internal/ui/shortcuts.go:240
 msgid "Turn the shortcut off"
 msgstr "Desactivar el acceso directo"
 
@@ -16595,15 +16665,19 @@ msgstr "inua no pudo actualizar"
 msgid "Could not upgrade: %s"
 msgstr "No se pudo actualizar: %s"
 
-#: internal/ui/voice.go:209
+#: internal/ui/voice.go:151
+msgid "Wayfire is not connected"
+msgstr ""
+
+#: internal/ui/voice.go:218
 msgid "Dictation did not work"
 msgstr "El dictado no funcionó"
 
-#: internal/ui/voice.go:271
-msgid "dictation pastes with Hyprland, which is not running"
-msgstr "el dictado pega con Hyprland, que no está en marcha"
+#: internal/ui/voice.go:285
+msgid "dictation pastes with Hyprland or Wayfire, which is not running"
+msgstr ""
 
-#: internal/ui/voice.go:281
+#: internal/ui/voice.go:301
 msgid "no window has the focus to type into"
 msgstr "ninguna ventana tiene el foco para escribir en ella"
 

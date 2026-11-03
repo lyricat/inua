@@ -239,13 +239,13 @@ generate = true
 # Lock is Escape), "ctrl:nocaps" (Caps Lock is Ctrl), "ctrl:swap_lalt_lctl"
 # (swap left Ctrl and Alt), "ctrl:swap_ralt_rctl" (the right ones).
 # "" clears XKB options from the compositor config.
+# kb_options = ""
 
 # Touchpad speed maps to touchpad_accel on Wayfire, -1 (slowest) to 1.
 # touchpad_speed = 0.0
 
-# Touchpad acceleration profile: "adaptive" or "flat".
+# Touchpad acceleration: "adaptive" (faster swipes go further) or "flat".
 touchpad_accel = ""
-
 
 [displays]
 # Displays are written to Hyprland monitor rules or Wayfire [output:NAME]
@@ -511,13 +511,13 @@ enable = false
 # ending processes, power, the clipboard and notifications still ask).
 policy = "ask"
 
-# Keyboard shortcuts set in the settings window (Shortcuts). inua writes
-# them to ~/.config/hypr/inua.conf: each unbinds its keys from anything
-# else, and the keys its action had in hyprland.conf ("replaces"). Actions
-# without an entry keep their hyprland.conf shortcuts. An action is one of
-#   launcher windows overview control notifications clipboard focus settings restart lock
-#   shot-area shot-area-silent shot-screen shot-window shot-record color
-# or "exec" with a command. keys = "" turns the action's shortcut off.
+# Keyboard shortcuts set in the settings window (Shortcuts). Under Hyprland
+# they go to hypr/inua.conf. Under Wayfire, Inua's command shortcuts go to
+# [command] in wayfire.ini. Existing Wayfire shortcuts are not listed here.
+# Actions are launcher windows overview control notifications clipboard focus
+# settings restart lock shot-area shot-area-silent shot-screen shot-window
+# shot-record color voice widgets, or "exec" with a command. keys = "" turns
+# the action's shortcut off.
 #
 #   [[shortcuts]]
 #   action = "launcher"

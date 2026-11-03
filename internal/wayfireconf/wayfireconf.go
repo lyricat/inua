@@ -135,10 +135,18 @@ func Apply(path string, c config.Config) (bool, error) {
 		f.Close()
 		return false, err
 	}
-	if _, err = f.WriteString(content); err == nil { err = f.Sync() }
-	if closeErr := f.Close(); err == nil { err = closeErr }
-	if err != nil { return false, err }
-	if err := os.Rename(tmp, path); err != nil { return false, err }
+	if _, err = f.WriteString(content); err == nil {
+		err = f.Sync()
+	}
+	if closeErr := f.Close(); err == nil {
+		err = closeErr
+	}
+	if err != nil {
+		return false, err
+	}
+	if err := os.Rename(tmp, path); err != nil {
+		return false, err
+	}
 	return true, nil
 }
 
@@ -230,12 +238,16 @@ func setManaged(section *ini.Section, name, value string) {
 }
 
 func stringValue(value *string) string {
-	if value == nil { return "" }
+	if value == nil {
+		return ""
+	}
 	return *value
 }
 
 func floatValue(value *float64) string {
-	if value == nil { return "" }
+	if value == nil {
+		return ""
+	}
 	return strconv.FormatFloat(*value, 'f', 6, 64)
 }
 
@@ -252,7 +264,7 @@ func wayfireMode(mode string) string {
 		return mode
 	}
 	return fmt.Sprintf("%s@%.0f", resolution, hz*1000)
-	}
+}
 
 func wayfireBinding(keys string) string {
 	parts := strings.Split(keys, "+")
@@ -296,4 +308,3 @@ func wayfireKey(key string) string {
 	}
 	return "KEY_" + key
 }
-

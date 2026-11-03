@@ -350,7 +350,7 @@ msgstr "%d%%、充電中"
 #: internal/ui/settings.go:347
 #: internal/ui/settings.go:814
 #: internal/ui/settings.go:918
-#: internal/ui/settings_displays.go:418
+#: internal/ui/settings_displays.go:501
 msgid "%d%%"
 msgstr "%d%%"
 
@@ -395,7 +395,7 @@ msgstr "開く"
 
 #: internal/apps/connect/share.go:129
 #: internal/ui/record.go:157
-#: internal/ui/screenshot.go:1140
+#: internal/ui/screenshot.go:1151
 #: internal/ui/settings_custom.go:40
 msgid "Show in Folder"
 msgstr "フォルダ内で表示"
@@ -2117,8 +2117,8 @@ msgstr "サービスを起動しています。"
 #: internal/termui/headmenu.go:164
 #: internal/termui/prefsweb.go:130
 #: internal/ui/settings_bluetooth.go:214
-#: internal/ui/settings_displays.go:294
-#: internal/ui/settings_displays.go:389
+#: internal/ui/settings_displays.go:369
+#: internal/ui/settings_displays.go:472
 #: internal/ui/settings_wifi.go:285
 #: ui/remote.ui:359
 #: ui/settings.ui:6030
@@ -9638,7 +9638,7 @@ msgstr "検索できませんでした: %s"
 #: internal/lightui/sysmon.go:55
 #: internal/shell/launcher_actions.go:45
 #: internal/termui/menubar.go:34
-#: internal/ui/dock.go:532
+#: internal/ui/dock.go:536
 #: internal/ui/portal_ask.go:80
 msgid "Quit"
 msgstr "やめる"
@@ -10341,7 +10341,7 @@ msgstr "使用中"
 #: internal/termui/prefs.go:345
 #: internal/ui/settings_ai.go:272
 #: internal/ui/settings_keyring.go:572
-#: internal/ui/shortcuts.go:150
+#: internal/ui/shortcuts.go:151
 #: internal/ui/voice_page.go:313
 msgid "None"
 msgstr "なし"
@@ -12741,7 +12741,7 @@ msgid "Screenshot Area"
 msgstr "スクリーンショット領域"
 
 #: internal/shell/commands.go:34
-#: internal/ui/screenshot.go:590
+#: internal/ui/screenshot.go:594
 msgid "Drag out an area"
 msgstr "領域をドラッグアウトする"
 
@@ -12750,7 +12750,7 @@ msgid "Screenshot Window"
 msgstr "スクリーンショットウィンドウ"
 
 #: internal/shell/commands.go:35
-#: internal/ui/screenshot.go:591
+#: internal/ui/screenshot.go:595
 #: ui/screenshot.ui:169
 msgid "Click a window"
 msgstr "ウィンドウをクリックする"
@@ -12760,7 +12760,7 @@ msgid "Screenshot Screen"
 msgstr "スクリーンショット画面"
 
 #: internal/shell/commands.go:36
-#: internal/ui/screenshot.go:592
+#: internal/ui/screenshot.go:596
 #: ui/screenshot.ui:194
 msgid "Click a screen"
 msgstr "画面をクリックします"
@@ -12919,7 +12919,7 @@ msgid "Find apps, windows and answers"
 msgstr "アプリ、ウィンドウ、および回答を見つける"
 
 #: internal/shell/dock.go:313
-#: internal/ui/screenshot.go:1134
+#: internal/ui/screenshot.go:1145
 #: ui/settings.ui:2060
 msgid "Screenshot"
 msgstr "スクリーンショット"
@@ -13025,22 +13025,22 @@ msgid "%s · workspace %s"
 msgstr "%[1]s · ワークスペース %[2]s"
 
 #: internal/shell/launcher_actions.go:33
-#: internal/ui/dock.go:523
+#: internal/ui/dock.go:527
 msgid "New Window"
 msgstr "新しい窓"
 
 #: internal/shell/launcher_actions.go:39
-#: internal/ui/dock.go:526
+#: internal/ui/dock.go:530
 msgid "Remove from Dock"
 msgstr "ドックから取り外す"
 
 #: internal/shell/launcher_actions.go:41
-#: internal/ui/dock.go:528
+#: internal/ui/dock.go:532
 msgid "Keep in Dock"
 msgstr "ドックに固定"
 
 #: internal/shell/launcher_actions.go:47
-#: internal/ui/dock.go:534
+#: internal/ui/dock.go:538
 msgid "Quit (%d windows)"
 msgstr "終了 (%d Windows)"
 
@@ -14204,7 +14204,7 @@ msgid "Click a key, then press the new one; Backspace frees it"
 msgstr "キーをクリックして新しいキーを押す。Backspace で解除"
 
 #: internal/termui/prefs.go:357
-#: internal/ui/shortcuts.go:197
+#: internal/ui/shortcuts.go:202
 msgid "Press keys…"
 msgstr "キーを押してください…"
 
@@ -14742,43 +14742,65 @@ msgstr "ワークショップのアプリ"
 msgid "The light apps are not installed (make install)."
 msgstr "ライトアプリはインストールされない(メイクインストール)。"
 
-#: internal/ui/input.go:55
+#: internal/ui/input.go:60
 msgid "Not applied to Hyprland: %s"
 msgstr "Hyprland には適用されません: %s"
 
-#: internal/ui/input.go:113
-#: internal/ui/input.go:130
-#: internal/ui/settings_displays.go:310
+#: internal/ui/input.go:82
+msgid "Not saved to Wayfire: %s"
+msgstr ""
+
+#: internal/ui/input.go:85
+msgid "Saved in wayfire.ini; restart Wayfire to apply these settings"
+msgstr ""
+
+#: internal/ui/input.go:164
+#: internal/ui/input.go:185
+#: internal/ui/settings_displays.go:394
 msgid "Set by inua"
 msgstr "inuaによる設定"
 
-#: internal/ui/input.go:115
-#: internal/ui/input.go:132
-#: internal/ui/settings_displays.go:308
+#: internal/ui/input.go:166
+#: internal/ui/input.go:187
+#: internal/ui/settings_displays.go:390
+msgid "Set in wayfire.ini"
+msgstr ""
+
+#: internal/ui/input.go:168
+#: internal/ui/input.go:189
+#: internal/ui/settings_displays.go:387
 msgid "Set in hyprland.conf"
 msgstr "hyprland.confに設定"
 
-#: internal/ui/input.go:117
+#: internal/ui/input.go:170
 msgid "no XKB options"
 msgstr "XKBオプションなし"
 
-#: internal/ui/input.go:125
+#: internal/ui/input.go:178
+msgid "From wayfire.ini"
+msgstr ""
+
+#: internal/ui/input.go:180
 msgid "From hyprland.conf"
 msgstr "hyprland.confより"
 
-#: internal/ui/input.go:153
+#: internal/ui/input.go:207
+msgid "Wayfire settings use wayfire.ini. Inua supports XKB options, touchpad speed and acceleration, output modes, positions and scales, and recorded command shortcuts. Wayfire does not report alternate output modes, so the resolution menu only offers the current mode and preferred; configure other values in config.toml. Wayfire requires connector names; Hyprland desc: output identifiers do not apply. Inua has no verified Wayfire equivalent for display enable/disable, mirroring, automatic relative positions, or lid-triggered output switching. Existing Wayfire shortcuts cannot be listed here."
+msgstr ""
+
+#: internal/ui/input.go:213
 msgid "hyprland.lua does not load inua.lua, so these settings do nothing yet. Add this as its last line: %s"
 msgstr "hyprland.lua が inua.lua を読み込んでいないため、これらの設定はまだ効きません。最後の行に次を追加してください:%s"
 
-#: internal/ui/input.go:155
+#: internal/ui/input.go:215
 msgid "hyprland.conf does not load inua.conf, so these settings do nothing yet. Add this as its last line: source = ./%s"
 msgstr "hyprland.conf は inua.conf をロードしないため、これらの設定はまだ何も行いません。これを最後の行として追加します:source = ./%s"
 
-#: internal/ui/input.go:159
+#: internal/ui/input.go:219
 msgid "hyprland.lua sets these again after loading inua.lua, which wins over inua: %s. Move the require line below them."
 msgstr "hyprland.lua は inua.lua を読み込んだ後にこれらを再設定しているため、inua の設定より優先されます:%s。require の行をそれらの下に移動してください。"
 
-#: internal/ui/input.go:161
+#: internal/ui/input.go:221
 msgid "hyprland.conf sets these again after loading inua.conf, which wins over inua: %s. Move the source line below them."
 msgstr "hyprland.conf は、inua.conf をロードした後にこれらを再度設定します。これは、inua: %s よりも優先されます。ソース行をそれらの下に移動します。"
 
@@ -14848,68 +14870,68 @@ msgstr ""
 msgid "Bluetooth off"
 msgstr ""
 
-#: internal/ui/overview.go:186
+#: internal/ui/overview.go:196
 msgid "restore focus"
 msgstr "フォーカスを復元する"
 
-#: internal/ui/overview.go:297
+#: internal/ui/overview.go:312
 msgid "kill window"
 msgstr "ウィンドウをキルする"
 
-#: internal/ui/overview.go:432
+#: internal/ui/overview.go:447
 msgid "MRU: ON"
 msgstr "MRU:オン"
 
-#: internal/ui/overview.go:432
+#: internal/ui/overview.go:447
 msgid "MRU: OFF"
 msgstr "MRU: オフ"
 
-#: internal/ui/overview.go:433
+#: internal/ui/overview.go:448
 msgid "This monitor"
 msgstr "このモニター"
 
-#: internal/ui/overview.go:433
+#: internal/ui/overview.go:448
 msgid "All monitors"
 msgstr "すべてのモニター"
 
-#: internal/ui/overview.go:442
+#: internal/ui/overview.go:457
 msgid "FILTER"
 msgstr "絞り込み"
 
-#: internal/ui/overview.go:444
+#: internal/ui/overview.go:459
 msgid "NO MATCHES"
 msgstr "一致なし"
 
-#: internal/ui/overview.go:446
+#: internal/ui/overview.go:461
 msgid "%d RESULT"
 msgid_plural "%d RESULTS"
 msgstr[0] "%d 件"
 
-#: internal/ui/overview.go:474
+#: internal/ui/overview.go:489
 msgid "No workspaces"
 msgstr "ワークスペースがない"
 
-#: internal/ui/overview.go:476
+#: internal/ui/overview.go:491
 msgid "No matches"
 msgstr "一致しない"
 
-#: internal/ui/overview.go:595
+#: internal/ui/overview.go:610
 msgid "＋  New workspace"
 msgstr "＋  新しいワークスペース"
 
-#: internal/ui/overview.go:897
+#: internal/ui/overview.go:952
 msgid "Filter by window title or app"
 msgstr "ウィンドウのタイトルまたはアプリでフィルタリングする"
 
-#: internal/ui/overview.go:913
+#: internal/ui/overview.go:968
 msgid "TYPE TO FILTER WINDOWS"
 msgstr "入力してウィンドウを絞り込む"
 
-#: internal/ui/overview.go:926
+#: internal/ui/overview.go:981
 msgid "Type or / to filter windows   Esc · clear / close   Arrows / Tab · select   Middle click · close   Ctrl+Shift+X · kill   Drag · move"
 msgstr "または / を入力してウィンドウをフィルタリングします Esc · クリア / 閉じる 矢印 / Tab · 選択 中クリック · 閉じる Ctrl+Shift+X · kill ドラッグ · 移動"
 
-#: internal/ui/overview.go:970
+#: internal/ui/overview.go:1025
 msgid "inua overview"
 msgstr "イヌアの概要"
 
@@ -15060,47 +15082,47 @@ msgstr "録音が保存されました"
 msgid "Screen recording"
 msgstr "画面記録"
 
-#: internal/ui/screenshot.go:572
+#: internal/ui/screenshot.go:576
 msgid "inua screenshot"
 msgstr "イヌアのスクリーンショット"
 
-#: internal/ui/screenshot.go:593
+#: internal/ui/screenshot.go:597
 msgid "Click to copy a colour"
 msgstr "クリックして色をコピーします"
 
-#: internal/ui/screenshot.go:597
+#: internal/ui/screenshot.go:601
 msgid "Drag out an area to record"
 msgstr "録画する領域をドラッグ"
 
-#: internal/ui/screenshot.go:598
+#: internal/ui/screenshot.go:602
 msgid "Click a window to record"
 msgstr "ウィンドウをクリックして記録する"
 
-#: internal/ui/screenshot.go:599
+#: internal/ui/screenshot.go:603
 msgid "Click a screen to record"
 msgstr "画面をクリックして記録する"
 
-#: internal/ui/screenshot.go:644
+#: internal/ui/screenshot.go:648
 msgid "Drag to adjust · click inside to take"
 msgstr "ドラッグで調整 · 内側をクリックで撮影"
 
-#: internal/ui/screenshot.go:646
+#: internal/ui/screenshot.go:650
 msgid "Drag to adjust · click inside to record"
 msgstr "ドラッグで調整 · 内側をクリックで録画"
 
-#: internal/ui/screenshot.go:1128
+#: internal/ui/screenshot.go:1139
 msgid "Screenshot saved and copied"
 msgstr "スクリーンショットの保存とコピー"
 
-#: internal/ui/screenshot.go:1129
+#: internal/ui/screenshot.go:1140
 msgid "Screenshot saved"
 msgstr "スクリーンショットが保存されました"
 
-#: internal/ui/screenshot.go:1130
+#: internal/ui/screenshot.go:1141
 msgid "Screenshot copied"
 msgstr "スクリーンショットがコピーされました"
 
-#: internal/ui/screenshot.go:1131
+#: internal/ui/screenshot.go:1142
 msgid "Screenshot taken"
 msgstr "撮影されたスクリーンショット"
 
@@ -15783,7 +15805,7 @@ msgid "Not added: %s"
 msgstr "追加されませんでした：%s"
 
 #: internal/ui/settings_displays.go:51
-#: internal/ui/settings_displays.go:416
+#: internal/ui/settings_displays.go:499
 msgid "Automatic"
 msgstr "自動"
 
@@ -15803,93 +15825,133 @@ msgstr "ほかのディスプレイの上"
 msgid "Below the others"
 msgstr "ほかのディスプレイの下"
 
-#: internal/ui/settings_displays.go:185
+#: internal/ui/settings_displays.go:137
+msgid "Wayfire does not expose a lid switch binding that can disable and restore this output"
+msgstr ""
+
+#: internal/ui/settings_displays.go:213
 msgid "No displays"
 msgstr "ディスプレイなし"
 
-#: internal/ui/settings_displays.go:186
-msgid "Hyprland lists no displays"
-msgstr "Hyprland にディスプレイがありません"
-
-#: internal/ui/settings_displays.go:186
+#: internal/ui/settings_displays.go:214
 msgid "Is the shell connected to Hyprland?"
 msgstr "シェルは Hyprland に接続していますか?"
 
+#: internal/ui/settings_displays.go:216
+msgid "Is Wayfire's IPC plugin enabled and connected?"
+msgstr ""
+
+#: internal/ui/settings_displays.go:218
+msgid "Hyprland lists no displays"
+msgstr "Hyprland にディスプレイがありません"
+
 #: internal/ui/settings_displays.go:220
+msgid "Wayfire lists no displays"
+msgstr ""
+
+#: internal/ui/settings_displays.go:256
 msgid "Use this display"
 msgstr "このディスプレイを使う"
 
-#: internal/ui/settings_displays.go:234
+#: internal/ui/settings_displays.go:263
+msgid "Inua has no verified Wayfire output enable or disable option"
+msgstr ""
+
+#: internal/ui/settings_displays.go:273
 msgid "Preferred"
 msgstr "推奨"
 
-#: internal/ui/settings_displays.go:245
+#: internal/ui/settings_displays.go:284
 #: ui/remote.ui:760
 msgid "Resolution"
 msgstr "解像度"
 
-#: internal/ui/settings_displays.go:266
+#: internal/ui/settings_displays.go:305
 msgid "%s (Hyprland uses %s)"
 msgstr "%s(Hyprland では %s)"
 
-#: internal/ui/settings_displays.go:271
+#: internal/ui/settings_displays.go:310
 msgid "Scale"
 msgstr "拡大率"
 
-#: internal/ui/settings_displays.go:271
+#: internal/ui/settings_displays.go:310
 msgid "Text and windows larger or smaller"
 msgstr "文字とウィンドウを大きく、または小さく"
 
-#: internal/ui/settings_displays.go:284
+#: internal/ui/settings_displays.go:344
+msgid "Left of %s"
+msgstr ""
+
+#: internal/ui/settings_displays.go:345
+msgid "Right of %s"
+msgstr ""
+
+#: internal/ui/settings_displays.go:346
+msgid "Above %s"
+msgstr ""
+
+#: internal/ui/settings_displays.go:347
+msgid "Below %s"
+msgstr ""
+
+#: internal/ui/settings_displays.go:359
 msgid "Where it is (%s, %s)"
 msgstr "今の位置 (%s, %s)"
 
-#: internal/ui/settings_displays.go:286
+#: internal/ui/settings_displays.go:361
 #: ui/settings.ui:1750
 msgid "Position"
 msgstr "位置"
 
-#: internal/ui/settings_displays.go:297
-#: internal/ui/settings_displays.go:301
+#: internal/ui/settings_displays.go:372
+#: internal/ui/settings_displays.go:376
 msgid "Same picture as %s"
 msgstr "%s と同じ画面"
 
-#: internal/ui/settings_displays.go:303
+#: internal/ui/settings_displays.go:380
+msgid "Wayfire does not support output mirroring"
+msgstr ""
+
+#: internal/ui/settings_displays.go:382
 msgid "Mirror"
 msgstr "ミラー"
 
-#: internal/ui/settings_displays.go:313
+#: internal/ui/settings_displays.go:388
 #: ui/settings.ui:6181
 #: ui/settings.ui:6448
 msgid "Use hyprland.conf"
 msgstr "hyprland.confを使用する"
 
-#: internal/ui/settings_displays.go:316
+#: internal/ui/settings_displays.go:391
+msgid "Use Wayfire's output settings"
+msgstr ""
+
+#: internal/ui/settings_displays.go:399
 msgid "Stop setting this display in inua"
 msgstr "このディスプレイを inua で設定しない"
 
-#: internal/ui/settings_displays.go:374
+#: internal/ui/settings_displays.go:457
 msgid "Built-in display"
 msgstr "内蔵ディスプレイ"
 
-#: internal/ui/settings_displays.go:387
+#: internal/ui/settings_displays.go:470
 msgid "Off while the lid is closed"
 msgstr "ふたを閉じている間はオフ"
 
-#: internal/ui/settings_displays.go:393
-#: internal/ui/settings_displays.go:396
+#: internal/ui/settings_displays.go:476
+#: internal/ui/settings_displays.go:479
 msgid "Shows the same picture as %s"
 msgstr "%s と同じ画面を表示"
 
-#: internal/ui/settings_displays.go:398
+#: internal/ui/settings_displays.go:481
 msgid "%s, at %s"
 msgstr "%s、%s"
 
-#: internal/ui/settings_displays.go:408
+#: internal/ui/settings_displays.go:491
 msgid "%d × %d"
 msgstr "%d × %d"
 
-#: internal/ui/settings_displays.go:410
+#: internal/ui/settings_displays.go:493
 msgid "%d × %d, %s Hz"
 msgstr "%d × %d、%s Hz"
 
@@ -16400,39 +16462,47 @@ msgstr "DNS"
 msgid "Hardware address"
 msgstr "ハードウェアアドレス"
 
-#: internal/ui/shortcuts.go:88
+#: internal/ui/shortcuts.go:89
 msgid "Set in inua"
 msgstr "イヌアを舞台とする"
 
-#: internal/ui/shortcuts.go:90
+#: internal/ui/shortcuts.go:91
 msgid "Turned off in inua"
 msgstr "inuaで電源が切れました"
 
-#: internal/ui/shortcuts.go:93
+#: internal/ui/shortcuts.go:94
 msgid "From Hyprland"
 msgstr "Hyprland から"
 
-#: internal/ui/shortcuts.go:134
+#: internal/ui/shortcuts.go:135
 msgid "Lua function"
 msgstr "Lua 関数"
 
-#: internal/ui/shortcuts.go:192
+#: internal/ui/shortcuts.go:153
+msgid "Existing Wayfire shortcuts are not listed"
+msgstr ""
+
+#: internal/ui/shortcuts.go:197
 msgid "Click, then press the new shortcut"
 msgstr "新しいショートカットをクリックして押します"
 
-#: internal/ui/shortcuts.go:201
+#: internal/ui/shortcuts.go:206
 msgid "Not set"
 msgstr "未設定"
 
-#: internal/ui/shortcuts.go:227
+#: internal/ui/shortcuts.go:232
 msgid "Remove this command"
 msgstr "このコマンドを削除します"
 
-#: internal/ui/shortcuts.go:229
+#: internal/ui/shortcuts.go:234
 msgid "Use hyprland.conf's shortcut again"
 msgstr "hyprland.conf のショートカットを再度使用する"
 
-#: internal/ui/shortcuts.go:231
+#: internal/ui/shortcuts.go:236
+msgid "Use Wayfire's shortcut again"
+msgstr ""
+
+#: internal/ui/shortcuts.go:240
 msgid "Turn the shortcut off"
 msgstr "ショートカットをオフにする"
 
@@ -16501,15 +16571,19 @@ msgstr "inua をアップグレードできませんでした"
 msgid "Could not upgrade: %s"
 msgstr "アップグレードできませんでした: %s"
 
-#: internal/ui/voice.go:209
+#: internal/ui/voice.go:151
+msgid "Wayfire is not connected"
+msgstr ""
+
+#: internal/ui/voice.go:218
 msgid "Dictation did not work"
 msgstr "ディクテーションはうまくいきませんでした"
 
-#: internal/ui/voice.go:271
-msgid "dictation pastes with Hyprland, which is not running"
-msgstr "Hyprland が動いていないため、ディクテーションは貼り付けできません"
+#: internal/ui/voice.go:285
+msgid "dictation pastes with Hyprland or Wayfire, which is not running"
+msgstr ""
 
-#: internal/ui/voice.go:281
+#: internal/ui/voice.go:301
 msgid "no window has the focus to type into"
 msgstr "入力先のフォーカスされたウィンドウがありません"
 

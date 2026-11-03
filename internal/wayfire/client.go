@@ -54,7 +54,7 @@ type outputRecord struct {
 		Width  int `json:"width"`
 		Height int `json:"height"`
 	} `json:"geometry"`
-	WorkspaceSetID uint64 `json:"wset-index"`
+	WorkspaceSetID uint64   `json:"wset-index"`
 	Scale          float64  `json:"scale"`
 	Refresh        float64  `json:"refresh-rate"`
 	Modes          []string `json:"available-modes"`
