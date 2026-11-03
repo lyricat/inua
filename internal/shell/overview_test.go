@@ -292,7 +292,7 @@ func TestOverviewNumberSlotsStayOnFocusedMonitorWithMRUOff(t *testing.T) {
 	}
 }
 
-func TestOverviewShowsOneCardPerWindowWithoutWorkspaces(t *testing.T) {
+func TestOverviewGroupsWindowsByAppWithoutWorkspaces(t *testing.T) {
 	snap := hypr.Snapshot{
 		Toplevels: []hypr.Toplevel{
 			{Address: "wf:3", Class: "files", Title: "Files A", Monitor: "HDMI-A-1"},
@@ -302,7 +302,7 @@ func TestOverviewShowsOneCardPerWindowWithoutWorkspaces(t *testing.T) {
 	}
 	var o Overview
 	o.Show(snap)
-	if len(o.Cards) != 2 || len(o.Cards[0].Windows) != 1 || len(o.Cards[1].Windows) != 1 {
+	if len(o.Cards) != 1 || len(o.Cards[0].Windows) != 1 {
 		t.Fatalf("cards = %+v", o.Cards)
 	}
 	if o.Cards[o.Selected].Windows[0].Address != "wf:5" {

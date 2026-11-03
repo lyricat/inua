@@ -129,13 +129,42 @@ func (o *Overview) refresh(snap hypr.Snapshot) {
 	workspaces, toplevels := o.projected(snap)
 	o.AllCards = nil
 	if len(workspaces) == 0 && len(toplevels) > 0 {
-		// Wayfire: no tiling workspaces to group by, so one card per window.
-		for i, window := range toplevels {
-			workspace := hypr.Workspace{
-				ID: i + 1, Name: strconv.Itoa(i + 1), Monitor: window.Monitor,
-				Active: window.Activated, Focused: window.Activated,
+		// Wayfire: no tiling workspaces to group by, so one card per app.
+		type appGroup struct {
+			windows []hypr.Toplevel
+			monitor string
+			active  bool
+		}
+		groups := map[string]*appGroup{}
+		var order []string
+		for _, window := range toplevels {
+			key := window.Class
+			if key == "" {
+				key = window.Title
 			}
-			o.AllCards = append(o.AllCards, OverviewCard{Workspace: workspace, Windows: []hypr.Toplevel{window}})
+			group := groups[key]
+			if group == nil {
+				group = &appGroup{monitor: window.Monitor}
+				groups[key] = group
+				order = append(order, key)
+			}
+			group.windows = append(group.windows, window)
+			group.active = group.active || window.Activated
+		}
+		for i, key := range order {
+			group := groups[key]
+			chosen := group.windows[0]
+			for _, window := range group.windows {
+				if window.Activated {
+					chosen = window
+					break
+				}
+			}
+			workspace := hypr.Workspace{
+				ID: i + 1, Name: strconv.Itoa(i + 1), Monitor: group.monitor,
+				Active: group.active, Focused: group.active,
+			}
+			o.AllCards = append(o.AllCards, OverviewCard{Workspace: workspace, Windows: []hypr.Toplevel{chosen}})
 		}
 	} else {
 		for _, ws := range workspaces {
