@@ -106,8 +106,9 @@ type shellUI struct {
 	alarms    alarms
 	settings  settings
 	wifi      wifiState // the networks, while a list shows them
-	tray      tray
+	appmenu   appMenuState
 	osd       osd
+	tray      tray
 	dictation dictationCard // dictation as it goes
 	sys       shell.System
 	svc       services
@@ -161,6 +162,7 @@ type shellUI struct {
 	onTrayClicked          func(gtk.Button)
 	onTrayPressed          func(gtk.GestureClick, int32, float64, float64)
 	onTrayMenuClosed       func(gtk.Popover)
+	onAppMenuClicked       func(gtk.Button)
 	onSettingsEntry        func(uintptr, uintptr)
 	onSettingsSwitch       func(gtk.Switch, bool) bool
 	onAIAbility            func(gtk.ToggleButton)
@@ -473,6 +475,7 @@ func (s *shellUI) start() {
 	s.bindVoiceHandlers()
 	s.bindTrayHandlers()
 	s.bindSettingsHandlers()
+	s.bindAppMenuHandlers()
 	s.bindAboutHandlers()
 	s.bindCardHandlers()
 	s.bindWifiHandlers()
@@ -510,6 +513,7 @@ func (s *shellUI) start() {
 		s.startPolkit()
 	}
 	s.startPortals()
+	s.startAppMenu()
 	if s.cfg.Bar.Tray {
 		s.startTray()
 	}
