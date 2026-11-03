@@ -7,6 +7,10 @@ remote = "origin"
 # Names whose "## name · time" sections count as the owner's.
 owners = ["lyric", "Lyric"]
 
+# A review/ item reaches ready/ only after a passing review of its current
+# head (Morph's review job); a fix verdict becomes a fix round.
+review = true
+
 # Must pass before an item reaches ready/: the Python session tests,
 # go vet and the Go tests with the race detector (needs a C compiler).
 test = "make test"
