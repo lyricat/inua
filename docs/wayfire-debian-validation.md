@@ -47,13 +47,11 @@ The local Wayfire `v0.9.0` source and Debian package metadata establish these co
 
 ## Current implementation and capability boundary
 
-In the integration build the shell starts the foreign-toplevel reader, enumerates
-Wayfire IPC methods, subscribes to window events and refreshes its compositor
-snapshot. Launcher and control center work on that runtime. This PR provides the
-client and abstraction those paths call; the shell wiring itself is not included, so
-the shell in this PR still talks to Hyprland only. The shared overview rejects
-Wayfire open requests because output capture and overview state integration are not
-connected; `compositor status` reports `WindowCapture=false`.
+The shell now consumes Wayfire's `zwlr_foreign_toplevel_manager_v1` snapshots
+for its Dock and launcher window mode. Wayfire IPC handles window focus and
+close requests. The shared overview still rejects Wayfire open requests
+because output capture and overview state integration are not connected;
+`compositor status` reports `WindowCapture=false`.
 
 | Capability | Source implementation | Live runtime evidence |
 |---|---|---|
@@ -79,8 +77,22 @@ window uses the same headerbar. Other sessions keep their existing windows.
 The shared app UI covers Files, Viewer, Mail, Terminal, Mobile Link, Remote
 Desktop, Disk Usage, Virtual Machines, the Assistant, Games and registered
 light apps. The application window-added hook also gives app-owned dialogs a
-titlebar. The session exports `XDG_CURRENT_DESKTOP=Wayfire:Inua`, so this works
-for the shell started before Wayfire publishes its client environment.
+titlebar.
+
+The SDDM entry “Inua on Wayfire” starts Wayfire with the bundled session
+profile. Its autostart command starts the shell after Wayfire creates its
+Wayland display and IPC socket. On first launch the wrapper copies the sample
+`wayfire.ini` only when the user's config is absent.
+
+## Dock and application switching
+
+The Dock groups open windows by Wayfire's application ID, marks the active
+window, and retains pinned app IDs from Inua's config. Its menu can pin,
+unpin, launch and close apps; window focus and close use Wayfire's
+`window-rules` IPC methods. `Super+Tab` opens Inua's launcher in window mode.
+The foreign-toplevel protocol does not provide workspace membership, so the
+window list does not show workspace names. Overview and per-window capture
+remain unavailable.
 
 ## Remaining runtime acceptance
 

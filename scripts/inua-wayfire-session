@@ -1,5 +1,5 @@
 #!/bin/sh
-# Start Inua once, then replace this process with Wayfire.
+# Start Wayfire; its autostart launches Inua after the compositor is ready.
 set -eu
 
 for program in inua-shell inua wayfire; do
@@ -11,32 +11,24 @@ done
 
 config_dir=${XDG_CONFIG_HOME:-"$HOME/.config"}
 config_file=$config_dir/wayfire.ini
+sample=${INUA_WAYFIRE_CONFIG:-}
+if [ -z "$sample" ]; then
+	script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+	sample=$script_dir/../config/session/wayfire.ini
+fi
+if [ ! -e "$config_file" ]; then
+	if [ ! -r "$sample" ]; then
+		echo "inua-wayfire-session: missing $config_file and Wayfire sample $sample" >&2
+		exit 1
+	fi
+	install -D -m644 "$sample" "$config_file"
+fi
 if [ ! -r "$config_file" ]; then
-    echo "inua-wayfire-session: missing $config_file; copy config/session/wayfire.ini there" >&2
-    exit 1
+	echo "inua-wayfire-session: cannot read $config_file" >&2
+	exit 1
 fi
 
-# Give the Wayfire shell its own control socket. The socket listener rejects
-# a second launcher attempt that is still active for this session.
-instance=wayfire
+# The autostart entry starts Inua after Wayfire has created its display and IPC socket.
 XDG_CURRENT_DESKTOP=Wayfire:Inua
 export XDG_CURRENT_DESKTOP
-INUA_INSTANCE=$instance export INUA_INSTANCE
-inua-shell -n "$instance" &
-shell_pid=$!
-cleanup() {
-    kill "$shell_pid" 2>/dev/null || true
-    wait "$shell_pid" 2>/dev/null || true
-}
-trap cleanup EXIT HUP INT TERM
-
-# If GTK startup fails immediately, do not enter a shell-less session.
-sleep 0.2
-if ! kill -0 "$shell_pid" 2>/dev/null; then
-    wait "$shell_pid" || status=$?
-    echo "inua-wayfire-session: inua-shell exited before Wayfire startup (${status:-1})" >&2
-    exit "${status:-1}"
-fi
-
-trap - EXIT HUP INT TERM
 exec wayfire -c "$config_file"
