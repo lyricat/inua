@@ -65,3 +65,6 @@ The size + 16 inset understates the dock's footprint, but the Overview's existin
 Validation: git diff --check passed. Read-only checks found the seven catalog diffs change source references only, with new references pointing to translation calls. The reviewed worktree remained clean. No build, tests, or generators were run during review. UI not checked by eye; actual GTK/Hyprland layout, scaling, and custom CSS remain unverified.
 ## ほたる · 2026-11-03 12:54
 Moved to ready at the owner's explicit request after the code-review discussion. Visual verification in a nested session remains outstanding; this transition does not claim that it was performed. No implementation changes or merge in this step.
+
+## factory · 2026-11-03 13:04
+Owner approved merging both items in Console. Merged into master and pushed (58a19b2); branch ancestry verified against origin/master. Combined merge result: make generate and make i18n left tracked files unchanged; make test passed with throwaway HOME and XDG_RUNTIME_DIR. Initial test attempt lacked XDG_RUNTIME_DIR; rerun passed after providing a temporary runtime directory. No real desktop or nested-session visual verification was performed.

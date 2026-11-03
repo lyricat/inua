@@ -58,3 +58,6 @@ Factory independently ran make i18n and make test successfully with a throwaway 
 
 ## factory · 2026-11-03 09:27
 Merge result tested: factory/0056-dbus-export-race (f5139f1) merges cleanly with master (53d1cb5's successors up to 12d3b1b); make generate and make i18n change nothing; make test passes, internal/dbusexport included, no data races. No dependency or workflow changes. Not checked: a real desktop session.
+
+## factory · 2026-11-03 13:04
+Owner approved merging both items in Console. Merged into master and pushed (58a19b2); branch ancestry verified against origin/master. Combined merge result: make generate and make i18n left tracked files unchanged; make test passed with throwaway HOME and XDG_RUNTIME_DIR. Initial test attempt lacked XDG_RUNTIME_DIR; rerun passed after providing a temporary runtime directory. No real desktop or nested-session visual verification was performed.
