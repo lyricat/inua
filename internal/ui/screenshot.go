@@ -341,9 +341,13 @@ func (s *shellUI) openShot(mode string) {
 		dir, err := shotTempDir()
 		var clients []byte
 		if err == nil {
-			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-			clients, err = s.client.Request(ctx, "j/clients")
-			cancel()
+			if s.client == nil {
+				clients = []byte("[]")
+			} else {
+				ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+				clients, err = s.client.Request(ctx, "j/clients")
+				cancel()
+			}
 		}
 		var surfaces []*shotSurface
 		for _, m := range mons {
@@ -1012,12 +1016,19 @@ func removeShotFiles(surfaces []*shotSurface, keep string) {
 // shootNow takes the focused screen or window without the tool.
 func (s *shellUI) shootNow(what string) {
 	focused := s.snap.FocusedMonitor
+	if focused == "" && len(s.snap.Monitors) > 0 {
+		focused = s.snap.Monitors[0].Name
+	}
 	wait := s.hideForShot()
 	go func() {
 		defer gtkx.Post(s.shotShown)
 		time.Sleep(wait)
 		args := []string{"-o", focused}
 		if what == "window" {
+			if s.client == nil {
+				log.Printf("screenshot: window capture needs Hyprland")
+				return
+			}
 			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 			reply, err := s.client.Request(ctx, "j/activewindow")
 			cancel()

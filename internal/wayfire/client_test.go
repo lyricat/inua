@@ -42,6 +42,37 @@ func fakeSocket(t *testing.T, response string) string {
 	return path
 }
 
+// fakeSockets serves one response per connection, in order.
+func fakeSockets(t *testing.T, responses ...string) string {
+	t.Helper()
+	path := filepath.Join(t.TempDir(), "wayfire.sock")
+	listener, err := net.Listen("unix", path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = listener.Close() })
+	go func() {
+		for _, response := range responses {
+			conn, err := listener.Accept()
+			if err != nil {
+				return
+			}
+			var header [4]byte
+			if _, err := io.ReadFull(conn, header[:]); err != nil {
+				conn.Close()
+				return
+			}
+			n := int(header[0]) | int(header[1])<<8 | int(header[2])<<16 | int(header[3])<<24
+			_, _ = io.ReadFull(conn, make([]byte, n))
+			payload := []byte(response)
+			frame := []byte{byte(len(payload)), byte(len(payload) >> 8), byte(len(payload) >> 16), byte(len(payload) >> 24)}
+			_, _ = conn.Write(append(frame, payload...))
+			conn.Close()
+		}
+	}()
+	return path
+}
+
 func TestRequestAndMethods(t *testing.T) {
 	path := fakeSocket(t, `{"methods":["list-views","list-outputs"]}`)
 	c := &Client{Socket: path, Timeout: time.Second}
@@ -145,7 +176,13 @@ func TestMapState(t *testing.T) {
 }
 
 func TestWindowsUseIPCViewIDs(t *testing.T) {
-	path := fakeSocket(t, `[{"id":12,"pid":123,"title":"Terminal","app-id":"kitty","output-name":"HDMI-A-1","activated":true},{"id":7,"pid":124,"title":"Files","app-id":"files","output-name":"HDMI-A-2","activated":false}]`)
+	path := fakeSockets(t,
+		`[{"id":12,"pid":123,"title":"Terminal","app-id":"kitty","output-name":"HDMI-A-1","activated":true},{"id":7,"pid":124,"title":"Files","app-id":"files","output-name":"HDMI-A-2","activated":false}]`,
+		`{"result":"ok","info":{"id":11,"name":"HDMI-A-2"}}`,
+		`[{"id":1,"name":"HDMI-A-1","geometry":{"x":0,"y":0,"width":1280,"height":1024},"workspace":{"x":0,"y":0,"grid_width":3,"grid_height":3}},{"id":11,"name":"HDMI-A-2","geometry":{"x":1280,"y":0,"width":1920,"height":1080},"workspace":{"x":0,"y":0,"grid_width":3,"grid_height":3}}]`,
+		`{"result":"ok","value":"1.000000"}`,
+		`{"result":"ok","value":"2.000000"}`,
+	)
 	c := &Client{Socket: path, Timeout: time.Second}
 	snapshot, err := c.Windows(context.Background())
 	if err != nil {
@@ -157,6 +194,9 @@ func TestWindowsUseIPCViewIDs(t *testing.T) {
 	first := snapshot.Toplevels[0]
 	if first.Address != "wf:12" || first.Class != "kitty" || first.PID != 123 || first.Monitor != "HDMI-A-1" || !first.Activated {
 		t.Fatalf("first window = %+v", first)
+	}
+	if snapshot.FocusedMonitor != "HDMI-A-2" || len(snapshot.Monitors) != 2 || snapshot.Monitors[1].Scale != 2 {
+		t.Fatalf("monitors = %#v focused=%q", snapshot.Monitors, snapshot.FocusedMonitor)
 	}
 
 	path = fakeSocket(t, `[{"id":12,"title":"Terminal","app-id":"kitty","activated":false},{"id":7,"title":"Files","app-id":"files","activated":true}]`)

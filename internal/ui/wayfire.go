@@ -62,6 +62,10 @@ func followWayfire(client *wayfire.Client, update func(compositor.Snapshot)) {
 
 func (s *shellUI) applyWayfireSnapshot(snapshot compositor.Snapshot) {
 	s.windowSnap = wayfireSnapshot(snapshot)
+	s.snap = s.windowSnap
+	for _, b := range s.bars {
+		b.setHypr(s, s.snap)
+	}
 	s.launcher.st.SetConnected(true)
 	s.launcher.st.SetSnapshot(s.windowSnap)
 	s.renderDocks()

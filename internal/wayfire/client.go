@@ -372,7 +372,58 @@ func (c *Client) Windows(ctx context.Context) (compositor.Snapshot, error) {
 			snapshot.ActiveToplevel = address
 		}
 	}
+	focusedID := -1
+	if raw, err := c.Request(ctx, "window-rules/get-focused-output", map[string]any{}); err == nil {
+		var focused struct {
+			Info outputRecord `json:"info"`
+		}
+		if json.Unmarshal(raw, &focused) == nil {
+			focusedID = focused.Info.ID
+		}
+	}
+	raw, err = c.Request(ctx, "window-rules/list-outputs", map[string]any{})
+	if err != nil {
+		return snapshot, err
+	}
+	var outputs []outputRecord
+	if err := json.Unmarshal(raw, &outputs); err != nil {
+		return snapshot, fmt.Errorf("decode window-rules/list-outputs: %w", err)
+	}
+	for _, output := range outputs {
+		workspaceID := output.Workspace.Y*output.Workspace.Width + output.Workspace.X + 1
+		monitor := compositor.Monitor{
+			ID: output.ID, Name: output.Name,
+			X: output.Geometry.X, Y: output.Geometry.Y,
+			Width: output.Geometry.Width, Height: output.Geometry.Height,
+			Scale: c.outputScale(ctx, output.Name), Focused: output.ID == focusedID,
+			ActiveWorkspaceID: workspaceID,
+		}
+		snapshot.Monitors = append(snapshot.Monitors, monitor)
+		if monitor.Focused {
+			snapshot.FocusedMonitor = monitor.Name
+		}
+	}
 	return snapshot, nil
+}
+
+// outputScale reads an output's configured scale; Wayfire's list-outputs
+// reports pixels, not logical size.
+func (c *Client) outputScale(ctx context.Context, name string) float64 {
+	raw, err := c.Request(ctx, "wayfire/get-config-option", map[string]any{"option": "output:" + name + "/scale"})
+	if err != nil {
+		return 1
+	}
+	var reply struct {
+		Value string `json:"value"`
+	}
+	if json.Unmarshal(raw, &reply) != nil {
+		return 1
+	}
+	scale, err := strconv.ParseFloat(reply.Value, 64)
+	if err != nil || scale <= 0 {
+		return 1
+	}
+	return scale
 }
 
 // FocusedAppID names the application of the focused view.
