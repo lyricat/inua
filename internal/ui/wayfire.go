@@ -91,6 +91,7 @@ func wayfireSnapshot(snapshot compositor.Snapshot) hypr.Snapshot {
 			ID: monitor.ID, Name: monitor.Name, Description: monitor.Description,
 			X: monitor.X, Y: monitor.Y, Width: monitor.Width, Height: monitor.Height,
 			Scale: monitor.Scale, Focused: monitor.Focused, ActiveWorkspaceID: monitor.ActiveWorkspaceID,
+			Raw: map[string]any{"wayfire": true},
 		})
 	}
 	for _, workspace := range snapshot.Workspaces {

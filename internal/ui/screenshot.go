@@ -396,6 +396,11 @@ func (s *shellUI) openShot(mode string) {
 // logicalSize is a monitor's size in logical pixels, turned if the
 // monitor is.
 func logicalSize(m hypr.Monitor) (w, h float64) {
+	if wayfire, _ := m.Raw["wayfire"].(bool); wayfire {
+		// Wayfire's output geometry is already in logical pixels; Scale is
+		// the buffer scale used by grim.
+		return float64(m.Width), float64(m.Height)
+	}
 	w, h = math.Round(float64(m.Width)/m.Scale), math.Round(float64(m.Height)/m.Scale)
 	if t, _ := m.Raw["transform"].(float64); int(t)%2 == 1 {
 		w, h = h, w
