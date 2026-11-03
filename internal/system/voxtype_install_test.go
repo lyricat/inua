@@ -164,6 +164,9 @@ esac
 func TestConfigureVoxtypeFile(t *testing.T) {
 	home, bin := t.TempDir(), t.TempDir()
 	t.Setenv("HOME", home)
+	// voxtype looks in $XDG_CONFIG_HOME first, and a machine that sets it
+	// would have this test write there instead of into home.
+	t.Setenv("XDG_CONFIG_HOME", filepath.Join(home, ".config"))
 	t.Setenv("PATH", bin+":/usr/bin:/bin")
 	// A voxtype of 0.7: no `config get`, no `config set`.
 	os.WriteFile(filepath.Join(bin, "voxtype"), []byte("#!/bin/sh\nexit 2\n"), 0o755)
