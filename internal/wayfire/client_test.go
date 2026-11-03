@@ -144,6 +144,28 @@ func TestMapState(t *testing.T) {
 	}
 }
 
+func TestWindowsUseIPCViewIDs(t *testing.T) {
+	path := fakeSocket(t, `[{"id":12,"pid":123,"title":"Terminal","app-id":"kitty","output-name":"HDMI-A-1","activated":true},{"id":7,"pid":124,"title":"Files","app-id":"files","output-name":"HDMI-A-2","activated":false}]`)
+	c := &Client{Socket: path, Timeout: time.Second}
+	snapshot, err := c.Windows(context.Background())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if snapshot.ActiveToplevel != "wf:12" || len(snapshot.Toplevels) != 2 {
+		t.Fatalf("snapshot = %#v", snapshot)
+	}
+	first := snapshot.Toplevels[0]
+	if first.Address != "wf:12" || first.Class != "kitty" || first.PID != 123 || first.Monitor != "HDMI-A-1" || !first.Activated {
+		t.Fatalf("first window = %+v", first)
+	}
+
+	path = fakeSocket(t, `[{"id":12,"title":"Terminal","app-id":"kitty","activated":false},{"id":7,"title":"Files","app-id":"files","activated":true}]`)
+	c = &Client{Socket: path, Timeout: time.Second}
+	if app, err := c.FocusedAppID(context.Background()); err != nil || app != "files" {
+		t.Fatalf("FocusedAppID = %q, %v", app, err)
+	}
+}
+
 func TestMethodEnumerationFailureIsReported(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "missing.sock")
 	c := &Client{Socket: path, Timeout: time.Second}

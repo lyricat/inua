@@ -13,25 +13,51 @@ import (
 	"github.com/lyricat/inua/internal/wayfire"
 )
 
-// startWayfire reads native Wayland toplevel events for the Dock and window
-// launcher. Wayfire starts the shell from its autostart plugin so its IPC
-// socket is available for window actions.
+// startWayfire follows Wayfire's IPC view list for the Dock and window
+// launcher. Its view IDs are what focus and close take.
 func (s *shellUI) startWayfire() {
 	client, err := wayfire.FromEnv()
 	if err != nil {
 		log.Printf("wayfire: %v", err)
-	} else {
-		s.wayfire = client
+		return
 	}
+	s.wayfire = client
+	go followWayfire(client, func(snapshot compositor.Snapshot) {
+		gtkx.Post(func() { s.applyWayfireSnapshot(snapshot) })
+	})
+}
 
-	go func() {
-		err := wayfire.NewWayland().Run(context.Background(), func(snapshot compositor.Snapshot) {
-			gtkx.Post(func() { s.applyWayfireSnapshot(snapshot) })
-		})
+func followWayfire(client *wayfire.Client, update func(compositor.Snapshot)) {
+	ctx := context.Background()
+	if _, err := client.Methods(ctx); err != nil {
+		log.Printf("wayfire: %v", err)
+	}
+	refresh := func() {
+		snapshot, err := client.Windows(ctx)
 		if err != nil {
-			log.Printf("wayfire: %v", err)
+			log.Printf("wayfire: windows: %v", err)
+			return
 		}
-	}()
+		update(snapshot)
+	}
+	refresh()
+	events, err := client.Events(ctx)
+	if err != nil {
+		log.Printf("wayfire: events: %v", err)
+	}
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+	for {
+		select {
+		case _, ok := <-events:
+			if !ok {
+				events = nil
+			}
+			refresh()
+		case <-ticker.C:
+			refresh()
+		}
+	}
 }
 
 func (s *shellUI) applyWayfireSnapshot(snapshot compositor.Snapshot) {

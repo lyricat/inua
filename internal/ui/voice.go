@@ -26,6 +26,7 @@ import (
 	"github.com/lyricat/inua/internal/notify"
 	"github.com/lyricat/inua/internal/shell"
 	"github.com/lyricat/inua/internal/system"
+	"github.com/lyricat/inua/internal/wayfire"
 )
 
 // Dictation (voice input into any window): the bar's microphone, the
@@ -141,7 +142,15 @@ func (s *shellUI) followVoice() {
 	v.voiceRun, v.voxtypeSet = want, false
 	v.typer = dictationTyper{history: s.clipboard.path,
 		hypr: func() (hyprNow, error) {
-			return gtkx.Call(time.Second, func() hyprNow { return hyprNow{s.client, s.hyprLua} })
+			return gtkx.Call(time.Second, func() hyprNow {
+				return hyprNow{client: s.client, wayfire: s.wayfire, lua: s.hyprLua}
+			})
+		},
+		wayfireFocus: func(ctx context.Context) (string, error) {
+			if s.wayfire == nil {
+				return "", errors.New(i18n.T("Wayfire is not connected"))
+			}
+			return s.wayfire.FocusedAppID(ctx)
 		},
 		heard: func(text string) { gtkx.Post(func() { s.dictationHeard(text) }) }}
 	s.sys.Voice = system.VoiceState{}
@@ -237,8 +246,10 @@ type dictationTyper struct {
 	// hypr is the shell's Hyprland client, read on the main thread, and
 	// whether it takes 0.55's Lua dispatchers: both are known only after
 	// start-up.
-	hypr  func() (hyprNow, error)
-	heard func(text string)
+	hypr func() (hyprNow, error)
+	// wayfireFocus names the application of the window focused on Wayfire.
+	wayfireFocus func(context.Context) (string, error)
+	heard        func(text string)
 	// The clipboard, for a test: its text, and putting text on it. Left
 	// nil, wl-paste and wl-copy serve it.
 	clipboard func() []byte
@@ -248,8 +259,9 @@ type dictationTyper struct {
 // hyprNow is the shell's Hyprland client (nil without Hyprland) and
 // whether it takes 0.55's Lua dispatchers, both known only after start-up.
 type hyprNow struct {
-	client *hypr.Client
-	lua    bool
+	client  *hypr.Client
+	wayfire *wayfire.Client
+	lua     bool
 }
 
 func (t dictationTyper) typeText(text string) error {
@@ -258,21 +270,29 @@ func (t dictationTyper) typeText(text string) error {
 }
 
 // paste puts text into the focused window through the clipboard: the
-// history's watcher skips it, the window is sent the paste shortcut by its
-// address, and the clipboard's own text is put back once the window has read
-// it. A terminal gets Ctrl+Shift+V, which pastes there.
+// history's watcher skips it, the window is sent the paste shortcut, and the
+// clipboard's own text is put back once the window has read it. A terminal
+// gets Ctrl+Shift+V, which pastes there.
 func (t dictationTyper) paste(text string) error {
 	h, err := t.hypr()
 	if err != nil {
 		return err
 	}
-	client, lua := h.client, h.lua
-	if client == nil {
-		return errors.New(i18n.T("dictation pastes with Hyprland, which is not running"))
-	}
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
-	reply, err := client.Request(ctx, "j/activewindow")
+	if h.client == nil {
+		if t.wayfireFocus == nil {
+			return errors.New(i18n.T("dictation pastes with Hyprland or Wayfire, which is not running"))
+		}
+		class, err := t.wayfireFocus(ctx)
+		if err != nil {
+			return err
+		}
+		return t.withClipboard(text, func() error {
+			return wtypePaste(ctx, isTerminalClass(class))
+		})
+	}
+	reply, err := h.client.Request(ctx, "j/activewindow")
 	if err != nil {
 		return err
 	}
@@ -280,45 +300,78 @@ func (t dictationTyper) paste(text string) error {
 	if json.Unmarshal(reply, &w) != nil || w.Address == "" {
 		return errors.New(i18n.T("no window has the focus to type into"))
 	}
-	read := func() []byte {
-		if t.clipboard != nil {
-			return t.clipboard()
-		}
-		out, _ := exec.Command("wl-paste", "--no-newline", "--type", "text/plain").Output()
-		return out
-	}
-	old := read()
-	copyText := func(b []byte) error {
-		if t.copy != nil {
-			return t.copy(b)
-		}
-		// Not into the clipboard history: its capture skips the next one.
-		if t.history != "" {
-			clipboard.SkipFirst(t.history)
-		}
-		cmd := exec.Command("wl-copy", "--type", "text/plain;charset=utf-8")
-		cmd.Stdin = bytes.NewReader(b)
-		// wl-copy's daemon must not inherit a pipe waited on by Cmd.Run.
-		cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
-		return cmd.Run()
-	}
-	if err := copyText([]byte(text)); err != nil {
-		return err
-	}
 	mods := "CTRL"
-	if class := strings.ToLower(w.Class); slices.ContainsFunc(terminalClasses, func(t string) bool { return strings.Contains(class, t) }) {
+	if isTerminalClass(w.Class) {
 		mods = "CTRL SHIFT"
 	}
-	// The window has to read the clipboard before the shortcut reaches it.
-	time.Sleep(150 * time.Millisecond)
-	if lua {
-		err = client.LuaDispatch(ctx, fmt.Sprintf(`hl.dsp.send_shortcut({ mods = %q, key = "V", window = %q })`, mods, "address:"+w.Address))
-	} else {
-		err = client.Dispatch(ctx, fmt.Sprintf("sendshortcut %s, V, address:%s", mods, w.Address))
+	return t.withClipboard(text, func() error {
+		if h.lua {
+			return h.client.LuaDispatch(ctx, fmt.Sprintf(`hl.dsp.send_shortcut({ mods = %q, key = "V", window = %q })`, mods, "address:"+w.Address))
+		}
+		return h.client.Dispatch(ctx, fmt.Sprintf("sendshortcut %s, V, address:%s", mods, w.Address))
+	})
+}
+
+// withClipboard puts text on the clipboard, waits for the window to notice,
+// sends the paste shortcut, then puts the clipboard's own text back.
+func (t dictationTyper) withClipboard(text string, send func() error) error {
+	old := t.readClipboard()
+	if err := t.copyClipboard([]byte(text)); err != nil {
+		return err
 	}
+	time.Sleep(150 * time.Millisecond)
+	err := send()
 	if len(old) > 0 {
 		time.Sleep(400 * time.Millisecond) // the window has read the clipboard
-		copyText(old)
+		t.copyClipboard(old)
 	}
 	return err
+}
+
+func (t dictationTyper) readClipboard() []byte {
+	if t.clipboard != nil {
+		return t.clipboard()
+	}
+	out, _ := exec.Command("wl-paste", "--no-newline", "--type", "text/plain").Output()
+	return out
+}
+
+func (t dictationTyper) copyClipboard(b []byte) error {
+	if t.copy != nil {
+		return t.copy(b)
+	}
+	// Not into the clipboard history: its capture skips the next one.
+	if t.history != "" {
+		clipboard.SkipFirst(t.history)
+	}
+	cmd := exec.Command("wl-copy", "--type", "text/plain;charset=utf-8")
+	cmd.Stdin = bytes.NewReader(b)
+	// wl-copy's daemon must not inherit a pipe waited on by Cmd.Run.
+	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
+	return cmd.Run()
+}
+
+// isTerminalClass reports whether an application pastes with Ctrl+Shift+V.
+func isTerminalClass(class string) bool {
+	class = strings.ToLower(class)
+	return slices.ContainsFunc(terminalClasses, func(t string) bool { return strings.Contains(class, t) })
+}
+
+// wtypePaste sends the paste shortcut through the virtual-keyboard protocol,
+// which Wayfire supports.
+func wtypePaste(ctx context.Context, terminal bool) error {
+	args := []string{"-M", "ctrl"}
+	if terminal {
+		args = append(args, "-M", "shift")
+	}
+	args = append(args, "-k", "v")
+	if terminal {
+		args = append(args, "-m", "shift")
+	}
+	args = append(args, "-m", "ctrl")
+	out, err := exec.CommandContext(ctx, "wtype", args...).CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("wtype: %w: %s", err, strings.TrimSpace(string(out)))
+	}
+	return nil
 }

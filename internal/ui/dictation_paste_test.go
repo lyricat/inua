@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"context"
 	"io"
 	"net"
 	"os"
@@ -89,5 +90,40 @@ func TestDictationPastes(t *testing.T) {
 	}
 	if _, err := os.Stat(filepath.Join(bin, "ran")); err == nil {
 		t.Error("dictation ran wtype")
+	}
+}
+
+// On Wayfire the focused application is read from its IPC view list and the
+// paste shortcut is sent with wtype, which Wayfire's virtual keyboard serves.
+func TestDictationPastesOnWayfire(t *testing.T) {
+	bin := t.TempDir()
+	argsPath := filepath.Join(bin, "args")
+	script := "#!/bin/sh\nprintf '%s' \"$*\" > " + argsPath + "\n"
+	if err := os.WriteFile(filepath.Join(bin, "wtype"), []byte(script), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("PATH", bin+":/usr/bin:/bin")
+
+	var copied []string
+	clip := []byte("before")
+	typer := dictationTyper{
+		hypr:         func() (hyprNow, error) { return hyprNow{}, nil },
+		wayfireFocus: func(context.Context) (string, error) { return "kitty", nil },
+		heard:        func(string) {},
+		clipboard:    func() []byte { return clip },
+		copy:         func(b []byte) error { copied = append(copied, string(b)); clip = b; return nil },
+	}
+	if err := typer.typeText("hello"); err != nil {
+		t.Fatal(err)
+	}
+	if len(copied) != 2 || copied[0] != "hello " || copied[1] != "before" {
+		t.Errorf("clipboard copies %q", copied)
+	}
+	args, err := os.ReadFile(argsPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := string(args); got != "-M ctrl -M shift -k v -m shift -m ctrl" {
+		t.Errorf("wtype args %q", got)
 	}
 }

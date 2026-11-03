@@ -350,6 +350,49 @@ func (c *Client) MoveWindowToWorkspace(ctx context.Context, address string, work
 	return err
 }
 
+// Windows lists Wayfire's views with their IPC IDs, which focus and close
+// take. The foreign-toplevel protocol uses different handle numbers.
+func (c *Client) Windows(ctx context.Context) (compositor.Snapshot, error) {
+	raw, err := c.Request(ctx, "window-rules/list-views", map[string]any{})
+	if err != nil {
+		return compositor.Snapshot{}, err
+	}
+	var views []viewRecord
+	if err := json.Unmarshal(raw, &views); err != nil {
+		return compositor.Snapshot{}, fmt.Errorf("decode window-rules/list-views: %w", err)
+	}
+	snapshot := compositor.Snapshot{}
+	for _, view := range views {
+		address := fmt.Sprintf("wf:%d", view.ID)
+		snapshot.Toplevels = append(snapshot.Toplevels, compositor.Toplevel{
+			Address: address, PID: view.PID, Title: view.Title, Class: view.AppID,
+			Monitor: view.OutputName, Activated: view.Activated,
+		})
+		if view.Activated {
+			snapshot.ActiveToplevel = address
+		}
+	}
+	return snapshot, nil
+}
+
+// FocusedAppID names the application of the focused view.
+func (c *Client) FocusedAppID(ctx context.Context) (string, error) {
+	raw, err := c.Request(ctx, "window-rules/list-views", map[string]any{})
+	if err != nil {
+		return "", err
+	}
+	var views []viewRecord
+	if err := json.Unmarshal(raw, &views); err != nil {
+		return "", fmt.Errorf("decode window-rules/list-views: %w", err)
+	}
+	for _, view := range views {
+		if view.Activated {
+			return view.AppID, nil
+		}
+	}
+	return "", errors.New("no Wayfire window has the focus")
+}
+
 func (c *Client) CloseWindow(ctx context.Context, address string) error {
 	id, err := parseViewID(address)
 	if err != nil {
