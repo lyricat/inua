@@ -78,7 +78,7 @@ class SessionTest(unittest.TestCase):
         self.assertEqual(result.returncode, 17, result.stderr)
         self.assertEqual(self.systemctl.read_text().splitlines(), [
             f"--user set-environment XDG_DESKTOP_PORTAL_DIR={portals}",
-            "--user try-restart xdg-desktop-portal.service",
+            "--user --no-block try-restart xdg-desktop-portal.service",
         ])
 
     def test_no_portal_directory_takes_it_away(self):
@@ -87,7 +87,7 @@ class SessionTest(unittest.TestCase):
         self.assertEqual(result.returncode, 17, result.stderr)
         self.assertEqual(self.systemctl.read_text().splitlines(), [
             "--user unset-environment XDG_DESKTOP_PORTAL_DIR",
-            "--user try-restart xdg-desktop-portal.service",
+            "--user --no-block try-restart xdg-desktop-portal.service",
         ])
 
     def test_config_without_shell_does_not_start_compositor(self):
