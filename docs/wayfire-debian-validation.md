@@ -4,6 +4,13 @@
 
 Target: Debian 13 (trixie), official Wayfire 0.9.0 package and wlroots 0.18.2. Runtime acceptance is **partially verified**: the isolated compositor exposed all requested Wayland globals, answered IPC, ran the checkout-built Inua shell, and produced three distinct sanitized screenshots. The shared overview remains unavailable because Wayfire output capture and overview state integration are not implemented; no overview cards or overview screenshot are claimed.
 
+The runtime session and screenshots below come from a build that also carries the
+shell wiring on a private working branch; that wiring is not part of this PR. This
+PR supplies the compositor abstraction (`internal/compositor`), the Wayfire IPC and
+foreign-toplevel client (`internal/wayfire`), the sample session files and the
+Wayfire app-window titlebar. It is verified here by the client's unit tests,
+`gofmt`, `go vet` and a full `go build`, not by the shell session.
+
 The installed packages report `wayfire 0.9.0-5`, `libwlroots-0.18 0.18.2-3`, `libwf-config1 0.9.0-2`, and `wf-plugins 0.9.0-5`. `wayfire --version` prints `0.9.0-unknown (Dec 24 2024) branch unknown`.
 
 ## Isolated runtime evidence
@@ -19,10 +26,10 @@ Measured from Wayfire's log, `wayland-info`, live IPC, and `grim`:
 - `list-methods` returned 33 methods (the requested count was 28). All observed methods and normalized responses are recorded in [`docs/evidence/wayfire/ipc.json`](evidence/wayfire/ipc.json).
 - `list-outputs` reported one 1280×720 output. `list-views` initially returned no windows; after shell startup it reported Inua's bar, background, dock and overlays. `get-focused-view` reported a test window when focused and the control-center overlay during capture.
 - A synthetic Xwayland window focus request returned `ok` and `get-focused-view` confirmed Alpha activated. `close-view` on Beta returned `ok`, after which its client exited and its view disappeared. Both workspace switch to `(0,1)` and return to `(0,0)` returned `ok` and the output reflected the new coordinates.
-- The checkout-built `./bin/inua-shell`, run with the existing local GTK4 layer-shell 1.3 library, reported `layer=true bars=HEADLESS-1`; compositor status reported Wayfire connected with state query/events, focus, move, close and workspace-switch capabilities.
+- In that session the checkout-built `./bin/inua-shell`, run with the existing local GTK4 layer-shell 1.3 library, reported `layer=true bars=HEADLESS-1`; compositor status reported Wayfire connected with state query/events, focus, move, close and workspace-switch capabilities.
 - `launcher toggle` and `control open` returned `ok`; Wayfire listed the `inua-control` overlay. `grim` captured bar/wallpaper, launcher and control-center states. The three committed PNGs have distinct SHA-256 hashes and measured nonzero RGB variance; see [the evidence README](evidence/wayfire/README.md).
-- The system-installed layer-shell library lacks required session-lock symbols; the compatible existing local 1.3 library was used for the successful shell run. A stale `~/.local/bin/inua-shell` was not used for final evidence; it is older than this checkout's `bin/inua-shell`.
-- The earlier stale-binary run wrote `/home/tetsuya/.config/hypr/inua.lua`; that file was left unchanged. Protected PIDs 618453 and 631845 and their runtimes were not signaled, queried for application state, or changed.
+- The system-installed layer-shell library lacks required session-lock symbols; the compatible existing local 1.3 library was used for the successful shell run. A stale binary outside the checkout was not used for final evidence; it is older than this checkout's `bin/inua-shell`.
+- An earlier stale-binary run wrote a sample config into the local Hyprland config directory; that file was left unchanged. Unrelated running sessions and their runtimes were not signalled, queried for application state, or changed.
 
 The remaining blocker is **overview behavior**: `overview open` returns `overview is unavailable on Wayfire: compositor state and output capture are not connected`. The required state could not be represented as an overview card, so no overview screenshot is included.
 
@@ -35,12 +42,18 @@ The local Wayfire `v0.9.0` source and Debian package metadata establish these co
 - `window-rules/configure-view` accepts `id`, `output_id`, `geometry` and `sticky`; it does not accept `wset-index`.
 - `vswitch/set-workspace` takes unsigned `x`, `y`, and `output-id`, with optional `view-id`; switch and return were both exercised.
 - `window-rules/events/watch` is a persistent stream. `view-workspace-changed` carries the actual destination coordinates. A window's `wset-index` is a workspace-set/output identifier, not its current viewport.
-- The foreign-toplevel protocol supplies title, app ID, activation and output membership, not PID, geometry or viewport. The shell only assigns workspace membership after a real viewport event; it does not infer it from the active viewport.
+- The foreign-toplevel protocol supplies title, app ID, activation and output membership, not PID, geometry or viewport. Workspace membership is assigned only after a real viewport event; it is not inferred from the active viewport.
 - Wayfire 0.9 provides the screencopy global in this runtime, and `grim` captured three full-output frames. Inua does not yet consume output frames for overview cards or window crops.
 
 ## Current implementation and capability boundary
 
-The shell starts the foreign-toplevel reader, enumerates Wayfire IPC methods, subscribes to window events and refreshes its compositor snapshot. Launcher and control center work on this runtime. The shared overview rejects Wayfire open requests because output capture and overview state integration are not connected. `compositor status` reports `WindowCapture=false`.
+In the integration build the shell starts the foreign-toplevel reader, enumerates
+Wayfire IPC methods, subscribes to window events and refreshes its compositor
+snapshot. Launcher and control center work on that runtime. This PR provides the
+client and abstraction those paths call; the shell wiring itself is not included, so
+the shell in this PR still talks to Hyprland only. The shared overview rejects
+Wayfire open requests because output capture and overview state integration are not
+connected; `compositor status` reports `WindowCapture=false`.
 
 | Capability | Source implementation | Live runtime evidence |
 |---|---|---|

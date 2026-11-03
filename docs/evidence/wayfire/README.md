@@ -2,6 +2,8 @@
 
 This evidence records an isolated Wayfire 0.9.0 run using the requested headless/GLES2 recipe. Wayfire selected `wayland-1` inside its unique runtime directory; the recipe's literal `WAYLAND_DISPLAY=wf-accept` does not match the automatically chosen socket name. Setting `WAYLAND_DISPLAY=wayland-1` allowed clients to connect. Inua was run from the checkout's `bin/inua-shell` with the locally built GTK4 layer-shell 1.3 library.
 
+The run used a build that also carries the shell wiring on a private working branch. That wiring is not part of this PR, which supplies the Wayfire client and compositor abstraction; the screenshots show the runtime those connect to, not a shell in this PR driving it.
+
 ## Screenshots
 
 All images are 1280×720 RGB PNGs captured by `grim`, visually inspected, and contain no hostname, username, IP address, absolute path, or private window title.
