@@ -53,3 +53,13 @@ The inset is short of the dock's real footprint. From `ui/style.css` and `ui/doc
 Done by the factory directly: the work was a cherry-pick, so no coding agent ran.
 
 Not checked: the UI change was not looked at in a nested session, for any dock position.
+
+## Lyric · review · 2026-11-03 11:11
+head: 68344911aa1e46e622b55b6509240440213f2535
+verdict: pass
+
+No qualifying findings. Codex reviewed origin/master...origin/factory/0057-overview-dock-insets (merge-base 237e7b6), covering all nine changed files. Both commits preserve CHEYAN's authorship; the original commit objects were unavailable locally for patch comparison.
+
+The size + 16 inset understates the dock's footprint, but the Overview's existing 28px vertical and 48px horizontal padding provides additional clearance. For size=36 with edge gaps, the vertical dock occupies about 62px versus an 80px content boundary; the horizontal dock occupies about 60px versus 100px. The 3px auto-hide trigger still leaves clearance. The earlier overlap concern is therefore not supported by this static review. All four positions and zero-inset hidden/off/non-layer-shell cases were checked; the layout key includes the insets.
+
+Validation: git diff --check passed. Read-only checks found the seven catalog diffs change source references only, with new references pointing to translation calls. The reviewed worktree remained clean. No build, tests, or generators were run during review. UI not checked by eye; actual GTK/Hyprland layout, scaling, and custom CSS remain unverified.
