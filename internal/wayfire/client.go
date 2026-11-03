@@ -40,7 +40,7 @@ type viewRecord struct {
 	OutputID    int          `json:"output-id"`
 	OutputName  string       `json:"output-name"`
 	Activated   bool         `json:"activated"`
-	WorkspaceID uint64       `json:"wset-index"`
+	WorkspaceID int64        `json:"wset-index"`
 	Geometry    viewGeometry `json:"geometry"`
 }
 
@@ -601,10 +601,11 @@ func MapRuntimeState(metadata compositor.Snapshot, state WayfireState, positions
 		}
 	}
 	for _, view := range state.Views {
-		grid, ok := grids[view.WorkspaceID]
-		if !ok {
+		grid, ok := grids[uint64(view.WorkspaceID)]
+		if view.WorkspaceID < 0 || !ok {
 			continue
 		}
+
 		position, ok := positions[view.ID]
 		if !ok {
 			continue
