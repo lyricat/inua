@@ -85,13 +85,11 @@ type dockButton struct {
 type dockState struct {
 	apps       shell.AppIndex
 	items      []shell.DockItem
-	launching  map[string]bool   // apps started from the dock, bouncing until a window shows
-	menuKey    string            // the app whose menu is open (drawerMenu)
-	gapTicking bool              // onDockGapTick is running
-	drawer     *drawerPanel      // the open drawer, nil when closed
-	programs   map[int]string    // /proc/PID/comm of windows' processes, by PID
-	thumbs     map[string]string // window address -> thumbnail file
-	thumbing   map[string]bool   // thumbnails being captured
+	launching  map[string]bool // apps started from the dock, bouncing until a window shows
+	menuKey    string          // the app whose menu is open (drawerMenu)
+	gapTicking bool            // onDockGapTick is running
+	drawer     *drawerPanel    // the open drawer, nil when closed
+	programs   map[int]string  // /proc/PID/comm of windows' processes, by PID
 
 	// The workshop apps installed, read again when their folder changes.
 	workshopStamp string
@@ -453,44 +451,6 @@ func (s *shellUI) updateDockButton(db *dockButton, it shell.DockItem) {
 	toggle(&db.dot.Widget, "running", len(it.Windows) > 0 && !it.Active)
 	toggle(&db.dot.Widget, "active", it.Active)
 	toggle(&db.img.Widget, "launching", s.dockState.launching[it.Key])
-	if s.wayfire != nil && len(it.Windows) > 0 {
-		address := it.Windows[0].Address
-		if path := s.dockState.thumbs[address]; path != "" {
-			db.img.SetFromFile(path)
-		} else {
-			s.ensureDockThumbnail(address)
-		}
-		return
-	}
-	setIcon(db.img, it.Icon)
-}
-
-func (s *shellUI) ensureDockThumbnail(address string) {
-	if s.dockState.thumbing[address] {
-		return
-	}
-	if s.dockState.thumbing == nil {
-		s.dockState.thumbing = map[string]bool{}
-	}
-	s.dockState.thumbing[address] = true
-	snapshot := s.snap
-	go func() {
-		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-		defer cancel()
-		path, err := s.windowThumbnail(ctx, snapshot, address)
-		gtkx.Post(func() {
-			delete(s.dockState.thumbing, address)
-			if err != nil {
-				log.Printf("dock thumbnail: %v", err)
-				return
-			}
-			if s.dockState.thumbs == nil {
-				s.dockState.thumbs = map[string]string{}
-			}
-			s.dockState.thumbs[address] = path
-			s.renderDocks()
-		})
-	}()
 }
 
 // scrollDock goes n notches' way (down the next, up the previous) through
@@ -635,8 +595,22 @@ func (s *shellUI) bindDockHandlers() {
 			return
 		}
 		key := strings.TrimPrefix(w.GetName(), "dock:")
-		if it, ok := s.dockItem(key); ok {
-			s.showDockPreview(key, w, it)
+		if s.dockPreviewKey == key {
+			return
+		}
+		if it, ok := s.dockItem(key); ok && s.wayfire != nil && len(it.Windows) > 0 {
+			s.dockPreviewKey = key
+			s.dockPreviewGen++
+			gen := s.dockPreviewGen
+			time.AfterFunc(250*time.Millisecond, func() {
+				gtkx.Post(func() {
+					if s.dockPreviewGen == gen && s.dockPreviewKey == key {
+						if item, ok := s.dockItem(key); ok {
+							s.showDockPreview(key, w, item)
+						}
+					}
+				})
+			})
 		}
 	}
 	s.onDockHoverLeave = func(gtk.EventControllerMotion) {
@@ -1057,14 +1031,17 @@ func (s *shellUI) nextPinned(key string) string {
 
 // showDockPreview shows the app's latest window as a thumbnail above the dock.
 func (s *shellUI) showDockPreview(key string, at *gtk.Widget, it shell.DockItem) {
-	if s.wayfire == nil || len(it.Windows) == 0 || s.dockPreviewKey == key {
+	if s.wayfire == nil || len(it.Windows) == 0 {
 		return
 	}
 	s.closeDockPreview()
+	s.dockPreviewKey = key
 	pop := gtk.NewPopover()
 	pop.SetParent(at)
 	pop.SetHasArrow(true)
+	pop.SetPosition(gtk.PosTopValue)
 	pop.SetAutohide(false)
+
 	box := gtk.NewBox(gtk.OrientationVerticalValue, 6)
 	title := gtk.NewLabel(it.Name)
 	title.SetXalign(0)

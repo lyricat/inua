@@ -193,7 +193,11 @@ func (s *shellUI) closeOverview(restore bool) {
 	if restore && previous != "" {
 		for _, w := range s.snap.Toplevels {
 			if w.Address == previous {
-				s.dispatchOverview(i18n.T("restore focus"), fmt.Sprintf(`hl.dsp.focus({ window = %q })`, "address:"+previous))
+				if s.wayfire != nil {
+					s.focusWindow(previous)
+				} else {
+					s.dispatchOverview(i18n.T("restore focus"), fmt.Sprintf(`hl.dsp.focus({ window = %q })`, "address:"+previous))
+				}
 				break
 			}
 		}
