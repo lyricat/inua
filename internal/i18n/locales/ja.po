@@ -14870,31 +14870,31 @@ msgid "%d RESULT"
 msgid_plural "%d RESULTS"
 msgstr[0] "%d 件"
 
-#: internal/ui/overview.go:474
+#: internal/ui/overview.go:479
 msgid "No workspaces"
 msgstr "ワークスペースがない"
 
-#: internal/ui/overview.go:476
+#: internal/ui/overview.go:481
 msgid "No matches"
 msgstr "一致しない"
 
-#: internal/ui/overview.go:595
+#: internal/ui/overview.go:601
 msgid "＋  New workspace"
 msgstr "＋  新しいワークスペース"
 
-#: internal/ui/overview.go:897
+#: internal/ui/overview.go:927
 msgid "Filter by window title or app"
 msgstr "ウィンドウのタイトルまたはアプリでフィルタリングする"
 
-#: internal/ui/overview.go:913
+#: internal/ui/overview.go:943
 msgid "TYPE TO FILTER WINDOWS"
 msgstr "入力してウィンドウを絞り込む"
 
-#: internal/ui/overview.go:926
+#: internal/ui/overview.go:956
 msgid "Type or / to filter windows   Esc · clear / close   Arrows / Tab · select   Middle click · close   Ctrl+Shift+X · kill   Drag · move"
 msgstr "または / を入力してウィンドウをフィルタリングします Esc · クリア / 閉じる 矢印 / Tab · 選択 中クリック · 閉じる Ctrl+Shift+X · kill ドラッグ · 移動"
 
-#: internal/ui/overview.go:970
+#: internal/ui/overview.go:1000
 msgid "inua overview"
 msgstr "イヌアの概要"
 
