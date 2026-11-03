@@ -1163,6 +1163,9 @@ func (s *shellUI) request(req ipc.Request) ipc.Response {
 		default:
 			return bad
 		}
+	case "window":
+		return s.windowRequest(req.Function, req.Args)
+
 	case "screenshot":
 		if !s.screenshotRequest(req.Function) {
 			return bad

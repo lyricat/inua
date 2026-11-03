@@ -317,36 +317,37 @@ func (c *Client) FocusWindow(ctx context.Context, address string) error {
 }
 
 func (c *Client) MoveWindowToWorkspace(ctx context.Context, address string, workspace int) error {
+	return c.windowToWorkspace(ctx, "vswitch/set-workspace", address, workspace)
+}
+
+// SendWindowToWorkspace moves the window without following it.
+func (c *Client) SendWindowToWorkspace(ctx context.Context, address string, workspace int) error {
+	return c.windowToWorkspace(ctx, "vswitch/send-view", address, workspace)
+}
+
+func (c *Client) windowToWorkspace(ctx context.Context, method, address string, workspace int) error {
 	id, err := parseViewID(address)
 	if err != nil {
 		return err
 	}
-	snapshot, err := c.Snapshot(ctx)
+	raw, err := c.Request(ctx, "window-rules/get-focused-output", map[string]any{})
 	if err != nil {
 		return err
 	}
-	var target *compositor.Workspace
-	for i := range snapshot.Workspaces {
-		if snapshot.Workspaces[i].ID == workspace {
-			target = &snapshot.Workspaces[i]
-			break
-		}
+	var focused struct {
+		Info outputRecord `json:"info"`
 	}
-	if target == nil {
-		return fmt.Errorf("Wayfire workspace %d is unavailable", workspace)
+	if err := json.Unmarshal(raw, &focused); err != nil {
+		return fmt.Errorf("decode focused output: %w", err)
 	}
-	var output *compositor.Monitor
-	for i := range snapshot.Monitors {
-		if snapshot.Monitors[i].Name == target.Monitor {
-			output = &snapshot.Monitors[i]
-			break
-		}
+	width := focused.Info.Workspace.Width
+	if width < 1 {
+		width = 1
 	}
-	if output == nil {
-		return fmt.Errorf("Wayfire output %q is unavailable", target.Monitor)
-	}
-	width := gridWidthFromSnapshot(snapshot, output.Name)
-	_, err = c.Request(ctx, "vswitch/set-workspace", map[string]any{"x": (workspace - 1) % width, "y": (workspace - 1) / width, "output-id": output.ID, "view-id": id})
+	_, err = c.Request(ctx, method, map[string]any{
+		"x": (workspace - 1) % width, "y": (workspace - 1) / width,
+		"output-id": focused.Info.ID, "view-id": id,
+	})
 	return err
 }
 
