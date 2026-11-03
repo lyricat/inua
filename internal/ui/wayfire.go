@@ -61,8 +61,15 @@ func followWayfire(client *wayfire.Client, update func(compositor.Snapshot)) {
 }
 
 func (s *shellUI) applyWayfireSnapshot(snapshot compositor.Snapshot) {
+	oldPID := focusedPID(s.snap)
 	s.windowSnap = wayfireSnapshot(snapshot)
 	s.snap = s.windowSnap
+	if s.menu.open && s.menu.pid != focusedPID(s.snap) {
+		s.closeMenu()
+	}
+	if oldPID != focusedPID(s.snap) {
+		s.syncAppMenu()
+	}
 	for _, b := range s.bars {
 		b.setHypr(s, s.snap)
 	}

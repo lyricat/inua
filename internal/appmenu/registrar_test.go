@@ -145,3 +145,54 @@ func waitFor(t *testing.T, check func() bool) {
 	}
 	t.Fatal("condition not met")
 }
+
+// A dynamic submenu replaces its cached action IDs when it is opened.
+type dynamicMenu struct {
+	testMenu
+	ready bool
+}
+
+func (m *dynamicMenu) AboutToShow(id int32) (bool, *dbus.Error) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	m.ready = id == 7
+	return true, nil
+}
+func (m *dynamicMenu) GetLayout(id int32, _ int32, _ []string) (uint32, testNode, *dbus.Error) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	children := []dbus.Variant{}
+	if m.ready {
+		children = append(children, dbus.MakeVariant(testNode{ID: 42, Props: map[string]dbus.Variant{"label": dbus.MakeVariant("Folder")}, Children: []dbus.Variant{}}))
+	}
+	return 2, testNode{ID: id, Props: map[string]dbus.Variant{}, Children: children}, nil
+}
+func TestOpenRefreshesDynamicSubmenu(t *testing.T) {
+	addr := dbustest.Start(t)
+	t.Setenv("DBUS_SESSION_BUS_ADDRESS", addr)
+	server := dbustest.Conn(t, addr)
+	menu := &dynamicMenu{}
+	path := dbus.ObjectPath("/Menu")
+	if err := server.Export(menu, path, menuInterface); err != nil {
+		t.Fatal(err)
+	}
+	entries := []Entry{{ID: 7, Children: []Entry{{ID: 8}}}}
+	setDbusmenuAction(entries, Registration{Service: server.Names()[0], Path: path})
+	direct(entries)
+	client := NewClient(nil, nil)
+	children, err := client.Open(entries[0])
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(children) != 1 || children[0].ID != 42 || !children[0].Action.Direct {
+		t.Fatalf("children=%+v", children)
+	}
+	if err := client.Activate(children[0]); err != nil {
+		t.Fatal(err)
+	}
+	menu.mu.Lock()
+	defer menu.mu.Unlock()
+	if !reflect.DeepEqual(menu.events, []int32{42}) {
+		t.Fatalf("events=%v", menu.events)
+	}
+}

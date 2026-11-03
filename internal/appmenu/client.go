@@ -131,11 +131,53 @@ func (c *Client) readMenu(conn *dbus.Conn, r Registration) ([]Entry, error) {
 	return n.Children, nil
 }
 
+// Open refreshes a D-Bus submenu after notifying its owner that it will be
+// shown. Dynamic menus prepare their actions and working directory here.
+func (c *Client) Open(e Entry) ([]Entry, error) {
+	if e.Action.Kind != ActionDbusmenu {
+		return e.Children, nil
+	}
+	conn, err := dbus.ConnectSessionBus()
+	if err != nil {
+		return nil, err
+	}
+	defer conn.Close()
+	ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
+	defer cancel()
+	obj := conn.Object(e.Action.Bus, e.Action.Path)
+	if err := obj.CallWithContext(ctx, menuInterface+".AboutToShow", 0, e.ID).Err; err != nil {
+		return nil, err
+	}
+	call := obj.CallWithContext(ctx, menuInterface+".GetLayout", 0, e.ID, int32(-1), []string{})
+	if call.Err != nil {
+		return nil, call.Err
+	}
+	if len(call.Body) != 2 {
+		return nil, fmt.Errorf("appmenu: malformed submenu reply")
+	}
+	raw, ok := call.Body[1].([]any)
+	if !ok {
+		return nil, fmt.Errorf("appmenu: malformed submenu layout")
+	}
+	count := 0
+	node, ok := decode(raw, 0, &count)
+	if !ok {
+		return nil, fmt.Errorf("appmenu: malformed or oversized submenu")
+	}
+	setDbusmenuAction(node.Children, Registration{Service: e.Action.Bus, Path: e.Action.Path})
+	if e.Action.Direct {
+		direct(node.Children)
+	}
+	if e.Action.NativeWayland {
+		markNative(node.Children)
+	}
+	return node.Children, nil
+}
+
 func markNative(entries []Entry) {
 	for i := range entries {
 		if len(entries[i].Children) > 0 {
 			markNative(entries[i].Children)
-			continue
 		}
 		entries[i].Action.NativeWayland = true
 	}
@@ -179,15 +221,22 @@ const kdeNamePrefix = "org.kde."
 // child for each window's menu (/MenuBar/1, /MenuBar/2 …).
 const kdeMenuRoot = dbus.ObjectPath("/MenuBar")
 
-// kdeMenu reads the menu a KDE application (Dolphin, Kate, Konsole …)
-// exports on its own well-known name. KDE does not use the Canonical
-// registrar and its applications are native Wayland, so this is the only
-// place their menu is; the object is a plain com.canonical.dbusmenu tree,
-// which the registrar's reader takes as it is.
-//
-// A process with more than one menu (several windows) shows none, as with
-// inua's own: without a per-window identity the shell cannot tell which
-// window's menu belongs to the focused one.
+// firefoxNamePrefix starts the well-known name Firefox publishes on the
+// session bus ("org.mozilla.firefox.default", "org.mozilla.firefox.ZGVm…").
+const firefoxNamePrefix = "org.mozilla.firefox."
+
+// firefoxMenuRoot is where Firefox's GTK global-menu bridge exports its
+// com.canonical.dbusmenu tree (/com/canonical/menu/0, …). On Wayland Firefox
+// only announces that path over KWin's proprietary appmenu protocol and skips
+// com.canonical.AppMenu.Registrar, leaving the menu exported on its own bus
+// name.
+const firefoxMenuRoot = dbus.ObjectPath("/com/canonical/menu")
+
+// kdeMenu reads the menu a KDE application (Dolphin, Kate, Konsole …) or
+// Firefox on Wayland exports on its own well-known name. Neither uses the
+// Canonical registrar on native Wayland, so this is the only place their
+// menu is; the object is a plain com.canonical.dbusmenu tree, which the
+// registrar's reader takes as it is.
 func (c *Client) kdeMenu(pid int) ([]Entry, bool, error) {
 	conn, err := dbus.ConnectSessionBus()
 	if err != nil {
@@ -202,18 +251,25 @@ func (c *Client) kdeMenu(pid int) ([]Entry, bool, error) {
 	}
 	var found []Registration
 	for _, name := range names {
-		if !strings.HasPrefix(name, kdeNamePrefix) {
+		var root dbus.ObjectPath
+		switch {
+		case strings.HasPrefix(name, kdeNamePrefix):
+			root = kdeMenuRoot
+		case strings.HasPrefix(name, firefoxNamePrefix):
+			root = firefoxMenuRoot
+		default:
 			continue
 		}
 		var owner uint32
 		if conn.BusObject().CallWithContext(ctx, "org.freedesktop.DBus.GetConnectionUnixProcessID", 0, name).Store(&owner) != nil || int(owner) != pid {
 			continue
 		}
-		path, err := kdeMenuPath(conn, name)
+		path, err := menuChildPath(conn, name, root)
 		if err != nil || path == "" {
-			// A name of KDE's with no menu (Kate until it is asked for
-			// one, an application that keeps its menus to itself): not a
-			// reason to stop looking, nor to stop the other sources.
+			// A name with no menu (Kate until it is asked for one, Firefox
+			// without its global-menu bridge, or an application that keeps
+			// its menus to itself): not a reason to stop looking, nor to
+			// stop the other sources.
 			continue
 		}
 		found = append(found, Registration{PID: uint32(pid), Service: name, Path: path})
@@ -233,14 +289,20 @@ func (c *Client) kdeMenu(pid int) ([]Entry, bool, error) {
 }
 
 // kdeMenuPath is the object a KDE application exports its menu at: the
-// first child of /MenuBar ("/MenuBar/2"), or "" when it has none. KDE
-// names the child after the window it belongs to, so the path is read from
-// the introspection XML rather than guessed at.
+// first child of /MenuBar ("/MenuBar/2"), or "" when it has none.
 func kdeMenuPath(conn *dbus.Conn, service string) (dbus.ObjectPath, error) {
+	return menuChildPath(conn, service, kdeMenuRoot)
+}
+
+// menuChildPath is the first child object under root ("/MenuBar/2",
+// "/com/canonical/menu/0"), or "" when it has none. Applications name the
+// child after the window or menu bar it belongs to, so the path is read from
+// the introspection XML rather than guessed at.
+func menuChildPath(conn *dbus.Conn, service string, root dbus.ObjectPath) (dbus.ObjectPath, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
 	defer cancel()
 	var decoded string
-	call := conn.Object(service, kdeMenuRoot).CallWithContext(ctx, "org.freedesktop.DBus.Introspectable.Introspect", 0)
+	call := conn.Object(service, root).CallWithContext(ctx, "org.freedesktop.DBus.Introspectable.Introspect", 0)
 	if call.Err != nil {
 		return "", call.Err
 	}
@@ -262,7 +324,7 @@ func kdeMenuPath(conn *dbus.Conn, service string) (dbus.ObjectPath, error) {
 		if child.Name == "" || strings.ContainsAny(child.Name, "/<>") {
 			continue
 		}
-		return kdeMenuRoot + "/" + dbus.ObjectPath(child.Name), nil
+		return root + "/" + dbus.ObjectPath(child.Name), nil
 	}
 	return "", nil
 }
@@ -273,7 +335,6 @@ func direct(entries []Entry) {
 	for i := range entries {
 		if len(entries[i].Children) > 0 {
 			direct(entries[i].Children)
-			continue
 		}
 		entries[i].Action.Direct = true
 	}

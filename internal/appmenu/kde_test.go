@@ -117,3 +117,74 @@ func uniqueName(t *testing.T, conn *dbus.Conn) string {
 type introspectable struct{ xml string }
 
 func (i introspectable) Introspect() (string, *dbus.Error) { return i.xml, nil }
+
+type firefoxTestMenu struct {
+	testMenu
+}
+
+func (m *firefoxTestMenu) GetLayout(int32, int32, []string) (uint32, testNode, *dbus.Error) {
+	item := testNode{
+		ID:       10,
+		Props:    map[string]dbus.Variant{"label": dbus.MakeVariant("New _Tab"), "enabled": dbus.MakeVariant(true)},
+		Children: []dbus.Variant{},
+	}
+	section := testNode{
+		ID:       1,
+		Props:    map[string]dbus.Variant{"label": dbus.MakeVariant("_File"), "children-display": dbus.MakeVariant("submenu")},
+		Children: []dbus.Variant{dbus.MakeVariant(item)},
+	}
+	root := testNode{
+		ID:       0,
+		Props:    map[string]dbus.Variant{},
+		Children: []dbus.Variant{dbus.MakeVariant(section)},
+	}
+	return 1, root, nil
+}
+
+// Firefox on Wayland exports its global menu at /com/canonical/menu/0 on its
+// own org.mozilla.firefox.* bus name without registering on
+// com.canonical.AppMenu.Registrar.
+func TestFirefoxWaylandMenu(t *testing.T) {
+	addr := startBus(t)
+	t.Setenv("DBUS_SESSION_BUS_ADDRESS", addr)
+	conn := connTo(t, addr)
+	reply, err := conn.RequestName("org.mozilla.firefox.default", dbus.NameFlagDoNotQueue)
+	if err != nil || reply != dbus.RequestNameReplyPrimaryOwner {
+		t.Fatalf("RequestName = %v, %v", reply, err)
+	}
+	const xml = `<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+ "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <node name="0"/>
+</node>`
+	if err := conn.Export(introspectable{xml: xml}, firefoxMenuRoot, "org.freedesktop.DBus.Introspectable"); err != nil {
+		t.Fatal(err)
+	}
+	menu := &firefoxTestMenu{}
+	if err := conn.Export(menu, "/com/canonical/menu/0", menuInterface); err != nil {
+		t.Fatal(err)
+	}
+	var pid uint32
+	if err := conn.BusObject().Call("org.freedesktop.DBus.GetConnectionUnixProcessID", 0, "org.mozilla.firefox.default").Store(&pid); err != nil {
+		t.Fatal(err)
+	}
+	client := NewClient(nil, nil)
+	entries, err := client.Menu(int(pid))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(entries) != 1 || entries[0].Label != "File" || len(entries[0].Children) != 1 || entries[0].Children[0].Label != "New Tab" {
+		t.Fatalf("entries = %+v", entries)
+	}
+	if !entries[0].Action.Direct || !entries[0].Children[0].Action.Direct {
+		t.Fatalf("expected direct dbusmenu actions: %+v", entries)
+	}
+	if err := client.Activate(entries[0].Children[0]); err != nil {
+		t.Fatal(err)
+	}
+	menu.mu.Lock()
+	defer menu.mu.Unlock()
+	if len(menu.events) != 1 || menu.events[0] != 10 {
+		t.Fatalf("events = %v, want [10]", menu.events)
+	}
+}

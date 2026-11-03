@@ -269,6 +269,8 @@ func (s *shellUI) openAppMenu(b *bar, button *gtk.Button, target appMenuTarget) 
 		m.pid, m.section = target.pid, target.entry.Label
 		m.entries, m.stack = target.entry.Children, nil
 		s.fillMenu()
+		s.refreshMenuBranch(target.entry, nil)
+		s.dropToButton(&m.drop, b, button)
 		return
 	}
 	if m.closing {
@@ -311,6 +313,13 @@ func (s *shellUI) activateAppMenu(target appMenuTarget) {
 // pid - the one the bar names. A toolkit's own close may be behind a
 // confirmation the shell cannot answer; this is the window manager's
 // request, which every window answers.
+func (s *shellUI) closeWindowAddress(ctx context.Context, address string) error {
+	if s.wayfire != nil {
+		return s.wayfire.CloseWindow(ctx, address)
+	}
+	return s.client.Dispatch(ctx, "closewindow address:"+address)
+}
+
 func (s *shellUI) closeWindowOf(pid int) {
 	t := s.windowOf(pid)
 	if t == nil {
@@ -318,7 +327,7 @@ func (s *shellUI) closeWindowOf(pid int) {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
-	if err := s.client.Dispatch(ctx, "closewindow address:"+t.Address); err != nil {
+	if err := s.closeWindowAddress(ctx, t.Address); err != nil {
 		log.Printf("appmenu: close %s: %v", t.Class, err)
 	}
 }
@@ -333,7 +342,7 @@ func (s *shellUI) quitApp(pid int) {
 		if t.PID != pid {
 			continue
 		}
-		if err := s.client.Dispatch(ctx, "closewindow address:"+t.Address); err != nil {
+		if err := s.closeWindowAddress(ctx, t.Address); err != nil {
 			log.Printf("appmenu: close %s: %v", t.Class, err)
 		}
 	}

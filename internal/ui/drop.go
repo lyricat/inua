@@ -53,6 +53,7 @@ type drop struct {
 	radius, corner float64
 	border         bool
 	end            bool    // flush with the bar's end
+	menu           bool    // align application menus with their trigger
 	under, at      float64 // the middle of the button it hangs under, and its left edge
 	x, w, h        float64 // the card's box, at rest
 	glass, line    gdk.RGBA
@@ -390,6 +391,8 @@ func (d *drop) allocate(_ *gtk.Widget, _, _ int) {
 		// Its outline, just outside it, on the bar's border, just inside
 		// the bar.
 		d.x = d.right - 1 - d.w
+	} else if d.menu {
+		d.x = math.Round(max(d.left, min(d.at, d.right-d.w)))
 	} else {
 		room := d.radius + d.corner // the arc's
 		// Centred under what opened it, inside the bar's island: the card
@@ -420,6 +423,15 @@ func (d *drop) anchor() float64 {
 
 func (d *drop) snapshot(_ *gtk.Widget, s *gtk.Snapshot) {
 	if !d.hanging {
+		return
+	}
+	if d.menu {
+		// Each menu column paints its own card and shadow. Painting the
+		// drop's glass here would fill the whole rectangle behind them,
+		// including the gap and the space below a shorter submenu.
+		s.PushClip(rect(0, float32(d.y), float32(d.canvas.GetWidth()), float32(d.canvas.GetHeight())))
+		d.canvas.SnapshotChild(d.card, s)
+		s.Pop()
 		return
 	}
 	n := d.now()

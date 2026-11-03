@@ -255,7 +255,6 @@ func setDbusmenuAction(entries []Entry, reg Registration) {
 	for i := range entries {
 		if len(entries[i].Children) > 0 {
 			setDbusmenuAction(entries[i].Children, reg)
-			continue
 		}
 		entries[i].Action = Action{Kind: ActionDbusmenu, Bus: reg.Service, Path: reg.Path, Index: entries[i].ID}
 	}

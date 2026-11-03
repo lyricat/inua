@@ -3556,7 +3556,7 @@ msgstr[1] ""
 #: internal/term/web/strings.go:30
 #: internal/termui/keys.go:295
 #: internal/termui/wsmenu.go:129
-#: internal/ui/appmenu.go:546
+#: internal/ui/appmenu.go:555
 #: internal/ui/settings_bench.go:132
 #: internal/ui/settings_wifi_details.go:62
 #: ui/mail-compose.ui:292
@@ -12908,7 +12908,7 @@ msgid "Start the shell again"
 msgstr ""
 
 #: internal/shell/commands.go:46
-#: internal/ui/appmenu.go:480
+#: internal/ui/appmenu.go:489
 msgid "Close Window"
 msgstr ""
 
@@ -14436,16 +14436,16 @@ msgstr ""
 msgid "Snooze"
 msgstr ""
 
-#: internal/ui/appmenu.go:479
-#: internal/ui/appmenu.go:529
+#: internal/ui/appmenu.go:488
+#: internal/ui/appmenu.go:538
 msgid "About %s"
 msgstr ""
 
-#: internal/ui/appmenu.go:481
+#: internal/ui/appmenu.go:490
 msgid "Quit %s"
 msgstr ""
 
-#: internal/ui/appmenu.go:544
+#: internal/ui/appmenu.go:553
 msgid "Process %d"
 msgstr ""
 

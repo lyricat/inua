@@ -1363,6 +1363,7 @@ func (s *shellUI) appMenuHover(b *bar, x, y float64) {
 	m.pid, m.section = target.pid, target.entry.Label
 	m.entries, m.stack = target.entry.Children, nil
 	s.fillMenu()
+	s.refreshMenuBranch(target.entry, nil)
 	s.dropToButton(&m.drop, b, button)
 }
 

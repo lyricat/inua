@@ -40,7 +40,7 @@
 .window-titlebar button:hover { background: alpha(@accent, 0.09); color: @t0; }
 .window-titlebar button.close:hover { background: alpha(@danger, 0.12); color: @danger; }
 
-window.bar, window.control, window.agenda, window.banners, window.osd, window.center, window.dock-window, window.shot-drawer-win, window.drawer-overlay, window.clipboard-panel { background: transparent; }
+window.bar, window.control, window.agenda, window.banners, window.osd, window.center, window.dock-window, window.shot-drawer-win, window.drawer-overlay, window.clipboard-panel, window.appmenu { background: transparent; }
 window.overview, window.widgets { background: transparent; }
 /* The launcher's catcher of clicks outside it: a surface wholly clear
    gets no pointer from Hyprland, so it is all but clear. */

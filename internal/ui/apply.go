@@ -203,6 +203,9 @@ func (s *shellUI) applyConfig(c config.Config) {
 		}
 		s.renderDocks()
 	}
+	if old.Bar.Menu != c.Bar.Menu {
+		s.setAppMenuOn(c.Bar.Menu)
+	}
 	s.followVoice() // dictation's engine: [voice], or the AI's profile
 	if old.Voice != c.Voice {
 		s.setVoiceButton()
