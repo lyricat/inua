@@ -2,14 +2,18 @@
 
 ## Scope and acceptance level
 
-Target: Debian 13 (trixie), official Wayfire 0.9.0 package and wlroots 0.18.2. Runtime acceptance is **partially verified**: the isolated compositor exposed all requested Wayland globals, answered IPC, ran the checkout-built Inua shell, and produced three distinct sanitized screenshots. The shared overview remains unavailable because Wayfire output capture and overview state integration are not implemented; no overview cards or overview screenshot are claimed.
+Target: Debian 13 (trixie), official Wayfire 0.9.0 package and wlroots 0.18.2. Runtime acceptance is **partially verified**: the isolated compositor exposed all requested Wayland globals, answered IPC, ran the checkout-built Inua shell, and produced three distinct sanitized screenshots. The current branch consumes Wayfire's IPC view list for the Dock, launcher window mode and per-window overview cards; window thumbnails are captured with `grim` and cropped from the view geometry. Overview capture is therefore no longer Hyprland-only.
 
 The runtime session and screenshots below were captured before this branch carried
-the shell wiring, from a private integration build. This PR now holds both the
+the shell wiring, from a private integration build. The branch now holds both the
 client and the wiring that consumes it (`internal/ui/wayfire.go`), together with the
-sample session files, the Wayfire app-window titlebar and the client's unit tests;
-`gofmt`, `go vet` and a full `go build` cover the branch. The overview is still out
-of scope, as the section below says.
+sample session files, the Wayfire app-window titlebar, settings/display writes and
+the client's unit tests; `gofmt`, `go vet` and a full `go build` cover the branch.
+
+The compositor-neutral interface in `internal/compositor` exists, but the shell
+still stores `hypr.Snapshot` and adapts Wayfire into it. The planned refactor is
+recorded in [compositor-abstraction.md](compositor-abstraction.md); read it before
+adding another compositor or another `if Wayfire` branch.
 
 The installed packages report `wayfire 0.9.0-5`, `libwlroots-0.18 0.18.2-3`, `libwf-config1 0.9.0-2`, and `wf-plugins 0.9.0-5`. `wayfire --version` prints `0.9.0-unknown (Dec 24 2024) branch unknown`.
 

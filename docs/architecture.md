@@ -5,6 +5,11 @@ inua is a desktop shell that works with Hyprland. Its logic is Go, its interface
 document follows [design.md](design.md); why this toolkit is in
 [toolkit.md](toolkit.md).
 
+The compositor-neutral interface in `internal/compositor` is the intended seam,
+but the shell still stores Hyprland snapshots and adapts Wayfire into them. Read
+[compositor-abstraction.md](compositor-abstraction.md) before adding another
+compositor or another compositor-specific branch.
+
 ## 1. Layers
 
 ```
