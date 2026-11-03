@@ -387,41 +387,37 @@ color = %s
 generate = %t
 
 [input]
-# Keyboard and touchpad settings for Hyprland. inua writes them to
-# ~/.config/hypr/inua.conf, which hyprland.conf must source after its own
-# input settings (`+"`inua config hyprland`"+` checks). A setting left commented
-# out or empty stays with hyprland.conf. After editing by hand:
-# `+"`inua config apply`"+`.
+# Keyboard and touchpad settings go to hypr/inua.conf under Hyprland or to
+# [input] in wayfire.ini under Wayfire. On Wayfire, restart the compositor
+# after Inua writes its settings. Unset values leave the config in control.
 
 # XKB options for every keyboard, comma-separated, e.g. "caps:escape" (Caps
 # Lock is Escape), "ctrl:nocaps" (Caps Lock is Ctrl), "ctrl:swap_lalt_lctl"
 # (swap left Ctrl and Alt), "ctrl:swap_ralt_rctl" (the right ones).
-# "" clears the options hyprland.conf sets.
+# "" clears XKB options from the compositor config.
 %s
 
-# Touchpad pointer speed, -1 (slowest) to 1 (fastest); 0 is libinput's.
+# Touchpad speed maps to touchpad_accel on Wayfire, -1 (slowest) to 1.
 %s
 
 # Touchpad acceleration: "adaptive" (faster swipes go further) or "flat".
 touchpad_accel = %s
 
 [displays]
-# Monitors, set in the settings window (Displays). inua writes them to
-# ~/.config/hypr/inua.conf as monitor rules after hyprland.conf's, so a
-# display listed here is as it says, and one not listed stays as
-# hyprland.conf has it. After editing by hand: `+"`inua config apply`"+`.
+# Displays are written to Hyprland monitor rules or Wayfire [output:NAME]
+# sections. Wayfire applies explicit modes, XxY positions and scales; mirror,
+# automatic relative positions and lid-triggered switching are Hyprland-only.
+# After editing by hand: `+"`inua config apply`"+`.
 
 # While a laptop's lid is closed and another display is connected, turn
 # the built-in display off (its workspaces move to the others); opening
 # the lid turns it on again, beside them.
 lid_off = %t
 
-# A display: output is its connector ("DP-1"), or "desc:" and its
-# description (hyprctl monitors) to follow it from port to port. mode is
-# "WIDTHxHEIGHT@HZ" ("" the preferred); position "auto", "auto-left",
-# "auto-right", "auto-up", "auto-down" (beside the others) or "XxY";
-# scale 0.25 to 4 (0 automatic); mirror another output to show the same
-# picture; disabled = true leaves it off.
+# A display output is its connector (DP-1). A mode is WIDTHxHEIGHT@HZ (empty
+# for preferred); position is XxY (empty for Wayfire's default layout); scale
+# is 0.25 to 4 (0 automatic); mirror works on Hyprland only; disabled = true
+# leaves the output off.
 #
 #   [[displays.monitors]]
 #   output = "desc:Dell Inc. DELL U2720QM GZF09H3"
@@ -639,13 +635,13 @@ enable = %t
 # ending processes, power, the clipboard and notifications still ask).
 policy = %s
 
-# Keyboard shortcuts set in the settings window (Shortcuts). inua writes
-# them to ~/.config/hypr/inua.conf: each unbinds its keys from anything
-# else, and the keys its action had in hyprland.conf ("replaces"). Actions
-# without an entry keep their hyprland.conf shortcuts. An action is one of
-#   launcher windows overview control notifications clipboard focus settings restart lock
-#   shot-area shot-area-silent shot-screen shot-window shot-record color
-# or "exec" with a command. keys = "" turns the action's shortcut off.
+# Keyboard shortcuts set in the settings window (Shortcuts). Under Hyprland
+# they go to hypr/inua.conf. Under Wayfire, Inua's command shortcuts go to
+# [command] in wayfire.ini. Existing Wayfire shortcuts are not listed here.
+# Actions are launcher windows overview control notifications clipboard focus
+# settings restart lock shot-area shot-area-silent shot-screen shot-window
+# shot-record color voice widgets, or "exec" with a command. keys = "" turns
+# the action's shortcut off.
 #
 #   [[shortcuts]]
 #   action = "launcher"

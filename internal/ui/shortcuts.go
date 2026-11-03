@@ -13,6 +13,7 @@ import (
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
 	"github.com/lyricat/inua/internal/config"
+	"github.com/lyricat/inua/internal/desktop"
 	"github.com/lyricat/inua/internal/gtkx"
 	"github.com/lyricat/inua/internal/hyprconf"
 	"github.com/lyricat/inua/internal/i18n"
@@ -147,7 +148,11 @@ func (s *shellUI) showShortcuts() {
 		n++
 	}
 	if n == 0 {
-		l := gtk.NewLabel(i18n.T("None"))
+		text := i18n.T("None")
+		if desktop.Wayfire() {
+			text = i18n.T("Existing Wayfire shortcuts are not listed")
+		}
+		l := gtk.NewLabel(text)
 		l.AddCssClass("sub")
 		l.AddCssClass("row")
 		l.SetXalign(0)
@@ -226,7 +231,11 @@ func (s *shellUI) shortcutRow(box *gtk.Box, id, title, sub string, keys []string
 	case custom:
 		icon("sc-del:"+id, "window-close-symbolic", i18n.T("Remove this command"))
 	case managed:
-		icon("sc-reset:"+id, "edit-undo-symbolic", i18n.T("Use hyprland.conf's shortcut again"))
+		tip := i18n.T("Use hyprland.conf's shortcut again")
+		if desktop.Wayfire() {
+			tip = i18n.T("Use Wayfire's shortcut again")
+		}
+		icon("sc-reset:"+id, "edit-undo-symbolic", tip)
 	case len(keys) > 0:
 		icon("sc-off:"+id, "window-close-symbolic", i18n.T("Turn the shortcut off"))
 	}

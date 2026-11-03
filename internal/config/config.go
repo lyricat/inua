@@ -784,46 +784,43 @@ type Notify struct {
 // BannerChoices are the banner durations the settings window offers.
 var BannerChoices = []int{3, 5, 8, 12}
 
-// Input is the Hyprland input settings inua manages. They are written to
-// hypr/inua.conf (internal/hyprconf), which hyprland.conf sources. Unset
-// values (nil, "") are not written, leaving them to hyprland.conf.
+// Input is the keyboard and touchpad settings Inua manages for its compositor.
+// Hyprland gets them from hypr/inua.conf; Wayfire gets them from [input] in
+// wayfire.ini. Unset values leave that compositor's config in control.
 type Input struct {
-	// KbOptions is Hyprland's input:kb_options for every keyboard: XKB
-	// options, comma-separated ("caps:escape,ctrl:swap_lalt_lctl").
+	// KbOptions is XKB options for every keyboard, comma-separated.
 	KbOptions *string `toml:"kb_options"`
 	// TouchpadSpeed is the touchpads' sensitivity, -1 to 1.
 	TouchpadSpeed *float64 `toml:"touchpad_speed"`
-	// TouchpadAccel is the touchpads' accel_profile: "adaptive" or "flat".
+	// TouchpadAccel is the touchpad acceleration profile: adaptive or flat.
 	TouchpadAccel string `toml:"touchpad_accel"`
 }
 
-// Displays is how the monitors are set up. Like [input], Hyprland applies
-// it: the rules are written to hypr/inua.conf as monitor rules, after
-// hyprland.conf's, so they win.
+// Displays is how monitor mode, position, scale and enablement are set up.
+// Hyprland applies monitor rules from hypr/inua.conf; Wayfire applies output
+// sections in wayfire.ini.
 type Displays struct {
 	// LidOff turns the built-in display off while the lid is closed and
-	// another display is connected; opening the lid turns it on again.
+	// another display is connected. Wayfire does not support this behavior.
 	LidOff bool `toml:"lid_off"`
-	// Monitors are the displays set in inua's settings window; one not
-	// listed stays as hyprland.conf has it.
+	// Monitors are the displays set in Inua's settings window.
 	Monitors []Monitor `toml:"monitors"`
 }
 
-// Monitor is one display's settings, a Hyprland monitor rule.
+// Monitor is one display's settings.
 type Monitor struct {
-	// Output is the display: a connector ("eDP-1"), or "desc:" and its
-	// description, which follows it from one port to another.
+	// Output is a connector name, or a Hyprland desc: identifier.
 	Output string `toml:"output"`
 	// Disabled leaves the display off.
 	Disabled bool `toml:"disabled"`
-	// Mode is "WIDTHxHEIGHT@HZ", or "" for the display's preferred mode.
+	// Mode is WIDTHxHEIGHT@HZ, or empty for the display's preferred mode.
 	Mode string `toml:"mode"`
-	// Position is one of MonitorPositions ("" is "auto"), or "XxY" in
-	// the layout's logical pixels.
+	// Position is auto, an auto direction, or XxY in logical pixels.
 	Position string `toml:"position"`
-	// Scale is 0.25 to 4, or 0 for Hyprland's choice.
+	// Scale is 0.25 to 4, or 0 for automatic.
 	Scale float64 `toml:"scale"`
-	// Mirror is the output this one shows the same picture as; "" for none.
+	// Mirror is the output this one shows the same picture as. Wayfire has no
+	// equivalent in its output configuration.
 	Mirror string `toml:"mirror"`
 }
 
@@ -1108,15 +1105,15 @@ func (c *Config) validate() []string {
 		}
 	}
 	if o := c.Input.KbOptions; o != nil && !ValidKbOptions(*o) {
-		w = append(w, fmt.Sprintf("input.kb_options = %q: want XKB options like \"caps:escape,ctrl:swap_lalt_lctl\"; leaving it to hyprland.conf", *o))
+		w = append(w, fmt.Sprintf("input.kb_options = %q: want XKB options like \"caps:escape,ctrl:swap_lalt_lctl\"; leaving it to the compositor config", *o))
 		c.Input.KbOptions = nil
 	}
 	if v := c.Input.TouchpadSpeed; v != nil && (*v < -1 || *v > 1) {
-		w = append(w, fmt.Sprintf("input.touchpad_speed = %v: want -1 to 1; leaving it to hyprland.conf", *v))
+		w = append(w, fmt.Sprintf("input.touchpad_speed = %v: want -1 to 1; leaving it to the compositor config", *v))
 		c.Input.TouchpadSpeed = nil
 	}
 	if a := c.Input.TouchpadAccel; a != "" && a != "adaptive" && a != "flat" {
-		w = append(w, fmt.Sprintf("input.touchpad_accel = %q: want \"adaptive\" or \"flat\"; leaving it to hyprland.conf", a))
+		w = append(w, fmt.Sprintf("input.touchpad_accel = %q: want \"adaptive\" or \"flat\"; leaving it to the compositor config", a))
 		c.Input.TouchpadAccel = ""
 	}
 	outputs := map[string]bool{}
@@ -1126,7 +1123,7 @@ func (c *Config) validate() []string {
 			if problem == "" {
 				problem = "a later rule is for the same output"
 			}
-			w = append(w, fmt.Sprintf("displays.monitors %q: %s; leaving it to hyprland.conf", m.Output, problem))
+			w = append(w, fmt.Sprintf("displays.monitors %q: %s; leaving it to the compositor config", m.Output, problem))
 			c.Displays.Monitors = slices.Delete(c.Displays.Monitors, i, i+1)
 			continue
 		}
@@ -1222,8 +1219,7 @@ var (
 )
 
 // ValidKbOptions reports whether s is a comma-separated list of XKB options
-// (or empty). It also keeps anything but options out of the generated
-// Hyprland file.
+// (or empty). It keeps anything but options out of compositor configuration.
 func ValidKbOptions(s string) bool { return kbOptionsRe.MatchString(s) }
 
 // ValidColor reports whether s is a valid background.color: "#rrggbb" or

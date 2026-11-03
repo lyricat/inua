@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/lyricat/inua/internal/compositor"
+	"github.com/lyricat/inua/internal/display"
 )
 
 const maxMessageSize = 1 << 20
@@ -54,6 +55,10 @@ type outputRecord struct {
 		Height int `json:"height"`
 	} `json:"geometry"`
 	WorkspaceSetID uint64 `json:"wset-index"`
+	Scale          float64  `json:"scale"`
+	Refresh        float64  `json:"refresh-rate"`
+	Modes          []string `json:"available-modes"`
+	Mode           string   `json:"mode"`
 	Workspace      struct {
 		X      int `json:"x"`
 		Y      int `json:"y"`
@@ -429,6 +434,38 @@ func (c *Client) outputScale(ctx context.Context, name string) float64 {
 		return 1
 	}
 	return scale
+}
+
+// SettingsOutputs returns connected outputs in the display settings model.
+func (c *Client) SettingsOutputs(ctx context.Context) ([]display.Output, error) {
+	raw, err := c.Request(ctx, "window-rules/list-outputs", map[string]any{})
+	if err != nil {
+		return nil, err
+	}
+	var outputs []outputRecord
+	if err := json.Unmarshal(raw, &outputs); err != nil {
+		return nil, fmt.Errorf("decode Wayfire outputs: %w", err)
+	}
+	result := make([]display.Output, 0, len(outputs))
+	for _, output := range outputs {
+		width, height := output.Geometry.Width, output.Geometry.Height
+		mode := output.Mode
+		if mode == "" && width > 0 && height > 0 {
+			mode = fmt.Sprintf("%dx%d", width, height)
+			if output.Refresh > 0 {
+				mode += fmt.Sprintf("@%.2f", output.Refresh)
+			}
+		}
+		modes := output.Modes
+		if len(modes) == 0 && mode != "" {
+			modes = []string{mode}
+		}
+		result = append(result, display.Output{
+			Name: output.Name, Width: width, Height: height, Refresh: output.Refresh,
+			X: output.Geometry.X, Y: output.Geometry.Y, Scale: c.outputScale(ctx, output.Name), Modes: modes,
+		})
+	}
+	return result, nil
 }
 
 // FocusedAppID names the application of the focused view.

@@ -53,6 +53,15 @@ close requests. The shared overview still rejects Wayfire open requests
 because output capture and overview state integration are not connected;
 `compositor status` reports `WindowCapture=false`.
 
+Inua writes managed keyboard and touchpad options to `[input]`, monitor mode,
+position and scale to `[output:NAME]`, and recorded shell shortcuts to
+`[command]` in `wayfire.ini`. Wayfire must restart to load these file changes.
+Its output query does not report alternate modes; the settings page offers the
+current mode and preferred mode. Output enable/disable, mirroring, automatic
+relative positions, lid-triggered switching, and listing existing Wayfire
+shortcuts remain unavailable with reasons in Settings.
+
+
 | Capability | Source implementation | Live runtime evidence |
 |---|---|---|
 | Wayland protocol globals | Wayland registry | All four requested globals present; versions recorded in IPC JSON |
@@ -60,6 +69,8 @@ because output capture and overview state integration are not connected;
 | State snapshot | `list-views` / outputs / wsets | One output at 1280×720; Inua surfaces listed; synthetic test windows observed and removed |
 | Focus / close | `window-rules/focus-view`, `close-view` | Both returned `ok`; focused view confirmed and closed view disappeared |
 | Workspace switch | `vswitch/set-workspace` | Switch and return returned `ok`; output coordinates confirmed |
+| Managed display, input and shortcut settings | `[input]`, `[output:NAME]`, `[command]` config sections | Written to `wayfire.ini`; restart required; alternate modes are not listed by output IPC |
+| Output enablement / mirror / lid switch | No verified Inua Wayfire equivalent is connected | Unavailable in Settings |
 | Launcher / control center | Shell IPC and Wayland surfaces | Both opened; screenshots captured |
 | Overview UI / cards | Shared GTK overview | Blocked: `overview open` returns unavailable on Wayfire because capture/state integration is missing |
 | Output capture | `zwlr_screencopy_manager_v1`, `grim` | Three distinct full-output screenshots captured, hashed and variance-checked |
