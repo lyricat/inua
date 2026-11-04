@@ -39,12 +39,12 @@ type shortcutState struct {
 
 // hyprBinds asks Hyprland for its shortcuts.
 func (s *shellUI) hyprBinds() []hyprconf.Bind {
-	if s.client == nil {
+	if s.hypr == nil {
 		return nil
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
 	defer cancel()
-	reply, err := s.client.Request(ctx, "j/binds")
+	reply, err := s.hypr.Client.Request(ctx, "j/binds")
 	if err != nil {
 		log.Printf("hyprland: binds: %v", err)
 		return nil

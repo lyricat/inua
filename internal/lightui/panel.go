@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/gtkx"
-	"github.com/lyricat/inua/internal/hypr"
 )
 
 // sidePanel is a panel sliding in at a window's right, which widens the
@@ -20,8 +20,8 @@ type sidePanel struct {
 	win    *gtk.ApplicationWindow
 	rev    *gtk.Revealer
 	want   bool
-	before *hypr.Rect // the window before the panel, while it shows
-	grown  *hypr.Rect // and once the panel showed
+	before *compositor.Rect // the window before the panel, while it shows
+	grown  *compositor.Rect // and once the panel showed
 	// onRevealed outlives the window, like every signal handler.
 	onRevealed func(uintptr, uintptr, uintptr)
 }
@@ -35,7 +35,7 @@ func (p *sidePanel) init(win *gtk.ApplicationWindow, rev *gtk.Revealer) {
 		}
 		shown, grown := p.rev.GetChildRevealed(), p.grown
 		go func() {
-			c, err := hyprClient()
+			c, err := placer()
 			if err != nil {
 				return
 			}
@@ -77,8 +77,8 @@ func (p *sidePanel) open() {
 	}
 	p.want = true
 	go func() {
-		var before *hypr.Rect
-		if c, err := hyprClient(); err == nil {
+		var before *compositor.Rect
+		if c, err := placer(); err == nil {
 			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 			if r, err := c.WindowOf(ctx, os.Getpid()); err == nil {
 				before = &r
@@ -102,10 +102,15 @@ func (p *sidePanel) close() {
 	p.rev.SetRevealChild(false)
 }
 
-func hyprClient() (*hypr.Client, error) {
-	paths, err := hypr.PathsFromEnv()
+// placer is the compositor's window placement, when it has one.
+func placer() (compositor.Placer, error) {
+	b, err := compositor.Detect()
 	if err != nil {
-		return nil, err // not in Hyprland
+		return nil, err
 	}
-	return hypr.NewClient(paths), nil
+	p, ok := b.(compositor.Placer)
+	if !ok || !b.Capabilities().Has(compositor.CapPlacement) {
+		return nil, compositor.ErrUnsupported
+	}
+	return p, nil
 }

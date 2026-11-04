@@ -2,12 +2,12 @@ package clipboard
 
 import (
 	"context"
-	"encoding/json"
 	"os/exec"
 	"strings"
 	"time"
 
-	"github.com/lyricat/inua/internal/hypr"
+	"github.com/lyricat/inua/internal/compositor"
+	_ "github.com/lyricat/inua/internal/hypr" // the compositors Detect knows
 )
 
 // Selection is where the selection being copied now comes from: the
@@ -34,19 +34,26 @@ func offeredTypes() []string {
 	return strings.Split(strings.TrimSpace(string(out)), "\n")
 }
 
-// focusedWindow is the window focused now, as Hyprland names it; none
-// without Hyprland.
+// focusedWindow is the window focused now, as the compositor names it;
+// none without one.
 func focusedWindow() Window {
 	var w Window
-	paths, err := hypr.PathsFromEnv()
+	b, err := compositor.Detect()
 	if err != nil {
 		return w
 	}
-	c := hypr.NewClient(paths)
-	c.Timeout = 300 * time.Millisecond // a copy is not held up for long
-	data, err := c.Request(context.Background(), "j/activewindow")
-	if err == nil {
-		json.Unmarshal(data, &w)
+	sn, ok := b.(compositor.Snapshotter)
+	if !ok {
+		return w
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 300*time.Millisecond) // a copy is not held up for long
+	defer cancel()
+	snap, err := sn.Snapshot(ctx)
+	if err != nil {
+		return w
+	}
+	if f, ok := snap.Window(snap.FocusedWindow); ok {
+		w.Class, w.PID = f.AppID, f.PID
 	}
 	return w
 }

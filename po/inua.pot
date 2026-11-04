@@ -133,7 +133,7 @@ msgstr ""
 #: internal/lightui/clock.go:219
 #: internal/ui/control.go:322
 #: internal/ui/lock.go:248
-#: internal/ui/widgets.go:992
+#: internal/ui/widgets.go:987
 msgid "Monday, January 2"
 msgstr ""
 
@@ -171,10 +171,10 @@ msgstr ""
 #: internal/config/strftime.go:50
 #: internal/i18n/time.go:11
 #: internal/lightui/weather.go:358
-#: internal/mailui/window.go:1434
+#: internal/mailui/window.go:1438
 #: internal/shell/notify.go:28
 #: internal/ui/agenda.go:371
-#: internal/ui/widgets.go:1050
+#: internal/ui/widgets.go:1045
 #: ui/calendar.ui:127
 msgid "Mon"
 msgstr ""
@@ -222,7 +222,7 @@ msgstr ""
 
 #: internal/apps/clock/clock.go:112
 #: internal/lightui/weather.go:360
-#: internal/ui/widgets.go:1052
+#: internal/ui/widgets.go:1047
 #: ui/agenda.ui:80
 #: ui/calendar.ui:39
 msgid "Today"
@@ -393,7 +393,7 @@ msgstr ""
 
 #: internal/apps/connect/share.go:129
 #: internal/ui/record.go:157
-#: internal/ui/screenshot.go:1140
+#: internal/ui/screenshot.go:1150
 #: internal/ui/settings_custom.go:41
 msgid "Show in Folder"
 msgstr ""
@@ -1218,7 +1218,7 @@ msgstr ""
 #: internal/filesui/sidebar.go:50
 #: internal/filesui/tabs.go:97
 #: internal/filesui/window.go:309
-#: internal/mailui/window.go:775
+#: internal/mailui/window.go:779
 msgid "Trash"
 msgstr ""
 
@@ -1516,7 +1516,7 @@ msgid "Not signed in"
 msgstr ""
 
 #: internal/apps/mail/sort.go:32
-#: internal/mailui/window.go:247
+#: internal/mailui/window.go:248
 msgid "REPLY"
 msgstr ""
 
@@ -1721,7 +1721,7 @@ msgid "online"
 msgstr ""
 
 #: internal/apps/tailscale/status.go:168
-#: internal/mailui/window.go:1793
+#: internal/mailui/window.go:1797
 msgid "just now"
 msgstr ""
 
@@ -1772,7 +1772,7 @@ msgstr ""
 #: internal/filesui/remote.go:170
 #: internal/filesui/remotesetup.go:418
 #: internal/lightui/tailscale.go:153
-#: internal/mailui/window.go:652
+#: internal/mailui/window.go:656
 #: internal/shell/bluetooth.go:38
 #: internal/shell/status.go:158
 #: internal/shell/wifi.go:38
@@ -2547,224 +2547,224 @@ msgstr ""
 msgid "Reading the notification history"
 msgstr ""
 
-#: internal/desk/tools.go:224
-#: internal/desk/tools.go:250
+#: internal/desk/tools.go:241
+#: internal/desk/tools.go:267
 msgid "the focused window"
 msgstr ""
 
-#: internal/desk/tools.go:230
+#: internal/desk/tools.go:247
 msgid "Looking at the windows"
 msgstr ""
 
-#: internal/desk/tools.go:237
+#: internal/desk/tools.go:254
 msgid "Focusing %s"
 msgstr ""
 
-#: internal/desk/tools.go:250
+#: internal/desk/tools.go:267
 msgid "Moving %s to workspace %s"
 msgstr ""
 
-#: internal/desk/tools.go:266
+#: internal/desk/tools.go:283
 msgid "Closing %s"
 msgstr ""
 
-#: internal/desk/tools.go:278
+#: internal/desk/tools.go:295
 msgid "Going to workspace %s"
 msgstr ""
 
-#: internal/desk/tools.go:289
+#: internal/desk/tools.go:306
 msgid "Looking at the workspaces"
 msgstr ""
 
-#: internal/desk/tools.go:400
+#: internal/desk/tools.go:388
 msgid "Looking at the apps"
 msgstr ""
 
-#: internal/desk/tools.go:416
+#: internal/desk/tools.go:404
 msgid "Opening %s"
 msgstr ""
 
-#: internal/desk/tools.go:452
+#: internal/desk/tools.go:440
 msgid "Looking at the system"
 msgstr ""
 
-#: internal/desk/tools.go:466
+#: internal/desk/tools.go:454
 msgid "Setting the volume to %s%%"
 msgstr ""
 
-#: internal/desk/tools.go:468
+#: internal/desk/tools.go:456
 msgid "Setting the brightness to %s%%"
 msgstr ""
 
-#: internal/desk/tools.go:471
+#: internal/desk/tools.go:459
 msgid "Turning Wi-Fi on"
 msgstr ""
 
-#: internal/desk/tools.go:471
+#: internal/desk/tools.go:459
 msgid "Turning Wi-Fi off"
 msgstr ""
 
-#: internal/desk/tools.go:472
+#: internal/desk/tools.go:460
 msgid "Turning Bluetooth on"
 msgstr ""
 
-#: internal/desk/tools.go:472
+#: internal/desk/tools.go:460
 msgid "Turning Bluetooth off"
 msgstr ""
 
-#: internal/desk/tools.go:473
+#: internal/desk/tools.go:461
 msgid "Muting the sound"
 msgstr ""
 
-#: internal/desk/tools.go:473
+#: internal/desk/tools.go:461
 msgid "Unmuting the sound"
 msgstr ""
 
-#: internal/desk/tools.go:474
+#: internal/desk/tools.go:462
 msgid "Turning Focus on"
 msgstr ""
 
-#: internal/desk/tools.go:474
+#: internal/desk/tools.go:462
 msgid "Turning Focus off"
 msgstr ""
 
-#: internal/desk/tools.go:475
+#: internal/desk/tools.go:463
 msgid "Turning power saver on"
 msgstr ""
 
-#: internal/desk/tools.go:475
+#: internal/desk/tools.go:463
 msgid "Turning power saver off"
 msgstr ""
 
-#: internal/desk/tools.go:477
+#: internal/desk/tools.go:465
 msgid "Setting %s to %s"
 msgstr ""
 
-#: internal/desk/tools.go:489
+#: internal/desk/tools.go:477
 msgid "Locking the screen"
 msgstr ""
 
-#: internal/desk/tools.go:498
+#: internal/desk/tools.go:486
 msgid "Taking a screenshot of the focused window"
 msgstr ""
 
-#: internal/desk/tools.go:500
+#: internal/desk/tools.go:488
 msgid "Taking a screenshot of the screen"
 msgstr ""
 
-#: internal/desk/tools.go:502
+#: internal/desk/tools.go:490
 msgid "Taking a screenshot of an area"
 msgstr ""
 
-#: internal/desk/tools.go:517
+#: internal/desk/tools.go:505
 msgid "Suspending"
 msgstr ""
 
-#: internal/desk/tools.go:517
+#: internal/desk/tools.go:505
 msgid "Restarting the computer"
 msgstr ""
 
-#: internal/desk/tools.go:517
+#: internal/desk/tools.go:505
 msgid "Shutting down"
 msgstr ""
 
-#: internal/desk/tools.go:517
+#: internal/desk/tools.go:505
 msgid "Logging out"
 msgstr ""
 
-#: internal/desk/tools.go:529
+#: internal/desk/tools.go:517
 msgid "Reading the notifications"
 msgstr ""
 
-#: internal/desk/tools.go:534
+#: internal/desk/tools.go:522
 msgid "Clearing the notifications"
 msgstr ""
 
-#: internal/desk/tools.go:540
+#: internal/desk/tools.go:528
 msgid "Dismissing a notification"
 msgstr ""
 
-#: internal/desk/tools.go:554
+#: internal/desk/tools.go:542
 msgid "Choosing “%s” on a notification"
 msgstr ""
 
-#: internal/desk/tools.go:556
+#: internal/desk/tools.go:544
 msgid "Opening a notification"
 msgstr ""
 
-#: internal/desk/tools.go:571
+#: internal/desk/tools.go:559
 msgid "Opening the launcher"
 msgstr ""
 
-#: internal/desk/tools.go:571
+#: internal/desk/tools.go:559
 msgid "Opening the overview"
 msgstr ""
 
-#: internal/desk/tools.go:572
+#: internal/desk/tools.go:560
 msgid "Opening the control center"
 msgstr ""
 
-#: internal/desk/tools.go:572
+#: internal/desk/tools.go:560
 msgid "Opening the calendar"
 msgstr ""
 
-#: internal/desk/tools.go:573
+#: internal/desk/tools.go:561
 msgid "Opening the clipboard history"
 msgstr ""
 
-#: internal/desk/tools.go:573
+#: internal/desk/tools.go:561
 msgid "Opening the notifications"
 msgstr ""
 
-#: internal/desk/tools.go:574
+#: internal/desk/tools.go:562
 msgid "Opening Settings"
 msgstr ""
 
-#: internal/desk/tools.go:594
+#: internal/desk/tools.go:582
 msgid "Reading the clipboard"
 msgstr ""
 
-#: internal/desk/tools.go:609
+#: internal/desk/tools.go:597
 msgid "Copying “%s…”"
 msgstr ""
 
-#: internal/desk/tools.go:611
+#: internal/desk/tools.go:599
 msgid "Copying “%s”"
 msgstr ""
 
-#: internal/desk/tools.go:633
+#: internal/desk/tools.go:621
 msgid "Looking at the processes"
 msgstr ""
 
-#: internal/desk/tools.go:682
+#: internal/desk/tools.go:670
 msgid "Killing %s(%d)"
 msgstr ""
 
-#: internal/desk/tools.go:684
+#: internal/desk/tools.go:672
 msgid "Asking %s(%d) to quit"
 msgstr ""
 
-#: internal/desk/tools.go:705
+#: internal/desk/tools.go:693
 msgid "Looking at Tailscale"
 msgstr ""
 
-#: internal/desk/tools.go:735
+#: internal/desk/tools.go:723
 msgid "Stopping the Tailscale exit node"
 msgstr ""
 
-#: internal/desk/tools.go:737
+#: internal/desk/tools.go:725
 msgid "Using %s as Tailscale exit node"
 msgstr ""
 
-#: internal/desk/tools.go:740
+#: internal/desk/tools.go:728
 msgid "Connecting Tailscale"
 msgstr ""
 
-#: internal/desk/tools.go:742
+#: internal/desk/tools.go:730
 msgid "Disconnecting Tailscale"
 msgstr ""
 
-#: internal/desk/tools.go:775
+#: internal/desk/tools.go:763
 msgid "Looking up the weather in %s"
 msgstr ""
 
@@ -2839,7 +2839,7 @@ msgid "Opens video files"
 msgstr ""
 
 #: internal/desktop/defaults.go:48
-#: internal/lightui/pass_otp.go:340
+#: internal/lightui/pass_otp.go:338
 #: internal/ui/settings.go:1042
 msgid "Images"
 msgstr ""
@@ -3013,7 +3013,7 @@ msgstr ""
 #: internal/lightui/gpg.go:1517
 #: internal/lightui/pass.go:950
 #: internal/term/web/strings.go:43
-#: internal/ui/clipboard.go:503
+#: internal/ui/clipboard.go:504
 #: internal/vmui/window.go:1996
 #: internal/vmui/window.go:2002
 #: internal/vmui/window.go:2015
@@ -3171,7 +3171,7 @@ msgstr ""
 
 #: internal/diskui/window.go:557
 #: internal/filesui/pane.go:1552
-#: internal/ui/widgets.go:1054
+#: internal/ui/widgets.go:1049
 msgid "15:04"
 msgstr ""
 
@@ -3308,7 +3308,7 @@ msgstr ""
 
 #: internal/filesui/archive.go:79
 #: internal/mailui/picker.go:142
-#: internal/mailui/window.go:771
+#: internal/mailui/window.go:775
 msgid "Archive"
 msgstr ""
 
@@ -3526,7 +3526,7 @@ msgstr ""
 
 #: internal/filesui/cards.go:497
 #: internal/filesui/picker.go:369
-#: internal/lightui/pass_otp.go:189
+#: internal/lightui/pass_otp.go:188
 msgid "Replace"
 msgstr ""
 
@@ -3855,7 +3855,7 @@ msgstr ""
 
 #: internal/filesui/details.go:51
 #: internal/lightui/sysmon.go:791
-#: internal/mailui/window.go:247
+#: internal/mailui/window.go:248
 #: internal/term/web/strings.go:52
 msgid "FILES"
 msgstr ""
@@ -3866,7 +3866,7 @@ msgstr ""
 
 #: internal/filesui/details.go:55
 #: internal/mailui/picker.go:137
-#: internal/mailui/window.go:1762
+#: internal/mailui/window.go:1766
 msgid "Search"
 msgstr ""
 
@@ -8626,7 +8626,7 @@ msgstr ""
 
 #: internal/lightui/apps.go:16
 #: internal/ui/alarms.go:106
-#: internal/ui/widgets.go:587
+#: internal/ui/widgets.go:582
 #: ui/settings.ui:1188
 #: config/apps/io.github.lyricat.Inua.Clock.desktop:3
 msgid "Clock"
@@ -8635,8 +8635,8 @@ msgstr ""
 #: internal/lightui/apps.go:17
 #: internal/lightui/weather.go:224
 #: internal/ui/agenda.go:334
-#: internal/ui/widgets.go:589
-#: internal/ui/widgets.go:1071
+#: internal/ui/widgets.go:584
+#: internal/ui/widgets.go:1066
 #: config/apps/io.github.lyricat.Inua.Weather.desktop:3
 msgid "Weather"
 msgstr ""
@@ -8653,7 +8653,7 @@ msgid "Calculator"
 msgstr ""
 
 #: internal/lightui/apps.go:20
-#: internal/ui/widgets.go:588
+#: internal/ui/widgets.go:583
 #: ui/bar.ui:65
 #: config/apps/io.github.lyricat.Inua.Calendar.desktop:3
 msgid "Calendar"
@@ -8672,7 +8672,7 @@ msgstr ""
 
 #: internal/lightui/apps.go:24
 #: internal/lightui/pass.go:266
-#: internal/lightui/pass_otp.go:114
+#: internal/lightui/pass_otp.go:113
 #: ui/pass.ui:29
 #: config/apps/io.github.lyricat.Inua.Pass.desktop:3
 msgid "Pass"
@@ -8702,7 +8702,7 @@ msgstr ""
 
 #: internal/lightui/calendar.go:132
 #: internal/ui/agenda.go:228
-#: internal/ui/widgets.go:1024
+#: internal/ui/widgets.go:1019
 msgid "January 2006"
 msgstr ""
 
@@ -9253,7 +9253,7 @@ msgid "Cannot play %s: %s"
 msgstr ""
 
 #: internal/lightui/music.go:560
-#: internal/ui/widgets.go:1102
+#: internal/ui/widgets.go:1097
 #: ui/music.ui:86
 msgid "Nothing playing"
 msgstr ""
@@ -9375,12 +9375,12 @@ msgid "Decrypting %s"
 msgstr ""
 
 #: internal/lightui/pass.go:691
-#: internal/lightui/pass_otp.go:188
+#: internal/lightui/pass_otp.go:187
 msgid "Replace the one-time code"
 msgstr ""
 
 #: internal/lightui/pass.go:693
-#: internal/lightui/pass_otp.go:191
+#: internal/lightui/pass_otp.go:190
 #: ui/pass.ui:230
 #: ui/pass.ui:670
 msgid "Add a one-time code"
@@ -9425,7 +9425,7 @@ msgid "Hide"
 msgstr ""
 
 #: internal/lightui/pass.go:787
-#: internal/lightui/pass_otp.go:246
+#: internal/lightui/pass_otp.go:245
 #: internal/ui/passwords.go:661
 msgid "%d second left"
 msgid_plural "%d seconds left"
@@ -9594,41 +9594,41 @@ msgstr ""
 msgid "read"
 msgstr ""
 
-#: internal/lightui/pass_otp.go:101
+#: internal/lightui/pass_otp.go:100
 msgid "It is not an image this app reads (PNG or JPEG)."
 msgstr ""
 
-#: internal/lightui/pass_otp.go:192
+#: internal/lightui/pass_otp.go:191
 #: internal/lightui/workshop_manager.go:88
-#: internal/ui/widgets.go:950
+#: internal/ui/widgets.go:945
 #: ui/connect.ui:967
 #: ui/pass.ui:871
 #: ui/remote.ui:1053
 msgid "Add"
 msgstr ""
 
-#: internal/lightui/pass_otp.go:265
+#: internal/lightui/pass_otp.go:264
 msgid "Reading the screen needs grim."
 msgstr ""
 
-#: internal/lightui/pass_otp.go:269
+#: internal/lightui/pass_otp.go:268
 msgid "Selecting an area needs slurp."
 msgstr ""
 
-#: internal/lightui/pass_otp.go:273
+#: internal/lightui/pass_otp.go:272
 msgid "No area was chosen."
 msgstr ""
 
-#: internal/lightui/pass_otp.go:288
-#: internal/lightui/pass_otp.go:326
+#: internal/lightui/pass_otp.go:287
+#: internal/lightui/pass_otp.go:324
 msgid "The screen could not be read."
 msgstr ""
 
-#: internal/lightui/pass_otp.go:338
+#: internal/lightui/pass_otp.go:336
 msgid "An image with a QR code"
 msgstr ""
 
-#: internal/lightui/pass_otp.go:361
+#: internal/lightui/pass_otp.go:359
 msgid "Reading the QR code…"
 msgstr ""
 
@@ -9637,7 +9637,7 @@ msgid "Search for a symbol to add it."
 msgstr ""
 
 #: internal/lightui/stocks.go:282
-#: internal/mailui/window.go:990
+#: internal/mailui/window.go:994
 msgid "Loading %s…"
 msgstr ""
 
@@ -9684,7 +9684,7 @@ msgstr ""
 #: internal/lightui/sysmon.go:54
 #: internal/shell/launcher_actions.go:45
 #: internal/termui/menubar.go:34
-#: internal/ui/dock.go:532
+#: internal/ui/dock.go:533
 #: internal/ui/portal_ask.go:80
 msgid "Quit"
 msgstr ""
@@ -10835,7 +10835,7 @@ msgid "Mail forgets it on this computer: its sign-in and the mail it kept. The m
 msgstr ""
 
 #: internal/mailui/actions.go:518
-#: internal/mailui/window.go:588
+#: internal/mailui/window.go:592
 msgid "Unsent"
 msgstr ""
 
@@ -10843,7 +10843,7 @@ msgstr ""
 #: internal/mailui/details.go:190
 #: internal/mailui/people.go:301
 #: internal/mailui/reader.go:232
-#: internal/mailui/window.go:1333
+#: internal/mailui/window.go:1337
 msgid "(no subject)"
 msgstr ""
 
@@ -10876,7 +10876,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: internal/mailui/app.go:23
-#: internal/mailui/window.go:1723
+#: internal/mailui/window.go:1727
 #: ui/mail.ui:14
 #: config/apps/io.github.lyricat.Inua.Mail.desktop:3
 msgid "Mail"
@@ -10916,7 +10916,7 @@ msgid "The assistant gave no search."
 msgstr ""
 
 #: internal/mailui/assist.go:262
-#: internal/mailui/window.go:1560
+#: internal/mailui/window.go:1564
 msgid "Searched for %s"
 msgstr ""
 
@@ -11010,7 +11010,7 @@ msgstr ""
 #: internal/mailui/details.go:98
 #: internal/mailui/formatted.go:192
 #: internal/mailui/settings.go:382
-#: internal/mailui/window.go:1752
+#: internal/mailui/window.go:1756
 msgid "Not saved: %v"
 msgstr ""
 
@@ -11367,7 +11367,7 @@ msgid "Forward (F)"
 msgstr ""
 
 #: internal/mailui/reader.go:320
-#: internal/mailui/window.go:1249
+#: internal/mailui/window.go:1253
 msgid "Archive (E)"
 msgstr ""
 
@@ -11384,17 +11384,17 @@ msgid "Move to a folder (V)"
 msgstr ""
 
 #: internal/mailui/reader.go:327
-#: internal/mailui/window.go:1378
+#: internal/mailui/window.go:1382
 msgid "Star (S)"
 msgstr ""
 
 #: internal/mailui/reader.go:330
-#: internal/mailui/window.go:1375
+#: internal/mailui/window.go:1379
 msgid "Unstar (S)"
 msgstr ""
 
 #: internal/mailui/reader.go:332
-#: internal/mailui/window.go:1385
+#: internal/mailui/window.go:1389
 msgid "Mark as unread (U)"
 msgstr ""
 
@@ -11454,7 +11454,7 @@ msgid "Fold"
 msgstr ""
 
 #: internal/mailui/reader.go:670
-#: internal/mailui/window.go:1327
+#: internal/mailui/window.go:1331
 msgid "me"
 msgstr ""
 
@@ -12045,7 +12045,7 @@ msgid "Enter signs in · Esc goes back"
 msgstr ""
 
 #: internal/mailui/welcome.go:600
-#: internal/mailui/window.go:644
+#: internal/mailui/window.go:648
 msgid "Sign in"
 msgstr ""
 
@@ -12128,253 +12128,253 @@ msgstr ""
 msgid "Hide your own OAuth client"
 msgstr ""
 
-#: internal/mailui/window.go:247
+#: internal/mailui/window.go:248
 msgid "ALL"
 msgstr ""
 
-#: internal/mailui/window.go:247
+#: internal/mailui/window.go:248
 msgid "UNREAD"
 msgstr ""
 
-#: internal/mailui/window.go:251
+#: internal/mailui/window.go:252
 msgid "Every conversation"
 msgstr ""
 
-#: internal/mailui/window.go:251
+#: internal/mailui/window.go:252
 msgid "With messages not read"
 msgstr ""
 
-#: internal/mailui/window.go:252
-#: internal/mailui/window.go:1370
+#: internal/mailui/window.go:253
+#: internal/mailui/window.go:1374
 msgid "With files attached"
 msgstr ""
 
-#: internal/mailui/window.go:252
+#: internal/mailui/window.go:253
 msgid "Waiting for your reply"
 msgstr ""
 
-#: internal/mailui/window.go:262
+#: internal/mailui/window.go:263
 msgid "MARK READ"
 msgstr ""
 
-#: internal/mailui/window.go:265
+#: internal/mailui/window.go:266
 msgid "Mark every conversation here as read"
 msgstr ""
 
-#: internal/mailui/window.go:269
+#: internal/mailui/window.go:270
 msgid "EMPTY"
 msgstr ""
 
-#: internal/mailui/window.go:272
+#: internal/mailui/window.go:273
 msgid "Permanently delete every message here"
 msgstr ""
 
-#: internal/mailui/window.go:477
+#: internal/mailui/window.go:481
 msgid "Signed out"
 msgstr ""
 
-#: internal/mailui/window.go:479
+#: internal/mailui/window.go:483
 msgid "No client ID"
 msgstr ""
 
-#: internal/mailui/window.go:496
+#: internal/mailui/window.go:500
 msgid "Offline: server not found"
 msgstr ""
 
-#: internal/mailui/window.go:498
+#: internal/mailui/window.go:502
 msgid "Offline: connection refused"
 msgstr ""
 
-#: internal/mailui/window.go:500
+#: internal/mailui/window.go:504
 msgid "Offline: no network"
 msgstr ""
 
-#: internal/mailui/window.go:502
+#: internal/mailui/window.go:506
 msgid "Offline: certificate not trusted"
 msgstr ""
 
-#: internal/mailui/window.go:504
+#: internal/mailui/window.go:508
 msgid "Offline: no answer from the server"
 msgstr ""
 
-#: internal/mailui/window.go:506
+#: internal/mailui/window.go:510
 msgid "Offline: connection dropped"
 msgstr ""
 
-#: internal/mailui/window.go:508
+#: internal/mailui/window.go:512
 #: internal/shell/status.go:77
 msgid "Offline"
 msgstr ""
 
-#: internal/mailui/window.go:567
-#: internal/mailui/window.go:1698
+#: internal/mailui/window.go:571
+#: internal/mailui/window.go:1702
 msgid "No account yet"
 msgstr ""
 
-#: internal/mailui/window.go:582
+#: internal/mailui/window.go:586
 msgid "All inboxes"
 msgstr ""
 
-#: internal/mailui/window.go:583
+#: internal/mailui/window.go:587
 msgid "Needs reply"
 msgstr ""
 
-#: internal/mailui/window.go:584
+#: internal/mailui/window.go:588
 msgid "Starred"
 msgstr ""
 
-#: internal/mailui/window.go:586
+#: internal/mailui/window.go:590
 msgid "Newsletters"
 msgstr ""
 
-#: internal/mailui/window.go:592
+#: internal/mailui/window.go:596
 msgid "Contacts"
 msgstr ""
 
-#: internal/mailui/window.go:601
+#: internal/mailui/window.go:605
 msgid "This account's settings"
 msgstr ""
 
-#: internal/mailui/window.go:679
+#: internal/mailui/window.go:683
 msgid "%d more folder"
 msgid_plural "%d more folders"
 msgstr[0] ""
 msgstr[1] ""
 
-#: internal/mailui/window.go:681
+#: internal/mailui/window.go:685
 msgid "Fewer folders"
 msgstr ""
 
-#: internal/mailui/window.go:765
+#: internal/mailui/window.go:769
 msgid "Inbox"
 msgstr ""
 
-#: internal/mailui/window.go:767
+#: internal/mailui/window.go:771
 msgid "Drafts"
 msgstr ""
 
-#: internal/mailui/window.go:769
+#: internal/mailui/window.go:773
 msgid "Sent"
 msgstr ""
 
-#: internal/mailui/window.go:773
+#: internal/mailui/window.go:777
 msgid "Spam"
 msgstr ""
 
-#: internal/mailui/window.go:812
+#: internal/mailui/window.go:816
 msgid "Search contacts"
 msgstr ""
 
-#: internal/mailui/window.go:814
-#: internal/mailui/window.go:1760
+#: internal/mailui/window.go:818
+#: internal/mailui/window.go:1764
 #: ui/mail.ui:148
 msgid "Search, or ask in a sentence"
 msgstr ""
 
-#: internal/mailui/window.go:1032
+#: internal/mailui/window.go:1036
 msgid "your mail"
 msgstr ""
 
-#: internal/mailui/window.go:1045
+#: internal/mailui/window.go:1049
 msgid "Nothing found"
 msgstr ""
 
-#: internal/mailui/window.go:1047
+#: internal/mailui/window.go:1051
 msgid "Fetching your mail…"
 msgstr ""
 
-#: internal/mailui/window.go:1049
+#: internal/mailui/window.go:1053
 msgid "Nothing waits for your reply"
 msgstr ""
 
-#: internal/mailui/window.go:1051
+#: internal/mailui/window.go:1055
 msgid "No starred conversation"
 msgstr ""
 
-#: internal/mailui/window.go:1053
+#: internal/mailui/window.go:1057
 msgid "No newsletter"
 msgstr ""
 
-#: internal/mailui/window.go:1055
+#: internal/mailui/window.go:1059
 msgid "All read"
 msgstr ""
 
-#: internal/mailui/window.go:1057
+#: internal/mailui/window.go:1061
 msgid "Inbox empty. Nothing waits for you."
 msgstr ""
 
-#: internal/mailui/window.go:1059
+#: internal/mailui/window.go:1063
 msgid "No mail here"
 msgstr ""
 
-#: internal/mailui/window.go:1124
+#: internal/mailui/window.go:1128
 msgid "Could not load older mail: %v"
 msgstr ""
 
-#: internal/mailui/window.go:1250
+#: internal/mailui/window.go:1254
 msgid "Delete (D)"
 msgstr ""
 
-#: internal/mailui/window.go:1274
+#: internal/mailui/window.go:1278
 msgid "SUSPICIOUS"
 msgstr ""
 
-#: internal/mailui/window.go:1342
+#: internal/mailui/window.go:1346
 msgid "EMPTY PREVIEW"
 msgstr ""
 
-#: internal/mailui/window.go:1382
+#: internal/mailui/window.go:1386
 msgid "Mark as read"
 msgstr ""
 
-#: internal/mailui/window.go:1436
+#: internal/mailui/window.go:1440
 #: internal/shell/notify.go:30
 msgid "Jan 2"
 msgstr ""
 
-#: internal/mailui/window.go:1494
+#: internal/mailui/window.go:1498
 msgid "Press Enter to ask the assistant to search for this."
 msgstr ""
 
-#: internal/mailui/window.go:1539
+#: internal/mailui/window.go:1543
 msgid "Searching the server…"
 msgstr ""
 
-#: internal/mailui/window.go:1563
+#: internal/mailui/window.go:1567
 msgid "The server's search failed: %s"
 msgstr ""
 
-#: internal/mailui/window.go:1695
+#: internal/mailui/window.go:1699
 msgid "Up to date"
 msgstr ""
 
-#: internal/mailui/window.go:1700
+#: internal/mailui/window.go:1704
 msgid "Checking for mail…"
 msgstr ""
 
-#: internal/mailui/window.go:1704
+#: internal/mailui/window.go:1708
 msgid "Offline: trying again soon"
 msgstr ""
 
-#: internal/mailui/window.go:1706
+#: internal/mailui/window.go:1710
 msgid "%d account cannot connect"
 msgid_plural "%d accounts cannot connect"
 msgstr[0] ""
 msgstr[1] ""
 
-#: internal/mailui/window.go:1708
+#: internal/mailui/window.go:1712
 msgid "Checked %s"
 msgstr ""
 
-#: internal/mailui/window.go:1713
+#: internal/mailui/window.go:1717
 msgid "Last checked at %s"
 msgstr ""
 
-#: internal/mailui/window.go:1721
+#: internal/mailui/window.go:1725
 msgid "Mail · %d unread"
 msgstr ""
 
-#: internal/mailui/window.go:1796
+#: internal/mailui/window.go:1800
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] ""
@@ -12807,7 +12807,7 @@ msgid "Screenshot Area"
 msgstr ""
 
 #: internal/shell/commands.go:34
-#: internal/ui/screenshot.go:590
+#: internal/ui/screenshot.go:596
 msgid "Drag out an area"
 msgstr ""
 
@@ -12816,7 +12816,7 @@ msgid "Screenshot Window"
 msgstr ""
 
 #: internal/shell/commands.go:35
-#: internal/ui/screenshot.go:591
+#: internal/ui/screenshot.go:597
 #: ui/screenshot.ui:169
 msgid "Click a window"
 msgstr ""
@@ -12826,7 +12826,7 @@ msgid "Screenshot Screen"
 msgstr ""
 
 #: internal/shell/commands.go:36
-#: internal/ui/screenshot.go:592
+#: internal/ui/screenshot.go:598
 #: ui/screenshot.ui:194
 msgid "Click a screen"
 msgstr ""
@@ -12984,7 +12984,7 @@ msgid "Find apps, windows and answers"
 msgstr ""
 
 #: internal/shell/dock.go:313
-#: internal/ui/screenshot.go:1134
+#: internal/ui/screenshot.go:1144
 #: ui/settings.ui:1915
 msgid "Screenshot"
 msgstr ""
@@ -13029,44 +13029,44 @@ msgstr[1] ""
 msgid "%s minutes"
 msgstr ""
 
-#: internal/shell/launcher.go:48
+#: internal/shell/launcher.go:47
 msgid "[WINDOWS]"
 msgstr ""
 
-#: internal/shell/launcher.go:50
-#: internal/ui/widgets.go:600
+#: internal/shell/launcher.go:49
+#: internal/ui/widgets.go:595
 msgid "[APPS]"
 msgstr ""
 
-#: internal/shell/launcher.go:337
+#: internal/shell/launcher.go:336
 msgid "That window has closed"
 msgstr ""
 
-#: internal/shell/launcher.go:364
+#: internal/shell/launcher.go:363
 msgid "Ask the assistant anything"
 msgstr ""
 
-#: internal/shell/launcher.go:366
+#: internal/shell/launcher.go:365
 msgid "No emoji or symbol matches"
 msgstr ""
 
-#: internal/shell/launcher.go:368
+#: internal/shell/launcher.go:367
 msgid "Reading apps…"
 msgstr ""
 
-#: internal/shell/launcher.go:370
+#: internal/shell/launcher.go:369
 msgid "No app matches"
 msgstr ""
 
-#: internal/shell/launcher.go:372
+#: internal/shell/launcher.go:371
 msgid "Not connected to Hyprland"
 msgstr ""
 
-#: internal/shell/launcher.go:374
+#: internal/shell/launcher.go:373
 msgid "No windows open"
 msgstr ""
 
-#: internal/shell/launcher.go:376
+#: internal/shell/launcher.go:375
 msgid "No window matches"
 msgstr ""
 
@@ -13092,22 +13092,22 @@ msgid "%s · workspace %s"
 msgstr ""
 
 #: internal/shell/launcher_actions.go:33
-#: internal/ui/dock.go:523
+#: internal/ui/dock.go:524
 msgid "New Window"
 msgstr ""
 
 #: internal/shell/launcher_actions.go:39
-#: internal/ui/dock.go:526
+#: internal/ui/dock.go:527
 msgid "Remove from Dock"
 msgstr ""
 
 #: internal/shell/launcher_actions.go:41
-#: internal/ui/dock.go:528
+#: internal/ui/dock.go:529
 msgid "Keep in Dock"
 msgstr ""
 
 #: internal/shell/launcher_actions.go:47
-#: internal/ui/dock.go:534
+#: internal/ui/dock.go:535
 msgid "Quit (%d windows)"
 msgstr ""
 
@@ -14397,32 +14397,32 @@ msgid "inua calendar"
 msgstr ""
 
 #: internal/ui/agenda.go:227
-#: internal/ui/widgets.go:992
+#: internal/ui/widgets.go:987
 msgid "%s · WK %d"
 msgstr ""
 
 #: internal/ui/agenda.go:335
-#: internal/ui/widgets.go:1072
+#: internal/ui/widgets.go:1067
 msgid "Add a place in Weather to see it here"
 msgstr ""
 
 #: internal/ui/agenda.go:346
-#: internal/ui/widgets.go:1078
+#: internal/ui/widgets.go:1073
 msgid "No forecast: offline?"
 msgstr ""
 
 #: internal/ui/agenda.go:348
-#: internal/ui/widgets.go:1076
+#: internal/ui/widgets.go:1071
 msgid "Reading the forecast…"
 msgstr ""
 
 #: internal/ui/agenda.go:356
-#: internal/ui/widgets.go:1085
+#: internal/ui/widgets.go:1080
 msgid "%s · feels %s"
 msgstr ""
 
 #: internal/ui/agenda.go:359
-#: internal/ui/widgets.go:1087
+#: internal/ui/widgets.go:1082
 msgid "H %s  L %s"
 msgstr ""
 
@@ -14630,86 +14630,86 @@ msgstr ""
 msgid "The passphrases do not match."
 msgstr ""
 
-#: internal/ui/bar.go:472
+#: internal/ui/bar.go:462
 msgid "Workspace %s"
 msgstr ""
 
-#: internal/ui/bar.go:485
+#: internal/ui/bar.go:475
 msgid "WORKSPACE"
 msgstr ""
 
-#: internal/ui/clipboard.go:82
+#: internal/ui/clipboard.go:83
 msgid "Could not clear the history"
 msgstr ""
 
-#: internal/ui/clipboard.go:95
+#: internal/ui/clipboard.go:96
 msgid "Could not delete it"
 msgstr ""
 
-#: internal/ui/clipboard.go:250
+#: internal/ui/clipboard.go:251
 msgid "[CLIPBOARD]"
 msgstr ""
 
-#: internal/ui/clipboard.go:255
+#: internal/ui/clipboard.go:256
 #: ui/center.ui:81
 msgid "Clear all"
 msgstr ""
 
-#: internal/ui/clipboard.go:262
+#: internal/ui/clipboard.go:263
 msgid "Search clipboard history"
 msgstr ""
 
-#: internal/ui/clipboard.go:359
+#: internal/ui/clipboard.go:360
 #: ui/connect.ui:728
 #: ui/settings.ui:3589
 msgid "Clipboard"
 msgstr ""
 
-#: internal/ui/clipboard.go:423
+#: internal/ui/clipboard.go:424
 msgid "Could not read the clipboard history"
 msgstr ""
 
-#: internal/ui/clipboard.go:469
+#: internal/ui/clipboard.go:470
 msgid "Image · %s"
 msgstr ""
 
-#: internal/ui/clipboard.go:499
+#: internal/ui/clipboard.go:500
 msgid "Copy without pasting"
 msgstr ""
 
-#: internal/ui/clipboard.go:501
+#: internal/ui/clipboard.go:502
 msgid "Paste the image file's path"
 msgstr ""
 
-#: internal/ui/clipboard.go:507
+#: internal/ui/clipboard.go:508
 msgid "Nothing copied yet"
 msgstr ""
 
-#: internal/ui/clipboard.go:509
+#: internal/ui/clipboard.go:510
 msgid "Nothing matches"
 msgstr ""
 
-#: internal/ui/clipboard.go:518
+#: internal/ui/clipboard.go:519
 msgid "%d entry · click to paste · Escape to close"
 msgid_plural "%d entries · click to paste · Escape to close"
 msgstr[0] ""
 msgstr[1] ""
 
-#: internal/ui/clipboard.go:520
+#: internal/ui/clipboard.go:521
 msgid "%d entry · click to copy · Escape to close"
 msgid_plural "%d entries · click to copy · Escape to close"
 msgstr[0] ""
 msgstr[1] ""
 
-#: internal/ui/clipboard.go:540
+#: internal/ui/clipboard.go:541
 msgid "[DETAILS]"
 msgstr ""
 
-#: internal/ui/clipboard.go:543
+#: internal/ui/clipboard.go:544
 msgid "[COPIED %s FROM %s]"
 msgstr ""
 
-#: internal/ui/clipboard.go:545
+#: internal/ui/clipboard.go:546
 msgid "[COPIED %s]"
 msgstr ""
 
@@ -14792,7 +14792,7 @@ msgstr ""
 
 #: internal/ui/drawer.go:217
 #: internal/ui/settings.go:575
-#: internal/ui/widgets.go:591
+#: internal/ui/widgets.go:586
 #: ui/settings.ui:181
 #: ui/settings.ui:2054
 msgid "Apps"
@@ -14846,7 +14846,7 @@ msgstr ""
 msgid "hyprland.conf sets these again after loading inua.conf, which wins over inua: %s. Move the source line below them."
 msgstr ""
 
-#: internal/ui/launcher.go:516
+#: internal/ui/launcher.go:517
 msgid "inua launcher"
 msgstr ""
 
@@ -14912,89 +14912,89 @@ msgstr ""
 msgid "Bluetooth off"
 msgstr ""
 
-#: internal/ui/overview.go:186
+#: internal/ui/overview.go:184
 msgid "restore focus"
 msgstr ""
 
-#: internal/ui/overview.go:297
+#: internal/ui/overview.go:293
 msgid "kill window"
 msgstr ""
 
-#: internal/ui/overview.go:432
+#: internal/ui/overview.go:426
 msgid "MRU: ON"
 msgstr ""
 
-#: internal/ui/overview.go:432
+#: internal/ui/overview.go:426
 msgid "MRU: OFF"
 msgstr ""
 
-#: internal/ui/overview.go:433
+#: internal/ui/overview.go:427
 msgid "This monitor"
 msgstr ""
 
-#: internal/ui/overview.go:433
+#: internal/ui/overview.go:427
 msgid "All monitors"
 msgstr ""
 
-#: internal/ui/overview.go:442
+#: internal/ui/overview.go:436
 msgid "FILTER"
 msgstr ""
 
-#: internal/ui/overview.go:444
+#: internal/ui/overview.go:438
 msgid "NO MATCHES"
 msgstr ""
 
-#: internal/ui/overview.go:446
+#: internal/ui/overview.go:440
 msgid "%d RESULT"
 msgid_plural "%d RESULTS"
 msgstr[0] ""
 msgstr[1] ""
 
-#: internal/ui/overview.go:479
+#: internal/ui/overview.go:473
 msgid "No workspaces"
 msgstr ""
 
-#: internal/ui/overview.go:481
+#: internal/ui/overview.go:475
 msgid "No matches"
 msgstr ""
 
-#: internal/ui/overview.go:601
+#: internal/ui/overview.go:595
 msgid "＋  New workspace"
 msgstr ""
 
-#: internal/ui/overview.go:927
+#: internal/ui/overview.go:954
 msgid "Filter by window title or app"
 msgstr ""
 
-#: internal/ui/overview.go:943
+#: internal/ui/overview.go:970
 msgid "TYPE TO FILTER WINDOWS"
 msgstr ""
 
-#: internal/ui/overview.go:956
+#: internal/ui/overview.go:983
 msgid "Type or / to filter windows   Esc · clear / close   Arrows / Tab · select   Middle click · close   Ctrl+Shift+X · kill   Drag · move"
 msgstr ""
 
-#: internal/ui/overview.go:1000
+#: internal/ui/overview.go:1027
 msgid "inua overview"
 msgstr ""
 
-#: internal/ui/overview_manage.go:123
+#: internal/ui/overview_manage.go:124
 msgid "close window"
 msgstr ""
 
-#: internal/ui/overview_manage.go:163
+#: internal/ui/overview_manage.go:164
 msgid "%s · %s · Middle click: close"
 msgstr ""
 
-#: internal/ui/overview_manage.go:201
+#: internal/ui/overview_manage.go:202
 msgid "Click a window to force-terminate ONLY that client · Esc / right click cancels"
 msgstr ""
 
-#: internal/ui/overview_manage.go:205
+#: internal/ui/overview_manage.go:206
 msgid "Arrows / Tab · select    Type or / · search    Middle click · close    Ctrl+Shift+X · kill    Drag · move"
 msgstr ""
 
-#: internal/ui/overview_manage.go:243
+#: internal/ui/overview_manage.go:242
 msgid "position floating window"
 msgstr ""
 
@@ -15128,47 +15128,47 @@ msgstr ""
 msgid "Screen recording"
 msgstr ""
 
-#: internal/ui/screenshot.go:572
+#: internal/ui/screenshot.go:578
 msgid "inua screenshot"
 msgstr ""
 
-#: internal/ui/screenshot.go:593
+#: internal/ui/screenshot.go:599
 msgid "Click to copy a colour"
 msgstr ""
 
-#: internal/ui/screenshot.go:597
+#: internal/ui/screenshot.go:603
 msgid "Drag out an area to record"
 msgstr ""
 
-#: internal/ui/screenshot.go:598
+#: internal/ui/screenshot.go:604
 msgid "Click a window to record"
 msgstr ""
 
-#: internal/ui/screenshot.go:599
+#: internal/ui/screenshot.go:605
 msgid "Click a screen to record"
 msgstr ""
 
-#: internal/ui/screenshot.go:644
+#: internal/ui/screenshot.go:650
 msgid "Drag to adjust · click inside to take"
 msgstr ""
 
-#: internal/ui/screenshot.go:646
+#: internal/ui/screenshot.go:652
 msgid "Drag to adjust · click inside to record"
 msgstr ""
 
-#: internal/ui/screenshot.go:1128
+#: internal/ui/screenshot.go:1138
 msgid "Screenshot saved and copied"
 msgstr ""
 
-#: internal/ui/screenshot.go:1129
+#: internal/ui/screenshot.go:1139
 msgid "Screenshot saved"
 msgstr ""
 
-#: internal/ui/screenshot.go:1130
+#: internal/ui/screenshot.go:1140
 msgid "Screenshot copied"
 msgstr ""
 
-#: internal/ui/screenshot.go:1131
+#: internal/ui/screenshot.go:1141
 msgid "Screenshot taken"
 msgstr ""
 
@@ -16574,15 +16574,15 @@ msgstr ""
 msgid "Could not upgrade: %s"
 msgstr ""
 
-#: internal/ui/voice.go:209
+#: internal/ui/voice.go:214
 msgid "Dictation did not work"
 msgstr ""
 
-#: internal/ui/voice.go:271
-msgid "dictation pastes with Hyprland, which is not running"
+#: internal/ui/voice.go:274
+msgid "dictation pastes through the compositor, which cannot send keys"
 msgstr ""
 
-#: internal/ui/voice.go:281
+#: internal/ui/voice.go:278
 msgid "no window has the focus to type into"
 msgstr ""
 
@@ -16867,62 +16867,62 @@ msgstr ""
 msgid "Remove from the Page"
 msgstr ""
 
-#: internal/ui/widgets.go:564
+#: internal/ui/widgets.go:559
 #: ui/bar.ui:40
 msgid "Engawa"
 msgstr ""
 
-#: internal/ui/widgets.go:590
+#: internal/ui/widgets.go:585
 msgid "Now Playing"
 msgstr ""
 
-#: internal/ui/widgets.go:596
+#: internal/ui/widgets.go:591
 msgid "[CLOCK]"
 msgstr ""
 
-#: internal/ui/widgets.go:597
+#: internal/ui/widgets.go:592
 #: ui/agenda.ui:46
 msgid "[CALENDAR]"
 msgstr ""
 
-#: internal/ui/widgets.go:598
+#: internal/ui/widgets.go:593
 msgid "[WEATHER]"
 msgstr ""
 
-#: internal/ui/widgets.go:599
+#: internal/ui/widgets.go:594
 msgid "[NOW PLAYING]"
 msgstr ""
 
-#: internal/ui/widgets.go:834
+#: internal/ui/widgets.go:829
 msgid "Open Clock"
 msgstr ""
 
-#: internal/ui/widgets.go:852
+#: internal/ui/widgets.go:847
 msgid "Open Calendar"
 msgstr ""
 
-#: internal/ui/widgets.go:887
+#: internal/ui/widgets.go:882
 #: ui/agenda.ui:116
 msgid "Open Weather"
 msgstr ""
 
-#: internal/ui/widgets.go:952
+#: internal/ui/widgets.go:947
 msgid "Add an app, or drag one here from the dock"
 msgstr ""
 
-#: internal/ui/widgets.go:1054
+#: internal/ui/widgets.go:1049
 msgid "Alarm %s %s · %s"
 msgstr ""
 
-#: internal/ui/widgets.go:1103
+#: internal/ui/widgets.go:1098
 msgid "A player that plays shows here"
 msgstr ""
 
-#: internal/ui/widgets.go:1137
+#: internal/ui/widgets.go:1132
 msgid "Search apps"
 msgstr ""
 
-#: internal/ui/widgets.go:1188
+#: internal/ui/widgets.go:1183
 msgid "No app by that name"
 msgstr ""
 

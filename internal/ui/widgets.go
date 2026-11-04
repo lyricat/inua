@@ -4,10 +4,11 @@ import (
 	"cmp"
 	"log"
 	"slices"
-	"strconv"
 	"strings"
 	"time"
 	"unsafe"
+
+	"github.com/lyricat/inua/internal/compositor"
 
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/gobject"
@@ -22,7 +23,6 @@ import (
 	"github.com/lyricat/inua/internal/config"
 	"github.com/lyricat/inua/internal/desktop"
 	"github.com/lyricat/inua/internal/gtkx"
-	"github.com/lyricat/inua/internal/hypr"
 	"github.com/lyricat/inua/internal/i18n"
 	"github.com/lyricat/inua/internal/layershell"
 	"github.com/lyricat/inua/internal/shell"
@@ -42,7 +42,7 @@ import (
 type widgetPage struct {
 	open, closing bool
 	monitor       string // the connector it shows on
-	workspace     int    // the workspace under it, which it goes back to
+	workspace     string // the workspace under it, which it goes back to
 
 	win    gtk.ApplicationWindow
 	reveal gtk.Revealer
@@ -407,7 +407,7 @@ func (s *shellUI) openWidgets(b *bar) {
 	}
 	if b == nil {
 		for _, x := range s.bars {
-			if x.connector() == s.snap.FocusedMonitor {
+			if x.connector() == s.snap.FocusedOutput {
 				b = x
 			}
 		}
@@ -438,12 +438,7 @@ func (s *shellUI) openWidgets(b *bar) {
 	s.closePasswords()
 	s.closeDrawer()
 	p.monitor = b.connector()
-	p.workspace = 0
-	for _, mon := range s.snap.Monitors {
-		if mon.Name == p.monitor {
-			p.workspace = mon.ActiveWorkspaceID
-		}
-	}
+	p.workspace = s.snap.ActiveWorkspace(p.monitor)
 	s.buildWidgets(b)
 	p.open = true
 	s.fillWidgets()
@@ -504,8 +499,8 @@ func (s *shellUI) followWidgets() {
 		s.closeWidgets()
 		return
 	}
-	for _, mon := range s.snap.Monitors {
-		if mon.Name == p.monitor && mon.ActiveWorkspaceID != p.workspace {
+	for _, mon := range s.snap.Outputs {
+		if mon.Name == p.monitor && mon.ActiveWorkspace != p.workspace {
 			s.closeWidgets()
 		}
 	}
@@ -1217,7 +1212,7 @@ func (s *shellUI) widgetsRequest(fn string) bool {
 func (s *shellUI) swipeWorkspaces(dir int) {
 	var b *bar
 	for _, x := range s.bars {
-		if x.connector() == s.snap.FocusedMonitor {
+		if x.connector() == s.snap.FocusedOutput {
 			b = x
 		}
 	}
@@ -1227,28 +1222,23 @@ func (s *shellUI) swipeWorkspaces(dir int) {
 	if s.widgetsShownOn(b) {
 		s.closeWidgets()
 		if dir < 0 && len(b.shown) > 0 && !b.shown[0].Active {
-			s.switchWorkspace(strconv.Itoa(b.shown[0].ID))
+			s.switchWorkspace(b.shown[0].ID)
 		}
 		return
 	}
-	current, last := 0, 0
-	for _, mon := range s.snap.Monitors {
-		if mon.Name == b.connector() {
-			current = mon.ActiveWorkspaceID
-		}
-	}
-	i := slices.IndexFunc(b.shown, func(w hypr.Workspace) bool { return w.ID == current })
-	for _, w := range s.snap.Workspaces {
-		last = max(last, w.ID)
-	}
+	current := s.snap.ActiveWorkspace(b.connector())
+	i := slices.IndexFunc(b.shown, func(w compositor.Workspace) bool { return w.ID == current })
 	switch {
 	case dir < 0 && i <= 0:
 		s.openWidgets(b)
 	case dir < 0:
-		s.switchWorkspace(strconv.Itoa(b.shown[i-1].ID))
+		s.switchWorkspace(b.shown[i-1].ID)
 	case i >= 0 && i+1 < len(b.shown):
-		s.switchWorkspace(strconv.Itoa(b.shown[i+1].ID))
-	case slices.ContainsFunc(s.snap.Toplevels, func(t hypr.Toplevel) bool { return t.WorkspaceID == current }):
-		s.switchWorkspace(strconv.Itoa(last + 1)) // an empty one is the last
+		s.switchWorkspace(b.shown[i+1].ID)
+	case current != "" && slices.ContainsFunc(s.snap.Windows, func(t compositor.Window) bool { return t.Workspace == current }):
+		// Past the last: an empty one, as the compositor names it.
+		if ws, ok := s.newWorkspace(s.snap, b.connector(), nil); ok {
+			s.switchWorkspace(ws.ID)
+		}
 	}
 }

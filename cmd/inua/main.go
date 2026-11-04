@@ -39,6 +39,7 @@ import (
 	samples "github.com/lyricat/inua/config"
 	"github.com/lyricat/inua/internal/bootstrap"
 	"github.com/lyricat/inua/internal/clipboard"
+	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/config"
 	"github.com/lyricat/inua/internal/desktop"
 	"github.com/lyricat/inua/internal/hypr"
@@ -179,16 +180,16 @@ func cmdControl(op string, args []string) error {
 // printer is a hypr.Handler that prints to stdout.
 type printer struct{ events bool }
 
-func (p printer) OnSnapshot(s hypr.Snapshot) {
-	fmt.Printf("== snapshot: focused monitor %q, active toplevel %q\n", s.FocusedMonitor, s.ActiveToplevel)
-	for _, m := range s.Monitors {
-		fmt.Printf("monitor   %-10s id=%d %dx%d@%d,%d focused=%v ws=%d\n", m.Name, m.ID, m.Width, m.Height, m.X, m.Y, m.Focused, m.ActiveWorkspaceID)
+func (p printer) OnSnapshot(s compositor.Snapshot) {
+	fmt.Printf("== snapshot: focused output %q, focused window %q\n", s.FocusedOutput, s.FocusedWindow)
+	for _, m := range s.Outputs {
+		fmt.Printf("output    %-10s %dx%d@%d,%d scale=%g focused=%v ws=%s\n", m.Name, m.Width, m.Height, m.X, m.Y, m.Scale, m.Focused, m.ActiveWorkspace)
 	}
 	for _, w := range s.Workspaces {
-		fmt.Printf("workspace %-10s id=%d mon=%s active=%v focused=%v fullscreen=%v urgent=%v\n", w.Name, w.ID, w.Monitor, w.Active, w.Focused, w.HasFullscreen, w.Urgent)
+		fmt.Printf("workspace %-10s id=%s output=%s active=%v focused=%v fullscreen=%v urgent=%v\n", w.Name, w.ID, w.Output, w.Active, w.Focused, w.HasFullscreen, w.Urgent)
 	}
-	for _, t := range s.Toplevels {
-		fmt.Printf("toplevel  %s ws=%d mon=%s active=%v urgent=%v %s: %q\n", t.Address, t.WorkspaceID, t.Monitor, t.Activated, t.Urgent, t.Class, t.Title)
+	for _, t := range s.Windows {
+		fmt.Printf("window    %s ws=%s output=%s focused=%v urgent=%v rank=%d %s: %q\n", t.ID, t.Workspace, t.Output, t.Focused, t.Urgent, t.FocusRank, t.AppID, t.Title)
 	}
 }
 

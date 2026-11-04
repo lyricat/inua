@@ -135,7 +135,7 @@ msgstr "黑"
 #: internal/lightui/clock.go:219
 #: internal/ui/control.go:322
 #: internal/ui/lock.go:248
-#: internal/ui/widgets.go:992
+#: internal/ui/widgets.go:987
 msgid "Monday, January 2"
 msgstr "1月2日 Monday"
 
@@ -173,10 +173,10 @@ msgstr "周日"
 #: internal/config/strftime.go:50
 #: internal/i18n/time.go:11
 #: internal/lightui/weather.go:358
-#: internal/mailui/window.go:1434
+#: internal/mailui/window.go:1438
 #: internal/shell/notify.go:28
 #: internal/ui/agenda.go:371
-#: internal/ui/widgets.go:1050
+#: internal/ui/widgets.go:1045
 #: ui/calendar.ui:127
 msgid "Mon"
 msgstr "周一"
@@ -224,7 +224,7 @@ msgstr "周末"
 
 #: internal/apps/clock/clock.go:112
 #: internal/lightui/weather.go:360
-#: internal/ui/widgets.go:1052
+#: internal/ui/widgets.go:1047
 #: ui/agenda.ui:80
 #: ui/calendar.ui:39
 msgid "Today"
@@ -395,7 +395,7 @@ msgstr "打开"
 
 #: internal/apps/connect/share.go:129
 #: internal/ui/record.go:157
-#: internal/ui/screenshot.go:1140
+#: internal/ui/screenshot.go:1150
 #: internal/ui/settings_custom.go:41
 msgid "Show in Folder"
 msgstr "在文件夹中显示"
@@ -1217,7 +1217,7 @@ msgstr "项目的历史、分支和 stash；未推送的内容只存在于这里
 #: internal/filesui/sidebar.go:50
 #: internal/filesui/tabs.go:97
 #: internal/filesui/window.go:309
-#: internal/mailui/window.go:775
+#: internal/mailui/window.go:779
 msgid "Trash"
 msgstr "垃圾箱"
 
@@ -1513,7 +1513,7 @@ msgid "Not signed in"
 msgstr "未登录"
 
 #: internal/apps/mail/sort.go:32
-#: internal/mailui/window.go:247
+#: internal/mailui/window.go:248
 msgid "REPLY"
 msgstr "待回复"
 
@@ -1718,7 +1718,7 @@ msgid "online"
 msgstr "在线"
 
 #: internal/apps/tailscale/status.go:168
-#: internal/mailui/window.go:1793
+#: internal/mailui/window.go:1797
 msgid "just now"
 msgstr "刚才"
 
@@ -1769,7 +1769,7 @@ msgstr "等待批准"
 #: internal/filesui/remote.go:170
 #: internal/filesui/remotesetup.go:418
 #: internal/lightui/tailscale.go:153
-#: internal/mailui/window.go:652
+#: internal/mailui/window.go:656
 #: internal/shell/bluetooth.go:38
 #: internal/shell/status.go:158
 #: internal/shell/wifi.go:38
@@ -2544,224 +2544,224 @@ msgstr "正在清空剪贴板历史"
 msgid "Reading the notification history"
 msgstr "正在读取通知历史"
 
-#: internal/desk/tools.go:224
-#: internal/desk/tools.go:250
+#: internal/desk/tools.go:241
+#: internal/desk/tools.go:267
 msgid "the focused window"
 msgstr "聚焦窗口"
 
-#: internal/desk/tools.go:230
+#: internal/desk/tools.go:247
 msgid "Looking at the windows"
 msgstr "正在查看窗口"
 
-#: internal/desk/tools.go:237
+#: internal/desk/tools.go:254
 msgid "Focusing %s"
 msgstr "聚焦%s"
 
-#: internal/desk/tools.go:250
+#: internal/desk/tools.go:267
 msgid "Moving %s to workspace %s"
 msgstr "将%[1]s移动到工作区%[2]s"
 
-#: internal/desk/tools.go:266
+#: internal/desk/tools.go:283
 msgid "Closing %s"
 msgstr "关闭%s"
 
-#: internal/desk/tools.go:278
+#: internal/desk/tools.go:295
 msgid "Going to workspace %s"
 msgstr "前往工作区%s"
 
-#: internal/desk/tools.go:289
+#: internal/desk/tools.go:306
 msgid "Looking at the workspaces"
 msgstr "正在查看工作区"
 
-#: internal/desk/tools.go:400
+#: internal/desk/tools.go:388
 msgid "Looking at the apps"
 msgstr "查看应用程序"
 
-#: internal/desk/tools.go:416
+#: internal/desk/tools.go:404
 msgid "Opening %s"
 msgstr "正在打开 %s"
 
-#: internal/desk/tools.go:452
+#: internal/desk/tools.go:440
 msgid "Looking at the system"
 msgstr "查看系统"
 
-#: internal/desk/tools.go:466
+#: internal/desk/tools.go:454
 msgid "Setting the volume to %s%%"
 msgstr "将音量设为 %s%%"
 
-#: internal/desk/tools.go:468
+#: internal/desk/tools.go:456
 msgid "Setting the brightness to %s%%"
 msgstr "将亮度设为 %s%%"
 
-#: internal/desk/tools.go:471
+#: internal/desk/tools.go:459
 msgid "Turning Wi-Fi on"
 msgstr "正在打开 Wi-Fi"
 
-#: internal/desk/tools.go:471
+#: internal/desk/tools.go:459
 msgid "Turning Wi-Fi off"
 msgstr "正在关闭 Wi-Fi"
 
-#: internal/desk/tools.go:472
+#: internal/desk/tools.go:460
 msgid "Turning Bluetooth on"
 msgstr "正在打开蓝牙"
 
-#: internal/desk/tools.go:472
+#: internal/desk/tools.go:460
 msgid "Turning Bluetooth off"
 msgstr "正在关闭蓝牙"
 
-#: internal/desk/tools.go:473
+#: internal/desk/tools.go:461
 msgid "Muting the sound"
 msgstr "正在静音"
 
-#: internal/desk/tools.go:473
+#: internal/desk/tools.go:461
 msgid "Unmuting the sound"
 msgstr "正在取消静音"
 
-#: internal/desk/tools.go:474
+#: internal/desk/tools.go:462
 msgid "Turning Focus on"
 msgstr "正在开启专注模式"
 
-#: internal/desk/tools.go:474
+#: internal/desk/tools.go:462
 msgid "Turning Focus off"
 msgstr "正在关闭专注模式"
 
-#: internal/desk/tools.go:475
+#: internal/desk/tools.go:463
 msgid "Turning power saver on"
 msgstr "正在开启节能模式"
 
-#: internal/desk/tools.go:475
+#: internal/desk/tools.go:463
 msgid "Turning power saver off"
 msgstr "正在关闭节能模式"
 
-#: internal/desk/tools.go:477
+#: internal/desk/tools.go:465
 msgid "Setting %s to %s"
 msgstr "将 %s 设为 %s"
 
-#: internal/desk/tools.go:489
+#: internal/desk/tools.go:477
 msgid "Locking the screen"
 msgstr "锁定屏幕"
 
-#: internal/desk/tools.go:498
+#: internal/desk/tools.go:486
 msgid "Taking a screenshot of the focused window"
 msgstr "正在截取当前窗口"
 
-#: internal/desk/tools.go:500
+#: internal/desk/tools.go:488
 msgid "Taking a screenshot of the screen"
 msgstr "正在截取整个屏幕"
 
-#: internal/desk/tools.go:502
+#: internal/desk/tools.go:490
 msgid "Taking a screenshot of an area"
 msgstr "正在截取一个区域"
 
-#: internal/desk/tools.go:517
+#: internal/desk/tools.go:505
 msgid "Suspending"
 msgstr "暂停"
 
-#: internal/desk/tools.go:517
+#: internal/desk/tools.go:505
 msgid "Restarting the computer"
 msgstr "重新启动计算机"
 
-#: internal/desk/tools.go:517
+#: internal/desk/tools.go:505
 msgid "Shutting down"
 msgstr "正在关机"
 
-#: internal/desk/tools.go:517
+#: internal/desk/tools.go:505
 msgid "Logging out"
 msgstr "注销"
 
-#: internal/desk/tools.go:529
+#: internal/desk/tools.go:517
 msgid "Reading the notifications"
 msgstr "阅读通知"
 
-#: internal/desk/tools.go:534
+#: internal/desk/tools.go:522
 msgid "Clearing the notifications"
 msgstr "清除通知"
 
-#: internal/desk/tools.go:540
+#: internal/desk/tools.go:528
 msgid "Dismissing a notification"
 msgstr "正在关闭一条通知"
 
-#: internal/desk/tools.go:554
+#: internal/desk/tools.go:542
 msgid "Choosing “%s” on a notification"
 msgstr "正在选择通知上的“%s”"
 
-#: internal/desk/tools.go:556
+#: internal/desk/tools.go:544
 msgid "Opening a notification"
 msgstr "正在打开一条通知"
 
-#: internal/desk/tools.go:571
+#: internal/desk/tools.go:559
 msgid "Opening the launcher"
 msgstr "正在打开启动器"
 
-#: internal/desk/tools.go:571
+#: internal/desk/tools.go:559
 msgid "Opening the overview"
 msgstr "正在打开概览"
 
-#: internal/desk/tools.go:572
+#: internal/desk/tools.go:560
 msgid "Opening the control center"
 msgstr "正在打开控制中心"
 
-#: internal/desk/tools.go:572
+#: internal/desk/tools.go:560
 msgid "Opening the calendar"
 msgstr "正在打开日历"
 
-#: internal/desk/tools.go:573
+#: internal/desk/tools.go:561
 msgid "Opening the clipboard history"
 msgstr "正在打开剪贴板历史"
 
-#: internal/desk/tools.go:573
+#: internal/desk/tools.go:561
 msgid "Opening the notifications"
 msgstr "正在打开通知"
 
-#: internal/desk/tools.go:574
+#: internal/desk/tools.go:562
 msgid "Opening Settings"
 msgstr "正在打开设置"
 
-#: internal/desk/tools.go:594
+#: internal/desk/tools.go:582
 msgid "Reading the clipboard"
 msgstr "读取剪贴板"
 
-#: internal/desk/tools.go:609
+#: internal/desk/tools.go:597
 msgid "Copying “%s…”"
 msgstr "正在复制“%s......”"
 
-#: internal/desk/tools.go:611
+#: internal/desk/tools.go:599
 msgid "Copying “%s”"
 msgstr "复制“%s”"
 
-#: internal/desk/tools.go:633
+#: internal/desk/tools.go:621
 msgid "Looking at the processes"
 msgstr "查看进程"
 
-#: internal/desk/tools.go:682
+#: internal/desk/tools.go:670
 msgid "Killing %s(%d)"
 msgstr "杀死%[1]s(%[2]d)"
 
-#: internal/desk/tools.go:684
+#: internal/desk/tools.go:672
 msgid "Asking %s(%d) to quit"
 msgstr "要求%[1]s(%[2]d)退出"
 
-#: internal/desk/tools.go:705
+#: internal/desk/tools.go:693
 msgid "Looking at Tailscale"
 msgstr "正在查看 Tailscale"
 
-#: internal/desk/tools.go:735
+#: internal/desk/tools.go:723
 msgid "Stopping the Tailscale exit node"
 msgstr "停止Tailscale出口节点"
 
-#: internal/desk/tools.go:737
+#: internal/desk/tools.go:725
 msgid "Using %s as Tailscale exit node"
 msgstr "使用%s作为Tailscale出口节点"
 
-#: internal/desk/tools.go:740
+#: internal/desk/tools.go:728
 msgid "Connecting Tailscale"
 msgstr "正在连接 Tailscale"
 
-#: internal/desk/tools.go:742
+#: internal/desk/tools.go:730
 msgid "Disconnecting Tailscale"
 msgstr "正在断开 Tailscale"
 
-#: internal/desk/tools.go:775
+#: internal/desk/tools.go:763
 msgid "Looking up the weather in %s"
 msgstr "查询%s的天气"
 
@@ -2836,7 +2836,7 @@ msgid "Opens video files"
 msgstr "打开视频文件"
 
 #: internal/desktop/defaults.go:48
-#: internal/lightui/pass_otp.go:340
+#: internal/lightui/pass_otp.go:338
 #: internal/ui/settings.go:1042
 msgid "Images"
 msgstr "图像"
@@ -3008,7 +3008,7 @@ msgstr "永久删除 %s？"
 #: internal/lightui/gpg.go:1517
 #: internal/lightui/pass.go:950
 #: internal/term/web/strings.go:43
-#: internal/ui/clipboard.go:503
+#: internal/ui/clipboard.go:504
 #: internal/vmui/window.go:1996
 #: internal/vmui/window.go:2002
 #: internal/vmui/window.go:2015
@@ -3166,7 +3166,7 @@ msgstr "%s，%s 个文件 · %s"
 
 #: internal/diskui/window.go:557
 #: internal/filesui/pane.go:1552
-#: internal/ui/widgets.go:1054
+#: internal/ui/widgets.go:1049
 msgid "15:04"
 msgstr "15:04"
 
@@ -3299,7 +3299,7 @@ msgstr "压缩包将创建在“%s”中。"
 
 #: internal/filesui/archive.go:79
 #: internal/mailui/picker.go:142
-#: internal/mailui/window.go:771
+#: internal/mailui/window.go:775
 msgid "Archive"
 msgstr "压缩包"
 
@@ -3515,7 +3515,7 @@ msgstr "合并"
 
 #: internal/filesui/cards.go:497
 #: internal/filesui/picker.go:369
-#: internal/lightui/pass_otp.go:189
+#: internal/lightui/pass_otp.go:188
 msgid "Replace"
 msgstr "替换"
 
@@ -3843,7 +3843,7 @@ msgstr "文件夹"
 
 #: internal/filesui/details.go:51
 #: internal/lightui/sysmon.go:791
-#: internal/mailui/window.go:247
+#: internal/mailui/window.go:248
 #: internal/term/web/strings.go:52
 msgid "FILES"
 msgstr "文件"
@@ -3854,7 +3854,7 @@ msgstr "文件大小"
 
 #: internal/filesui/details.go:55
 #: internal/mailui/picker.go:137
-#: internal/mailui/window.go:1762
+#: internal/mailui/window.go:1766
 msgid "Search"
 msgstr "搜索"
 
@@ -8591,7 +8591,7 @@ msgstr ""
 
 #: internal/lightui/apps.go:16
 #: internal/ui/alarms.go:106
-#: internal/ui/widgets.go:587
+#: internal/ui/widgets.go:582
 #: ui/settings.ui:1188
 #: config/apps/io.github.lyricat.Inua.Clock.desktop:3
 msgid "Clock"
@@ -8600,8 +8600,8 @@ msgstr "时钟"
 #: internal/lightui/apps.go:17
 #: internal/lightui/weather.go:224
 #: internal/ui/agenda.go:334
-#: internal/ui/widgets.go:589
-#: internal/ui/widgets.go:1071
+#: internal/ui/widgets.go:584
+#: internal/ui/widgets.go:1066
 #: config/apps/io.github.lyricat.Inua.Weather.desktop:3
 msgid "Weather"
 msgstr "天气"
@@ -8618,7 +8618,7 @@ msgid "Calculator"
 msgstr "计算器"
 
 #: internal/lightui/apps.go:20
-#: internal/ui/widgets.go:588
+#: internal/ui/widgets.go:583
 #: ui/bar.ui:65
 #: config/apps/io.github.lyricat.Inua.Calendar.desktop:3
 msgid "Calendar"
@@ -8637,7 +8637,7 @@ msgstr "系统监视器"
 
 #: internal/lightui/apps.go:24
 #: internal/lightui/pass.go:266
-#: internal/lightui/pass_otp.go:114
+#: internal/lightui/pass_otp.go:113
 #: ui/pass.ui:29
 #: config/apps/io.github.lyricat.Inua.Pass.desktop:3
 msgid "Pass"
@@ -8667,7 +8667,7 @@ msgstr "使用%s"
 
 #: internal/lightui/calendar.go:132
 #: internal/ui/agenda.go:228
-#: internal/ui/widgets.go:1024
+#: internal/ui/widgets.go:1019
 msgid "January 2006"
 msgstr "2006年1月"
 
@@ -9213,7 +9213,7 @@ msgid "Cannot play %s: %s"
 msgstr "无法播放 %s：%s"
 
 #: internal/lightui/music.go:560
-#: internal/ui/widgets.go:1102
+#: internal/ui/widgets.go:1097
 #: ui/music.ui:86
 msgid "Nothing playing"
 msgstr "未在播放"
@@ -9332,12 +9332,12 @@ msgid "Decrypting %s"
 msgstr "正在解密 %s"
 
 #: internal/lightui/pass.go:691
-#: internal/lightui/pass_otp.go:188
+#: internal/lightui/pass_otp.go:187
 msgid "Replace the one-time code"
 msgstr "替换一次性验证码"
 
 #: internal/lightui/pass.go:693
-#: internal/lightui/pass_otp.go:191
+#: internal/lightui/pass_otp.go:190
 #: ui/pass.ui:230
 #: ui/pass.ui:670
 msgid "Add a one-time code"
@@ -9382,7 +9382,7 @@ msgid "Hide"
 msgstr "隐藏"
 
 #: internal/lightui/pass.go:787
-#: internal/lightui/pass_otp.go:246
+#: internal/lightui/pass_otp.go:245
 #: internal/ui/passwords.go:661
 msgid "%d second left"
 msgid_plural "%d seconds left"
@@ -9547,41 +9547,41 @@ msgstr "已允许：无人可询问"
 msgid "read"
 msgstr "已读取"
 
-#: internal/lightui/pass_otp.go:101
+#: internal/lightui/pass_otp.go:100
 msgid "It is not an image this app reads (PNG or JPEG)."
 msgstr "这不是本应用能读取的图片（PNG 或 JPEG）。"
 
-#: internal/lightui/pass_otp.go:192
+#: internal/lightui/pass_otp.go:191
 #: internal/lightui/workshop_manager.go:88
-#: internal/ui/widgets.go:950
+#: internal/ui/widgets.go:945
 #: ui/connect.ui:967
 #: ui/pass.ui:871
 #: ui/remote.ui:1053
 msgid "Add"
 msgstr "添加"
 
-#: internal/lightui/pass_otp.go:265
+#: internal/lightui/pass_otp.go:264
 msgid "Reading the screen needs grim."
 msgstr "读取屏幕需要 grim。"
 
-#: internal/lightui/pass_otp.go:269
+#: internal/lightui/pass_otp.go:268
 msgid "Selecting an area needs slurp."
 msgstr "选择区域需要 slurp。"
 
-#: internal/lightui/pass_otp.go:273
+#: internal/lightui/pass_otp.go:272
 msgid "No area was chosen."
 msgstr "没有选择区域。"
 
-#: internal/lightui/pass_otp.go:288
-#: internal/lightui/pass_otp.go:326
+#: internal/lightui/pass_otp.go:287
+#: internal/lightui/pass_otp.go:324
 msgid "The screen could not be read."
 msgstr "无法读取屏幕。"
 
-#: internal/lightui/pass_otp.go:338
+#: internal/lightui/pass_otp.go:336
 msgid "An image with a QR code"
 msgstr "含二维码的图片"
 
-#: internal/lightui/pass_otp.go:361
+#: internal/lightui/pass_otp.go:359
 msgid "Reading the QR code…"
 msgstr "正在读取二维码…"
 
@@ -9590,7 +9590,7 @@ msgid "Search for a symbol to add it."
 msgstr "搜索符号以添加它。"
 
 #: internal/lightui/stocks.go:282
-#: internal/mailui/window.go:990
+#: internal/mailui/window.go:994
 msgid "Loading %s…"
 msgstr "正在加载%s…"
 
@@ -9637,7 +9637,7 @@ msgstr "无法搜索:%s"
 #: internal/lightui/sysmon.go:54
 #: internal/shell/launcher_actions.go:45
 #: internal/termui/menubar.go:34
-#: internal/ui/dock.go:532
+#: internal/ui/dock.go:533
 #: internal/ui/portal_ask.go:80
 msgid "Quit"
 msgstr "退出"
@@ -10783,7 +10783,7 @@ msgid "Mail forgets it on this computer: its sign-in and the mail it kept. The m
 msgstr "邮件会在这台电脑上忘掉它：登录信息和已保存的邮件。服务器上的邮件仍会保留。"
 
 #: internal/mailui/actions.go:518
-#: internal/mailui/window.go:588
+#: internal/mailui/window.go:592
 msgid "Unsent"
 msgstr "未发送"
 
@@ -10791,7 +10791,7 @@ msgstr "未发送"
 #: internal/mailui/details.go:190
 #: internal/mailui/people.go:301
 #: internal/mailui/reader.go:232
-#: internal/mailui/window.go:1333
+#: internal/mailui/window.go:1337
 msgid "(no subject)"
 msgstr "（无主题）"
 
@@ -10823,7 +10823,7 @@ msgid_plural "%s and %d more messages"
 msgstr[0] "%s 及另外 %d 封"
 
 #: internal/mailui/app.go:23
-#: internal/mailui/window.go:1723
+#: internal/mailui/window.go:1727
 #: ui/mail.ui:14
 #: config/apps/io.github.lyricat.Inua.Mail.desktop:3
 msgid "Mail"
@@ -10863,7 +10863,7 @@ msgid "The assistant gave no search."
 msgstr "助手没有给出搜索。"
 
 #: internal/mailui/assist.go:262
-#: internal/mailui/window.go:1560
+#: internal/mailui/window.go:1564
 msgid "Searched for %s"
 msgstr "已搜索 %s"
 
@@ -10956,7 +10956,7 @@ msgstr "翻译成%s"
 #: internal/mailui/details.go:98
 #: internal/mailui/formatted.go:192
 #: internal/mailui/settings.go:382
-#: internal/mailui/window.go:1752
+#: internal/mailui/window.go:1756
 msgid "Not saved: %v"
 msgstr "未保存：%v"
 
@@ -11311,7 +11311,7 @@ msgid "Forward (F)"
 msgstr "转发 (F)"
 
 #: internal/mailui/reader.go:320
-#: internal/mailui/window.go:1249
+#: internal/mailui/window.go:1253
 msgid "Archive (E)"
 msgstr "归档 (E)"
 
@@ -11328,17 +11328,17 @@ msgid "Move to a folder (V)"
 msgstr "移到文件夹 (V)"
 
 #: internal/mailui/reader.go:327
-#: internal/mailui/window.go:1378
+#: internal/mailui/window.go:1382
 msgid "Star (S)"
 msgstr "加星 (S)"
 
 #: internal/mailui/reader.go:330
-#: internal/mailui/window.go:1375
+#: internal/mailui/window.go:1379
 msgid "Unstar (S)"
 msgstr "取消星标 (S)"
 
 #: internal/mailui/reader.go:332
-#: internal/mailui/window.go:1385
+#: internal/mailui/window.go:1389
 msgid "Mark as unread (U)"
 msgstr "标为未读 (U)"
 
@@ -11397,7 +11397,7 @@ msgid "Fold"
 msgstr ""
 
 #: internal/mailui/reader.go:670
-#: internal/mailui/window.go:1327
+#: internal/mailui/window.go:1331
 msgid "me"
 msgstr "我"
 
@@ -11985,7 +11985,7 @@ msgid "Enter signs in · Esc goes back"
 msgstr "Enter 登录 · Esc 返回"
 
 #: internal/mailui/welcome.go:600
-#: internal/mailui/window.go:644
+#: internal/mailui/window.go:648
 msgid "Sign in"
 msgstr "登录"
 
@@ -12065,251 +12065,251 @@ msgstr "你自己的 OAuth 客户端…"
 msgid "Hide your own OAuth client"
 msgstr "隐藏你自己的 OAuth 客户端"
 
-#: internal/mailui/window.go:247
+#: internal/mailui/window.go:248
 msgid "ALL"
 msgstr "全部"
 
-#: internal/mailui/window.go:247
+#: internal/mailui/window.go:248
 msgid "UNREAD"
 msgstr "未读"
 
-#: internal/mailui/window.go:251
+#: internal/mailui/window.go:252
 msgid "Every conversation"
 msgstr "所有会话"
 
-#: internal/mailui/window.go:251
+#: internal/mailui/window.go:252
 msgid "With messages not read"
 msgstr "有未读邮件"
 
-#: internal/mailui/window.go:252
-#: internal/mailui/window.go:1370
+#: internal/mailui/window.go:253
+#: internal/mailui/window.go:1374
 msgid "With files attached"
 msgstr "带有附件"
 
-#: internal/mailui/window.go:252
+#: internal/mailui/window.go:253
 msgid "Waiting for your reply"
 msgstr "等待你的回复"
 
-#: internal/mailui/window.go:262
+#: internal/mailui/window.go:263
 msgid "MARK READ"
 msgstr "全部已读"
 
-#: internal/mailui/window.go:265
+#: internal/mailui/window.go:266
 msgid "Mark every conversation here as read"
 msgstr "将这里的所有会话标为已读"
 
-#: internal/mailui/window.go:269
+#: internal/mailui/window.go:270
 msgid "EMPTY"
 msgstr ""
 
-#: internal/mailui/window.go:272
+#: internal/mailui/window.go:273
 msgid "Permanently delete every message here"
 msgstr ""
 
-#: internal/mailui/window.go:477
+#: internal/mailui/window.go:481
 msgid "Signed out"
 msgstr "已退出登录"
 
-#: internal/mailui/window.go:479
+#: internal/mailui/window.go:483
 msgid "No client ID"
 msgstr ""
 
-#: internal/mailui/window.go:496
+#: internal/mailui/window.go:500
 msgid "Offline: server not found"
 msgstr "{'es': 'Sin conexión: no se encuentra el servidor', 'fr': 'Hors ligne : serveur introuvable', 'ja': 'オフライン：サーバーが見つかりません', 'ko': '오프라인: 서버를 찾을 수 없음', 'zh_CN': '离线：找不到服务器', 'zh_TW': '離線：找不到伺服器'}"
 
-#: internal/mailui/window.go:498
+#: internal/mailui/window.go:502
 msgid "Offline: connection refused"
 msgstr "{'es': 'Sin conexión: conexión rechazada', 'fr': 'Hors ligne : connexion refusée', 'ja': 'オフライン：接続が拒否されました', 'ko': '오프라인: 연결이 거부됨', 'zh_CN': '离线：连接被拒绝', 'zh_TW': '離線：連線被拒絕'}"
 
-#: internal/mailui/window.go:500
+#: internal/mailui/window.go:504
 msgid "Offline: no network"
 msgstr "{'es': 'Sin conexión: no hay red', 'fr': 'Hors ligne : pas de réseau', 'ja': 'オフライン：ネットワークがありません', 'ko': '오프라인: 네트워크 없음', 'zh_CN': '离线：没有网络', 'zh_TW': '離線：沒有網路'}"
 
-#: internal/mailui/window.go:502
+#: internal/mailui/window.go:506
 msgid "Offline: certificate not trusted"
 msgstr "{'es': 'Sin conexión: certificado no fiable', 'fr': 'Hors ligne : certificat non reconnu', 'ja': 'オフライン：証明書を信頼できません', 'ko': '오프라인: 신뢰할 수 없는 인증서', 'zh_CN': '离线：证书不受信任', 'zh_TW': '離線：憑證不受信任'}"
 
-#: internal/mailui/window.go:504
+#: internal/mailui/window.go:508
 msgid "Offline: no answer from the server"
 msgstr "{'es': 'Sin conexión: el servidor no responde', 'fr': 'Hors ligne : le serveur ne répond pas', 'ja': 'オフライン：サーバーが応答しません', 'ko': '오프라인: 서버가 응답하지 않음', 'zh_CN': '离线：服务器无响应', 'zh_TW': '離線：伺服器無回應'}"
 
-#: internal/mailui/window.go:506
+#: internal/mailui/window.go:510
 msgid "Offline: connection dropped"
 msgstr "{'es': 'Sin conexión: se cortó la conexión', 'fr': 'Hors ligne : connexion interrompue', 'ja': 'オフライン：接続が切れました', 'ko': '오프라인: 연결이 끊김', 'zh_CN': '离线：连接已断开', 'zh_TW': '離線：連線已中斷'}"
 
-#: internal/mailui/window.go:508
+#: internal/mailui/window.go:512
 #: internal/shell/status.go:77
 msgid "Offline"
 msgstr "离线"
 
-#: internal/mailui/window.go:567
-#: internal/mailui/window.go:1698
+#: internal/mailui/window.go:571
+#: internal/mailui/window.go:1702
 msgid "No account yet"
 msgstr "还没有账户"
 
-#: internal/mailui/window.go:582
+#: internal/mailui/window.go:586
 msgid "All inboxes"
 msgstr "所有收件箱"
 
-#: internal/mailui/window.go:583
+#: internal/mailui/window.go:587
 msgid "Needs reply"
 msgstr "需要回复"
 
-#: internal/mailui/window.go:584
+#: internal/mailui/window.go:588
 msgid "Starred"
 msgstr "已加星标"
 
-#: internal/mailui/window.go:586
+#: internal/mailui/window.go:590
 msgid "Newsletters"
 msgstr ""
 
-#: internal/mailui/window.go:592
+#: internal/mailui/window.go:596
 msgid "Contacts"
 msgstr ""
 
-#: internal/mailui/window.go:601
+#: internal/mailui/window.go:605
 msgid "This account's settings"
 msgstr "此账户的设置"
 
-#: internal/mailui/window.go:679
+#: internal/mailui/window.go:683
 msgid "%d more folder"
 msgid_plural "%d more folders"
 msgstr[0] "另外 %d 个文件夹"
 
-#: internal/mailui/window.go:681
+#: internal/mailui/window.go:685
 msgid "Fewer folders"
 msgstr "收起文件夹"
 
-#: internal/mailui/window.go:765
+#: internal/mailui/window.go:769
 msgid "Inbox"
 msgstr "收件箱"
 
-#: internal/mailui/window.go:767
+#: internal/mailui/window.go:771
 msgid "Drafts"
 msgstr "草稿"
 
-#: internal/mailui/window.go:769
+#: internal/mailui/window.go:773
 msgid "Sent"
 msgstr "已发送"
 
-#: internal/mailui/window.go:773
+#: internal/mailui/window.go:777
 msgid "Spam"
 msgstr "垃圾邮件"
 
-#: internal/mailui/window.go:812
+#: internal/mailui/window.go:816
 msgid "Search contacts"
 msgstr ""
 
-#: internal/mailui/window.go:814
-#: internal/mailui/window.go:1760
+#: internal/mailui/window.go:818
+#: internal/mailui/window.go:1764
 #: ui/mail.ui:148
 msgid "Search, or ask in a sentence"
 msgstr "搜索，或用一句话提问"
 
-#: internal/mailui/window.go:1032
+#: internal/mailui/window.go:1036
 msgid "your mail"
 msgstr "你的邮件"
 
-#: internal/mailui/window.go:1045
+#: internal/mailui/window.go:1049
 msgid "Nothing found"
 msgstr "未找到"
 
-#: internal/mailui/window.go:1047
+#: internal/mailui/window.go:1051
 msgid "Fetching your mail…"
 msgstr "正在获取邮件…"
 
-#: internal/mailui/window.go:1049
+#: internal/mailui/window.go:1053
 msgid "Nothing waits for your reply"
 msgstr "没有等你回复的邮件"
 
-#: internal/mailui/window.go:1051
+#: internal/mailui/window.go:1055
 msgid "No starred conversation"
 msgstr "没有加星标的会话"
 
-#: internal/mailui/window.go:1053
+#: internal/mailui/window.go:1057
 msgid "No newsletter"
 msgstr ""
 
-#: internal/mailui/window.go:1055
+#: internal/mailui/window.go:1059
 msgid "All read"
 msgstr "全部已读"
 
-#: internal/mailui/window.go:1057
+#: internal/mailui/window.go:1061
 msgid "Inbox empty. Nothing waits for you."
 msgstr "收件箱空了，没有等你处理的邮件。"
 
-#: internal/mailui/window.go:1059
+#: internal/mailui/window.go:1063
 msgid "No mail here"
 msgstr "这里没有邮件"
 
-#: internal/mailui/window.go:1124
+#: internal/mailui/window.go:1128
 msgid "Could not load older mail: %v"
 msgstr "无法加载更早的邮件：%v"
 
-#: internal/mailui/window.go:1250
+#: internal/mailui/window.go:1254
 msgid "Delete (D)"
 msgstr "删除 (D)"
 
-#: internal/mailui/window.go:1274
+#: internal/mailui/window.go:1278
 msgid "SUSPICIOUS"
 msgstr "可疑"
 
-#: internal/mailui/window.go:1342
+#: internal/mailui/window.go:1346
 msgid "EMPTY PREVIEW"
 msgstr ""
 
-#: internal/mailui/window.go:1382
+#: internal/mailui/window.go:1386
 msgid "Mark as read"
 msgstr "标为已读"
 
-#: internal/mailui/window.go:1436
+#: internal/mailui/window.go:1440
 #: internal/shell/notify.go:30
 msgid "Jan 2"
 msgstr "1月2日"
 
-#: internal/mailui/window.go:1494
+#: internal/mailui/window.go:1498
 msgid "Press Enter to ask the assistant to search for this."
 msgstr "按 Enter 让助手搜索这句话。"
 
-#: internal/mailui/window.go:1539
+#: internal/mailui/window.go:1543
 msgid "Searching the server…"
 msgstr "正在搜索服务器…"
 
-#: internal/mailui/window.go:1563
+#: internal/mailui/window.go:1567
 msgid "The server's search failed: %s"
 msgstr "服务器搜索失败：%s"
 
-#: internal/mailui/window.go:1695
+#: internal/mailui/window.go:1699
 msgid "Up to date"
 msgstr "已是最新"
 
-#: internal/mailui/window.go:1700
+#: internal/mailui/window.go:1704
 msgid "Checking for mail…"
 msgstr "正在检查邮件…"
 
-#: internal/mailui/window.go:1704
+#: internal/mailui/window.go:1708
 msgid "Offline: trying again soon"
 msgstr "离线：稍后重试"
 
-#: internal/mailui/window.go:1706
+#: internal/mailui/window.go:1710
 msgid "%d account cannot connect"
 msgid_plural "%d accounts cannot connect"
 msgstr[0] "%d 个账户无法连接"
 
-#: internal/mailui/window.go:1708
+#: internal/mailui/window.go:1712
 msgid "Checked %s"
 msgstr "%s检查过"
 
-#: internal/mailui/window.go:1713
+#: internal/mailui/window.go:1717
 msgid "Last checked at %s"
 msgstr "上次检查于 %s"
 
-#: internal/mailui/window.go:1721
+#: internal/mailui/window.go:1725
 msgid "Mail · %d unread"
 msgstr "邮件 · %d 未读"
 
-#: internal/mailui/window.go:1796
+#: internal/mailui/window.go:1800
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d 分钟前"
@@ -12740,7 +12740,7 @@ msgid "Screenshot Area"
 msgstr "截图区"
 
 #: internal/shell/commands.go:34
-#: internal/ui/screenshot.go:590
+#: internal/ui/screenshot.go:596
 msgid "Drag out an area"
 msgstr "拖出一个区域"
 
@@ -12749,7 +12749,7 @@ msgid "Screenshot Window"
 msgstr "截图窗口"
 
 #: internal/shell/commands.go:35
-#: internal/ui/screenshot.go:591
+#: internal/ui/screenshot.go:597
 #: ui/screenshot.ui:169
 msgid "Click a window"
 msgstr "单击窗口"
@@ -12759,7 +12759,7 @@ msgid "Screenshot Screen"
 msgstr "屏幕截图"
 
 #: internal/shell/commands.go:36
-#: internal/ui/screenshot.go:592
+#: internal/ui/screenshot.go:598
 #: ui/screenshot.ui:194
 msgid "Click a screen"
 msgstr "单击屏幕"
@@ -12917,7 +12917,7 @@ msgid "Find apps, windows and answers"
 msgstr "查找应用程序、窗口和答案"
 
 #: internal/shell/dock.go:313
-#: internal/ui/screenshot.go:1134
+#: internal/ui/screenshot.go:1144
 #: ui/settings.ui:1915
 msgid "Screenshot"
 msgstr "截图"
@@ -12960,44 +12960,44 @@ msgstr[0] "%d 分钟"
 msgid "%s minutes"
 msgstr "%s 分钟"
 
-#: internal/shell/launcher.go:48
+#: internal/shell/launcher.go:47
 msgid "[WINDOWS]"
 msgstr "[窗口]"
 
-#: internal/shell/launcher.go:50
-#: internal/ui/widgets.go:600
+#: internal/shell/launcher.go:49
+#: internal/ui/widgets.go:595
 msgid "[APPS]"
 msgstr "[应用]"
 
-#: internal/shell/launcher.go:337
+#: internal/shell/launcher.go:336
 msgid "That window has closed"
 msgstr "该窗口已关闭"
 
-#: internal/shell/launcher.go:364
+#: internal/shell/launcher.go:363
 msgid "Ask the assistant anything"
 msgstr "有什么事情都可以向助理询问"
 
-#: internal/shell/launcher.go:366
+#: internal/shell/launcher.go:365
 msgid "No emoji or symbol matches"
 msgstr "没有表情符号或符号匹配"
 
-#: internal/shell/launcher.go:368
+#: internal/shell/launcher.go:367
 msgid "Reading apps…"
 msgstr "阅读应用程序……"
 
-#: internal/shell/launcher.go:370
+#: internal/shell/launcher.go:369
 msgid "No app matches"
 msgstr "没有应用匹配"
 
-#: internal/shell/launcher.go:372
+#: internal/shell/launcher.go:371
 msgid "Not connected to Hyprland"
 msgstr "未连接到 Hyprland"
 
-#: internal/shell/launcher.go:374
+#: internal/shell/launcher.go:373
 msgid "No windows open"
 msgstr "没有打开的窗口"
 
-#: internal/shell/launcher.go:376
+#: internal/shell/launcher.go:375
 msgid "No window matches"
 msgstr "没有窗口匹配"
 
@@ -13023,22 +13023,22 @@ msgid "%s · workspace %s"
 msgstr "%[1]s·工作空间%[2]s"
 
 #: internal/shell/launcher_actions.go:33
-#: internal/ui/dock.go:523
+#: internal/ui/dock.go:524
 msgid "New Window"
 msgstr "新窗口"
 
 #: internal/shell/launcher_actions.go:39
-#: internal/ui/dock.go:526
+#: internal/ui/dock.go:527
 msgid "Remove from Dock"
 msgstr "从扩展坞中移除"
 
 #: internal/shell/launcher_actions.go:41
-#: internal/ui/dock.go:528
+#: internal/ui/dock.go:529
 msgid "Keep in Dock"
 msgstr "固定到程序坞"
 
 #: internal/shell/launcher_actions.go:47
-#: internal/ui/dock.go:534
+#: internal/ui/dock.go:535
 msgid "Quit (%d windows)"
 msgstr "退出(%d窗口)"
 
@@ -14321,32 +14321,32 @@ msgid "inua calendar"
 msgstr "inua日历"
 
 #: internal/ui/agenda.go:227
-#: internal/ui/widgets.go:992
+#: internal/ui/widgets.go:987
 msgid "%s · WK %d"
 msgstr "%s · 第 %d 周"
 
 #: internal/ui/agenda.go:335
-#: internal/ui/widgets.go:1072
+#: internal/ui/widgets.go:1067
 msgid "Add a place in Weather to see it here"
 msgstr "在天气中添加地点即可在此处查看"
 
 #: internal/ui/agenda.go:346
-#: internal/ui/widgets.go:1078
+#: internal/ui/widgets.go:1073
 msgid "No forecast: offline?"
 msgstr "无预测：离线？"
 
 #: internal/ui/agenda.go:348
-#: internal/ui/widgets.go:1076
+#: internal/ui/widgets.go:1071
 msgid "Reading the forecast…"
 msgstr "阅读预测……"
 
 #: internal/ui/agenda.go:356
-#: internal/ui/widgets.go:1085
+#: internal/ui/widgets.go:1080
 msgid "%s · feels %s"
 msgstr "%[1]s·感觉%[2]s"
 
 #: internal/ui/agenda.go:359
-#: internal/ui/widgets.go:1087
+#: internal/ui/widgets.go:1082
 msgid "H %s  L %s"
 msgstr "H %[1]s L %[2]s"
 
@@ -14553,84 +14553,84 @@ msgstr "为截图已隐藏。"
 msgid "The passphrases do not match."
 msgstr "密码短语不匹配。"
 
-#: internal/ui/bar.go:472
+#: internal/ui/bar.go:462
 msgid "Workspace %s"
 msgstr "工作空间%s"
 
-#: internal/ui/bar.go:485
+#: internal/ui/bar.go:475
 msgid "WORKSPACE"
 msgstr "工作区"
 
-#: internal/ui/clipboard.go:82
+#: internal/ui/clipboard.go:83
 msgid "Could not clear the history"
 msgstr "无法清空历史"
 
-#: internal/ui/clipboard.go:95
+#: internal/ui/clipboard.go:96
 msgid "Could not delete it"
 msgstr "无法删除"
 
-#: internal/ui/clipboard.go:250
+#: internal/ui/clipboard.go:251
 msgid "[CLIPBOARD]"
 msgstr "[剪贴板]"
 
-#: internal/ui/clipboard.go:255
+#: internal/ui/clipboard.go:256
 #: ui/center.ui:81
 msgid "Clear all"
 msgstr "全部清除"
 
-#: internal/ui/clipboard.go:262
+#: internal/ui/clipboard.go:263
 msgid "Search clipboard history"
 msgstr "搜索剪贴板历史"
 
-#: internal/ui/clipboard.go:359
+#: internal/ui/clipboard.go:360
 #: ui/connect.ui:728
 #: ui/settings.ui:3589
 msgid "Clipboard"
 msgstr "剪贴板"
 
-#: internal/ui/clipboard.go:423
+#: internal/ui/clipboard.go:424
 msgid "Could not read the clipboard history"
 msgstr "无法读取剪贴板历史"
 
-#: internal/ui/clipboard.go:469
+#: internal/ui/clipboard.go:470
 msgid "Image · %s"
 msgstr "图片 · %s"
 
-#: internal/ui/clipboard.go:499
+#: internal/ui/clipboard.go:500
 msgid "Copy without pasting"
 msgstr "只复制,不粘贴"
 
-#: internal/ui/clipboard.go:501
+#: internal/ui/clipboard.go:502
 msgid "Paste the image file's path"
 msgstr "粘贴图片文件的路径"
 
-#: internal/ui/clipboard.go:507
+#: internal/ui/clipboard.go:508
 msgid "Nothing copied yet"
 msgstr "还没有复制过内容"
 
-#: internal/ui/clipboard.go:509
+#: internal/ui/clipboard.go:510
 msgid "Nothing matches"
 msgstr "没有匹配项"
 
-#: internal/ui/clipboard.go:518
+#: internal/ui/clipboard.go:519
 msgid "%d entry · click to paste · Escape to close"
 msgid_plural "%d entries · click to paste · Escape to close"
 msgstr[0] "%d 条 · 点击粘贴 · Esc 关闭"
 
-#: internal/ui/clipboard.go:520
+#: internal/ui/clipboard.go:521
 msgid "%d entry · click to copy · Escape to close"
 msgid_plural "%d entries · click to copy · Escape to close"
 msgstr[0] "%d 条 · 点击复制 · Esc 关闭"
 
-#: internal/ui/clipboard.go:540
+#: internal/ui/clipboard.go:541
 msgid "[DETAILS]"
 msgstr "[详情]"
 
-#: internal/ui/clipboard.go:543
+#: internal/ui/clipboard.go:544
 msgid "[COPIED %s FROM %s]"
 msgstr "[复制于 %s，来自 %s]"
 
-#: internal/ui/clipboard.go:545
+#: internal/ui/clipboard.go:546
 msgid "[COPIED %s]"
 msgstr "[复制于 %s]"
 
@@ -14713,7 +14713,7 @@ msgstr "还没有配对的设备"
 
 #: internal/ui/drawer.go:217
 #: internal/ui/settings.go:575
-#: internal/ui/widgets.go:591
+#: internal/ui/widgets.go:586
 #: ui/settings.ui:181
 #: ui/settings.ui:2054
 msgid "Apps"
@@ -14767,7 +14767,7 @@ msgstr "hyprland.lua 在加载 inua.lua 之后又设置了这些,会盖过 inua 
 msgid "hyprland.conf sets these again after loading inua.conf, which wins over inua: %s. Move the source line below them."
 msgstr "hyprland.conf 在加载 inua.conf 后再次设置这些,这赢得了 inua: %s。将源代码行移到它们下方。"
 
-#: internal/ui/launcher.go:516
+#: internal/ui/launcher.go:517
 msgid "inua launcher"
 msgstr "inua发射器"
 
@@ -14833,88 +14833,88 @@ msgstr "蓝牙开"
 msgid "Bluetooth off"
 msgstr "蓝牙关"
 
-#: internal/ui/overview.go:186
+#: internal/ui/overview.go:184
 msgid "restore focus"
 msgstr "恢复焦点"
 
-#: internal/ui/overview.go:297
+#: internal/ui/overview.go:293
 msgid "kill window"
 msgstr "杀掉窗口"
 
-#: internal/ui/overview.go:432
+#: internal/ui/overview.go:426
 msgid "MRU: ON"
 msgstr "MRU:开"
 
-#: internal/ui/overview.go:432
+#: internal/ui/overview.go:426
 msgid "MRU: OFF"
 msgstr "MRU:关闭"
 
-#: internal/ui/overview.go:433
+#: internal/ui/overview.go:427
 msgid "This monitor"
 msgstr "该显示器"
 
-#: internal/ui/overview.go:433
+#: internal/ui/overview.go:427
 msgid "All monitors"
 msgstr "所有监视器"
 
-#: internal/ui/overview.go:442
+#: internal/ui/overview.go:436
 msgid "FILTER"
 msgstr "筛选"
 
-#: internal/ui/overview.go:444
+#: internal/ui/overview.go:438
 msgid "NO MATCHES"
 msgstr "没有匹配"
 
-#: internal/ui/overview.go:446
+#: internal/ui/overview.go:440
 msgid "%d RESULT"
 msgid_plural "%d RESULTS"
 msgstr[0] "%d 个结果"
 
-#: internal/ui/overview.go:479
+#: internal/ui/overview.go:473
 msgid "No workspaces"
 msgstr "没有工作区"
 
-#: internal/ui/overview.go:481
+#: internal/ui/overview.go:475
 msgid "No matches"
 msgstr "没有匹配项"
 
-#: internal/ui/overview.go:601
+#: internal/ui/overview.go:595
 msgid "＋  New workspace"
 msgstr "＋  新工作区"
 
-#: internal/ui/overview.go:927
+#: internal/ui/overview.go:954
 msgid "Filter by window title or app"
 msgstr "按窗口标题或应用程序过滤"
 
-#: internal/ui/overview.go:943
+#: internal/ui/overview.go:970
 msgid "TYPE TO FILTER WINDOWS"
 msgstr "输入以筛选窗口"
 
-#: internal/ui/overview.go:956
+#: internal/ui/overview.go:983
 msgid "Type or / to filter windows   Esc · clear / close   Arrows / Tab · select   Middle click · close   Ctrl+Shift+X · kill   Drag · move"
 msgstr "键入 或 / 来过滤窗口 Esc · 清除/关闭箭头/ Tab · 选择中键单击 · 关闭 Ctrl+Shift+X · 删除 拖动 · 移动"
 
-#: internal/ui/overview.go:1000
+#: internal/ui/overview.go:1027
 msgid "inua overview"
 msgstr "inua概述"
 
-#: internal/ui/overview_manage.go:123
+#: internal/ui/overview_manage.go:124
 msgid "close window"
 msgstr "关闭窗口"
 
-#: internal/ui/overview_manage.go:163
+#: internal/ui/overview_manage.go:164
 msgid "%s · %s · Middle click: close"
 msgstr "%[1]s·%[2]s·中键:关闭"
 
-#: internal/ui/overview_manage.go:201
+#: internal/ui/overview_manage.go:202
 msgid "Click a window to force-terminate ONLY that client · Esc / right click cancels"
 msgstr "单击窗口仅强制终止该客户端 · Esc/右键单击取消"
 
-#: internal/ui/overview_manage.go:205
+#: internal/ui/overview_manage.go:206
 msgid "Arrows / Tab · select    Type or / · search    Middle click · close    Ctrl+Shift+X · kill    Drag · move"
 msgstr "箭头/选项卡·选择类型或/·搜索中键单击·关闭Ctrl+Shift+X·删除拖动·移动"
 
-#: internal/ui/overview_manage.go:243
+#: internal/ui/overview_manage.go:242
 msgid "position floating window"
 msgstr "定位浮动窗口"
 
@@ -15045,47 +15045,47 @@ msgstr "录屏已保存"
 msgid "Screen recording"
 msgstr "屏幕录制"
 
-#: internal/ui/screenshot.go:572
+#: internal/ui/screenshot.go:578
 msgid "inua screenshot"
 msgstr "inua截图"
 
-#: internal/ui/screenshot.go:593
+#: internal/ui/screenshot.go:599
 msgid "Click to copy a colour"
 msgstr "单击复制颜色"
 
-#: internal/ui/screenshot.go:597
+#: internal/ui/screenshot.go:603
 msgid "Drag out an area to record"
 msgstr "拖出要录制的区域"
 
-#: internal/ui/screenshot.go:598
+#: internal/ui/screenshot.go:604
 msgid "Click a window to record"
 msgstr "点击窗口进行录制"
 
-#: internal/ui/screenshot.go:599
+#: internal/ui/screenshot.go:605
 msgid "Click a screen to record"
 msgstr "点击屏幕进行录制"
 
-#: internal/ui/screenshot.go:644
+#: internal/ui/screenshot.go:650
 msgid "Drag to adjust · click inside to take"
 msgstr "拖动以调整 · 点击区域内截图"
 
-#: internal/ui/screenshot.go:646
+#: internal/ui/screenshot.go:652
 msgid "Drag to adjust · click inside to record"
 msgstr "拖动以调整 · 点击区域内录制"
 
-#: internal/ui/screenshot.go:1128
+#: internal/ui/screenshot.go:1138
 msgid "Screenshot saved and copied"
 msgstr "屏幕截图已保存并复制"
 
-#: internal/ui/screenshot.go:1129
+#: internal/ui/screenshot.go:1139
 msgid "Screenshot saved"
 msgstr "屏幕截图已保存"
 
-#: internal/ui/screenshot.go:1130
+#: internal/ui/screenshot.go:1140
 msgid "Screenshot copied"
 msgstr "截图已复制"
 
-#: internal/ui/screenshot.go:1131
+#: internal/ui/screenshot.go:1141
 msgid "Screenshot taken"
 msgstr "截图"
 
@@ -16482,15 +16482,15 @@ msgstr "inua无法升级"
 msgid "Could not upgrade: %s"
 msgstr "无法升级:%s"
 
-#: internal/ui/voice.go:209
+#: internal/ui/voice.go:214
 msgid "Dictation did not work"
 msgstr "听写没有成功"
 
-#: internal/ui/voice.go:271
-msgid "dictation pastes with Hyprland, which is not running"
-msgstr "听写通过 Hyprland 粘贴，而它没有运行"
+#: internal/ui/voice.go:274
+msgid "dictation pastes through the compositor, which cannot send keys"
+msgstr ""
 
-#: internal/ui/voice.go:281
+#: internal/ui/voice.go:278
 msgid "no window has the focus to type into"
 msgstr "没有获得焦点的窗口可供输入"
 
@@ -16774,62 +16774,62 @@ msgstr "移除小组件"
 msgid "Remove from the Page"
 msgstr "从页面移除"
 
-#: internal/ui/widgets.go:564
+#: internal/ui/widgets.go:559
 #: ui/bar.ui:40
 msgid "Engawa"
 msgstr "缘侧"
 
-#: internal/ui/widgets.go:590
+#: internal/ui/widgets.go:585
 msgid "Now Playing"
 msgstr "正在播放"
 
-#: internal/ui/widgets.go:596
+#: internal/ui/widgets.go:591
 msgid "[CLOCK]"
 msgstr "[时钟]"
 
-#: internal/ui/widgets.go:597
+#: internal/ui/widgets.go:592
 #: ui/agenda.ui:46
 msgid "[CALENDAR]"
 msgstr "[日历]"
 
-#: internal/ui/widgets.go:598
+#: internal/ui/widgets.go:593
 msgid "[WEATHER]"
 msgstr "[天气]"
 
-#: internal/ui/widgets.go:599
+#: internal/ui/widgets.go:594
 msgid "[NOW PLAYING]"
 msgstr "[正在播放]"
 
-#: internal/ui/widgets.go:834
+#: internal/ui/widgets.go:829
 msgid "Open Clock"
 msgstr "打开时钟"
 
-#: internal/ui/widgets.go:852
+#: internal/ui/widgets.go:847
 msgid "Open Calendar"
 msgstr "打开日历"
 
-#: internal/ui/widgets.go:887
+#: internal/ui/widgets.go:882
 #: ui/agenda.ui:116
 msgid "Open Weather"
 msgstr "打开天气"
 
-#: internal/ui/widgets.go:952
+#: internal/ui/widgets.go:947
 msgid "Add an app, or drag one here from the dock"
 msgstr "添加应用，或从程序坞拖到这里"
 
-#: internal/ui/widgets.go:1054
+#: internal/ui/widgets.go:1049
 msgid "Alarm %s %s · %s"
 msgstr "闹钟 %s %s · %s"
 
-#: internal/ui/widgets.go:1103
+#: internal/ui/widgets.go:1098
 msgid "A player that plays shows here"
 msgstr "正在播放的播放器会显示在这里"
 
-#: internal/ui/widgets.go:1137
+#: internal/ui/widgets.go:1132
 msgid "Search apps"
 msgstr "搜索应用"
 
-#: internal/ui/widgets.go:1188
+#: internal/ui/widgets.go:1183
 msgid "No app by that name"
 msgstr "没有这个名字的应用"
 

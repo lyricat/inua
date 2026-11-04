@@ -6,25 +6,45 @@ import (
 	"testing"
 	"time"
 
-	"github.com/lyricat/inua/internal/hypr"
+	"github.com/lyricat/inua/internal/compositor"
 )
 
-func overviewFixture() hypr.Snapshot {
-	return hypr.Snapshot{
-		Monitors:   []hypr.Monitor{{Name: "A"}, {Name: "B"}},
-		Workspaces: []hypr.Workspace{{ID: 1, Name: "1", Monitor: "A", Focused: true}, {ID: 2, Name: "2", Monitor: "A"}, {ID: 4, Name: "4", Monitor: "B"}, {ID: 12, Name: "12", Monitor: "B"}},
-		Toplevels: []hypr.Toplevel{
-			{Address: "0x1", Class: "terminal", Title: "first", WorkspaceID: 1, Monitor: "A", Raw: map[string]any{"focusHistoryID": float64(0)}},
-			{Address: "0x2", Class: "browser", Title: "second", WorkspaceID: 2, Monitor: "A", Raw: map[string]any{"focusHistoryID": float64(1)}},
-			{Address: "0x4", Class: "editor", Title: "fourth", WorkspaceID: 4, Monitor: "B", Raw: map[string]any{"focusHistoryID": float64(2)}},
+// ws is a numbered workspace on an output.
+func ws(id int, output string) compositor.Workspace {
+	return compositor.Workspace{ID: strconv.Itoa(id), Name: strconv.Itoa(id), Output: output, Order: id}
+}
+
+// owin is a window on workspace id of an output, focused history-th last.
+func owin(addr, class, title string, id int, output string, history int) compositor.Window {
+	return compositor.Window{ID: addr, AppID: class, Title: title, Workspace: strconv.Itoa(id), Output: output, FocusRank: history + 1}
+}
+
+func overviewFixture() compositor.Snapshot {
+	w1 := ws(1, "A")
+	w1.Focused = true
+	return compositor.Snapshot{
+		Outputs:    []compositor.Output{{Name: "A"}, {Name: "B"}},
+		Workspaces: []compositor.Workspace{w1, ws(2, "A"), ws(4, "B"), ws(12, "B")},
+		Windows: []compositor.Window{
+			owin("0x1", "terminal", "first", 1, "A", 0),
+			owin("0x2", "browser", "second", 2, "A", 1),
+			owin("0x4", "editor", "fourth", 4, "B", 2),
 		},
-		ActiveToplevel: "0x1", FocusedMonitor: "A",
+		FocusedWindow: "0x1", FocusedOutput: "A",
 	}
 }
-func overviewIDs(o *Overview, mon string) []int {
-	var ids []int
+
+// numbered is the Overview with a Hyprland-like New: numbers from 1.
+func numbered(mru bool) Overview {
+	return Overview{MRU: mru, NewWorkspace: func(snap compositor.Snapshot, output string, unavailable func(string) bool) (compositor.Workspace, bool) {
+		return compositor.NextNumbered(snap, output, unavailable, 1)
+	}}
+}
+
+func overviewIDs(o *Overview, mon string) []string {
+	var ids []string
 	for _, c := range o.Cards {
-		if c.Workspace.Monitor == mon && !c.New {
+		if c.Workspace.Output == mon && !c.New {
 			ids = append(ids, c.Workspace.ID)
 		}
 	}
@@ -32,80 +52,81 @@ func overviewIDs(o *Overview, mon string) []int {
 }
 func TestOverviewMRUFrozenAndSharedWithBar(t *testing.T) {
 	snap := overviewFixture()
-	o := Overview{MRU: true}
+	o := numbered(true)
 	o.Show(snap)
-	snap.Toplevels[0].Raw["focusHistoryID"] = float64(4)
-	snap.Toplevels[1].Raw["focusHistoryID"] = float64(0)
-	snap.ActiveToplevel = "0x2"
+	snap.Windows[0].FocusRank = 5
+	snap.Windows[1].FocusRank = 1
+	snap.FocusedWindow = "0x2"
 	o.SetSnapshot(snap)
-	if got := overviewIDs(&o, "A"); !slices.Equal(got, []int{1, 2}) {
+	if got := overviewIDs(&o, "A"); !slices.Equal(got, []string{"1", "2"}) {
 		t.Fatalf("open order changed: %v", got)
 	}
-	if got := ids(o.BarWorkspaces(snap, "A", false)); !slices.Equal(got, []int{1, 2}) {
+	if got := ids(o.BarWorkspaces(snap, "A", false)); !slices.Equal(got, []string{"1", "2"}) {
 		t.Fatalf("bar disagrees: %v", got)
 	}
 	o.Close()
 	o.SetSnapshot(snap)
 	o.Show(snap)
-	if got := overviewIDs(&o, "A"); !slices.Equal(got, []int{2, 1}) {
+	if got := overviewIDs(&o, "A"); !slices.Equal(got, []string{"2", "1"}) {
 		t.Fatalf("closed MRU not promoted: %v", got)
 	}
-	if got := overviewIDs(&o, "B"); !slices.Equal(got, []int{4}) {
+	if got := overviewIDs(&o, "B"); !slices.Equal(got, []string{"4"}) {
 		t.Fatalf("MRU order within B: %v", got)
 	}
 }
 func TestOverviewSelectionSurvivesWorkspaceRemoval(t *testing.T) {
 	snap := overviewFixture()
-	o := Overview{}
+	o := numbered(false)
 	o.Show(snap)
 	for i, c := range o.Cards {
-		if c.New && c.Workspace.Monitor == "B" {
+		if c.New && c.Workspace.Output == "B" {
 			o.Selected = i
 		}
 	}
 	snap.Workspaces = snap.Workspaces[1:]
-	snap.Toplevels = snap.Toplevels[1:]
+	snap.Windows = snap.Windows[1:]
 	o.SetSnapshot(snap)
-	if c := o.Cards[o.Selected]; !c.New || c.Workspace.Monitor != "B" {
+	if c := o.Cards[o.Selected]; !c.New || c.Workspace.Output != "B" {
 		t.Fatalf("new-card selection lost: %+v", c)
 	}
 }
 func TestOverviewHidesEmptyWorkspacesButBarShowsThem(t *testing.T) {
 	snap := overviewFixture()
-	snap.Workspaces = append(snap.Workspaces, hypr.Workspace{ID: 3, Name: "3", Monitor: "A"})
-	o := Overview{}
+	snap.Workspaces = append(snap.Workspaces, ws(3, "A"))
+	o := numbered(false)
 	o.Show(snap)
-	if got := overviewIDs(&o, "A"); !slices.Equal(got, []int{1, 2}) {
+	if got := overviewIDs(&o, "A"); !slices.Equal(got, []string{"1", "2"}) {
 		t.Fatalf("overview shows empty workspace: %v", got)
 	}
-	if got := ids(o.BarWorkspaces(snap, "A", false)); !slices.Equal(got, []int{1, 2, 3}) {
+	if got := ids(o.BarWorkspaces(snap, "A", false)); !slices.Equal(got, []string{"1", "2", "3"}) {
 		t.Fatalf("bar hides empty workspace: %v", got)
 	}
 }
 func TestOverviewMRUBarIncludesEmptyWorkspaces(t *testing.T) {
 	snap := overviewFixture()
-	snap.Workspaces = append(snap.Workspaces, hypr.Workspace{ID: 3, Name: "3", Monitor: "A"})
-	o := Overview{MRU: true, History: []int{2, 1}}
-	if got := ids(o.BarWorkspaces(snap, "A", false)); !slices.Equal(got, []int{2, 1, 3}) {
+	snap.Workspaces = append(snap.Workspaces, ws(3, "A"))
+	o := numbered(true)
+	o.History = []string{"2", "1"}
+	if got := ids(o.BarWorkspaces(snap, "A", false)); !slices.Equal(got, []string{"2", "1", "3"}) {
 		t.Fatalf("MRU bar workspaces: %v", got)
 	}
 }
 func TestOverviewNeverShowsEmptyWorkspacesAndKeepsMonitorGroups(t *testing.T) {
 	snap := overviewFixture()
-	snap.Workspaces = append(snap.Workspaces, hypr.Workspace{ID: 3, Name: "3", Monitor: "A"}, hypr.Workspace{ID: 10, Name: "10", Monitor: "B"})
-	snap.Workspaces = append(snap.Workspaces, hypr.Workspace{ID: 22, Name: "22", Monitor: "B"})
-	snap.Toplevels = append(snap.Toplevels, hypr.Toplevel{Address: "0x22", Class: "editor", Title: "last", WorkspaceID: 22, Monitor: "B", Raw: map[string]any{"focusHistoryID": float64(0)}})
+	snap.Workspaces = append(snap.Workspaces, ws(3, "A"), ws(10, "B"))
+	snap.Workspaces = append(snap.Workspaces, ws(22, "B"))
+	snap.Windows = append(snap.Windows, owin("0x22", "editor", "last", 22, "B", 0))
 	for _, mru := range []bool{false, true} {
-		o := Overview{MRU: mru}
+		o := numbered(mru)
 		o.Show(snap)
-		wantB := []int{4, 10, 12, 22}
+		wantB := []string{"4", "10", "12", "22"}
 		if got := ids(o.BarWorkspaces(snap, "B", false)); !slices.Equal(got, wantB) {
 			t.Fatalf("bar B (mru=%v): %v, want %v", mru, got, wantB)
 		}
 		lastMonitor := ""
 		newSeen := map[string]bool{}
 		for _, card := range o.Cards {
-			mon := card.Workspace.Monitor
+			mon := card.Workspace.Output
 			if mon != lastMonitor && newSeen[mon] {
 				t.Fatalf("monitor group resumed after another display: %+v", card)
 			}
@@ -125,17 +146,17 @@ func TestOverviewNeverShowsEmptyWorkspacesAndKeepsMonitorGroups(t *testing.T) {
 		}
 		a, b := overviewIDs(&o, "A"), overviewIDs(&o, "B")
 		if mru {
-			if !slices.Equal(a, []int{1, 2}) || !slices.Equal(b, []int{22, 4}) {
+			if !slices.Equal(a, []string{"1", "2"}) || !slices.Equal(b, []string{"22", "4"}) {
 				t.Fatalf("MRU leaked across monitors: A=%v B=%v", a, b)
 			}
-		} else if !slices.Equal(a, []int{1, 2}) || !slices.Equal(b, []int{4, 22}) {
+		} else if !slices.Equal(a, []string{"1", "2"}) || !slices.Equal(b, []string{"4", "22"}) {
 			t.Fatalf("numeric order leaked across monitors: A=%v B=%v", a, b)
 		}
 	}
 }
 
 func TestOverviewNavigationNormalizesLargeNegativeDelta(t *testing.T) {
-	o := Overview{}
+	o := numbered(false)
 	o.Show(overviewFixture())
 	o.Move(-1000)
 	if o.Selected < 0 || o.Selected >= len(o.Cards) {
@@ -144,38 +165,38 @@ func TestOverviewNavigationNormalizesLargeNegativeDelta(t *testing.T) {
 }
 func TestOverviewSearchDoesNotFilterBarSlots(t *testing.T) {
 	snap := overviewFixture()
-	o := Overview{MRU: true}
+	o := numbered(true)
 	o.Show(snap)
 	o.SetQuery("browser")
-	if len(o.Cards) != 1 || o.Cards[0].Workspace.ID != 2 {
+	if len(o.Cards) != 1 || o.Cards[0].Workspace.ID != "2" {
 		t.Fatalf("search: %+v", o.Cards)
 	}
-	if got := ids(o.BarWorkspaces(snap, "A", false)); !slices.Equal(got, []int{1, 2}) {
+	if got := ids(o.BarWorkspaces(snap, "A", false)); !slices.Equal(got, []string{"1", "2"}) {
 		t.Fatalf("query changed slots: %v", got)
 	}
 }
 func TestOverviewMRUEmptyFocusedMonitorSelectsNew(t *testing.T) {
 	snap := overviewFixture()
-	snap.FocusedMonitor = "B"
+	snap.FocusedOutput = "B"
 	snap.Workspaces[0].Focused = false
 	snap.Workspaces[3].Focused = true
-	snap.Toplevels = snap.Toplevels[:2]
-	o := Overview{MRU: true}
+	snap.Windows = snap.Windows[:2]
+	o := numbered(true)
 	o.Show(snap)
-	if c := o.Cards[o.Selected]; !c.New || c.Workspace.Monitor != "B" {
+	if c := o.Cards[o.Selected]; !c.New || c.Workspace.Output != "B" {
 		t.Fatalf("wrong fallback selection: %+v", c)
 	}
 }
 
 func TestOverviewSlotIgnoresSearchAndInvalidSlotIsNoop(t *testing.T) {
 	snap := overviewFixture()
-	o := Overview{MRU: true}
+	o := numbered(true)
 	o.Show(snap)
 	o.SetQuery("browser")
-	if c, ok := o.WorkspaceSlot(snap, "A", 1); !ok || c.Workspace.ID != 1 {
+	if c, ok := o.WorkspaceSlot(snap, "A", 1); !ok || c.Workspace.ID != "1" {
 		t.Fatalf("slot followed query: %+v %v", c, ok)
 	}
-	if c, ok := o.WorkspaceSlot(snap, "B", 2); !ok || !c.New || c.Workspace.Monitor != "B" {
+	if c, ok := o.WorkspaceSlot(snap, "B", 2); !ok || !c.New || c.Workspace.Output != "B" {
 		t.Fatalf("new belongs to wrong display: %+v %v", c, ok)
 	}
 	if _, ok := o.WorkspaceSlot(snap, "B", 10); ok {
@@ -188,68 +209,69 @@ func TestOverviewSlotIgnoresSearchAndInvalidSlotIsNoop(t *testing.T) {
 
 func TestOverviewNewReservationsDoNotCollide(t *testing.T) {
 	snap := overviewFixture()
-	o := Overview{}
+	o := numbered(false)
 	now := time.Unix(100, 0)
-	first := o.ReserveWorkspace(snap, false, now, "B")
-	second := o.ReserveWorkspace(snap, false, now, "B")
-	if first != 12 {
-		t.Fatalf("empty workspace on B should be recycled: %d", first)
+	first, _ := o.ReserveWorkspace(snap, now, "B")
+	second, _ := o.ReserveWorkspace(snap, now, "B")
+	if first != "12" {
+		t.Fatalf("empty workspace on B should be recycled: %s", first)
 	}
-	if second == first || second <= 0 {
-		t.Fatalf("rapid New IDs collided: %d %d", first, second)
+	if second == first || second == "" {
+		t.Fatalf("rapid New IDs collided: %s %s", first, second)
 	}
-	if expired := o.ReserveWorkspace(snap, false, now.Add(6*time.Second), "B"); expired != 12 {
-		t.Fatalf("failed reservation did not expire: %d", expired)
+	if expired, _ := o.ReserveWorkspace(snap, now.Add(6*time.Second), "B"); expired != "12" {
+		t.Fatalf("failed reservation did not expire: %s", expired)
 	}
-	empty := Overview{}
-	if id := empty.ReserveWorkspace(hypr.Snapshot{}, true, now, ""); id != 11 {
-		t.Fatalf("native reserved default slots: %d", id)
+	var none Overview
+	if id, ok := none.ReserveWorkspace(snap, now, "B"); ok || id != "" {
+		t.Fatalf("without a compositor naming workspaces: %q %v", id, ok)
 	}
 }
 
 func TestOverviewReservePrefersEmptyWorkspaceOnTargetMonitor(t *testing.T) {
 	snap := overviewFixture()
-	snap.Workspaces = append(snap.Workspaces, hypr.Workspace{ID: 3, Name: "3", Monitor: "A"})
-	o := Overview{}
+	snap.Workspaces = append(snap.Workspaces, ws(3, "A"))
+	o := numbered(false)
 	now := time.Now()
-	if id := o.ReserveWorkspace(snap, false, now, "A"); id != 3 {
-		t.Fatalf("should recycle empty workspace on A: %d", id)
+	if id, _ := o.ReserveWorkspace(snap, now, "A"); id != "3" {
+		t.Fatalf("should recycle empty workspace on A: %s", id)
 	}
 }
 
 func TestOverviewPendingMoveOccupiesNewCardOnTargetMonitor(t *testing.T) {
 	snap := overviewFixture()
-	o := Overview{}
+	o := numbered(false)
 	o.Show(snap)
 	now := time.Now()
-	id := o.ReserveWorkspace(snap, false, now, "A")
-	o.BeginMove("0x4", id, "A", 4, now)
+	id, _ := o.ReserveWorkspace(snap, now, "A")
+	o.BeginMove("0x4", id, "A", "4", now)
 	var moved OverviewCard
 	for _, c := range o.Cards {
 		if !c.New && c.Workspace.ID == id {
 			moved = c
 		}
-		if !c.New && c.Workspace.ID == 4 {
+		if !c.New && c.Workspace.ID == "4" {
 			t.Fatalf("emptied source workspace still shown: %+v", c)
 		}
 	}
-	if moved.Workspace.Monitor != "A" || len(moved.Windows) != 1 || moved.Windows[0].Address != "0x4" {
+	if moved.Workspace.Output != "A" || len(moved.Windows) != 1 || moved.Windows[0].ID != "0x4" {
 		t.Fatalf("pending New drop did not occupy target: %+v", moved)
 	}
-	if c, ok := o.WorkspaceSlot(snap, "A", 4); !ok || !c.New || c.Workspace.Monitor != "A" {
+	if c, ok := o.WorkspaceSlot(snap, "A", 4); !ok || !c.New || c.Workspace.Output != "A" {
 		t.Fatalf("target monitor lost its trailing New card: %+v %v", c, ok)
 	}
-	snap.Toplevels[2].WorkspaceID = id
-	snap.Toplevels[2].Monitor = "A"
+	snap.Windows[2].Workspace = id
+	snap.Windows[2].Output = "A"
 	found := false
-	for i, ws := range snap.Workspaces {
-		if ws.ID == id {
-			snap.Workspaces[i].Monitor = "A"
+	for i, w := range snap.Workspaces {
+		if w.ID == id {
+			snap.Workspaces[i].Output = "A"
 			found = true
 		}
 	}
 	if !found {
-		snap.Workspaces = append(snap.Workspaces, hypr.Workspace{ID: id, Name: strconv.Itoa(id), Monitor: "A"})
+		n, _ := strconv.Atoi(id)
+		snap.Workspaces = append(snap.Workspaces, ws(n, "A"))
 	}
 	o.SetSnapshot(snap)
 	if len(o.moves) != 0 {
@@ -259,9 +281,9 @@ func TestOverviewPendingMoveOccupiesNewCardOnTargetMonitor(t *testing.T) {
 
 func TestOverviewCountsWindowByWorkspaceIDEvenWhenClientMonitorDiffers(t *testing.T) {
 	snap := overviewFixture()
-	snap.Toplevels = append(snap.Toplevels, hypr.Toplevel{Address: "0x3", Class: "floating", Title: "pinned", WorkspaceID: 3, Monitor: "B"})
-	snap.Workspaces = append(snap.Workspaces, hypr.Workspace{ID: 3, Name: "3", Monitor: "A"})
-	o := Overview{}
+	snap.Windows = append(snap.Windows, owin("0x3", "floating", "pinned", 3, "B", -1))
+	snap.Workspaces = append(snap.Workspaces, ws(3, "A"))
+	o := numbered(false)
 	o.Show(snap)
 	if _, ok := o.WorkspaceSlot(snap, "A", 2); !ok {
 		t.Fatal("occupied workspace was hidden because the client monitor differed")
@@ -270,23 +292,23 @@ func TestOverviewCountsWindowByWorkspaceIDEvenWhenClientMonitorDiffers(t *testin
 
 func TestOverviewNumberSlotsStayOnFocusedMonitorWithMRUOff(t *testing.T) {
 	snap := overviewFixture()
-	snap.Workspaces = append(snap.Workspaces, hypr.Workspace{ID: 3, Name: "3", Monitor: "A"}, hypr.Workspace{ID: 10, Name: "10", Monitor: "B"})
-	snap.Toplevels = append(snap.Toplevels,
-		hypr.Toplevel{Address: "0x3", Class: "term", Title: "third", WorkspaceID: 3, Monitor: "A"},
-		hypr.Toplevel{Address: "0x10", Class: "term", Title: "tenth", WorkspaceID: 10, Monitor: "B"})
-	o := Overview{MRU: false}
-	for slot, want := range []int{4, 10} {
+	snap.Workspaces = append(snap.Workspaces, ws(3, "A"), ws(10, "B"))
+	snap.Windows = append(snap.Windows,
+		owin("0x3", "term", "third", 3, "A", -1),
+		owin("0x10", "term", "tenth", 10, "B", -1))
+	o := numbered(false)
+	for slot, want := range []string{"4", "10"} {
 		card, ok := o.WorkspaceSlot(snap, "B", slot+1)
-		if !ok || card.Workspace.ID != want || card.Workspace.Monitor != "B" {
+		if !ok || card.Workspace.ID != want || card.Workspace.Output != "B" {
 			t.Fatalf("B slot %d: %+v %v", slot+1, card, ok)
 		}
 	}
-	if card, ok := o.WorkspaceSlot(snap, "B", 3); !ok || !card.New || card.Workspace.Monitor != "B" {
+	if card, ok := o.WorkspaceSlot(snap, "B", 3); !ok || !card.New || card.Workspace.Output != "B" {
 		t.Fatalf("B new-workspace slot escaped monitor: %+v %v", card, ok)
 	}
-	for slot, want := range []int{1, 2, 3} {
+	for slot, want := range []string{"1", "2", "3"} {
 		card, ok := o.WorkspaceSlot(snap, "A", slot+1)
-		if !ok || card.Workspace.ID != want || card.Workspace.Monitor != "A" {
+		if !ok || card.Workspace.ID != want || card.Workspace.Output != "A" {
 			t.Fatalf("A slot %d: %+v %v", slot+1, card, ok)
 		}
 	}

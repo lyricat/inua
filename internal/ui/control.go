@@ -601,7 +601,7 @@ func (s *shellUI) doPower(name string) {
 	case "logout":
 		// Hyprland 0.55 runs a Lua configuration, where a dispatcher is an
 		// expression; the classic text form is rejected there.
-		s.dispatchEither("exit", "hl.dsp.exit()")
+		s.hyprDispatch("exit", "hl.dsp.exit()")
 	}
 }
 

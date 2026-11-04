@@ -504,7 +504,7 @@ func (s *shellUI) drawerRequest(fn string) bool {
 		return true
 	}
 	for _, b := range s.bars {
-		if b.dock == nil || b.connector() != s.snap.FocusedMonitor || b.dock.drawer == nil {
+		if b.dock == nil || b.connector() != s.snap.FocusedOutput || b.dock.drawer == nil {
 			continue
 		}
 		if kind == drawerWorkshop && b.dock.workshop == nil {

@@ -134,7 +134,7 @@ func (s *shellUI) showDisplays() {
 	d.lidOff.SetActive(s.cfg.Displays.LidOff)
 	s.settings.filling = false
 	d.gen++
-	gen, client, lidOff := d.gen, s.client, s.cfg.Displays.LidOff
+	gen, client, lidOff := d.gen, s.hyprClient(), s.cfg.Displays.LidOff
 	go func() {
 		var outputs []display.Output
 		var err error

@@ -11,17 +11,18 @@ import (
 	"strings"
 	"time"
 
+	"github.com/lyricat/inua/internal/compositor"
+
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/gobject"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/lyricat/inua/internal/gtkx"
-	"github.com/lyricat/inua/internal/hypr"
 	"github.com/lyricat/inua/internal/i18n"
 	"github.com/lyricat/inua/internal/layershell"
 )
 
 type overviewDropTarget struct {
-	ID      int
+	ID      string
 	Monitor string
 	New     bool
 	Scale   float64
@@ -120,7 +121,7 @@ func (s *shellUI) bindOverviewManagement() {
 		}
 		defer widget.Unref()
 		address := strings.TrimPrefix(widget.GetName(), "window:")
-		s.dispatchOverview(i18n.T("close window"), fmt.Sprintf(`hl.dsp.window.close({window=%q})`, "address:"+address))
+		s.overviewDo(i18n.T("close window"), func(ctx context.Context) error { return s.comp.CloseWindow(ctx, address) })
 		g.SetState(gtk.EventSequenceClaimedValue)
 	}
 	o.onOverviewScroll = func(_ gtk.EventControllerScroll, _, dy float64) bool {
@@ -147,9 +148,9 @@ func (s *shellUI) bindOverviewManagement() {
 		address := strings.TrimPrefix(widget.GetName(), "window:")
 		for i, card := range o.st.Cards {
 			for _, w := range card.Windows {
-				if w.Address == address {
+				if w.ID == address {
 					o.st.Selected = i
-					o.st.FocusedMon = card.Workspace.Monitor
+					o.st.FocusedMon = card.Workspace.Output
 					for ptr, dest := range o.targets {
 						widget := gtk.Widget{}
 						widget.Ptr = ptr
@@ -160,7 +161,7 @@ func (s *shellUI) bindOverviewManagement() {
 						}
 					}
 					if o.hint != nil {
-						o.hint.SetText(i18n.Tf("%s · %s · Middle click: close", w.Title, w.Class))
+						o.hint.SetText(i18n.Tf("%s · %s · Middle click: close", w.Title, w.AppID))
 					}
 					s.updateOverviewCapture()
 					return
@@ -207,56 +208,58 @@ func (s *shellUI) setOverviewKillMode(armed bool) {
 	}
 }
 
-func (s *shellUI) nextOverviewWorkspaceID(monitor string) int {
-	return s.overview.st.ReserveWorkspace(s.snap, !s.cfg.Overview.MRU, time.Now(), monitor)
+func (s *shellUI) nextOverviewWorkspaceID(monitor string) (string, bool) {
+	if s.hypr != nil {
+		s.hypr.FreshWorkspace = s.freshWorkspace()
+	}
+	return s.overview.st.ReserveWorkspace(s.snap, time.Now(), monitor)
 }
 
 // Drops never follow a window or switch the user's active workspace. A new
 // target is allocated at commit time and routed by its owning monitor.
 func (s *shellUI) moveOverviewWindow(address string, target overviewDropTarget, x, y float64) bool {
 	o := &s.overview
-	var window *hypr.Toplevel
-	for i := range s.snap.Toplevels {
-		if s.snap.Toplevels[i].Address == address {
-			window = &s.snap.Toplevels[i]
-			break
-		}
-	}
-	if window == nil {
+	window, ok := s.snap.Window(address)
+	if !ok {
 		return false
 	}
 	id := target.ID
 	if target.New {
-		id = s.nextOverviewWorkspaceID(target.Monitor)
+		if id, ok = s.nextOverviewWorkspaceID(target.Monitor); !ok {
+			return false
+		}
 	}
-	log.Printf("overview: drop address=%s source=%d target=%d monitor=%s new=%v", address, window.WorkspaceID, id, target.Monitor, target.New)
-	if id <= 0 {
+	log.Printf("overview: drop address=%s source=%s target=%s monitor=%s new=%v", address, window.Workspace, id, target.Monitor, target.New)
+	if id == "" {
 		return false
 	}
-	if id == window.WorkspaceID {
-		floating, _ := window.Raw["floating"].(bool)
-		if !floating {
+	if id == window.Workspace {
+		if !window.Floating || s.hypr == nil {
 			return false
 		}
 		scale := max(0.001, target.Scale)
-		px, py := max(0, (x-s.overview.dragX)/scale), max(0, (y-s.overview.dragY)/scale)
-		s.dispatchOverview(i18n.T("position floating window"), fmt.Sprintf(`hl.dsp.window.move({window=%q,x=%q,y=%q})`, "address:"+address, strconv.Itoa(int(px)), strconv.Itoa(int(py))))
+		px, py := int(max(0, (x-s.overview.dragX)/scale)), int(max(0, (y-s.overview.dragY)/scale))
+		s.overviewDo(i18n.T("position floating window"), func(ctx context.Context) error {
+			return s.hypr.Dispatch(ctx, fmt.Sprintf("movewindowpixel exact %d %d,address:%s", px, py, address),
+				fmt.Sprintf(`hl.dsp.window.move({window=%q,x=%q,y=%q})`, "address:"+address, strconv.Itoa(px), strconv.Itoa(py)))
+		})
 		return true
 	}
-	// window.move takes a numeric workspace ID. A quoted string is a name and
-	// leaves a blank numeric workspace on the destination monitor.
-	expression := fmt.Sprintf(`hl.dsp.window.move({window=%q,workspace=%d,follow=false})`, "address:"+address, id)
+	if !s.caps.Has(compositor.CapMoveWithoutFollow) {
+		return false
+	}
+	mover, _ := s.comp.(compositor.WorkspaceMover)
 	monitor := target.Monitor
-	source := window.WorkspaceID
+	source := window.Workspace
 	o.st.BeginMove(address, id, monitor, source, time.Now())
 	o.movesPending++
 	go func() {
 		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 		defer cancel()
-		if err := s.client.LuaDispatch(ctx, expression); err != nil {
+		if err := s.comp.MoveWindow(ctx, address, id, false); err != nil {
 			log.Printf("overview move: %v", err)
-		} else if monitor != "" {
-			if err := s.client.LuaDispatch(ctx, fmt.Sprintf(`hl.dsp.workspace.move({workspace=%q,monitor=%q})`, strconv.Itoa(id), monitor)); err != nil {
+		} else if monitor != "" && mover != nil {
+			if err := mover.MoveWorkspace(ctx, id, monitor); err != nil {
 				log.Printf("overview move monitor: %v", err)
 			}
 		}
@@ -283,7 +286,7 @@ func (s *shellUI) navigateOverview(delta int) {
 	indices := []int{}
 	position := 0
 	for i, card := range o.st.Cards {
-		if card.Workspace.Monitor == o.st.FocusedMon {
+		if card.Workspace.Output == o.st.FocusedMon {
 			if i == o.st.Selected {
 				position = len(indices)
 			}
@@ -308,11 +311,11 @@ func (s *shellUI) overviewInput() *workspaceOverview {
 // mouse shortcuts intact. Restore locally without a compositor reload.
 func (s *shellUI) guardOverviewMouse(enabled bool) {
 	o := &s.overview
-	if s.client == nil || o.mouseGuard == enabled {
+	if s.hypr == nil || o.mouseGuard == enabled {
 		return
 	}
 	o.mouseGuard = enabled
-	client := s.client
+	client := s.hypr.Client
 	func() {
 		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 		defer cancel()
@@ -357,23 +360,23 @@ func (s *shellUI) guardOverviewMouse(enabled bool) {
 
 // Dispatch before dismissing the exclusive layer. Closing first races the
 // compositor's focus restoration and can make a click appear ineffective.
-func (s *shellUI) activateOverview(expression, monitor string, after ...string) {
-	if s.client == nil {
+func (s *shellUI) activateOverview(monitor string, steps ...func(ctx context.Context) error) {
+	if s.comp == nil {
 		return
 	}
 	generation := s.overview.activation
-	client := s.client
+	focuser, _ := s.comp.(compositor.OutputFocuser)
 	go func() {
 		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 		defer cancel()
-		if monitor != "" {
-			if err := client.LuaDispatch(ctx, fmt.Sprintf(`hl.dsp.focus({monitor=%q})`, monitor)); err != nil {
+		if monitor != "" && focuser != nil {
+			if err := focuser.FocusOutput(ctx, monitor); err != nil {
 				log.Printf("overview activate monitor: %v", err)
 				return
 			}
 		}
-		for _, action := range append([]string{expression}, after...) {
-			if err := client.LuaDispatch(ctx, action); err != nil {
+		for _, step := range steps {
+			if err := step(ctx); err != nil {
 				log.Printf("overview activate: %v", err)
 				return
 			}
@@ -389,21 +392,23 @@ func (s *shellUI) activateOverview(expression, monitor string, after ...string) 
 func (s *shellUI) overviewWindowMonitor(address string) string {
 	for _, card := range s.overview.st.AllCards {
 		for _, window := range card.Windows {
-			if window.Address == address {
-				return card.Workspace.Monitor
+			if window.ID == address {
+				return card.Workspace.Output
 			}
 		}
 	}
 	return ""
 }
 
-func (s *shellUI) overviewWorkspaceMonitor(name string) string {
+// overviewWorkspaceByName is the id and the monitor of the card named
+// name (a workspace's name, or its id).
+func (s *shellUI) overviewWorkspaceByName(name string) (id, monitor string) {
 	for _, card := range s.overview.st.AllCards {
-		if card.Workspace.Name == name || strconv.Itoa(card.Workspace.ID) == name {
-			return card.Workspace.Monitor
+		if !card.New && (card.Workspace.Name == name || card.Workspace.ID == name) {
+			return card.Workspace.ID, card.Workspace.Output
 		}
 	}
-	return ""
+	return "", ""
 }
 
 func overviewHistoryPath() string {
@@ -414,12 +419,27 @@ func overviewHistoryPath() string {
 	}
 	return filepath.Join(root, "inua/overview-history.json")
 }
+
+// loadOverviewHistory reads the workspaces last used, as ids; a file from
+// before ids were strings holds Hyprland's numbers, read as their text.
 func (s *shellUI) loadOverviewHistory() {
 	data, err := os.ReadFile(overviewHistoryPath())
-	if err == nil {
-		_ = json.Unmarshal(data, &s.overview.st.History)
-		s.overview.historyLast = string(data)
+	if err != nil {
+		return
 	}
+	var raw []any
+	if json.Unmarshal(data, &raw) == nil {
+		s.overview.st.History = s.overview.st.History[:0]
+		for _, v := range raw {
+			switch id := v.(type) {
+			case string:
+				s.overview.st.History = append(s.overview.st.History, id)
+			case float64:
+				s.overview.st.History = append(s.overview.st.History, strconv.Itoa(int(id)))
+			}
+		}
+	}
+	s.overview.historyLast = string(data)
 }
 func (s *shellUI) saveOverviewHistory() {
 	data, err := json.Marshal(s.overview.st.History)

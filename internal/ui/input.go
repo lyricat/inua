@@ -36,7 +36,7 @@ type hyprApply struct {
 // applyHyprland writes inua.conf from the input settings in the
 // background, and reloads Hyprland if the file changed.
 func (s *shellUI) applyHyprland() {
-	c, client := s.cfg, s.client
+	c, client := s.cfg, s.hyprClient()
 	path := hyprconf.Target(s.hyprConfig())
 	gen := s.hyprApply.latest.Add(1)
 	go func() {
@@ -83,12 +83,12 @@ func (s *shellUI) kbOptions() string {
 
 // hyprKbOptions asks Hyprland for input:kb_options, "" if it cannot say.
 func (s *shellUI) hyprKbOptions() string {
-	if s.client == nil {
+	if s.hypr == nil {
 		return ""
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 300*time.Millisecond)
 	defer cancel()
-	reply, err := s.client.Request(ctx, "j/getoption input:kb_options")
+	reply, err := s.hypr.Client.Request(ctx, "j/getoption input:kb_options")
 	if err != nil {
 		log.Printf("hyprland: kb_options: %v", err)
 		return ""

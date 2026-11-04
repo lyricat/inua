@@ -3,7 +3,6 @@ package lightui
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"errors"
 	"image"
 	_ "image/jpeg" // images with a QR code
@@ -21,8 +20,8 @@ import (
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
 	"github.com/lyricat/inua/internal/apps/pass"
+	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/gtkx"
-	"github.com/lyricat/inua/internal/hypr"
 	"github.com/lyricat/inua/internal/i18n"
 )
 
@@ -295,16 +294,15 @@ func grab(args ...string) (image.Image, error) {
 // whole screen at once elsewhere; those that cannot be taken left out.
 func monitorImages() ([]image.Image, error) {
 	var names []string
-	if paths, err := hypr.PathsFromEnv(); err == nil {
-		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-		data, err := hypr.NewClient(paths).Request(ctx, "j/monitors")
-		cancel()
-		var mons []struct {
-			Name string `json:"name"`
-		}
-		if err == nil && json.Unmarshal(data, &mons) == nil {
-			for _, m := range mons {
-				names = append(names, m.Name)
+	if b, err := compositor.Detect(); err == nil {
+		if sn, ok := b.(compositor.Snapshotter); ok {
+			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+			snap, err := sn.Snapshot(ctx)
+			cancel()
+			if err == nil {
+				for _, m := range snap.Outputs {
+					names = append(names, m.Name)
+				}
 			}
 		}
 	}

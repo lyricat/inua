@@ -15,6 +15,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/lyricat/inua/internal/compositor"
+	"github.com/lyricat/inua/internal/compositor/compositortest"
 	"github.com/lyricat/inua/internal/desk"
 )
 
@@ -637,17 +639,17 @@ func TestSessionDesk(t *testing.T) {
 	os.WriteFile(filepath.Join(dir, "main.py"), []byte(deskApp), 0o644)
 	m := Manifest{ID: "dev.test.desk", Name: "Desk", Run: []string{"python3", "main.py"}, Dir: dir, Uses: []string{"windows", "system"}}
 	var mu sync.Mutex
-	wifi, closed := "true", 0
+	wifi := "true"
+	comp := compositortest.New()
+	comp.Snap = compositor.Snapshot{Windows: []compositor.Window{{ID: "0xa", Title: "Mail", AppID: "mail", Workspace: "1", Focused: true}}, FocusedWindow: "0xa"}
+	closed := func() int { return len(comp.Actions()) }
 	d := desk.Desktop{
 		Call: func(context.Context, string, string, ...string) (string, error) {
 			mu.Lock()
 			defer mu.Unlock()
 			return `{"wifi":` + wifi + `}`, nil
 		},
-		HyprRequest: func(context.Context, string) ([]byte, error) {
-			return []byte(`[{"address":"0xa","title":"Mail","class":"mail","mapped":true,"focusHistoryID":0,"workspace":{"name":"1"}}]`), nil
-		},
-		HyprDispatch: func(context.Context, string) error { mu.Lock(); closed++; mu.Unlock(); return nil },
+		Compositor: comp,
 	}
 	h := newFakeHost()
 	h.deny = true
@@ -666,8 +668,8 @@ func TestSessionDesk(t *testing.T) {
 		}
 	}
 	h.mu.Lock()
-	if len(h.asked) != 1 || h.asked[0] != "Let Desk do this? Closing Mail" || closed != 0 {
-		t.Errorf("asked %q, closed %d", h.asked, closed)
+	if len(h.asked) != 1 || h.asked[0] != "Let Desk do this? Closing Mail" || closed() != 0 {
+		t.Errorf("asked %q, closed %d", h.asked, closed())
 	}
 	h.mu.Unlock()
 

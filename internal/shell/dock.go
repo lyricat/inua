@@ -5,8 +5,8 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/desktop"
-	"github.com/lyricat/inua/internal/hypr"
 	"github.com/lyricat/inua/internal/i18n"
 	"github.com/lyricat/inua/internal/workshop"
 )
@@ -20,8 +20,8 @@ type DockItem struct {
 	Icon    string         // icon name or path; the class when there is no entry
 	Entry   *desktop.Entry // nil: no desktop entry, so it cannot be launched or pinned
 	Pinned  bool
-	Windows []hypr.Toplevel // its windows, most recently focused first
-	Active  bool            // it has the focused window
+	Windows []compositor.Window // its windows, most recently focused first
+	Active  bool                // it has the focused window
 }
 
 // AppIndex finds desktop entries for window classes.
@@ -125,7 +125,7 @@ func (a AppIndex) ForClass(class string) *desktop.Entry {
 // Dock lists the dock's apps: the pinned ones in order (those not
 // installed are skipped), then the others with windows, in the order their
 // first window appeared. Windows skip reports are left out (nil: none).
-func Dock(pinned []string, apps AppIndex, snap hypr.Snapshot, skip func(hypr.Toplevel) bool) []DockItem {
+func Dock(pinned []string, apps AppIndex, snap compositor.Snapshot, skip func(compositor.Window) bool) []DockItem {
 	var items []DockItem
 	at := map[string]int{}
 	add := func(it DockItem) {
@@ -145,18 +145,18 @@ func Dock(pinned []string, apps AppIndex, snap hypr.Snapshot, skip func(hypr.Top
 		}
 		add(DockItem{Key: e.ID, Name: dockName(e), Icon: e.Icon, Entry: e, Pinned: true})
 	}
-	for _, t := range snap.Toplevels {
-		if t.Class == "" {
+	for _, t := range snap.Windows {
+		if t.AppID == "" {
 			continue
 		}
-		entry := apps.ForClass(t.Class)
-		if isFcitxWindow(t.Class, entry) || (skip != nil && skip(t)) {
+		entry := apps.ForClass(t.AppID)
+		if isFcitxWindow(t.AppID, entry) || (skip != nil && skip(t)) {
 			continue
 		}
-		if t.Class == AppID { // the shell's own windows: Settings and its dialogs
+		if t.AppID == AppID { // the shell's own windows: Settings and its dialogs
 			entry = ShellApps[0]
 		}
-		key, item := t.Class, DockItem{Key: t.Class, Name: cmpOr(t.Title, t.Class), Icon: t.Class}
+		key, item := t.AppID, DockItem{Key: t.AppID, Name: cmpOr(t.Title, t.AppID), Icon: t.AppID}
 		if entry != nil {
 			key, item = entry.ID, DockItem{Key: entry.ID, Name: dockName(entry), Icon: entry.Icon, Entry: entry}
 		}
@@ -167,14 +167,14 @@ func Dock(pinned []string, apps AppIndex, snap hypr.Snapshot, skip func(hypr.Top
 		}
 		it := &items[j]
 		it.Windows = append(it.Windows, t)
-		if t.Address == snap.ActiveToplevel {
+		if t.ID == snap.FocusedWindow {
 			it.Active = true
 		}
 	}
 	for i := range items {
 		ws := items[i].Windows
-		slices.SortStableFunc(ws, func(a, b hypr.Toplevel) int {
-			return focusHistory(a, len(snap.Toplevels)) - focusHistory(b, len(snap.Toplevels))
+		slices.SortStableFunc(ws, func(a, b compositor.Window) int {
+			return focusHistory(a, len(snap.Windows)) - focusHistory(b, len(snap.Windows))
 		})
 	}
 	return items
@@ -219,9 +219,9 @@ func DockTarget(it DockItem) (launch bool, address string) {
 	case len(it.Windows) == 0:
 		return it.Entry != nil, ""
 	case it.Active && len(it.Windows) > 1:
-		return false, it.Windows[len(it.Windows)-1].Address
+		return false, it.Windows[len(it.Windows)-1].ID
 	}
-	return false, it.Windows[0].Address
+	return false, it.Windows[0].ID
 }
 
 // Pin returns pinned with key added at the end, or removed.

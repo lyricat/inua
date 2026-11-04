@@ -313,6 +313,31 @@ Hyprland; each is one commit or a few.
    number slots; screenshot and picker; dictation paste; lock; display
    settings; remote desktop virtual screen.
 
+### What #63 did
+
+Steps 1 to 5 are in; what they left where it was, on purpose:
+
+- `internal/shell`'s screenshot and picker models still parse Hyprland's
+  `j/clients` (`ShotWindows`, `PickGroups`): they need stacking order and
+  special workspaces the snapshot does not carry, so the UI asks the
+  Hyprland backend for the list and hides the window picker without it.
+- The Hyprland-only pages and paths take the backend's client directly
+  through `shellUI.hyprClient`: Displays, Shortcuts, keyboard options,
+  the Lua key listeners, the mouse-binding guard, the virtual screen, the
+  dictation card's placement, floating-window placement in the Overview.
+  Each checks for Hyprland and does nothing without it; the capability
+  states for them (`CapBinds`, `CapDisplays`, `CapKeyObserver`,
+  `CapVirtualOutput`) are reported but not yet read by those pages.
+- `internal/apps/remotedesk` and `internal/term/desktop` find a Hyprland
+  instance by its lock file (another session's) and keep `internal/hypr`.
+- The Overview is shown when the compositor is there and, on Hyprland,
+  runs Lua (`overviewAvailable`); its New card needs `CapWorkspaces`, its
+  drag `CapMoveWithoutFollow`.
+- The saved Overview history now holds workspace ids as strings; an old
+  file with Hyprland's numbers is read as their text.
+- The desk tools' `list_workspaces` ids are strings now (Hyprland's numbers
+  as text), and `move_window` and `switch_workspace` take a name or an id.
+
 ## 8. Validation with niri (#64)
 
 `internal/niri`: the JSON-lines client, the event stream into snapshots,

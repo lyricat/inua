@@ -217,7 +217,7 @@ func (s *shellUI) dictationShow(stage, text string) {
 // Hyprland, asked once a showing.
 func (s *shellUI) placeDictation() {
 	d := &s.dictation
-	client, inWindow := s.client, s.cfg.Voice.Show == "window"
+	client, inWindow := s.hyprClient(), s.cfg.Voice.Show == "window"
 	go func() {
 		var at hyprPlace
 		if client != nil {
@@ -226,7 +226,7 @@ func (s *shellUI) placeDictation() {
 		gtkx.Post(func() {
 			w := d.win.GoPointer()
 			for _, b := range s.bars {
-				if b.connector() == at.monitor || at.monitor == "" && b.connector() == s.snap.FocusedMonitor {
+				if b.connector() == at.monitor || at.monitor == "" && b.connector() == s.snap.FocusedOutput {
 					layershell.SetMonitor(w, b.mon.GoPointer())
 				}
 			}

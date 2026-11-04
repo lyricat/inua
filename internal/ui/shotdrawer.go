@@ -165,7 +165,7 @@ func (s *shellUI) showDrawerRecord(d *shotDrawer) {
 
 func (s *shellUI) buildShotDrawer() {
 	sh := &s.shot
-	mon := s.monitorByName(s.snap.FocusedMonitor)
+	mon := s.monitorByName(s.snap.FocusedOutput)
 	if mon == nil {
 		for _, b := range s.bars { // any screen rather than none
 			mon = b.mon

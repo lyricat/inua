@@ -13,6 +13,8 @@ import (
 	"time"
 	"unsafe"
 
+	"github.com/lyricat/inua/internal/compositor"
+
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"codeberg.org/puregotk/puregotk/v4/gobject"
@@ -22,7 +24,6 @@ import (
 
 	"github.com/lyricat/inua/internal/desktop"
 	"github.com/lyricat/inua/internal/gtkx"
-	"github.com/lyricat/inua/internal/hypr"
 	"github.com/lyricat/inua/internal/i18n"
 	"github.com/lyricat/inua/internal/layershell"
 	"github.com/lyricat/inua/internal/shell"
@@ -286,7 +287,7 @@ func dockSignature(items []shell.DockItem, size int, drawer bool) string {
 // (Fcitx's candidate popup, whatever class it gets), by the program that
 // owns it. Names are read from /proc/PID/comm once per PID and forgotten
 // when the PID has no window left.
-func (s *shellUI) inputMethodWindow(t hypr.Toplevel) bool {
+func (s *shellUI) inputMethodWindow(t compositor.Window) bool {
 	if t.PID <= 0 { // unknown, as for some XWayland windows
 		return false
 	}
@@ -305,7 +306,7 @@ func (s *shellUI) inputMethodWindow(t hypr.Toplevel) bool {
 // forgetPrograms drops the names of processes without windows.
 func (s *shellUI) forgetPrograms() {
 	live := map[int]bool{}
-	for _, t := range s.snap.Toplevels {
+	for _, t := range s.snap.Windows {
 		live[t.PID] = true
 	}
 	maps.DeleteFunc(s.dockState.programs, func(pid int, _ string) bool { return !live[pid] })
@@ -469,7 +470,7 @@ func (s *shellUI) scrollDock(n int) {
 		return
 	}
 	if it, ok := s.dockItem(key); ok {
-		s.focusWindowHere(it.Windows[0].Address)
+		s.focusWindowHere(it.Windows[0].ID)
 	}
 }
 
@@ -562,7 +563,7 @@ func (s *shellUI) dockMenuAction(name string) {
 		s.changeSettings(c)
 	case "quit":
 		for _, w := range it.Windows {
-			s.dispatch("closewindow address:" + w.Address)
+			s.closeWindow(w.ID)
 		}
 	}
 }
@@ -787,43 +788,15 @@ func (s *shellUI) markLaunching(key string) {
 }
 
 // focusWindowHere focuses a window without moving the pointer to it, as
-// focusing does unless cursor:no_warps is set: the pointer stays on the
-// dock, where the user clicked.
-func (s *shellUI) focusWindowHere(addr string) {
-	if s.client == nil {
+// focusing does on Hyprland unless cursor:no_warps is set: the pointer
+// stays on the dock, where the user clicked. A compositor without a quiet
+// focus focuses as it does.
+func (s *shellUI) focusWindowHere(id string) {
+	if q, ok := s.comp.(compositor.QuietFocuser); ok && s.caps.Has(compositor.CapQuietFocus) {
+		s.compositorDo("focus "+id, func(ctx context.Context) error { return q.FocusWindowQuietly(ctx, id) })
 		return
 	}
-	client, lua := s.client, s.hyprLua
-	go func() {
-		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-		defer cancel()
-		if err := focusQuietly(ctx, client, lua, addr); err != nil {
-			log.Printf("dock: focus %s: %v", addr, err)
-		}
-	}()
-}
-
-// focusQuietly focuses the window addr with cursor:no_warps turned on for
-// the focus only, and back as it was: in one Lua script where Hyprland
-// runs Lua (0.55 and later), else in one batch of classic commands. It
-// blocks; run it off the main thread.
-func focusQuietly(ctx context.Context, client *hypr.Client, lua bool, addr string) error {
-	if lua {
-		script := fmt.Sprintf(`local noWarps = hl.get_config("cursor.no_warps"); hl.config({cursor={no_warps=true}}); local ok, err = pcall(function() hl.dispatch(hl.dsp.focus({window=%q})) end); hl.config({cursor={no_warps=noWarps}}); if not ok then error(err) end`, "address:"+addr)
-		reply, err := client.Request(ctx, "eval "+script)
-		if err == nil && strings.TrimSpace(string(reply)) != "ok" {
-			err = fmt.Errorf("eval: %s", strings.TrimSpace(string(reply)))
-		}
-		return err
-	}
-	focus := "focuswindow address:" + addr
-	reply, err := client.Request(ctx, "j/getoption cursor:no_warps")
-	if err == nil && strings.Contains(string(reply), `"int": 0`) {
-		// One batch, so the setting is back before anything else runs.
-		_, err = client.Request(ctx, "[[BATCH]]keyword cursor:no_warps 1;dispatch "+focus+";keyword cursor:no_warps 0")
-		return err
-	}
-	return client.Dispatch(ctx, focus)
+	s.focusWindow(id)
 }
 
 // dockOfItems is the dock whose item box w is.

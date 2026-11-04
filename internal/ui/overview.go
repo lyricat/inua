@@ -2,12 +2,12 @@ package ui
 
 import (
 	"context"
-	"fmt"
 	"log"
-	"strconv"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/lyricat/inua/internal/compositor"
 
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/glib"
@@ -18,7 +18,6 @@ import (
 
 	"github.com/lyricat/inua/internal/capture/hyprland"
 	"github.com/lyricat/inua/internal/gtkx"
-	"github.com/lyricat/inua/internal/hypr"
 	"github.com/lyricat/inua/internal/i18n"
 	"github.com/lyricat/inua/internal/layershell"
 	"github.com/lyricat/inua/internal/shell"
@@ -92,7 +91,7 @@ func (s *shellUI) showOverview() {
 		s.closeOverview(false)
 		return
 	}
-	if !s.hyprLua {
+	if !s.overviewAvailable() {
 		// Hyprland without Lua (before 0.55): the launcher's windows
 		// instead, what Super+Tab opened before the overview.
 		s.showLauncher(shell.Windows)
@@ -109,10 +108,10 @@ func (s *shellUI) showOverview() {
 	s.overview.killMode = false
 	s.overview.targets = map[uintptr]overviewDropTarget{}
 	s.overview.dragging = ""
-	s.overview.monitor = s.snap.FocusedMonitor
-	s.overview.inputMonitor = s.snap.FocusedMonitor
+	s.overview.monitor = s.snap.FocusedOutput
+	s.overview.inputMonitor = s.snap.FocusedOutput
 	s.overview.views = map[string]*workspaceOverview{}
-	for _, mon := range s.snap.Monitors {
+	for _, mon := range s.snap.Outputs {
 		if mon.Name != s.overview.monitor {
 			s.overview.views[mon.Name] = &workspaceOverview{monitor: mon.Name}
 		}
@@ -122,9 +121,9 @@ func (s *shellUI) showOverview() {
 	}
 	// Keep the most recent frame for each live window while the overview is
 	// closed. The next open can paint these immediately while capture refreshes.
-	live := make(map[string]bool, len(s.snap.Toplevels))
-	for _, w := range s.snap.Toplevels {
-		live[w.Address] = true
+	live := make(map[string]bool, len(s.snap.Windows))
+	for _, w := range s.snap.Windows {
+		live[w.ID] = true
 	}
 	for address, texture := range s.overview.textures {
 		if !live[address] {
@@ -181,11 +180,8 @@ func (s *shellUI) closeOverview(restore bool) {
 	o.images = nil
 	o.renderedTargets = nil
 	if restore && previous != "" {
-		for _, w := range s.snap.Toplevels {
-			if w.Address == previous {
-				s.dispatchOverview(i18n.T("restore focus"), fmt.Sprintf(`hl.dsp.focus({ window = %q })`, "address:"+previous))
-				break
-			}
+		if _, ok := s.snap.Window(previous); ok {
+			s.overviewDo(i18n.T("restore focus"), func(ctx context.Context) error { return s.comp.FocusWindow(ctx, previous) })
 		}
 	}
 }
@@ -294,17 +290,16 @@ func (s *shellUI) bindOverviewHandlers() {
 		if strings.HasPrefix(key, "window:") {
 			addr := strings.TrimPrefix(key, "window:")
 			if s.overview.killMode {
-				s.dispatchOverview(i18n.T("kill window"), fmt.Sprintf(`hl.dsp.window.kill({ window = %q })`, "address:"+addr))
+				s.overviewDo(i18n.T("kill window"), func(ctx context.Context) error { return s.killWindow(ctx, addr) })
 				s.setOverviewKillMode(false)
 				s.closeOverview(false)
 				return
 			}
-			s.activateOverview(fmt.Sprintf(`hl.dsp.focus({ window = %q })`, "address:"+addr), s.overviewWindowMonitor(addr))
+			s.activateOverview(s.overviewWindowMonitor(addr), func(ctx context.Context) error { return s.comp.FocusWindow(ctx, addr) })
 			return
 		}
 		if strings.HasPrefix(key, "workspace:") {
-			name := strings.TrimPrefix(key, "workspace:")
-			s.activateOverview(fmt.Sprintf(`hl.dsp.focus({ workspace = %q })`, name), s.overviewWorkspaceMonitor(name))
+			s.activateWorkspace(strings.TrimPrefix(key, "workspace:"))
 			return
 		}
 		if strings.HasPrefix(key, "new-workspace:") {
@@ -348,8 +343,7 @@ func (s *shellUI) bindOverviewHandlers() {
 		if strings.HasPrefix(key, "new-workspace:") {
 			s.createWorkspaceOnMonitor(strings.TrimPrefix(key, "new-workspace:"))
 		} else {
-			name := strings.TrimPrefix(key, "workspace:")
-			s.activateOverview(fmt.Sprintf(`hl.dsp.focus({ workspace = %q })`, name), s.overviewWorkspaceMonitor(name))
+			s.activateWorkspace(strings.TrimPrefix(key, "workspace:"))
 		}
 	}
 	s.onOverviewMotion = func(dt gtk.DropTarget, _, _ float64) gdk.DragAction {
@@ -433,7 +427,7 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 	o.scope.SetLabel(map[bool]string{true: i18n.T("This monitor"), false: i18n.T("All monitors")}[s.cfg.Overview.PerMonitor])
 	matching := 0
 	for _, card := range o.st.Cards {
-		if s.cfg.Overview.PerMonitor && card.Workspace.Monitor != o.monitor {
+		if s.cfg.Overview.PerMonitor && card.Workspace.Output != o.monitor {
 			continue
 		}
 		matching += len(card.Windows)
@@ -451,7 +445,7 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 	o.content.SetMarginBottom(int32(bottomInset))
 	o.content.SetMarginStart(int32(startInset))
 	o.content.SetMarginEnd(int32(endInset))
-	key := overviewLayoutKey(o.st.Cards, s.snap.Monitors, s.cfg.Overview.PerMonitor, o.monitor, int(o.root.GetScaleFactor()), o.st.Query != "", topInset, bottomInset, startInset, endInset)
+	key := overviewLayoutKey(o.st.Cards, s.snap.Outputs, s.cfg.Overview.PerMonitor, o.monitor, int(o.root.GetScaleFactor()), o.st.Query != "", topInset, bottomInset, startInset, endInset)
 	if o.layoutKey == key {
 		s.updateOverviewWidgets(o)
 		return
@@ -471,7 +465,7 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 	}
 	cards := []indexedCard{}
 	for i, card := range o.st.Cards {
-		if !s.cfg.Overview.PerMonitor || card.Workspace.Monitor == o.monitor {
+		if !s.cfg.Overview.PerMonitor || card.Workspace.Output == o.monitor {
 			cards = append(cards, indexedCard{i, card})
 		}
 	}
@@ -488,7 +482,7 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 	// Match the original overview: monitor groups contain proportional
 	// workspace canvases; windows occupy their actual compositor geometry.
 	viewportW, viewportH := 1920.0, 1080.0
-	for _, mon := range s.snap.Monitors {
+	for _, mon := range s.snap.Outputs {
 		if mon.Name == o.monitor {
 			scale := max(mon.Scale, 1)
 			viewportW, viewportH = float64(mon.Width)/scale, float64(mon.Height)/scale
@@ -501,12 +495,12 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 	aspect := 9.0 / 16.0
 	for _, item := range cards {
 		card := item.card
-		if counts[card.Workspace.Monitor] == 0 {
-			groups = append(groups, card.Workspace.Monitor)
+		if counts[card.Workspace.Output] == 0 {
+			groups = append(groups, card.Workspace.Output)
 		}
-		counts[card.Workspace.Monitor]++
+		counts[card.Workspace.Output]++
 	}
-	for _, mon := range s.snap.Monitors {
+	for _, mon := range s.snap.Outputs {
 		aspect = max(aspect, float64(mon.Height)/float64(mon.Width))
 	}
 	columns, thumbW := 1, 0.0
@@ -528,15 +522,15 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 	for _, item := range cards {
 		i, card := item.index, item.card
 		var monW, monH, monX, monY float64 = 1920, 1080, 0, 0
-		for _, mon := range s.snap.Monitors {
-			if mon.Name == card.Workspace.Monitor {
+		for _, mon := range s.snap.Outputs {
+			if mon.Name == card.Workspace.Output {
 				scale := max(mon.Scale, 1)
 				monW, monH, monX, monY = float64(mon.Width)/scale, float64(mon.Height)/scale, float64(mon.X), float64(mon.Y)
 			}
 		}
 		thumbH := thumbW * monH / monW
-		if card.Workspace.Monitor != lastMonitor {
-			lastMonitor = card.Workspace.Monitor
+		if card.Workspace.Output != lastMonitor {
+			lastMonitor = card.Workspace.Output
 			section := gtk.NewBox(gtk.OrientationVerticalValue, 10)
 			section.AddCssClass("overview-monitor-group")
 			label := gtk.NewLabel(lastMonitor)
@@ -559,9 +553,9 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 		canvas.SetVexpand(false)
 		canvas.SetSizeRequest(int32(thumbW), int32(thumbH))
 		canvas.SetOverflow(gtk.OverflowHiddenValue)
-		canvas.SetName(fmt.Sprintf("workspace:%d", card.Workspace.ID))
+		canvas.SetName("workspace:" + card.Workspace.ID)
 		if card.New {
-			canvas.SetName("new-workspace:" + card.Workspace.Monitor)
+			canvas.SetName("new-workspace:" + card.Workspace.Output)
 		}
 		click := gtk.NewGestureClick()
 		click.ConnectReleased(&s.onOverviewCanvas)
@@ -580,12 +574,12 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 		background.ConnectClicked(&s.onOverviewButton)
 
 		if card.New {
-			background.SetName("new-workspace:" + card.Workspace.Monitor)
+			background.SetName("new-workspace:" + card.Workspace.Output)
 		}
 		canvas.SetChild(&background.Widget)
 		background.Unref()
 		{
-			s.overview.targets[canvas.GoPointer()] = overviewDropTarget{ID: card.Workspace.ID, Monitor: card.Workspace.Monitor, New: card.New, Scale: thumbW / monW}
+			s.overview.targets[canvas.GoPointer()] = overviewDropTarget{ID: card.Workspace.ID, Monitor: card.Workspace.Output, New: card.New, Scale: thumbW / monW}
 			o.renderedTargets = append(o.renderedTargets, canvas.GoPointer())
 			drop := gtk.NewDropTarget(types.GType(gobject.TypeStringVal), gdk.ActionMoveValue)
 			drop.ConnectMotion(&s.onOverviewMotion)
@@ -613,15 +607,15 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 		for wi := len(card.Windows) - 1; wi >= 0; wi-- {
 			w := card.Windows[wi]
 			x, y, pw, ph := overviewWindowLayout(w, monX, monY, monW, monH, thumbW, thumbH)
-			s.noteOverviewPreviewSize(w.Address, pw, ph, int(o.root.GetScaleFactor()))
+			s.noteOverviewPreviewSize(w.ID, pw, ph, int(o.root.GetScaleFactor()))
 			b := gtk.NewButton()
-			b.SetName("window:" + w.Address)
+			b.SetName("window:" + w.ID)
 			b.SetSizeRequest(int32(pw), int32(ph))
 			b.SetTooltipText(w.Title) // the label is cut short in small previews
 			ww := &overviewWindowWidgets{button: b, rect: [4]float64{x, y, pw, ph}, title: w.Title}
-			o.windowWidgets[w.Address] = ww
+			o.windowWidgets[w.ID] = ww
 			b.AddCssClass("overview-window")
-			if w.Activated {
+			if w.Focused {
 				b.AddCssClass("active")
 			}
 			b.ConnectClicked(&s.onOverviewButton)
@@ -629,7 +623,7 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 			preview.SetCanShrink(true)
 			preview.SetContentFit(gtk.ContentFitFillValue)
 			preview.AddCssClass("overview-preview")
-			if texture := o.textures[w.Address]; texture != nil {
+			if texture := o.textures[w.ID]; texture != nil {
 				preview.SetPaintable(texture)
 			}
 			windowLayer := gtk.NewOverlay()
@@ -642,7 +636,7 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 			meta.SetValign(gtk.AlignEndValue)
 			meta.SetSizeRequest(-1, 38)
 			icon := gtk.NewImage()
-			if entry := s.dockState.apps.ForClass(w.Class); entry != nil && entry.Icon != "" {
+			if entry := s.dockState.apps.ForClass(w.AppID); entry != nil && entry.Icon != "" {
 				setIcon(icon, entry.Icon)
 			} else {
 				setIcon(icon, "application-x-executable")
@@ -667,10 +661,10 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 			meta.Unref()
 			b.SetChild(&windowLayer.Widget)
 			windowLayer.Unref()
-			o.images[w.Address] = preview
+			o.images[w.ID] = preview
 			var value gobject.Value
 			value.Init(gobject.TypeStringVal)
-			value.SetString(w.Address)
+			value.SetString(w.ID)
 			content := gdk.NewContentProviderForValue(&value)
 			value.Unset()
 			drag := gtk.NewDragSource()
@@ -709,9 +703,9 @@ func (s *shellUI) updateOverviewCapture() {
 	var targets, priority []string
 	for i, card := range o.st.Cards {
 		for _, w := range card.Windows {
-			targets = append(targets, w.Address)
+			targets = append(targets, w.ID)
 			if i == o.st.Selected {
-				priority = append(priority, w.Address)
+				priority = append(priority, w.ID)
 			}
 		}
 	}
@@ -858,23 +852,56 @@ func (s *shellUI) drainOverviewFrames() {
 	}
 }
 
+// createWorkspaceOnMonitor goes to a new workspace on a monitor: the one
+// the compositor names, shown there.
 func (s *shellUI) createWorkspaceOnMonitor(monitor string) {
-	if s.client == nil || monitor == "" {
+	if s.comp == nil || monitor == "" {
 		return
 	}
-	id := strconv.Itoa(s.nextOverviewWorkspaceID(monitor))
-	s.activateOverview(fmt.Sprintf(`hl.dsp.focus({workspace=%s})`, id), monitor, fmt.Sprintf(`hl.dsp.workspace.move({workspace=%q,monitor=%q})`, id, monitor))
+	id, ok := s.nextOverviewWorkspaceID(monitor)
+	if !ok {
+		return
+	}
+	mover, _ := s.comp.(compositor.WorkspaceMover)
+	s.activateOverview(monitor, func(ctx context.Context) error { return s.comp.FocusWorkspace(ctx, id) },
+		func(ctx context.Context) error {
+			if mover == nil {
+				return nil
+			}
+			return mover.MoveWorkspace(ctx, id, monitor)
+		})
 }
 
-func (s *shellUI) dispatchOverview(action, expression string) {
-	if s.client == nil {
-		log.Printf("overview: Hyprland is not connected; cannot %s", action)
+// activateWorkspace goes to the workspace a card names (its name as the
+// widget carries it), on its monitor.
+func (s *shellUI) activateWorkspace(name string) {
+	id, monitor := s.overviewWorkspaceByName(name)
+	if id == "" {
+		return
+	}
+	s.activateOverview(monitor, func(ctx context.Context) error { return s.comp.FocusWorkspace(ctx, id) })
+}
+
+// killWindow ends a window's client without asking it where the
+// compositor can (Hyprland), else closes it.
+func (s *shellUI) killWindow(ctx context.Context, id string) error {
+	if s.hypr != nil {
+		return s.hypr.KillWindow(ctx, id)
+	}
+	return s.comp.CloseWindow(ctx, id)
+}
+
+// overviewDo runs a compositor action for the overview in the
+// background; a failure is logged, the overview stays.
+func (s *shellUI) overviewDo(action string, do func(ctx context.Context) error) {
+	if s.comp == nil {
+		log.Printf("overview: the compositor is not connected; cannot %s", action)
 		return
 	}
 	go func() {
 		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 		defer cancel()
-		if err := s.client.LuaDispatch(ctx, expression); err != nil {
+		if err := do(ctx); err != nil {
 			log.Printf("overview: %s: %v", action, err)
 		}
 	}()
@@ -1021,26 +1048,15 @@ func (s *shellUI) buildOverview(o *workspaceOverview) {
 	o.win.AddController(&right.EventController)
 }
 
-func overviewPair(value any, fallbackX, fallbackY float64) (float64, float64) {
-	if pair, ok := value.([]any); ok && len(pair) >= 2 {
-		x, xok := pair[0].(float64)
-		y, yok := pair[1].(float64)
-		if xok && yok {
-			return x, y
-		}
-	}
-	return fallbackX, fallbackY
-}
-
 // overviewWindowLayout maps compositor geometry onto a workspace card. A
 // window that still reports coordinates on another monitor (typical right
 // after a New drop) fills the card so the existing screenshot stays visible.
-func overviewWindowLayout(w hypr.Toplevel, monX, monY, monW, monH, thumbW, thumbH float64) (x, y, pw, ph float64) {
-	if w.Raw == nil {
+func overviewWindowLayout(w compositor.Window, monX, monY, monW, monH, thumbW, thumbH float64) (x, y, pw, ph float64) {
+	if w.Geometry == nil {
 		return 0, 0, thumbW, thumbH
 	}
-	ax, ay := overviewPair(w.Raw["at"], monX, monY)
-	ww, wh := overviewPair(w.Raw["size"], monW, monH)
+	ax, ay := float64(w.Geometry.X), float64(w.Geometry.Y)
+	ww, wh := float64(w.Geometry.W), float64(w.Geometry.H)
 	if ax+ww <= monX || ay+wh <= monY || ax >= monX+monW || ay >= monY+monH {
 		return 0, 0, thumbW, thumbH
 	}

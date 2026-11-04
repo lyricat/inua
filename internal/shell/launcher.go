@@ -6,13 +6,12 @@ package shell
 
 import (
 	"cmp"
-	"fmt"
 	"slices"
 	"strings"
 
+	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/convert"
 	"github.com/lyricat/inua/internal/desktop"
-	"github.com/lyricat/inua/internal/hypr"
 	"github.com/lyricat/inua/internal/i18n"
 )
 
@@ -107,7 +106,7 @@ type Launcher struct {
 
 	apps      []*desktop.Entry
 	appsReady bool
-	snap      hypr.Snapshot
+	snap      compositor.Snapshot
 	connected bool
 	rates     *convert.Rates // exchange rates for answers; nil until read
 	previous  string         // window focused before Show
@@ -145,7 +144,7 @@ func (l *Launcher) SetApps(apps []*desktop.Entry) {
 
 // SetSnapshot replaces the compositor state. An open window list is
 // refreshed, keeping the selected window selected while it exists.
-func (l *Launcher) SetSnapshot(snap hypr.Snapshot) {
+func (l *Launcher) SetSnapshot(snap compositor.Snapshot) {
 	l.snap = snap
 	if l.Open && l.Mode == Windows {
 		l.search(true)
@@ -173,7 +172,7 @@ func (l *Launcher) SetConnected(up bool) {
 // switches its mode and starts over.
 func (l *Launcher) Show(m Mode) {
 	if !l.Open {
-		l.previous = l.snap.ActiveToplevel
+		l.previous = l.snap.FocusedWindow
 	}
 	l.Open, l.Mode, l.Query, l.notice, l.armed = true, m, "", "", ""
 	l.search(false)
@@ -370,7 +369,7 @@ func (l *Launcher) Message() string {
 		return i18n.T("No app matches")
 	case !l.connected:
 		return i18n.T("Not connected to Hyprland")
-	case len(l.snap.Toplevels) == 0:
+	case len(l.snap.Windows) == 0:
 		return i18n.T("No windows open")
 	}
 	return i18n.T("No window matches")
@@ -382,16 +381,17 @@ func (l *Launcher) Failed() bool { return l.notice != "" && l.armed == "" }
 
 // windowTitle is a window's title, or its class; "" when it is gone.
 func (l *Launcher) windowTitle(addr string) string {
-	for _, t := range l.snap.Toplevels {
-		if t.Address == addr {
-			return cmp.Or(t.Title, t.Class)
+	for _, t := range l.snap.Windows {
+		if t.ID == addr {
+			return cmp.Or(t.Title, t.AppID)
 		}
 	}
 	return ""
 }
 
 func (l *Launcher) windowExists(addr string) bool {
-	return slices.ContainsFunc(l.snap.Toplevels, func(t hypr.Toplevel) bool { return t.Address == addr })
+	_, ok := l.snap.Window(addr)
+	return ok
 }
 
 // search rebuilds the results. keep holds on to the selected window across
@@ -441,7 +441,7 @@ func (l *Launcher) search(keep bool) {
 	}
 	// Like Alt-Tab: with no query the windows are in focus order, and the
 	// one to switch to is the previous one, not the one already focused.
-	if l.Mode == Windows && q == "" && len(l.Results) > 1 && l.Results[0].Address == l.snap.ActiveToplevel {
+	if l.Mode == Windows && q == "" && len(l.Results) > 1 && l.Results[0].Address == l.snap.FocusedWindow {
 		l.Selected = 1
 	}
 }
@@ -501,23 +501,23 @@ func searchApps(apps []*desktop.Entry, q string) []Result {
 	return rs
 }
 
-func searchWindows(snap hypr.Snapshot, q string) []Result {
+func searchWindows(snap compositor.Snapshot, q string) []Result {
 	var rs []Result
-	for i, t := range snap.Toplevels {
+	for i, t := range snap.Windows {
 		score := 1
 		if q != "" {
-			score = rank(q, t.Title, t.Class)
+			score = rank(q, t.Title, t.AppID)
 		}
 		if score == 0 {
 			continue
 		}
-		detail := t.Class
-		if t.WorkspaceID != 0 {
-			detail = i18n.Tf("%s · workspace %s", t.Class, workspaceName(snap, t.WorkspaceID))
+		detail := t.AppID
+		if t.Workspace != "" {
+			detail = i18n.Tf("%s · workspace %s", t.AppID, workspaceName(snap, t.Workspace))
 		}
 		rs = append(rs, Result{
-			Title: cmp.Or(t.Title, t.Class), Detail: detail, Icon: t.Class,
-			Address: t.Address, score: score, history: focusHistory(t, len(snap.Toplevels)+i),
+			Title: cmp.Or(t.Title, t.AppID), Detail: detail, Icon: t.AppID,
+			Address: t.ID, score: score, history: focusHistory(t, len(snap.Windows)+i),
 		})
 	}
 	slices.SortStableFunc(rs, func(a, b Result) int {
@@ -526,20 +526,18 @@ func searchWindows(snap hypr.Snapshot, q string) []Result {
 	return rs
 }
 
-// focusHistory is Hyprland's focusHistoryID (0 = focused last); windows
-// without one sort after all that have one, in client order.
-func focusHistory(t hypr.Toplevel, fallback int) int {
-	if v, ok := t.Raw["focusHistoryID"].(float64); ok && v >= 0 {
-		return int(v)
+// focusHistory is a window's focus rank (1 = focused last); windows
+// without one sort after all that have one, in the compositor's order.
+func focusHistory(t compositor.Window, fallback int) int {
+	if t.FocusRank > 0 {
+		return t.FocusRank
 	}
 	return fallback
 }
 
-func workspaceName(snap hypr.Snapshot, id int) string {
-	for _, w := range snap.Workspaces {
-		if w.ID == id && w.Name != "" {
-			return w.Name
-		}
+func workspaceName(snap compositor.Snapshot, id string) string {
+	if w, ok := snap.Workspace(id); ok && w.Name != "" {
+		return w.Name
 	}
-	return fmt.Sprint(id)
+	return id
 }

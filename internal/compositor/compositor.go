@@ -208,6 +208,17 @@ var (
 	ErrNoCompositor = errors.New("compositor: no known compositor in this session")
 )
 
+// Snapshotter reads the state once, for a program that does not run a
+// backend: a light app placing its window, the assistant's tools.
+type Snapshotter interface {
+	Snapshot(ctx context.Context) (Snapshot, error)
+}
+
+// OutputFocuser focuses an output, for an action that must happen on it.
+type OutputFocuser interface {
+	FocusOutput(ctx context.Context, name string) error
+}
+
 // WorkspaceMover is CapWorkspaces: naming a new workspace and moving one.
 type WorkspaceMover interface {
 	// NewWorkspace names the workspace a window moved to "new" on output

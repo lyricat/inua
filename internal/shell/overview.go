@@ -7,57 +7,61 @@ import (
 	"strings"
 	"time"
 
-	"github.com/lyricat/inua/internal/hypr"
+	"github.com/lyricat/inua/internal/compositor"
 )
 
 // Overview is the workspace and window overview shown above the compositor.
 // It owns selection and focus rules; the GTK view only renders Cards and
 // dispatches the returned action.
 type Overview struct {
-	Open         bool
-	Cards        []OverviewCard
-	AllCards     []OverviewCard
-	Selected     int
-	Query        string
-	Previous     string
-	FocusedMon   string
-	MRU          bool
-	History      []int
-	snapshot     hypr.Snapshot
-	frozenOrder  []int
-	reservations map[int]time.Time
+	Open       bool
+	Cards      []OverviewCard
+	AllCards   []OverviewCard
+	Selected   int
+	Query      string
+	Previous   string
+	FocusedMon string
+	MRU        bool
+	History    []string // workspace ids, the most recently focused first
+	// NewWorkspace names the workspace a New drop on an output creates
+	// (compositor.WorkspaceMover); nil: no New.
+	NewWorkspace func(snap compositor.Snapshot, output string, unavailable func(id string) bool) (compositor.Workspace, bool)
+
+	snapshot     compositor.Snapshot
+	frozenOrder  []string
+	reservations map[string]time.Time
 	moves        []overviewMove
 }
 
 // overviewMove is a window relocation the compositor has not yet confirmed.
 // The view shows the destination immediately so a drop onto New does not flash
-// an empty card while Hyprland creates and routes the workspace.
+// an empty card while the compositor creates and routes the workspace.
 type overviewMove struct {
-	Address   string
-	Workspace int
+	Window    string
+	Workspace string
 	Monitor   string
-	Source    int
+	Source    string
 	Until     time.Time
 }
 
 type OverviewCard struct {
-	Workspace hypr.Workspace
-	Windows   []hypr.Toplevel
+	Workspace compositor.Workspace
+	Windows   []compositor.Window
 	New       bool
 }
 
-func (o *Overview) Show(snap hypr.Snapshot) {
+func (o *Overview) Show(snap compositor.Snapshot) {
 	o.frozenOrder = nil
 	o.Open = true
 	o.Query = ""
 	o.snapshot = snap
-	o.Previous = snap.ActiveToplevel
-	o.FocusedMon = snap.FocusedMonitor
+	o.Previous = snap.FocusedWindow
+	o.FocusedMon = snap.FocusedOutput
 	o.refresh(snap)
 	o.freezeOrder()
 	o.Selected = 0
 	for i, c := range o.Cards {
-		if c.New && c.Workspace.Monitor == snap.FocusedMonitor {
+		if c.New && c.Workspace.Output == snap.FocusedOutput {
 			o.Selected = i
 		}
 	}
@@ -69,17 +73,14 @@ func (o *Overview) Show(snap hypr.Snapshot) {
 	}
 }
 
-func (o *Overview) SetSnapshot(snap hypr.Snapshot) {
+func (o *Overview) SetSnapshot(snap compositor.Snapshot) {
 	if !o.Open {
-		for _, w := range snap.Toplevels {
-			if w.Address == snap.ActiveToplevel {
-				o.History = slices.DeleteFunc(o.History, func(id int) bool { return id == w.WorkspaceID })
-				o.History = append([]int{w.WorkspaceID}, o.History...)
-				break
-			}
+		if w, ok := snap.Window(snap.FocusedWindow); ok && w.Workspace != "" {
+			o.History = slices.DeleteFunc(o.History, func(id string) bool { return id == w.Workspace })
+			o.History = append([]string{w.Workspace}, o.History...)
 		}
 		o.snapshot = snap
-		o.FocusedMon = snap.FocusedMonitor
+		o.FocusedMon = snap.FocusedOutput
 		return
 	}
 	var selected OverviewCard
@@ -87,10 +88,10 @@ func (o *Overview) SetSnapshot(snap hypr.Snapshot) {
 		selected = o.Cards[o.Selected]
 	}
 	o.snapshot = snap
-	o.FocusedMon = snap.FocusedMonitor
+	o.FocusedMon = snap.FocusedOutput
 	o.refresh(snap)
 	for i, c := range o.Cards {
-		if c.Workspace.ID == selected.Workspace.ID && c.Workspace.Monitor == selected.Workspace.Monitor && c.New == selected.New {
+		if c.Workspace.ID == selected.Workspace.ID && c.Workspace.Output == selected.Workspace.Output && c.New == selected.New {
 			o.Selected = i
 			return
 		}
@@ -115,7 +116,7 @@ func (o *Overview) SetQuery(query string) {
 	o.filter()
 	for i, c := range o.Cards {
 		for _, w := range c.Windows {
-			if selected != "" && w.Address == selected {
+			if selected != "" && w.ID == selected {
 				o.Selected = i
 				return
 			}
@@ -124,49 +125,42 @@ func (o *Overview) SetQuery(query string) {
 	o.Selected = max(0, min(o.Selected, len(o.Cards)-1))
 }
 
-func (o *Overview) refresh(snap hypr.Snapshot) {
+func (o *Overview) refresh(snap compositor.Snapshot) {
 	o.settleMoves(snap, time.Now())
-	workspaces, toplevels := o.projected(snap)
+	workspaces, windows := o.projected(snap)
 	o.AllCards = nil
 	for _, ws := range workspaces {
-		if ws.ID <= 0 || ws.Monitor == "" {
+		if ws.ID == "" || ws.Output == "" {
 			continue
 		}
 		card := OverviewCard{Workspace: ws}
-		for _, w := range toplevels {
-			if w.WorkspaceID == ws.ID {
+		for _, w := range windows {
+			if w.Workspace == ws.ID {
 				card.Windows = append(card.Windows, w)
 			}
 		}
-		slices.SortFunc(card.Windows, func(a, b hypr.Toplevel) int {
-			if a.Activated != b.Activated {
-				if a.Activated {
+		slices.SortFunc(card.Windows, func(a, b compositor.Window) int {
+			if a.Focused != b.Focused {
+				if a.Focused {
 					return -1
 				}
 				return 1
 			}
-			if a.Title < b.Title {
-				return -1
-			}
-			if a.Title > b.Title {
-				return 1
-			}
-			return 0
+			return strings.Compare(a.Title, b.Title)
 		})
 		if len(card.Windows) > 0 {
 			o.AllCards = append(o.AllCards, card)
 		}
 	}
 
-	for _, mon := range snap.Monitors {
-		o.AllCards = append(o.AllCards, OverviewCard{Workspace: hypr.Workspace{Monitor: mon.Name}, New: true})
+	if o.NewWorkspace != nil {
+		for _, mon := range snap.Outputs {
+			o.AllCards = append(o.AllCards, OverviewCard{Workspace: compositor.Workspace{Output: mon.Name}, New: true})
+		}
 	}
 	slices.SortFunc(o.AllCards, func(a, b OverviewCard) int {
-		if a.Workspace.Monitor != b.Workspace.Monitor {
-			if a.Workspace.Monitor < b.Workspace.Monitor {
-				return -1
-			}
-			return 1
+		if a.Workspace.Output != b.Workspace.Output {
+			return strings.Compare(a.Workspace.Output, b.Workspace.Output)
 		}
 		if a.New != b.New {
 			if a.New {
@@ -193,13 +187,7 @@ func (o *Overview) refresh(snap hypr.Snapshot) {
 				return 1
 			}
 		}
-		if a.Workspace.ID < b.Workspace.ID {
-			return -1
-		}
-		if a.Workspace.ID > b.Workspace.ID {
-			return 1
-		}
-		return 0
+		return workspaceOrder(a.Workspace, b.Workspace)
 	})
 	if o.Open && o.MRU && len(o.frozenOrder) > 0 {
 		for _, card := range o.AllCards {
@@ -216,20 +204,22 @@ func (o *Overview) refresh(snap hypr.Snapshot) {
 	}
 }
 
+// workspaceOrder sorts workspaces as the compositor orders them, ids
+// deciding between equals.
+func workspaceOrder(a, b compositor.Workspace) int {
+	if a.Order != b.Order {
+		return a.Order - b.Order
+	}
+	return strings.Compare(a.ID, b.ID)
+}
+
+// workspaceHistory is how long ago a card's workspace was in use: the best
+// focus rank of its windows, the largest int when none has one.
 func workspaceHistory(c OverviewCard) int {
 	best := int(^uint(0) >> 1)
 	for _, w := range c.Windows {
-		var n int
-		switch v := w.Raw["focusHistoryID"].(type) {
-		case float64:
-			n = int(v)
-		case int:
-			n = v
-		default:
-			continue
-		}
-		if n < best {
-			best = n
+		if w.FocusRank > 0 && w.FocusRank < best {
+			best = w.FocusRank
 		}
 	}
 	return best
@@ -248,7 +238,7 @@ func (o *Overview) filter() {
 		}
 		filtered := OverviewCard{Workspace: c.Workspace}
 		for _, w := range c.Windows {
-			if strings.Contains(strings.ToLower(w.Title), q) || strings.Contains(strings.ToLower(w.Class), q) {
+			if strings.Contains(strings.ToLower(w.Title), q) || strings.Contains(strings.ToLower(w.AppID), q) {
 				filtered.Windows = append(filtered.Windows, w)
 			}
 		}
@@ -258,11 +248,13 @@ func (o *Overview) filter() {
 	}
 }
 
+// SelectedAddress is the id of the selected card's first window, "" for
+// none.
 func (o *Overview) SelectedAddress() string {
 	if o.Selected < 0 || o.Selected >= len(o.Cards) || len(o.Cards[o.Selected].Windows) == 0 {
 		return ""
 	}
-	return o.Cards[o.Selected].Windows[0].Address
+	return o.Cards[o.Selected].Windows[0].ID
 }
 
 func (o *Overview) Move(delta int) {
@@ -290,64 +282,55 @@ func (o *Overview) Close() {
 }
 
 // BeginMove records a drop so the destination card shows the window and
-// screenshot before Hyprland events arrive. The emptied source stays hidden.
-func (o *Overview) BeginMove(address string, workspace int, monitor string, source int, now time.Time) {
-	if address == "" || workspace <= 0 {
+// screenshot before the compositor's events arrive. The emptied source
+// stays hidden.
+func (o *Overview) BeginMove(window, workspace, monitor, source string, now time.Time) {
+	if window == "" || workspace == "" {
 		return
 	}
-	o.moves = slices.DeleteFunc(o.moves, func(m overviewMove) bool { return m.Address == address })
+	o.moves = slices.DeleteFunc(o.moves, func(m overviewMove) bool { return m.Window == window })
 	o.moves = append(o.moves, overviewMove{
-		Address: address, Workspace: workspace, Monitor: monitor, Source: source, Until: now.Add(5 * time.Second),
+		Window: window, Workspace: workspace, Monitor: monitor, Source: source, Until: now.Add(5 * time.Second),
 	})
 	if o.reservations == nil {
-		o.reservations = map[int]time.Time{}
+		o.reservations = map[string]time.Time{}
 	}
 	o.reservations[workspace] = now.Add(5 * time.Second)
 	o.refresh(o.snapshot)
 }
 
-func (o *Overview) settleMoves(snap hypr.Snapshot, now time.Time) {
+func (o *Overview) settleMoves(snap compositor.Snapshot, now time.Time) {
 	o.moves = slices.DeleteFunc(o.moves, func(m overviewMove) bool {
 		if !now.Before(m.Until) {
 			return true
 		}
-		onWorkspace := false
-		for _, w := range snap.Toplevels {
-			if w.Address == m.Address && w.WorkspaceID == m.Workspace {
-				onWorkspace = true
-				break
-			}
-		}
-		if !onWorkspace {
+		w, ok := snap.Window(m.Window)
+		if !ok || w.Workspace != m.Workspace {
 			return false
 		}
 		if m.Monitor == "" {
 			return true
 		}
-		for _, ws := range snap.Workspaces {
-			if ws.ID == m.Workspace {
-				return ws.Monitor == m.Monitor
-			}
-		}
-		return false
+		ws, ok := snap.Workspace(m.Workspace)
+		return ok && ws.Output == m.Monitor
 	})
 }
 
-func (o *Overview) projected(snap hypr.Snapshot) ([]hypr.Workspace, []hypr.Toplevel) {
-	workspaces := append([]hypr.Workspace(nil), snap.Workspaces...)
-	toplevels := append([]hypr.Toplevel(nil), snap.Toplevels...)
+func (o *Overview) projected(snap compositor.Snapshot) ([]compositor.Workspace, []compositor.Window) {
+	workspaces := append([]compositor.Workspace(nil), snap.Workspaces...)
+	windows := append([]compositor.Window(nil), snap.Windows...)
 	if len(o.moves) == 0 {
-		return workspaces, toplevels
+		return workspaces, windows
 	}
-	byAddr := make(map[string]int, len(toplevels))
-	for i := range toplevels {
-		byAddr[toplevels[i].Address] = i
+	byID := make(map[string]int, len(windows))
+	for i := range windows {
+		byID[windows[i].ID] = i
 	}
 	for _, m := range o.moves {
-		if i, ok := byAddr[m.Address]; ok {
-			toplevels[i].WorkspaceID = m.Workspace
+		if i, ok := byID[m.Window]; ok {
+			windows[i].Workspace = m.Workspace
 			if m.Monitor != "" {
-				toplevels[i].Monitor = m.Monitor
+				windows[i].Output = m.Monitor
 			}
 		}
 		found := false
@@ -356,23 +339,26 @@ func (o *Overview) projected(snap hypr.Snapshot) ([]hypr.Workspace, []hypr.Tople
 				continue
 			}
 			if m.Monitor != "" {
-				workspaces[i].Monitor = m.Monitor
+				workspaces[i].Output = m.Monitor
 			}
 			found = true
 			break
 		}
 		if !found {
-			workspaces = append(workspaces, hypr.Workspace{
-				ID: m.Workspace, Name: strconv.Itoa(m.Workspace), Monitor: m.Monitor,
+			order, _ := strconv.Atoi(m.Workspace)
+			workspaces = append(workspaces, compositor.Workspace{
+				ID: m.Workspace, Name: m.Workspace, Output: m.Monitor, Order: order,
 			})
 		}
 	}
-	return workspaces, toplevels
+	return workspaces, windows
 }
 
-func (o *Overview) Select(index int) (hypr.Workspace, string, bool) {
+// Select selects a card and says what activating it means: its
+// workspace, and its first window's id when it has one.
+func (o *Overview) Select(index int) (compositor.Workspace, string, bool) {
 	if index < 0 || index >= len(o.Cards) {
-		return hypr.Workspace{}, "", false
+		return compositor.Workspace{}, "", false
 	}
 	o.Selected = index
 	c := o.Cards[index]
@@ -380,7 +366,7 @@ func (o *Overview) Select(index int) (hypr.Workspace, string, bool) {
 		return c.Workspace, "", true
 	}
 	if len(c.Windows) > 0 {
-		return c.Workspace, c.Windows[0].Address, true
+		return c.Workspace, c.Windows[0].ID, true
 	}
 	return c.Workspace, "", true
 }
@@ -390,12 +376,12 @@ func (o *Overview) Select(index int) (hypr.Workspace, string, bool) {
 // when it is on, the workspace's own order otherwise. A workspace with no
 // windows keeps its mark: the bar says where the display can be, while the
 // overview's cards say where the windows are.
-func (o Overview) BarWorkspaces(snap hypr.Snapshot, connector string, all bool) []hypr.Workspace {
+func (o Overview) BarWorkspaces(snap compositor.Snapshot, connector string, all bool) []compositor.Workspace {
 	workspaces := BarWorkspaces(snap, connector, all)
 	if !o.MRU {
 		return workspaces
 	}
-	slices.SortFunc(workspaces, func(a, b hypr.Workspace) int {
+	slices.SortFunc(workspaces, func(a, b compositor.Workspace) int {
 		ha, hb := slices.Index(o.History, a.ID), slices.Index(o.History, b.ID)
 		if ha < 0 {
 			ha = 100000 + min(workspaceHistory(OverviewCard{Workspace: a}), 100000)
@@ -406,14 +392,14 @@ func (o Overview) BarWorkspaces(snap hypr.Snapshot, connector string, all bool) 
 		if ha != hb {
 			return ha - hb
 		}
-		return a.ID - b.ID
+		return workspaceOrder(a, b)
 	})
 	return workspaces
 }
 
 // WorkspaceSlot resolves the unfiltered visual slot, including New, without
 // opening the overview or changing the current search/selection.
-func (o Overview) WorkspaceSlot(snap hypr.Snapshot, monitor string, slot int) (OverviewCard, bool) {
+func (o Overview) WorkspaceSlot(snap compositor.Snapshot, monitor string, slot int) (OverviewCard, bool) {
 	if slot < 1 {
 		return OverviewCard{}, false
 	}
@@ -425,7 +411,7 @@ func (o Overview) WorkspaceSlot(snap hypr.Snapshot, monitor string, slot int) (O
 	o.reservations = maps.Clone(o.reservations)
 	o.refresh(snap)
 	for _, card := range o.AllCards {
-		if card.Workspace.Monitor != monitor {
+		if card.Workspace.Output != monitor {
 			continue
 		}
 		slot--
@@ -436,13 +422,16 @@ func (o Overview) WorkspaceSlot(snap hypr.Snapshot, monitor string, slot int) (O
 	return OverviewCard{}, false
 }
 
-// ReserveWorkspace picks an ID for a New drop. Empty non-active Hyprland
-// workspaces are recycled so IDs do not ratchet after every move; occupied,
-// active, reserved and in-flight destinations stay unavailable. A recycled
-// workspace is still moved onto preferMonitor by the drop path.
-func (o *Overview) ReserveWorkspace(snap hypr.Snapshot, native bool, now time.Time, preferMonitor string) int {
+// ReserveWorkspace names the workspace a New drop on preferMonitor goes
+// to, asking the compositor's NewWorkspace with everything reserved, in
+// flight or shown kept out; the id is held for five seconds. false when
+// the compositor cannot name one.
+func (o *Overview) ReserveWorkspace(snap compositor.Snapshot, now time.Time, preferMonitor string) (string, bool) {
+	if o.NewWorkspace == nil {
+		return "", false
+	}
 	if o.reservations == nil {
-		o.reservations = map[int]time.Time{}
+		o.reservations = map[string]time.Time{}
 	}
 	o.settleMoves(snap, now)
 	for reserved, deadline := range o.reservations {
@@ -450,57 +439,20 @@ func (o *Overview) ReserveWorkspace(snap hypr.Snapshot, native bool, now time.Ti
 			delete(o.reservations, reserved)
 		}
 	}
-	unavailable := map[int]bool{}
-	occupied := map[int]bool{}
-	_, toplevels := o.projected(snap)
-	for _, w := range toplevels {
-		if w.WorkspaceID > 0 {
-			occupied[w.WorkspaceID] = true
-			unavailable[w.WorkspaceID] = true
-		}
-	}
+	unavailable := map[string]bool{}
 	for _, m := range o.moves {
 		unavailable[m.Workspace] = true
 	}
 	for reserved := range o.reservations {
 		unavailable[reserved] = true
 	}
-	for _, mon := range snap.Monitors {
-		if mon.ActiveWorkspaceID > 0 {
-			unavailable[mon.ActiveWorkspaceID] = true
-		}
+	_, windows := o.projected(snap)
+	projected := snap
+	projected.Windows = windows
+	ws, ok := o.NewWorkspace(projected, preferMonitor, func(id string) bool { return unavailable[id] })
+	if !ok {
+		return "", false
 	}
-	for _, ws := range snap.Workspaces {
-		if ws.Active && ws.ID > 0 {
-			unavailable[ws.ID] = true
-		}
-	}
-	prefer := 0
-	recycle := 0
-	for _, ws := range snap.Workspaces {
-		if ws.ID <= 0 || occupied[ws.ID] || unavailable[ws.ID] {
-			continue
-		}
-		if preferMonitor != "" && ws.Monitor == preferMonitor && prefer == 0 {
-			prefer = ws.ID
-		}
-		if recycle == 0 || ws.ID < recycle {
-			recycle = ws.ID
-		}
-	}
-	id := prefer
-	if id == 0 {
-		id = recycle
-	}
-	if id == 0 {
-		id = 1
-		if native {
-			id = 11
-		}
-		for unavailable[id] || occupied[id] {
-			id++
-		}
-	}
-	o.reservations[id] = now.Add(5 * time.Second)
-	return id
+	o.reservations[ws.ID] = now.Add(5 * time.Second)
+	return ws.ID, true
 }

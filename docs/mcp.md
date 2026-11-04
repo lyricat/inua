@@ -57,7 +57,7 @@ match several windows are an error naming them, to pass an id.
 | `move_window` | `window?`, `workspace` (a number or a name) | the window; it moves without following | change |
 | `switch_workspace` | `workspace` (a number or a name) | `ok` | change |
 | `close_window` | `window?` | the window; its app may ask to save | change, asks |
-| `list_workspaces` | | `{workspaces: [{id, name, monitor, windows, shown?, focused?}], monitors: [{name, width, height, scale, focused?, workspace}]}`; scratchpads left out | read |
+| `list_workspaces` | | `{workspaces: [{id, name, monitor, windows, shown?, focused?}], monitors: [{name, width, height, scale, focused?, workspace}]}`; ids are the compositor's strings (Hyprland's numbers as text); scratchpads left out | read |
 
 ### Apps
 

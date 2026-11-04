@@ -37,7 +37,8 @@ the view uses the tricky parts of puregotk only through `gtkx`.
 
 | Path | What | State |
 | --- | --- | --- |
-| `internal/hypr` | Hyprland requests, events, snapshots, the state store | Done, tested |
+| `internal/compositor` | The contract between the shell and a compositor ([compositor-contracts.md](compositor-contracts.md)): outputs, workspaces and windows as a snapshot, the base actions, the capability states, the optional interfaces, `Detect` over the registered backends; `compositortest` is the fake for tests | Done, tested |
+| `internal/hypr` | The Hyprland backend: requests, events, the state store, `Backend` behind the contract (Lua probed at each connection), and what only Hyprland has (Lua listeners, binds, displays, the virtual screen) | Done, tested |
 | `internal/capture/hyprland` | Standalone Wayland client for Hyprland's toplevel export protocol; streams SHM frames to the workspace overview | Implemented; runtime verification needs Hyprland |
 | `internal/desktop` | `.desktop` parsing, Exec expansion, launching | Done, tested |
 | `internal/ipc` | The control socket | Done, tested |
@@ -189,6 +190,15 @@ implemented dependencies, failure behavior, protocol versions and test gaps.
 On it build the [compositor capability comparison and baseline](compositor-capabilities.md),
 the [niri and Wayfire experiments](compositor-experiments.md) and the
 [compositor contracts and migration plan](compositor-contracts.md) (#58).
+
+`internal/compositor` is what the shell, the desk tools and the light apps
+see: a `Backend` delivering snapshots and taking the base actions, and the
+capability states that decide what the UI shows. The shell asks for the
+optional interfaces (`QuietFocuser`, `WorkspaceMover`, `Keystroker`,
+`Pointer`, `Moder`, `Placer`) and keeps the Hyprland backend itself for
+what the contract does not cover yet. Workspace and window ids are the
+backend's strings, compared only for equality; a New workspace is named by
+the backend (`NextNumbered` on Hyprland).
 
 `internal/hypr` (toolkit-free):
 

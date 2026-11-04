@@ -21,6 +21,7 @@ import (
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"codeberg.org/puregotk/puregotk/v4/pango"
 	"github.com/lyricat/inua/internal/clipboard"
+	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/gtkx"
 	"github.com/lyricat/inua/internal/i18n"
 	"github.com/lyricat/inua/internal/layershell"
@@ -213,10 +214,10 @@ func (s *shellUI) openClipboard(mon *gdk.Monitor) {
 	s.closeAgenda()
 	s.closePasswords()
 	s.dropClipboardWindow() // opened again while sliding away
-	c.target, c.targetClass = s.snap.ActiveToplevel, ""
-	for _, w := range s.snap.Toplevels {
-		if w.Address == c.target {
-			c.targetClass = w.Class
+	c.target, c.targetClass = s.snap.FocusedWindow, ""
+	for _, w := range s.snap.Windows {
+		if w.ID == c.target {
+			c.targetClass = w.AppID
 			break
 		}
 	}
@@ -590,7 +591,11 @@ var terminalClasses = []string{"kitty", "alacritty", "foot", "wezterm", "ghostty
 // types the shortcut into whatever is focused.
 func (s *shellUI) pasteClipboard(entry clipboard.Entry, action string) {
 	c := &s.clipboard
-	target, class, client, lua := c.target, strings.ToLower(c.targetClass), s.client, s.hyprLua
+	target, class := c.target, strings.ToLower(c.targetClass)
+	keys, _ := s.comp.(compositor.Keystroker)
+	if !s.caps.Has(compositor.CapKeystrokes) {
+		keys = nil
+	}
 	// The panel takes the keyboard; it goes before the paste.
 	s.closeClipboard()
 	go func() {
@@ -614,7 +619,7 @@ func (s *shellUI) pasteClipboard(entry clipboard.Entry, action string) {
 			log.Printf("clipboard copy: %v", err)
 			return
 		}
-		if action == "copy" || (client != nil && target == "") {
+		if action == "copy" || (keys != nil && target == "") {
 			return
 		}
 		time.Sleep(150 * time.Millisecond) // the panel has let go of the keyboard
@@ -626,21 +631,14 @@ func (s *shellUI) pasteClipboard(entry clipboard.Entry, action string) {
 		defer cancel()
 		var err error
 		switch {
-		case client == nil:
+		case keys == nil:
 			args := []string{"-M", "ctrl", "-k", "v", "-m", "ctrl"}
 			if mods != "CTRL" {
 				args = []string{"-M", "ctrl", "-M", "shift", "-k", "v", "-m", "shift", "-m", "ctrl"}
 			}
 			err = exec.CommandContext(ctx, "wtype", args...).Run()
 		default:
-			if err = focusQuietly(ctx, client, lua, target); err != nil {
-				break
-			}
-			if lua {
-				err = client.LuaDispatch(ctx, fmt.Sprintf(`hl.dsp.send_shortcut({ mods = %q, key = "V", window = %q })`, mods, "address:"+target))
-			} else {
-				err = client.Dispatch(ctx, fmt.Sprintf("sendshortcut %s, V, address:%s", mods, target))
-			}
+			err = keys.SendKey(ctx, target, mods, "V")
 		}
 		if err != nil {
 			log.Printf("clipboard paste: %v", err)

@@ -3,11 +3,12 @@ package shell
 import (
 	"errors"
 	"slices"
+	"strconv"
 	"strings"
 	"testing"
 
+	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/desktop"
-	"github.com/lyricat/inua/internal/hypr"
 )
 
 func titles(rs []Result) []string {
@@ -100,20 +101,20 @@ func TestAppsNotLoaded(t *testing.T) {
 	}
 }
 
-func win(addr, class, title string, ws, history int) hypr.Toplevel {
-	return hypr.Toplevel{Address: addr, Class: class, Title: title, WorkspaceID: ws,
-		Raw: map[string]any{"focusHistoryID": float64(history)}}
+// win is a window on workspace ws, focused history-th last (0 = last).
+func win(addr, class, title string, ws, history int) compositor.Window {
+	return compositor.Window{ID: addr, AppID: class, Title: title, Workspace: strconv.Itoa(ws), FocusRank: history + 1}
 }
 
-func testSnap() hypr.Snapshot {
-	return hypr.Snapshot{
-		Workspaces: []hypr.Workspace{{ID: 1, Name: "1"}, {ID: 2, Name: "web"}},
-		Toplevels: []hypr.Toplevel{
+func testSnap() compositor.Snapshot {
+	return compositor.Snapshot{
+		Workspaces: []compositor.Workspace{{ID: "1", Name: "1", Order: 1}, {ID: "2", Name: "web", Order: 2}},
+		Windows: []compositor.Window{
 			win("0x1", "foot", "~/src", 1, 2),
 			win("0x2", "firefox", "Mozilla Firefox", 2, 0),
 			win("0x3", "code", "main.go - Code", 1, 1),
 		},
-		ActiveToplevel: "0x2",
+		FocusedWindow: "0x2",
 	}
 }
 
@@ -153,13 +154,13 @@ func TestWindowListFollowsSnapshot(t *testing.T) {
 		t.Fatalf("selected %+v", l.Results[l.Selected])
 	}
 	// A new window appears first; the selection stays on ~/src.
-	snap.Toplevels = append(snap.Toplevels, win("0x4", "mpv", "video", 2, 0))
+	snap.Windows = append(snap.Windows, win("0x4", "mpv", "video", 2, 0))
 	l.SetSnapshot(snap)
 	if l.Results[l.Selected].Address != "0x1" {
 		t.Errorf("selection moved to %+v", l.Results[l.Selected])
 	}
 	// The selected window closes: the selection falls back to the top.
-	snap.Toplevels = slices.DeleteFunc(snap.Toplevels, func(t hypr.Toplevel) bool { return t.Address == "0x1" })
+	snap.Windows = slices.DeleteFunc(snap.Windows, func(t compositor.Window) bool { return t.ID == "0x1" })
 	l.SetSnapshot(snap)
 	if len(l.Results) != 3 || l.Selected >= len(l.Results) {
 		t.Errorf("after close: %q selected %d", titles(l.Results), l.Selected)
@@ -191,7 +192,7 @@ func TestCancelReturnsFocus(t *testing.T) {
 	l.SetSnapshot(snap)
 	l.Show(Apps)
 	// The window focused at open time gets focus back...
-	snap.ActiveToplevel = "0x1" // even if something else got focus meanwhile
+	snap.FocusedWindow = "0x1" // even if something else got focus meanwhile
 	l.SetSnapshot(snap)
 	if a := l.Cancel(); a != (Action{Kind: Focus, Address: "0x2"}) || l.Open {
 		t.Errorf("cancel: %+v open=%v", a, l.Open)
@@ -204,14 +205,14 @@ func TestCancelReturnsFocus(t *testing.T) {
 	l.SetSnapshot(testSnap())
 	l.Show(Apps)
 	snap = testSnap()
-	snap.Toplevels = snap.Toplevels[:1]
+	snap.Windows = snap.Windows[:1]
 	l.SetSnapshot(snap)
 	if a := l.Cancel(); a.Kind != None {
 		t.Errorf("cancel after the window closed: %+v", a)
 	}
 
 	// Nothing was focused.
-	l.SetSnapshot(hypr.Snapshot{})
+	l.SetSnapshot(compositor.Snapshot{})
 	l.Show(Apps)
 	if a := l.Cancel(); a.Kind != None {
 		t.Errorf("cancel without a previous window: %+v", a)
@@ -223,7 +224,7 @@ func TestShowWhileOpenKeepsPrevious(t *testing.T) {
 	snap := testSnap()
 	l.SetSnapshot(snap)
 	l.Show(Apps)
-	snap.ActiveToplevel = "0x3"
+	snap.FocusedWindow = "0x3"
 	l.SetSnapshot(snap)
 	l.Show(Windows) // switching modes is not a new open
 	if a := l.Cancel(); a.Address != "0x2" {
@@ -283,7 +284,7 @@ func TestExecuteClosedWindow(t *testing.T) {
 	// against what it has, so simulate a stale list.
 	stale := l.Results
 	snap := testSnap()
-	snap.Toplevels = slices.DeleteFunc(snap.Toplevels, func(t hypr.Toplevel) bool { return t.Address == "0x3" })
+	snap.Windows = slices.DeleteFunc(snap.Windows, func(t compositor.Window) bool { return t.ID == "0x3" })
 	l.snap = snap // state changed without a list refresh
 	l.Results = stale
 	if a := l.Execute(); a.Kind != None {
@@ -347,7 +348,7 @@ func TestLauncherAnswers(t *testing.T) {
 func TestCommands(t *testing.T) {
 	var l Launcher
 	l.SetApps(testApps())
-	l.SetSnapshot(hypr.Snapshot{Toplevels: []hypr.Toplevel{{Address: "0x1", Class: "firefox", Title: "Inbox"}}, ActiveToplevel: "0x1"})
+	l.SetSnapshot(compositor.Snapshot{Windows: []compositor.Window{{ID: "0x1", AppID: "firefox", Title: "Inbox"}}, FocusedWindow: "0x1"})
 	l.Show(Apps)
 
 	l.SetQuery("lock")

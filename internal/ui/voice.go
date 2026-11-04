@@ -3,9 +3,7 @@ package ui
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"errors"
-	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -18,8 +16,8 @@ import (
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
 	"github.com/lyricat/inua/internal/clipboard"
+	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/gtkx"
-	"github.com/lyricat/inua/internal/hypr"
 	"github.com/lyricat/inua/internal/hyprconf"
 	"github.com/lyricat/inua/internal/i18n"
 	"github.com/lyricat/inua/internal/ipc"
@@ -140,8 +138,15 @@ func (s *shellUI) followVoice() {
 	}
 	v.voiceRun, v.voxtypeSet = want, false
 	v.typer = dictationTyper{history: s.clipboard.path,
-		hypr: func() (hyprNow, error) {
-			return gtkx.Call(time.Second, func() hyprNow { return hyprNow{s.client, s.hyprLua} })
+		target: func() (pasteTarget, error) {
+			return gtkx.Call(time.Second, func() pasteTarget {
+				var t pasteTarget
+				if s.caps.Has(compositor.CapKeystrokes) {
+					t.keys, _ = s.comp.(compositor.Keystroker)
+				}
+				t.window, _ = s.snap.Window(s.snap.FocusedWindow)
+				return t
+			})
 		},
 		heard: func(text string) { gtkx.Post(func() { s.dictationHeard(text) }) }}
 	s.sys.Voice = system.VoiceState{}
@@ -234,22 +239,21 @@ func spaced(text string) string {
 // what made dictation paste nothing usable into apps like Telegram.
 type dictationTyper struct {
 	history string // the clipboard history's file
-	// hypr is the shell's Hyprland client, read on the main thread, and
-	// whether it takes 0.55's Lua dispatchers: both are known only after
-	// start-up.
-	hypr  func() (hyprNow, error)
-	heard func(text string)
+	// target is where a paste goes, read on the main thread: the
+	// compositor's keystrokes and the window focused now.
+	target func() (pasteTarget, error)
+	heard  func(text string)
 	// The clipboard, for a test: its text, and putting text on it. Left
 	// nil, wl-paste and wl-copy serve it.
 	clipboard func() []byte
 	copy      func([]byte) error
 }
 
-// hyprNow is the shell's Hyprland client (nil without Hyprland) and
-// whether it takes 0.55's Lua dispatchers, both known only after start-up.
-type hyprNow struct {
-	client *hypr.Client
-	lua    bool
+// pasteTarget is the compositor's way to send a key to a window (nil when
+// it has none) and the window focused now (an empty one when none is).
+type pasteTarget struct {
+	keys   compositor.Keystroker
+	window compositor.Window
 }
 
 func (t dictationTyper) typeText(text string) error {
@@ -262,24 +266,19 @@ func (t dictationTyper) typeText(text string) error {
 // address, and the clipboard's own text is put back once the window has read
 // it. A terminal gets Ctrl+Shift+V, which pastes there.
 func (t dictationTyper) paste(text string) error {
-	h, err := t.hypr()
+	target, err := t.target()
 	if err != nil {
 		return err
 	}
-	client, lua := h.client, h.lua
-	if client == nil {
-		return errors.New(i18n.T("dictation pastes with Hyprland, which is not running"))
+	if target.keys == nil {
+		return errors.New(i18n.T("dictation pastes through the compositor, which cannot send keys"))
+	}
+	w := target.window
+	if w.ID == "" {
+		return errors.New(i18n.T("no window has the focus to type into"))
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
-	reply, err := client.Request(ctx, "j/activewindow")
-	if err != nil {
-		return err
-	}
-	var w struct{ Address, Class string }
-	if json.Unmarshal(reply, &w) != nil || w.Address == "" {
-		return errors.New(i18n.T("no window has the focus to type into"))
-	}
 	read := func() []byte {
 		if t.clipboard != nil {
 			return t.clipboard()
@@ -306,16 +305,12 @@ func (t dictationTyper) paste(text string) error {
 		return err
 	}
 	mods := "CTRL"
-	if class := strings.ToLower(w.Class); slices.ContainsFunc(terminalClasses, func(t string) bool { return strings.Contains(class, t) }) {
+	if class := strings.ToLower(w.AppID); slices.ContainsFunc(terminalClasses, func(t string) bool { return strings.Contains(class, t) }) {
 		mods = "CTRL SHIFT"
 	}
 	// The window has to read the clipboard before the shortcut reaches it.
 	time.Sleep(150 * time.Millisecond)
-	if lua {
-		err = client.LuaDispatch(ctx, fmt.Sprintf(`hl.dsp.send_shortcut({ mods = %q, key = "V", window = %q })`, mods, "address:"+w.Address))
-	} else {
-		err = client.Dispatch(ctx, fmt.Sprintf("sendshortcut %s, V, address:%s", mods, w.Address))
-	}
+	err = target.keys.SendKey(ctx, w.ID, mods, "V")
 	if len(old) > 0 {
 		time.Sleep(400 * time.Millisecond) // the window has read the clipboard
 		copyText(old)

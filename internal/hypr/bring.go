@@ -80,8 +80,6 @@ func bringHere(activeJSON, clientsJSON []byte, pid int) ([]string, error) {
 }
 
 // Rect is a window's place: its top-left corner and size, in layout pixels.
-type Rect struct{ X, Y, W, H int }
-
 // WindowOf is where process pid's window is.
 func (c *Client) WindowOf(ctx context.Context, pid int) (Rect, error) {
 	clients, err := c.Request(ctx, "j/clients")
@@ -105,7 +103,7 @@ func windowOf(clientsJSON []byte, pid int) (Rect, error) {
 	}
 	for _, cl := range clients {
 		if cl.Pid == pid && cl.Mapped {
-			return Rect{cl.At[0], cl.At[1], cl.Size[0], cl.Size[1]}, nil
+			return Rect{X: cl.At[0], Y: cl.At[1], W: cl.Size[0], H: cl.Size[1]}, nil
 		}
 	}
 	return Rect{}, fmt.Errorf("no window of process %d", pid)

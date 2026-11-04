@@ -8,17 +8,24 @@ import (
 	"testing"
 
 	"github.com/lyricat/inua/internal/apps/sysmon"
+	"github.com/lyricat/inua/internal/compositor"
+	"github.com/lyricat/inua/internal/compositor/compositortest"
 	"github.com/lyricat/inua/internal/desktop"
 )
 
 // fakeDesktop records what the tools do.
 func fakeDesktop() (Desktop, *[]string) {
 	var did []string
-	clients := `[
-	  {"address":"0xa","title":"Inbox — Mail","class":"thunderbird","mapped":true,"focusHistoryID":1,"workspace":{"name":"1"}},
-	  {"address":"0xb","title":"inua — Firefox","class":"firefox","mapped":true,"focusHistoryID":0,"workspace":{"name":"2"}},
-	  {"address":"0xc","title":"Docs — Firefox","class":"firefox","mapped":true,"focusHistoryID":2,"workspace":{"name":"2"}},
-	  {"address":"0xd","title":"hidden","class":"x","mapped":false,"focusHistoryID":3,"workspace":{"name":"1"}}]`
+	comp := compositortest.New()
+	comp.Snap = compositor.Snapshot{
+		Workspaces: []compositor.Workspace{{ID: "1", Name: "1", Order: 1}, {ID: "2", Name: "2", Order: 2}},
+		Windows: []compositor.Window{
+			{ID: "0xa", Title: "Inbox — Mail", AppID: "thunderbird", Workspace: "1", FocusRank: 2},
+			{ID: "0xb", Title: "inua — Firefox", AppID: "firefox", Workspace: "2", FocusRank: 1, Focused: true},
+			{ID: "0xc", Title: "Docs — Firefox", AppID: "firefox", Workspace: "2", FocusRank: 3},
+		},
+		FocusedWindow: "0xb",
+	}
 	d := Desktop{
 		Call: func(_ context.Context, target, fn string, args ...string) (string, error) {
 			did = append(did, strings.Join(append([]string{"call", target, fn}, args...), " "))
@@ -27,8 +34,7 @@ func fakeDesktop() (Desktop, *[]string) {
 			}
 			return "", nil
 		},
-		HyprRequest:  func(context.Context, string) ([]byte, error) { return []byte(clients), nil },
-		HyprDispatch: func(_ context.Context, a string) error { did = append(did, "dispatch "+a); return nil },
+		Compositor: comp,
 		Apps: func() []*desktop.Entry {
 			return []*desktop.Entry{{ID: "org.gnome.Nautilus", Name: "Files"}, {ID: "firefox", Name: "Firefox"}, {ID: "x", Name: "Hidden", NoDisplay: true}}
 		},
@@ -39,6 +45,9 @@ func fakeDesktop() (Desktop, *[]string) {
 	}
 	return d, &did
 }
+
+// actions are the compositor actions a test's desktop took.
+func actions(d Desktop) []string { return d.Compositor.(*compositortest.Fake).Actions() }
 
 func run(t *testing.T, d Desktop, name string, args map[string]any) (string, error) {
 	t.Helper()
@@ -53,7 +62,7 @@ func run(t *testing.T, d Desktop, name string, args map[string]any) (string, err
 }
 
 func TestWindowTools(t *testing.T) {
-	d, did := fakeDesktop()
+	d, _ := fakeDesktop()
 	out, err := run(t, d, "list_windows", nil)
 	var ws []window
 	json.Unmarshal([]byte(out), &ws)
@@ -61,26 +70,26 @@ func TestWindowTools(t *testing.T) {
 		t.Fatalf("list: %v %+v", err, ws)
 	}
 	for args, want := range map[string]string{
-		`{"window":"mail"}`:                 "dispatch focuswindow address:0xa",
-		`{"window":"0xc"}`:                  "dispatch focuswindow address:0xc",
-		`{}`:                                "dispatch focuswindow address:0xb", // the focused one
-		`{"window":"Mail","workspace":"3"}`: "dispatch movetoworkspacesilent 3,address:0xa",
+		`{"window":"mail"}`:                 "focus-window 0xa",
+		`{"window":"0xc"}`:                  "focus-window 0xc",
+		`{}`:                                "focus-window 0xb", // the focused one
+		`{"window":"Mail","workspace":"3"}`: "move-window 0xa 3 follow=false",
 	} {
-		*did = nil
 		var a map[string]any
 		json.Unmarshal([]byte(args), &a)
 		tool := "focus_window"
 		if _, ok := a["workspace"]; ok {
 			tool = "move_window"
 		}
-		if _, err := run(t, d, tool, a); err != nil || len(*did) != 1 || (*did)[0] != want {
-			t.Errorf("%s %s: %v %q, want %q", tool, args, err, *did, want)
+		before := len(actions(d))
+		if _, err := run(t, d, tool, a); err != nil || len(actions(d)) != before+1 || actions(d)[before] != want {
+			t.Errorf("%s %s: %v %q, want %q", tool, args, err, actions(d), want)
 		}
 	}
 	// Two Firefox windows: an error naming both, nothing done.
-	*did = nil
-	if _, err := run(t, d, "close_window", map[string]any{"window": "firefox"}); err == nil || !strings.Contains(err.Error(), "0xb") || len(*did) != 0 {
-		t.Errorf("ambiguous: %v %q", err, *did)
+	before := len(actions(d))
+	if _, err := run(t, d, "close_window", map[string]any{"window": "firefox"}); err == nil || !strings.Contains(err.Error(), "0xb") || len(actions(d)) != before {
+		t.Errorf("ambiguous: %v %q", err, actions(d))
 	}
 	if _, err := run(t, d, "move_window", map[string]any{"window": "mail", "workspace": "1,address:0xb"}); err == nil {
 		t.Error("a workspace smuggling a second address")

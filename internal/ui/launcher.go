@@ -325,17 +325,18 @@ func (s *shellUI) runCommand(id, arg, window string) {
 	case "workspace":
 		s.switchWorkspace(arg)
 	case "move-window":
-		s.dispatch("movetoworkspace " + arg + "," + w)
+		id := strings.TrimPrefix(w, "address:")
+		s.compositorDo("move window", func(ctx context.Context) error { return s.comp.MoveWindow(ctx, id, arg, true) })
 	case "close-window":
-		s.dispatch("closewindow " + w)
+		s.closeWindow(strings.TrimPrefix(w, "address:"))
 	case "float":
-		s.dispatch("togglefloating " + w)
+		s.hyprDispatch("togglefloating "+w, "")
 	case "fullscreen":
-		s.dispatch("focuswindow " + w)
-		s.dispatch("fullscreen 0")
+		s.hyprDispatch("focuswindow "+w, "")
+		s.hyprDispatch("fullscreen 0", "")
 	case "center":
-		s.dispatch("focuswindow " + w)
-		s.dispatch("centerwindow")
+		s.hyprDispatch("focuswindow "+w, "")
+		s.hyprDispatch("centerwindow", "")
 	default:
 		log.Printf("launcher: unknown command %q", id)
 	}
@@ -1193,7 +1194,7 @@ func (s *shellUI) launcherAction(id string) {
 	case "quit":
 		if it, ok := s.dockItem(r.Entry.ID); ok {
 			for _, w := range it.Windows {
-				s.dispatch("closewindow address:" + w.Address)
+				s.closeWindow(w.ID)
 			}
 		}
 		l.st.Done(nil)

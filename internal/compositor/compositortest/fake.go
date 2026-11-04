@@ -10,11 +10,13 @@ import (
 	"github.com/lyricat/inua/internal/compositor"
 )
 
-// Fake implements compositor.Backend and WorkspaceMover. Actions append
-// one line each to Actions, such as "focus-window 0x1".
+// Fake implements compositor.Backend, Snapshotter, OutputFocuser,
+// WorkspaceMover, QuietFocuser and Keystroker. Actions append one line
+// each to Actions, such as "focus-window 0x1".
 type Fake struct {
 	Caps    compositor.Capabilities
-	Fresh   int // NewWorkspace numbers from here (NextNumbered)
+	Snap    compositor.Snapshot // what Snapshot returns
+	Fresh   int                 // NewWorkspace numbers from here (NextNumbered)
 	Fail    error
 	mu      sync.Mutex
 	actions []string
@@ -108,4 +110,18 @@ func (f *Fake) NewWorkspace(snap compositor.Snapshot, output string, unavailable
 }
 func (f *Fake) MoveWorkspace(_ context.Context, id, output string) error {
 	return f.record("move-workspace %s %s", id, output)
+}
+func (f *Fake) FocusOutput(_ context.Context, name string) error {
+	return f.record("focus-output %s", name)
+}
+func (f *Fake) FocusWindowQuietly(_ context.Context, id string) error {
+	return f.record("focus-window-quietly %s", id)
+}
+func (f *Fake) SendKey(_ context.Context, window, mods, key string) error {
+	return f.record("send-key %s %s %s", window, mods, key)
+}
+func (f *Fake) Snapshot(context.Context) (compositor.Snapshot, error) {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	return f.Snap, f.Fail
 }

@@ -4,13 +4,13 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/desktop"
-	"github.com/lyricat/inua/internal/hypr"
 	"github.com/lyricat/inua/internal/workshop"
 )
 
-func dockWin(addr, class string, history float64) hypr.Toplevel {
-	return hypr.Toplevel{Address: addr, Class: class, Title: class + " window", Raw: map[string]any{"focusHistoryID": history}}
+func dockWin(addr, class string, history int) compositor.Window {
+	return compositor.Window{ID: addr, AppID: class, Title: class + " window", FocusRank: history + 1}
 }
 
 func TestDock(t *testing.T) {
@@ -20,15 +20,15 @@ func TestDock(t *testing.T) {
 		{ID: "code", Name: "Code", Icon: "vscode", WMClass: "Code"},
 		{ID: "kitty", Name: "kitty", Icon: "kitty"},
 	})
-	snap := hypr.Snapshot{
-		Toplevels: []hypr.Toplevel{
+	snap := compositor.Snapshot{
+		Windows: []compositor.Window{
 			dockWin("0x1", "Code", 2),
 			dockWin("0x2", "firefox", 1),
 			dockWin("0x3", "nautilus", 3),
 			dockWin("0x4", "firefox", 0),
 			dockWin("0x5", "obscure-tool", 4),
 		},
-		ActiveToplevel: "0x4",
+		FocusedWindow: "0x4",
 	}
 	items := Dock([]string{"firefox", "missing.app", "kitty", "firefox"}, apps, snap, nil)
 	var keys []string
@@ -45,7 +45,7 @@ func TestDock(t *testing.T) {
 		}
 	}
 	ff := items[0]
-	if !ff.Pinned || !ff.Active || len(ff.Windows) != 2 || ff.Windows[0].Address != "0x4" {
+	if !ff.Pinned || !ff.Active || len(ff.Windows) != 2 || ff.Windows[0].ID != "0x4" {
 		t.Errorf("firefox: %+v", ff)
 	}
 	if items[1].Pinned != true || len(items[1].Windows) != 0 {
@@ -77,7 +77,7 @@ func TestDockSkipsFcitxWindows(t *testing.T) {
 	apps := NewAppIndex([]*desktop.Entry{
 		{ID: "org.fcitx.Fcitx5", Name: "Fcitx 5", Icon: "fcitx", Command: []string{"fcitx5"}},
 	})
-	snap := hypr.Snapshot{Toplevels: []hypr.Toplevel{
+	snap := compositor.Snapshot{Windows: []compositor.Window{
 		dockWin("0x1", "fcitx", 0),
 		dockWin("0x2", "fcitx5", 1),
 		dockWin("0x3", "org.fcitx.Fcitx5", 2),
@@ -94,7 +94,7 @@ func TestDockSkipsFcitxWindows(t *testing.T) {
 // with its icon and entry, so it can be kept in the dock; kept, its
 // windows join its item.
 func TestDockShellWindows(t *testing.T) {
-	snap := hypr.Snapshot{Toplevels: []hypr.Toplevel{dockWin("0x1", AppID, 0)}}
+	snap := compositor.Snapshot{Windows: []compositor.Window{dockWin("0x1", AppID, 0)}}
 	got := Dock(nil, NewAppIndex(nil), snap, nil)
 	if len(got) != 1 || got[0].Name != "Settings" || got[0].Icon != "io.github.lyricat.Inua.Settings" ||
 		got[0].Entry == nil || got[0].Key != "inua:settings" {
@@ -111,9 +111,9 @@ func TestDockSkips(t *testing.T) {
 	telegram := dockWin("0x1", "org.telegram.desktop", 1)
 	popup := dockWin("0x2", "org.telegram.desktop", 0)
 	popup.PID = 42
-	snap := hypr.Snapshot{Toplevels: []hypr.Toplevel{telegram, popup}}
-	got := Dock(nil, NewAppIndex(nil), snap, func(t hypr.Toplevel) bool { return t.PID == 42 })
-	if len(got) != 1 || len(got[0].Windows) != 1 || got[0].Windows[0].Address != "0x1" {
+	snap := compositor.Snapshot{Windows: []compositor.Window{telegram, popup}}
+	got := Dock(nil, NewAppIndex(nil), snap, func(t compositor.Window) bool { return t.PID == 42 })
+	if len(got) != 1 || len(got[0].Windows) != 1 || got[0].Windows[0].ID != "0x1" {
 		t.Errorf("Dock() = %+v, want Telegram's own window only", got)
 	}
 }

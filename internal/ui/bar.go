@@ -7,6 +7,8 @@ import (
 	"time"
 	"unsafe"
 
+	"github.com/lyricat/inua/internal/compositor"
+
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"codeberg.org/puregotk/puregotk/v4/graphene"
@@ -14,7 +16,6 @@ import (
 
 	"github.com/lyricat/inua/internal/config"
 	"github.com/lyricat/inua/internal/gtkx"
-	"github.com/lyricat/inua/internal/hypr"
 	"github.com/lyricat/inua/internal/i18n"
 	"github.com/lyricat/inua/internal/layershell"
 	"github.com/lyricat/inua/internal/shell"
@@ -70,11 +71,11 @@ type bar struct {
 	// The workspaces this bar shows, and their buttons by id, owned by the
 	// workspaces box. Buttons are kept across updates so a focus change
 	// restyles them, which CSS animates.
-	shown []hypr.Workspace
-	ws    map[int]*gtk.Button
+	shown []compositor.Workspace
+	ws    map[string]*gtk.Button
 	// Buttons not styled yet: a class set before their first frame would
 	// not animate.
-	fresh map[int]bool
+	fresh map[string]bool
 }
 
 // connector is the monitor's name, as Hyprland calls it too ("eDP-1"). A
@@ -152,7 +153,7 @@ func (s *shellUI) dropBar(b *bar) {
 }
 
 func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
-	b := &bar{mon: mon, ws: map[int]*gtk.Button{}, fresh: map[int]bool{}}
+	b := &bar{mon: mon, ws: map[string]*gtk.Button{}, fresh: map[string]bool{}}
 	ui := s.load("bar.ui", &b.refs)
 	ui.Get("bar", &b.win)
 	ui.Get("frame", &b.frame)
@@ -379,18 +380,12 @@ func (b *bar) setClock(s *shellUI, now time.Time) {
 	b.clock.SetText(config.Strftime(s.cfg.Bar.Clock, now))
 }
 
-func (b *bar) setHypr(s *shellUI, snap hypr.Snapshot) {
+func (b *bar) setHypr(s *shellUI, snap compositor.Snapshot) {
 	name := b.connector()
-	activeWorkspace := 0
-	for _, mon := range snap.Monitors {
-		if mon.Name == name {
-			activeWorkspace = mon.ActiveWorkspaceID
-			break
-		}
-	}
+	activeWorkspace := snap.ActiveWorkspace(name)
 	hasWindows := false
-	for _, win := range snap.Toplevels {
-		if win.WorkspaceID == activeWorkspace {
+	for _, win := range snap.Windows {
+		if activeWorkspace != "" && win.Workspace == activeWorkspace {
 			hasWindows = true
 			break
 		}
@@ -414,23 +409,18 @@ func (b *bar) setHypr(s *shellUI, snap hypr.Snapshot) {
 // the place before the first: up from there opens it, down from it goes
 // back to the workspace under it.
 func (s *shellUI) scrollWorkspaces(b *bar, n int) {
-	current := 0
-	for _, mon := range s.snap.Monitors {
-		if mon.Name == b.connector() {
-			current = mon.ActiveWorkspaceID
-		}
-	}
+	current := s.snap.ActiveWorkspace(b.connector())
 	var ids []string
 	if s.cfg.Widgets.Enable {
 		ids = append(ids, widgetsPlace)
 	}
 	for _, w := range b.shown {
-		ids = append(ids, fmt.Sprint(w.ID))
+		ids = append(ids, w.ID)
 		if w.Focused && s.cfg.Bar.Workspaces == "all" {
 			current = w.ID
 		}
 	}
-	from := fmt.Sprint(current)
+	from := current
 	shown := s.widgetsShownOn(b)
 	if shown {
 		from = widgetsPlace
@@ -451,10 +441,10 @@ func (s *shellUI) scrollWorkspaces(b *bar, n int) {
 // already exist are restyled right away, so the focus change animates; new
 // ones are styled a moment later, after their first frame, so they grow in
 // too.
-func (b *bar) setWorkspaces(s *shellUI, wss []hypr.Workspace) {
+func (b *bar) setWorkspaces(s *shellUI, wss []compositor.Workspace) {
 	b.shown = wss
 	for id, btn := range b.ws {
-		if !slices.ContainsFunc(wss, func(w hypr.Workspace) bool { return w.ID == id }) {
+		if !slices.ContainsFunc(wss, func(w compositor.Workspace) bool { return w.ID == id }) {
 			b.workspaces.Remove(&btn.Widget) // drops the last reference
 			delete(b.ws, id)
 			delete(b.fresh, id)
@@ -466,7 +456,7 @@ func (b *bar) setWorkspaces(s *shellUI, wss []hypr.Workspace) {
 		btn, ok := b.ws[w.ID]
 		if !ok {
 			btn = gtk.NewButton()
-			btn.SetName(fmt.Sprint(w.ID))
+			btn.SetName(w.ID)
 			btn.SetFocusable(false)
 			btn.SetValign(gtk.AlignCenterValue)
 			btn.SetTooltipText(i18n.Tf("Workspace %s", w.Name))
