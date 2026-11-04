@@ -373,7 +373,7 @@ msgstr "%s からのファイル"
 #: internal/apps/connect/share.go:129
 #: internal/filesui/cards.go:678
 #: internal/filesui/picker.go:488
-#: internal/filesui/window.go:803
+#: internal/filesui/window.go:801
 #: internal/lightui/workshop_blocks.go:427
 #: internal/lightui/workshop_manager.go:63
 #: internal/mailui/actions.go:533
@@ -1216,7 +1216,7 @@ msgstr "プロジェクトの履歴、ブランチ、stash です。プッシュ
 #: internal/filesui/pane.go:1068
 #: internal/filesui/sidebar.go:50
 #: internal/filesui/tabs.go:97
-#: internal/filesui/window.go:309
+#: internal/filesui/window.go:307
 #: internal/mailui/window.go:775
 msgid "Trash"
 msgstr "ゴミ箱"
@@ -3055,7 +3055,7 @@ msgid "Copied"
 msgstr "コピーしました"
 
 #: internal/diskui/details.go:581
-#: internal/filesui/window.go:819
+#: internal/filesui/window.go:817
 #: internal/gamesui/lobbyhost.go:169
 #: internal/lightui/pass.go:748
 #: internal/lightui/pass.go:773
@@ -3107,7 +3107,7 @@ msgstr "%s が %s を削除しました:%s 空きました。"
 #: internal/filesui/cards.go:682
 #: internal/filesui/sidebar.go:36
 #: internal/filesui/tabs.go:99
-#: internal/filesui/window.go:313
+#: internal/filesui/window.go:311
 msgid "Home"
 msgstr "ホーム"
 
@@ -3238,8 +3238,8 @@ msgstr[0] "%s · %d 個のフォルダ · 安全に削除可能 %s"
 #: internal/filesui/app.go:86
 #: internal/filesui/cards.go:689
 #: internal/filesui/remote.go:371
-#: internal/filesui/window.go:109
-#: internal/filesui/window.go:306
+#: internal/filesui/window.go:108
+#: internal/filesui/window.go:304
 #: ui/gpg.ui:446
 #: ui/gpg.ui:811
 #: config/apps/io.github.lyricat.Inua.Files.desktop:3
@@ -3480,8 +3480,8 @@ msgstr "ゴミ箱には移動せず、元に戻せません。"
 
 #: internal/filesui/cards.go:452
 #: internal/filesui/sidebar.go:51
-#: internal/filesui/window.go:776
-#: internal/filesui/window.go:782
+#: internal/filesui/window.go:774
+#: internal/filesui/window.go:780
 #: internal/mailui/actions.go:265
 #: internal/shell/commands.go:32
 #: ui/filespane.ui:288
@@ -3662,7 +3662,7 @@ msgid "Copy the paths (none selected: the folder's)"
 msgstr "パスをコピー（未選択ならフォルダーのパス）"
 
 #: internal/filesui/cards.go:693
-#: internal/filesui/window.go:844
+#: internal/filesui/window.go:842
 #: internal/lightui/gpg.go:1525
 #: internal/mailui/picker.go:143
 #: internal/ui/settings_custom.go:42
@@ -3691,17 +3691,17 @@ msgid "Copy / move to the other pane"
 msgstr "もう一方のペインへコピー / 移動"
 
 #: internal/filesui/cards.go:698
-#: internal/filesui/window.go:805
+#: internal/filesui/window.go:803
 msgid "Open with…"
 msgstr "アプリケーションで開く…"
 
 #: internal/filesui/cards.go:699
-#: internal/filesui/window.go:858
+#: internal/filesui/window.go:856
 msgid "Bookmark"
 msgstr "ブックマーク"
 
 #: internal/filesui/cards.go:700
-#: internal/filesui/window.go:791
+#: internal/filesui/window.go:789
 msgid "Terminal here"
 msgstr "ここで端末を開く"
 
@@ -3721,7 +3721,7 @@ msgid "Next / previous tab"
 msgstr "次 / 前のタブ"
 
 #: internal/filesui/cards.go:705
-#: internal/filesui/window.go:808
+#: internal/filesui/window.go:806
 msgid "Middle click"
 msgstr "中クリック"
 
@@ -3735,7 +3735,7 @@ msgstr "リスト / グリッド / カラム"
 
 #: internal/filesui/cards.go:707
 #: internal/filesui/picker.go:501
-#: internal/filesui/window.go:796
+#: internal/filesui/window.go:794
 msgid "Hidden files"
 msgstr "隠しファイル"
 
@@ -3748,7 +3748,7 @@ msgid "Sidebar"
 msgstr "サイドバー"
 
 #: internal/filesui/cards.go:710
-#: internal/filesui/window.go:850
+#: internal/filesui/window.go:848
 msgid "Details"
 msgstr "詳細"
 
@@ -3762,7 +3762,7 @@ msgstr "新しいウィンドウ、ウィンドウを閉じる"
 
 #: internal/filesui/cards.go:713
 #: internal/filesui/picker.go:502
-#: internal/filesui/window.go:797
+#: internal/filesui/window.go:795
 msgid "Reload"
 msgstr "再読み込み"
 
@@ -4099,13 +4099,13 @@ msgid "A file of the same name is in this folder; the app will write over it."
 msgstr ""
 
 #: internal/filesui/picker.go:494
-#: internal/filesui/window.go:839
+#: internal/filesui/window.go:837
 #: internal/termui/wsmenu.go:69
 msgid "Rename…"
 msgstr "名前を変更…"
 
 #: internal/filesui/picker.go:500
-#: internal/filesui/window.go:787
+#: internal/filesui/window.go:785
 msgid "New folder…"
 msgstr "新規フォルダー…"
 
@@ -4589,12 +4589,12 @@ msgid "Eject"
 msgstr "取り出す"
 
 #: internal/filesui/sidebar.go:143
-#: internal/filesui/window.go:808
+#: internal/filesui/window.go:806
 msgid "Open in a new tab"
 msgstr "新しいタブで開く"
 
 #: internal/filesui/sidebar.go:144
-#: internal/filesui/window.go:809
+#: internal/filesui/window.go:807
 msgid "Open in a new window"
 msgstr "新しいウィンドウで開く"
 
@@ -4622,107 +4622,107 @@ msgstr "アシスタントがフォルダーを整理できるよう、「設定
 msgid "Asked the assistant to tidy %s."
 msgstr "%s の整理をアシスタントに頼みました。"
 
-#: internal/filesui/window.go:779
+#: internal/filesui/window.go:777
 msgid "Restore"
 msgstr "復元"
 
-#: internal/filesui/window.go:780
-#: internal/filesui/window.go:845
+#: internal/filesui/window.go:778
+#: internal/filesui/window.go:843
 msgid "Delete for good…"
 msgstr "完全に削除…"
 
-#: internal/filesui/window.go:788
+#: internal/filesui/window.go:786
 msgid "New file…"
 msgstr "新規ファイル…"
 
-#: internal/filesui/window.go:789
+#: internal/filesui/window.go:787
 #: internal/term/settings/settings.go:119
 #: internal/termui/paste.go:339
 msgid "Paste"
 msgstr "貼り付け"
 
-#: internal/filesui/window.go:792
-#: internal/filesui/window.go:824
+#: internal/filesui/window.go:790
+#: internal/filesui/window.go:822
 msgid "Tidy with AI…"
 msgstr "AI で整理…"
 
-#: internal/filesui/window.go:793
+#: internal/filesui/window.go:791
 msgid "Copy the folder's path"
 msgstr "フォルダーのパスをコピー"
 
-#: internal/filesui/window.go:811
+#: internal/filesui/window.go:809
 msgid "Open in the other pane"
 msgstr "もう一方のペインで開く"
 
-#: internal/filesui/window.go:815
+#: internal/filesui/window.go:813
 msgid "Show in its folder"
 msgstr "フォルダー内で表示"
 
-#: internal/filesui/window.go:818
+#: internal/filesui/window.go:816
 msgid "Cut"
 msgstr "切り取り"
 
-#: internal/filesui/window.go:820
+#: internal/filesui/window.go:818
 msgid "Copy the path"
 msgstr "パスをコピー"
 
-#: internal/filesui/window.go:823
+#: internal/filesui/window.go:821
 msgid "Paste into the folder"
 msgstr "フォルダーに貼り付け"
 
-#: internal/filesui/window.go:828
+#: internal/filesui/window.go:826
 msgid "Extract here"
 msgstr "ここに展開"
 
-#: internal/filesui/window.go:830
+#: internal/filesui/window.go:828
 msgid "Compress…"
 msgstr "圧縮…"
 
-#: internal/filesui/window.go:833
+#: internal/filesui/window.go:831
 msgid "Copy to the other pane"
 msgstr "もう一方のペインへコピー"
 
-#: internal/filesui/window.go:834
+#: internal/filesui/window.go:832
 msgid "Move to the other pane"
 msgstr "もう一方のペインへ移動"
 
-#: internal/filesui/window.go:841
+#: internal/filesui/window.go:839
 msgid "Rename %d item…"
 msgid_plural "Rename %d items…"
 msgstr[0] "%d 項目の名前を変更…"
 
-#: internal/filesui/window.go:856
+#: internal/filesui/window.go:854
 msgid "Remove the bookmark"
 msgstr "ブックマークを削除"
 
-#: internal/filesui/window.go:911
+#: internal/filesui/window.go:909
 msgid "Cut %d item: paste to move it."
 msgid_plural "Cut %d items: paste to move them."
 msgstr[0] "%d 項目を切り取りました。貼り付けると移動します。"
 
-#: internal/filesui/window.go:913
+#: internal/filesui/window.go:911
 msgid "Copied %d item."
 msgid_plural "Copied %d items."
 msgstr[0] "%d 項目をコピーしました。"
 
-#: internal/filesui/window.go:921
+#: internal/filesui/window.go:919
 msgid "Copied %d path."
 msgid_plural "Copied %d paths."
 msgstr[0] "%d 個のパスをコピーしました。"
 
-#: internal/filesui/window.go:1003
+#: internal/filesui/window.go:1001
 msgid "Bookmarked %s."
 msgstr "%s をブックマークしました。"
 
-#: internal/filesui/window.go:1005
+#: internal/filesui/window.go:1003
 msgid "Removed the bookmark of %s."
 msgstr "%s のブックマークを削除しました。"
 
-#: internal/filesui/window.go:1030
+#: internal/filesui/window.go:1028
 msgid "Copied %s."
 msgstr "%s をコピーしました。"
 
-#: internal/filesui/window.go:1059
+#: internal/filesui/window.go:1057
 msgid "No terminal was found: install xdg-terminal-exec or set $TERMINAL."
 msgstr "端末が見つかりません。xdg-terminal-exec をインストールするか $TERMINAL を設定してください。"
 
