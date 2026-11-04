@@ -55,7 +55,7 @@ type Window struct {
     Focused    bool
     Urgent     bool
     Floating   bool
-    FocusOrder int     // larger is more recently focused; 0 unknown
+    FocusRank  int     // 1 the most recently focused, larger older; 0 unknown
     Geometry   *Rect   // global logical pixels; nil when the backend has none (CapGeometry)
 }
 
@@ -72,7 +72,7 @@ type Snapshot struct {
 
 Differences from `hypr.Snapshot`: `Raw` maps are gone, their seven read
 fields are typed (`at`/`size` → `Geometry`, `floating`, `focusHistoryID` →
-`FocusOrder` as its negation, `transform`, `refreshRate`,
+`FocusRank` as the id plus one, `transform`, `refreshRate`,
 `specialWorkspace`); ids are strings; `Monitor` is `Output`; `Toplevel` is
 `Window`; `Class` is `AppID`; `Activated` is `Focused`. Special and negative
 Hyprland workspaces are not in `Workspaces`; a backend filters what its
@@ -182,7 +182,7 @@ type QuietFocuser interface {
 }
 
 type Keystroker interface {
-    SendKey(ctx context.Context, window string, key string) error // "Ctrl+V"; focuses first where needed
+    SendKey(ctx context.Context, window, mods, key string) error // "CTRL SHIFT", "V"; focuses first where needed
 }
 
 type Previewer interface {
