@@ -32,3 +32,9 @@ notes:
 - No unpinned installs or dependency manifest changes.
 - UI not visually checked; hover, drag and window activation interactions still require manual checks. libinua-vt.so unavailable, so engine-dependent tests used existing skip behavior.
 - review/ → ready/; not merged into master.
+
+## factory · 2026-11-05 08:05
+Owner authorized shipping ready items without blockers. Merged into master at 41f37c4; pushed integrated master f9cecde. Moved ready/ → done/. No linked issues or PRs.
+
+Integration: resolved catalog conflicts through regeneration and preserved both terminal session drag and context-menu handlers. make generate and make i18n passed with no remaining generated changes. Final make test passed in isolated HOME/XDG/runtime and D-Bus (15 Python tests, go vet, race tests across 104 Go packages); compositor experiment suite passed 17 tests. Initial temporary-path failures were corrected in test isolation, not business code. 50 skip records include unavailable terminal engine, libturbojpeg, fish, bun and conditional/helper tests. No installs. No protected paths changed.
+Limits: no visual or real-compositor validation; existing review P2 notes remain unresolved and nonblocking under the configured gate.

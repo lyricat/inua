@@ -33,3 +33,9 @@ notes:
 Validation: Codex reviewed all 15 changed files in origin/master...HEAD. No merge conflicts. Final make test exited 0: 15 Python tests, go vet, and race tests (103 packages passed, 33 without tests). Initial test attempts failed due to isolated temporary-path length and path safety checks; final run used a go test -exec wrapper giving seven socket-related packages short temporary aliases, with real paths for other packages. No tests were changed or excluded. make generate and make i18n in a disposable HEAD copy succeeded; all 51 generated files matched HEAD. Worktree remains clean; no code commits. Installs: none; existing pinned dependency caches copied only.
 Limits: GTK/Broadway state probes were run, but UI was not checked by eye. Real Hyprland gestures, external clipboard, long text and light/dark themes remain unverified.
 No P0/P1 findings remain; moved review/ → ready/ under the configured review gate, with both P2 findings retained for owner consideration. No linked issues or PRs. Not merged into master.
+
+## factory · 2026-11-05 08:05
+Owner authorized shipping ready items without blockers. Merged into master at f1acc7a; pushed integrated master f9cecde. Moved ready/ → done/. No linked issues or PRs.
+
+Integration: resolved catalog conflicts through regeneration and preserved both terminal session drag and context-menu handlers. make generate and make i18n passed with no remaining generated changes. Final make test passed in isolated HOME/XDG/runtime and D-Bus (15 Python tests, go vet, race tests across 104 Go packages); compositor experiment suite passed 17 tests. Initial temporary-path failures were corrected in test isolation, not business code. 50 skip records include unavailable terminal engine, libturbojpeg, fish, bun and conditional/helper tests. No installs. No protected paths changed.
+Limits: no visual or real-compositor validation; existing review P2 notes remain unresolved and nonblocking under the configured gate.

@@ -30,3 +30,9 @@ Tests: make test passed with isolated HOME/XDG directories: 15 Python tests, go 
 Installs: none; no dependency downloads. Temporary probes cleaned up; tracked worktree clean and HEAD unchanged.
 Limits: no manual visual inspection or nested Hyprland validation. Broadway computed styles do not replace real-desktop interaction checks. Owner should verify closing all Files windows and reopening without restarting the resident process.
 Moved review/ → ready/; not merged into master.
+
+## factory · 2026-11-05 08:05
+Owner authorized shipping ready items without blockers. Merged into master at 206decd; pushed integrated master f9cecde. Moved ready/ → done/. No linked issues or PRs.
+
+Integration: resolved catalog conflicts through regeneration and preserved both terminal session drag and context-menu handlers. make generate and make i18n passed with no remaining generated changes. Final make test passed in isolated HOME/XDG/runtime and D-Bus (15 Python tests, go vet, race tests across 104 Go packages); compositor experiment suite passed 17 tests. Initial temporary-path failures were corrected in test isolation, not business code. 50 skip records include unavailable terminal engine, libturbojpeg, fish, bun and conditional/helper tests. No installs. No protected paths changed.
+Limits: no visual or real-compositor validation; existing review P2 notes remain unresolved and nonblocking under the configured gate.

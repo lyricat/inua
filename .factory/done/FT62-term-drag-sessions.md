@@ -31,3 +31,9 @@ verdict: pass
 Validation: Codex reviewed all 17 files in origin/master...HEAD against the request and plan; no verified introduced P0–P3 defects found. No merge conflicts. After correcting isolated HOME, temporary-directory and Unix socket path-length compatibility issues, make test passed (Python session tests, go vet, Go race tests); git diff --check passed. Worktree unchanged; no code commits. Installs: none.
 Limits: UI was not checked by eye. Real drag animations, scrolling and concurrent interactions remain for manual verification. Terminal-engine-dependent tests were skipped by existing test rules because the engine was unavailable.
 Moved review/ → ready/; not merged into master. No linked issues or PRs.
+
+## factory · 2026-11-05 08:05
+Owner authorized shipping ready items without blockers. Merged into master at 401ddd9; pushed integrated master f9cecde. Moved ready/ → done/. No linked issues or PRs.
+
+Integration: resolved catalog conflicts through regeneration and preserved both terminal session drag and context-menu handlers. make generate and make i18n passed with no remaining generated changes. Final make test passed in isolated HOME/XDG/runtime and D-Bus (15 Python tests, go vet, race tests across 104 Go packages); compositor experiment suite passed 17 tests. Initial temporary-path failures were corrected in test isolation, not business code. 50 skip records include unavailable terminal engine, libturbojpeg, fish, bun and conditional/helper tests. No installs. No protected paths changed.
+Limits: no visual or real-compositor validation; existing review P2 notes remain unresolved and nonblocking under the configured gate.
