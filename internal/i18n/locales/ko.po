@@ -7,7 +7,7 @@ msgstr ""
 
 #: cmd/inua-assistant/answer.go:36
 #: cmd/inua-assistant/transcribe.go:40
-#: internal/assistantui/assistantui.go:323
+#: internal/assistantui/assistantui.go:366
 #: internal/diskui/details.go:332
 #: internal/mailui/assist.go:43
 msgid "The assistant is turned off. Turn it on in Settings → AI."
@@ -1881,7 +1881,7 @@ msgid "Enter your password to run this command as administrator:\n\n%s"
 msgstr "이 명령을 관리자 권한으로 실행하려면 암호를 입력하세요:\n\n%s"
 
 #: internal/asker/asker.go:212
-#: internal/assistantui/assistantui.go:688
+#: internal/assistantui/assistantui.go:734
 #: internal/ui/askpass.go:441
 #: internal/ui/portal_ask.go:60
 #: internal/ui/portal_ask.go:80
@@ -1946,15 +1946,15 @@ msgstr "내 테일넷의 어떤 장치가 온라인 상태입니까?"
 msgid "What is the weather this afternoon in Kyoto?"
 msgstr "오늘 오후 교토 날씨는 어떻습니까?"
 
-#: internal/assistantui/assistantui.go:159
+#: internal/assistantui/assistantui.go:170
 msgid "%s answers from here"
 msgstr "%s는 여기에서 답변합니다."
 
-#: internal/assistantui/assistantui.go:384
+#: internal/assistantui/assistantui.go:427
 msgid "Could not start the Console endpoint: %s"
 msgstr "콘솔 끝점을 시작할 수 없습니다: %s"
 
-#: internal/assistantui/assistantui.go:482
+#: internal/assistantui/assistantui.go:528
 #: internal/lightui/clock.go:497
 #: internal/ui/alarms.go:108
 #: ui/disk.ui:179
@@ -1969,77 +1969,103 @@ msgstr "콘솔 끝점을 시작할 수 없습니다: %s"
 msgid "Stop"
 msgstr "중지"
 
-#: internal/assistantui/assistantui.go:489
+#: internal/assistantui/assistantui.go:535
 msgid "✕ Not done: %s"
 msgstr "✕ 완료되지 않음: %s"
 
-#: internal/assistantui/assistantui.go:500
+#: internal/assistantui/assistantui.go:546
 #: internal/mailui/settings.go:497
 #: ui/assistant.ui:202
 msgid "Ask"
 msgstr "질문하다"
 
-#: internal/assistantui/assistantui.go:505
+#: internal/assistantui/assistantui.go:551
 msgid "Stopped."
 msgstr "중지되었습니다."
 
-#: internal/assistantui/assistantui.go:508
+#: internal/assistantui/assistantui.go:554
 msgid "Something went wrong: %s"
 msgstr "문제가 발생했습니다: %s"
 
-#: internal/assistantui/assistantui.go:511
+#: internal/assistantui/assistantui.go:557
 msgid "(no answer)"
 msgstr "(대답 없음)"
 
-#: internal/assistantui/assistantui.go:522
+#: internal/assistantui/assistantui.go:568
 msgid "Voice input records with pw-cat, from PipeWire (pipewire-bin on Debian and Ubuntu, pipewire on Arch, pipewire-utils on Fedora)"
 msgstr "음성 입력은 PipeWire의 pw-cat으로 녹음합니다 (Debian과 Ubuntu에서는 pipewire-bin, Arch에서는 pipewire, Fedora에서는 pipewire-utils)"
 
-#: internal/assistantui/assistantui.go:524
+#: internal/assistantui/assistantui.go:570
 #: internal/ui/settings_ai.go:730
 #: ui/assistant.ui:193
 msgid "Voice input"
 msgstr "음성 입력"
 
-#: internal/assistantui/assistantui.go:532
-#: internal/assistantui/assistantui.go:596
+#: internal/assistantui/assistantui.go:578
+#: internal/assistantui/assistantui.go:642
 msgid "Cannot record: %s"
 msgstr "녹음할 수 없습니다: %s"
 
-#: internal/assistantui/assistantui.go:546
+#: internal/assistantui/assistantui.go:592
 msgid "Stop and transcribe"
 msgstr "멈추고 텍스트로 변환"
 
-#: internal/assistantui/assistantui.go:598
+#: internal/assistantui/assistantui.go:644
 msgid "The assistant is not set up."
 msgstr "도우미가 설정되지 않았습니다."
 
-#: internal/assistantui/assistantui.go:602
+#: internal/assistantui/assistantui.go:648
 msgid "Cannot transcribe: %s"
 msgstr "텍스트로 변환할 수 없습니다: %s"
 
-#: internal/assistantui/assistantui.go:614
+#: internal/assistantui/assistantui.go:660
 msgid "No speech was heard."
 msgstr "말소리가 들리지 않았습니다."
 
-#: internal/assistantui/assistantui.go:688
+#: internal/assistantui/assistantui.go:734
 msgid "Don't"
 msgstr "거부"
 
-#: internal/assistantui/assistantui.go:709
+#: internal/assistantui/assistantui.go:755
 msgid "Not allowed"
 msgstr "허용되지 않음"
 
-#: internal/assistantui/assistantui.go:711
+#: internal/assistantui/assistantui.go:757
 msgid "Canceled"
 msgstr "취소됨"
 
-#: internal/assistantui/assistantui.go:713
+#: internal/assistantui/assistantui.go:759
 #: ui/settings.ui:4189
 msgid "Allowed"
 msgstr "허용됨"
 
-#: internal/assistantui/assistantui.go:802
+#: internal/assistantui/assistantui.go:793
+#: internal/diskui/details.go:581
+#: internal/filesui/window.go:819
+#: internal/gamesui/lobbyhost.go:169
+#: internal/lightui/pass.go:748
+#: internal/lightui/pass.go:773
+#: internal/mailui/details.go:222
+#: internal/shell/launcher_actions.go:59
+#: internal/term/settings/settings.go:118
+#: internal/term/web/strings.go:36
+#: internal/termui/prefsweb.go:92
+#: internal/ui/askpass.go:232
+#: internal/ui/passwords.go:647
+#: internal/vmui/window.go:896
+#: ui/disk.ui:697
+#: ui/gpg.ui:662
+#: ui/gpg.ui:908
+#: ui/settings.ui:3145
+#: ui/vm.ui:639
+msgid "Copy"
+msgstr "복사"
+
+#: internal/assistantui/assistantui.go:801
+msgid "Clipboard is unavailable."
+msgstr "클립보드를 사용할 수 없습니다."
+
+#: internal/assistantui/assistantui.go:872
 msgid "TRY"
 msgstr "시도하다"
 
@@ -3053,27 +3079,6 @@ msgstr "%s에서 실행됩니다."
 #: internal/vmui/window.go:893
 msgid "Copied"
 msgstr "복사됨"
-
-#: internal/diskui/details.go:581
-#: internal/filesui/window.go:819
-#: internal/gamesui/lobbyhost.go:169
-#: internal/lightui/pass.go:748
-#: internal/lightui/pass.go:773
-#: internal/mailui/details.go:222
-#: internal/shell/launcher_actions.go:59
-#: internal/term/settings/settings.go:118
-#: internal/term/web/strings.go:36
-#: internal/termui/prefsweb.go:92
-#: internal/ui/askpass.go:232
-#: internal/ui/passwords.go:647
-#: internal/vmui/window.go:896
-#: ui/disk.ui:697
-#: ui/gpg.ui:662
-#: ui/gpg.ui:908
-#: ui/settings.ui:3145
-#: ui/vm.ui:639
-msgid "Copy"
-msgstr "복사"
 
 #: internal/diskui/details.go:596
 msgid "Cleans %s, %s now."

@@ -49,6 +49,14 @@ var suggestions = []string{
 	i18n.M("What is the weather this afternoon in Kyoto?"),
 }
 
+// The conversation owns these widgets; reset and shutdown drop the lookup.
+type message struct {
+	row     *gtk.Box
+	text    *gtk.Label
+	copy    *gtk.Button
+	copyErr *gtk.Label
+}
+
 type view struct {
 	c          *appui.Ctx
 	win        *gtk.ApplicationWindow
@@ -79,8 +87,8 @@ type view struct {
 	names     []string // the profile drop-down's
 	running   bool
 	cancel    context.CancelFunc
-	answer    *gtk.Label // the answer being streamed
-	first     []string   // the question of the first start (--ask)
+	answer    *message // the answer being streamed
+	first     []string // the question of the first start (--ask)
 	apiCancel context.CancelFunc
 	apiDone   chan struct{}
 	reloading bool
@@ -89,8 +97,10 @@ type view struct {
 
 	approvals map[string]chan bool // by card, while a tool waits
 	nextCard  int
+	messages  map[uintptr]*message // by Copy button, using one shared callback
 
 	onSend, onReset, onCard, onSuggestion func(gtk.Button)
+	onCopy                                func(gtk.Button)
 	onVoice, onVoiceDiscard               func(gtk.Button)
 	onVoiceTick                           glib.SourceFunc
 	onSettings                            func(gtk.Button)
@@ -108,6 +118,7 @@ func (v *view) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	v.c = c
 	c.StartHidden = v.background
 	v.approvals = map[string]chan bool{}
+	v.messages = map[uintptr]*message{}
 	win := &gtk.ApplicationWindow{}
 	v.win = win
 	var reset, settings, openSettings gtk.Button
@@ -170,8 +181,38 @@ func (v *view) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 			return
 		}
 		v.as.Reset()
+		clear(v.messages)
+		v.answer = nil
 		gtkx.Clear(&v.talk)
 		v.showSuggestions()
+	}
+	v.onCopy = func(b gtk.Button) {
+		m := v.messages[b.GoPointer()]
+		if v.closed || m == nil || !b.GetSensitive() {
+			return
+		}
+		m.copyErr.SetVisible(false)
+		text := m.text.GetText()
+		if text == "" {
+			return
+		}
+		display := b.GetDisplay()
+		if display == nil {
+			m.copyErr.SetVisible(true)
+			return
+		}
+		defer display.Unref()
+		if display.IsClosed() {
+			m.copyErr.SetVisible(true)
+			return
+		}
+		clip := display.GetClipboard()
+		if clip == nil {
+			m.copyErr.SetVisible(true)
+			return
+		}
+		defer clip.Unref()
+		clip.SetText(text)
 	}
 	v.onSuggestion = func(b gtk.Button) { v.ask(b.GetName()) }
 	v.onCard = func(b gtk.Button) {
@@ -220,6 +261,8 @@ func (v *view) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 		}
 		v.dropVoice()
 		v.closed = true
+		clear(v.messages)
+		v.answer = nil
 		if v.cancel != nil {
 			v.cancel()
 		}
@@ -417,6 +460,8 @@ func (v *view) refresh() {
 	hadNone := v.as == nil
 	v.setUp()
 	if hadNone && v.as != nil {
+		clear(v.messages)
+		v.answer = nil
 		gtkx.Clear(&v.talk)
 		v.showSuggestions()
 	}
@@ -477,7 +522,8 @@ func (v *view) ask(q string) {
 	}
 	v.dropSuggestions()
 	v.line("as-you", q)
-	v.answer = v.line("as-answer", "…")
+	v.answer = v.line("as-answer", "")
+	v.answer.text.SetText("…") // waiting is not an answer to copy
 	v.running = true
 	v.send.SetLabel(i18n.T("Stop"))
 	ctx, cancel := context.WithCancel(v.ctx)
@@ -506,7 +552,7 @@ func (v *view) ask(q string) {
 			case err != nil:
 				log.Printf("assistant: %v", err)
 				v.setAnswer(i18n.Tf("Something went wrong: %s", err.Error()))
-				v.answer.AddCssClass("as-error")
+				v.answer.text.AddCssClass("as-error")
 			case answer == "":
 				v.setAnswer(i18n.T("(no answer)"))
 			}
@@ -727,23 +773,45 @@ func (v *view) approve(ctx context.Context, _, doing string) (allowed bool, err 
 	}
 }
 
-// line adds a line of text to the conversation.
-func (v *view) line(class, text string) *gtk.Label {
+// line adds selectable text and a keyboard-reachable Copy action.
+func (v *view) line(class, text string) *message {
+	row := gtk.NewBox(gtk.OrientationVerticalValue, 4)
 	l := gtk.NewLabel(text)
 	l.AddCssClass(class)
 	l.SetXalign(0)
 	l.SetWrap(true)
 	l.SetWrapMode(pango.WrapWordCharValue)
+	l.SetSelectable(true)
+	l.SetCanFocus(false) // or the first answer takes focus, all selected
+	align := gtk.AlignStartValue
 	if class == "as-you" {
 		l.SetHalign(gtk.AlignEndValue)
 		l.SetXalign(1)
-	} else {
-		l.SetSelectable(true)
-		l.SetCanFocus(false) // or the first answer takes focus, all selected
+		align = gtk.AlignEndValue
 	}
-	gtkx.Append(&v.talk, &l.Widget)
+	gtkx.Append(row, &l.Widget)
+	copy := gtk.NewButtonWithLabel(i18n.T("Copy"))
+	copy.AddCssClass("outlined")
+	copy.AddCssClass("small")
+	copy.SetHalign(align)
+	copy.SetFocusOnClick(false)
+	copy.SetSensitive(text != "")
+	copy.ConnectClicked(&v.onCopy)
+	gtkx.Append(row, &copy.Widget)
+	copyErr := gtk.NewLabel(i18n.T("Clipboard is unavailable."))
+	copyErr.AddCssClass("as-error")
+	copyErr.AddCssClass("sub")
+	copyErr.SetXalign(0)
+	copyErr.SetWrap(true)
+	copyErr.SetSelectable(true)
+	copyErr.SetCanFocus(false)
+	copyErr.SetVisible(false)
+	gtkx.Append(row, &copyErr.Widget)
+	m := &message{row: row, text: l, copy: copy, copyErr: copyErr}
+	v.messages[copy.GoPointer()] = m
+	gtkx.Append(&v.talk, &row.Widget)
 	v.toBottom()
-	return l
+	return m
 }
 
 // toolLine goes before the answer being streamed, which stays last.
@@ -762,8 +830,9 @@ func (v *view) toolLine(text string) {
 
 func (v *view) insertBeforeAnswer(w *gtk.Widget) {
 	if v.answer != nil {
-		if prev := v.answer.GetPrevSibling(); prev != nil {
+		if prev := v.answer.row.GetPrevSibling(); prev != nil {
 			v.talk.InsertChildAfter(w, prev)
+			prev.Unref()
 		} else {
 			v.talk.Prepend(w)
 		}
@@ -775,7 +844,8 @@ func (v *view) insertBeforeAnswer(w *gtk.Widget) {
 
 func (v *view) setAnswer(text string) {
 	if !v.closed && v.answer != nil {
-		v.answer.SetText(text)
+		v.answer.text.SetText(text)
+		v.answer.copy.SetSensitive(text != "")
 		v.toBottom()
 	}
 }
