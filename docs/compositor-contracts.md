@@ -1,0 +1,326 @@
+# Compositor contracts and the migration plan
+
+The fourth step of #58 (issue #62). It defines the smallest set of
+interfaces inua needs between its shell and a compositor, from what the
+[audit](hyprland-coupling.md) found the code using, what the
+[capability comparison](compositor-capabilities.md) says the candidates
+offer, and the [experiments'](compositor-experiments.md) constraints. It
+then gives the plan for moving Hyprland behind them (#63) and validating
+them with niri (#64). It is a contract, not a universal compositor API: a
+backend implements the base and whichever optional pieces its compositor
+can do, and says which.
+
+Package: `internal/compositor`, toolkit-free, imported by `internal/shell`,
+`internal/ui`, `internal/desk` and the light apps. The backends
+(`internal/hypr` today, `internal/niri` in #64) import it and register
+themselves; nothing in `internal/compositor` imports a backend.
+
+## 1. Shared types
+
+Only what a consumer reads today. Ids are opaque strings chosen by the
+backend and compared for equality only.
+
+```go
+type Output struct {
+    Name        string  // connector name, equal to GDK's
+    Description string
+    X, Y        int     // logical position in the global space
+    Width, Height int   // logical size after scale and transform
+    Scale       float64
+    Transform   int     // wl_output transform; odd values swap width and height when a backend reports the mode's size
+    RefreshRate float64 // Hz, 0 unknown
+    Focused     bool
+    ActiveWorkspace  string // workspace id shown on it
+    SpecialWorkspace string // Hyprland's special workspace shown on it, "" elsewhere
+}
+
+type Workspace struct {
+    ID      string
+    Name    string
+    Output  string
+    Order   int    // sort key among the output's workspaces; backends make it stable while nothing moves
+    Active  bool   // shown on its output
+    Focused bool   // active on the focused output
+    Urgent  bool
+    HasFullscreen bool
+}
+
+type Window struct {
+    ID         string
+    PID        int
+    Title      string
+    AppID      string  // Hyprland's class, niri's app_id, Wayfire's app-id
+    Workspace  string
+    Output     string
+    Focused    bool
+    Urgent     bool
+    Floating   bool
+    FocusOrder int     // larger is more recently focused; 0 unknown
+    Geometry   *Rect   // global logical pixels; nil when the backend has none (CapGeometry)
+}
+
+type Rect struct{ X, Y, W, H int }
+
+type Snapshot struct {
+    Outputs       []Output    // by name
+    Workspaces    []Workspace // by output, then Order
+    Windows       []Window    // backend order
+    FocusedWindow string
+    FocusedOutput string
+}
+```
+
+Differences from `hypr.Snapshot`: `Raw` maps are gone, their seven read
+fields are typed (`at`/`size` → `Geometry`, `floating`, `focusHistoryID` →
+`FocusOrder` as its negation, `transform`, `refreshRate`,
+`specialWorkspace`); ids are strings; `Monitor` is `Output`; `Toplevel` is
+`Window`; `Class` is `AppID`; `Activated` is `Focused`. Special and negative
+Hyprland workspaces are not in `Workspaces`; a backend filters what its
+compositor treats as not a user workspace, so consumers drop the
+`ID <= 0` checks.
+
+## 2. The base contract
+
+```go
+type Handler interface {
+    OnSnapshot(Snapshot)              // after a change; from the backend's goroutine
+    OnConnection(up bool, err error)  // the control channel going up or down
+    OnCapabilities(Capabilities)      // when a probe changes a state (a plugin loaded, a Lua probe)
+}
+
+type Backend interface {
+    Name() string                     // "hyprland", "niri", "wayfire"
+    Run(ctx context.Context, h Handler) error // connects, delivers the full state, follows changes, reconnects with backoff
+    Refresh()                         // ask for a re-read; consumers never poll otherwise
+    Capabilities() Capabilities
+
+    FocusWindow(ctx context.Context, id string) error
+    CloseWindow(ctx context.Context, id string) error
+    FocusWorkspace(ctx context.Context, id string) error
+    MoveWindow(ctx context.Context, id, workspace string, follow bool) error
+}
+```
+
+Semantics:
+
+- `Run` delivers the first `OnSnapshot` before `OnConnection(true)`. On
+  Hyprland that is the four queries after the event socket is up; on niri the
+  event stream's first events; on Wayfire the lists then the watch. A change
+  racing the initial read is seen as an event and causes another snapshot.
+- Snapshots are whole and consistent as far as the compositor allows; a
+  backend coalesces bursts (Hyprland's 15 ms debounce) and publishes only
+  when something changed. Consumers never see raw events.
+- A disconnect keeps the last snapshot in the consumers (as today) and
+  `OnConnection(false, err)`; the backend retries from 250 ms doubling to
+  5 s and resets after a session longer than 5 s. A reconnect rebuilds the
+  state and re-publishes it.
+- An action returns the backend's error, wrapped, or `nil` once the
+  compositor accepted it. Acceptance is not completion: the resulting state
+  arrives as a snapshot, and consumers that show a projected result (the
+  Overview's moves) settle it on the next snapshot, as they do now.
+  `MoveWindow(follow=false)` returns `ErrUnsupported` where the compositor
+  cannot keep focus; callers check `CapMoveWithoutFollow` first.
+- `Refresh` is a request, not a promise; the backend may already have one
+  pending.
+
+## 3. Capabilities and their states
+
+```go
+type Capability string
+type State int // Supported, Unavailable, Unsupported
+type Capabilities map[Capability]State
+
+var ErrUnsupported = errors.New("compositor: not supported")
+var ErrUnavailable = errors.New("compositor: not available now")
+```
+
+A capability absent from the map is `Unsupported`. `Unavailable` is a probe
+that failed or a part not answering while the channel is up (a Wayfire
+plugin missing from `list-methods`, Hyprland's Lua probe failing, a
+reconnect in progress); it may become `Supported` later and
+`OnCapabilities` says so. Consumers decide what to show from the state, by
+the rules in the capability comparison: Unsupported hides the control or
+names what is missing on a settings page; Unavailable keeps the control and
+shows the error where the control shows errors.
+
+The capabilities, each the name of an optional interface or a data field:
+
+| Capability | What it enables | Hyprland | niri (from docs) |
+| --- | --- | --- | --- |
+| `CapGeometry` | `Window.Geometry` present: Overview card layout, picker, dictation hint | yes | yes (`layout`) |
+| `CapMoveWithoutFollow` | Overview drag of a window | yes (Lua) | yes |
+| `CapWorkspaces` (`WorkspaceMover`) | New card, drag onto another output | yes | yes |
+| `CapQuietFocus` (`QuietFocuser`) | dock click without pointer warp | yes | n/a: never warps, so `FocusWindow` is quiet and the backend reports Supported |
+| `CapPreviews` (`Previewer`) | live Overview previews | yes | no |
+| `CapKeystrokes` (`Keystroker`) | paste from history, dictation insert | yes | yes, by virtual keyboard after focus (two steps) |
+| `CapBinds` (`Binder`) | Settings → Shortcuts | yes | no (config only) |
+| `CapKeyObserver` (`KeyObserver`) | Super tap, Super+Tab, number slots | yes (Lua) | no |
+| `CapDisplays` (`Displayer`) | Settings → Displays, lid rules | yes | partial (`Output` request; persistence by config) |
+| `CapVirtualOutput` (`VirtualOutputs`) | remote desktop without a monitor | yes | no |
+| `CapPointer` (`Pointer`) | read and move the cursor | yes | no |
+| `CapPlacement` (`Placer`) | bring here, place beside, tile (apps) | yes | partial (floating only) |
+| `CapModes` (`Moder`) | a key mode that swallows keys (recording, dictation) | yes | no |
+| `CapRules` | compositor styling the sample config installs | yes | layer rules, no blur |
+
+## 4. Optional interfaces
+
+Each is a Go interface a backend may implement; consumers assert it and read
+the capability's state. Signatures are what the current callers pass.
+
+```go
+type WorkspaceMover interface {
+    // NewWorkspace names the workspace a window moved to "new" on output
+    // would land on, skipping ids unavailable says are taken (reserved,
+    // in flight). Hyprland: the lowest free positive integer; niri: the
+    // output's trailing empty workspace; Wayfire: an empty grid cell.
+    NewWorkspace(snap Snapshot, output string, unavailable func(id string) bool) (Workspace, bool)
+    MoveWorkspace(ctx context.Context, id, output string) error
+}
+
+type QuietFocuser interface {
+    FocusWindowQuietly(ctx context.Context, id string) error // no pointer warp
+}
+
+type Keystroker interface {
+    SendKey(ctx context.Context, window string, key string) error // "Ctrl+V"; focuses first where needed
+}
+
+type Previewer interface {
+    // Previews returns a source of window images by id; the capture
+    // package's stream today, keyed by Hyprland addresses.
+    Previews() capture.Source
+}
+
+type Pointer interface {
+    CursorPos(ctx context.Context) (x, y int, err error)
+    MoveCursor(ctx context.Context, x, y int) error
+}
+
+type Moder interface {
+    EnterMode(ctx context.Context, name string) error // "" leaves
+}
+
+type Placer interface {
+    BringHere(ctx context.Context, pid int) error
+    WindowOf(ctx context.Context, pid int) (Rect, error)
+    PlaceWindow(ctx context.Context, pid int, r Rect) error
+    RoomRight(ctx context.Context, pid int) (Rect, int, error)
+    Tile(ctx context.Context, pid int) (bool, error)
+}
+
+type KeyObserver interface {
+    // Observe installs the compositor-side listener for Super taps,
+    // Super+Tab and the number slots; events come back on h.
+    Observe(ctx context.Context, h func(KeyEvent)) (stop func(), err error)
+}
+
+type Binder interface {
+    Binds(ctx context.Context) ([]Bind, error)
+    Apply(ctx context.Context, cfg config.Config) (changed bool, err error) // hyprconf.Apply today
+}
+
+type Displayer interface {
+    Outputs(ctx context.Context) ([]display.Output, error)
+    ApplyDisplays(ctx context.Context, cfg config.Config) error
+}
+
+type VirtualOutputs interface {
+    SyncVirtualScreen(ctx context.Context, mode string) (changed bool, err error)
+}
+```
+
+`Previewer`, `KeyObserver`, `Binder`, `Displayer` and `VirtualOutputs` wrap
+code that exists in `internal/hypr`, `internal/capture/hyprland` and
+`internal/hyprconf` and stay Hyprland-only until a second backend has them;
+the contract only gives the UI one place to ask and one state to show.
+
+## 5. Discovery and the session
+
+```go
+func Register(name string, open func() (Backend, error))
+func Detect() (Backend, error) // ErrNoCompositor when nothing registered matches the environment
+```
+
+A backend registers in its package `init` and `Detect` tries them in
+registration order on the environment: `HYPRLAND_INSTANCE_SIGNATURE` for
+Hyprland, `NIRI_SOCKET` for niri, `WAYFIRE_SOCKET` for Wayfire. The programs
+that need a compositor import the backends they ship with
+(`_ "…/internal/hypr"`). Light apps that only bring a window here call
+`Detect` and the `Placer`; without one they do nothing, as today when there
+is no Hyprland.
+
+The session script gains a compositor argument (`inua-session [hyprland|niri]`)
+with the Hyprland path unchanged; the niri path, its sample config and what
+`inua init` writes for it are #64's.
+
+## 6. Error handling, states, UI
+
+- Every action's error reaches the control that asked. The Launcher keeps
+  showing the window list with the message in its line; the Dock and the
+  Overview log and keep their state, as the audit records; nothing new is
+  invented here, the contract only forbids a backend from swallowing an
+  error.
+- A capability's state is data on the snapshot's side, not derived from the
+  compositor's name anywhere in `internal/ui` or `internal/shell`. The one
+  allowed name check is the session script.
+- A backend never simulates: an action it cannot do returns
+  `ErrUnsupported`; a value it does not know is the zero value or nil
+  (`Geometry`), never an estimate.
+
+## 7. Migration plan (#63)
+
+Each step compiles, passes `make test` and changes no behaviour on
+Hyprland; each is one commit or a few.
+
+1. **Types and contract.** Add `internal/compositor` with sections 1 to 4
+   and a `compositortest` fake backend (snapshots pushed by the test,
+   actions recorded). No consumer yet.
+2. **Hyprland implements it.** `hypr.BuildSnapshot` produces
+   `compositor.Snapshot`; `hypr.Store` becomes the backend's `Run`; the
+   Lua-or-classic choice (`dispatchEither`) moves into `hypr.Backend` with
+   the probe reporting `CapKeyObserver`, `CapMoveWithoutFollow` and
+   `CapQuietFocus`; `Keystroker`, `Pointer`, `Moder`, `Placer`,
+   `VirtualOutputs` wrap the existing methods. `cmd/inua` keeps its debug
+   printer on the new types. Existing `internal/hypr` tests keep passing
+   with the type change.
+3. **Shell state on the contract.** `internal/shell` (bar, dock, launcher,
+   overview, screenshot, shotpick) and their tests use the shared types;
+   workspace ids become strings; `Overview.ReserveWorkspace` keeps its
+   reservation bookkeeping and asks `WorkspaceMover.NewWorkspace` for the
+   id; the saved Overview history reads old integer ids as strings.
+4. **Shell UI on the contract.** `shellUI` holds a `compositor.Backend`
+   instead of `*hypr.Client`; `focusWindow`, `switchWorkspace`, Dock's
+   quiet focus, the Overview's activate, move, route and New, the cursor,
+   submaps, dictation and clipboard paste go through the interfaces;
+   controls check the capability state. The Hyprland-only pages
+   (Displays, Shortcuts, input options, screenshot's `j/clients`) take the
+   backend's `Binder`/`Displayer` when present, else show the "not
+   available" line.
+5. **Other consumers.** `internal/desk` takes a `Backend` for its window
+   and workspace tools (its `HyprRequest`/`HyprDispatch` stay for the
+   Hyprland-only tools, now obtained through the backend's
+   `hypr`-specific method when the backend is Hyprland); `appui`,
+   `lightui`, `mailui`, `term/desktop` use `Detect` and `Placer`;
+   `remotedesk` uses `VirtualOutputs`; `clipboard` and `cmd/inua fetch`
+   use the backend.
+6. **Regression coverage.** The existing tests move with the types. New:
+   `compositor` contract tests run against the fake and against `hypr`
+   with the fake socket of `hypr_test.go` (snapshot on connect, change on
+   event, reconnect, action errors); shell tests use the fake backend. The
+   nested-session checks before merging: bar workspaces and titles on two
+   monitors; dock click and quiet focus; launcher window focus and cancel;
+   Overview open, select, drag to New, drag across monitors, Super tap and
+   number slots; screenshot and picker; dictation paste; lock; display
+   settings; remote desktop virtual screen.
+
+## 8. Validation with niri (#64)
+
+`internal/niri`: the JSON-lines client, the event stream into snapshots,
+the base actions and `WorkspaceMover` (`NewWorkspace` = the output's
+trailing empty workspace; `MoveWorkspace` = `MoveWorkspaceToMonitor` by
+name), `Keystroker` by focus plus the virtual keyboard, the capability map
+from section 3, contract tests on a fake niri socket, a session script
+path, and a sample `config.kdl` with inua's binds and layer rules. The
+first real session on niri runs the baseline's feature list and the #61
+tables, and fills the "observed" columns; the contract changes with what
+that finds, which is the point of a second implementation.
