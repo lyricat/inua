@@ -61,3 +61,12 @@ notes:
 Validation: Codex reviewed origin/master...HEAD, the complete documentation diff, source references and protocol XML. Full make test on HEAD and baseline with throwaway HOME and isolated session directories exited 2; Python 15 tests and go vet passed. Both race runs had 5 failing packages / 54 failures and 46 skips. Targeted race rerun of those packages with a real TMPDIR left only clipboard TestFindSource failing; it does not replace the full required test. git diff --check passed; worktree clean. No code changes or commits, no unpinned installs or manifest changes. No merge conflicts with master.
 
 Limits: UI, real compositor sessions and alternative desktop compatibility were not exercised. Item stays in review/ pending owner decision; no merge approval.
+
+## lyric · 2026-11-04 13:15
+The test failures from the last round are resolved on master: TestFindSource is fixed (89e121e), and full `make test` passes with TMPDIR unset and a throwaway HOME.
+
+Merge origin/master into this branch first, so it has that fix.
+
+Run `make test` with TMPDIR unset and do not use a short temporary-path alias. If socket path errors return, report them; do not work around them.
+
+Fix the review's P2: in docs/hyprland-coupling.md, document clipboard and dictation separately, including the `wtype` fallback in pasteClipboard and its lack of address-targeted focus.
