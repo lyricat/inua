@@ -23,3 +23,11 @@ Installs: none.
 Checks: coder tests and independent manager make test both passed under throwaway HOME (Python session tests, go vet ./..., go test -race ./...). make i18n and git diff --check passed. No protected paths changed.
 Not checked: UI was not inspected by eye; nested-session manual checks listed above remain for the owner. No live windows or services were manipulated.
 Moved new/ → review/ for review; not merged into master.
+
+## factory · review · 2026-11-05 00:59
+head: 4739b7dce32c74a543dcdd3a92ed35553d5c051b
+verdict: pass
+
+Validation: Codex reviewed all 17 files in origin/master...HEAD against the request and plan; no verified introduced P0–P3 defects found. No merge conflicts. After correcting isolated HOME, temporary-directory and Unix socket path-length compatibility issues, make test passed (Python session tests, go vet, Go race tests); git diff --check passed. Worktree unchanged; no code commits. Installs: none.
+Limits: UI was not checked by eye. Real drag animations, scrolling and concurrent interactions remain for manual verification. Terminal-engine-dependent tests were skipped by existing test rules because the engine was unavailable.
+Moved review/ → ready/; not merged into master. No linked issues or PRs.
