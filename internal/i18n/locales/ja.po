@@ -2167,6 +2167,7 @@ msgstr "%s がペアリングを求めています。このキーが表示され
 #: internal/termui/keys.go:421
 #: internal/termui/paste.go:337
 #: internal/termui/restart.go:42
+#: internal/termui/sessionmenu.go:111
 #: internal/termui/wsmenu.go:127
 #: internal/ui/askpass.go:301
 #: internal/ui/askpass.go:446
@@ -3545,6 +3546,7 @@ msgstr[0] "…ほか %d 件"
 #: internal/shell/launcher_actions.go:53
 #: internal/term/web/strings.go:30
 #: internal/termui/keys.go:295
+#: internal/termui/sessionmenu.go:113
 #: internal/termui/wsmenu.go:129
 #: internal/ui/settings_bench.go:132
 #: internal/ui/settings_wifi_details.go:62
@@ -4102,6 +4104,7 @@ msgstr ""
 
 #: internal/filesui/picker.go:494
 #: internal/filesui/window.go:837
+#: internal/termui/sessionmenu.go:81
 #: internal/termui/wsmenu.go:69
 msgid "Rename…"
 msgstr "名前を変更…"
@@ -13304,7 +13307,7 @@ msgstr "このワークスペースに新しいセッション"
 
 #: internal/term/settings/settings.go:104
 #: internal/term/web/strings.go:70
-#: internal/termui/columns.go:174
+#: internal/termui/columns.go:176
 msgid "New workspace"
 msgstr "新しいワークスペース"
 
@@ -13603,7 +13606,7 @@ msgid "New pane"
 msgstr ""
 
 #: internal/term/web/strings.go:68
-#: internal/termui/columns.go:175
+#: internal/termui/columns.go:177
 #: ui/term.ui:235
 msgid "New session"
 msgstr "新しいセッション"
@@ -13859,15 +13862,15 @@ msgstr "ターミナルはウィンドウの色を使います"
 msgid "Your login shell (%s)"
 msgstr "ログインシェル（%s）"
 
-#: internal/termui/columns.go:173
+#: internal/termui/columns.go:175
 msgid "Menu"
 msgstr "メニュー"
 
-#: internal/termui/columns.go:176
+#: internal/termui/columns.go:178
 msgid "Hide the sidebar"
 msgstr "サイドバーを隠す"
 
-#: internal/termui/columns.go:177
+#: internal/termui/columns.go:179
 msgid "Show the sidebar"
 msgstr "サイドバーを表示"
 
@@ -13960,6 +13963,7 @@ msgid "A program may still be running. Closing the pane ends it."
 msgstr ""
 
 #: internal/termui/keys.go:278
+#: internal/termui/sessionmenu.go:103
 #: internal/termui/wsmenu.go:113
 msgid "Close %s?"
 msgstr "%s を閉じますか？"
@@ -14299,6 +14303,15 @@ msgstr "次の一致 (Shift+Enter)"
 msgid "Close (Escape)"
 msgstr "クローズ(エスケープ)"
 
+#: internal/termui/sessionmenu.go:82
+#: internal/termui/wsmenu.go:70
+msgid "Close…"
+msgstr "閉じる…"
+
+#: internal/termui/sessionmenu.go:104
+msgid "All panes in this session close, and every program running in them quits."
+msgstr ""
+
 #: internal/termui/tiles.go:657
 msgid "%s\nBranch %s"
 msgstr "%s\nブランチ %s"
@@ -14306,10 +14319,6 @@ msgstr "%s\nブランチ %s"
 #: internal/termui/tiles.go:659
 msgid "%s, a worktree of %s\nBranch %s"
 msgstr "%s（%s の worktree）\nブランチ %s"
-
-#: internal/termui/wsmenu.go:70
-msgid "Close…"
-msgstr "閉じる…"
 
 #: internal/termui/wsmenu.go:91
 msgid "Rename the workspace"

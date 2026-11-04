@@ -63,11 +63,12 @@ type columns struct {
 	filling bool
 	// finder is the foot of column 1: the agents waiting and idle.
 	finder finder
-	// drag and sessionDrag reorder the two lists; rowMenu is the
-	// workspace rows' menu.
+	// drag and sessionDrag reorder the two lists; rowMenu and
+	// sessionMenu hold their context-menu callbacks.
 	sessionDrag sessionDrag
 	drag        wsDrag
 	rowMenu     wsMenu
+	sessionMenu sessionMenu
 
 	onRow          func(gtk.ListBox, uintptr)
 	onFind         func(uintptr, uintptr)
@@ -129,6 +130,7 @@ func (a *App) buildColumns(ui *gtkx.Builder) {
 	c.startDrag(a)
 	c.startSessionDrag(a)
 	c.startMenu(a)
+	c.startSessionMenu(a)
 	c.finder.build(a, ui)
 	c.onFind = func(uintptr, uintptr) { c.update(a) }
 	gtkx.ConnectChanged(c.find, &c.onFind)
@@ -386,6 +388,7 @@ func (c *columns) makeSessions(a *App, w *model.Workspace) {
 		h.button.SetChild(&hb.Widget)
 		c.clickAt[h.button.GoPointer()] = dropSpot{s.ID, 0}
 		h.button.ConnectClicked(&c.onHeadClick)
+		c.menuSessionHead(h.button)
 		a.dropOn(&h.button.Widget, s.ID, 0)
 		section.Append(&h.button.Widget)
 		c.heads[s.ID] = h

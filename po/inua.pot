@@ -2170,6 +2170,7 @@ msgstr ""
 #: internal/termui/keys.go:421
 #: internal/termui/paste.go:337
 #: internal/termui/restart.go:42
+#: internal/termui/sessionmenu.go:111
 #: internal/termui/wsmenu.go:127
 #: internal/ui/askpass.go:301
 #: internal/ui/askpass.go:446
@@ -3557,6 +3558,7 @@ msgstr[1] ""
 #: internal/shell/launcher_actions.go:53
 #: internal/term/web/strings.go:30
 #: internal/termui/keys.go:295
+#: internal/termui/sessionmenu.go:113
 #: internal/termui/wsmenu.go:129
 #: internal/ui/settings_bench.go:132
 #: internal/ui/settings_wifi_details.go:62
@@ -4124,6 +4126,7 @@ msgstr ""
 
 #: internal/filesui/picker.go:494
 #: internal/filesui/window.go:837
+#: internal/termui/sessionmenu.go:81
 #: internal/termui/wsmenu.go:69
 msgid "Rename…"
 msgstr ""
@@ -13373,7 +13376,7 @@ msgstr ""
 
 #: internal/term/settings/settings.go:104
 #: internal/term/web/strings.go:70
-#: internal/termui/columns.go:174
+#: internal/termui/columns.go:176
 msgid "New workspace"
 msgstr ""
 
@@ -13672,7 +13675,7 @@ msgid "New pane"
 msgstr ""
 
 #: internal/term/web/strings.go:68
-#: internal/termui/columns.go:175
+#: internal/termui/columns.go:177
 #: ui/term.ui:235
 msgid "New session"
 msgstr ""
@@ -13930,15 +13933,15 @@ msgstr ""
 msgid "Your login shell (%s)"
 msgstr ""
 
-#: internal/termui/columns.go:173
+#: internal/termui/columns.go:175
 msgid "Menu"
 msgstr ""
 
-#: internal/termui/columns.go:176
+#: internal/termui/columns.go:178
 msgid "Hide the sidebar"
 msgstr ""
 
-#: internal/termui/columns.go:177
+#: internal/termui/columns.go:179
 msgid "Show the sidebar"
 msgstr ""
 
@@ -14031,6 +14034,7 @@ msgid "A program may still be running. Closing the pane ends it."
 msgstr ""
 
 #: internal/termui/keys.go:278
+#: internal/termui/sessionmenu.go:103
 #: internal/termui/wsmenu.go:113
 msgid "Close %s?"
 msgstr ""
@@ -14373,16 +14377,21 @@ msgstr ""
 msgid "Close (Escape)"
 msgstr ""
 
+#: internal/termui/sessionmenu.go:82
+#: internal/termui/wsmenu.go:70
+msgid "Close…"
+msgstr ""
+
+#: internal/termui/sessionmenu.go:104
+msgid "All panes in this session close, and every program running in them quits."
+msgstr ""
+
 #: internal/termui/tiles.go:657
 msgid "%s\nBranch %s"
 msgstr ""
 
 #: internal/termui/tiles.go:659
 msgid "%s, a worktree of %s\nBranch %s"
-msgstr ""
-
-#: internal/termui/wsmenu.go:70
-msgid "Close…"
 msgstr ""
 
 #: internal/termui/wsmenu.go:91
