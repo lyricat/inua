@@ -20,3 +20,13 @@ Tests: make test passed in a throwaway HOME, including an independent manager ru
 Installs: none.
 Not checked: no manual visual inspection or nested Hyprland check; computed styles were checked in isolated GTK/Broadway.
 Moved new/ → review/; branch pushed. Owner should check closing all Files windows and reopening without restarting its process.
+
+## factory · review · 2026-11-04 23:44
+head: 9448f7e1cce36b90b4afd55c130a450b1fed5d2b
+verdict: pass
+
+Validation: Codex reviewed all 9 changed files in origin/master...HEAD, including window ownership, reopen/multi-window behavior and CSS provider lifetime. No qualifying P0–P3 findings. No merge conflicts with origin/master.
+Tests: make test passed with isolated HOME/XDG directories: 15 Python tests, go vet and race-enabled tests across 104 Go packages. Two initial attempts encountered temporary-path length and symlink semantics in the isolation launcher; adjusted the launcher, not source code, and the full suite passed. Isolated Broadway regression checks passed for repeated reopen, surviving windows, theme/user CSS reload and missing/broken configuration. An overlay restoring the baseline implementation reproduced missing CSS classes/application ownership and incorrect foreground styling.
+Installs: none; no dependency downloads. Temporary probes cleaned up; tracked worktree clean and HEAD unchanged.
+Limits: no manual visual inspection or nested Hyprland validation. Broadway computed styles do not replace real-desktop interaction checks. Owner should verify closing all Files windows and reopening without restarting the resident process.
+Moved review/ → ready/; not merged into master.
