@@ -69,6 +69,44 @@ x = 1
 	}
 }
 
+func TestFocusFollowsMouse(t *testing.T) {
+	if Default().Terminal.FocusFollowsMouse {
+		t.Fatal("hover focus must be off by default")
+	}
+	for _, tc := range []struct {
+		name, content string
+		want          bool
+	}{
+		{name: "missing file"},
+		{name: "missing key", content: "[terminal]\ncopy_on_select = false\n"},
+		{name: "enabled", content: "[terminal]\nfocus_follows_mouse = true\n", want: true},
+		{name: "disabled", content: "[terminal]\nfocus_follows_mouse = false\n"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			path := filepath.Join(t.TempDir(), "term.toml")
+			if tc.content != "" {
+				if err := os.WriteFile(path, []byte(tc.content), 0o600); err != nil {
+					t.Fatal(err)
+				}
+			}
+			s, warnings, err := Load(path)
+			if err != nil || len(warnings) != 0 {
+				t.Fatalf("load: %v %v", err, warnings)
+			}
+			if s.Terminal.FocusFollowsMouse != tc.want {
+				t.Fatalf("hover focus = %v, want %v", s.Terminal.FocusFollowsMouse, tc.want)
+			}
+			if err := Save(path, s); err != nil {
+				t.Fatal(err)
+			}
+			got, warnings, err := Load(path)
+			if err != nil || len(warnings) != 0 || !reflect.DeepEqual(got, s) {
+				t.Fatalf("round trip: %+v, warnings %v, error %v", got, warnings, err)
+			}
+		})
+	}
+}
+
 // A file of the first version: the keys it kept at that version's
 // defaults become Ghostty's, the ones the user chose stay, and its hooks
 // setting is let go without a warning.
