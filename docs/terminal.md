@@ -100,7 +100,12 @@ from it, or at `$INUA_VT_LIB`.
   it, or Ctrl+`, goes to the next: waiting, then done, then idle.
 - **Sessions** (column 2): the shown workspace's sessions, each a section of its
   panes under a head with the same square and a badge counting the
-  agents that wait. A pane's row shows its agent's mark and title, its state and
+  agents that wait. Right-click a head, or press Menu or Shift+F10 while
+  it has keyboard focus, to rename or close that session. Closing always
+  asks first, even with one pane: all its panes and programs end. Cancel
+  has focus; Cancel or Escape leaves the session running. Clicking a
+  head still selects it, and double-clicking still renames it.
+  A pane's row shows its agent's mark and title, its state and
   how long it has been in it; an agent waiting for you shows what it
   asks. A shell shows the command running in it. An agent's mark takes
   its own colour (Claude Code's orange, Gemini's blue…) while it runs.

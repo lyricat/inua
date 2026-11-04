@@ -65,8 +65,9 @@ type columns struct {
 	finder finder
 	// drag is a workspace's row being dragged to its new place, rowMenu
 	// the rows' menu.
-	drag    wsDrag
-	rowMenu wsMenu
+	drag        wsDrag
+	rowMenu     wsMenu
+	sessionMenu sessionMenu
 
 	onRow          func(gtk.ListBox, uintptr)
 	onFind         func(uintptr, uintptr)
@@ -127,6 +128,7 @@ func (a *App) buildColumns(ui *gtkx.Builder) {
 	c.list.ConnectRowActivated(&c.onRow)
 	c.startDrag(a)
 	c.startMenu(a)
+	c.startSessionMenu(a)
 	c.finder.build(a, ui)
 	c.onFind = func(uintptr, uintptr) { c.update(a) }
 	gtkx.ConnectChanged(c.find, &c.onFind)
@@ -377,6 +379,7 @@ func (c *columns) makeSessions(a *App, w *model.Workspace) {
 		h.button.SetChild(&hb.Widget)
 		c.clickAt[h.button.GoPointer()] = dropSpot{s.ID, 0}
 		h.button.ConnectClicked(&c.onHeadClick)
+		c.menuSessionHead(h.button)
 		a.dropOn(&h.button.Widget, s.ID, 0)
 		section.Append(&h.button.Widget)
 		c.heads[s.ID] = h
