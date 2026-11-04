@@ -26,3 +26,12 @@ Tests: make test passed in isolated HOME, independently rerun by manager. Coder 
 Not checked: UI not verified by eye. Attempted isolated Broadway check aborted on an assertion during first-frame rendering; menu, keyboard and confirmation interactions still need manual verification.
 
 Moved new/ → review/ for review, not merged into master.
+
+## factory · review · 2026-11-05 01:24
+head: c1ded70cfeb2d961a498d22be8fc60925b4ba07b
+verdict: pass
+
+Validation: Codex reviewed all 10 changed files in origin/master...HEAD, including session ID targeting, confirmation/cancellation, event handling and GTK reference/callback lifetime. No confirmed introduced defects. No merge conflicts. Required make test passed on final rerun: 15 script tests, go vet and full race suite. Initial long Unix socket paths caused failures also reproduced on base (17 failed tests); shortening isolated paths with a /proc alias resolved the environment issue without code changes. Temporary catalog regeneration matched; formatting and diff checks passed. Worktree unchanged; no commits or installs.
+
+Limits: UI was not checked by eye; real menu, keyboard and confirmation interactions remain manual checks. libinua-vt.so was unavailable, so related tests skipped under existing rules. New warning text is not yet translated and falls back to English.
+Moved review/ → ready/ for owner approval; not merged into master.
