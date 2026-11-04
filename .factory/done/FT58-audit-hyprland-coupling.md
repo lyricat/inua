@@ -99,3 +99,10 @@ Installs: Only pinned Go modules restored; no unpinned tools or dependency-manif
 Limits: Real UI, focus, hotplug, lock recovery and alternative compositor compatibility not exercised. Skips include unavailable terminal engine, libturbojpeg, fish, node, unconfigured real ISO download and test helper entry points. No runtime or UI changes.
 
 Moved review/ → ready/ for owner approval; nothing merged.
+
+## factory · 2026-11-04 15:32
+Merged into master at d6a2e5a on the owner's word. Closed issue #59.
+
+Tests: the first full make test on the merge failed once in internal/term/pty: `pty_test.go:255: the program did not get SIGHUP` (TestCloseWhileReading). The change is documentation only; the test then passed 20 of 20 alone with the race detector, and a second full make test passed (exit 0; Python 15 tests, go vet, 103 packages). The test looks flaky under load; the cause was not found and it was not fixed.
+
+Moved ready/ → done/.
