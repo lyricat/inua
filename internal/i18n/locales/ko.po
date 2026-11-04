@@ -3004,7 +3004,8 @@ msgstr "%s을(를) 영구히 삭제할까요?"
 
 #: internal/diskui/details.go:528
 #: internal/filesui/cards.go:435
-#: internal/lightui/calculator.go:53
+#: internal/lightui/calculator.go:59
+#: internal/lightui/calculator.go:352
 #: internal/lightui/gpg.go:1517
 #: internal/lightui/pass.go:950
 #: internal/term/web/strings.go:43
@@ -3057,6 +3058,7 @@ msgstr "복사됨"
 #: internal/diskui/details.go:581
 #: internal/filesui/window.go:817
 #: internal/gamesui/lobbyhost.go:169
+#: internal/lightui/calculator.go:350
 #: internal/lightui/pass.go:748
 #: internal/lightui/pass.go:773
 #: internal/mailui/details.go:222
@@ -4636,6 +4638,7 @@ msgid "New file…"
 msgstr "새 파일…"
 
 #: internal/filesui/window.go:787
+#: internal/lightui/calculator.go:351
 #: internal/term/settings/settings.go:119
 #: internal/termui/paste.go:339
 msgid "Paste"
@@ -4659,6 +4662,7 @@ msgid "Show in its folder"
 msgstr "해당 폴더에서 보기"
 
 #: internal/filesui/window.go:816
+#: internal/lightui/calculator.go:349
 msgid "Cut"
 msgstr "잘라내기"
 
@@ -8649,19 +8653,24 @@ msgstr "Pass"
 msgid "GPG"
 msgstr "GPG"
 
-#: internal/lightui/calculator.go:57
+#: internal/lightui/calculator.go:63
 msgid "Change sign"
 msgstr "변경 표시"
 
-#: internal/lightui/calculator.go:240
-msgid "Error"
-msgstr "오류"
+#: internal/lightui/calculator.go:354
+#: internal/term/web/strings.go:94
+msgid "Select all"
+msgstr ""
 
-#: internal/lightui/calculator.go:274
+#: internal/lightui/calculator.go:414
+msgid "Enter a valid expression."
+msgstr ""
+
+#: internal/lightui/calculator.go:444
 msgid "No calculations yet"
 msgstr "아직 계산이 없습니다."
 
-#: internal/lightui/calculator.go:296
+#: internal/lightui/calculator.go:466
 msgid "Use %s"
 msgstr "%s를 사용한다"
 
@@ -13676,10 +13685,6 @@ msgstr "왕복"
 msgid "SNIPPETS"
 msgstr ""
 
-#: internal/term/web/strings.go:94
-msgid "Select all"
-msgstr ""
-
 #: internal/term/web/strings.go:95
 msgid "Session %d"
 msgstr "세션 %d"
@@ -17831,11 +17836,21 @@ msgstr "최근 계산"
 msgid "History"
 msgstr "역사"
 
-#: ui/calculator.ui:149
+#: ui/calculator.ui:91
+#: ui/calculator.ui:93
+msgid "Formula"
+msgstr ""
+
+#: ui/calculator.ui:105
+#: ui/calculator.ui:107
+msgid "Value"
+msgstr ""
+
+#: ui/calculator.ui:169
 msgid "HISTORY"
 msgstr "역사"
 
-#: ui/calculator.ui:170
+#: ui/calculator.ui:190
 msgid "Clear history"
 msgstr "이력 지우기"
 

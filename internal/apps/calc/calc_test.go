@@ -69,12 +69,17 @@ func TestPasted(t *testing.T) {
 		"sqrt(2)+pi":   "√(2)+π",
 		"1.5e-3":       "1.5e−3",
 		"sin(30)\n":    "sin(30)",
+		"1 +":          "1+",
+		"si":           "si",
+		"hello":        "hello",
+		"2 & 3":        "2&3",
+		"$5":           "$5",
 	} {
 		if got, ok := Pasted(in); !ok || got != want {
 			t.Errorf("Pasted(%q) = %q, %v; want %q", in, got, ok, want)
 		}
 	}
-	for _, in := range []string{"", "  ", "hello", "2 & 3", "$5"} {
+	for _, in := range []string{"", "  ", "\n\t", "="} {
 		if got, ok := Pasted(in); ok {
 			t.Errorf("Pasted(%q) = %q, want not ok", in, got)
 		}

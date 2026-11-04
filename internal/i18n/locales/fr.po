@@ -3011,7 +3011,8 @@ msgstr "Supprimer %s définitivement ?"
 
 #: internal/diskui/details.go:528
 #: internal/filesui/cards.go:435
-#: internal/lightui/calculator.go:53
+#: internal/lightui/calculator.go:59
+#: internal/lightui/calculator.go:352
 #: internal/lightui/gpg.go:1517
 #: internal/lightui/pass.go:950
 #: internal/term/web/strings.go:43
@@ -3064,6 +3065,7 @@ msgstr "Copié"
 #: internal/diskui/details.go:581
 #: internal/filesui/window.go:817
 #: internal/gamesui/lobbyhost.go:169
+#: internal/lightui/calculator.go:350
 #: internal/lightui/pass.go:748
 #: internal/lightui/pass.go:773
 #: internal/mailui/details.go:222
@@ -4663,6 +4665,7 @@ msgid "New file…"
 msgstr "Nouveau fichier…"
 
 #: internal/filesui/window.go:787
+#: internal/lightui/calculator.go:351
 #: internal/term/settings/settings.go:119
 #: internal/termui/paste.go:339
 msgid "Paste"
@@ -4686,6 +4689,7 @@ msgid "Show in its folder"
 msgstr "Afficher dans son dossier"
 
 #: internal/filesui/window.go:816
+#: internal/lightui/calculator.go:349
 msgid "Cut"
 msgstr "Couper"
 
@@ -8686,19 +8690,24 @@ msgstr "Pass"
 msgid "GPG"
 msgstr "GPG"
 
-#: internal/lightui/calculator.go:57
+#: internal/lightui/calculator.go:63
 msgid "Change sign"
 msgstr "Changer de signe"
 
-#: internal/lightui/calculator.go:240
-msgid "Error"
-msgstr "Erreur"
+#: internal/lightui/calculator.go:354
+#: internal/term/web/strings.go:94
+msgid "Select all"
+msgstr ""
 
-#: internal/lightui/calculator.go:274
+#: internal/lightui/calculator.go:414
+msgid "Enter a valid expression."
+msgstr ""
+
+#: internal/lightui/calculator.go:444
 msgid "No calculations yet"
 msgstr "Aucun calcul pour l'instant"
 
-#: internal/lightui/calculator.go:296
+#: internal/lightui/calculator.go:466
 msgid "Use %s"
 msgstr "Utiliser %s"
 
@@ -13747,10 +13756,6 @@ msgstr "Aller-retour"
 msgid "SNIPPETS"
 msgstr ""
 
-#: internal/term/web/strings.go:94
-msgid "Select all"
-msgstr ""
-
 #: internal/term/web/strings.go:95
 msgid "Session %d"
 msgstr "Session %d"
@@ -17931,11 +17936,21 @@ msgstr "Calculs récents"
 msgid "History"
 msgstr "Histoire"
 
-#: ui/calculator.ui:149
+#: ui/calculator.ui:91
+#: ui/calculator.ui:93
+msgid "Formula"
+msgstr ""
+
+#: ui/calculator.ui:105
+#: ui/calculator.ui:107
+msgid "Value"
+msgstr ""
+
+#: ui/calculator.ui:169
 msgid "HISTORY"
 msgstr "HISTOIRE"
 
-#: ui/calculator.ui:170
+#: ui/calculator.ui:190
 msgid "Clear history"
 msgstr "Effacer l'historique"
 
