@@ -22,3 +22,14 @@ Built and pushed commit 047670ff. Formula and value use editable fields; shared 
 make generate and make i18n completed. Coder reports application build and full make test passed; an initial mail test failure passed on retry without mail changes. Manager independently reran make test with a throwaway HOME: passed. No unpinned installs or dependency manifest changes. No forbidden paths changed.
 
 UI changed and was not checked by eye. Manual checks listed above remain outstanding. Moved new/ → review/; not merged into master.
+
+## factory · review · 2026-11-05 00:29
+head: 047670fff829e8c1be3beaa0a5894d8e6cb18160
+verdict: pass
+notes:
+- [P2] internal/lightui/calculator.go:326: dismissing the context menu does not restore the saved caret/selection. GTK/Broadway reproduction: select `2` in `2+3`, open and dismiss the menu without an action; selection changes from [0,1] to [0,3], then keypad `9` replaces the whole expression instead of producing `9+3`. Restore selection on cancellation while preserving explicit menu actions.
+- [P2] internal/lightui/calculator.go:365: replacing field text with SetText clears native undo history. Reproduction in both fields: select `2` in `123`, paste `9` to obtain `193`, invoke GTK text.undo; text stays `193`, whereas ordinary typing is undoable. Use undo-preserving editable delete/insert operations; keypad replacement shares this path.
+
+Validation: Codex reviewed all 15 changed files in origin/master...HEAD. No merge conflicts. Final make test exited 0: 15 Python tests, go vet, and race tests (103 packages passed, 33 without tests). Initial test attempts failed due to isolated temporary-path length and path safety checks; final run used a go test -exec wrapper giving seven socket-related packages short temporary aliases, with real paths for other packages. No tests were changed or excluded. make generate and make i18n in a disposable HEAD copy succeeded; all 51 generated files matched HEAD. Worktree remains clean; no code commits. Installs: none; existing pinned dependency caches copied only.
+Limits: GTK/Broadway state probes were run, but UI was not checked by eye. Real Hyprland gestures, external clipboard, long text and light/dark themes remain unverified.
+No P0/P1 findings remain; moved review/ → ready/ under the configured review gate, with both P2 findings retained for owner consideration. No linked issues or PRs. Not merged into master.
