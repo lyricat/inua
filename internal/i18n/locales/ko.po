@@ -13241,15 +13241,15 @@ msgstr ""
 msgid "inua-keyring asks for your passphrase, for %s"
 msgstr ""
 
-#: internal/term/host/sessions.go:256
+#: internal/term/host/sessions.go:270
 msgid "No folder given."
 msgstr ""
 
-#: internal/term/host/sessions.go:259
+#: internal/term/host/sessions.go:273
 msgid "%s is not a folder."
 msgstr ""
 
-#: internal/term/host/sessions.go:303
+#: internal/term/host/sessions.go:317
 #: ui/connect.ui:851
 msgid "Commands"
 msgstr "명령"
@@ -13304,7 +13304,7 @@ msgstr "이 작업 공간에 새 세션"
 
 #: internal/term/settings/settings.go:103
 #: internal/term/web/strings.go:70
-#: internal/termui/columns.go:172
+#: internal/termui/columns.go:174
 msgid "New workspace"
 msgstr "새 작업 공간"
 
@@ -13603,7 +13603,7 @@ msgid "New pane"
 msgstr ""
 
 #: internal/term/web/strings.go:68
-#: internal/termui/columns.go:173
+#: internal/termui/columns.go:175
 #: ui/term.ui:235
 msgid "New session"
 msgstr "새 세션"
@@ -13859,15 +13859,15 @@ msgstr "터미널이 창의 색을 씁니다"
 msgid "Your login shell (%s)"
 msgstr "로그인 셸 (%s)"
 
-#: internal/termui/columns.go:171
+#: internal/termui/columns.go:173
 msgid "Menu"
 msgstr "메뉴"
 
-#: internal/termui/columns.go:174
+#: internal/termui/columns.go:176
 msgid "Hide the sidebar"
 msgstr "사이드바 숨기기"
 
-#: internal/termui/columns.go:175
+#: internal/termui/columns.go:177
 msgid "Show the sidebar"
 msgstr "사이드바 보이기"
 

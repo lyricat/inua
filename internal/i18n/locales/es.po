@@ -13312,15 +13312,15 @@ msgstr ""
 msgid "inua-keyring asks for your passphrase, for %s"
 msgstr ""
 
-#: internal/term/host/sessions.go:256
+#: internal/term/host/sessions.go:270
 msgid "No folder given."
 msgstr ""
 
-#: internal/term/host/sessions.go:259
+#: internal/term/host/sessions.go:273
 msgid "%s is not a folder."
 msgstr ""
 
-#: internal/term/host/sessions.go:303
+#: internal/term/host/sessions.go:317
 #: ui/connect.ui:851
 msgid "Commands"
 msgstr "Comandos"
@@ -13375,7 +13375,7 @@ msgstr "Nueva sesión en este espacio"
 
 #: internal/term/settings/settings.go:103
 #: internal/term/web/strings.go:70
-#: internal/termui/columns.go:172
+#: internal/termui/columns.go:174
 msgid "New workspace"
 msgstr "Nuevo espacio de trabajo"
 
@@ -13674,7 +13674,7 @@ msgid "New pane"
 msgstr ""
 
 #: internal/term/web/strings.go:68
-#: internal/termui/columns.go:173
+#: internal/termui/columns.go:175
 #: ui/term.ui:235
 msgid "New session"
 msgstr "Nueva sesión"
@@ -13932,15 +13932,15 @@ msgstr "Los terminales toman los colores de la ventana"
 msgid "Your login shell (%s)"
 msgstr "Tu shell de inicio de sesión (%s)"
 
-#: internal/termui/columns.go:171
+#: internal/termui/columns.go:173
 msgid "Menu"
 msgstr "Menú"
 
-#: internal/termui/columns.go:174
+#: internal/termui/columns.go:176
 msgid "Hide the sidebar"
 msgstr "Ocultar la barra lateral"
 
-#: internal/termui/columns.go:175
+#: internal/termui/columns.go:177
 msgid "Show the sidebar"
 msgstr "Mostrar la barra lateral"
 

@@ -186,6 +186,7 @@ const (
 	MsgRename       = "rename"        // client: Name for Session, else Workspace
 	MsgCloseSession = "close_session" // client: end Session's panes and forget it
 	MsgRemove       = "remove"        // client: forget Workspace, ending its panes
+	MsgMoveSession  = "move_session"  // client: Session before To (0: last), within Workspace
 	MsgMove         = "move"          // client: Workspace to place To
 	MsgUI           = "ui"            // client: UI, how the window is
 	MsgActive       = "active"        // client: its window is the active one (Active) or not

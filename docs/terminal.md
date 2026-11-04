@@ -104,6 +104,13 @@ from it, or at `$INUA_VT_LIB`.
   how long it has been in it; an agent waiting for you shows what it
   asks. A shell shows the command running in it. An agent's mark takes
   its own colour (Claude Code's orange, Gemini's blue…) while it runs.
+  Drag a session's header to reorder the whole section, including its
+  pane rows, within this workspace. It lifts under the pointer while the
+  other sections slide aside; dropping puts it there immediately. Escape
+  or a drop outside the list restores its place. Reordering keeps the
+  selected session, pane layout and running programs unchanged; the host
+  shares the order with every client and remembers it for kept sessions.
+  While the workspace search is active, reordering is disabled.
   After the last session, *New session* starts one.
 - **Terminals** (column 3): the shown session's panes, tiled, each with a
   head (state, mark, title, folder). In a git checkout, the folder's

@@ -63,10 +63,11 @@ type columns struct {
 	filling bool
 	// finder is the foot of column 1: the agents waiting and idle.
 	finder finder
-	// drag is a workspace's row being dragged to its new place, rowMenu
-	// the rows' menu.
-	drag    wsDrag
-	rowMenu wsMenu
+	// drag and sessionDrag reorder the two lists; rowMenu is the
+	// workspace rows' menu.
+	sessionDrag sessionDrag
+	drag        wsDrag
+	rowMenu     wsMenu
 
 	onRow          func(gtk.ListBox, uintptr)
 	onFind         func(uintptr, uintptr)
@@ -126,6 +127,7 @@ func (a *App) buildColumns(ui *gtkx.Builder) {
 	}
 	c.list.ConnectRowActivated(&c.onRow)
 	c.startDrag(a)
+	c.startSessionDrag(a)
 	c.startMenu(a)
 	c.finder.build(a, ui)
 	c.onFind = func(uintptr, uintptr) { c.update(a) }
@@ -199,6 +201,7 @@ type wsRow struct {
 
 // sessionHead is a session's head in column 2.
 type sessionHead struct {
+	section      *gtk.Box
 	button       *gtk.Button
 	mark         *gtk.Box
 	label, badge *gtk.Label
@@ -310,7 +313,10 @@ func (a *App) matches(w *model.Workspace, query string) bool {
 }
 
 func (c *columns) fillSessions(a *App) {
-	w := a.shownWorkspace()
+	if c.sessionDrag.id != 0 && strings.TrimSpace(c.find.GetText()) != "" {
+		c.cancelSessionDrag()
+	}
+	w := c.sessionDrag.preview(a.shownWorkspace())
 	c.newSession.SetVisible(w != nil)
 	// The shape: the workspace, then each session and its panes.
 	shape := []int{}
@@ -322,6 +328,7 @@ func (c *columns) fillSessions(a *App) {
 		}
 	}
 	if !slices.Equal(shape, c.sessionShape) {
+		c.cancelSessionDrag()
 		c.sessionShape = shape
 		c.makeSessions(a, w)
 	}
@@ -345,6 +352,8 @@ func (c *columns) fillSessions(a *App) {
 // makeSessions makes column 2's heads and rows for a workspace's sessions,
 // their content left to set.
 func (c *columns) makeSessions(a *App, w *model.Workspace) {
+	c.sessionDrag.rows = nil
+	c.sessionDrag.gaps = nil
 	for child := c.sessions.GetFirstChild(); child != nil; child = c.sessions.GetFirstChild() {
 		c.sessions.Remove(child)
 	}
@@ -358,7 +367,7 @@ func (c *columns) makeSessions(a *App, w *model.Workspace) {
 	for _, s := range w.Sessions {
 		section := gtk.NewBox(gtk.OrientationVerticalValue, 0)
 		section.AddCssClass("term-session")
-		h := &sessionHead{button: gtk.NewButton()}
+		h := &sessionHead{button: gtk.NewButton(), section: section}
 		h.button.AddCssClass("term-session-head")
 		hb := gtk.NewBox(gtk.OrientationHorizontalValue, 10)
 		h.mark = gtk.NewBox(gtk.OrientationHorizontalValue, 0)
@@ -380,6 +389,7 @@ func (c *columns) makeSessions(a *App, w *model.Workspace) {
 		a.dropOn(&h.button.Widget, s.ID, 0)
 		section.Append(&h.button.Widget)
 		c.heads[s.ID] = h
+		c.dragSessionHead(h)
 		for _, id := range s.Tree.Panes() {
 			r := makePaneRow()
 			c.paneRows[id] = r
@@ -390,6 +400,8 @@ func (c *columns) makeSessions(a *App, w *model.Workspace) {
 			section.Append(&r.button.Widget)
 		}
 		c.sessions.Append(&section.Widget)
+		c.sessionDrag.rows = append(c.sessionDrag.rows, s.ID)
+		c.sessionDrag.gaps = append(c.sessionDrag.gaps, wsGap{})
 	}
 }
 

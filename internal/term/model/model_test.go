@@ -1,6 +1,7 @@
 package model
 
 import (
+	"encoding/json"
 	"slices"
 	"testing"
 
@@ -121,5 +122,88 @@ func TestMove(t *testing.T) {
 	m.Move(c.ID, 2)
 	if m.Workspaces[0] != b || m.Workspaces[1] != a || m.Workspaces[2] != c {
 		t.Errorf("order %s %s %s", m.Workspaces[0].Name, m.Workspaces[1].Name, m.Workspaces[2].Name)
+	}
+}
+
+func TestMoveSession(t *testing.T) {
+	for _, tt := range []struct {
+		name         string
+		from, before int
+		want         []int
+	}{
+		{"up", 2, 0, []int{2, 0, 1}},
+		{"down", 0, 2, []int{1, 0, 2}},
+		{"end", 0, -1, []int{1, 2, 0}},
+		{"same", 1, 1, []int{0, 1, 2}},
+		{"already before", 0, 1, []int{0, 1, 2}},
+		{"already last", 2, -1, []int{0, 1, 2}},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			var m Model
+			w := m.AddWorkspace("/project", "", true)
+			sessions := []*Session{m.AddSession(w, "one", 1), m.AddSession(w, "two", 2), m.AddSession(w, "three", 3)}
+			m.Split(sessions[1].ID, 4, layout.Down)
+			sessions[1].Zoom, sessions[1].Used = 4, true
+			m.Show(w.ID, sessions[1].ID)
+			before, _ := json.Marshal(&m)
+			trees := []*layout.Node{sessions[0].Tree, sessions[1].Tree, sessions[2].Tree}
+			target := 0
+			if tt.before >= 0 {
+				target = sessions[tt.before].ID
+			}
+			if err := m.MoveSession(w.ID, sessions[tt.from].ID, target); err != nil {
+				t.Fatal(err)
+			}
+			for i, index := range tt.want {
+				if w.Sessions[i] != sessions[index] {
+					t.Fatalf("session %d: got %d, want %d", i, w.Sessions[i].ID, sessions[index].ID)
+				}
+			}
+			for i, s := range sessions {
+				if s.Tree != trees[i] {
+					t.Fatal("replaced a pane tree")
+				}
+			}
+			// Undo only the order: all other state must remain byte-for-byte.
+			w.Sessions = sessions
+			after, _ := json.Marshal(&m)
+			if string(before) != string(after) {
+				t.Fatalf("changed state beyond order:\n%s\n%s", before, after)
+			}
+		})
+	}
+}
+
+func TestMoveSessionRejectsMissingAndForeignIDs(t *testing.T) {
+	var m Model
+	w := m.AddWorkspace("/project", "", true)
+	a := m.AddSession(w, "", 1)
+	b := m.AddSession(w, "", 2)
+	other := m.AddWorkspace("/other", "", true)
+	foreign := m.AddSession(other, "", 3)
+	empty := m.AddWorkspace("/empty", "", true)
+	removed := m.AddSession(w, "", 4)
+	m.RemoveSession(removed.ID)
+	for _, move := range [][3]int{
+		{0, a.ID, b.ID}, {999, a.ID, b.ID}, {w.ID, 0, b.ID},
+		{w.ID, removed.ID, b.ID}, {w.ID, a.ID, removed.ID},
+		{w.ID, foreign.ID, b.ID}, {w.ID, a.ID, foreign.ID},
+		{empty.ID, a.ID, 0}, {w.ID, a.ID, -1},
+	} {
+		before, _ := json.Marshal(&m)
+		if err := m.MoveSession(move[0], move[1], move[2]); err != ErrNotFound {
+			t.Errorf("move %v: %v", move, err)
+		}
+		after, _ := json.Marshal(&m)
+		if string(before) != string(after) {
+			t.Fatalf("invalid move %v changed state", move)
+		}
+	}
+	if err := m.MoveSession(other.ID, foreign.ID, 0); err != nil || len(other.Sessions) != 1 || other.Sessions[0] != foreign {
+		t.Fatalf("single session: %v", err)
+	}
+	var emptyModel Model
+	if err := emptyModel.MoveSession(1, 2, 0); err != ErrNotFound {
+		t.Fatal(err)
 	}
 }
