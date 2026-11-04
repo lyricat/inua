@@ -29,9 +29,9 @@ import (
 	"github.com/godbus/dbus/v5"
 
 	"github.com/lyricat/inua/internal/compositor"
+	_ "github.com/lyricat/inua/internal/compositors" // the backends Detect knows
 	"github.com/lyricat/inua/internal/config"
 	"github.com/lyricat/inua/internal/gtkx"
-	_ "github.com/lyricat/inua/internal/hypr" // the compositors Detect knows
 	"github.com/lyricat/inua/internal/i18n"
 	"github.com/lyricat/inua/internal/portalconf"
 	"github.com/lyricat/inua/internal/rundir"

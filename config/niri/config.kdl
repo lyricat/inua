@@ -1,0 +1,109 @@
+// Inua on niri: the sample config. Copy it to ~/.config/niri/config.kdl and
+// add your outputs and input settings; niri reloads it when it changes.
+// What inua does on Hyprland through its own config (blur behind its
+// surfaces, the shortcut and display pages, the virtual screen, live
+// previews in the overview) it cannot on niri; docs/compositor-capabilities.md
+// says what is there and what is not. This is an experiment: see
+// docs/compositor-experiments.md before relying on it.
+
+input {
+    keyboard {
+        xkb {
+            layout "us"
+        }
+    }
+    touchpad {
+        tap
+        natural-scroll
+    }
+    // inua's dock click and clipboard paste focus windows for you; keep the
+    // pointer where it is.
+    warp-mouse-to-focus false
+}
+
+// inua draws the wallpaper, shows notifications, locks the screen and asks
+// for administrator passwords itself.
+spawn-at-startup "inua-shell"
+spawn-at-startup "sh" "-c" "command -v fcitx5 >/dev/null && fcitx5 -d --replace"
+
+prefer-no-csd
+
+layout {
+    gaps 8
+    focus-ring {
+        width 2
+    }
+}
+
+// The shell's surfaces animate themselves.
+layer-rule {
+    match namespace="^inua-(launcher|control|calendar|center|banners|dock|drawer|osd|widgets|background)$"
+    // niri has no layer blur; the surfaces stay translucent over what is
+    // behind them.
+}
+
+binds {
+    // Launcher: apps; windows (focus order, Enter switches to the previous one).
+    Mod+Space { spawn "inua" "call" "launcher" "toggle"; }
+    // Overview: choose a workspace or one of its windows.
+    Mod+Tab { spawn "inua" "call" "overview" "toggle"; }
+    // Control center, notification center, inua's settings.
+    Mod+A { spawn "inua" "call" "control" "toggle"; }
+    Mod+N { spawn "inua" "call" "notifications" "toggle"; }
+    Mod+Comma { spawn "inua" "call" "settings" "toggle"; }
+    // Restart the shell, e.g. after editing its config or rebuilding it.
+    Mod+Shift+R { spawn "inua" "call" "shell" "restart"; }
+    // Lock the screen.
+    Mod+L { spawn "inua" "call" "lock" "now"; }
+
+    Mod+Return { spawn "inua-term"; }
+    Mod+E { spawn "inua-files"; }
+    Mod+Q { close-window; }
+    Mod+V { toggle-window-floating; }
+    Mod+F { fullscreen-window; }
+    Mod+Shift+E { quit; }
+
+    Mod+Left { focus-column-left; }
+    Mod+Right { focus-column-right; }
+    Mod+Up { focus-window-up; }
+    Mod+Down { focus-window-down; }
+    Mod+Shift+Left { move-column-left; }
+    Mod+Shift+Right { move-column-right; }
+    Mod+Shift+Up { move-window-up; }
+    Mod+Shift+Down { move-window-down; }
+
+    Mod+1 { focus-workspace 1; }
+    Mod+2 { focus-workspace 2; }
+    Mod+3 { focus-workspace 3; }
+    Mod+4 { focus-workspace 4; }
+    Mod+5 { focus-workspace 5; }
+    Mod+6 { focus-workspace 6; }
+    Mod+7 { focus-workspace 7; }
+    Mod+8 { focus-workspace 8; }
+    Mod+9 { focus-workspace 9; }
+    Mod+Shift+1 { move-window-to-workspace 1; }
+    Mod+Shift+2 { move-window-to-workspace 2; }
+    Mod+Shift+3 { move-window-to-workspace 3; }
+    Mod+Shift+4 { move-window-to-workspace 4; }
+    Mod+Shift+5 { move-window-to-workspace 5; }
+    Mod+Shift+6 { move-window-to-workspace 6; }
+    Mod+Shift+7 { move-window-to-workspace 7; }
+    Mod+Shift+8 { move-window-to-workspace 8; }
+    Mod+Shift+9 { move-window-to-workspace 9; }
+    Mod+WheelScrollDown cooldown-ms=150 { focus-workspace-down; }
+    Mod+WheelScrollUp cooldown-ms=150 { focus-workspace-up; }
+
+    Print { spawn "inua" "call" "screenshot" "silent-area"; }
+    Ctrl+Print { spawn "inua" "call" "screenshot" "area"; }
+    Shift+Print { spawn "inua" "call" "screenshot" "screen"; }
+
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "-l" "1" "@DEFAULT_AUDIO_SINK@" "5%+"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-"; }
+    XF86AudioMute allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
+    XF86AudioMicMute allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
+    XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "-e4" "-n2" "set" "5%+"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "-e4" "-n2" "set" "5%-"; }
+    XF86AudioNext allow-when-locked=true { spawn "playerctl" "next"; }
+    XF86AudioPause allow-when-locked=true { spawn "playerctl" "play-pause"; }
+    XF86AudioPlay allow-when-locked=true { spawn "playerctl" "play-pause"; }
+}

@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/lyricat/inua/internal/compositor"
-	_ "github.com/lyricat/inua/internal/hypr" // the compositors Detect knows
+	_ "github.com/lyricat/inua/internal/compositors" // the backends Detect knows
 )
 
 // Selection is where the selection being copied now comes from: the

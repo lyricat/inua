@@ -1,33 +1,56 @@
 #!/bin/sh
 # Used by display managers and by users logging in on a TTY.
+# inua-session [hyprland|niri]: the compositor to run the shell on; Hyprland
+# when none is named. niri is an experiment (docs/compositor-experiments.md).
 set -eu
 
 export PATH="$HOME/.local/bin:/usr/local/bin:$PATH"
+which=${1:-hyprland}
+case "$which" in
+    hyprland|niri) ;;
+    *) echo "inua-session: unknown compositor $which (hyprland or niri)" >&2; exit 2 ;;
+esac
 for program in inua-shell inua; do
     if ! command -v "$program" >/dev/null 2>&1; then
-        echo "inua-session: $program is not on PATH; install Inua and Hyprland first" >&2
+        echo "inua-session: $program is not on PATH; install Inua and $which first" >&2
         exit 1
     fi
 done
-# start-hyprland (Hyprland 0.53 and later) watches over the compositor;
-# an older Hyprland is started itself.
-compositor=start-hyprland
-if ! command -v start-hyprland >/dev/null 2>&1; then
-    compositor=Hyprland
-    if ! command -v Hyprland >/dev/null 2>&1; then
-        echo "inua-session: Hyprland is not on PATH; install Inua and Hyprland first" >&2
+if [ "$which" = niri ]; then
+    if ! command -v niri >/dev/null 2>&1; then
+        echo "inua-session: niri is not on PATH; install Inua and niri first" >&2
         exit 1
     fi
-fi
+    # niri starts inua-shell from its config (spawn-at-startup); the
+    # sample config/niri/config.kdl has it.
+    config="${XDG_CONFIG_HOME:-$HOME/.config}/niri/config.kdl"
+    if [ -e "$config" ] && ! grep -q 'spawn-at-startup "inua-shell"' "$config"; then
+        echo "inua-session: $config does not start inua-shell (spawn-at-startup \"inua-shell\"); see config/niri/config.kdl" >&2
+        echo "inua-session: not starting; the niri session is unaffected" >&2
+        exit 1
+    fi
+    compositor="niri --session"
+else
+    # start-hyprland (Hyprland 0.53 and later) watches over the compositor;
+    # an older Hyprland is started itself.
+    compositor=start-hyprland
+    if ! command -v start-hyprland >/dev/null 2>&1; then
+        compositor=Hyprland
+        if ! command -v Hyprland >/dev/null 2>&1; then
+            echo "inua-session: Hyprland is not on PATH; install Inua and Hyprland first" >&2
+            exit 1
+        fi
+    fi
 
-# Let Hyprland resolve its default configuration, including XDG_CONFIG_HOME.
-# An existing config that never starts inua-shell (inua init leaves one
-# alone) would give a session without the shell; refuse and say why.
-config="${XDG_CONFIG_HOME:-$HOME/.config}/hypr/hyprland.conf"
-if [ -e "$config" ] && ! report=$(inua config hyprland "$config" 2>&1); then
-    printf '%s\n' "$report" >&2
-    echo "inua-session: not starting; the Hyprland session is unaffected" >&2
-    exit 1
+    # Let Hyprland resolve its default configuration, including XDG_CONFIG_HOME.
+    # An existing config that never starts inua-shell (inua init leaves one
+    # alone) would give a session without the shell; refuse and say why.
+    config="${XDG_CONFIG_HOME:-$HOME/.config}/hypr/hyprland.conf"
+    if [ -e "$config" ] && ! report=$(inua config hyprland "$config" 2>&1); then
+        printf '%s\n' "$report" >&2
+        echo "inua-session: not starting; the Hyprland session is unaffected" >&2
+        exit 1
+    fi
 fi
 # inua.conf as the lid is now: logging in with it closed and another
 # display connected, the built-in display stays off from the first frame.
@@ -45,7 +68,7 @@ systemctl --user try-restart xdg-desktop-portal.service >/dev/null 2>&1 || true
 # shows a frame. On a computer without one, inua-remote makes the virtual
 # screen when the user turned it on (Remote Desktop, Sharing), and does
 # nothing otherwise. It finds this Hyprland as this process's.
-if command -v inua-remote >/dev/null 2>&1; then
+if [ "$which" = hyprland ] && command -v inua-remote >/dev/null 2>&1; then
     inua-remote --await-session </dev/null >/dev/null &
 fi
-exec "$compositor"
+exec $compositor

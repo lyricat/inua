@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Inua on niri
+Comment=Inua desktop shell on niri (experimental)
+Exec=/usr/local/bin/inua-session niri
+TryExec=niri
+Type=Application
+DesktopNames=niri;

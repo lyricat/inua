@@ -133,6 +133,34 @@ class SessionTest(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("Hyprland is not on PATH", result.stderr)
 
+    def test_niri_session(self):
+        # inua-session niri runs niri as a session; the Hyprland config is
+        # not checked, inua-remote is not started.
+        self.executable("niri", '#!/bin/sh\nprintf "niri %s\\n" "$*"\nexit 19\n')
+        self.executable("inua-remote", f'#!/bin/sh\ntouch "{self.home}/inua-remote-calls"\nexit 0\n')
+        self.config.write_text("# a Hyprland config without the shell\n")
+        result = subprocess.run(["sh", str(ROOT / "scripts/inua-session"), "niri"], env=self.env, text=True, capture_output=True)
+        self.assertEqual(result.returncode, 19, result.stderr)
+        self.assertEqual(result.stdout.splitlines(), ["niri --session"])
+        self.assertFalse((self.home / "inua-remote-calls").exists())
+        # A niri config without the shell is refused, as Hyprland's is.
+        kdl = self.home / ".config/niri/config.kdl"
+        kdl.parent.mkdir(parents=True)
+        kdl.write_text('binds { Mod+Q { close-window; } }\n')
+        result = subprocess.run(["sh", str(ROOT / "scripts/inua-session"), "niri"], env=self.env, text=True, capture_output=True)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("niri session is unaffected", result.stderr)
+        kdl.write_text('spawn-at-startup "inua-shell"\n')
+        result = subprocess.run(["sh", str(ROOT / "scripts/inua-session"), "niri"], env=self.env, text=True, capture_output=True)
+        self.assertEqual(result.returncode, 19, result.stderr)
+        # Without niri, or with an unknown compositor, nothing starts.
+        (self.bin / "niri").unlink()
+        result = subprocess.run(["sh", str(ROOT / "scripts/inua-session"), "niri"], env=self.env, text=True, capture_output=True)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("niri is not on PATH", result.stderr)
+        result = subprocess.run(["sh", str(ROOT / "scripts/inua-session"), "sway"], env=self.env, text=True, capture_output=True)
+        self.assertEqual(result.returncode, 2)
+
     def test_install_and_reinstall_preserve_other_sessions(self):
         dest = Path(self.tmp.name) / "staged root"
         sessions = dest / "usr/share/wayland-sessions"
@@ -146,6 +174,10 @@ class SessionTest(unittest.TestCase):
             )
             self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(hypr.read_text(), "existing session\n")
+        niri = configparser.ConfigParser()
+        niri.read(sessions / "inua-niri.desktop")
+        self.assertEqual(niri["Desktop Entry"]["Exec"], "/usr/local/bin/inua-session niri")
+        self.assertEqual(niri["Desktop Entry"]["TryExec"], "niri")
         desktop = configparser.ConfigParser()
         desktop.read(sessions / "inua.desktop")
         entry = desktop["Desktop Entry"]

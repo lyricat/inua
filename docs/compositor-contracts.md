@@ -343,9 +343,31 @@ Steps 1 to 5 are in; what they left where it was, on purpose:
 `internal/niri`: the JSON-lines client, the event stream into snapshots,
 the base actions and `WorkspaceMover` (`NewWorkspace` = the output's
 trailing empty workspace; `MoveWorkspace` = `MoveWorkspaceToMonitor` by
-name), `Keystroker` by focus plus the virtual keyboard, the capability map
-from section 3, contract tests on a fake niri socket, a session script
-path, and a sample `config.kdl` with inua's binds and layer rules. The
-first real session on niri runs the baseline's feature list and the #61
-tables, and fills the "observed" columns; the contract changes with what
-that finds, which is the point of a second implementation.
+name), the capability map from section 3, contract tests on a fake niri
+socket, a session script path, and a sample `config.kdl` with inua's
+binds and layer rules. The first real session on niri runs the baseline's
+feature list and the #61 tables, and fills the "observed" columns; the
+contract changes with what that finds, which is the point of a second
+implementation.
+
+### What #64 did
+
+- `internal/niri` is in, with `Snapshotter`, `OutputFocuser`,
+  `WorkspaceMover`, `QuietFocuser` (niri does not warp unless configured)
+  and a partial `Placer` (`BringHere`, `WindowOf`, `Tile`; `PlaceWindow`
+  and `RoomRight` return `ErrUnsupported`, so the settings panel pins
+  without growing the window). `Keystroker` is not implemented: clipboard
+  paste falls back to `wtype`, dictation says it cannot paste. The window
+  capture, binds, key observer, pointer, displays and virtual output
+  capabilities are Unsupported, as the comparison found.
+- `internal/compositors` links both backends; `inua-session niri` starts
+  `niri --session` after checking the config starts the shell;
+  `config/niri/config.kdl` is the sample; the login screen gets "Inua on
+  niri" where niri is installed.
+- Outputs have no event in niri's stream: the backend re-reads them when
+  the workspaces change and on `Refresh`.
+- **Not done**: no real niri session was available, so nothing in this
+  round was run on niri. The backend is tested on a fake socket that
+  answers as the niri-ipc crate documents. The first real session is the
+  owner's, with the #61 tables; the shell's overview, bar, dock, launcher
+  and lock on niri are unverified.

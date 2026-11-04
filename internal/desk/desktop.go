@@ -13,9 +13,9 @@ import (
 	"github.com/lyricat/inua/internal/apps/tailscale"
 	"github.com/lyricat/inua/internal/clipboard"
 	"github.com/lyricat/inua/internal/compositor"
+	_ "github.com/lyricat/inua/internal/compositors" // the backends Detect knows
 	"github.com/lyricat/inua/internal/config"
 	"github.com/lyricat/inua/internal/desktop"
-	_ "github.com/lyricat/inua/internal/hypr" // the compositors Detect knows
 	"github.com/lyricat/inua/internal/ipc"
 	"github.com/lyricat/inua/internal/notify"
 )

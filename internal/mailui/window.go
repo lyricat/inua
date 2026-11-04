@@ -22,8 +22,8 @@ import (
 	"github.com/lyricat/inua/internal/apps/mail"
 	"github.com/lyricat/inua/internal/appui"
 	"github.com/lyricat/inua/internal/compositor"
+	_ "github.com/lyricat/inua/internal/compositors" // the backends Detect knows
 	"github.com/lyricat/inua/internal/gtkx"
-	_ "github.com/lyricat/inua/internal/hypr" // the compositors Detect knows
 	"github.com/lyricat/inua/internal/i18n"
 )
 
