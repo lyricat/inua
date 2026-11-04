@@ -1,6 +1,7 @@
 # 按用户功能审计 Hyprland 耦合
 
-本次调查对应 #59（FT58），审阅日期为 2026-11-04，源码基线为 `4ad7126`。
+本次调查对应 #59（FT58），审阅日期为 2026-11-04，初次源码基线为 `4ad7126`；
+第二轮修订已合并 `origin/master` 的 `89e121e`，并复核剪贴板与听写路径。
 owner 已允许此次调查进入
 factory；#60–64 不在此次范围。本文只记录依赖、已有行为和待验证的替代方向，
 不定义接口、不改变运行行为，也不承诺其他合成器的兼容性。
@@ -34,7 +35,8 @@ factory；#60–64 不在此次范围。本文只记录依赖、已有行为和�
 | Portal 截图与屏幕共享选择 | [portal.go](../internal/portal/portal.go) `Export`, `NewRequest`；[portal_share.go](../internal/ui/portal_share.go) `askShare`, `portalShare`；[portalconf.go](../internal/portalconf/portalconf.go) `Dirs.conf`；[xdph.go](../internal/portalconf/xdph.go) `setSharePicker` | inua 服务部分 D-Bus portal；ScreenCast 捕获仍由 xdg-desktop-portal-hyprland 做。picker 返回 `screen:NAME`, `window:0x…`, `region:NAME@x,y,w,h`；默认路由 `hyprland;gtk` | 目标桌面的 portal 后端及其选择器协议 | portal 的 D-Bus 接口并未消除后端地址与输出名耦合；用户取消可返回取消，缺协议没有通用 ScreenCast 替代实现 |
 | 锁屏、锁定期间输出变化、重启恢复 | [lock.go](../internal/ui/lock.go) `lockScreen`, `bindLockHandlers`, `lockEnded`, `lockMarked`；[bar.go](../internal/ui/bar.go) `syncBars`；[layershell.go](../internal/layershell/layershell.go) `LockSupported`, `AssignLockWindow`；[hyprconf.go](../internal/hyprconf/hyprconf.go) `Render`, `RenderLua` | ext-session-lock，经 gtk4-layer-shell；锁状态 marker；Hyprland `misc.allow_session_lock_restore`；库 1.2 的 monitor signal，旧库通过 GDK 列表分配锁表面 | ext-session-lock 加目标合成器的锁恢复政策 | 无协议／无认证 helper 就报错，无普通窗口假锁。锁持有时暂停创建普通 Bar，解锁再同步；崩溃后的可恢复性不是协议对任意合成器的保证 |
 | 手机触控板／键盘 | [input.go](../internal/apps/connect/input.go) `remoteInput.input`, `packet` → [vinput.go](../internal/vinput/vinput.go) `Open`, `Input.init`, `drain`, `Err` | 独立 Wayland 连接；seat、虚拟指针、虚拟键盘全部需要；XKB keymap 经 memfd 上传 | 同协议且获目标合成器许可，或目标桌面授权输入机制 | 无任一 manager 时整次 Open 失败；发送失败关闭连接，下一个输入包再开；不自动重放失败输入；多 seat 未建模 |
-| 剪贴板粘贴、听写插入及提示位置 | [clipboard.go](../internal/ui/clipboard.go) `pasteClipboard`；[voice.go](../internal/ui/voice.go) `dictationTyper`；[dictation.go](../internal/ui/dictation.go) `activePlace` | `wl-copy` 提供剪贴板，IPC `sendshortcut`／Lua `send_shortcut` 定向 Ctrl+V（终端含 Shift）；读活动窗口与屏幕定位提示 | 单独调查目标桌面的剪贴板／授权输入；手动粘贴是可考虑的退化 | 不能把能写剪贴板等同于能向指定窗口粘贴；不属于 vinput 的手机输入路径 |
+| 剪贴板历史的复制与粘贴 | [clipboard.go](../internal/ui/clipboard.go) `openClipboard`, `pasteClipboard` → [dock.go](../internal/ui/dock.go) `focusQuietly` | `wl-copy` 写入选中内容；正常粘贴先恢复打开面板时的窗口焦点，再用 classic `sendshortcut`／Lua `send_shortcut` 按地址发送 Ctrl+V，已识别终端加 Shift | 单独调查目标桌面的剪贴板与授权输入；保留指定窗口粘贴还需焦点和窗口身份能力 | `copy` 只复制；有 client 但目标地址为空时也只复制。`client == nil` 时已有 `wtype` 回退，向当前焦点发送粘贴键，不恢复或锁定地址目标；工具失败只记日志。详见下文 |
+| 听写插入及提示位置 | [voice.go](../internal/ui/voice.go) `dictationTyper.paste`, `applyVoiceState`；[dictation.go](../internal/ui/dictation.go) `placeDictation`, `activePlace`, `dictationFailed` | 插入时查询 `j/activewindow`，以 `wl-paste`／`wl-copy` 暂存和写入文本，再按地址发送粘贴快捷键；提示定位读取窗口／屏幕几何，录音状态切换 Hyprland submap | 单独调查听写的目标窗口、授权输入、提示定位和录音快捷键；手动粘贴是可考虑的退化 | 无 client 或无活动窗口地址即返回错误，**没有 `wtype` 回退**；错误显示在听写卡片，否则发通知／记日志。不是 vinput 的手机输入路径，也不能从转写引擎可用推断插入可用 |
 | 通知激活、文件选择器父窗口 | [notify.go](../internal/ui/notify.go) `activationToken`；[appid.go](../internal/gtkx/appid.go) `SetAppID`, `SetForeignParent` | GDK launch context 的激活 token；`wayland:HANDLE` 的 xdg-foreign 父窗口；应用 ID 还用于 Hyprland window rule | 保留 GDK／标准扩展路径，核对目标权限与父子关系 | token 可为空；不支持的 parent 返回 false，非 Wayland 上相应操作无效。实际协议协商版本由 GDK 决定 |
 | 应用重开、设置附加面板、Mail 平铺 | [app.go](../internal/appui/app.go) `bringHere` → [bring.go](../internal/hypr/bring.go) `BringHere`, `WindowOf`, `PlaceWindow`；[settings_panel.go](../internal/ui/settings_panel.go) `showPanel`；[panel.go](../internal/lightui/panel.go) `sidePanel.init`, `open`；[room.go](../internal/hypr/room.go) `RoomRight`；[window.go](../internal/mailui/window.go) `tileWindow` | 按 PID 查 mapped window，移动到当前工作区；读 `reserved`、outer gap、变换与缩放估算右侧空间；classic 移动／缩放／settiled | 应用正常 present／对话框布局；保留同样放置行为则需合成器控制 | 这些调用不经过 shell store，错误多为日志或放弃增强；PID 首个匹配、classic dispatcher 兼容性需单独核对 |
 | Assistant／MCP／Workshop 的 desk API | [desktop.go](../internal/desk/desktop.go) `Local` → [tools.go](../internal/desk/tools.go) `windows`, `windowTools`, `workspaces`；[watch.go](../internal/desk/watch.go) `WatchTool` | 直接读 IPC 并执行 classic dispatcher，不走 Store；窗口 focus 用 `focusHistoryID==0`；窗口主题订阅是轮询，不是事件流 | 必须连同 UI 之外的控制消费者一起调查；保留工具的明确错误与动作语义 | 无 Hyprland 回调时读操作报错；工作区视图过滤负 ID。首轮轮询只建立基线，读失败跳过，不发断线状态 |
@@ -120,6 +122,29 @@ Bar 的热插拔处理推断 Overview 具有相同的生命周期保证。
 不能保证 reset 到达；`OnConnection` 也不重发录制的 reset。现有测试没有证明
 这些故障下绑定会恢复，需与普通绑定的持久性分开考虑。
 
+### 剪贴板与听写的不同失败路径
+
+`pasteClipboard` 先关闭历史面板，再调用 `wl-copy`。`copy` 操作到此结束，
+即使没有 Hyprland client，也会尝试写入剪贴板；`wl-copy` 缺失或执行失败时，
+记录 `clipboard copy` 错误并停止，不发送粘贴键。
+
+粘贴有两条路径。有 client 且目标地址非空时，等待 150 ms 释放面板键盘焦点，
+再通过 `focusQuietly` 聚焦原窗口，并向该地址发送快捷键。有 client 但目标地址
+为空时只复制；聚焦或发送失败时只记日志，**不会切换到 `wtype`**。只有 `client == nil`
+才调用 `wtype -M ctrl -k v -m ctrl`；若保存的 class 被识别为终端，则加入
+Shift。此分支不按地址聚焦，快捷键由发送时的当前焦点接收，不能保证回到打开
+面板前的窗口，也不能保证获得其 class 来识别终端。缺少 `wtype` 或执行失败时
+记录 `clipboard paste` 错误；已成功写入的剪贴板内容仍保留，面板不会重新打开。
+这些是源码中的已有分支，外部工具的协议支持及真实焦点行为未在此次验证。
+
+`dictationTyper.paste` 则在写入剪贴板之前要求 Hyprland client 和活动窗口地址；
+目标是插入时查询到的窗口，而非开始录音时保存的窗口。它不调用
+`focusQuietly`，直接按查询到的地址发送 Ctrl+V（终端加 Shift）。`wl-copy`
+失败会返回错误；读取旧文本的 `wl-paste` 错误被忽略，只有读到非空旧文本时才
+在发送后等待 400 ms 尝试恢复，恢复失败也被忽略。无 client、IPC 失败或发送
+失败都不会调用 `wtype`。提示卡片的定位查询失败时改用角落位置，不代表听写
+插入也有可用退化。
+
 ### 初次运行、配置和会话
 
 [config/hypr/hyprland.conf](../config/hypr/hyprland.conf) 是 Hyprland 0.53 风格的
@@ -171,7 +196,7 @@ Store 自身不采用这种重新发现方式。
 | `hyprland_toplevel_mapping_manager_v1` | Hyprland 扩展；`client.init` 绑定 1，`client.read` 用 `get_window_for_toplevel_wlr`（opcode 1） | 最低 1；收到 address_hi 与低 32 位组成完整 IPC 地址；必须用同一 Wayland 连接拥有的 handle。[XML](https://raw.githubusercontent.com/hyprwm/hyprland-protocols/main/protocols/hyprland-toplevel-mapping-v1.xml) |
 | `hyprland_toplevel_export_manager_v1` | Hyprland 扩展；`client.init` 绑定 `min(advertised, 2)` | `client.capture` 无条件用 opcode 2，即 since=2 的 `capture_toplevel_with_wlr_toplevel_handle`，所以真正最低为 2。源码没有拒绝 advertised=1，也没有 v1 请求回退；这是版本检查缺口，未在此修复。[XML](https://raw.githubusercontent.com/hyprwm/hyprland-protocols/main/protocols/hyprland-toplevel-export-v1.xml) |
 | `zwlr_virtual_pointer_manager_v1`, `zwp_virtual_keyboard_manager_v1` | 分别为 wlr 和虚拟键盘扩展；`Input.init` 两者都绑定 1 | 实现用 v1 的 create、motion/button/axis/frame、keymap/key/modifiers；权限与暴露取决于合成器。没有仅键盘或仅指针的降级 |
-| grim、wf-recorder、wl-copy／wl-paste、xdph | 外部进程持有实际协议连接；[screenshot.go](../internal/ui/screenshot.go)、[record.go](../internal/ui/record.go)、[desktop.go](../internal/desk/desktop.go)、[portal_share.go](../internal/ui/portal_share.go) | 没有源码内协议 bind/version 证据；这些程序的具体构建、捕获／数据控制协议版本未知，不能把可执行文件存在当作协议可用 |
+| grim、wf-recorder、wl-copy／wl-paste、wtype、xdph | 外部进程持有实际协议连接；[screenshot.go](../internal/ui/screenshot.go)、[record.go](../internal/ui/record.go)、[clipboard.go](../internal/ui/clipboard.go)、[voice.go](../internal/ui/voice.go)、[desktop.go](../internal/desk/desktop.go)、[portal_share.go](../internal/ui/portal_share.go) | 没有源码内协议 bind/version 证据；这些程序的具体构建、捕获／数据控制／输入协议版本未知，不能把可执行文件存在当作协议可用 |
 | Hyprland request/event sockets | 非 Wayland；`Client.Request`, `readEvents` | 无协议版本握手；文本／JSON 字段与 dispatcher 语法就是契约。Lua 通过 `eval` 的 `ok` 探测；README 的 0.53／Overview 的 0.55+ 不能代替逐项能力检查 |
 
 ## 替代方向能说明什么
@@ -236,6 +261,7 @@ Store 自身不采用这种重新发现方式。
 | 配置与会话 | [bootstrap_test.go](../internal/bootstrap/bootstrap_test.go) `TestInstallFresh`, `TestInstallKeepsUserFiles`, `TestSamplesBesideLuaConfig`, `TestFindLua`；[hyprconf_test.go](../internal/hyprconf/hyprconf_test.go) `TestApplyWithoutHyprland`, `TestRenderVerifies`, `TestRenderLua`, `TestApplyLua`, `TestRenderShortcuts`, `TestRenderLockRestore`；[displays_test.go](../internal/hyprconf/displays_test.go) `TestRenderDisplaysVerifies`；[test-session.py](../scripts/test-session.py) `SessionTest` | Python 使用假 compositor／systemctl；verify-config 仅在安装 Hyprland 时运行，不证明真实应用、Lua 有效配置、会话环境和权限；未覆盖录制中崩溃／断线后的 submap 恢复 |
 | 截图、portal、输入 | [screenshot_test.go](../internal/shell/screenshot_test.go) `TestShotWindows`, `TestRectPixels`；[shotpick_test.go](../internal/shell/shotpick_test.go) `TestPickGroups`；[screenshot_test.go](../internal/portal/screenshot_test.go) `TestScreenshot`；[portalconf_test.go](../internal/portalconf/portalconf_test.go) `TestEnableWritesDirectory`；[vinput_test.go](../internal/vinput/vinput_test.go) `TestKeysym`, `TestKeymap` | portal 测试是假 D-Bus／回调，不证明 xdph 共享；vinput 没有协议往返测试；无输出／无 client 截图结束路径、各工具协议协商未验证 |
 | desk 与应用辅助 | [tools_test.go](../internal/desk/tools_test.go) `TestWindowTools`；[history_test.go](../internal/desk/history_test.go) `TestListWorkspaces`；[watch_test.go](../internal/desk/watch_test.go) `TestWatch`；[bring_test.go](../internal/hypr/bring_test.go) `TestBringHere`, `TestWindowOf`；[hypr_test.go](../internal/hypr/hypr_test.go) `TestRoomRight` | 假数据不证明 classic/Lua 兼容性、实际 PID／class 匹配、应用重开／多窗与未知合成器 |
+| 剪贴板与听写插入 | [dictation_paste_test.go](../internal/ui/dictation_paste_test.go) `TestDictationPastes` 以假 Hyprland socket 和注入的剪贴板检查 Lua 地址目标、终端 Shift、旧文本恢复，以及未执行 `wtype` | 未覆盖剪贴板面板的 nil client／`wtype` 分支、工具缺失、焦点恢复；听写的 nil client、classic 分支、失败与真实输入法也未由此测试证明 |
 
 本次检查结果见末节。运行时缺口保持为调查结论，不在文档分支修复。
 
@@ -311,3 +337,42 @@ data/state/cache/runtime、Go 缓存和 TMPDIR。`env -i` 仅传入测试用 PAT
 没有非固定版本安装或依赖清单变更；没有修改运行代码、Blueprint 或测试，
 无需 generate／i18n。原恢复缓存未改动，新的测试日志和缓存均在工作树外。
 未做 UI、真实合成器、输出热插拔或其他桌面的兼容性检查。
+
+### 第二轮评审修订与全量复核
+
+先以 merge 合并已有 `origin/master`（`89e121e`），无冲突；该提交修复
+`internal/clipboard.TestFindSource` 对宿主进程的依赖。合并提交前执行
+`make i18n`，翻译文件没有变化。随后仅修改本文：分别说明剪贴板的复制、按
+地址粘贴、nil client 时的 `wtype` 当前焦点回退，以及听写插入必须有 Hyprland
+client 的行为。未自行修改运行代码或测试，未改 Blueprint。
+
+使用 Go 1.26.1。先 `unset TMPDIR`；`ft58_run` 指向父构建目录内新建的真实
+临时目录，内有独立的 home、config、data、state、cache、runtime 子目录，
+runtime 权限为 0700。`ft58_modules` 和 `ft58_cache` 分别指向父构建目录内
+复用的 GOPATH 和 Go 构建缓存。完整命令如下：
+
+```sh
+env -i PATH=/usr/local/go/bin:/usr/bin:/bin \
+  HOME="$ft58_run/home" \
+  XDG_CONFIG_HOME="$ft58_run/config" XDG_DATA_HOME="$ft58_run/data" \
+  XDG_STATE_HOME="$ft58_run/state" XDG_CACHE_HOME="$ft58_run/cache" \
+  XDG_RUNTIME_DIR="$ft58_run/runtime" \
+  GOPATH="$ft58_modules" GOCACHE="$ft58_cache" \
+  GOTOOLCHAIN=local GOFLAGS=-v \
+  DBUS_SESSION_BUS_ADDRESS="unix:path=$ft58_run/no-session-bus" \
+  DBUS_SYSTEM_BUS_ADDRESS="unix:path=$ft58_run/no-system-bus" \
+  make test > "$ft58_run/make-test.log" 2>&1
+```
+
+`env -i` 不继承真实 Wayland、Hyprland 或其他会话环境；两个 D-Bus 地址均
+不存在，测试使用自己的私有 bus。`TMPDIR` 未传入，测试临时文件使用系统默认
+临时目录；没有短路径别名或目录 fd 入口，未操作真实窗口、服务或凭据。
+
+`make test` 退出码为 **0**：Python **15 tests / OK**（0.327s），
+`go vet ./...` 通过，`CGO_ENABLED=1 go test -race ./...` **103 个包通过**
+（其中 18 个使用 Go 测试缓存），**0 个失败、46 个顶层测试跳过**。跳过项与
+前述记录相同；`TestFindSource` 通过，未出现 socket 路径错误或私有
+dbus-daemon `EOF`。138 个文档本地链接均存在，`git diff --check` 通过。
+
+没有非固定版本安装或依赖清单变更。未验证真实桌面上的 `wtype` 焦点、听写
+输入法交互、UI 或其他合成器；测试通过不改变本文对运行验证的限制。
