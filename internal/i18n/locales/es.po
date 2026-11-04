@@ -8439,7 +8439,7 @@ msgid "Notification center"
 msgstr "Centro de notificaciones"
 
 #: internal/hyprconf/keys.go:28
-#: ui/bar.ui:136
+#: ui/bar.ui:145
 msgid "Clipboard history"
 msgstr "Historial del portapapeles"
 
@@ -8500,7 +8500,7 @@ msgstr "Elige un color"
 
 #: internal/hyprconf/keys.go:40
 #: internal/ui/voice_page.go:169
-#: ui/bar.ui:177
+#: ui/bar.ui:186
 #: ui/settings.ui:6335
 msgid "Dictation"
 msgstr "Dictado"
@@ -8656,7 +8656,7 @@ msgstr "Calculadora"
 
 #: internal/lightui/apps.go:20
 #: internal/ui/widgets.go:588
-#: ui/bar.ui:65
+#: ui/bar.ui:74
 #: config/apps/io.github.lyricat.Inua.Calendar.desktop:3
 msgid "Calendar"
 msgstr "Calendario"
@@ -14243,7 +14243,7 @@ msgstr "bash, zsh y fish marcan sus avisos para recordar las órdenes"
 
 #: internal/termui/prefs.go:182
 #: internal/ui/notify.go:324
-#: ui/bar.ui:147
+#: ui/bar.ui:156
 #: ui/settings.ui:3325
 msgid "Notifications"
 msgstr "Notificaciones"
@@ -15010,7 +15010,7 @@ msgid "Search every entry"
 msgstr "Buscar en todas las entradas"
 
 #: internal/ui/passwords.go:283
-#: ui/bar.ui:126
+#: ui/bar.ui:135
 #: ui/settings.ui:1384
 msgid "Passwords"
 msgstr "Contraseñas"
@@ -17903,11 +17903,11 @@ msgstr "Preguntar, o decirme qué hacer"
 msgid "Discard the recording"
 msgstr "Descartar la grabación"
 
-#: ui/bar.ui:95
+#: ui/bar.ui:104
 msgid "Stop recording"
 msgstr "Detener grabación"
 
-#: ui/bar.ui:192
+#: ui/bar.ui:201
 msgid "Control Center"
 msgstr "Centro de control"
 

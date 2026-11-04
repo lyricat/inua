@@ -8402,7 +8402,7 @@ msgid "Notification center"
 msgstr "通知中心"
 
 #: internal/hyprconf/keys.go:28
-#: ui/bar.ui:136
+#: ui/bar.ui:145
 msgid "Clipboard history"
 msgstr "剪贴板历史"
 
@@ -8463,7 +8463,7 @@ msgstr "选择颜色"
 
 #: internal/hyprconf/keys.go:40
 #: internal/ui/voice_page.go:169
-#: ui/bar.ui:177
+#: ui/bar.ui:186
 #: ui/settings.ui:6335
 msgid "Dictation"
 msgstr "听写"
@@ -8619,7 +8619,7 @@ msgstr "计算器"
 
 #: internal/lightui/apps.go:20
 #: internal/ui/widgets.go:588
-#: ui/bar.ui:65
+#: ui/bar.ui:74
 #: config/apps/io.github.lyricat.Inua.Calendar.desktop:3
 msgid "Calendar"
 msgstr "日历"
@@ -14168,7 +14168,7 @@ msgstr "让 bash、zsh 和 fish 标记提示符，以便记住命令"
 
 #: internal/termui/prefs.go:182
 #: internal/ui/notify.go:324
-#: ui/bar.ui:147
+#: ui/bar.ui:156
 #: ui/settings.ui:3325
 msgid "Notifications"
 msgstr "通知"
@@ -14928,7 +14928,7 @@ msgid "Search every entry"
 msgstr "搜索所有条目"
 
 #: internal/ui/passwords.go:283
-#: ui/bar.ui:126
+#: ui/bar.ui:135
 #: ui/settings.ui:1384
 msgid "Passwords"
 msgstr "密码"
@@ -17803,11 +17803,11 @@ msgstr "询问，或告诉我该怎么做"
 msgid "Discard the recording"
 msgstr "放弃录音"
 
-#: ui/bar.ui:95
+#: ui/bar.ui:104
 msgid "Stop recording"
 msgstr "停止录制"
 
-#: ui/bar.ui:192
+#: ui/bar.ui:201
 msgid "Control Center"
 msgstr "控制中心"
 
