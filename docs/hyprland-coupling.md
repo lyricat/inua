@@ -25,7 +25,7 @@ factory；#60–64 不在此次范围。本文只记录依赖、已有行为和�
 | Launcher 聚焦、取消和窗口命令 | [launcher.go](../internal/ui/launcher.go) `cancelLauncher`, `executeLauncher`, `runCommand` → [launcher.go](../internal/shell/launcher.go) `Launcher.Show`, `Cancel`, `Execute`, `Done` → [shell.go](../internal/ui/shell.go) `focusWindow`, `dispatchEither` | 打开时记住地址；取消仅恢复快照中仍存在的窗口；聚焦可走 classic 或 Lua。移动、关闭、浮动、全屏、居中等命令仍有 classic 路径 | foreign-toplevel 的激活／关闭请求；其他动作需单独调查目标合成器控制能力 | 选中窗口后异步发请求并立即 `Done(nil)`；聚焦失败只记日志，**不会保持 Launcher 并显示错误**。模型能检测快照中已消失的窗口，但不能覆盖请求期间的消失 |
 | Dock 点击窗口时保持指针位置 | [dock.go](../internal/ui/dock.go) `focusWindowHere`, `focusQuietly`；[dock.go](../internal/shell/dock.go) `DockTarget` | 临时修改 `cursor:no_warps`：Lua 用 `pcall` 后恢复；classic 查询选项后发 `[[BATCH]]keyword…dispatch…keyword…` | 目标合成器的无指针跳转激活行为 | classic 只在回复含精确子串 `"int": 0` 时包围修改，且批处理只检查传输错误，未逐条校验回复。并非通用 Wayland 聚焦事务 |
 | Overview 浏览、搜索、MRU、每屏 New 卡片 | [overview.go](../internal/ui/overview.go) `showOverview`, `renderOverviewView`, `buildOverview` → [overview.go](../internal/shell/overview.go) `Overview.Show`, `refresh`, `WorkspaceSlot`, `ReserveWorkspace` | Lua 能力探测决定是否启用；按工作区 ID 收集窗口，按 monitor 分组；MRU 历史与 `focusHistoryID`，打开期间冻结次序；只显示有窗口的普通工作区，另给每屏 New | 工作区枚举加窗口归属；可考虑先保留文字列表，缺少能力时不提供 New／拖放 | Lua 不可用时 `showOverview` 打开 Launcher 的 Windows 模式；Bar 的 Overview 手势直接不执行。无窗口但有输出时有 New；无卡片时显示“No workspaces”或“No matches” |
-| Overview 激活、拖放、新工作区、关闭／强制结束 | [overview_manage.go](../internal/ui/overview_manage.go) `moveOverviewWindow`, `activateOverview`, `guardOverviewMouse`；[overview.go](../internal/ui/overview.go) `createWorkspaceOnMonitor`, `dispatchOverview`；[overview.go](../internal/shell/overview.go) `BeginMove`, `settleMoves`, `projected` | `hl.dsp.focus`, `window.move`, `workspace.move`, `window.close/kill`；先聚焦目标屏；移动工作区时 `follow=false`；临时取消鼠标移动／缩放绑定。正整数 ID 预留与复用 | 需要目标合成器的窗口归属、非跟随移动、工作区创建／屏幕路由；不是列表协议即可替代 | 跨屏移动是多次请求，可能部分成功。UI 暂时投影目的位置，5 秒有效期在下一次模型刷新时结算；没有独立的超时回滚定时器。激活失败保留 Overview，仅记日志 |
+| Overview 激活、拖放、新工作区、关闭／强制结束 | [overview_manage.go](../internal/ui/overview_manage.go) `moveOverviewWindow`, `activateOverview`, `guardOverviewMouse`；[overview.go](../internal/ui/overview.go) `createWorkspaceOnMonitor`, `dispatchOverview`；[overview.go](../internal/shell/overview.go) `BeginMove`, `settleMoves`, `projected` | `hl.dsp.focus`, `window.move`, `workspace.move`, `window.close/kill`；激活时先聚焦目标屏；拖放先以 `window.move(..., follow=false)` 移动窗口，再单独请求 `workspace.move` 将目标工作区路由到目标屏；临时取消识别到的 Super+鼠标移动／缩放绑定。正整数 ID 预留与复用 | 需要目标合成器的窗口归属、非跟随移动、工作区创建／屏幕路由；不是列表协议即可替代 | 跨屏移动是多次请求，可能部分成功。UI 暂时投影目的位置，5 秒有效期在下一次模型刷新时结算；没有独立的超时回滚定时器。激活失败保留 Overview，仅记日志 |
 | Overview 实时预览 | [overview.go](../internal/ui/overview.go) `updateOverviewCapture`, `queueOverviewFrame`, `drainOverviewFrames` → [stream.go](../internal/capture/hyprland/stream.go) `Start`, `client.init`, `read`, `capture`；[schedule.go](../internal/capture/hyprland/schedule.go) `captureSchedule.next` | 独立 Wayland 连接；wlr foreign handle → Hyprland mapping → 64 位 IPC 地址 → Hyprland export；SHM 像素送回 GTK。不是截取屏幕上可见矩形 | `ext-foreign-toplevel-list` 加 `ext-image-capture-source`／`ext-image-copy-capture`；还需证明与窗口／工作区模型的身份关联 | 无协议不改走截图；保留旧纹理或空预览及标题。Overview 每秒重建失败的流；无目标／关闭时停止。权限、遮挡、不可见工作区及 XWayland 的实际捕获效果未验证 |
 | Dock 避让、自动隐藏及 Overview 上方 Dock | [dock.go](../internal/ui/dock.go) `syncDock`, `newDock`, `bindDockHandlers`, `syncOverviewDock`；[overview.go](../internal/ui/overview.go) `overviewDockInsets`；[layershell.go](../internal/layershell/layershell.go) `AutoExclusiveZone`, `SetExclusiveZone`, `SetLayer` | 常显 Dock 请求自动 exclusive zone；自动隐藏时 zone=0，以 pointer enter/leave 控制 Revealer。Overview 可升 Dock 到 Overlay 并为其留出内边距 | 继续使用 layer-shell；若要求精确浮动窗口避让或智能隐藏，需要额外合成器策略／几何信息 | 当前没有按应用窗口与 Dock 相交来隐藏或移动窗口的逻辑。exclusive zone 是合成器的布局提示，不保证每个浮动／全屏窗口避让；无 layer-shell 时不创建 Dock |
 | 普通快捷键及设置录制 | [shortcuts.go](../internal/ui/shortcuts.go) `hyprBinds`, `setShortcut`, `startRecording`, `stopRecording` → [keys.go](../internal/hyprconf/keys.go) `ParseBinds`, `renderShortcuts`, `renderShortcutsLua`, `RecordSubmap` | 读 `j/binds`；保存替换键、unbind/bind 和命令；录制时进入 `inua-record` submap，退出 reset。配置重载后重读生效值 | 目标合成器的绑定配置；可考虑独立快捷键注册服务，但须确认释放、冲突、录制和救援键语义 | 无 client 时录制 UI 仍可运行，但不能禁用外部快捷键；IPC 失败只记日志。绑定由合成器持有，不依赖 shell 持续读键盘 |
@@ -97,6 +97,28 @@ floating、pin、urgent 及部分 v2 事件。不是每个事件都刷新：`con
 合并后交 GTK；关闭时 Stop 取消 worker，正在进行的读取仍受超时约束。
 关闭 Overview 不立即清空所有纹理；下次打开才按存活窗口清理。这改善再次打开
 的显示，但断线／地址复用时旧图像身份是否仍正确没有测试证明。
+
+### 输出变化与 Overview 表面
+
+[bar.go](../internal/ui/bar.go) `syncBars`／`dropBar` 随 GDK 输出列表增减
+Bar、背景和 Dock；屏幕移除也关闭挂在该 Bar 上的面板。
+Overview 的工作区卡片随 IPC 快照更新，但每屏视图集合只在
+[overview.go](../internal/ui/overview.go) `showOverview` 中按当时的 monitor
+建立；`renderOverview` 只重绘已有视图，`closeOverview` 才销毁它们。
+[shell.go](../internal/ui/shell.go) `bindHandlers` 的输出变化回调不增删
+Overview 视图。因此打开期间插入新屏，不会为它新建 Overview 表面；移除屏幕
+也没有对应的应用层视图清理。原表面由 GTK／合成器如何处理仍待实测，不能从
+Bar 的热插拔处理推断 Overview 具有相同的生命周期保证。
+
+### 快捷键录制与退出
+
+[shortcuts.go](../internal/ui/shortcuts.go) `startRecording` 请求进入空 submap，
+并设置 15 秒的 GTK 定时器；`recordKey` 在完成或取消时调用 `stopRecording`。
+[settings.go](../internal/ui/settings.go) `bindSettingsHandlers` 的
+`onRecordTimeout` 及 `closeSettings` 也调用它，请求 `reset`。
+这是 shell 内的退出路径，不是合成器端的超时恢复：进程崩溃或 IPC 断线时，
+不能保证 reset 到达；`OnConnection` 也不重发录制的 reset。现有测试没有证明
+这些故障下绑定会恢复，需与普通绑定的持久性分开考虑。
 
 ### 初次运行、配置和会话
 
@@ -208,16 +230,18 @@ Store 自身不采用这种重新发现方式。
 | --- | --- | --- |
 | IPC 状态与重连 | [hypr_test.go](../internal/hypr/hypr_test.go) `TestBuildSnapshot`, `TestBuildSnapshotNoActiveWindow`, `TestBuildSnapshotKeepsDisabledMonitorWithWorkspace`, `TestStoreInitialSnapshotAndEvents`, `TestStoreIgnoresNonStateEvents`, `TestStoreUrgentTracking`, `TestStoreReconnectRebuildsState`, `TestStoreManualRefresh` | 初始查询中途变更的精确竞争、解析失败后恢复、断线 urgent 残留、实例 signature 改变、实际 Hyprland 的所有事件组合 |
 | Bar／窗口／Dock | [bar_test.go](../internal/shell/bar_test.go) `TestBarWorkspaces`, `TestBarTitle`；[launcher_test.go](../internal/shell/launcher_test.go) `TestCancelReturnsFocus`, `TestExecuteClosedWindow`, `TestWindowMessages`；[dock_test.go](../internal/shell/dock_test.go) `TestDock`, `TestDockSkipsFcitxWindows` | GTK 焦点与异步失败提示、no_warps 恢复、exclusive zone／浮动／全屏避让、connector 延迟与多屏拔插 |
-| Overview 模型 | [overview_test.go](../internal/shell/overview_test.go) `TestOverviewMRUFrozenAndSharedWithBar`, `TestOverviewHidesEmptyWorkspacesButBarShowsThem`, `TestOverviewSelectionSurvivesWorkspaceRemoval`, `TestOverviewNewReservationsDoNotCollide`, `TestOverviewPendingMoveOccupiesNewCardOnTargetMonitor`, `TestOverviewCountsWindowByWorkspaceIDEvenWhenClientMonitorDiffers`, `TestOverviewNumberSlotsStayOnFocusedMonitorWithMRUOff` | Lua 脚本实际事件／按键释放与冲突、GTK 多屏 OnDemand、移动失败／投影过期的界面效果、布局与 capture 的完整调用路径 |
+| Overview 模型 | [overview_test.go](../internal/shell/overview_test.go) `TestOverviewMRUFrozenAndSharedWithBar`, `TestOverviewHidesEmptyWorkspacesButBarShowsThem`, `TestOverviewSelectionSurvivesWorkspaceRemoval`, `TestOverviewNewReservationsDoNotCollide`, `TestOverviewPendingMoveOccupiesNewCardOnTargetMonitor`, `TestOverviewCountsWindowByWorkspaceIDEvenWhenClientMonitorDiffers`, `TestOverviewNumberSlotsStayOnFocusedMonitorWithMRUOff` | Lua 脚本实际事件／按键释放与冲突、GTK 多屏 OnDemand、打开期间输出增减、移动失败／投影过期的界面效果、布局与 capture 的完整调用路径 |
 | 预览 | [schedule_test.go](../internal/capture/hyprland/schedule_test.go) `TestCaptureSchedule`；[shrink_test.go](../internal/capture/hyprland/shrink_test.go) `TestShrinkCopiesAndFlipsWithoutResizing`, `TestShrinkFitsDisplayBoxAndAverages`, `TestShrinkRejectsBadFrames` | 没有 stream.go 协议往返测试；版本 1 export、global 移除、mapping 失败、断线重建、不可见窗口、SHM 帧生命周期与真实格式 |
 | 显示／虚拟屏／实例 | [display_test.go](../internal/display/display_test.go) `TestPanelsOff`, `TestOutputs`, `TestValidScale`；[virtual_test.go](../internal/hypr/virtual_test.go) `TestSyncVirtualScreen`, `TestSyncVirtualScreenRefused`；[instance_test.go](../internal/hypr/instance_test.go) `TestInstanceOfTheSessionStarted`, `TestSessionInstanceSkipsGoneSession` | 真实 DRM／logind 热插拔、无首帧登录、锁屏时屏幕增加、虚拟屏与编码器重新初始化 |
-| 配置与会话 | [bootstrap_test.go](../internal/bootstrap/bootstrap_test.go) `TestInstallFresh`, `TestInstallKeepsUserFiles`, `TestSamplesBesideLuaConfig`, `TestFindLua`；[hyprconf_test.go](../internal/hyprconf/hyprconf_test.go) `TestApplyWithoutHyprland`, `TestRenderVerifies`, `TestRenderLua`, `TestApplyLua`, `TestRenderShortcuts`, `TestRenderLockRestore`；[displays_test.go](../internal/hyprconf/displays_test.go) `TestRenderDisplaysVerifies`；[test-session.py](../scripts/test-session.py) `SessionTest` | Python 使用假 compositor／systemctl；verify-config 仅在安装 Hyprland 时运行，不证明真实应用、Lua 有效配置、会话环境和权限 |
+| 配置与会话 | [bootstrap_test.go](../internal/bootstrap/bootstrap_test.go) `TestInstallFresh`, `TestInstallKeepsUserFiles`, `TestSamplesBesideLuaConfig`, `TestFindLua`；[hyprconf_test.go](../internal/hyprconf/hyprconf_test.go) `TestApplyWithoutHyprland`, `TestRenderVerifies`, `TestRenderLua`, `TestApplyLua`, `TestRenderShortcuts`, `TestRenderLockRestore`；[displays_test.go](../internal/hyprconf/displays_test.go) `TestRenderDisplaysVerifies`；[test-session.py](../scripts/test-session.py) `SessionTest` | Python 使用假 compositor／systemctl；verify-config 仅在安装 Hyprland 时运行，不证明真实应用、Lua 有效配置、会话环境和权限；未覆盖录制中崩溃／断线后的 submap 恢复 |
 | 截图、portal、输入 | [screenshot_test.go](../internal/shell/screenshot_test.go) `TestShotWindows`, `TestRectPixels`；[shotpick_test.go](../internal/shell/shotpick_test.go) `TestPickGroups`；[screenshot_test.go](../internal/portal/screenshot_test.go) `TestScreenshot`；[portalconf_test.go](../internal/portalconf/portalconf_test.go) `TestEnableWritesDirectory`；[vinput_test.go](../internal/vinput/vinput_test.go) `TestKeysym`, `TestKeymap` | portal 测试是假 D-Bus／回调，不证明 xdph 共享；vinput 没有协议往返测试；无输出／无 client 截图结束路径、各工具协议协商未验证 |
 | desk 与应用辅助 | [tools_test.go](../internal/desk/tools_test.go) `TestWindowTools`；[history_test.go](../internal/desk/history_test.go) `TestListWorkspaces`；[watch_test.go](../internal/desk/watch_test.go) `TestWatch`；[bring_test.go](../internal/hypr/bring_test.go) `TestBringHere`, `TestWindowOf`；[hypr_test.go](../internal/hypr/hypr_test.go) `TestRoomRight` | 假数据不证明 classic/Lua 兼容性、实际 PID／class 匹配、应用重开／多窗与未知合成器 |
 
 本次检查结果见末节。运行时缺口保持为调查结论，不在文档分支修复。
 
 ## 本次检查记录
+
+### 停止前的检查
 
 源码基线与本地已有 `origin/master` 都是 `4ad7126`，不需要合并。
 使用 Go 1.26.1；只改本文和架构页链接。未新增自动测试，未运行 UI、嵌套会话或
@@ -259,3 +283,31 @@ cache/runtime、Go 缓存与临时目录；清除会话环境，D-Bus 指向隔�
 文档内部链接、所引路径／符号、直接协议版本与 `git diff --check` 已检查。
 未检查真实窗口聚焦、多屏几何、输出热插拔、锁恢复、预览权限与重连、快捷键
 冲突、Dock 避让及任何替代合成器能力。它们仍是后续验证任务，不属于本次实现。
+
+### 恢复构建后的复核
+
+保留 `8a03af4` 的审计文档与架构链接；恢复后补充 Overview 的输出生命周期、
+快捷键录制故障后的恢复边界，并明确 `follow=false` 属于窗口移动请求。
+对照任务所有者的验收项核对了功能矩阵、源码路径／符号、协议版本、替代方向、
+合成器内部需求和测试缺口；没有扩大到 #60–64。
+
+使用 Go 1.26.1，在工作树外、父构建目录内重新建立临时 HOME、XDG config/
+data/state/cache/runtime、Go 缓存和 TMPDIR。`env -i` 仅传入测试用 PATH、这些
+目录、`GOTOOLCHAIN=local`、`GOFLAGS=-v` 和指向隔离不存在地址的两个 D-Bus
+环境变量，再执行 `make test`。未继承真实 Wayland、Hyprland 或会话环境。
+
+| 检查 | 结果 |
+| --- | --- |
+| 恢复后的 `make test` | 退出码 **2**；Python **15 tests / OK**（0.343s）；`go vet ./...` 通过；race 测试 **13 个包失败、61 个顶层测试失败、46 个跳过**。失败为 socket 路径过长、私有 dbus-daemon `EOF` 和 `TestFindSource` 的进程枚举断言 |
+| 仅对上述 13 个失败包用短 TMPDIR 入口复核 | `CGO_ENABLED=1 go test -race -count=1 -v`，退出码 **1**；**12 个包通过，1 个包／1 个顶层测试失败，9 个跳过**。运行器通过持有的目录 fd 提供短入口，实际文件仍在父构建目录内；未更改测试源码 |
+| 唯一仍失败的测试 | `internal/clipboard.TestFindSource`：预期 `firefox`，实际识别为 `start-hyprland` 所在进程组；隔离环境变量不会隔离进程列表，未操作该会话的进程 |
+
+复核的包为 `internal/` 下的 `apps/connect`、`apps/files/chooser`、
+`apps/files/disks`、`apps/files/fm1`、`apps/files/remote`、`clipboard`、
+`dbusexport`、`hypr`、`keyring`、`portal`、`sni`、`system`、`term/host`。
+短入口消除了这些包的 socket／D-Bus 失败；这不是整套 `make test` 通过。
+全量运行的 46 个跳过项与停止前记录相同；定向复核的 9 项来自 `term/host`。
+
+没有非固定版本安装或依赖清单变更；没有修改运行代码、Blueprint 或测试，
+无需 generate／i18n。原恢复缓存未改动，新的测试日志和缓存均在工作树外。
+未做 UI、真实合成器、输出热插拔或其他桌面的兼容性检查。
