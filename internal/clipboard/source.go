@@ -42,13 +42,17 @@ const copierAge = 5 * time.Second
 // whether that is a program listed in sensitive (names or window classes,
 // in any case).
 func FindSource(w Window, sensitive []string) Source {
+	return findSource(w, sensitive, proc.All())
+}
+
+// findSource is FindSource looking only among the processes in all.
+func findSource(w Window, sensitive []string, all []int) Source {
 	var s Source
 	add := func(name string) {
 		if name = strings.ToLower(name); name != "" && !slices.Contains(s.Names, name) {
 			s.Names = append(s.Names, name)
 		}
 	}
-	all := proc.All()
 	for _, pid := range all {
 		if proc.Name(pid) != "wl-copy" || primary(proc.Args(pid)) || proc.Age(pid) > copierAge {
 			continue
