@@ -276,6 +276,14 @@ for the program), and the Web Terminal (`[web]`: `on`, `tailscale`,
 `port`). The theme, the colours and the shell take hold at
 once; the icons and the text size follow inua's `config.toml`.
 
+**Focus follows mouse** (Settings → Terminal) focuses a pane when the
+pointer enters its terminal or header in the active window. Its TOML key
+is `terminal.focus_follows_mouse`, default `false`, including for existing
+settings that omit it. Turning it on or off takes effect immediately and
+is saved for the next start. Keyboard focus stays where you put it until
+the pointer enters another pane. Search, dialogs, menus, selection and
+dragging keep their focus. This option applies to the desktop terminal.
+
 ## On a phone
 
 The **Web Terminal** shows the terminals in a browser, a phone's over

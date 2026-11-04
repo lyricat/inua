@@ -2801,7 +2801,7 @@ msgstr "打开文件夹"
 #: internal/termui/quick.go:29
 #: internal/termui/quick.go:47
 #: internal/termui/quick.go:145
-#: internal/termui/tiles.go:704
+#: internal/termui/tiles.go:756
 #: ui/settings.ui:2078
 #: config/apps/io.github.lyricat.Inua.Term.desktop:3
 msgid "Terminal"
@@ -3063,7 +3063,7 @@ msgstr "已复制"
 #: internal/lightui/pass.go:773
 #: internal/mailui/details.go:222
 #: internal/shell/launcher_actions.go:59
-#: internal/term/settings/settings.go:118
+#: internal/term/settings/settings.go:119
 #: internal/term/web/strings.go:36
 #: internal/termui/prefsweb.go:92
 #: internal/ui/askpass.go:232
@@ -3772,7 +3772,7 @@ msgstr "重新加载"
 #: internal/mailui/picker.go:130
 #: internal/mailui/reader.go:378
 #: internal/termui/palette.go:213
-#: internal/termui/prefs.go:203
+#: internal/termui/prefs.go:205
 msgid "Keys"
 msgstr "快捷键"
 
@@ -4639,7 +4639,7 @@ msgstr "新建文件……"
 
 #: internal/filesui/window.go:787
 #: internal/lightui/calculator.go:351
-#: internal/term/settings/settings.go:119
+#: internal/term/settings/settings.go:120
 #: internal/termui/paste.go:339
 msgid "Paste"
 msgstr "粘贴"
@@ -8422,7 +8422,7 @@ msgstr "聚焦或关闭"
 #: internal/mailui/picker.go:155
 #: internal/shell/commands.go:33
 #: internal/shell/dock.go:311
-#: internal/term/settings/settings.go:125
+#: internal/term/settings/settings.go:126
 #: internal/term/web/strings.go:96
 #: internal/termui/headmenu.go:110
 #: ui/control.ui:58
@@ -10346,7 +10346,7 @@ msgid "IN USE"
 msgstr "使用中"
 
 #: internal/lightui/tailscale.go:602
-#: internal/termui/prefs.go:345
+#: internal/termui/prefs.go:347
 #: internal/ui/settings_ai.go:272
 #: internal/ui/settings_keyring.go:572
 #: internal/ui/shortcuts.go:150
@@ -13298,107 +13298,107 @@ msgstr "暖色纸面上的大地色调"
 msgid "The classic, on cream"
 msgstr "经典，米色底"
 
-#: internal/term/settings/settings.go:102
+#: internal/term/settings/settings.go:103
 msgid "New session in this workspace"
 msgstr "在此工作区新建会话"
 
-#: internal/term/settings/settings.go:103
+#: internal/term/settings/settings.go:104
 #: internal/term/web/strings.go:70
 #: internal/termui/columns.go:174
 msgid "New workspace"
 msgstr "新建工作区"
 
-#: internal/term/settings/settings.go:104
+#: internal/term/settings/settings.go:105
 msgid "Split right"
 msgstr "向右拆分"
 
-#: internal/term/settings/settings.go:105
+#: internal/term/settings/settings.go:106
 msgid "Split down"
 msgstr "向下拆分"
 
-#: internal/term/settings/settings.go:106
+#: internal/term/settings/settings.go:107
 msgid "Close pane"
 msgstr "关闭窗格"
 
-#: internal/term/settings/settings.go:107
+#: internal/term/settings/settings.go:108
 msgid "Swap with the pane in a direction (then an arrow)"
 msgstr "与该方向的窗格交换（再按方向键）"
 
-#: internal/term/settings/settings.go:108
+#: internal/term/settings/settings.go:109
 msgid "Zoom pane / back"
 msgstr "放大窗格 / 还原"
 
-#: internal/term/settings/settings.go:109
+#: internal/term/settings/settings.go:110
 msgid "Equalize"
 msgstr "均分"
 
-#: internal/term/settings/settings.go:110
+#: internal/term/settings/settings.go:111
 msgid "Next layout"
 msgstr "下一种布局"
 
-#: internal/term/settings/settings.go:111
+#: internal/term/settings/settings.go:112
 msgid "Previous session"
 msgstr "上一个会话"
 
-#: internal/term/settings/settings.go:112
+#: internal/term/settings/settings.go:113
 msgid "Next session"
 msgstr "下一个会话"
 
-#: internal/term/settings/settings.go:113
+#: internal/term/settings/settings.go:114
 msgid "Next agent that needs you"
 msgstr "下一个需要你的智能体"
 
-#: internal/term/settings/settings.go:114
+#: internal/term/settings/settings.go:115
 msgid "Next agent that needs you or is idle"
 msgstr "下一个需要你或空闲的智能体"
 
-#: internal/term/settings/settings.go:115
+#: internal/term/settings/settings.go:116
 msgid "Every agent"
 msgstr "所有智能体"
 
-#: internal/term/settings/settings.go:116
+#: internal/term/settings/settings.go:117
 msgid "Fold the workspaces"
 msgstr "折叠工作区"
 
-#: internal/term/settings/settings.go:117
+#: internal/term/settings/settings.go:118
 msgid "Fold the sessions"
 msgstr "折叠会话"
 
-#: internal/term/settings/settings.go:120
+#: internal/term/settings/settings.go:121
 msgid "Search the scrollback"
 msgstr "搜索回滚内容"
 
-#: internal/term/settings/settings.go:121
+#: internal/term/settings/settings.go:122
 msgid "Copy mode"
 msgstr "复制模式"
 
-#: internal/term/settings/settings.go:122
+#: internal/term/settings/settings.go:123
 #: internal/term/web/strings.go:90
 #: internal/termui/keys.go:395
 msgid "Rename the session"
 msgstr "重命名会话"
 
-#: internal/term/settings/settings.go:123
+#: internal/term/settings/settings.go:124
 msgid "Every action by name"
 msgstr "按名称列出所有操作"
 
-#: internal/term/settings/settings.go:124
+#: internal/term/settings/settings.go:125
 msgid "Show the keys"
 msgstr "显示按键"
 
-#: internal/term/settings/settings.go:126
+#: internal/term/settings/settings.go:127
 msgid "Restart the terminal host"
 msgstr "重启终端主机"
 
-#: internal/term/settings/settings.go:127
+#: internal/term/settings/settings.go:128
 msgid "Font larger"
 msgstr "字体放大"
 
-#: internal/term/settings/settings.go:128
+#: internal/term/settings/settings.go:129
 msgid "Font smaller"
 msgstr "字体缩小"
 
-#: internal/term/settings/settings.go:129
+#: internal/term/settings/settings.go:130
 msgid "Font size as set"
 msgstr "恢复设定的字号"
 
@@ -13575,7 +13575,7 @@ msgid "INFO"
 msgstr "信息"
 
 #: internal/term/web/strings.go:61
-#: internal/termui/prefs.go:204
+#: internal/termui/prefs.go:206
 #: ui/gpg.ui:1043
 msgid "KEYS"
 msgstr "密钥"
@@ -13691,7 +13691,7 @@ msgstr "会话 %d"
 
 #: internal/term/web/strings.go:97
 #: internal/termui/menubar.go:41
-#: internal/termui/prefs.go:179
+#: internal/termui/prefs.go:181
 msgid "Shell"
 msgstr "Shell"
 
@@ -14131,95 +14131,103 @@ msgstr "选中即复制"
 msgid "Selecting copies to the clipboard; the primary selection follows it either way"
 msgstr "选中即复制到剪贴板；主选区始终跟随"
 
-#: internal/termui/prefs.go:167
+#: internal/termui/prefs.go:164
+msgid "Focus follows mouse"
+msgstr "焦点跟随鼠标"
+
+#: internal/termui/prefs.go:164
+msgid "Focus a pane when the pointer enters it in the active window"
+msgstr "在活动窗口中，指针进入窗格时使其获得焦点"
+
+#: internal/termui/prefs.go:169
 msgid "Scrollback"
 msgstr "回滚"
 
-#: internal/termui/prefs.go:167
+#: internal/termui/prefs.go:169
 msgid "Lines kept per pane"
 msgstr "每个窗格保留的行数"
 
-#: internal/termui/prefs.go:171
+#: internal/termui/prefs.go:173
 msgid "Replay"
 msgstr "重放"
 
-#: internal/termui/prefs.go:171
+#: internal/termui/prefs.go:173
 msgid "MiB of a pane's recent output kept for a window opened later"
 msgstr "为之后打开的窗口保留的窗格近期输出（MiB）"
 
-#: internal/termui/prefs.go:173
+#: internal/termui/prefs.go:175
 msgid "Shell and agents"
 msgstr "Shell 与智能体"
 
-#: internal/termui/prefs.go:174
+#: internal/termui/prefs.go:176
 msgid "SHELL AND AGENTS"
 msgstr "SHELL 与智能体"
 
-#: internal/termui/prefs.go:174
+#: internal/termui/prefs.go:176
 msgid "Below the shell: used when the terminal host starts again"
 msgstr "shell 以下各项：终端主机再次启动时生效"
 
-#: internal/termui/prefs.go:179
+#: internal/termui/prefs.go:181
 msgid "What new panes start; the panes open already keep theirs"
 msgstr "新窗格启动的程序；已打开的窗格保持原样"
 
-#: internal/termui/prefs.go:180
+#: internal/termui/prefs.go:182
 msgid "Shell integration"
 msgstr "Shell 集成"
 
-#: internal/termui/prefs.go:180
+#: internal/termui/prefs.go:182
 msgid "bash, zsh and fish mark their prompts, so the commands are remembered"
 msgstr "让 bash、zsh 和 fish 标记提示符，以便记住命令"
 
-#: internal/termui/prefs.go:182
+#: internal/termui/prefs.go:184
 #: internal/ui/notify.go:324
 #: ui/bar.ui:147
 #: ui/settings.ui:3325
 msgid "Notifications"
 msgstr "通知"
 
-#: internal/termui/prefs.go:182
+#: internal/termui/prefs.go:184
 msgid "When an agent needs you or is done in a pane you are not looking at"
 msgstr "当智能体在你未查看的窗格中需要你或已完成时"
 
-#: internal/termui/prefs.go:184
+#: internal/termui/prefs.go:186
 msgid "Remember commands"
 msgstr "记住命令"
 
-#: internal/termui/prefs.go:184
+#: internal/termui/prefs.go:186
 msgid "Put each pane's last command back at its prompt, not run"
 msgstr "将每个窗格的最后一条命令放回提示符，不执行"
 
-#: internal/termui/prefs.go:199
+#: internal/termui/prefs.go:201
 msgid "Never keep"
 msgstr "从不保留"
 
-#: internal/termui/prefs.go:199
+#: internal/termui/prefs.go:201
 msgid "Commands matching these patterns, comma-separated"
 msgstr "匹配这些模式的命令，用逗号分隔"
 
-#: internal/termui/prefs.go:201
+#: internal/termui/prefs.go:203
 msgid "Web terminal"
 msgstr "网页终端"
 
-#: internal/termui/prefs.go:204
+#: internal/termui/prefs.go:206
 msgid "Click a key, then press the new one; Backspace frees it"
 msgstr "点击一个按键，再按下新的按键；Backspace 清除"
 
-#: internal/termui/prefs.go:357
+#: internal/termui/prefs.go:359
 #: internal/ui/shortcuts.go:197
 msgid "Press keys…"
 msgstr "按键……"
 
-#: internal/termui/prefs.go:358
+#: internal/termui/prefs.go:360
 msgid "Escape cancels; Backspace frees the action's keys."
 msgstr "Escape 取消；Backspace 清除该操作的按键。"
 
-#: internal/termui/prefs.go:380
+#: internal/termui/prefs.go:382
 msgid "A key needs Ctrl, Alt or Super with it: the others are the programs'."
 msgstr "按键需要搭配 Ctrl、Alt 或 Super：其余按键属于程序。"
 
-#: internal/termui/prefs.go:391
+#: internal/termui/prefs.go:393
 msgid "%s was %s's; that one has no keys now."
 msgstr "%s 原属于 %s；该操作现在没有按键。"
 
@@ -14291,11 +14299,11 @@ msgstr "下一个匹配 (Shift+Enter)"
 msgid "Close (Escape)"
 msgstr "关闭（Esc）"
 
-#: internal/termui/tiles.go:605
+#: internal/termui/tiles.go:657
 msgid "%s\nBranch %s"
 msgstr "%s\n分支 %s"
 
-#: internal/termui/tiles.go:607
+#: internal/termui/tiles.go:659
 msgid "%s, a worktree of %s\nBranch %s"
 msgstr "%s（%s 的 worktree）\n分支 %s"
 
