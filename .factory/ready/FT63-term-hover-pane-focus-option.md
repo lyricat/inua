@@ -22,3 +22,13 @@ Built b94e3f8f: optional focus-follows-mouse switch, persisted settings, guarded
 Checks: make i18n and targeted race tests passed. Manager make test initially failed in unrelated mail test: `TestBodyStructureOpaqueMessagePart: bodystructure_test.go:42: unexpected EOF`. Coder investigated unchanged baseline mail/go-imap sources (suspected CAPABILITY/FETCH test timing) and retried the complete make test with a throwaway HOME and private runtime directory: passed, including an uncached mail run. Initial coder test setup also needed a private runtime directory, then passed.
 
 UI changed and was not visually checked. All manual interaction checks listed above remain unperformed. Branch pushed; new/ → review/ for review, not merged into master.
+
+## factory · review · 2026-11-05 01:06
+head: b94e3f8f0a0feb6018a72f6d075921f75ad9f75c
+verdict: pass
+notes:
+- Codex reviewed all 12 changed files in origin/master...HEAD (base d6a2e5a2). No confirmed introduced defects; no outstanding P0/P1 findings. Clean merge with base; no tracked files changed.
+- Final make test passed: 15 Python tests, go vet, and uncached Go race tests, using throwaway HOME and private runtime directory. Initial environment failures also reproduced on base (overlong Unix socket paths and private D-Bus EOF); shortening test paths resolved them. Previous mail unexpected EOF did not recur.
+- No unpinned installs or dependency manifest changes.
+- UI not visually checked; hover, drag and window activation interactions still require manual checks. libinua-vt.so unavailable, so engine-dependent tests used existing skip behavior.
+- review/ → ready/; not merged into master.
