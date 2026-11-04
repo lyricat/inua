@@ -186,6 +186,9 @@ Hyprland reports focused.
 
 The [feature-by-feature coupling audit](hyprland-coupling.md) traces the
 implemented dependencies, failure behavior, protocol versions and test gaps.
+On it build the [compositor capability comparison and baseline](compositor-capabilities.md),
+the [niri and Wayfire experiments](compositor-experiments.md) and the
+[compositor contracts and migration plan](compositor-contracts.md) (#58).
 
 `internal/hypr` (toolkit-free):
 
