@@ -2373,7 +2373,7 @@ button.shot-record:checked { background: alpha(@danger, 0.1); border-color: alph
   color: @t0;
 }
 .as-answer { font-size: 14px; line-height: 1.4; color: @t0; }
-.as-answer.as-error, .as-error { color: @danger; }
+.as-answer.as-error, .as-error.sub, .as-error { color: @danger; }
 .as-tool { font-family: "Geist Mono", "IBM Plex Mono", monospace; font-size: 11.5px; color: @t2; }
 .as-card { padding: 12px 14px; border: 1px solid alpha(@accent, 0.38); border-radius: 2px; background: @surface; color: @t0; }
 .as-card:disabled { opacity: 0.55; }

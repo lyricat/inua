@@ -57,7 +57,8 @@ editor for pasting:
    Check for GTK warnings or crashes.
 8. In a disposable clipboard failure harness, exercise an unavailable or
    closed display and a missing clipboard. Copy must not crash or report
-   success; its error belongs under that message. Retry with a working
-   clipboard and confirm the error clears and the text pastes correctly.
+   success; its error belongs under that message in the theme's danger
+   colour. Retry with a working clipboard and confirm the error clears and
+   the text pastes correctly.
 
 These are UI interaction checks; no new automated test was added for them.
