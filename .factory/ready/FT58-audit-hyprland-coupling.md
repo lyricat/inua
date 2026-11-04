@@ -85,3 +85,17 @@ Installs: No unpinned tools or manifest changes. make i18n before upstream merge
 Not checked: Real UI, wtype focus behavior, dictation input-method interaction and alternative compositor compatibility. No UI changes or live-session operations. Reused clean existing worktree; no stopped-run changes required recovery.
 
 Moved new/ → review/; not approval to merge.
+
+## factory · review · 2026-11-04 13:38
+head: 3943fa1a3632a36ef8de2a89cea0dd12f649c314
+verdict: pass
+
+Validation: Codex reviewed the complete origin/master...HEAD documentation diff (2 files, 381 added lines), source branches, protocol XML and test references; 138 local links valid. No verified findings. Previous P1 required-test gate and P2 clipboard/dictation documentation finding resolved. No merge conflicts with master.
+
+Full make test passed (exit 0): Python 15/15, go vet, Go race 103 packages passed, zero failed, 46 top-level skips, without test cache. TestFindSource passed; no socket-path errors. Used throwaway HOME, isolated XDG/Go caches and session environment, TMPDIR unset, no short-path alias. git diff --check passed; HEAD unchanged and worktree clean after moving review artifacts outside it.
+
+Installs: Only pinned Go modules restored; no unpinned tools or dependency-manifest changes.
+
+Limits: Real UI, focus, hotplug, lock recovery and alternative compositor compatibility not exercised. Skips include unavailable terminal engine, libturbojpeg, fish, node, unconfigured real ISO download and test helper entry points. No runtime or UI changes.
+
+Moved review/ → ready/ for owner approval; nothing merged.
