@@ -1,7 +1,7 @@
 ---
 source: issue #59
 branch: factory/FT58-audit-hyprland-coupling
-round: 1
+round: 2
 ---
 # Audit existing Hyprland coupling by user-facing feature
 
@@ -70,3 +70,18 @@ Merge origin/master into this branch first, so it has that fix.
 Run `make test` with TMPDIR unset and do not use a short temporary-path alias. If socket path errors return, report them; do not work around them.
 
 Fix the review's P2: in docs/hyprland-coupling.md, document clipboard and dictation separately, including the `wtype` fallback in pasteClipboard and its lack of address-targeted focus.
+
+
+## factory · plan · 2026-11-04 13:28
+Fix round 2 addition: Merge origin/master first. Separate clipboard copy, address-targeted paste and nil-client wtype current-focus fallback from Hyprland-dependent dictation, including missing-tool and error behavior. Keep documentation-only scope; no new compatibility claims or runtime implementation. Verify source references and run full make test with throwaway HOME, TMPDIR unset and no short-path alias; report any socket failures without workaround.
+
+## factory · 2026-11-04 13:28
+Fix round 2 built and pushed 3943fa1a, following merge 40d4dbac of origin/master 89e121e without conflicts. Split clipboard and dictation documentation, explained wtype dependencies/current-focus limitation and failure behavior, and updated coverage and validation notes. Only documentation differs from master; protected paths unchanged.
+
+Tests: Codex full make test passed (Python 15 tests, go vet, Go race tests; 103 packages passed, 46 top-level skips). Independent manager full make test also passed, with throwaway HOME and isolated XDG/D-Bus environment, TMPDIR unset and no short-path alias. No socket-path errors. git diff --check passed; worktree clean. Previous P1 test gate and P2 documentation finding addressed, pending fresh review.
+
+Installs: No unpinned tools or manifest changes. make i18n before upstream merge commit produced no catalog changes; no Blueprint changes.
+
+Not checked: Real UI, wtype focus behavior, dictation input-method interaction and alternative compositor compatibility. No UI changes or live-session operations. Reused clean existing worktree; no stopped-run changes required recovery.
+
+Moved new/ → review/; not approval to merge.
