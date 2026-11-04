@@ -30,25 +30,29 @@ func TestFindSource(t *testing.T) {
 	}
 	defer job.Wait()
 	defer syscall.Kill(-job.Process.Pid, syscall.SIGKILL)
+	// Only the job's processes: a wl-copy elsewhere on this machine would
+	// be taken for the source.
+	var procs []int
 	for range 100 {
-		if slices.ContainsFunc(proc.All(), func(p int) bool { return proc.Name(p) == "wl-copy" && proc.Group(p) == job.Process.Pid }) {
+		procs = slices.DeleteFunc(proc.All(), func(p int) bool { return proc.Group(p) != job.Process.Pid })
+		if slices.ContainsFunc(procs, func(p int) bool { return proc.Name(p) == "wl-copy" }) {
 			break
 		}
 		time.Sleep(20 * time.Millisecond)
 	}
 	w := Window{Class: "com.mitchellh.ghostty", PID: os.Getpid()}
-	s := FindSource(w, []string{"keepassxc", " PASS "})
+	s := findSource(w, []string{"keepassxc", " PASS "}, procs)
 	if s.Name != "pass" || !s.Sensitive || !slices.Contains(s.Names, "pass") || !slices.Contains(s.Names, "com.mitchellh.ghostty") {
 		t.Errorf("pass -c: %+v", s)
 	}
 	syscall.Kill(-job.Process.Pid, syscall.SIGKILL)
 	job.Wait()
 	// A copy in a window: the window, kept unless its class is listed.
-	s = FindSource(Window{Class: "firefox"}, []string{"keepassxc", "pass"})
+	s = findSource(Window{Class: "firefox"}, []string{"keepassxc", "pass"}, nil)
 	if s.Name != "firefox" || s.Sensitive {
 		t.Errorf("firefox: %+v", s)
 	}
-	if s := FindSource(Window{Class: "org.keepassxc.KeePassXC"}, []string{"org.keepassxc.keepassxc"}); !s.Sensitive {
+	if s := findSource(Window{Class: "org.keepassxc.KeePassXC"}, []string{"org.keepassxc.keepassxc"}, nil); !s.Sensitive {
 		t.Errorf("a listed window class: %+v", s)
 	}
 }
