@@ -184,6 +184,9 @@ Hyprland reports focused.
 
 ## 7. Keeping up with Hyprland
 
+The [feature-by-feature coupling audit](hyprland-coupling.md) traces the
+implemented dependencies, failure behavior, protocol versions and test gaps.
+
 `internal/hypr` (toolkit-free):
 
 1. Connect to the event socket first, then query the initial state; changes
