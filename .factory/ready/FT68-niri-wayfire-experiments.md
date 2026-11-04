@@ -42,3 +42,11 @@ Built separate niri and Wayfire probes, reproducible nested-session instructions
 Checks: Codex experiment suite passed 17 tests; make test passed Python 15 tests, go vet and Go race tests (103 packages; 53 top-level and 6 subtests skipped, reasons in EVIDENCE.md). Manager independently reran both experiment tests and make test with isolated HOME/XDG/buses: both exit 0. git diff --check passed; working tree clean.
 Installs: none. All real niri/Wayfire sessions, nested-session instructions and visual observations remain UNTESTED; no UI changes. Source checks and fake sockets do not prove real compositor interoperability.
 Moved new/ → review/. Owner should inspect EVIDENCE.md, per-target run instructions and the go/no-go limits after review.
+
+## factory · review · 2026-11-05 03:55
+head: ba74a6055961010af0b61cabb688189d224420ed
+verdict: pass
+
+Validation: Codex reviewed all 11 changed files in origin/master...HEAD against the owner's request and plan; no confirmed P0–P3 findings. No merge conflicts. Experiment tests: 17 passed. Required make test exited 0: Python session tests 15 passed, go vet passed, Go race tests passed across 103 packages; 53 top-level tests and 6 subtests skipped for missing dependencies, intentionally isolated tools and conditional cases. Diff formatting and internal documentation links passed. Tests used throwaway HOME/XDG, isolated buses and short temporary paths. Manager verified unchanged HEAD, clean worktree and git diff --check. No code edits or commits. Installs: none.
+Limits: Real niri/Wayfire sessions, nested-session instructions and visual behavior remain UNTESTED, as explicitly permitted by the owner's experiment scope. These probes do not establish production support. FT67 remains pending and PR67 is context only.
+Moved review/ → ready/. Owner should inspect EVIDENCE.md, both targets' run instructions and the go/no-go limitations before shipping.
