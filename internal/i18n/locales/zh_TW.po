@@ -3004,7 +3004,8 @@ msgstr "永久刪除 %s？"
 
 #: internal/diskui/details.go:528
 #: internal/filesui/cards.go:435
-#: internal/lightui/calculator.go:53
+#: internal/lightui/calculator.go:59
+#: internal/lightui/calculator.go:352
 #: internal/lightui/gpg.go:1517
 #: internal/lightui/pass.go:950
 #: internal/term/web/strings.go:43
@@ -3057,6 +3058,7 @@ msgstr "已複製"
 #: internal/diskui/details.go:581
 #: internal/filesui/window.go:819
 #: internal/gamesui/lobbyhost.go:169
+#: internal/lightui/calculator.go:350
 #: internal/lightui/pass.go:748
 #: internal/lightui/pass.go:773
 #: internal/mailui/details.go:222
@@ -4636,6 +4638,7 @@ msgid "New file…"
 msgstr "新增檔案……"
 
 #: internal/filesui/window.go:789
+#: internal/lightui/calculator.go:351
 #: internal/term/settings/settings.go:119
 #: internal/termui/paste.go:339
 msgid "Paste"
@@ -4659,6 +4662,7 @@ msgid "Show in its folder"
 msgstr "在所在資料夾中顯示"
 
 #: internal/filesui/window.go:818
+#: internal/lightui/calculator.go:349
 msgid "Cut"
 msgstr "剪下"
 
@@ -8649,19 +8653,24 @@ msgstr "Pass"
 msgid "GPG"
 msgstr "GPG"
 
-#: internal/lightui/calculator.go:57
+#: internal/lightui/calculator.go:63
 msgid "Change sign"
 msgstr "改變符號"
 
-#: internal/lightui/calculator.go:240
-msgid "Error"
-msgstr "錯誤"
+#: internal/lightui/calculator.go:354
+#: internal/term/web/strings.go:94
+msgid "Select all"
+msgstr ""
 
-#: internal/lightui/calculator.go:274
+#: internal/lightui/calculator.go:414
+msgid "Enter a valid expression."
+msgstr ""
+
+#: internal/lightui/calculator.go:444
 msgid "No calculations yet"
 msgstr "尚未計算"
 
-#: internal/lightui/calculator.go:296
+#: internal/lightui/calculator.go:466
 msgid "Use %s"
 msgstr "使用%s"
 
@@ -13676,10 +13685,6 @@ msgstr "往返"
 msgid "SNIPPETS"
 msgstr ""
 
-#: internal/term/web/strings.go:94
-msgid "Select all"
-msgstr ""
-
 #: internal/term/web/strings.go:95
 msgid "Session %d"
 msgstr "工作階段 %d"
@@ -17831,11 +17836,21 @@ msgstr "最近的計算"
 msgid "History"
 msgstr "歷史"
 
-#: ui/calculator.ui:149
+#: ui/calculator.ui:91
+#: ui/calculator.ui:93
+msgid "Formula"
+msgstr ""
+
+#: ui/calculator.ui:105
+#: ui/calculator.ui:107
+msgid "Value"
+msgstr ""
+
+#: ui/calculator.ui:169
 msgid "HISTORY"
 msgstr "歷史"
 
-#: ui/calculator.ui:170
+#: ui/calculator.ui:190
 msgid "Clear history"
 msgstr "清除歷史記錄"
 

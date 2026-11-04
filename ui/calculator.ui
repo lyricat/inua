@@ -77,26 +77,46 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
                 <style>
                   <class name="calc-display"/>
                 </style>
+                <property name="spacing">8</property>
                 <property name="orientation">1</property>
                 <property name="vexpand">true</property>
                 <property name="valign">2</property>
                 <child>
-                  <object class="GtkLabel" id="expression">
+                  <object class="GtkEntry" id="expression">
                     <style>
                       <class name="calc-expr"/>
                     </style>
                     <property name="xalign">1</property>
-                    <property name="ellipsize">1</property>
+                    <property name="width-chars">1</property>
+                    <property name="tooltip-text" translatable="yes">Formula</property>
+                    <accessibility>
+                      <property name="label" translatable="yes">Formula</property>
+                    </accessibility>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="result">
+                  <object class="GtkEntry" id="result">
                     <style>
                       <class name="calc-result"/>
                     </style>
                     <property name="xalign">1</property>
-                    <property name="ellipsize">1</property>
-                    <property name="label">0</property>
+                    <property name="width-chars">1</property>
+                    <property name="text">0</property>
+                    <property name="tooltip-text" translatable="yes">Value</property>
+                    <accessibility>
+                      <property name="label" translatable="yes">Value</property>
+                    </accessibility>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="error">
+                    <style>
+                      <class name="calc-error"/>
+                    </style>
+                    <property name="visible">false</property>
+                    <property name="xalign">0</property>
+                    <property name="wrap">true</property>
+                    <property name="selectable">true</property>
                   </object>
                 </child>
               </object>
