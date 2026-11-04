@@ -13232,15 +13232,15 @@ msgstr ""
 msgid "inua-keyring asks for your passphrase, for %s"
 msgstr ""
 
-#: internal/term/host/sessions.go:256
+#: internal/term/host/sessions.go:270
 msgid "No folder given."
 msgstr ""
 
-#: internal/term/host/sessions.go:259
+#: internal/term/host/sessions.go:273
 msgid "%s is not a folder."
 msgstr ""
 
-#: internal/term/host/sessions.go:303
+#: internal/term/host/sessions.go:317
 #: ui/connect.ui:851
 msgid "Commands"
 msgstr "指令"
@@ -13295,7 +13295,7 @@ msgstr "在此工作區新增工作階段"
 
 #: internal/term/settings/settings.go:103
 #: internal/term/web/strings.go:70
-#: internal/termui/columns.go:172
+#: internal/termui/columns.go:174
 msgid "New workspace"
 msgstr "新增工作區"
 
@@ -13594,7 +13594,7 @@ msgid "New pane"
 msgstr ""
 
 #: internal/term/web/strings.go:68
-#: internal/termui/columns.go:173
+#: internal/termui/columns.go:175
 #: ui/term.ui:235
 msgid "New session"
 msgstr "新增工作階段"
@@ -13854,15 +13854,15 @@ msgstr "終端機使用視窗的顏色"
 msgid "Your login shell (%s)"
 msgstr "你的登入 shell（%s）"
 
-#: internal/termui/columns.go:171
+#: internal/termui/columns.go:173
 msgid "Menu"
 msgstr "選單"
 
-#: internal/termui/columns.go:174
+#: internal/termui/columns.go:176
 msgid "Hide the sidebar"
 msgstr "隱藏側邊欄"
 
-#: internal/termui/columns.go:175
+#: internal/termui/columns.go:177
 msgid "Show the sidebar"
 msgstr "顯示側邊欄"
 

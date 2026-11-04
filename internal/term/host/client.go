@@ -347,6 +347,12 @@ func (c *Client) MoveWorkspace(workspace, to int) error {
 	return err
 }
 
+// MoveSession puts session before another session in its workspace (0: last).
+func (c *Client) MoveSession(workspace, session, before int) error {
+	_, err := c.call(Message{Type: MsgMoveSession, Workspace: workspace, Session: session, To: before})
+	return err
+}
+
 // Report tells the host what the agent in a pane does: its type, its
 // state (working, blocked, done, idle; "" to keep it), its title and what
 // it asks or did.

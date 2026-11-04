@@ -304,3 +304,31 @@ func (m *Model) Move(workspace, to int) error {
 	m.Workspaces = slices.Insert(m.Workspaces, to, w)
 	return nil
 }
+
+// MoveSession puts session before another session in the same workspace;
+// before 0 puts it last. Validate both IDs before changing the order so
+// a removed target or a session from another workspace cannot move it.
+func (m *Model) MoveSession(workspace, session, before int) error {
+	w := m.Workspace(workspace)
+	if w == nil {
+		return ErrNotFound
+	}
+	from := slices.IndexFunc(w.Sessions, func(s *Session) bool { return s.ID == session })
+	to := len(w.Sessions)
+	if before != 0 {
+		to = slices.IndexFunc(w.Sessions, func(s *Session) bool { return s.ID == before })
+	}
+	if from < 0 || to < 0 {
+		return ErrNotFound
+	}
+	if from == to || from+1 == to {
+		return nil
+	}
+	s := w.Sessions[from]
+	if from < to {
+		to--
+	}
+	w.Sessions = slices.Delete(w.Sessions, from, from+1)
+	w.Sessions = slices.Insert(w.Sessions, to, s)
+	return nil
+}
