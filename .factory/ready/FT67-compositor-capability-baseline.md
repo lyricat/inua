@@ -35,3 +35,13 @@ Built the five-compositor, 23-feature capability matrix, minimum/optional baseli
 Checks: Codex make test passed (Python 15 tests, go vet, race tests: 103 packages passed, 0 failed); 48 top-level tests and 6 subtests skipped, with causes recorded in the document. Manager independently reran make test with throwaway HOME/XDG and isolated D-Bus environment: exit 0. git diff --check passed; only the three planned documentation paths changed, no forbidden paths.
 Installs: none reported; no dependency manifest changes. No UI changes, real-session compositor checks or experiments; runtime capabilities and protocol negotiation remain unverified. Earlier path-length test failures and successful final checks are recorded in the document.
 Moved new/ → review/. Owner should examine the proposed minimum baseline and niri recommendation after review; FT68 was not built in this run.
+
+## factory · review · 2026-11-05 02:40
+head: 90f7d2cc1dcba4f5605d45569d78d440a3b9c0d7
+verdict: pass
+notes:
+- [P2] docs/compositor-capabilities.md:92: niri press/release bindings are marked "Since: next release" in the cited official documentation and absent from v26.04 configuration source. Mark this as development-only rather than available in the compared release; for example, `Mod { release { toggle-overview; } }` is not supported by that release.
+
+Validation: Codex reviewed origin/master...HEAD; all 23 inventory rows and five compositor columns, local links, reference definitions and git diff --check passed. All 46 external references were retrieved and key capability/version evidence checked. Final complete make test exited 0: Python 15 tests, go vet and race tests passed (103 packages passed, 33 without tests; 1159 top-level tests passed, 53 top-level and 6 subtests skipped). Initial four-package failures from temporary /proc path aliases disappeared after correcting isolated test paths; affected code is unchanged from base. No remaining test failure. No merge conflicts. Worktree clean; no code changes, commits, installs or dependency restoration.
+Limits: skipped tests require unavailable terminal engine, libturbojpeg, fish, JavaScript runtime or download conditions; compositor and GPG/pass tools were excluded from test PATH for isolation, and some helper tests skip by design. Rolling docs and source checks do not prove real-session interoperability. No visual, live compositor or integration experiment validation.
+Moved review/ → ready/: no P0/P1 findings. Owner should examine the P2 version caveat, proposed minimum baseline and niri recommendation; this review does not approve or start experiments.
