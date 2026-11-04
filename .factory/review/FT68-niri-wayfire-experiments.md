@@ -1,5 +1,7 @@
 ---
 source: issue #61
+branch: factory/FT68-niri-wayfire-experiments
+round: 1
 ---
 # Validate niri and Wayfire with small integration experiments
 
@@ -27,3 +29,16 @@ The build machine has neither niri nor Wayfire, and the factory cannot install s
 - A go/no-go recommendation for each target, and any revision to the baseline proposed by #60.
 - No claim that the prototypes are compositor support.
 - Linked from docs/hyprland-coupling.md.
+
+## factory · plan · 2026-11-05 03:35
+Behaviour: Separate opt-in disposable probes enumerate windows/workspaces, watch changes, focus native window IDs and switch native workspaces. Subscribe before non-atomic snapshots; distinguish empty, unavailable, malformed and denied results. Invalidate state on disconnect, reconnect watcher generations without replaying actions, and distinguish acknowledgment from observed effects.
+Scope: experiments/compositor and the coupling-inventory link only; version-targeted nested instructions, action/event evidence, unsupported/untested behavior, Hyprland comparison and go/no-go for both targets. No production support, abstraction layer or shell changes; no PR67 merging or fixes.
+Decisions: Python standard library and fake Unix sockets; absent compositors are expected, so every real-session observation remains UNTESTED. FT67 is ready but unshipped and remains a pending proposal. Protocol claims use versioned sources, not PR67 runtime claims.
+Checking: Fake-socket regression coverage for framing, identifiers, errors, empty/null states, timeouts, startup/event ordering, reconnects and action checks; run experiment tests, make test in throwaway HOME/XDG with isolated buses, diff and documentation-link checks. No live compositor or UI checks.
+
+## factory · 2026-11-05 03:35
+Recovered the interrupted build's uncommitted experiment drafts and inventory link, preserving a backup in the build directory; Codex completed them. Commit ba74a605, pushed factory/FT68-niri-wayfire-experiments. Only 11 planned experiment/documentation files changed; no forbidden paths or unrelated commits.
+Built separate niri and Wayfire probes, reproducible nested-session instructions, EVIDENCE.md with protocol sources and test limits, native identity/event/error semantics, Hyprland comparison and baseline revision recommendations. Both targets are GO for further nested validation and NO-GO for claiming production support. PR67 was context only; FT67 remains pending.
+Checks: Codex experiment suite passed 17 tests; make test passed Python 15 tests, go vet and Go race tests (103 packages; 53 top-level and 6 subtests skipped, reasons in EVIDENCE.md). Manager independently reran both experiment tests and make test with isolated HOME/XDG/buses: both exit 0. git diff --check passed; working tree clean.
+Installs: none. All real niri/Wayfire sessions, nested-session instructions and visual observations remain UNTESTED; no UI changes. Source checks and fake sockets do not prove real compositor interoperability.
+Moved new/ → review/. Owner should inspect EVIDENCE.md, per-target run instructions and the go/no-go limits after review.
