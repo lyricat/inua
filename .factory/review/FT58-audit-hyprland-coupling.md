@@ -49,3 +49,15 @@ Tests: Full make test still fails after retry and independent manager verificati
 Not checked: UI, real compositor sessions and alternative desktop compatibility were not exercised. No UI or runtime code changed.
 
 Moved new/ → review/ for review, not approval to merge.
+
+## factory · review · 2026-11-04 11:50
+head: 52837fa04ea09321be8fcb1f2cfa300ad603720e
+verdict: fix
+fix:
+- [P1] Makefile:102: Required make test fails on both HEAD and origin/master (5 packages, 54 failures). This is a pre-existing/environment-related test gate failure, not a regression introduced by this documentation change. Resolve the test environment or baseline failures and obtain a passing full make test before approval. Example: source_test.go:49: firefox: got start-hyprland.
+notes:
+- [P2] docs/hyprland-coupling.md:37: Clipboard and dictation are grouped without documenting the existing clipboard fallback. With client == nil, pasteClipboard invokes wtype to send Ctrl+V to the currently focused window (internal/ui/clipboard.go:629); dictation requires Hyprland. Document these separately, the wtype dependency and the lack of address-targeted focus in that fallback.
+
+Validation: Codex reviewed origin/master...HEAD, the complete documentation diff, source references and protocol XML. Full make test on HEAD and baseline with throwaway HOME and isolated session directories exited 2; Python 15 tests and go vet passed. Both race runs had 5 failing packages / 54 failures and 46 skips. Targeted race rerun of those packages with a real TMPDIR left only clipboard TestFindSource failing; it does not replace the full required test. git diff --check passed; worktree clean. No code changes or commits, no unpinned installs or manifest changes. No merge conflicts with master.
+
+Limits: UI, real compositor sessions and alternative desktop compatibility were not exercised. Item stays in review/ pending owner decision; no merge approval.
