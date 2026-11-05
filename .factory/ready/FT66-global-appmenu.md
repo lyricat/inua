@@ -95,3 +95,18 @@ notes:
 Validation: Codex reviewed all 15 changed files against origin/master (f9cecde). Required make test failed on HEAD and base with temporary Unix socket path limits; Python 15/15 and go vet passed on both. Race suites: HEAD 98 packages passed and 7 failed; base 97 passed and 7 failed. With shorter socket addresses the affected seven packages passed on both, and all seven appmenu tests passed. Four isolated probes reproduced the P2 defects. git diff --check passed; checkout unchanged. Prior compilation, callback ownership, sender validation, signal signature and focus integration findings are addressed. No unpinned installs.
 
 Limits: UI was not checked by eye; live compositor integration, monitor hotplug stress and registration floods unverified. Codex lacked a local review-code skill; directly reviewed D-Bus ownership/decoding and native callback lifetimes. The P1 is a validation-environment blocker, not an identified product regression. Remains in review/ for owner decision.
+
+
+## factory · review · 2026-11-05 11:07
+head: f728bed05b3500ac88552a43e644cabe0dcb8533
+verdict: pass
+notes:
+- [P2] internal/ui/appmenu.go:275-277: nested submenus are static uikit.Item.Items and do not refresh at actual opening. Private-bus/Broadway reproduction: open parent 7 with More 8 containing Old action, change the application's leaf to New action, then click More. AboutToShow stays [7,8] and Old action remains visible. Refresh and replace contents when the nested submenu opens; eager fetching at parent opening is insufficient.
+
+Re-review requested by the owner. Fast-forwarded the factory mirror from 7a695a9 to the unchanged current PR head f728bed (two author fixes); no source changes or merge into master. Reviewed all 15 changed files against origin/master 5c274fc, merge base f9cecde. No P0/P1 product findings; pass follows the factory's P0/P1 gate, not absence of defects.
+
+Validation: full make test exit 0: 15/15 Python tests, go vet, race tests across 105 passing packages and 32 packages without tests; no cached results. Initial plain short-TMPDIR runs still exceeded Unix socket limits. Final run used an external go test -exec launcher giving only eight socket-sensitive packages a short /proc fd alias to isolated temporary storage, while other packages used the physical directory. No test source edits or skipped tests. This is an environment-assisted pass, not a claim that plain make test passes in the original environment. Complete commands and logs retained in review artifacts a66/review.txt, a66/commands.jsonl and a66/make-test-final.log.
+
+Old P1 compilation and callback exhaustion are resolved: vet, no-CGO shell build and 40 rounds rebuilding 100 buttons plus 100 actions passed. Three previous P2 findings (ambiguous PID mapping, stale asynchronous responses, hidden top-level updates) are fixed. Nested refresh is only partially fixed and remains above. Eight existing appmenu tests and three independent probes pass, including sender validation and cross-client unregister; UI ordering/close/callback probes pass. The nested-menu expected-behavior probe fails and confirms the remaining P2. git diff --check passes and checkout is clean.
+
+No installations. Tests used throwaway HOME, isolated runtime and private services. No visual UI, real application/compositor integration, monitor hotplug or registration-flood testing; full native object leak freedom not established. Current master suite was not rerun. Moved review/ to ready/; not merged into master.
