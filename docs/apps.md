@@ -70,6 +70,14 @@ Ask from the launcher (`?` before the query, or its last row) or with
 `inua-assistant --ask "…"`. Questions go to the open window and keep its
 conversation; + starts a new one.
 
+Each question and answer has a **Copy** button. It copies that message's
+full plain text, including line breaks; while an answer streams, it copies
+the text shown so far. The button is disabled until there is text to copy.
+Displayed errors, stopped answers and the no-answer message can be copied
+too. Use Tab or Shift+Tab to reach **Copy**, then Space or Enter to activate
+it. Text can also be selected with the pointer. Clipboard errors appear
+under the message. See the [manual checks](assistant-copy.md).
+
 ### Profiles
 
 Set it up in Settings → AI. Each profile is a model: a provider (OpenAI,

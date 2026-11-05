@@ -14,6 +14,7 @@ import (
 	"codeberg.org/puregotk/puregotk/v4/graphene"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
+	"github.com/lyricat/inua/internal/appmenu"
 	"github.com/lyricat/inua/internal/config"
 	"github.com/lyricat/inua/internal/gtkx"
 	"github.com/lyricat/inua/internal/i18n"
@@ -41,6 +42,7 @@ type bar struct {
 	voiceIcon   gtk.Image
 	unread      gtk.Box
 	tray        gtk.Box
+	appMenu     gtk.Box // the focused application's menu (appmenu.go)
 	status      gtk.Button
 	netIcon     gtk.Image
 	btIcon      gtk.Image
@@ -52,9 +54,15 @@ type bar struct {
 	clockButton gtk.Button // opens the calendar panel
 	recTime     gtk.Label
 	refs        gtkx.Scope
-	edgeGaps    bool
-	compact     bool
-	height      int32 // the window's, by its density
+
+	appMenuReg     appmenu.Registration // whose menu it shows, if any
+	appMenuTop     []appMenuTop         // the buttons, as last drawn
+	appMenuLoading bool                 // the menu is being read
+	appMenuStale   bool                 // and changed meanwhile
+
+	edgeGaps bool
+	compact  bool
+	height   int32 // the window's, by its density
 
 	// held counts the panels hanging from the bar (drop.go), whose
 	// window is grown down over the monitor meanwhile; pressHeld is
@@ -126,6 +134,7 @@ func (s *shellUI) dropBar(b *bar) {
 	if s.tray.menu != nil {
 		s.tray.menu.Popdown() // it may hang off this bar
 	}
+	s.clearAppMenu(b)
 	// A panel hanging from the bar goes with it.
 	if s.control.drop.host == b {
 		s.closeControl()
@@ -181,6 +190,7 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	ui.Get("voice_icon", &b.voiceIcon)
 	ui.Get("unread", &b.unread)
 	ui.Get("tray", &b.tray)
+	ui.Get("app_menu", &b.appMenu)
 	ui.Get("status", &b.status)
 	ui.Get("net_icon", &b.netIcon)
 	ui.Get("bt_icon", &b.btIcon)
@@ -401,6 +411,7 @@ func (b *bar) setHypr(s *shellUI, snap compositor.Snapshot) {
 	order := s.overview.st
 	order.MRU = s.cfg.Overview.MRU
 	b.setWorkspaces(s, order.BarWorkspaces(snap, name, s.cfg.Bar.Workspaces == "all"))
+	s.syncAppMenu(b)
 }
 
 // scrollWorkspaces goes n notches' way (down the next, up the previous)
