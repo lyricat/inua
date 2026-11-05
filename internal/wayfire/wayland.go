@@ -182,7 +182,7 @@ func (w *Wayland) roundtrip() error {
 	}
 	w.callbacks[id] = true
 	for {
-		obj, op, _, err := w.readMessage()
+		obj, op, payload, err := w.readMessage()
 		if err != nil {
 			return err
 		}
@@ -193,7 +193,7 @@ func (w *Wayland) roundtrip() error {
 			}
 			continue
 		}
-		if err := w.handle(obj, op, nil); err != nil {
+		if err := w.handle(obj, op, payload); err != nil {
 			return err
 		}
 	}
@@ -258,7 +258,7 @@ func (w *Wayland) handle(obj uint32, op uint16, p []byte) error {
 	case 5: // done
 	case 6: // closed
 		delete(w.views, v.id)
-		_ = w.send(obj, 0) // destroy handle
+		_ = w.send(obj, 7) // zwlr_foreign_toplevel_handle_v1.destroy
 	case 7: // parent
 	default:
 	}
@@ -321,7 +321,7 @@ func (w *Wayland) CloseWindow(_ context.Context, address string) error {
 	if _, err := fmt.Sscanf(address, "wf:%d", &handle); err != nil || handle == 0 {
 		return fmt.Errorf("invalid Wayfire toplevel id %q", address)
 	}
-	return w.send(handle, 3) // zwlr_foreign_toplevel_handle_v1.close
+	return w.send(handle, 5) // zwlr_foreign_toplevel_handle_v1.close
 }
 
 func (w *Wayland) SwitchWorkspace(context.Context, int) error {
