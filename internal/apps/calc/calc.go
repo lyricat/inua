@@ -319,16 +319,13 @@ func (p *parser) apply(name string, x float64) (float64, error) {
 }
 
 // Pasted is pasted text as the calculator shows an expression (× ÷ − √ π),
-// without spaces, thousands separators or a closing "="; ok is false when
-// it is not something the calculator can read.
+// without spaces, thousands separators or a closing "=". Empty text is ignored;
+// incomplete or invalid expressions remain available for the user to edit.
 func Pasted(s string) (expr string, ok bool) {
 	s = strings.TrimSuffix(strings.TrimSpace(s), "=")
 	s = strings.Join(strings.Fields(s), "")
 	s = strings.NewReplacer(",", "", "*", "×", "/", "÷", "-", "−", "–", "−", "sqrt", "√", "pi", "π").Replace(s)
 	if s == "" {
-		return "", false
-	}
-	if _, err := lex(s); err != nil {
 		return "", false
 	}
 	return s, true

@@ -102,14 +102,12 @@ func (a *App) newWindow() *window {
 	ui.Get("picker_accept", &f.accept)
 	ui.Close()
 
-	if len(a.wins) > 0 {
-		// A window after the first: the app's classes, as appui gives the
-		// first.
-		w.win.SetApplication(a.c.App)
-		w.win.SetTitle(i18n.T("Files"))
-		for _, c := range []string{"app", "settings", "files"} {
-			w.win.AddCssClass(c)
-		}
+	// appui initializes only the first window. Files also creates windows
+	// after all previous ones close, while the process is still resident.
+	w.win.SetApplication(a.c.App)
+	w.win.SetTitle(i18n.T("Files"))
+	for _, c := range []string{"app", "settings", "files"} {
+		w.win.AddCssClass(c)
 	}
 	a.wins = append(a.wins, w)
 	if s := a.settings; s.Width > 0 && s.Height > 0 {

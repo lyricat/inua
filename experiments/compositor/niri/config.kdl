@@ -1,0 +1,9 @@
+// Disposable nested profile; no session services or user configuration imports.
+spawn-at-startup "sh" "-c" "printf '%s\\n' \"$NIRI_SOCKET\" > \"$FT68_RUN/niri.socket\"; printf '%s\\n' \"$WAYLAND_DISPLAY\" > \"$FT68_RUN/display\""
+binds {
+    Mod+Return { spawn "foot"; }
+    Mod+Shift+Q { close-window; }
+    Mod+Shift+E { quit; }
+    Mod+J { focus-workspace-down; }
+    Mod+K { focus-workspace-up; }
+}

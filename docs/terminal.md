@@ -100,10 +100,22 @@ from it, or at `$INUA_VT_LIB`.
   it, or Ctrl+`, goes to the next: waiting, then done, then idle.
 - **Sessions** (column 2): the shown workspace's sessions, each a section of its
   panes under a head with the same square and a badge counting the
-  agents that wait. A pane's row shows its agent's mark and title, its state and
+  agents that wait. Right-click a head, or press Menu or Shift+F10 while
+  it has keyboard focus, to rename or close that session. Closing always
+  asks first, even with one pane: all its panes and programs end. Cancel
+  has focus; Cancel or Escape leaves the session running. Clicking a
+  head still selects it, and double-clicking still renames it.
+  A pane's row shows its agent's mark and title, its state and
   how long it has been in it; an agent waiting for you shows what it
   asks. A shell shows the command running in it. An agent's mark takes
   its own colour (Claude Code's orange, Gemini's blue…) while it runs.
+  Drag a session's header to reorder the whole section, including its
+  pane rows, within this workspace. It lifts under the pointer while the
+  other sections slide aside; dropping puts it there immediately. Escape
+  or a drop outside the list restores its place. Reordering keeps the
+  selected session, pane layout and running programs unchanged; the host
+  shares the order with every client and remembers it for kept sessions.
+  While the workspace search is active, reordering is disabled.
   After the last session, *New session* starts one.
 - **Terminals** (column 3): the shown session's panes, tiled, each with a
   head (state, mark, title, folder). In a git checkout, the folder's
@@ -268,6 +280,14 @@ commands and what never to keep, and the keys by action (`""` frees one
 for the program), and the Web Terminal (`[web]`: `on`, `tailscale`,
 `port`). The theme, the colours and the shell take hold at
 once; the icons and the text size follow inua's `config.toml`.
+
+**Focus follows mouse** (Settings → Terminal) focuses a pane when the
+pointer enters its terminal or header in the active window. Its TOML key
+is `terminal.focus_follows_mouse`, default `false`, including for existing
+settings that omit it. Turning it on or off takes effect immediately and
+is saved for the next start. Keyboard focus stays where you put it until
+the pointer enters another pane. Search, dialogs, menus, selection and
+dragging keep their focus. This option applies to the desktop terminal.
 
 ## On a phone
 

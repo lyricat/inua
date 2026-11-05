@@ -184,6 +184,13 @@ Hyprland reports focused.
 
 ## 7. Keeping up with Hyprland
 
+The [feature-by-feature coupling audit](hyprland-coupling.md) traces the
+implemented dependencies, failure behavior, protocol versions and test gaps.
+The [compositor capability comparison](compositor-capabilities.md) uses that
+inventory to propose a minimum support baseline and a first additional target,
+pending the owner's decision. It does not change the current implementation or
+claim compatibility with other compositors.
+
 `internal/hypr` (toolkit-free):
 
 1. Connect to the event socket first, then query the initial state; changes

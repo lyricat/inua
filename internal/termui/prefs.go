@@ -161,6 +161,8 @@ func (a *App) buildSettings() {
 	sec = pr.section(page, i18n.T("TERMINAL"), "")
 	pr.row(sec, i18n.T("Copy on select"), i18n.T("Selecting copies to the clipboard; the primary selection follows it either way"),
 		pr.toggle(s.Terminal.CopyOnSelect, func(on bool) { s.Terminal.CopyOnSelect = on; save() }))
+	pr.row(sec, i18n.T("Focus follows mouse"), i18n.T("Focus a pane when the pointer enters it in the active window"),
+		pr.toggle(s.Terminal.FocusFollowsMouse, func(on bool) { s.Terminal.FocusFollowsMouse = on; save() }))
 	sb := gtk.NewSpinButtonWithRange(0, 1000000, 1000)
 	sb.SetValue(float64(s.Terminal.Scrollback))
 	pr.spin(sb, func(v float64) { s.Terminal.Scrollback = int(v); save() })

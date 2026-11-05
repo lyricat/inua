@@ -1932,20 +1932,20 @@ progressbar.thin progress { min-height: 2px; border-radius: 1px; background: @ac
 }
 .settings button.framed-toggle:checked { background: alpha(@accent, 0.09); border-color: alpha(@accent, 0.38); color: @t0; }
 .calc-display { padding: 8px 4px 14px; }
-.calc-expr {
-  min-height: 22px;
+.settings entry.calc-expr {
   font-family: "Geist Mono", "IBM Plex Mono", monospace;
   font-size: 15px;
   color: @t1;
 }
-.calc-result {
+.settings entry.calc-result {
   font-family: "IBM Plex Sans", "Zen Kaku Gothic New", sans-serif;
   font-size: 46px;
   font-weight: 300;
   font-feature-settings: "tnum";
   color: @t0;
 }
-.calc-result.preview { color: @t2; }
+.settings entry.calc-result.preview { color: @t2; }
+.calc-error { color: @danger; font-size: 12px; }
 button.calc-key {
   min-width: 56px;
   min-height: 48px;
