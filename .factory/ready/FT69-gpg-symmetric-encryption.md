@@ -63,3 +63,16 @@ notes:
 - Validation: 15 Python session tests and go vet passed. Initial race run passed 99 packages and failed 7; six of those passed after environment adjustments, but the socket test remained blocked. Full make test success is not established. All 8 GPG package tests passed; isolated real GPG 2.4.8 probes covered cancellation, wrong-passphrase retry, cached decryption and mixed recipients. Generated translations and Blueprint output matched the commit in temporary copies.
 - Installs: none. Project working tree remained clean. No visual UI check; real desktop pinentry interaction and older GPG versions remain unverified.
 - Item remains in review/ for the owner to decide. No linked GitHub issue or PR was specified.
+
+## factory · review · 2026-11-05 23:18
+head: 6f9967dfcb3b6dbc0ca1b84cc25a4638d21c30ae
+verdict: pass
+notes:
+- Owner requested retry of the environment-blocked review. Re-reviewed all 14 changed files against master 648db7a8b7e76d327de9856eba337337872950ca; no merge conflicts and no P0/P1 code findings. The previous sockdir P1 was an environment validation blocker, not an introduced defect; successful full validation now clears that blocker.
+- Full make test returned 0: 15 Python session tests, go vet, and 106 passing Go packages with race detection and forced uncached test results; 32 packages had no tests, no failed packages or race reports. All 8 GPG package tests passed.
+- Isolation runner used a throwaway HOME, private temporary/runtime directories and a private writable /tmp. Its initial read-only AppArmor query-interface setup caused D-Bus failures; preserving access to that query interface resolved them without changing policy or project code. No tests were edited, filtered or manually skipped.
+- The successful run still emitted 51 built-in SKIP records (46 top-level tests and 5 subtests), covering missing optional libraries/tools, system-directory trust assumptions, opt-in real ISO downloads and subprocess helpers. Passing the configured command does not mean every test case ran.
+- [P2] internal/i18n/locales/ko.po:18253: Eight new Korean translations use 암호문 (ciphertext) where passphrase is meant; the guidance incorrectly says ciphertext alone opens the message and should be sent separately. Use a passphrase term such as 암호 문구 in those entries, not a global replacement of legitimate ciphertext labels. This previously recorded P2 remains unfixed.
+- make generate and make i18n passed in an isolated archive copy; all tracked generated outputs matched HEAD byte for byte. Review checkout remained clean. Installs: none.
+- No visual UI or real desktop pinentry validation this round. File chooser/multi-file partial success, focus and keyboard interactions, switching back to public-key mode with existing keys, translated layouts and GPG older than 2.4.8 remain unverified. Prior scripted pinentry/cache/mixed-recipient probes were not rerun.
+- Moved review/ → ready/ under the configured no-P0/P1 rule, with the P2 retained. No merge or code changes. No linked GitHub issue or PR specified.
