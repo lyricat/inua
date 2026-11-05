@@ -10,10 +10,12 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/lyricat/inua/internal/sockdir"
 )
 
 func TestRoundTrip(t *testing.T) {
-	path := filepath.Join(t.TempDir(), "s.sock")
+	path := filepath.Join(sockdir.New(t), "s.sock")
 	ctx, cancel := context.WithCancel(context.Background())
 	done := make(chan error, 1)
 	go func() {
@@ -69,7 +71,7 @@ func TestRoundTrip(t *testing.T) {
 // A caller that stops waiting (inua-pinentry, its passphrase answered
 // elsewhere) ends the request's context: the handler gives it up.
 func TestCallerHangsUp(t *testing.T) {
-	path := filepath.Join(t.TempDir(), "s.sock")
+	path := filepath.Join(sockdir.New(t), "s.sock")
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	ln, err := net.Listen("unix", path)

@@ -7,10 +7,12 @@ import (
 	"net/http"
 	"path/filepath"
 	"testing"
+
+	"github.com/lyricat/inua/internal/sockdir"
 )
 
 func TestTailscaleRead(t *testing.T) {
-	socket := filepath.Join(t.TempDir(), "tailscaled.sock")
+	socket := filepath.Join(sockdir.New(t), "tailscaled.sock")
 	l, err := net.Listen("unix", socket)
 	if err != nil {
 		t.Fatal(err)

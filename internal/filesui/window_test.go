@@ -17,6 +17,7 @@ import (
 	"github.com/lyricat/inua/internal/config"
 	"github.com/lyricat/inua/internal/dbustest"
 	"github.com/lyricat/inua/internal/gtkx"
+	"github.com/lyricat/inua/internal/sockdir"
 )
 
 // Build real Files windows through appui, without device watchers, folder
@@ -52,12 +53,7 @@ func TestWindowStylesAfterReopen(t *testing.T) {
 	defer runtime.UnlockOSThread()
 
 	// Both display sockets and all application files belong to this test.
-	// Keep the socket directory short enough for a Unix socket address.
-	dir, err := os.MkdirTemp("", "files-gtk-")
-	if err != nil {
-		t.Fatal(err)
-	}
-	t.Cleanup(func() { os.RemoveAll(dir) })
+	dir := sockdir.New(t)
 	for key, value := range map[string]string{
 		"HOME": dir, "XDG_RUNTIME_DIR": dir,
 		"XDG_CONFIG_HOME": filepath.Join(dir, "config"),

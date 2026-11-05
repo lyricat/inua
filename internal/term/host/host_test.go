@@ -14,6 +14,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/lyricat/inua/internal/sockdir"
 	"github.com/lyricat/inua/internal/term/agent"
 	"github.com/lyricat/inua/internal/term/layout"
 	"github.com/lyricat/inua/internal/term/shellint"
@@ -31,7 +32,7 @@ func init() {
 
 func startHost(t *testing.T) (*Host, string) {
 	t.Helper()
-	path := filepath.Join(t.TempDir(), "inua", "term.sock")
+	path := filepath.Join(sockdir.New(t), "inua", "term.sock")
 	h, err := Listen(path)
 	if err != nil {
 		t.Fatal(err)
@@ -338,7 +339,7 @@ func TestListen(t *testing.T) {
 	if _, err := Listen(path); err == nil {
 		t.Error("a second host on a live socket")
 	}
-	stale := filepath.Join(t.TempDir(), "term.sock")
+	stale := filepath.Join(sockdir.New(t), "term.sock")
 	os.WriteFile(stale, nil, 0o600)
 	h, err := Listen(stale)
 	if err != nil {

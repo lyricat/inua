@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/lyricat/inua/internal/hypr"
+	"github.com/lyricat/inua/internal/sockdir"
 )
 
 // fakeHypr serves Hyprland's request socket: the focused window, and the
@@ -21,7 +22,7 @@ type fakeHypr struct {
 
 func newFakeHypr(t *testing.T, active string) *fakeHypr {
 	t.Helper()
-	f := &fakeHypr{dir: t.TempDir(), active: active}
+	f := &fakeHypr{dir: sockdir.New(t), active: active}
 	ln, err := net.Listen("unix", filepath.Join(f.dir, ".socket.sock"))
 	if err != nil {
 		t.Fatal(err)

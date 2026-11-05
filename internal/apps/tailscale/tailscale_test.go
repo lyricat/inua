@@ -13,6 +13,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/lyricat/inua/internal/sockdir"
 )
 
 const statusJSON = `{
@@ -111,7 +113,7 @@ func TestOfferExit(t *testing.T) {
 // fakeDaemon serves a local API on a socket in a temporary directory.
 func fakeDaemon(t *testing.T, h http.HandlerFunc) *Client {
 	t.Helper()
-	sock := filepath.Join(t.TempDir(), "tailscaled.sock")
+	sock := filepath.Join(sockdir.New(t), "tailscaled.sock")
 	l, err := net.Listen("unix", sock)
 	if err != nil {
 		t.Fatal(err)
@@ -178,7 +180,7 @@ func TestClient(t *testing.T) {
 		t.Errorf("requests\n%v\nwant\n%v", got, want)
 	}
 
-	if _, err := NewClient(filepath.Join(t.TempDir(), "none.sock")).Status(ctx); !errors.Is(err, ErrNotRunning) {
+	if _, err := NewClient(filepath.Join(sockdir.New(t), "none.sock")).Status(ctx); !errors.Is(err, ErrNotRunning) {
 		t.Errorf("no daemon: %v", err)
 	}
 }

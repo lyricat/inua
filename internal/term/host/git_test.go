@@ -34,6 +34,10 @@ func TestReadGit(t *testing.T) {
 	write(t, filepath.Join(repo, ".git", "modules", "lib", "HEAD"), "0123456789abcdef0123456789abcdef01234567\n")
 	plain := filepath.Join(top, "plain")
 	os.MkdirAll(plain, 0o755)
+	// The temporary directory can itself be in a checkout (a CI run's, in
+	// its working copy): a plain folder then belongs to that one, and to
+	// none otherwise.
+	outside := readGit(filepath.Dir(top))
 
 	for _, c := range []struct {
 		dir  string
@@ -43,7 +47,7 @@ func TestReadGit(t *testing.T) {
 		{filepath.Join(repo, "src", "deep"), Git{Root: repo, Branch: "main"}},
 		{wt, Git{Root: wt, Branch: "feat/x", Worktree: true, Repo: repo}},
 		{sub, Git{Root: sub, Branch: "0123456"}},
-		{plain, Git{}},
+		{plain, outside},
 		{"", Git{}},
 		{"relative/dir", Git{}},
 	} {

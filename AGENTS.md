@@ -50,6 +50,8 @@ A light app's window should be up with its content about a second after launch. 
 
 Use the Go standard library's `testing`; name test functions `TestXxx`. Add behaviour regression tests for logic changes, using temporary directories, fake services and the private D-Bus of `internal/dbustest`; tests that need `dbus-daemon` are skipped without it. There is no coverage threshold.
 
+Tests must pass wherever the temporary directory is. A Unix socket's path holds at most 107 bytes, so a socket, and whatever makes one (a fake Hyprland, gpg-agent, a Broadway display), goes in `sockdir.New(t)`, not in `t.TempDir()`, which is too deep under a long `TMPDIR`; `dbustest` does so for its bus. Do not assume the temporary directory is outside a Git checkout either.
+
 Documentation, wording, simple logging, and visual or interaction changes to the UI do not get new automated tests. Check UI changes by hand in a nested session and note the steps. Do not verify an implementation by connecting to a database or starting a PostgreSQL container.
 
 ## Commits and Pull Requests
