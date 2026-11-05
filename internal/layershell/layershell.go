@@ -140,13 +140,18 @@ func load(l Loader, name, pkg string) error {
 	l.Register(&setExclusiveZone, lib, "gtk_layer_set_exclusive_zone")
 	l.Register(&autoExclusiveZone, lib, "gtk_layer_auto_exclusive_zone_enable")
 	l.Register(&setKeyboardMode, lib, "gtk_layer_set_keyboard_mode")
-	l.Register(&lockSupported, lib, "gtk_session_lock_is_supported")
-	l.Register(&lockNew, lib, "gtk_session_lock_instance_new")
-	l.Register(&lockLock, lib, "gtk_session_lock_instance_lock")
-	l.Register(&lockUnlock, lib, "gtk_session_lock_instance_unlock")
-	l.Register(&lockIsLocked, lib, "gtk_session_lock_instance_is_locked")
-	l.Register(&lockAssign, lib, "gtk_session_lock_instance_assign_window_to_monitor")
 	loaded = true
+	// The session lock came with 1.1; Debian 13 has 1.0, where binding
+	// its functions would stop the program. Without them LockSupported
+	// is false and nothing else is called.
+	if AtLeast(1, 1) {
+		l.Register(&lockSupported, lib, "gtk_session_lock_is_supported")
+		l.Register(&lockNew, lib, "gtk_session_lock_instance_new")
+		l.Register(&lockLock, lib, "gtk_session_lock_instance_lock")
+		l.Register(&lockUnlock, lib, "gtk_session_lock_instance_unlock")
+		l.Register(&lockIsLocked, lib, "gtk_session_lock_instance_is_locked")
+		l.Register(&lockAssign, lib, "gtk_session_lock_instance_assign_window_to_monitor")
+	}
 	return nil
 }
 
@@ -205,7 +210,8 @@ func SetAnchor(window uintptr, e Edge, anchor bool) {
 // The library destroys the windows when the lock ends.
 
 // LockSupported reports whether the compositor supports session locks.
-func LockSupported() bool { return loaded && lockSupported() != 0 }
+// It is false with a library older than 1.1, which has no session lock.
+func LockSupported() bool { return loaded && lockSupported != nil && lockSupported() != 0 }
 
 // NewLock makes a session lock instance (a new reference).
 func NewLock() uintptr { return lockNew() }
