@@ -89,63 +89,165 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
                                                 </style>
                                                 <property name="hexpand">true</property>
                                                 <property name="xalign">0</property>
-                                              </object>
-                                            </child>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkBox" id="to_box">
-                                            <style>
-                                              <class name="gpg-to"/>
-                                            </style>
-                                            <property name="spacing">6</property>
-                                            <child>
-                                              <object class="GtkFlowBox" id="to_chips">
-                                                <property name="hexpand">true</property>
-                                                <property name="valign">3</property>
-                                                <property name="selection-mode">0</property>
-                                                <property name="homogeneous">false</property>
-                                                <property name="column-spacing">6</property>
-                                                <property name="row-spacing">6</property>
-                                                <property name="max-children-per-line">30</property>
-                                                <child>
-                                                  <object class="GtkEntry" id="to_entry">
-                                                    <style>
-                                                      <class name="gpg-to-entry"/>
-                                                    </style>
-                                                    <property name="hexpand">true</property>
-                                                    <property name="width-chars">30</property>
-                                                    <property name="placeholder-text" translatable="yes">Name, address or key ID</property>
-                                                  </object>
-                                                </child>
+                                                <property name="ellipsize">3</property>
                                               </object>
                                             </child>
                                             <child>
-                                              <object class="GtkToggleButton" id="to_browse">
+                                              <object class="GtkStackSwitcher">
                                                 <style>
-                                                  <class name="plain"/>
-                                                  <class name="small"/>
+                                                  <class name="segmented"/>
                                                 </style>
-                                                <property name="valign">1</property>
-                                                <property name="icon-name">pan-down-symbolic</property>
-                                                <property name="tooltip-text" translatable="yes">All keys</property>
+                                                <property name="stack">to_kind</property>
+                                                <property name="valign">3</property>
                                               </object>
                                             </child>
                                           </object>
                                         </child>
                                         <child>
-                                          <object class="GtkBox" id="to_suggest">
-                                            <style>
-                                              <class name="gpg-suggest-frame"/>
-                                            </style>
-                                            <property name="orientation">1</property>
-                                            <property name="visible">false</property>
+                                          <object class="GtkStack" id="to_kind">
+                                            <property name="transition-type">1</property>
+                                            <property name="transition-duration">120</property>
+                                            <property name="vhomogeneous">false</property>
+                                            <child>
+                                              <object class="GtkStackPage">
+                                                <property name="name">keys</property>
+                                                <property name="title" translatable="yes">Public keys</property>
+                                                <property name="child">
+                                                  <object class="GtkBox">
+                                                    <property name="orientation">1</property>
+                                                    <child>
+                                                      <object class="GtkBox" id="to_box">
+                                                        <style>
+                                                          <class name="gpg-to"/>
+                                                        </style>
+                                                        <property name="spacing">6</property>
+                                                        <child>
+                                                          <object class="GtkFlowBox" id="to_chips">
+                                                            <property name="hexpand">true</property>
+                                                            <property name="valign">3</property>
+                                                            <property name="selection-mode">0</property>
+                                                            <property name="homogeneous">false</property>
+                                                            <property name="column-spacing">6</property>
+                                                            <property name="row-spacing">6</property>
+                                                            <property name="max-children-per-line">30</property>
+                                                            <child>
+                                                              <object class="GtkEntry" id="to_entry">
+                                                                <style>
+                                                                  <class name="gpg-to-entry"/>
+                                                                </style>
+                                                                <property name="hexpand">true</property>
+                                                                <property name="width-chars">30</property>
+                                                                <property name="placeholder-text" translatable="yes">Name, address or key ID</property>
+                                                              </object>
+                                                            </child>
+                                                          </object>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkToggleButton" id="to_browse">
+                                                            <style>
+                                                              <class name="plain"/>
+                                                              <class name="small"/>
+                                                            </style>
+                                                            <property name="valign">1</property>
+                                                            <property name="icon-name">pan-down-symbolic</property>
+                                                            <property name="tooltip-text" translatable="yes">All keys</property>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkBox" id="to_suggest">
+                                                        <style>
+                                                          <class name="gpg-suggest-frame"/>
+                                                        </style>
+                                                        <property name="orientation">1</property>
+                                                        <property name="visible">false</property>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </property>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkStackPage">
+                                                <property name="name">passphrase</property>
+                                                <property name="title" translatable="yes">Passphrase</property>
+                                                <property name="child">
+                                                  <object class="GtkBox">
+                                                    <property name="orientation">1</property>
+                                                    <child>
+                                                      <object class="GtkBox">
+                                                        <style>
+                                                          <class name="row"/>
+                                                          <class name="compact"/>
+                                                        </style>
+                                                        <property name="spacing">12</property>
+                                                        <child>
+                                                          <object class="GtkLabel">
+                                                            <style>
+                                                              <class name="title"/>
+                                                            </style>
+                                                            <property name="label" translatable="yes">Passphrase</property>
+                                                            <property name="hexpand">true</property>
+                                                            <property name="xalign">0</property>
+                                                          </object>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkPasswordEntry" id="pass_new">
+                                                            <property name="width-chars">30</property>
+                                                            <property name="show-peek-icon">true</property>
+                                                            <property name="valign">3</property>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkBox">
+                                                        <style>
+                                                          <class name="row"/>
+                                                          <class name="compact"/>
+                                                        </style>
+                                                        <property name="spacing">12</property>
+                                                        <child>
+                                                          <object class="GtkLabel">
+                                                            <style>
+                                                              <class name="title"/>
+                                                            </style>
+                                                            <property name="label" translatable="yes">Type it again</property>
+                                                            <property name="hexpand">true</property>
+                                                            <property name="xalign">0</property>
+                                                          </object>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkPasswordEntry" id="pass_repeat">
+                                                            <property name="width-chars">30</property>
+                                                            <property name="show-peek-icon">true</property>
+                                                            <property name="valign">3</property>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkLabel">
+                                                        <style>
+                                                          <class name="sub"/>
+                                                        </style>
+                                                        <property name="label" translatable="yes">No key is needed to open it, only the passphrase. Give it to them apart from the message.</property>
+                                                        <property name="xalign">0</property>
+                                                        <property name="wrap">true</property>
+                                                        <property name="margin-top">10</property>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </property>
+                                              </object>
+                                            </child>
                                           </object>
                                         </child>
                                       </object>
                                     </child>
                                     <child>
-                                      <object class="GtkBox">
+                                      <object class="GtkBox" id="from_section">
                                         <style>
                                           <class name="section"/>
                                         </style>

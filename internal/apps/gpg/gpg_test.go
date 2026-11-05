@@ -1,12 +1,15 @@
 package gpg
 
 import (
+	"errors"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"slices"
 	"strings"
 	"testing"
+
+	"github.com/lyricat/inua/internal/sockdir"
 )
 
 func TestParseKeys(t *testing.T) {
@@ -73,6 +76,54 @@ func TestParseStatus(t *testing.T) {
 	}
 	if r := ParseStatus([]byte("[GNUPG:] BADSIG 977E5858B6E4C43D Ada\n")); r.Signature != "bad" || r.Signer != "Ada" {
 		t.Errorf("bad: %+v", r)
+	}
+}
+
+// TestParseStatusPassphrase reads what gpg says of a message encrypted
+// with a passphrase: opened, to a key as well, not opened by the
+// passphrase given, and its dialog closed.
+func TestParseStatusPassphrase(t *testing.T) {
+	failed := errors.New("decryption failed: Bad session key")
+	r := ParseStatus([]byte(`[GNUPG:] NEED_PASSPHRASE_SYM 9 3 10
+[GNUPG:] BEGIN_DECRYPTION
+[GNUPG:] DECRYPTION_INFO 2 9 0
+[GNUPG:] PLAINTEXT 62 1793881195 
+[GNUPG:] DECRYPTION_OKAY
+[GNUPG:] END_DECRYPTION
+`))
+	if !r.Passphrase || !r.Encrypted || len(r.To) != 0 || r.Signed || r.failure(nil) != nil || r.failure(failed) != failed {
+		t.Errorf("opened: %+v", r)
+	}
+	r = ParseStatus([]byte(`[GNUPG:] ENC_TO AFC95841F7D506CF 18 0
+[GNUPG:] NEED_PASSPHRASE_SYM 9 3 10
+[GNUPG:] DECRYPTION_KEY B5EE3BE1693E32ACDAFEE470AFC95841F7D506CF E51585CE69B379C636C7D764977E5858B6E4C43D u
+[GNUPG:] DECRYPTION_OKAY
+`))
+	if !r.Passphrase || !r.Encrypted || !slices.Equal(r.To, []string{"AFC95841F7D506CF"}) {
+		t.Errorf("to a key and with a passphrase: %+v", r)
+	}
+	r = ParseStatus([]byte(`[GNUPG:] NEED_PASSPHRASE_SYM 9 3 10
+[GNUPG:] BEGIN_DECRYPTION
+[GNUPG:] ERROR symkey_decrypt.maybe_error 11_BAD_PASSPHRASE
+[GNUPG:] DECRYPTION_FAILED
+[GNUPG:] FAILURE gpg-exit 33554433
+`))
+	if !r.Passphrase || r.Encrypted || r.failure(failed) != ErrPassphrase {
+		t.Errorf("wrong passphrase: %+v, %v", r, r.failure(failed))
+	}
+	// A dialog closed leaves gpg without a passphrase, which it then
+	// calls a bad one.
+	r = ParseStatus([]byte(`[GNUPG:] NEED_PASSPHRASE_SYM 9 3 10
+[GNUPG:] CANCELED_BY_USER
+[GNUPG:] BEGIN_DECRYPTION
+[GNUPG:] ERROR symkey_decrypt.maybe_error 11_BAD_PASSPHRASE
+[GNUPG:] DECRYPTION_FAILED
+`))
+	if r.failure(failed) != ErrCanceled {
+		t.Errorf("cancelled: %+v, %v", r, r.failure(failed))
+	}
+	if r := ParseStatus([]byte("[GNUPG:] ERROR pkdecrypt_failed 11\n[GNUPG:] DECRYPTION_FAILED\n")); r.failure(failed) != failed {
+		t.Errorf("a key that did not open it: %v", r.failure(failed))
 	}
 }
 
@@ -182,6 +233,81 @@ func TestRoundTrip(t *testing.T) {
 	pub, err := Export(bob.Fingerprint)
 	if err != nil || !strings.HasPrefix(pub, "-----BEGIN PGP PUBLIC KEY BLOCK-----") {
 		t.Errorf("export: %v", err)
+	}
+}
+
+// TestPassphrase encrypts a message and a file with a passphrase alone
+// and decrypts them: real gpg in a home without a key, given the
+// passphrase to decrypt with instead of asking.
+func TestPassphrase(t *testing.T) {
+	for _, p := range []string{"gpg", "gpgconf"} {
+		if _, err := exec.LookPath(p); err != nil {
+			t.Skip("no " + p)
+		}
+	}
+	gnupg := sockdir.New(t) // gpg-agent's socket may be made in it
+	t.Setenv("GNUPGHOME", gnupg)
+	t.Cleanup(func() { exec.Command("gpgconf", "--homedir", gnupg, "--kill", "all").Run() })
+	asked := func(passphrase string) {
+		testArgs = []string{"--pinentry-mode", "loopback", "--passphrase", passphrase}
+	}
+	t.Cleanup(func() { testArgs = nil })
+
+	msg := []byte("meet at noon\n")
+	armored, err := Encrypt(msg, Options{Passphrase: "correct horse", Armor: true})
+	if err != nil && strings.Contains(err.Error(), "loopback") {
+		t.Skipf("gpg takes no passphrase here: %v", err)
+	}
+	if err != nil || !strings.HasPrefix(string(armored), "-----BEGIN PGP MESSAGE-----") {
+		t.Fatalf("encrypt: %v %q", err, armored)
+	}
+	asked("wrong horse")
+	if plain, r, err := Decrypt(armored); !errors.Is(err, ErrPassphrase) || len(plain) != 0 || !r.Passphrase || r.Encrypted {
+		t.Errorf("a wrong passphrase: %v %q %+v", err, plain, r)
+	}
+	asked("correct horse")
+	plain, r, err := Decrypt(armored)
+	if err != nil || string(plain) != string(msg) {
+		t.Fatalf("decrypt: %v %q", err, plain)
+	}
+	if !r.Encrypted || !r.Passphrase || len(r.To) != 0 || r.Signed {
+		t.Errorf("result %+v", r)
+	}
+	for _, o := range []Options{
+		{Passphrase: "correct horse", Recipients: []string{"E51585CE69B379C636C7D764977E5858B6E4C43D"}},
+		{Passphrase: "correct horse", Signer: "E51585CE69B379C636C7D764977E5858B6E4C43D"},
+		{Passphrase: "two\nlines"},
+	} {
+		if out, err := Encrypt(msg, o); err == nil {
+			t.Errorf("encrypted with %+v: %q", o, out)
+		}
+	}
+
+	dir := t.TempDir()
+	path := filepath.Join(dir, "notes.txt")
+	os.WriteFile(path, []byte("file body\n"), 0o600)
+	out, err := EncryptFile(path, Options{Passphrase: "correct horse"})
+	if err != nil || out != path+".gpg" {
+		t.Fatalf("encrypt file: %q %v", out, err)
+	}
+	if b, _ := os.ReadFile(out); len(b) == 0 || strings.Contains(string(b), "file body") {
+		t.Errorf("the file written: %q", b)
+	}
+	os.Rename(path, path+".orig")
+	asked("wrong horse")
+	if _, _, err := DecryptFile(out); !errors.Is(err, ErrPassphrase) {
+		t.Errorf("a wrong passphrase for the file: %v", err)
+	}
+	if _, err := os.Stat(path); err == nil {
+		t.Error("a wrong passphrase wrote a file")
+	}
+	asked("correct horse")
+	dec, r, err := DecryptFile(out)
+	if err != nil || dec != path {
+		t.Fatalf("decrypt file: %q %v", dec, err)
+	}
+	if b, _ := os.ReadFile(dec); string(b) != "file body\n" || !r.Encrypted || !r.Passphrase || r.FileName != "notes.txt" {
+		t.Errorf("decrypted %q, %+v", b, r)
 	}
 }
 
