@@ -91,7 +91,8 @@ if dir=$(inua portals dir 2>/dev/null) && [ -n "$dir" ]; then
 else
     systemctl --user unset-environment XDG_DESKTOP_PORTAL_DIR >/dev/null 2>&1 || true
 fi
-systemctl --user try-restart xdg-desktop-portal.service >/dev/null 2>&1 || true
+# A portal may wait for the display this script has yet to start.
+systemctl --user --no-block try-restart xdg-desktop-portal.service >/dev/null 2>&1 || true
 # Hyprland runs exec-once lines, inua-shell among them, only once a monitor
 # shows a frame. On a computer without one, inua-remote makes the virtual
 # screen when the user turned it on (Remote Desktop, Sharing), and does
