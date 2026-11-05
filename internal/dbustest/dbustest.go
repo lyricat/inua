@@ -12,6 +12,8 @@ import (
 	"testing"
 
 	"github.com/godbus/dbus/v5"
+
+	"github.com/lyricat/inua/internal/sockdir"
 )
 
 // No service activation: a call to a missing name fails instead of starting
@@ -38,7 +40,7 @@ func Start(t testing.TB) string {
 	if err != nil {
 		t.Skip("dbus-daemon not installed")
 	}
-	dir := t.TempDir()
+	dir := sockdir.New(t) // the socket is in it
 	conf := filepath.Join(dir, "bus.conf")
 	if err := os.WriteFile(conf, []byte(strings.ReplaceAll(config, "%DIR%", dir)), 0o600); err != nil {
 		t.Fatal(err)

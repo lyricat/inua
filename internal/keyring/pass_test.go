@@ -6,6 +6,8 @@ import (
 	"os/exec"
 	"path/filepath"
 	"testing"
+
+	"github.com/lyricat/inua/internal/sockdir"
 )
 
 // TestPass runs the store on the real pass, with a key made for the test
@@ -20,13 +22,7 @@ func TestPass(t *testing.T) {
 		t.Skip("makes a gpg key")
 	}
 	dir := t.TempDir()
-	// gpg-agent's socket path must stay short.
-	home, err := os.MkdirTemp("", "gpg")
-	if err != nil {
-		t.Fatal(err)
-	}
-	t.Cleanup(func() { os.RemoveAll(home) })
-	os.Chmod(home, 0o700)
+	home := sockdir.New(t) // gpg-agent's socket is in it
 	t.Setenv("GNUPGHOME", home)
 	store := filepath.Join(dir, "store")
 	t.Setenv("PASSWORD_STORE_DIR", store)

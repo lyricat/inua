@@ -62,9 +62,10 @@ type Cursor struct {
 }
 
 type Terminal struct {
-	CopyOnSelect bool `toml:"copy_on_select"`
-	Scrollback   int  `toml:"scrollback"` // lines kept per pane
-	Replay       int  `toml:"replay"`     // MiB of a pane's output the host keeps
+	CopyOnSelect      bool `toml:"copy_on_select"`
+	FocusFollowsMouse bool `toml:"focus_follows_mouse"`
+	Scrollback        int  `toml:"scrollback"` // lines kept per pane
+	Replay            int  `toml:"replay"`     // MiB of a pane's output the host keeps
 }
 
 type Shell struct {
@@ -328,6 +329,7 @@ blink = ` + fmt.Sprint(s.Cursor.Blink) + `
 
 [terminal]
 copy_on_select = ` + fmt.Sprint(s.Terminal.CopyOnSelect) + ` # selecting copies to the clipboard
+focus_follows_mouse = ` + fmt.Sprint(s.Terminal.FocusFollowsMouse) + ` # focus a pane when the pointer enters it; off by default
 scrollback = ` + fmt.Sprint(s.Terminal.Scrollback) + ` # lines kept per pane
 replay = ` + fmt.Sprint(s.Terminal.Replay) + ` # MiB of a pane's recent output the host keeps for a window opened later
 

@@ -200,6 +200,20 @@ func (h *Host) handleSessions(c *client, m Message) bool {
 		err = h.closeSession(m.Session)
 	case MsgRemove:
 		err = h.removeWorkspace(m.Workspace)
+	case MsgMoveSession:
+		h.mu.Lock()
+		err = h.m.MoveSession(m.Workspace, m.Session, m.To)
+		h.mu.Unlock()
+		// Reconcile even a rejected optimistic move. Send the state before
+		// the reply so the requesting window can release its preview then.
+		if err == nil {
+			h.publish()
+		} else {
+			h.tell(Message{Type: MsgState, State: h.state()})
+		}
+		reply.Error = errText(err)
+		c.message(reply)
+		return true
 	case MsgMove:
 		h.mu.Lock()
 		err = h.m.Move(m.Workspace, m.To)

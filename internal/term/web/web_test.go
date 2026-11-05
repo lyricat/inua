@@ -17,6 +17,7 @@ import (
 	"github.com/gorilla/websocket"
 
 	"github.com/lyricat/inua/internal/config"
+	"github.com/lyricat/inua/internal/sockdir"
 	"github.com/lyricat/inua/internal/term/host"
 	"github.com/lyricat/inua/internal/term/scheme"
 )
@@ -88,7 +89,7 @@ func TestNothingFromTheInternet(t *testing.T) {
 // gets back as control messages.
 func fakeHost(t *testing.T) string {
 	t.Helper()
-	path := filepath.Join(t.TempDir(), "term.sock")
+	path := filepath.Join(sockdir.New(t), "term.sock")
 	ln, err := net.Listen("unix", path)
 	if err != nil {
 		t.Fatal(err)

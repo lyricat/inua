@@ -47,6 +47,7 @@ type tile struct {
 	gitNeed   [2]int // the tile's width for the whole checkout, for the branch alone
 	gitShown  gitFit
 	width     int // where it was put last
+	onEnter   func(gtk.EventControllerMotion, float64, float64)
 }
 
 // gitFit is how much of the checkout a head shows.
@@ -510,6 +511,57 @@ func (a *App) addTile(id int) error {
 	t.box.Append(&p.root.Widget)
 	t.head = head
 	a.dragHead(head, id)
+	motion := gtk.NewEventControllerMotion()
+	t.onEnter = func(c gtk.EventControllerMotion, _, _ float64) {
+		if !a.set.Terminal.FocusFollowsMouse || !a.win.IsActive() || a.client == nil ||
+			a.tiles[id] != t || p.closed || p.exited || !t.box.GetMapped() || !t.box.GetChildVisible() {
+			return
+		}
+		select {
+		case <-a.client.Done():
+			return
+		default:
+		}
+		s := a.shown()
+		if s == nil || !s.Tree.Has(id) || (s.Zoom != 0 && s.Zoom != id) {
+			return
+		}
+		if _, ok := a.info[id]; !ok {
+			return
+		}
+		// A sheet, search or menu keeps the keys; dragging never changes
+		// the receiving pane, even when the pointer crosses a tile.
+		if a.sheet != nil || a.closePending || a.cols.headMenu.pop != nil ||
+			a.paneDrag.id != 0 || a.cols.drag.id != 0 || a.tiling.dragging != nil {
+			return
+		}
+		if focus := a.win.GetFocus(); focus != nil {
+			defer focus.Unref()
+			if focus.GoPointer() == a.cols.find.GoPointer() || focus.IsAncestor(&a.cols.find.Widget) {
+				return
+			}
+			if pop := focus.GetAncestor(gtk.PopoverGLibType()); pop != nil {
+				pop.Unref()
+				return
+			}
+		}
+		const buttons = gdk.Button1MaskValue | gdk.Button2MaskValue | gdk.Button3MaskValue | gdk.Button4MaskValue | gdk.Button5MaskValue
+		if c.GetCurrentEventState()&buttons != 0 {
+			return
+		}
+		for _, other := range a.tiles {
+			if q := other.pane; q.busy() || q.selecting || q.barDrag || q.buttons != 0 || q.copy != nil {
+				return
+			}
+		}
+		// Only entry requests focus, so keyboard focus survives motion
+		// within this tile. The focus controller synchronizes the host.
+		if !p.widget.HasFocus() {
+			p.widget.GrabFocus()
+		}
+	}
+	motion.ConnectEnter(&t.onEnter)
+	t.box.AddController(&motion.EventController)
 	t.box.SetParent(&a.tilesW.Widget)
 	a.tiles[id] = t
 	a.mu.Lock()
@@ -535,7 +587,7 @@ func (a *App) dropTile(id int) {
 	}
 	t.pane.close()
 	t.box.Unparent()
-	a.freeLater(t.pane.callbacks())
+	a.freeLater(append(t.pane.callbacks(), &t.onEnter))
 }
 
 // The bindings turn each Go callback GTK calls into one of a few thousand

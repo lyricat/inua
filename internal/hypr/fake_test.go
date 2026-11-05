@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"sync"
 	"testing"
+
+	"github.com/lyricat/inua/internal/sockdir"
 )
 
 // fakeHyprland serves the two Hyprland sockets from a temp dir.
@@ -27,7 +29,7 @@ type fakeHyprland struct {
 
 func newFakeHyprland(t *testing.T) *fakeHyprland {
 	t.Helper()
-	dir := t.TempDir()
+	dir := sockdir.New(t)
 	f := &fakeHyprland{
 		t: t,
 		paths: Paths{
