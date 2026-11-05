@@ -5,56 +5,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"sort"
+	"strconv"
 	"strings"
+
+	"github.com/lyricat/inua/internal/compositor"
 )
 
-// Monitor mirrors the fields of Quickshell's HyprlandMonitor.
-type Monitor struct {
-	ID                int
-	Name              string
-	Description       string
-	X, Y              int
-	Width, Height     int
-	Scale             float64
-	Focused           bool
-	ActiveWorkspaceID int
-	Raw               map[string]any // lastIpcObject
-}
-
-// Workspace mirrors the fields of Quickshell's HyprlandWorkspace.
-type Workspace struct {
-	ID            int
-	Name          string
-	Monitor       string // monitor name, "" if none
-	Active        bool   // shown on its monitor
-	Focused       bool   // active on the focused monitor
-	HasFullscreen bool
-	Urgent        bool
-	Raw           map[string]any
-}
-
-// Toplevel mirrors the fields of Quickshell's HyprlandToplevel.
-type Toplevel struct {
-	Address     string // "0x..." form, always lower case
-	PID         int
-	Title       string
-	Class       string
-	WorkspaceID int
-	Monitor     string
-	Activated   bool
-	Urgent      bool
-	Raw         map[string]any
-}
-
-// Snapshot is a consistent view of compositor state. Slices are ordered:
-// monitors and workspaces by id, toplevels in Hyprland's client order.
-type Snapshot struct {
-	Monitors       []Monitor
-	Workspaces     []Workspace
-	Toplevels      []Toplevel
-	ActiveToplevel string // address, "" if none
-	FocusedMonitor string // name, "" if none
-}
+// Rect is a window's place, as the contract has it.
+type Rect = compositor.Rect
 
 // NormalizeAddress turns "55d1c0" or "0x55D1C0" into "0x55d1c0".
 func NormalizeAddress(a string) string {
@@ -77,6 +35,8 @@ type rawMonitor struct {
 	Width           int     `json:"width"`
 	Height          int     `json:"height"`
 	Scale           float64 `json:"scale"`
+	Transform       int     `json:"transform"`
+	RefreshRate     float64 `json:"refreshRate"`
 	Focused         bool    `json:"focused"`
 	Disabled        bool    `json:"disabled"`
 	ActiveWorkspace struct {
@@ -101,29 +61,22 @@ type rawClient struct {
 	Title     string `json:"title"`
 	Class     string `json:"class"`
 	Monitor   int    `json:"monitor"`
+	Floating  bool   `json:"floating"`
+	At        []int  `json:"at"`
+	Size      []int  `json:"size"`
 	Workspace struct {
 		ID int `json:"id"`
 	} `json:"workspace"`
+	// FocusHistoryID is 0 for the window focused last; -1 when unset.
+	FocusHistoryID *int `json:"focusHistoryID"`
 }
 
-// decodeList decodes a JSON array into typed values and keeps each element as
-// a generic map for lastIpcObject.
-func decodeList[T any](data []byte) ([]T, []map[string]any, error) {
-	var raws []json.RawMessage
-	if err := json.Unmarshal(data, &raws); err != nil {
-		return nil, nil, err
+func decodeList[T any](data []byte) ([]T, error) {
+	var out []T
+	if err := json.Unmarshal(data, &out); err != nil {
+		return nil, err
 	}
-	typed := make([]T, len(raws))
-	maps := make([]map[string]any, len(raws))
-	for i, r := range raws {
-		if err := json.Unmarshal(r, &typed[i]); err != nil {
-			return nil, nil, err
-		}
-		if err := json.Unmarshal(r, &maps[i]); err != nil {
-			return nil, nil, err
-		}
-	}
-	return typed, maps, nil
+	return out, nil
 }
 
 // QueryResult holds the raw replies of one refresh.
@@ -152,19 +105,29 @@ func (c *Client) Query(ctx context.Context) (QueryResult, error) {
 	return q, nil
 }
 
+// WorkspaceID is the id a Hyprland workspace has in a snapshot: its number
+// as text. Special workspaces (negative numbers) are not listed, but a
+// window on one carries its id.
+func WorkspaceID(id int) string {
+	if id == 0 {
+		return ""
+	}
+	return strconv.Itoa(id)
+}
+
 // BuildSnapshot derives a snapshot from query replies. urgent holds toplevel
 // addresses marked urgent by events since they were last activated.
-func BuildSnapshot(q QueryResult, urgent map[string]bool) (Snapshot, error) {
-	var s Snapshot
-	mons, monMaps, err := decodeList[rawMonitor](q.Monitors)
+func BuildSnapshot(q QueryResult, urgent map[string]bool) (compositor.Snapshot, error) {
+	var s compositor.Snapshot
+	mons, err := decodeList[rawMonitor](q.Monitors)
 	if err != nil {
 		return s, fmt.Errorf("monitors: %w", err)
 	}
-	wss, wsMaps, err := decodeList[rawWorkspace](q.Workspaces)
+	wss, err := decodeList[rawWorkspace](q.Workspaces)
 	if err != nil {
 		return s, fmt.Errorf("workspaces: %w", err)
 	}
-	clients, clientMaps, err := decodeList[rawClient](q.Clients)
+	clients, err := decodeList[rawClient](q.Clients)
 	if err != nil {
 		return s, fmt.Errorf("clients: %w", err)
 	}
@@ -177,16 +140,18 @@ func BuildSnapshot(q QueryResult, urgent map[string]bool) (Snapshot, error) {
 			return s, fmt.Errorf("activewindow: %w", err)
 		}
 	}
-	s.ActiveToplevel = NormalizeAddress(active.Address)
+	s.FocusedWindow = NormalizeAddress(active.Address)
 
-	monName := map[int]string{}
-	shown := map[int]string{} // workspace id -> monitor name
+	// Disabled monitors stay while a workspace is on them and they have a
+	// size (a laptop's screen off behind the lid); a disconnected one goes.
 	workspaceMonitor := map[string]bool{}
 	for _, w := range wss {
 		workspaceMonitor[w.Monitor] = true
 	}
-	focusedMon := ""
-	for i, m := range mons {
+	sort.Slice(mons, func(i, j int) bool { return mons[i].ID < mons[j].ID })
+	monName := map[int]string{}
+	shown := map[int]string{} // workspace id -> monitor name
+	for _, m := range mons {
 		hasGeometry := m.Width > 0 && m.Height > 0
 		if m.Disabled && (!workspaceMonitor[m.Name] || !hasGeometry) {
 			continue
@@ -197,19 +162,18 @@ func BuildSnapshot(q QueryResult, urgent map[string]bool) (Snapshot, error) {
 			shown[m.SpecialWorkspace.ID] = m.Name
 		}
 		if m.Focused {
-			focusedMon = m.Name
+			s.FocusedOutput = m.Name
 		}
-		s.Monitors = append(s.Monitors, Monitor{
-			ID: m.ID, Name: m.Name, Description: m.Description,
+		s.Outputs = append(s.Outputs, compositor.Output{
+			Name: m.Name, Description: m.Description,
 			X: m.X, Y: m.Y, Width: m.Width, Height: m.Height, Scale: m.Scale,
-			Focused: m.Focused, ActiveWorkspaceID: m.ActiveWorkspace.ID,
-			Raw: monMaps[i],
+			Transform: m.Transform, RefreshRate: m.RefreshRate, Focused: m.Focused,
+			ActiveWorkspace: WorkspaceID(m.ActiveWorkspace.ID), SpecialWorkspace: WorkspaceID(m.SpecialWorkspace.ID),
 		})
 	}
-	s.FocusedMonitor = focusedMon
 
 	urgentWs := map[int]bool{}
-	for i, c := range clients {
+	for _, c := range clients {
 		if !c.Mapped {
 			continue
 		}
@@ -218,27 +182,33 @@ func BuildSnapshot(q QueryResult, urgent map[string]bool) (Snapshot, error) {
 		if u {
 			urgentWs[c.Workspace.ID] = true
 		}
-		s.Toplevels = append(s.Toplevels, Toplevel{
-			Address: addr, PID: c.PID, Title: c.Title, Class: c.Class,
-			WorkspaceID: c.Workspace.ID, Monitor: monName[c.Monitor],
-			Activated: addr == s.ActiveToplevel, Urgent: u,
-			Raw: clientMaps[i],
-		})
+		w := compositor.Window{
+			ID: addr, PID: c.PID, Title: c.Title, AppID: c.Class,
+			Workspace: WorkspaceID(c.Workspace.ID), Output: monName[c.Monitor],
+			Focused: addr == s.FocusedWindow, Urgent: u, Floating: c.Floating,
+		}
+		if c.FocusHistoryID != nil && *c.FocusHistoryID >= 0 {
+			w.FocusRank = *c.FocusHistoryID + 1
+		}
+		if len(c.At) == 2 && len(c.Size) == 2 {
+			w.Geometry = &compositor.Rect{X: c.At[0], Y: c.At[1], W: c.Size[0], H: c.Size[1]}
+		}
+		s.Windows = append(s.Windows, w)
 	}
 
-	for i, w := range wss {
+	for _, w := range wss {
+		if w.ID <= 0 { // special workspaces are not places to go
+			continue
+		}
 		mon, isShown := shown[w.ID]
-		s.Workspaces = append(s.Workspaces, Workspace{
-			ID: w.ID, Name: w.Name, Monitor: w.Monitor,
+		s.Workspaces = append(s.Workspaces, compositor.Workspace{
+			ID: WorkspaceID(w.ID), Name: w.Name, Output: w.Monitor, Order: w.ID,
 			Active:        isShown,
-			Focused:       isShown && mon == focusedMon && focusedMon != "",
+			Focused:       isShown && mon == s.FocusedOutput && s.FocusedOutput != "",
 			HasFullscreen: w.HasFullscreen,
 			Urgent:        urgentWs[w.ID],
-			Raw:           wsMaps[i],
 		})
 	}
-
-	sort.Slice(s.Monitors, func(i, j int) bool { return s.Monitors[i].ID < s.Monitors[j].ID })
-	sort.Slice(s.Workspaces, func(i, j int) bool { return s.Workspaces[i].ID < s.Workspaces[j].ID })
+	sort.Slice(s.Workspaces, func(i, j int) bool { return s.Workspaces[i].Order < s.Workspaces[j].Order })
 	return s, nil
 }

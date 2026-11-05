@@ -47,7 +47,7 @@ func (h portalShots) Screenshot(appID string, interactive bool, done <-chan stru
 			mon  string
 			wait time.Duration
 		}
-		at, err := gtkx.Call(time.Second, func() where { return where{s.snap.FocusedMonitor, s.hideForShot()} })
+		at, err := gtkx.Call(time.Second, func() where { return where{s.snap.FocusedOutput, s.hideForShot()} })
 		defer gtkx.Post(s.shotShown)
 		time.Sleep(at.wait) // the password dialog's details hidden
 		focused := at.mon

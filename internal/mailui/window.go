@@ -21,8 +21,9 @@ import (
 
 	"github.com/lyricat/inua/internal/apps/mail"
 	"github.com/lyricat/inua/internal/appui"
+	"github.com/lyricat/inua/internal/compositor"
+	_ "github.com/lyricat/inua/internal/compositors" // the backends Detect knows
 	"github.com/lyricat/inua/internal/gtkx"
-	"github.com/lyricat/inua/internal/hypr"
 	"github.com/lyricat/inua/internal/i18n"
 )
 
@@ -285,11 +286,14 @@ func openWindow(c *appui.Ctx) *window {
 // terminal's are: an inua.conf written by an inua older than Mail floats
 // every inua app's window. The window is looked for until it maps.
 func tileWindow() {
-	paths, err := hypr.PathsFromEnv()
+	b, err := compositor.Detect()
 	if err != nil {
-		return // not on Hyprland
+		return // no compositor we know
 	}
-	c := hypr.NewClient(paths)
+	c, ok := b.(compositor.Placer)
+	if !ok || !b.Capabilities().Has(compositor.CapPlacement) {
+		return
+	}
 	for range 30 {
 		time.Sleep(100 * time.Millisecond)
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)

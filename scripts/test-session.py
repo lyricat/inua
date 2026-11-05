@@ -69,7 +69,7 @@ class SessionTest(unittest.TestCase):
     def test_config_is_checked_for_the_shell(self):
         result = self.launch()
         self.assertEqual(result.returncode, 17, result.stderr)
-        self.assertEqual(self.calls.read_text().splitlines(), [f"config hyprland {self.config}", "config apply", "portals dir"])
+        self.assertEqual(self.calls.read_text().splitlines(), ["session compositor", f"config hyprland {self.config}", "config apply", "portals dir"])
 
     def test_portal_directory_given_to_frontend(self):
         portals = self.home / ".local/share/inua/portals"
@@ -133,6 +133,71 @@ class SessionTest(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("Hyprland is not on PATH", result.stderr)
 
+    def test_compositor_from_the_settings(self):
+        # No argument: inua says which compositor, as the settings have it.
+        self.executable("niri", '#!/bin/sh\nprintf "niri %s INUA_SESSION=%s\\n" "$*" "$INUA_SESSION"\nexit 19\n')
+        self.executable("inua", f'#!/bin/sh\necho "$*" >> "{self.calls}"\n[ "$1 $2" = "session compositor" ] && echo niri\nexit 0\n')
+        result = self.launch()
+        self.assertEqual(result.returncode, 19, result.stderr)
+        self.assertEqual(result.stdout.splitlines(), ["niri --session INUA_SESSION=niri"])
+        self.assertIn("session compositor", self.calls.read_text())
+        # An inua that cannot say (an older one), or says nonsense: Hyprland.
+        for script in ('#!/bin/sh\n[ "$1" = session ] && exit 1\nexit 0\n', '#!/bin/sh\n[ "$1" = session ] && echo plasma\nexit 0\n'):
+            self.executable("inua", script)
+            result = self.launch()
+            self.assertEqual(result.returncode, 17, result.stderr)
+            self.assertEqual(result.stdout.splitlines(), ["argc=0", "XDG_CONFIG_HOME="])
+
+    def test_niri_session(self):
+        # inua-session niri runs niri as a session; the Hyprland config is
+        # not checked, inua-remote is not started.
+        self.executable("niri", '#!/bin/sh\nprintf "niri %s\\n" "$*"\nexit 19\n')
+        self.executable("inua-remote", f'#!/bin/sh\ntouch "{self.home}/inua-remote-calls"\nexit 0\n')
+        self.config.write_text("# a Hyprland config without the shell\n")
+        result = subprocess.run(["sh", str(ROOT / "scripts/inua-session"), "niri"], env=self.env, text=True, capture_output=True)
+        self.assertEqual(result.returncode, 19, result.stderr)
+        self.assertEqual(result.stdout.splitlines(), ["niri --session"])
+        self.assertFalse((self.home / "inua-remote-calls").exists())
+        # A niri config without the shell is refused, as Hyprland's is.
+        kdl = self.home / ".config/niri/config.kdl"
+        kdl.parent.mkdir(parents=True)
+        kdl.write_text('binds { Mod+Q { close-window; } }\n')
+        result = subprocess.run(["sh", str(ROOT / "scripts/inua-session"), "niri"], env=self.env, text=True, capture_output=True)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("niri session is unaffected", result.stderr)
+        kdl.write_text('spawn-at-startup "inua-shell"\n')
+        result = subprocess.run(["sh", str(ROOT / "scripts/inua-session"), "niri"], env=self.env, text=True, capture_output=True)
+        self.assertEqual(result.returncode, 19, result.stderr)
+        # Without niri, or with an unknown compositor, nothing starts.
+        (self.bin / "niri").unlink()
+        result = subprocess.run(["sh", str(ROOT / "scripts/inua-session"), "niri"], env=self.env, text=True, capture_output=True)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("niri is not on PATH", result.stderr)
+        result = subprocess.run(["sh", str(ROOT / "scripts/inua-session"), "sway"], env=self.env, text=True, capture_output=True)
+        self.assertEqual(result.returncode, 2)
+
+    def test_wayfire_session(self):
+        self.executable("wayfire", '#!/bin/sh\nprintf "wayfire argc=%s\\n" "$#"\nexit 21\n')
+        launch = lambda: subprocess.run(["sh", str(ROOT / "scripts/inua-session"), "wayfire"], env=self.env, text=True, capture_output=True)
+        result = launch()
+        self.assertEqual(result.returncode, 21, result.stderr)
+        self.assertEqual(result.stdout.splitlines(), ["wayfire argc=0"])
+        # A config without the shell or without the IPC plugins is refused.
+        ini = self.home / ".config/wayfire.ini"
+        ini.write_text("[core]\nplugins = ipc ipc-rules vswitch\n")
+        result = launch()
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Wayfire session is unaffected", result.stderr)
+        ini.write_text("[core]\nplugins = vswitch autostart\n[autostart]\ninua = inua-shell\n")
+        self.assertEqual(launch().returncode, 1)
+        # The sample config passes.
+        ini.write_text((ROOT / "config/wayfire/wayfire.ini").read_text())
+        self.assertEqual(launch().returncode, 21)
+        (self.bin / "wayfire").unlink()
+        result = launch()
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("wayfire is not on PATH", result.stderr)
+
     def test_install_and_reinstall_preserve_other_sessions(self):
         dest = Path(self.tmp.name) / "staged root"
         sessions = dest / "usr/share/wayland-sessions"
@@ -146,6 +211,8 @@ class SessionTest(unittest.TestCase):
             )
             self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(hypr.read_text(), "existing session\n")
+        # One entry: the compositor is a setting, not a session of its own.
+        self.assertEqual(sorted(p.name for p in sessions.iterdir()), ["hyprland.desktop", "inua.desktop"])
         desktop = configparser.ConfigParser()
         desktop.read(sessions / "inua.desktop")
         entry = desktop["Desktop Entry"]

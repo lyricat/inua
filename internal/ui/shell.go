@@ -11,14 +11,12 @@ package ui
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"log"
 	"maps"
 	"os"
 	"path/filepath"
 	"slices"
-	"strconv"
 	"strings"
 	"time"
 
@@ -29,6 +27,8 @@ import (
 	"codeberg.org/puregotk/puregotk/v4/gobject"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
+	"github.com/lyricat/inua/internal/compositor"
+	_ "github.com/lyricat/inua/internal/compositors" // the backends Detect knows
 	"github.com/lyricat/inua/internal/config"
 	"github.com/lyricat/inua/internal/desktop"
 	"github.com/lyricat/inua/internal/gtkx"
@@ -70,9 +70,16 @@ type shellUI struct {
 	appsStamp string           // the applications folders as last scanned (desktop.Stamp)
 	apps      []*desktop.Entry // the desktop entries as last scanned
 
-	client    *hypr.Client
-	snap      hypr.Snapshot
-	connected bool
+	// comp is the compositor this shell runs on (nil: none found); hypr
+	// is the same backend when it is Hyprland, for what only Hyprland
+	// has (Lua listeners, binds, displays, the virtual screen).
+	comp compositor.Backend
+	hypr *hypr.Backend
+	// saidFallback: the login's fallback, if any, has been told (sayFallback).
+	saidFallback bool
+	caps         compositor.Capabilities
+	snap         compositor.Snapshot
+	connected    bool
 	// virtual asks for the virtual screen to follow the monitors again
 	// (syncVirtual); a request already waiting covers a new one.
 	virtual chan struct{}
@@ -174,6 +181,8 @@ type shellUI struct {
 	onDefaultApp           func(uintptr, uintptr, uintptr)
 	onDisplayDrop          func(uintptr, uintptr, uintptr)
 	onPowerDrop            func(uintptr, uintptr, uintptr) // the Power page's drop-downs
+	onCompositorPick       func(gtk.ToggleButton)          // the Compositor page's choice
+	onCompositorLogout     func(gtk.Button)
 	onVoiceSwitch          func(gtk.Switch, bool) bool
 	onVoiceMode            func(gtk.ToggleButton)
 	onVoiceRuns            func(gtk.ToggleButton)
@@ -460,7 +469,7 @@ func (s *shellUI) start() {
 	s.bindLauncherHandlers()
 	s.bindOverviewHandlers()
 	s.onWorkspaceOverview = func(g gtk.GestureClick, _ int32, _, _ float64) {
-		if !s.hyprLua {
+		if !s.overviewAvailable() {
 			return
 		}
 		s.showOverview()
@@ -519,11 +528,18 @@ func (s *shellUI) start() {
 		s.startTray()
 	}
 
-	if paths, err := hypr.PathsFromEnv(); err != nil {
-		log.Printf("hyprland: %v", err)
+	if b, err := compositor.Detect(); err != nil {
+		log.Printf("compositor: %v", err)
 	} else {
-		s.client = hypr.NewClient(paths)
-		go hypr.NewStore(s.client, hyprHandler{s}).Run(context.Background())
+		s.comp = b
+		s.setCaps(b.Capabilities())
+		if h, ok := b.(*hypr.Backend); ok {
+			s.hypr = h
+			h.FreshWorkspace = s.freshWorkspace()
+			h.OnEvent = s.onHyprEvent
+		}
+		s.overview.st.NewWorkspace = s.newWorkspace
+		go b.Run(context.Background(), compHandler{s})
 	}
 	// Bring hypr/inua.conf up to date with config.toml (edited while the
 	// shell was not running); Hyprland reloads only if it changed.
@@ -738,11 +754,24 @@ func (s *shellUI) isFocusedWorkspace(id string) bool {
 	return false
 }
 
-// hyprHandler forwards store callbacks to the main thread.
-type hyprHandler struct{ s *shellUI }
+// compHandler forwards the backend's callbacks to the main thread.
+type compHandler struct{ s *shellUI }
 
-func (h hyprHandler) OnSnapshot(snap hypr.Snapshot) { gtkx.Post(func() { h.s.apply(snap) }) }
-func (h hyprHandler) OnEvent(e hypr.Event) {
+func (h compHandler) OnSnapshot(snap compositor.Snapshot) { gtkx.Post(func() { h.s.apply(snap) }) }
+func (h compHandler) OnCapabilities(caps compositor.Capabilities) {
+	gtkx.Post(func() {
+		h.s.setCaps(caps)
+		h.s.hyprLua = h.s.hypr != nil && h.s.hypr.Lua()
+		if h.s.settings.win != nil {
+			h.s.showSourceWarning() // what the pages can do may have changed
+		}
+	})
+}
+
+// onHyprEvent takes Hyprland's raw events, for what the snapshot does not
+// carry: the overview's custom events, screencasts, config reloads.
+func (s *shellUI) onHyprEvent(e hypr.Event) {
+	h := compHandler{s}
 	h.s.overviewEvent(e)
 	if e.Name == "screencast" { // "1,OWNER" when a screencast starts, "0,…" when it ends
 		on := strings.HasPrefix(e.Data, "1")
@@ -771,8 +800,8 @@ func (h hyprHandler) OnEvent(e hypr.Event) {
 		})
 	}
 }
-func (h hyprHandler) OnConnection(up bool, err error) {
-	log.Printf("hyprland: connected=%v err=%v", up, err)
+func (h compHandler) OnConnection(up bool, err error) {
+	log.Printf("%s: connected=%v err=%v", h.s.comp.Name(), up, err)
 	if up { // Hyprland may have started again, without the virtual screen
 		h.s.followMonitors()
 	}
@@ -780,13 +809,20 @@ func (h hyprHandler) OnConnection(up bool, err error) {
 		h.s.connected = up
 		if up {
 			h.s.installOverviewKeys()
+			if !h.s.saidFallback {
+				h.s.saidFallback = true
+				h.s.sayFallback()
+			}
 		}
 		h.s.launcher.st.SetConnected(up)
 		h.s.syncLauncher()
 	})
 }
 
-func (s *shellUI) apply(snap hypr.Snapshot) {
+func (s *shellUI) apply(snap compositor.Snapshot) {
+	if s.hypr == nil { // Hyprland says so with events, and keeps its rules itself
+		s.followOutputs(s.snap.Outputs, snap.Outputs)
+	}
 	s.snap = snap
 	s.overview.st.SetSnapshot(snap)
 	for _, b := range s.bars {
@@ -807,112 +843,192 @@ func (s *shellUI) apply(snap hypr.Snapshot) {
 	s.scheduleOverviewRender()
 }
 
-// dispatch runs a Hyprland dispatcher in the background; the outcome shows
-// up as events.
+// panelLayer is the layer of a panel the user calls up over their
+// windows (the launcher, the overview, the clipboard, the passwords).
+// Hyprland shows the top layer over a fullscreen window while it holds
+// the keyboard; niri and Wayfire keep it under one, where the panel
+// would open unseen and take no keys, so there it goes on the overlay.
+func (s *shellUI) panelLayer() layershell.Layer {
+	if s.comp != nil && s.hypr == nil {
+		return layershell.LayerOverlay
+	}
+	return layershell.LayerTop
+}
+
+// setCaps keeps what the compositor can do, and takes the window commands
+// it has no way to do out of the launcher.
+func (s *shellUI) setCaps(caps compositor.Capabilities) {
+	s.caps = caps
+	var without []string
+	if !caps.Has(compositor.CapFloating) {
+		without = append(without, "float")
+	}
+	if !caps.Has(compositor.CapArrange) {
+		without = append(without, "fullscreen", "center")
+	}
+	s.launcher.st.SetWithout(without...)
+}
+
+// followOutputs keeps up with the displays of a compositor that takes
+// its settings from the shell: a display that came is given its rule (a
+// rule for one that is away was passed over), and the Displays page shows
+// them as they now are.
+func (s *shellUI) followOutputs(old, now []compositor.Output) {
+	if slices.Equal(old, now) {
+		return
+	}
+	name := func(o compositor.Output) string { return o.Name }
+	came := slices.ContainsFunc(now, func(o compositor.Output) bool {
+		return !slices.ContainsFunc(old, func(p compositor.Output) bool { return name(p) == name(o) })
+	})
+	if came && len(old) > 0 && len(s.cfg.Displays.Monitors) > 0 {
+		s.applyHyprland()
+	}
+	if s.settings.win != nil {
+		s.showDisplays()
+	}
+}
+
 // refocusPointer moves the pointer to where it is, once a panel that covers
 // the screen has appeared. Hyprland leaves the pointer with the surface it
 // was over until it moves, so a click without moving (a second tap on the
 // clock to close the panel) would go nowhere.
 func (s *shellUI) refocusPointer() {
-	if s.client == nil {
+	p, ok := s.comp.(compositor.Pointer)
+	if !ok || !s.caps.Has(compositor.CapPointer) {
 		return
 	}
-	lua := s.hyprLua
 	go func() {
 		time.Sleep(80 * time.Millisecond) // until the surface is on screen
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 		defer cancel()
-		b, err := s.client.Request(ctx, "j/cursorpos")
+		x, y, err := p.CursorPos(ctx)
 		if err != nil {
 			return
 		}
-		var p struct{ X, Y float64 }
-		if json.Unmarshal(b, &p) != nil {
-			return
-		}
-		if lua {
-			err = s.client.LuaDispatch(ctx, fmt.Sprintf("hl.dsp.cursor.move({ x = %d, y = %d })", int(p.X), int(p.Y)))
-		} else {
-			err = s.client.Dispatch(ctx, fmt.Sprintf("movecursor %d %d", int(p.X), int(p.Y)))
-		}
-		if err != nil {
-			log.Printf("hyprland: movecursor: %v", err)
+		if err := p.MoveCursor(ctx, x, y); err != nil {
+			log.Printf("compositor: move cursor: %v", err)
 		}
 	}()
 }
 
-// dispatchSubmap enters a submap, or leaves it with "reset": in Lua where
-// Hyprland runs it, else with the classic dispatcher.
+// dispatchSubmap enters a key mode (a submap), or leaves it with "" or
+// "reset", where the compositor has them.
 func (s *shellUI) dispatchSubmap(name string) {
-	if !s.hyprLua {
-		s.dispatch("submap " + name)
+	m, ok := s.comp.(compositor.Moder)
+	if !ok {
 		return
 	}
-	if s.client == nil {
+	if name == "reset" {
+		name = ""
+	}
+	s.compositorDo("mode "+name, func(ctx context.Context) error { return m.EnterMode(ctx, name) })
+}
+
+// compositorDo runs a compositor action in the background and logs its
+// failure; what is a log line here is what the audit records as the
+// shell's behaviour, the outcome showing up as a snapshot.
+func (s *shellUI) compositorDo(what string, do func(ctx context.Context) error) {
+	if s.comp == nil {
+		log.Printf("compositor: not connected, dropping %s", what)
 		return
 	}
 	go func() {
 		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 		defer cancel()
-		if err := s.client.LuaDispatch(ctx, fmt.Sprintf("hl.dsp.submap(%q)", name)); err != nil {
-			log.Printf("hyprland: submap %s: %v", name, err)
+		if err := do(ctx); err != nil {
+			log.Printf("compositor: %s: %v", what, err)
 		}
 	}()
 }
 
-func (s *shellUI) dispatch(arg string) {
-	if s.client == nil {
-		log.Printf("hyprland: not connected, dropping %q", arg)
-		return
-	}
-	go func() {
-		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-		defer cancel()
-		if err := s.client.Dispatch(ctx, arg); err != nil {
-			log.Printf("hyprland: %s: %v", arg, err)
-		}
-	}()
+// focusWindow focuses a window by its id.
+func (s *shellUI) focusWindow(id string) {
+	s.compositorDo("focus window "+id, func(ctx context.Context) error { return s.comp.FocusWindow(ctx, id) })
 }
 
-// dispatchEither runs a Lua dispatcher expression (hl.dsp.…) when Hyprland
-// runs Lua, else the classic dispatcher; lua "" always runs the classic.
-func (s *shellUI) dispatchEither(classic, lua string) {
-	if !s.hyprLua || lua == "" {
-		s.dispatch(classic)
-		return
-	}
-	if s.client == nil {
-		log.Printf("hyprland: not connected, dropping %q", lua)
-		return
-	}
-	go func() {
-		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-		defer cancel()
-		if err := s.client.LuaDispatch(ctx, lua); err != nil {
-			log.Printf("hyprland: %v", err)
-		}
-	}()
-}
-
-// focusWindow focuses a window by address ("0x…").
-func (s *shellUI) focusWindow(addr string) {
-	s.dispatchEither("focuswindow address:"+addr, fmt.Sprintf(`hl.dsp.focus({window=%q})`, "address:"+addr))
-}
-
-// switchWorkspace shows a workspace by ID. Only numeric IDs have a Lua
-// form here (a quoted one would name a new workspace).
+// switchWorkspace shows a workspace by its id.
 func (s *shellUI) switchWorkspace(id string) {
-	lua := ""
-	if _, err := strconv.Atoi(id); err == nil {
-		lua = "hl.dsp.focus({workspace=" + id + "})"
+	s.compositorDo("focus workspace "+id, func(ctx context.Context) error { return s.comp.FocusWorkspace(ctx, id) })
+}
+
+// compositorName is the compositor's name as people write it.
+func (s *shellUI) compositorName() string {
+	if s.comp == nil {
+		return "Hyprland"
 	}
-	s.dispatchEither("workspace "+id, lua)
+	switch name := s.comp.Name(); name {
+	case "hyprland":
+		return "Hyprland"
+	case "wayfire":
+		return "Wayfire"
+	default:
+		return name
+	}
+}
+
+// unsupported reports whether the compositor the shell runs on cannot do
+// c at all: a settings page then says so instead of offering controls
+// that do nothing. Without a compositor (not connected yet) nothing is
+// known to be missing.
+func (s *shellUI) unsupported(c compositor.Capability) bool {
+	return s.comp != nil && s.caps[c] == compositor.Unsupported
+}
+
+// hyprClient is the Hyprland client for what only Hyprland has; nil on
+// another compositor.
+func (s *shellUI) hyprClient() *hypr.Client {
+	if s.hypr == nil {
+		return nil
+	}
+	return s.hypr.Client
+}
+
+// hyprDispatch runs a Hyprland dispatcher in the background, the Lua form
+// where Hyprland runs Lua; nothing on another compositor.
+func (s *shellUI) hyprDispatch(classic, lua string) {
+	if s.hypr == nil {
+		log.Printf("hyprland: not here, dropping %q", classic)
+		return
+	}
+	s.compositorDo(classic, func(ctx context.Context) error { return s.hypr.Dispatch(ctx, classic, lua) })
+}
+
+// closeWindow asks a window to close.
+func (s *shellUI) closeWindow(id string) {
+	s.compositorDo("close window "+id, func(ctx context.Context) error { return s.comp.CloseWindow(ctx, id) })
+}
+
+// overviewAvailable says whether the overview can be shown: the
+// compositor is there, and on Hyprland it runs Lua (0.55 and later).
+func (s *shellUI) overviewAvailable() bool {
+	return s.comp != nil && (s.hypr == nil || s.hyprLua)
+}
+
+// freshWorkspace is where New workspaces are numbered from on Hyprland:
+// past the ten the number keys go to directly when the slots are not
+// the overview's.
+func (s *shellUI) freshWorkspace() int {
+	if s.cfg.Overview.MRU {
+		return 1
+	}
+	return 11
+}
+
+// newWorkspace names the workspace a New drop on an output creates, as
+// the compositor does; none when it cannot.
+func (s *shellUI) newWorkspace(snap compositor.Snapshot, output string, unavailable func(string) bool) (compositor.Workspace, bool) {
+	m, ok := s.comp.(compositor.WorkspaceMover)
+	if !ok || !s.caps.Has(compositor.CapWorkspaces) {
+		return compositor.Workspace{}, false
+	}
+	return m.NewWorkspace(snap, output, unavailable)
 }
 
 // focusedMonitor is the GDK monitor Hyprland has focused, nil if unknown.
 func (s *shellUI) focusedMonitor() *gdk.Monitor {
 	for _, b := range s.bars {
-		if b.connector() == s.snap.FocusedMonitor {
+		if b.connector() == s.snap.FocusedOutput {
 			return b.mon
 		}
 	}
@@ -1175,7 +1291,7 @@ func (s *shellUI) shellRequest(fn string, args []string) ipc.Response {
 			"pid=%d layer=%v layershell=%s bars=%s hyprland=%v launcher.visible=%v launcher.focus=%v launcher.mode=%s launcher.results=%d launcher.message=%q launcher.opens=%d toplevels=%d workspaces=%d control.open=%v tray=%d overview.open=%v overview.dragging=%q overview.surfaces=%d overview.kill=%v overview.search=%v",
 			os.Getpid(), s.layer, layershell.Version(), strings.Join(s.barNames(), ","), s.connected,
 			l.st.Open, l.hasFocus, l.st.Mode, len(l.st.Results), l.st.Message(), l.opens,
-			len(s.snap.Toplevels), len(s.snap.Workspaces), s.control.open, len(s.tray.items), s.overview.st.Open, s.overview.dragging, surfaces, s.overview.killMode, s.overview.searchMode)}
+			len(s.snap.Windows), len(s.snap.Workspaces), s.control.open, len(s.tray.items), s.overview.st.Open, s.overview.dragging, surfaces, s.overview.killMode, s.overview.searchMode)}
 	default:
 		return ipc.Response{Error: "unknown function shell " + fn}
 	}

@@ -326,7 +326,7 @@ func (s *shellUI) openPass(d *passDialog) {
 			layershell.SetAnchor(w, e, true)
 		}
 		layershell.SetExclusiveZone(w, -1)
-		if mon := s.monitorByName(s.snap.FocusedMonitor); mon != nil {
+		if mon := s.monitorByName(s.snap.FocusedOutput); mon != nil {
 			layershell.SetMonitor(w, mon.GoPointer())
 		}
 	} else {

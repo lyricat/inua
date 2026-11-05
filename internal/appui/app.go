@@ -28,9 +28,10 @@ import (
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/godbus/dbus/v5"
 
+	"github.com/lyricat/inua/internal/compositor"
+	_ "github.com/lyricat/inua/internal/compositors" // the backends Detect knows
 	"github.com/lyricat/inua/internal/config"
 	"github.com/lyricat/inua/internal/gtkx"
-	"github.com/lyricat/inua/internal/hypr"
 	"github.com/lyricat/inua/internal/i18n"
 	"github.com/lyricat/inua/internal/portalconf"
 	"github.com/lyricat/inua/internal/rundir"
@@ -464,16 +465,21 @@ func (c *Ctx) writeIconTheme(dir, name, overlay string) error {
 	return t.Write(dir)
 }
 
-// bringHere moves the app's window to the workspace in view, on Hyprland,
-// rather than leaving it where it was opened.
+// bringHere moves the app's window to the workspace in view, where the
+// compositor places windows for us, rather than leaving it where it was
+// opened.
 func bringHere() {
-	paths, err := hypr.PathsFromEnv()
+	b, err := compositor.Detect()
 	if err != nil {
-		return // not on Hyprland
+		return // no compositor we know
+	}
+	placer, ok := b.(compositor.Placer)
+	if !ok || !b.Capabilities().Has(compositor.CapPlacement) {
+		return
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	if err := hypr.NewClient(paths).BringHere(ctx, os.Getpid()); err != nil {
+	if err := placer.BringHere(ctx, os.Getpid()); err != nil {
 		log.Printf("bringing the window here: %v", err)
 	}
 }

@@ -1161,6 +1161,9 @@ window.settings { background: @app; font-size: 14px; }
 /* A notice: the hairline in the notice's colour, no fill. Every app's
    window is .settings too, so a status mark in warn is left out. */
 .settings .keyring-problem .title, .settings .sub.warn-text { color: @warn; }
+/* A section whose settings the compositor does not take: there to be
+   seen, dimmed, the page's notice saying why. */
+.settings .section.gated > .section-body { opacity: 0.45; }
 .settings .warn:not(.mark) {
   margin-bottom: 14px;
   padding: 10px 14px;
@@ -1727,6 +1730,9 @@ window.polkit { background: rgba(0, 0, 0, 0.45); } /* the screen behind, dimmed 
 }
 .segmented > button:hover { background: alpha(@t0, 0.06); color: @t0; }
 .segmented > button:checked { background: alpha(@accent, 0.16); color: @accent; }
+/* An option that cannot be chosen now: its words at half strength. */
+.segmented > button:disabled { color: alpha(@t2, 0.5); }
+.segmented > button:disabled:checked { color: alpha(@accent, 0.6); }
 .segmented > button image { -gtk-icon-size: 14px; }
 .segmented.icons > button { min-width: 28px; padding: 0; }
 

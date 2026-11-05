@@ -1,33 +1,84 @@
 #!/bin/sh
 # Used by display managers and by users logging in on a TTY.
+# inua-session [hyprland|niri|wayfire]: the compositor to run the shell on;
+# the one chosen in inua's settings when none is named. niri and Wayfire
+# are experiments (docs/compositor-experiments.md).
 set -eu
 
 export PATH="$HOME/.local/bin:/usr/local/bin:$PATH"
+# Without an argument the compositor is the one chosen in inua's settings
+# (Settings, Compositor): `inua session compositor` names it, or Hyprland
+# when the chosen one cannot give the shell, and keeps the reason for the
+# shell to say. One named here is started or refused, never replaced.
+which=${1:-}
+if [ -z "$which" ]; then
+    which=$(inua session compositor 2>/dev/null) || which=hyprland
+    case "$which" in
+        hyprland|niri|wayfire) ;;
+        *) which=hyprland ;;
+    esac
+fi
+case "$which" in
+    hyprland|niri|wayfire) ;;
+    *) echo "inua-session: unknown compositor $which (hyprland, niri or wayfire)" >&2; exit 2 ;;
+esac
+# The shell reads this to know the setting decided the compositor.
+export INUA_SESSION="$which"
 for program in inua-shell inua; do
     if ! command -v "$program" >/dev/null 2>&1; then
-        echo "inua-session: $program is not on PATH; install Inua and Hyprland first" >&2
+        echo "inua-session: $program is not on PATH; install Inua and $which first" >&2
         exit 1
     fi
 done
-# start-hyprland (Hyprland 0.53 and later) watches over the compositor;
-# an older Hyprland is started itself.
-compositor=start-hyprland
-if ! command -v start-hyprland >/dev/null 2>&1; then
-    compositor=Hyprland
-    if ! command -v Hyprland >/dev/null 2>&1; then
-        echo "inua-session: Hyprland is not on PATH; install Inua and Hyprland first" >&2
+if [ "$which" = niri ]; then
+    if ! command -v niri >/dev/null 2>&1; then
+        echo "inua-session: niri is not on PATH; install Inua and niri first" >&2
         exit 1
     fi
-fi
+    # niri starts inua-shell from its config (spawn-at-startup); the
+    # sample config/niri/config.kdl has it.
+    config="${XDG_CONFIG_HOME:-$HOME/.config}/niri/config.kdl"
+    if [ -e "$config" ] && ! grep -q 'spawn-at-startup "inua-shell"' "$config"; then
+        echo "inua-session: $config does not start inua-shell (spawn-at-startup \"inua-shell\"); see config/niri/config.kdl" >&2
+        echo "inua-session: not starting; the niri session is unaffected" >&2
+        exit 1
+    fi
+    compositor="niri --session"
+elif [ "$which" = wayfire ]; then
+    if ! command -v wayfire >/dev/null 2>&1; then
+        echo "inua-session: wayfire is not on PATH; install Inua and Wayfire first" >&2
+        exit 1
+    fi
+    # Wayfire starts inua-shell from its autostart plugin, and inua needs
+    # its ipc plugins; the sample config/wayfire/wayfire.ini has both.
+    config="${WAYFIRE_CONFIG_FILE:-${XDG_CONFIG_HOME:-$HOME/.config}/wayfire.ini}"
+    if [ -e "$config" ] && ! { grep -q 'inua-shell' "$config" && grep -Eq '^plugins[[:space:]]*=.*\bipc-rules\b' "$config"; }; then
+        echo "inua-session: $config does not start inua-shell or lacks the ipc-rules plugin; see config/wayfire/wayfire.ini" >&2
+        echo "inua-session: not starting; the Wayfire session is unaffected" >&2
+        exit 1
+    fi
+    compositor=wayfire
+else
+    # start-hyprland (Hyprland 0.53 and later) watches over the compositor;
+    # an older Hyprland is started itself.
+    compositor=start-hyprland
+    if ! command -v start-hyprland >/dev/null 2>&1; then
+        compositor=Hyprland
+        if ! command -v Hyprland >/dev/null 2>&1; then
+            echo "inua-session: Hyprland is not on PATH; install Inua and Hyprland first" >&2
+            exit 1
+        fi
+    fi
 
-# Let Hyprland resolve its default configuration, including XDG_CONFIG_HOME.
-# An existing config that never starts inua-shell (inua init leaves one
-# alone) would give a session without the shell; refuse and say why.
-config="${XDG_CONFIG_HOME:-$HOME/.config}/hypr/hyprland.conf"
-if [ -e "$config" ] && ! report=$(inua config hyprland "$config" 2>&1); then
-    printf '%s\n' "$report" >&2
-    echo "inua-session: not starting; the Hyprland session is unaffected" >&2
-    exit 1
+    # Let Hyprland resolve its default configuration, including XDG_CONFIG_HOME.
+    # An existing config that never starts inua-shell (inua init leaves one
+    # alone) would give a session without the shell; refuse and say why.
+    config="${XDG_CONFIG_HOME:-$HOME/.config}/hypr/hyprland.conf"
+    if [ -e "$config" ] && ! report=$(inua config hyprland "$config" 2>&1); then
+        printf '%s\n' "$report" >&2
+        echo "inua-session: not starting; the Hyprland session is unaffected" >&2
+        exit 1
+    fi
 fi
 # inua.conf as the lid is now: logging in with it closed and another
 # display connected, the built-in display stays off from the first frame.
@@ -46,7 +97,7 @@ systemctl --user --no-block try-restart xdg-desktop-portal.service >/dev/null 2>
 # shows a frame. On a computer without one, inua-remote makes the virtual
 # screen when the user turned it on (Remote Desktop, Sharing), and does
 # nothing otherwise. It finds this Hyprland as this process's.
-if command -v inua-remote >/dev/null 2>&1; then
+if [ "$which" = hyprland ] && command -v inua-remote >/dev/null 2>&1; then
     inua-remote --await-session </dev/null >/dev/null &
 fi
-exec "$compositor"
+exec $compositor

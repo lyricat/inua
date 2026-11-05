@@ -9,6 +9,31 @@
 假服务端返回的数据不是合成器输出。未安装依赖，没有非固定版本安装或清单变更。
 没有 Go／Blueprint 改动，无需 `make i18n` 或 `make generate`。
 
+## 2026-11-05 真实会话运行（后补）
+
+上面“全部 UNTESTED”是 FT68 交付时的状态。随后在一次性容器（Arch Linux
+软件包，无显示器）里对真实合成器运行了本目录的两个探针，未改动探针代码：
+
+- **niri 26.04 (8ed0da4)**，嵌套在 headless Wayfire 内（niri 没有 headless
+  后端），软件 GL，配置为只含一个绑定的最小 KDL。
+- **Wayfire 0.11.0 (d3990237, wlroots 0.20.2)**，`WLR_BACKENDS=headless`、
+  pixman 渲染，使用本目录的 `wayfire/wayfire.ini`。探针的目标版本是 0.10.0，
+  本次是 0.11，不能当作 0.10 的证据。
+
+| 探针命令 | niri 26.04 | Wayfire 0.11 |
+| --- | --- | --- |
+| `snapshot` | 退出码 0，9 行；`tile_pos_in_workspace_view` 对平铺窗口为 `null` | 退出码 0，21 行；三个 list 方法返回 JSON 数组 |
+| `watch`（6 秒，期间打开、改标题、关闭一个 foot） | 13 个事件：初始 `WorkspacesChanged`、`WindowsChanged`、`KeyboardLayoutsChanged`、`OverviewOpenedOrClosed`、`ConfigLoaded`、`CastsChanged`；打开为 `WorkspaceActiveWindowChanged` → `WindowOpenedOrChanged`（**无** `WindowFocusChanged`）；关闭为 `WorkspaceActiveWindowChanged` → `WindowFocusChanged` → `WindowClosed` → 稍后 `WindowFocusTimestampChanged` | 13 个事件：`view-set-output`、`view-title-changed`、`view-app-id-changed`、`view-mapped`、`view-focused`、`view-geometry-changed`、改标题的 `view-title-changed`、`view-unmapped`、`view-focused` |
+| `focus <id>` | `action-observed` | `action-observed` |
+| `switch` | `switch <workspace id>`：`action-observed` | `switch <output> 1 1`：`action-observed` |
+| `focus 987654` | 本地预检拒绝，`invalid-target`，退出码 1 | 同左 |
+
+未运行：断线重连、权限拒绝、多输出、XWayland、0.10 的 Wayfire。niri 服务端
+对不存在的窗口 ID 的动作回复 `{"Ok":"Handled"}`（用另一个直接发请求的
+探针观察到），所以本探针的本地预检是唯一的拒绝来源。完整的观察、与
+Hyprland 的对照和 shell 在三个合成器上的运行结果见
+[docs/compositor-experiments.md](../../docs/compositor-experiments.md)。
+
 ## 来源核对
 
 目标为 niri 产品 **26.04 / niri-ipc 26.4.0** 和 Wayfire **0.10.0**

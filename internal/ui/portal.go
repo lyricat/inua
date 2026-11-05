@@ -142,9 +142,9 @@ func (s *shellUI) forgetPortalNote(id uint32) {
 
 // bringApp focuses the app's last window, or starts it.
 func (s *shellUI) bringApp(appID string) {
-	for i := len(s.snap.Toplevels) - 1; i >= 0; i-- {
-		if t := s.snap.Toplevels[i]; strings.EqualFold(t.Class, appID) {
-			s.focusWindow(t.Address)
+	for i := len(s.snap.Windows) - 1; i >= 0; i-- {
+		if t := s.snap.Windows[i]; strings.EqualFold(t.AppID, appID) {
+			s.focusWindow(t.ID)
 			return
 		}
 	}

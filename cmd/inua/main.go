@@ -4,6 +4,8 @@
 //	inua call [-n instance] <target> <function> [args...]   control a running shell ("-": an argument from stdin)
 //	inua show [-n instance]                                  list what call accepts
 //	inua hypr dump | watch                           inspect Hyprland state
+//	inua compositor dump | watch                     inspect the compositor's state, whichever it is
+//	inua session compositor                          the compositor the login session starts
 //	inua config check [path] | path                  check the settings file
 //	inua config hyprland [path]                      check that Hyprland starts inua-shell and sources inua.conf
 //	inua config apply                                write hypr/inua.conf from [input], [displays] and [[shortcuts]] (the built-in display as the lid is now) and reload Hyprland
@@ -33,17 +35,21 @@ import (
 	"os/exec"
 	"os/signal"
 	"path/filepath"
+	"slices"
 	"strings"
 	"time"
 
 	samples "github.com/lyricat/inua/config"
 	"github.com/lyricat/inua/internal/bootstrap"
 	"github.com/lyricat/inua/internal/clipboard"
+	"github.com/lyricat/inua/internal/compositor"
+	"github.com/lyricat/inua/internal/compsettings"
 	"github.com/lyricat/inua/internal/config"
 	"github.com/lyricat/inua/internal/desktop"
 	"github.com/lyricat/inua/internal/hypr"
 	"github.com/lyricat/inua/internal/hyprconf"
 	"github.com/lyricat/inua/internal/ipc"
+	"github.com/lyricat/inua/internal/session"
 )
 
 // version is the release, set by the release build (-X main.version).
@@ -62,6 +68,10 @@ func main() {
 			usage()
 		}
 		err = cmdClipboardCapture(os.Args[3:])
+	case "compositor":
+		err = cmdCompositor(os.Args[2:])
+	case "session":
+		err = cmdSession(os.Args[2:])
 	case "hypr":
 		err = cmdHypr(os.Args[2:])
 	case "config":
@@ -102,6 +112,8 @@ func usage() {
   inua call [-n instance] <target> <function> [args...]   ("-" reads an argument from stdin)
   inua show [-n instance]
   inua hypr dump|watch
+  inua compositor dump|watch
+  inua session compositor
   inua config check [path] | path
   inua config hyprland [path]
   inua config apply
@@ -179,16 +191,16 @@ func cmdControl(op string, args []string) error {
 // printer is a hypr.Handler that prints to stdout.
 type printer struct{ events bool }
 
-func (p printer) OnSnapshot(s hypr.Snapshot) {
-	fmt.Printf("== snapshot: focused monitor %q, active toplevel %q\n", s.FocusedMonitor, s.ActiveToplevel)
-	for _, m := range s.Monitors {
-		fmt.Printf("monitor   %-10s id=%d %dx%d@%d,%d focused=%v ws=%d\n", m.Name, m.ID, m.Width, m.Height, m.X, m.Y, m.Focused, m.ActiveWorkspaceID)
+func (p printer) OnSnapshot(s compositor.Snapshot) {
+	fmt.Printf("== snapshot: focused output %q, focused window %q\n", s.FocusedOutput, s.FocusedWindow)
+	for _, m := range s.Outputs {
+		fmt.Printf("output    %-10s %dx%d@%d,%d scale=%g focused=%v ws=%s\n", m.Name, m.Width, m.Height, m.X, m.Y, m.Scale, m.Focused, m.ActiveWorkspace)
 	}
 	for _, w := range s.Workspaces {
-		fmt.Printf("workspace %-10s id=%d mon=%s active=%v focused=%v fullscreen=%v urgent=%v\n", w.Name, w.ID, w.Monitor, w.Active, w.Focused, w.HasFullscreen, w.Urgent)
+		fmt.Printf("workspace %-10s id=%s output=%s active=%v focused=%v fullscreen=%v urgent=%v\n", w.Name, w.ID, w.Output, w.Active, w.Focused, w.HasFullscreen, w.Urgent)
 	}
-	for _, t := range s.Toplevels {
-		fmt.Printf("toplevel  %s ws=%d mon=%s active=%v urgent=%v %s: %q\n", t.Address, t.WorkspaceID, t.Monitor, t.Activated, t.Urgent, t.Class, t.Title)
+	for _, t := range s.Windows {
+		fmt.Printf("window    %s ws=%s output=%s focused=%v urgent=%v rank=%d %s: %q\n", t.ID, t.Workspace, t.Output, t.Focused, t.Urgent, t.FocusRank, t.AppID, t.Title)
 	}
 }
 
@@ -200,6 +212,82 @@ func (p printer) OnEvent(e hypr.Event) {
 
 func (p printer) OnConnection(up bool, err error) {
 	fmt.Printf("== connected=%v err=%v\n", up, err)
+}
+
+// compPrinter prints a backend's output as printer does Hyprland's.
+type compPrinter struct{ printer }
+
+func (compPrinter) OnCapabilities(c compositor.Capabilities) {
+	names := make([]string, 0, len(c))
+	for k, v := range c {
+		names = append(names, string(k)+"="+v.String())
+	}
+	slices.Sort(names)
+	fmt.Printf("== capabilities: %s\n", strings.Join(names, " "))
+}
+
+// cmdCompositor shows the state of the compositor this session runs on,
+// as the shell sees it through the contract: once, or as it changes.
+func cmdCompositor(args []string) error {
+	if len(args) != 1 {
+		usage()
+	}
+	b, err := compositor.Detect()
+	if err != nil {
+		return err
+	}
+	switch args[0] {
+	case "dump":
+		sn, ok := b.(compositor.Snapshotter)
+		if !ok {
+			return fmt.Errorf("%s cannot be read once", b.Name())
+		}
+		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+		defer cancel()
+		s, err := sn.Snapshot(ctx)
+		if err != nil {
+			return err
+		}
+		// The displays as the settings show them, where the backend lists them.
+		var displays []compositor.Display
+		if d, ok := b.(compositor.Displayer); ok {
+			if displays, err = d.Displays(ctx); err != nil {
+				fmt.Fprintln(os.Stderr, "displays:", err)
+			}
+		}
+		enc := json.NewEncoder(os.Stdout)
+		enc.SetIndent("", "  ")
+		return enc.Encode(struct {
+			Compositor   string
+			Capabilities compositor.Capabilities
+			compositor.Snapshot
+			Displays []compositor.Display `json:",omitempty"`
+		}{b.Name(), b.Capabilities(), s, displays})
+	case "watch":
+		ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+		defer stop()
+		fmt.Printf("== compositor: %s\n", b.Name())
+		b.Run(ctx, compPrinter{})
+		return nil
+	}
+	usage()
+	return nil
+}
+
+// cmdSession answers the session script: which compositor to start, from
+// the settings file. One that is chosen but cannot give the shell (not
+// installed, its config does not start inua-shell) is passed over for the
+// default, with the reason kept for the shell to say after login.
+func cmdSession(args []string) error {
+	if len(args) != 1 || args[0] != "compositor" {
+		usage()
+	}
+	c, _, err := config.Load(config.DefaultPath())
+	if err != nil {
+		c = config.Default() // a broken settings file must not block the login
+	}
+	fmt.Println(session.Start(c.Session.Compositor))
+	return nil
 }
 
 func cmdHypr(args []string) error {
@@ -360,6 +448,24 @@ func applyHyprland(path string) error {
 	}
 	for _, w := range warnings {
 		fmt.Printf("%s: %s\n", path, w)
+	}
+	// Another compositor takes the same settings its own way.
+	if b, err := compositor.Detect(); err == nil {
+		if cf, ok := b.(compositor.Configurer); ok {
+			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+			defer cancel()
+			if err := cf.ApplySettings(ctx, compsettings.From(c)); err != nil {
+				return err
+			}
+			fmt.Printf("%s: applied to %s\n", path, cf.Source())
+			for _, cap := range []compositor.Capability{compositor.CapKeyboard, compositor.CapBinds} {
+				if hint := cf.Hint(cap); hint != "" {
+					fmt.Println(hint)
+					break
+				}
+			}
+			return nil
+		}
 	}
 	var client *hypr.Client
 	if paths, err := hypr.PathsFromEnv(); err == nil {

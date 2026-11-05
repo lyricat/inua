@@ -35,6 +35,7 @@ func Format(c Config) string {
 		c.Assistant.ServeEnable, q(c.Assistant.ServeListen), aiProfiles(c.Assistant.Profiles),
 		q(c.Keyring.Folder), c.Keyring.Notify, q(c.Keyring.Untrusted), c.Keyring.LockAfter,
 		c.MCP.Enable, q(c.MCP.Policy),
+		q(c.Session.Compositor),
 		shortcuts(c.Shortcuts))
 }
 
@@ -395,14 +396,16 @@ generate = %t
 touchpad_accel = %s
 
 [displays]
-# Monitors, set in the settings window (Displays). inua writes them to
-# ~/.config/hypr/inua.conf as monitor rules after hyprland.conf's, so a
-# display listed here is as it says, and one not listed stays as
-# hyprland.conf has it. After editing by hand: `+"`inua config apply`"+`.
+# Monitors, set in the settings window (Displays). On Hyprland inua
+# writes them to ~/.config/hypr/inua.conf as monitor rules after
+# hyprland.conf's; on Wayfire it sets them over the IPC each time the
+# shell starts. A display listed here is as it says, and one not listed
+# stays as the compositor's own config has it. After editing by hand:
+# `+"`inua config apply`"+`.
 
 # While a laptop's lid is closed and another display is connected, turn
 # the built-in display off (its workspaces move to the others); opening
-# the lid turns it on again, beside them.
+# the lid turns it on again, beside them. Hyprland only.
 lid_off = %t
 
 # A display: output is its connector ("DP-1"), or "desc:" and its
@@ -627,6 +630,13 @@ enable = %t
 # inua's dialog) or "allow" (change without asking; closing windows,
 # ending processes, power, the clipboard and notifications still ask).
 policy = %s
+
+[session]
+# The compositor the Inua login session starts: "hyprland", "niri" or
+# "wayfire" (Settings, Compositor). It applies at the next login. One that
+# is not installed, or whose own config does not start inua-shell, is
+# passed over for Hyprland, and the shell says why.
+compositor = %s
 
 # Keyboard shortcuts set in the settings window (Shortcuts). inua writes
 # them to ~/.config/hypr/inua.conf: each unbinds its keys from anything

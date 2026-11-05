@@ -17,6 +17,7 @@ import (
 	"github.com/lyricat/inua/internal/apps/sysmon"
 	"github.com/lyricat/inua/internal/apps/tailscale"
 	"github.com/lyricat/inua/internal/apps/weather"
+	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/desktop"
 	"github.com/lyricat/inua/internal/i18n"
 )
@@ -68,13 +69,13 @@ const DeclinedPrefix = "declined: "
 type Desktop struct {
 	// Call sends a request to the shell's control socket (`inua call`).
 	Call func(ctx context.Context, target, function string, args ...string) (string, error)
-	// Hypr requests from Hyprland ("j/clients") and dispatches ("focuswindow …").
-	HyprRequest  func(ctx context.Context, cmd string) ([]byte, error)
-	HyprDispatch func(ctx context.Context, args string) error
-	Apps         func() []*desktop.Entry
-	Launch       func(*desktop.Entry) error
-	ClipRead     func(ctx context.Context) (string, error)
-	ClipWrite    func(ctx context.Context, text string) error
+	// Compositor is the session's compositor (compositor.Detect), for the
+	// window and workspace tools; nil without one.
+	Compositor compositor.Backend
+	Apps       func() []*desktop.Entry
+	Launch     func(*desktop.Entry) error
+	ClipRead   func(ctx context.Context) (string, error)
+	ClipWrite  func(ctx context.Context, text string) error
 	// ClipImage puts an image file on the clipboard.
 	ClipImage func(ctx context.Context, path, mime string) error
 	// ClipHistory and NoteHistory are the clipboard's and the
@@ -149,34 +150,50 @@ type window struct {
 	Focused   bool   `json:"focused,omitempty"`
 }
 
-func windows(ctx context.Context, d Desktop) ([]window, error) {
-	if d.HyprRequest == nil {
-		return nil, errors.New("not on Hyprland")
+// snapshot reads the compositor's state once.
+func snapshot(ctx context.Context, d Desktop) (compositor.Snapshot, error) {
+	if d.Compositor == nil {
+		return compositor.Snapshot{}, errors.New("no compositor")
 	}
-	data, err := d.HyprRequest(ctx, "j/clients")
+	sn, ok := d.Compositor.(compositor.Snapshotter)
+	if !ok {
+		return compositor.Snapshot{}, errors.New("the compositor cannot be read")
+	}
+	return sn.Snapshot(ctx)
+}
+
+func windows(ctx context.Context, d Desktop) ([]window, error) {
+	snap, err := snapshot(ctx, d)
 	if err != nil {
 		return nil, err
 	}
-	var raw []struct {
-		Address   string `json:"address"`
-		Title     string `json:"title"`
-		Class     string `json:"class"`
-		Mapped    bool   `json:"mapped"`
-		Focus     int    `json:"focusHistoryID"`
-		Workspace struct {
-			Name string `json:"name"`
-		} `json:"workspace"`
-	}
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return nil, err
-	}
 	var ws []window
-	for _, c := range raw {
-		if c.Mapped {
-			ws = append(ws, window{ID: c.Address, Title: c.Title, App: c.Class, Workspace: c.Workspace.Name, Focused: c.Focus == 0})
+	for _, w := range snap.Windows {
+		name := w.Workspace
+		if s, ok := snap.Workspace(w.Workspace); ok && s.Name != "" {
+			name = s.Name
 		}
+		ws = append(ws, window{ID: w.ID, Title: w.Title, App: w.AppID, Workspace: name, Focused: w.Focused})
 	}
 	return ws, nil
+}
+
+// workspaceID is the id of the workspace named or numbered q, else q
+// itself for a workspace the compositor can make.
+func workspaceID(ctx context.Context, d Desktop, q string) (string, error) {
+	if q == "" || strings.ContainsAny(q, ",\n") {
+		return "", errors.New("want a workspace")
+	}
+	snap, err := snapshot(ctx, d)
+	if err != nil {
+		return "", err
+	}
+	for _, w := range snap.Workspaces {
+		if w.ID == q || w.Name == q {
+			return w.ID, nil
+		}
+	}
+	return q, nil
 }
 
 // findWindow takes a window's id, else the one whose title or app has the
@@ -240,7 +257,7 @@ func windowTools(d Desktop) []Tool {
 				if err != nil {
 					return nil, err
 				}
-				return w, d.HyprDispatch(ctx, "focuswindow address:"+w.ID)
+				return w, d.Compositor.FocusWindow(ctx, w.ID)
 			},
 		},
 		{
@@ -254,11 +271,11 @@ func windowTools(d Desktop) []Tool {
 				if err != nil {
 					return nil, err
 				}
-				ws := str(a, "workspace")
-				if ws == "" || strings.ContainsAny(ws, ",\n") {
-					return nil, errors.New("want a workspace")
+				ws, err := workspaceID(ctx, d, str(a, "workspace"))
+				if err != nil {
+					return nil, err
 				}
-				return w, d.HyprDispatch(ctx, "movetoworkspacesilent "+ws+",address:"+w.ID)
+				return w, d.Compositor.MoveWindow(ctx, w.ID, ws, false)
 			},
 		},
 		{
@@ -269,7 +286,7 @@ func windowTools(d Desktop) []Tool {
 				if err != nil {
 					return nil, err
 				}
-				return w, d.HyprDispatch(ctx, "closewindow address:"+w.ID)
+				return w, d.Compositor.CloseWindow(ctx, w.ID)
 			},
 		},
 		{
@@ -277,11 +294,11 @@ func windowTools(d Desktop) []Tool {
 			Schema:   schema(`"workspace":{"type":"string"}`, "workspace"),
 			Describe: func(a map[string]any) string { return i18n.Tf("Going to workspace %s", str(a, "workspace")) },
 			Run: func(ctx context.Context, a map[string]any) (any, error) {
-				ws := str(a, "workspace")
-				if ws == "" || strings.ContainsAny(ws, ",\n") {
-					return nil, errors.New("want a workspace")
+				ws, err := workspaceID(ctx, d, str(a, "workspace"))
+				if err != nil {
+					return nil, err
 				}
-				return "ok", d.HyprDispatch(ctx, "workspace "+ws)
+				return "ok", d.Compositor.FocusWorkspace(ctx, ws)
 			},
 		},
 		{
@@ -294,35 +311,11 @@ func windowTools(d Desktop) []Tool {
 	}
 }
 
-// workspaces are Hyprland's workspaces and monitors.
+// workspaces are the compositor's workspaces and monitors.
 func workspaces(ctx context.Context, d Desktop) (any, error) {
-	if d.HyprRequest == nil {
-		return nil, errors.New("not on Hyprland")
-	}
-	var mons []struct {
-		Name    string  `json:"name"`
-		Width   int     `json:"width"`
-		Height  int     `json:"height"`
-		Scale   float64 `json:"scale"`
-		Focused bool    `json:"focused"`
-		Active  struct {
-			ID int `json:"id"`
-		} `json:"activeWorkspace"`
-	}
-	var wss []struct {
-		ID      int    `json:"id"`
-		Name    string `json:"name"`
-		Monitor string `json:"monitor"`
-		Windows int    `json:"windows"`
-	}
-	for cmd, v := range map[string]any{"j/monitors": &mons, "j/workspaces": &wss} {
-		data, err := d.HyprRequest(ctx, cmd)
-		if err != nil {
-			return nil, err
-		}
-		if err := json.Unmarshal(data, v); err != nil {
-			return nil, err
-		}
+	snap, err := snapshot(ctx, d)
+	if err != nil {
+		return nil, err
 	}
 	type monitor struct {
 		Name      string  `json:"name"`
@@ -330,10 +323,10 @@ func workspaces(ctx context.Context, d Desktop) (any, error) {
 		Height    int     `json:"height"`
 		Scale     float64 `json:"scale"`
 		Focused   bool    `json:"focused,omitempty"`
-		Workspace int     `json:"workspace"`
+		Workspace string  `json:"workspace"`
 	}
 	type workspace struct {
-		ID      int    `json:"id"`
+		ID      string `json:"id"`
 		Name    string `json:"name"`
 		Monitor string `json:"monitor"`
 		Windows int    `json:"windows"`
@@ -341,22 +334,17 @@ func workspaces(ctx context.Context, d Desktop) (any, error) {
 		Focused bool   `json:"focused,omitempty"`
 	}
 	var outM []monitor
-	shown, focused := map[int]bool{}, 0
-	for _, m := range mons {
-		outM = append(outM, monitor{m.Name, m.Width, m.Height, m.Scale, m.Focused, m.Active.ID})
-		shown[m.Active.ID] = true
-		if m.Focused {
-			focused = m.Active.ID
-		}
+	for _, m := range snap.Outputs {
+		outM = append(outM, monitor{m.Name, m.Width, m.Height, m.Scale, m.Focused, m.ActiveWorkspace})
+	}
+	count := map[string]int{}
+	for _, w := range snap.Windows {
+		count[w.Workspace]++
 	}
 	var outW []workspace
-	for _, w := range wss {
-		if w.ID < 0 { // special workspaces (scratchpads)
-			continue
-		}
-		outW = append(outW, workspace{w.ID, w.Name, w.Monitor, w.Windows, shown[w.ID], w.ID == focused})
+	for _, w := range snap.Workspaces {
+		outW = append(outW, workspace{w.ID, w.Name, w.Output, count[w.ID], w.Active, w.Focused})
 	}
-	slices.SortFunc(outW, func(a, b workspace) int { return cmp.Compare(a.ID, b.ID) })
 	return map[string]any{"workspaces": outW, "monitors": outM}, nil
 }
 

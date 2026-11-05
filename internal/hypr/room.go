@@ -77,7 +77,7 @@ func roomRight(clientsJSON, monitorsJSON []byte, gap, pid int) (Rect, int, error
 		if cl.Pid != pid || !cl.Mapped {
 			continue
 		}
-		r := Rect{cl.At[0], cl.At[1], cl.Size[0], cl.Size[1]}
+		r := Rect{X: cl.At[0], Y: cl.At[1], W: cl.Size[0], H: cl.Size[1]}
 		for _, m := range monitors {
 			if m.ID != cl.Monitor {
 				continue

@@ -2,6 +2,7 @@ package ui
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"image"
 	"image/png"
@@ -15,6 +16,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/lyricat/inua/internal/compositor"
+
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
@@ -22,7 +25,6 @@ import (
 	"github.com/lyricat/inua/internal/annotui"
 	"github.com/lyricat/inua/internal/apps/store"
 	"github.com/lyricat/inua/internal/gtkx"
-	"github.com/lyricat/inua/internal/hypr"
 	"github.com/lyricat/inua/internal/i18n"
 	"github.com/lyricat/inua/internal/layershell"
 	"github.com/lyricat/inua/internal/notify"
@@ -328,8 +330,9 @@ func (s *shellUI) openShot(mode string) {
 		return
 	}
 	sh.busy = true
-	mons := s.snap.Monitors
-	focused := s.snap.FocusedMonitor
+	mons := s.snap.Outputs
+	focused := s.snap.FocusedOutput
+	client := s.hyprClient()
 	decode := mode == "color"
 	wait := s.hideForShot()
 	go func() {
@@ -340,9 +343,12 @@ func (s *shellUI) openShot(mode string) {
 		}
 		dir, err := shotTempDir()
 		var clients []byte
-		if err == nil {
+		// The windows an area snaps to are Hyprland's list; elsewhere the
+		// area is drawn freely.
+		clients = []byte("[]")
+		if err == nil && client != nil {
 			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-			clients, err = s.client.Request(ctx, "j/clients")
+			clients, err = client.Request(ctx, "j/clients")
 			cancel()
 		}
 		var surfaces []*shotSurface
@@ -391,21 +397,21 @@ func (s *shellUI) openShot(mode string) {
 
 // logicalSize is a monitor's size in logical pixels, turned if the
 // monitor is.
-func logicalSize(m hypr.Monitor) (w, h float64) {
+func logicalSize(m compositor.Output) (w, h float64) {
 	w, h = math.Round(float64(m.Width)/m.Scale), math.Round(float64(m.Height)/m.Scale)
-	if t, _ := m.Raw["transform"].(float64); int(t)%2 == 1 {
+	if m.Transform%2 == 1 {
 		w, h = h, w
 	}
 	return w, h
 }
 
-// shownWorkspaces are the workspaces a monitor shows: its active one, and
-// a special workspace open over it.
-func shownWorkspaces(m hypr.Monitor) []int {
-	ws := []int{m.ActiveWorkspaceID}
-	if sp, ok := m.Raw["specialWorkspace"].(map[string]any); ok {
-		if id, _ := sp["id"].(float64); id != 0 {
-			ws = append(ws, int(id))
+// shownWorkspaces are the workspaces a monitor shows, as Hyprland numbers
+// them: its active one, and a special workspace open over it.
+func shownWorkspaces(m compositor.Output) []int {
+	var ws []int
+	for _, id := range []string{m.ActiveWorkspace, m.SpecialWorkspace} {
+		if n, err := strconv.Atoi(id); err == nil && n != 0 {
+			ws = append(ws, n)
 		}
 	}
 	return ws
@@ -1011,16 +1017,20 @@ func removeShotFiles(surfaces []*shotSurface, keep string) {
 
 // shootNow takes the focused screen or window without the tool.
 func (s *shellUI) shootNow(what string) {
-	focused := s.snap.FocusedMonitor
+	focused := s.snap.FocusedOutput
 	wait := s.hideForShot()
 	go func() {
 		defer gtkx.Post(s.shotShown)
 		time.Sleep(wait)
 		args := []string{"-o", focused}
 		if what == "window" {
-			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-			reply, err := s.client.Request(ctx, "j/activewindow")
-			cancel()
+			var reply []byte
+			err := errors.New("the window needs Hyprland")
+			if client := s.hyprClient(); client != nil {
+				ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+				reply, err = client.Request(ctx, "j/activewindow")
+				cancel()
+			}
 			g, gerr := activeGeometry(reply)
 			if err != nil || gerr != nil {
 				log.Printf("screenshot: no focused window: %v %v", err, gerr)

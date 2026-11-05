@@ -34,6 +34,7 @@ var SettingsKeywords = map[string][]string{
 	"keyboard":      {"layout", "caps lock", "ctrl", "swap", "repeat"},
 	"mouse":         {"touchpad", "trackpad", "pointer", "speed", "scroll", "acceleration"},
 	"sound":         {"audio", "volume", "speaker", "speakers", "headphones", "output", "microphone", "mic", "input", "mute", "pipewire"},
+	"compositor":    {"hyprland", "niri", "wayfire", "window manager", "backend", "session", "login", "log out", "greetd"},
 	"about":         {"version", "update", "upgrade", "system", "fastfetch", "neofetch", "manifest", "card", "share", "qr", "cpu", "memory", "kernel", "changelog"},
 }
 

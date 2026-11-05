@@ -5,7 +5,8 @@
 **不是 compositor 支持实现**。不导入 inua 运行代码，也没有统一窗口模型。
 
 2026-11-05：本机只完成固定来源核对和假 Unix socket 测试。
-**全部真实 niri / Wayfire 观察均为 UNTESTED**。分别参见
+**全部真实 niri / Wayfire 观察均为 UNTESTED**（交付时；其后已在 niri 26.04 和
+Wayfire 0.11 的真实会话中运行，结果见 EVIDENCE.md 的“真实会话运行”一节）。分别参见
 [niri 操作说明](niri/README.md)、[Wayfire 操作说明](wayfire/README.md)、
 [证据与测试记录](EVIDENCE.md)。
 

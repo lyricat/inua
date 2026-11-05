@@ -6,6 +6,8 @@ import (
 	"sync"
 	"testing"
 	"time"
+
+	"github.com/lyricat/inua/internal/compositor"
 )
 
 const (
@@ -19,8 +21,8 @@ const (
 	 {"id":1,"name":"1","monitor":"eDP-1","hasfullscreen":false},
 	 {"id":2,"name":"2","monitor":"eDP-1","hasfullscreen":false}]`
 	clientsJSON = `[
-	 {"address":"0xAA","pid":12345,"mapped":true,"title":"Terminal, 1","class":"kitty","monitor":0,"workspace":{"id":1,"name":"1"}},
-	 {"address":"0xbb","mapped":true,"title":"Browser","class":"firefox","monitor":1,"workspace":{"id":3,"name":"3"}},
+	 {"address":"0xAA","pid":12345,"mapped":true,"title":"Terminal, 1","class":"kitty","monitor":0,"workspace":{"id":1,"name":"1"},"at":[10,20],"size":[800,600],"floating":true,"focusHistoryID":0},
+	 {"address":"0xbb","mapped":true,"title":"Browser","class":"firefox","monitor":1,"workspace":{"id":3,"name":"3"},"focusHistoryID":-1},
 	 {"address":"0xcc","mapped":false,"title":"hidden","class":"x","monitor":0,"workspace":{"id":2,"name":"2"}}]`
 )
 
@@ -57,34 +59,37 @@ func TestBuildSnapshot(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if s.FocusedMonitor != "eDP-1" || s.ActiveToplevel != "0xaa" {
-		t.Fatalf("focus: %q %q", s.FocusedMonitor, s.ActiveToplevel)
+	if s.FocusedOutput != "eDP-1" || s.FocusedWindow != "0xaa" {
+		t.Fatalf("focus: %q %q", s.FocusedOutput, s.FocusedWindow)
 	}
-	if len(s.Monitors) != 2 || s.Monitors[0].Name != "eDP-1" {
-		t.Fatalf("monitors not sorted by id: %+v", s.Monitors)
+	if len(s.Outputs) != 2 || s.Outputs[0].Name != "eDP-1" || s.Outputs[0].ActiveWorkspace != "1" {
+		t.Fatalf("outputs not in Hyprland's order: %+v", s.Outputs)
 	}
-	if len(s.Toplevels) != 2 {
-		t.Fatalf("unmapped client kept: %+v", s.Toplevels)
+	if len(s.Windows) != 2 {
+		t.Fatalf("unmapped client kept: %+v", s.Windows)
 	}
-	tl := s.Toplevels[0]
-	if tl.Address != "0xaa" || tl.PID != 12345 || !tl.Activated || tl.Monitor != "eDP-1" || tl.Raw["class"] != "kitty" {
-		t.Fatalf("toplevel: %+v", tl)
+	w := s.Windows[0]
+	if w.ID != "0xaa" || w.PID != 12345 || !w.Focused || w.Output != "eDP-1" || w.AppID != "kitty" || w.Workspace != "1" {
+		t.Fatalf("window: %+v", w)
 	}
-	if !s.Toplevels[1].Urgent || s.Toplevels[0].Urgent {
+	if w.FocusRank != 1 || s.Windows[1].FocusRank != 0 || w.Geometry == nil || *w.Geometry != (Rect{X: 10, Y: 20, W: 800, H: 600}) || !w.Floating {
+		t.Fatalf("typed fields: %+v %+v", w, w.Geometry)
+	}
+	if !s.Windows[1].Urgent || s.Windows[0].Urgent {
 		t.Fatalf("urgent flags wrong")
 	}
 	want := []struct {
-		id                      int
+		id                      string
 		active, focused, urgent bool
-	}{{1, true, true, false}, {2, false, false, false}, {3, true, false, true}}
+	}{{"1", true, true, false}, {"2", false, false, false}, {"3", true, false, true}}
 	for i, w := range want {
 		ws := s.Workspaces[i]
 		if ws.ID != w.id || ws.Active != w.active || ws.Focused != w.focused || ws.Urgent != w.urgent {
 			t.Errorf("workspace %d: %+v, want %+v", i, ws, w)
 		}
 	}
-	if !s.Workspaces[2].HasFullscreen {
-		t.Error("hasfullscreen lost")
+	if !s.Workspaces[2].HasFullscreen || s.Workspaces[2].Order != 3 {
+		t.Error("hasfullscreen or order lost")
 	}
 }
 
@@ -104,18 +109,18 @@ func TestBuildSnapshotKeepsDisabledMonitorWithWorkspace(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(s.Monitors) != 2 || s.Monitors[0].Name != "HDMI-A-1" || s.Monitors[1].Width != 3840 {
-		t.Fatalf("workspace-linked monitors not retained: %+v", s.Monitors)
+	if len(s.Outputs) != 2 || s.Outputs[0].Name != "HDMI-A-1" || s.Outputs[1].Width != 3840 {
+		t.Fatalf("workspace-linked monitors not retained: %+v", s.Outputs)
 	}
-	if s.FocusedMonitor != "HDMI-A-1" {
-		t.Fatalf("focused monitor = %q", s.FocusedMonitor)
+	if s.FocusedOutput != "HDMI-A-1" {
+		t.Fatalf("focused monitor = %q", s.FocusedOutput)
 	}
 }
 func TestBuildSnapshotNoActiveWindow(t *testing.T) {
 	s, err := BuildSnapshot(QueryResult{
 		Monitors: []byte(`[]`), Workspaces: []byte(`[]`), Clients: []byte(`[]`), ActiveWindow: []byte(`{}`),
 	}, nil)
-	if err != nil || s.ActiveToplevel != "" {
+	if err != nil || s.FocusedWindow != "" {
 		t.Fatalf("%+v %v", s, err)
 	}
 }
@@ -133,7 +138,7 @@ func TestDispatch(t *testing.T) {
 
 func TestPlaceWindow(t *testing.T) {
 	f := newFakeHyprland(t)
-	if err := NewClient(f.paths).PlaceWindow(context.Background(), 42, Rect{100, 80, 460, 700}); err != nil {
+	if err := NewClient(f.paths).PlaceWindow(context.Background(), 42, Rect{X: 100, Y: 80, W: 460, H: 700}); err != nil {
 		t.Fatal(err)
 	}
 	want := []string{"resizewindowpixel exact 460 700,pid:42", "movewindowpixel exact 100 80,pid:42"}
@@ -145,7 +150,7 @@ func TestPlaceWindow(t *testing.T) {
 // recorder is a Handler that records calls.
 type recorder struct {
 	mu      sync.Mutex
-	snaps   []Snapshot
+	snaps   []compositor.Snapshot
 	events  []Event
 	conn    []bool
 	updated chan struct{}
@@ -153,7 +158,7 @@ type recorder struct {
 
 func newRecorder() *recorder { return &recorder{updated: make(chan struct{}, 64)} }
 
-func (r *recorder) OnSnapshot(s Snapshot) {
+func (r *recorder) OnSnapshot(s compositor.Snapshot) {
 	r.mu.Lock()
 	r.snaps = append(r.snaps, s)
 	r.mu.Unlock()
@@ -166,7 +171,7 @@ func (r *recorder) OnConnection(up bool, _ error) {
 	r.mu.Unlock()
 }
 
-func (r *recorder) last() Snapshot {
+func (r *recorder) last() compositor.Snapshot {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	return r.snaps[len(r.snaps)-1]
@@ -202,7 +207,7 @@ func TestStoreInitialSnapshotAndEvents(t *testing.T) {
 	startStore(t, f, r)
 
 	waitFor(t, r.updated, "initial snapshot")
-	if got := len(r.last().Toplevels); got != 2 {
+	if got := len(r.last().Windows); got != 2 {
 		t.Fatalf("initial toplevels = %d", got)
 	}
 	<-f.connected
@@ -217,8 +222,8 @@ func TestStoreInitialSnapshotAndEvents(t *testing.T) {
 		t.Errorf("burst caused %d refreshes, want 1", n)
 	}
 	s := r.last()
-	if len(s.Toplevels) != 1 || s.Toplevels[0].Title != "renamed" {
-		t.Fatalf("after events: %+v", s.Toplevels)
+	if len(s.Windows) != 1 || s.Windows[0].Title != "renamed" {
+		t.Fatalf("after events: %+v", s.Windows)
 	}
 	r.mu.Lock()
 	nev := len(r.events)
@@ -254,12 +259,12 @@ func TestStoreUrgentTracking(t *testing.T) {
 
 	f.emit("urgent>>bb")
 	waitFor(t, r.updated, "urgent")
-	if !r.last().Toplevels[1].Urgent {
+	if !r.last().Windows[1].Urgent {
 		t.Fatal("urgent not applied")
 	}
 	f.emit("activewindowv2>>bb")
 	waitFor(t, r.updated, "urgent cleared")
-	if r.last().Toplevels[1].Urgent {
+	if r.last().Windows[1].Urgent {
 		t.Fatal("urgent not cleared on activation")
 	}
 }
@@ -275,7 +280,7 @@ func TestStoreReconnectRebuildsState(t *testing.T) {
 	f.dropEventConns()
 	<-f.connected
 	waitFor(t, r.updated, "snapshot after reconnect")
-	if len(r.last().Toplevels) != 2 {
+	if len(r.last().Windows) != 2 {
 		t.Fatalf("state not re-queried after reconnect: %+v", r.last())
 	}
 	// The snapshot is published before the connection is reported up.
@@ -306,7 +311,7 @@ func TestStoreManualRefresh(t *testing.T) {
 	f.set("j/clients", clientsJSON)
 	s.Refresh()
 	waitFor(t, r.updated, "manual refresh")
-	if len(r.last().Toplevels) != 2 {
+	if len(r.last().Windows) != 2 {
 		t.Fatal("manual refresh did not query")
 	}
 }
@@ -321,7 +326,7 @@ func TestRoomRight(t *testing.T) {
 		{"id":1,"x":2256,"width":1080,"height":1920,"scale":1,"transform":1,"reserved":[0,0,20,0]}]`
 	r, room, err := roomRight([]byte(clients), []byte(monitors), 8, 7)
 	// 3840/1.5 = 2560: the edge at 2256+2560-8 = 4808; the window ends at 3126.
-	if err != nil || r != (Rect{2266, 200, 860, 620}) || room != 1682 {
+	if err != nil || r != (Rect{X: 2266, Y: 200, W: 860, H: 620}) || room != 1682 {
 		t.Errorf("%+v %d %v", r, room, err)
 	}
 	// Turned: 1920 wide, less 20 reserved and the gap; it ends at 3100.

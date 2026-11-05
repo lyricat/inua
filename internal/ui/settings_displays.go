@@ -13,6 +13,7 @@ import (
 
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
+	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/config"
 	"github.com/lyricat/inua/internal/display"
 	"github.com/lyricat/inua/internal/gtkx"
@@ -21,14 +22,16 @@ import (
 )
 
 // displaysSettings is the Displays page: the lid's switch on a laptop,
-// then a section a display Hyprland has, on or off, each with its mode,
-// scale, position and mirror. A change becomes a monitor rule in
-// [displays], which Hyprland applies from inua.conf. The sections are laid
-// out again as displays come and go and as Hyprland applies the rules.
+// then a section a display the compositor has, on or off, each with its
+// mode, scale, position and mirror. A change becomes a monitor rule in
+// [displays], which Hyprland applies from inua.conf and another
+// compositor's backend its own way. The sections are laid out again as
+// displays come and go and as the rules are applied.
 type displaysSettings struct {
 	page     gtk.Box // the page; the displays' sections follow its own
 	lid      gtk.Box // the lid's section
 	lidOff   gtk.Switch
+	lidMeta  gtk.Label // the lid section's few words
 	warn     gtk.Label
 	sections []*gtk.Box // the displays', owned by page
 
@@ -59,6 +62,7 @@ func (s *shellUI) getDisplaySettings(ui *gtkx.Builder) {
 	d := &s.settings.displays
 	ui.Get("displays_page", &d.page)
 	ui.Get("displays_lid", &d.lid)
+	ui.Get("displays_lid_meta", &d.lidMeta)
 	ui.Get("lid_off", &d.lidOff)
 	ui.Get("displays_warn", &d.warn)
 	d.sections, d.outputs, d.off, d.shown = nil, nil, nil, ""
@@ -123,7 +127,7 @@ func (s *shellUI) changeDisplay(o display.Output, edit func(*config.Monitor)) {
 	s.changeSettings(c)
 }
 
-// showDisplays asks Hyprland for its displays and the kernel for the lid,
+// showDisplays asks the compositor for its displays and the kernel for the lid,
 // off the main loop, and lays the page out with the answer.
 func (s *shellUI) showDisplays() {
 	d := &s.settings.displays
@@ -134,18 +138,34 @@ func (s *shellUI) showDisplays() {
 	d.lidOff.SetActive(s.cfg.Displays.LidOff)
 	s.settings.filling = false
 	d.gen++
-	gen, client, lidOff := d.gen, s.client, s.cfg.Displays.LidOff
+	gen, client, lidOff := d.gen, s.hyprClient(), s.cfg.Displays.LidOff
+	// Another compositor lists its displays through its backend; turning
+	// the panel off with the lid is Hyprland's (a switch bind).
+	var lister compositor.Displayer
+	if client == nil && s.caps.Has(compositor.CapDisplays) {
+		lister, _ = s.comp.(compositor.Displayer)
+	}
+	lidOff = lidOff && client != nil
 	go func() {
 		var outputs []display.Output
 		var err error
-		if client != nil {
-			ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		switch {
+		case client != nil:
 			var reply []byte
 			if reply, err = client.Request(ctx, "j/monitors all"); err == nil {
 				outputs, err = display.Outputs(reply)
 			}
-			cancel()
+		case lister != nil:
+			var all []compositor.Display
+			all, err = lister.Displays(ctx)
+			for _, o := range all {
+				outputs = append(outputs, display.Output{Name: o.Name, Description: o.Description, Make: o.Make, Model: o.Model,
+					Width: o.Width, Height: o.Height, Refresh: o.Refresh, X: o.X, Y: o.Y, Scale: o.Scale,
+					Disabled: o.Disabled, MirrorOf: o.MirrorOf, Modes: o.Modes})
+			}
 		}
+		cancel()
 		if err != nil {
 			log.Printf("settings: displays: %v", err)
 		}
@@ -159,6 +179,11 @@ func (s *shellUI) showDisplays() {
 				return
 			}
 			d.lid.SetVisible(hasLid || slices.ContainsFunc(outputs, display.Output.Internal))
+			d.lid.SetSensitive(s.hypr != nil || s.comp == nil)
+			toggle(&d.lid.Widget, "gated", s.hypr == nil && s.comp != nil)
+			if s.hypr == nil && s.comp != nil {
+				d.lidMeta.SetText(i18n.Tf("Not available on %s", s.compositorName()))
+			}
 			s.layOutDisplays(outputs, off)
 		})
 	}()
@@ -182,8 +207,15 @@ func (s *shellUI) layOutDisplays(outputs []display.Output, off []string) {
 	d.sections = nil
 	clear(d.controls)
 	if len(outputs) == 0 {
-		sec, body := displaySection("", i18n.T("No displays"))
-		row, _ := displayRow(i18n.T("Hyprland lists no displays"), i18n.T("Is the shell connected to Hyprland?"))
+		title := i18n.T("No displays")
+		if s.unsupported(compositor.CapDisplays) {
+			title = i18n.T("Displays")
+		}
+		sec, body := displaySection("", title)
+		row, _ := displayRow(i18n.Tf("%s lists no displays", s.compositorName()), i18n.Tf("Is the shell connected to %s?", s.compositorName()))
+		if s.unsupported(compositor.CapDisplays) {
+			row, _ = displayRow(i18n.Tf("Not available on %s", s.compositorName()), i18n.T("Resolution, scale and arrangement are set in the compositor's own configuration."))
+		}
 		gtkx.Append(body, &row.Widget)
 		s.addDisplaySection(sec)
 		return
@@ -254,7 +286,12 @@ func (s *shellUI) outputSection(o display.Output, outputs []display.Output, on i
 	if mw, mh, _, ok := display.ParseMode(mode); ok {
 		w, h = mw, mh
 	}
-	scales := display.ScalesFor(w, h)
+	// Hyprland takes only the scales that give whole pixels; the others
+	// take what they are given.
+	scales := slices.Clone(display.Scales)
+	if s.hypr != nil {
+		scales = display.ScalesFor(w, h)
+	}
 	if !slices.Contains(scales, scale) {
 		scales = append(scales, scale)
 	}
@@ -262,7 +299,7 @@ func (s *shellUI) outputSection(o display.Output, outputs []display.Output, on i
 	labels = nil
 	for _, f := range scales {
 		values = append(values, strconv.FormatFloat(f, 'f', -1, 64))
-		if valid := display.ValidScale(w, h, f); valid != f {
+		if valid := display.ValidScale(w, h, f); valid != f && s.hypr != nil {
 			labels = append(labels, i18n.Tf("%s (Hyprland uses %s)", scaleLabel(f), scaleLabel(valid)))
 		} else {
 			labels = append(labels, scaleLabel(f))
@@ -305,12 +342,17 @@ func (s *shellUI) outputSection(o display.Output, outputs []display.Output, on i
 
 	// Where the settings come from.
 	gtkx.Append(body, &gtk.NewSeparator(gtk.OrientationHorizontalValue).Widget)
-	source := i18n.T("Set in hyprland.conf")
+	// Hyprland's own settings are a file; another compositor's are named
+	// by the compositor.
+	source, own := i18n.T("Set in hyprland.conf"), i18n.T("Use hyprland.conf")
+	if s.hypr == nil && s.comp != nil {
+		source, own = i18n.Tf("Set in %s's own configuration", s.compositorName()), i18n.Tf("Use %s's", s.compositorName())
+	}
 	if ruled {
 		source = i18n.T("Set by inua")
 	}
 	row, _ = displayRow(source, "")
-	reset := gtk.NewButtonWithLabel(i18n.T("Use hyprland.conf"))
+	reset := gtk.NewButtonWithLabel(own)
 	reset.AddCssClass("outlined")
 	reset.SetValign(gtk.AlignCenterValue)
 	reset.SetTooltipText(i18n.T("Stop setting this display in inua"))

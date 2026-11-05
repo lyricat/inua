@@ -323,7 +323,7 @@ All controls are 34 px tall where they sit in a row, framed by a 1 px
 | Number | An entry's box with the digits in mono; − and + as flat 32 px cells behind hairlines | `spinbutton` (styled for every `.settings` window) |
 | Drop-down | The outlined button's shape, at least 150 px; its list on `app` without GTK's padding | `dropdown` |
 | Switch | 36 × 18 px, 2 px corners: a 14% accent tint off, the accent on | `switch` |
-| Segmented | Options in one hairline frame, 34 px in all (28 px options inside its 2 px); the chosen one tinted with the accent (16%) in the accent's colour; words in mono 12 px, or icons, square (`icons`). A box of toggle buttons or a stack switcher alike | `segmented` |
+| Segmented | Options in one hairline frame, 34 px in all (28 px options inside its 2 px); the chosen one tinted with the accent (16%) in the accent's colour; words in mono 12 px, or icons, square (`icons`). An option that cannot be chosen now is disabled, its words at half strength, the reason in a hint under the row. A box of toggle buttons or a stack switcher alike | `segmented` |
 | Keycap | Mono 11.5 px in a hairline box | `keycap` |
 
 One main action per page, at most: the accent fill is that page's one

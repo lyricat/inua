@@ -236,6 +236,41 @@ owner 先决定是否接受基线和候选建议，再另行开展 #61 的 niri�
 需回答的缺口包括：窗口身份与焦点、工作区语义、几何、层表面、权限、断线和锁。
 这里没有开始实验、给出新接口或自动开启后续实现。未收到 owner 决定前，本文仅为建议，不更改支持声明。
 
+## 真实会话的修正（2026-11-05，后补）
+
+本文交付时五个合成器都没有实测。其后 niri 26.04、Wayfire 0.11 和
+Hyprland 0.57.1 在无显示器的容器里运行过，探针、`internal/niri` 与
+`internal/wayfire` 两个后端以及 `inua-shell` 本身都跑过；详见
+[实验报告](compositor-experiments.md)。Sway 和 KWin 仍只有文档证据。
+以下各条以实测为准，表内原有标记不改：
+
+- **niri 的窗口几何**：`tile_pos_in_workspace_view` 只对浮动窗口有值，平铺窗口为
+  `null`；Overview 在 niri 上没有按几何排布的窗口，只有标题和图标。
+- **niri 的错误**：对不存在的窗口 ID 的动作回复 `Ok`；只有格式错误的请求得到 `Err`。
+- **niri 的焦点事件**：新窗口的焦点随 `WindowOpenedOrChanged` 到达，没有单独的
+  `WindowFocusChanged`。
+- **niri 的 layer 键盘焦点**：按需（on-demand）键盘的 layer 表面只有被点击才
+  得到焦点；Hyprland 和 Wayfire 在其出现时就给。契约里是 `CapOnDemandFocus`。
+- **Wayfire `focus-view`** 会自己切到该 view 所在的格子，且不移动指针；
+  **`vswitch/send-view`** 不带走焦点。
+- **Wayfire 的 list 方法**返回数组；新输出由 `output-layout-changed` 通知，
+  没有观察到 `output-added`。
+- **首个新增目标**：niri 和 Wayfire 的后端现在都在，建议的先后不再决定什么。
+- **最低基线**在三个合成器上都已由 shell 实际满足：bar、dock、launcher、
+  Overview（niri／Wayfire 无预览）、锁屏、设置窗口；niri 的 Displays 页面
+  显示“不可用”一行，而不是空白或假成功。
+- **Wayfire 的显示设置**：IPC 只给输出的位置，不给模式；模式经
+  wlr-output-management 读取，设置经 `wayfire/set-config-options` 写入
+  `output:NAME/mode`、`/scale`、`/position`（`off` 与 `mirror NAME` 也是 mode）。
+  给一个输出定了位置，其余未定位的输出会被 Wayfire 重新排到它右边，所以
+  后端同时把其余输出固定在原位。
+- **Wayfire 0.9（Debian 13）**与 0.11 的差别：没有 `vswitch/send-view`（改用
+  `configure-view` 按整屏位移），没有 `list-config-options`，图层表面的
+  `wset-index` 写成 2^64-1，socket 在 `/tmp`；面板关闭后约 0.2 秒键盘才回到
+  窗口。Debian 13 的 gtk4-layer-shell 1.0 没有会话锁。
+- **全屏窗口之上的面板**：niri 与 Wayfire 把 top 图层放在全屏窗口之下，
+  launcher 等面板在这两个合成器上改用 overlay 图层。
+
 ## 本次检查
 
 文档覆盖 FT58 的 23 行，并保留了协议、专有命令、插件、权限与未知项的区别。

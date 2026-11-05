@@ -17,6 +17,8 @@ import (
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
 	"github.com/lyricat/inua/internal/bootstrap"
+	"github.com/lyricat/inua/internal/compositor"
+	"github.com/lyricat/inua/internal/compsettings"
 	"github.com/lyricat/inua/internal/gtkx"
 	"github.com/lyricat/inua/internal/hyprconf"
 	"github.com/lyricat/inua/internal/i18n"
@@ -36,7 +38,15 @@ type hyprApply struct {
 // applyHyprland writes inua.conf from the input settings in the
 // background, and reloads Hyprland if the file changed.
 func (s *shellUI) applyHyprland() {
-	c, client := s.cfg, s.client
+	if s.comp != nil && s.hypr == nil {
+		// Another compositor takes the same settings its own way;
+		// inua.conf is Hyprland's.
+		if cf := s.configurer(); cf != nil {
+			s.applyBackendSettings(cf)
+		}
+		return
+	}
+	c, client := s.cfg, s.hyprClient()
 	path := hyprconf.Target(s.hyprConfig())
 	gen := s.hyprApply.latest.Add(1)
 	go func() {
@@ -59,6 +69,9 @@ func (s *shellUI) applyHyprland() {
 		})
 	}()
 }
+
+// backendSettings are inua's settings as a compositor backend takes them.
+func (s *shellUI) backendSettings() compositor.Settings { return compsettings.From(s.cfg) }
 
 // refreshHyprInput rereads what Hyprland has in effect after it reloads
 // its config, for the settings window.
@@ -83,12 +96,12 @@ func (s *shellUI) kbOptions() string {
 
 // hyprKbOptions asks Hyprland for input:kb_options, "" if it cannot say.
 func (s *shellUI) hyprKbOptions() string {
-	if s.client == nil {
+	if s.hypr == nil {
 		return ""
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 300*time.Millisecond)
 	defer cancel()
-	reply, err := s.client.Request(ctx, "j/getoption input:kb_options")
+	reply, err := s.hypr.Client.Request(ctx, "j/getoption input:kb_options")
 	if err != nil {
 		log.Printf("hyprland: kb_options: %v", err)
 		return ""
@@ -145,6 +158,23 @@ func (s *shellUI) hyprConfig() string {
 // hyprland.lua), or overrides it.
 func (s *shellUI) showSourceWarning() {
 	st := &s.settings
+	if s.comp != nil && s.hypr == nil {
+		// Another compositor: each page's options are there when the
+		// compositor takes them, and disabled with the reason under them
+		// when it does not. What it takes can change under us (a line
+		// added to its config, a plugin loaded).
+		s.setCaps(s.comp.Capabilities())
+		for _, g := range []struct {
+			warn *gtk.Label
+			c    compositor.Capability
+		}{{&st.kbWarn, compositor.CapKeyboard}, {&st.tpWarn, compositor.CapTouchpad}, {&st.sc.warn, compositor.CapBinds}} {
+			s.gatePage(g.warn, s.capabilityHint(g.c))
+		}
+		st.displays.warn.SetVisible(false)
+		s.showBackendLabels()
+		s.showCompositor()
+		return
+	}
 	conf := s.hyprConfig()
 	_, overrides, err := bootstrap.FindSource(conf, hyprconf.Target(conf))
 	text := ""

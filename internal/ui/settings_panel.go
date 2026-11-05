@@ -2,7 +2,6 @@ package ui
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 	"time"
@@ -12,6 +11,7 @@ import (
 	"codeberg.org/puregotk/puregotk/v4/graphene"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
+	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/gtkx"
 )
 
@@ -126,8 +126,8 @@ func (s *shellUI) showPanel(p *sidePanel, show bool, anchor *gtk.Widget) {
 		page.Measure(gtk.OrientationHorizontalValue, -1, &least, &natural, nil, nil)
 		missing = int(least) - (int(page.GetWidth()) - p.width)
 	}
-	client := s.client
-	if missing <= 0 || client == nil {
+	placer, _ := s.comp.(compositor.Placer)
+	if missing <= 0 || placer == nil || !s.caps.Has(compositor.CapPlacement) {
 		p.pin(anchor)
 		p.rev.SetRevealChild(true)
 		return
@@ -137,13 +137,10 @@ func (s *shellUI) showPanel(p *sidePanel, show bool, anchor *gtk.Widget) {
 		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 		defer cancel()
 		pid := os.Getpid()
-		r, room, err := client.RoomRight(ctx, pid)
+		r, room, err := placer.RoomRight(ctx, pid)
 		if err == nil {
 			x := r.X - max(0, missing-room) // left by what the right lacks
-			err = client.Dispatch(ctx, fmt.Sprintf("resizewindowpixel exact %d %d,pid:%d", r.W+missing, r.H, pid))
-			if err == nil {
-				err = client.Dispatch(ctx, fmt.Sprintf("movewindowpixel exact %d %d,pid:%d", x, r.Y, pid))
-			}
+			err = placer.PlaceWindow(ctx, pid, compositor.Rect{X: x, Y: r.Y, W: r.W + missing, H: r.H})
 		}
 		if err != nil {
 			log.Printf("settings: panel: %v", err)

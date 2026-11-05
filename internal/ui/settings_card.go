@@ -57,17 +57,17 @@ func (s *shellUI) fetchSystem() {
 		return
 	}
 	a.fetching = true
-	client := s.client
+	client, name := s.hyprClient(), s.compositorName()
 	inua := strings.TrimPrefix(s.opts.Version, "v")
 	link := upgrade.Repo
 	if upgrade.IsRelease(s.opts.Version) {
 		link = upgrade.Repo + "/releases/tag/v" + inua
 	}
 	var screens []shell.CardScreen
-	for _, m := range s.snap.Monitors {
+	for _, m := range s.snap.Outputs {
 		sc := shell.CardScreen{Width: m.Width, Height: m.Height, Scale: m.Scale}
-		if hz, ok := m.Raw["refreshRate"].(float64); ok {
-			sc.Hz = math.Round(hz)
+		if m.RefreshRate > 0 {
+			sc.Hz = math.Round(m.RefreshRate)
 		}
 		screens = append(screens, sc)
 	}
@@ -77,7 +77,7 @@ func (s *shellUI) fetchSystem() {
 	colors := config.ThemeColors(css)
 	go func() {
 		info := system.ReadSysInfo("/")
-		wm := "Hyprland"
+		wm := name
 		if client != nil {
 			ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 			if b, err := client.Request(ctx, "j/version"); err == nil {

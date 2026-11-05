@@ -9,8 +9,8 @@ import (
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
 	"github.com/lyricat/inua/internal/appmenu"
+	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/gtkx"
-	"github.com/lyricat/inua/internal/hypr"
 	"github.com/lyricat/inua/internal/system"
 	"github.com/lyricat/inua/internal/uikit"
 )
@@ -49,13 +49,9 @@ func (s *shellUI) startAppMenu() {
 	}()
 }
 
-func focusedPID(snap hypr.Snapshot) int {
-	for _, win := range snap.Toplevels {
-		if win.Address == snap.ActiveToplevel {
-			return win.PID
-		}
-	}
-	return 0
+func focusedPID(snap compositor.Snapshot) int {
+	w, _ := snap.Window(snap.FocusedWindow)
+	return w.PID
 }
 
 func (s *shellUI) syncAppMenus() {
@@ -72,7 +68,7 @@ func (s *shellUI) syncAppMenu(b *bar) {
 		return
 	}
 	var want appmenu.Registration
-	if b.connector() == s.snap.FocusedMonitor {
+	if b.connector() == s.snap.FocusedOutput {
 		want, _ = s.appmenu.registrar.ForPID(focusedPID(s.snap))
 	}
 	if b.appMenuReg == want {

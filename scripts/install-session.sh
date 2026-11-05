@@ -17,6 +17,9 @@ dest=${2:-/}
 
 install -Dm755 "$root/scripts/inua-session" "$dest/usr/local/bin/inua-session"
 install -Dm644 "$root/config/session/inua.desktop" "$dest/usr/share/wayland-sessions/inua.desktop"
+# One entry serves every compositor: inua-session starts the one chosen in
+# inua's settings. Entries of an earlier install that named one go.
+rm -f "$dest/usr/share/wayland-sessions/inua-niri.desktop" "$dest/usr/share/wayland-sessions/inua-wayfire.desktop"
 # account NAME: whether the system being installed has that user.
 account() {
     if [ "$dest" = / ]; then

@@ -3,13 +3,14 @@ package desk
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"path/filepath"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/lyricat/inua/internal/clipboard"
+	"github.com/lyricat/inua/internal/compositor"
+	"github.com/lyricat/inua/internal/compositor/compositortest"
 	"github.com/lyricat/inua/internal/notify"
 )
 
@@ -53,22 +54,20 @@ func TestShellCalls(t *testing.T) {
 
 func TestListWorkspaces(t *testing.T) {
 	d, _ := fakeDesktop()
-	d.HyprRequest = func(_ context.Context, cmd string) ([]byte, error) {
-		switch cmd {
-		case "j/monitors":
-			return []byte(`[{"name":"DP-1","width":2560,"height":1440,"scale":1.25,"focused":true,"activeWorkspace":{"id":2}},
-				{"name":"eDP-1","width":1920,"height":1200,"scale":1,"focused":false,"activeWorkspace":{"id":5}}]`), nil
-		case "j/workspaces":
-			return []byte(`[{"id":5,"name":"5","monitor":"eDP-1","windows":1},{"id":2,"name":"web","monitor":"DP-1","windows":3},
-				{"id":1,"name":"1","monitor":"DP-1","windows":0},{"id":-98,"name":"special:magic","monitor":"DP-1","windows":1}]`), nil
-		}
-		return nil, errors.New("no " + cmd)
+	d.Compositor.(*compositortest.Fake).Snap = compositor.Snapshot{
+		Outputs: []compositor.Output{{Name: "DP-1", Width: 2560, Height: 1440, Scale: 1.25, Focused: true, ActiveWorkspace: "2"},
+			{Name: "eDP-1", Width: 1920, Height: 1200, Scale: 1, ActiveWorkspace: "5"}},
+		Workspaces: []compositor.Workspace{{ID: "1", Name: "1", Output: "DP-1", Order: 1},
+			{ID: "2", Name: "web", Output: "DP-1", Order: 2, Active: true, Focused: true},
+			{ID: "5", Name: "5", Output: "eDP-1", Order: 5, Active: true}},
+		Windows:       []compositor.Window{{ID: "0x1", Workspace: "5"}, {ID: "0x2", Workspace: "2"}, {ID: "0x3", Workspace: "2"}, {ID: "0x4", Workspace: "2"}},
+		FocusedOutput: "DP-1",
 	}
 	out, err := run(t, d, "list_workspaces", nil)
 	var got struct {
 		Workspaces []struct {
-			ID             int
-			Name           string
+			ID, Name       string
+			Windows        int
 			Shown, Focused bool
 		}
 		Monitors []struct{ Name string }
@@ -78,7 +77,7 @@ func TestListWorkspaces(t *testing.T) {
 		t.Fatalf("%v %s", err, out)
 	}
 	w := got.Workspaces
-	if w[0].ID != 1 || w[1].Name != "web" || !w[1].Shown || !w[1].Focused || !w[2].Shown || w[2].Focused || w[0].Shown {
+	if w[0].ID != "1" || w[1].Name != "web" || w[1].Windows != 3 || !w[1].Shown || !w[1].Focused || !w[2].Shown || w[2].Focused || w[0].Shown {
 		t.Errorf("workspaces %+v", w)
 	}
 }

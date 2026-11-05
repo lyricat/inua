@@ -5,6 +5,15 @@ The sample configuration inua needs on a new system:
 | File | Installed to | What |
 | --- | --- | --- |
 | `hypr/hyprland.conf` | `~/.config/hypr/hyprland.conf` | Hyprland 0.53: starts `inua-shell`; the shell's shortcuts, blur rules for its surfaces, common window management keys and media keys. Companions (hypridle, Fcitx 5) start only when installed. inua shows notifications, draws the wallpaper and asks for administrator passwords (as the Polkit agent) itself |
+| `niri/config.kdl` | `~/.config/niri/config.kdl` (written when niri is first chosen in Settings → Compositor and there is none; not by `inua init`) | niri (an experiment, docs/compositor-experiments.md): starts `inua-shell`, the shell's shortcuts and the window management keys, and includes `inua.kdl` last, which inua writes from its Keyboard, Mouse & Touch and Shortcuts settings. No blur, no display page, no live previews |
+| `wayfire/wayfire.ini` | `~/.config/wayfire.ini` (written when Wayfire is first chosen and there is none) | Wayfire (an experiment): the plugins inua needs (`ipc`, `ipc-rules`, `vswitch`, `command`), `inua-shell` from `autostart`, the shell's shortcuts through the `command` plugin. inua's keyboard, touchpad, shortcut and display settings are applied over the IPC each time the shell starts, not written to this file. Wayfire 0.9 (Debian 13) and 0.11 |
+
+The compositor is a setting, `[session] compositor` in `config.toml`,
+chosen in Settings → Compositor: the one Inua session entry runs
+`inua-session`, which starts the chosen compositor at the next login, or
+Hyprland when the chosen one is not installed or its config does not start
+`inua-shell` (the shell then says why). `inua-session niri` or
+`inua-session wayfire` starts one regardless of the setting.
 | `hypr/inua.conf` | `~/.config/hypr/inua.conf` | The Hyprland settings inua manages (keyboard, touchpad, shortcuts, the session lock restore setting, the light apps' window rule, blur behind the apps' menus), written by inua from `config.toml`. The sample has no settings of yours; `hyprland.conf` sources it last |
 | `inua/config.toml` | `~/.config/inua/config.toml` | The shell's settings: every option at its default, documented |
 | `inua/style.css` | `~/.config/inua/style.css` | Style overrides: the built-in colours and examples, all commented out |

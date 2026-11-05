@@ -12,9 +12,10 @@ import (
 
 	"github.com/lyricat/inua/internal/apps/tailscale"
 	"github.com/lyricat/inua/internal/clipboard"
+	"github.com/lyricat/inua/internal/compositor"
+	_ "github.com/lyricat/inua/internal/compositors" // the backends Detect knows
 	"github.com/lyricat/inua/internal/config"
 	"github.com/lyricat/inua/internal/desktop"
-	"github.com/lyricat/inua/internal/hypr"
 	"github.com/lyricat/inua/internal/ipc"
 	"github.com/lyricat/inua/internal/notify"
 )
@@ -65,10 +66,8 @@ func Local(terminal []string) Desktop {
 		once.Do(func() { apps = desktop.Scan(desktop.DataDirs(), os.Getenv("LANG")) })
 		return apps
 	}
-	if paths, err := hypr.PathsFromEnv(); err == nil {
-		client := hypr.NewClient(paths)
-		d.HyprRequest = client.Request
-		d.HyprDispatch = client.Dispatch
+	if b, err := compositor.Detect(); err == nil {
+		d.Compositor = b
 	}
 	return d
 }

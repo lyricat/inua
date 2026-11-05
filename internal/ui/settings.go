@@ -79,8 +79,12 @@ type settings struct {
 	// Keyboard and touchpad: where the settings come from, and why they
 	// would do nothing.
 	kbState, kbReadout, kbWarn, tpState, tpValue, tpWarn gtk.Label
-	notifyState                                          gtk.Label
-	kbReset, tpReset                                     gtk.Button
+	// The words that name the compositor, set for one other than Hyprland
+	// (showBackendLabels), and the hints under gated pages (gatePage).
+	kbSourceMeta, tpSourceMeta, scOtherLabel, scOtherMeta gtk.Label
+	compositor                                            compositorSettings
+	notifyState                                           gtk.Label
+	kbReset, tpReset                                      gtk.Button
 	// The language, and the offer to restart the shell into a new one.
 	language       gtk.DropDown
 	langRestartRow gtk.Box
@@ -471,6 +475,10 @@ func (s *shellUI) openSettings() {
 	ui.Get("sc_hypr", &st.sc.hypr)
 	ui.Get("sc_recording", &st.sc.recordingNote)
 	ui.Get("sc_warn", &st.sc.warn)
+	ui.Get("sc_other_label", &st.scOtherLabel)
+	ui.Get("sc_other_meta", &st.scOtherMeta)
+	ui.Get("kb_source_meta", &st.kbSourceMeta)
+	ui.Get("tp_source_meta", &st.tpSourceMeta)
 	ui.Get("sc_new_name", &st.sc.newName)
 	ui.Get("sc_new_cmd", &st.sc.newCmd)
 	var scAdd gtk.Button
@@ -522,6 +530,7 @@ func (s *shellUI) openSettings() {
 	s.getWifiSettings(ui)
 	s.getBluetoothSettings(ui)
 	s.getPowerSettings(ui)
+	s.getCompositorSettings(ui)
 	s.getVoiceSettings(ui)
 	s.getSoundSettings(ui)
 	s.buildSettingsIndex()
@@ -573,7 +582,7 @@ var settingsGroups = []struct {
 	{i18n.M("Devices"), []string{"displays", "keyboard", "mouse", "sound", "voice"}},
 	{i18n.M("Desktop"), []string{"appearance", "bar", "launcher", "notifications", "shortcuts"}},
 	{i18n.M("Apps"), []string{"apps", "ai", "clipboard", "keyring"}},
-	{i18n.M("System"), []string{"power", "about"}},
+	{i18n.M("System"), []string{"compositor", "power", "about"}},
 }
 
 // settingsPages are the pages' names in settings.ui, in the index's order.
@@ -785,6 +794,8 @@ func (s *shellUI) showSettings() {
 	s.showWifi()
 	s.showBluetooth()
 	s.showPower()
+	s.showCompositor()
+	s.showBackendLabels()
 	s.fillVoiceSettings()
 	s.showSound()
 	s.showDisplays()

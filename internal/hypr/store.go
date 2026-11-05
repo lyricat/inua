@@ -5,6 +5,8 @@ import (
 	"reflect"
 	"sync"
 	"time"
+
+	"github.com/lyricat/inua/internal/compositor"
 )
 
 // Handler receives store output. Calls are made from the store goroutine, one
@@ -12,7 +14,7 @@ import (
 type Handler interface {
 	// OnSnapshot is called after a refresh produced a state different from
 	// the previous one.
-	OnSnapshot(Snapshot)
+	OnSnapshot(compositor.Snapshot)
 	// OnEvent is called for every raw event, before any refresh it causes.
 	OnEvent(Event)
 	// OnConnection reports the event stream going up (err == nil) or down.
@@ -34,7 +36,7 @@ type Store struct {
 	refreshReq chan struct{}
 
 	mu     sync.Mutex
-	snap   Snapshot
+	snap   compositor.Snapshot
 	urgent map[string]bool
 }
 

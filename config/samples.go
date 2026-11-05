@@ -14,6 +14,13 @@ import (
 //go:embed hypr/hyprland.conf hypr/inua.conf inua/config.toml inua/style.css inua/themes/nord.css inua/icons/phosphor-bold
 var FS embed.FS
 
+// Compositors are the sample configs of the other compositors inua runs
+// on, written when the user first chooses one (internal/session), not by
+// inua init: niri/config.kdl and wayfire/wayfire.ini.
+//
+//go:embed niri/config.kdl wayfire/wayfire.ini
+var Compositors embed.FS
+
 // IconSet is the sample icon set's folder in FS.
 const IconSet = "inua/icons/phosphor-bold"
 

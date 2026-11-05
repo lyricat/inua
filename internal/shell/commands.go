@@ -63,8 +63,8 @@ func CommandByID(id string) (Command, bool) {
 var workspaceRe = regexp.MustCompile(`^(?:(move|send)\s+(?:window\s+)?(?:to\s+)?)?(?:workspace|ws)\s*(\d{1,2})$`)
 
 // searchCommands are the commands matching q, with window commands only
-// when there is a window (title) to act on.
-func searchCommands(q, window string) []Result {
+// when there is a window (title) to act on, and none of without.
+func searchCommands(q, window string, without []string) []Result {
 	if q == "" {
 		return nil
 	}
@@ -77,7 +77,7 @@ func searchCommands(q, window string) []Result {
 		}
 	}
 	for _, c := range Commands {
-		if c.Window && window == "" {
+		if c.Window && window == "" || slices.Contains(without, c.ID) {
 			continue
 		}
 		score := commandScore(q, c)

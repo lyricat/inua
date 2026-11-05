@@ -2,7 +2,6 @@ package ui
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"strconv"
 	"strings"
@@ -137,29 +136,13 @@ end,{description="Inua overview previous workspace"})
 end
 `
 
-// probeLua finds out whether Hyprland runs Lua (0.55 and later), whose
-// dispatchers (hl.dsp.*) the overview needs and the dock and launcher use
-// when there; 0.53 answers "unknown request" to eval, and takes the
-// classic dispatchers instead.
-func (s *shellUI) probeLua() {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-	defer cancel()
-	reply, err := s.client.Request(ctx, "eval _G.inuaOverviewProbe=true")
-	ok := err == nil && strings.TrimSpace(string(reply)) == "ok"
-	if ok != s.hyprLua {
-		log.Printf("hyprland: runs Lua: %v (the overview is on with it)", ok)
-	}
-	s.hyprLua = ok
-}
-
+// installOverviewKeys installs the Lua listeners for a Super tap, Super+Tab
+// and the number slots, on a Hyprland that runs Lua.
 func (s *shellUI) installOverviewKeys() {
-	if s.client == nil {
+	if s.hypr == nil || !s.hyprLua {
 		return
 	}
-	if s.probeLua(); !s.hyprLua {
-		return
-	}
-	client := s.client
+	client := s.hypr.Client
 	func() {
 		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 		defer cancel()
@@ -201,14 +184,15 @@ func (s *shellUI) overviewEvent(e hypr.Event) {
 			}
 			order := s.overview.st
 			order.MRU = s.cfg.Overview.MRU
-			card, ok := order.WorkspaceSlot(s.snap, s.snap.FocusedMonitor, slot)
+			card, ok := order.WorkspaceSlot(s.snap, s.snap.FocusedOutput, slot)
 			if !ok {
 				return
 			}
 			if card.New {
-				s.createWorkspaceOnMonitor(card.Workspace.Monitor)
+				s.createWorkspaceOnMonitor(card.Workspace.Output)
 			} else {
-				s.activateOverview(fmt.Sprintf(`hl.dsp.focus({workspace=%q})`, card.Workspace.Name), card.Workspace.Monitor)
+				id := card.Workspace.ID
+				s.activateOverview(card.Workspace.Output, func(ctx context.Context) error { return s.comp.FocusWorkspace(ctx, id) })
 			}
 			return
 		}
@@ -241,20 +225,19 @@ func (s *shellUI) commitOverview() {
 	}
 	newWorkspace := o.Cards[o.Selected].New
 	if newWorkspace {
-		s.createWorkspaceOnMonitor(ws.Monitor)
-
+		s.createWorkspaceOnMonitor(ws.Output)
 	} else {
-		s.activateOverview(fmt.Sprintf(`hl.dsp.focus({workspace=%q})`, ws.Name), ws.Monitor)
+		s.activateOverview(ws.Output, func(ctx context.Context) error { return s.comp.FocusWorkspace(ctx, ws.ID) })
 	}
 }
 
 // Stop observers before process replacement or normal shutdown. Bindings are
 // reinstalled by the next shell connection, without reloading the compositor.
 func (s *shellUI) pauseOverviewKeys() {
-	if s.client == nil || !s.hyprLua {
+	if s.hypr == nil || !s.hyprLua {
 		return
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	_, _ = s.client.Request(ctx, `eval if _G.inuaOverviewKeyTimer then _G.inuaOverviewKeyTimer:set_enabled(false) end;if _G.inuaOverviewListener then _G.inuaOverviewListener:remove();_G.inuaOverviewListener=nil end`)
+	_, _ = s.hypr.Client.Request(ctx, `eval if _G.inuaOverviewKeyTimer then _G.inuaOverviewKeyTimer:set_enabled(false) end;if _G.inuaOverviewListener then _G.inuaOverviewListener:remove();_G.inuaOverviewListener=nil end`)
 }

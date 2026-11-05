@@ -39,12 +39,32 @@ type shortcutState struct {
 
 // hyprBinds asks Hyprland for its shortcuts.
 func (s *shellUI) hyprBinds() []hyprconf.Bind {
-	if s.client == nil {
+	if cf := s.configurer(); cf != nil {
+		// Another compositor's own shortcuts, in the form the page reads:
+		// a command it runs, or what the compositor calls the action.
+		ctx, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
+		defer cancel()
+		own, err := cf.Binds(ctx)
+		if err != nil {
+			log.Printf("%s: binds: %v", s.comp.Name(), err)
+			return nil
+		}
+		binds := make([]hyprconf.Bind, 0, len(own))
+		for _, b := range own {
+			if b.Command != "" {
+				binds = append(binds, hyprconf.Bind{Keys: b.Keys, Dispatcher: "exec", Arg: b.Command})
+			} else {
+				binds = append(binds, hyprconf.Bind{Keys: b.Keys, Dispatcher: b.Action})
+			}
+		}
+		return binds
+	}
+	if s.hypr == nil {
 		return nil
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
 	defer cancel()
-	reply, err := s.client.Request(ctx, "j/binds")
+	reply, err := s.hypr.Client.Request(ctx, "j/binds")
 	if err != nil {
 		log.Printf("hyprland: binds: %v", err)
 		return nil
@@ -91,6 +111,9 @@ func (s *shellUI) showShortcuts() {
 			}
 		} else if keys = hyprconf.KeysFor(sc.binds, cmd, a.Label); len(keys) > 0 {
 			source = i18n.T("From Hyprland")
+			if s.configurer() != nil {
+				source = i18n.Tf("From %s", s.compositorName())
+			}
 		}
 		box := &sc.inua
 		if a.Shot {
@@ -226,7 +249,11 @@ func (s *shellUI) shortcutRow(box *gtk.Box, id, title, sub string, keys []string
 	case custom:
 		icon("sc-del:"+id, "window-close-symbolic", i18n.T("Remove this command"))
 	case managed:
-		icon("sc-reset:"+id, "edit-undo-symbolic", i18n.T("Use hyprland.conf's shortcut again"))
+		tip := i18n.T("Use hyprland.conf's shortcut again")
+		if s.configurer() != nil {
+			tip = i18n.Tf("Use %s's own shortcut again", s.compositorName())
+		}
+		icon("sc-reset:"+id, "edit-undo-symbolic", tip)
 	case len(keys) > 0:
 		icon("sc-off:"+id, "window-close-symbolic", i18n.T("Turn the shortcut off"))
 	}

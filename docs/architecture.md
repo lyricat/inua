@@ -1,6 +1,7 @@
 # Architecture
 
-inua is a desktop shell that works with Hyprland. Its logic is Go, its interface GTK4
+inua is a desktop shell that works with Hyprland, and as an experiment
+with niri and Wayfire (section 7). Its logic is Go, its interface GTK4
 (the puregotk binding, no cgo), and its layouts Blueprint/`.ui` markup. This
 document follows [design.md](design.md); why this toolkit is in
 [toolkit.md](toolkit.md).
@@ -37,7 +38,13 @@ the view uses the tricky parts of puregotk only through `gtkx`.
 
 | Path | What | State |
 | --- | --- | --- |
-| `internal/hypr` | Hyprland requests, events, snapshots, the state store | Done, tested |
+| `internal/compositor` | The contract between the shell and a compositor ([compositor-contracts.md](compositor-contracts.md)): outputs, workspaces and windows as a snapshot, the base actions, the capability states, the optional interfaces, `Detect` over the registered backends; `compositortest` is the fake for tests | Done, tested |
+| `internal/niri` | The niri backend (#64): the JSON IPC, the event stream folded into snapshots, the base actions, New as the output's trailing empty workspace; no previews, geometry for tiled windows, keystrokes, binds, key observer, pointer, displays or virtual outputs | Done, tested on a fake socket and run on niri 26.04 (docs/compositor-experiments.md) |
+| `internal/wayfire` | The Wayfire backend (#68): the plugins' IPC, capabilities probed from the loaded plugins, the workspace grid as workspaces, a view's cell from its place, New as the first empty cell, the display settings as output options, fullscreen and centring | Done, tested on a fake socket and run on Wayfire 0.11 and 0.9 |
+| `internal/wlroutput` | The displays of a wlroots compositor read through wlr-output-management (heads, modes, place, scale), the protocol spoken directly; Wayfire's Displays page lists them with it | Done, tested against a fake compositor and run on Wayfire |
+| `internal/compositors` | Links the backends into a program (`compositor.Detect`) | Done |
+| `internal/compsettings`, `internal/session` | inua's keyboard, touchpad, shortcut and display settings in the form a backend applies; which compositor the login starts (`[session] compositor`, read by `inua-session` through `inua session compositor`), what is installed, the sample configs of niri and Wayfire, the fallback to Hyprland and its note | Done, tested |
+| `internal/hypr` | The Hyprland backend: requests, events, the state store, `Backend` behind the contract (Lua probed at each connection), and what only Hyprland has (Lua listeners, binds, displays, the virtual screen) | Done, tested |
 | `internal/capture/hyprland` | Standalone Wayland client for Hyprland's toplevel export protocol; streams SHM frames to the workspace overview | Implemented; runtime verification needs Hyprland |
 | `internal/desktop` | `.desktop` parsing, Exec expansion, launching | Done, tested |
 | `internal/ipc` | The control socket | Done, tested |
@@ -187,9 +194,21 @@ Hyprland reports focused.
 The [feature-by-feature coupling audit](hyprland-coupling.md) traces the
 implemented dependencies, failure behavior, protocol versions and test gaps.
 The [compositor capability comparison](compositor-capabilities.md) uses that
-inventory to propose a minimum support baseline and a first additional target,
-pending the owner's decision. It does not change the current implementation or
-claim compatibility with other compositors.
+inventory to propose a minimum support baseline, and records what real
+sessions on niri and Wayfire corrected. The
+[experiments' report](compositor-experiments.md) has what niri 26.04,
+Wayfire 0.11 and Hyprland 0.57 did, and the
+[compositor contracts and migration plan](compositor-contracts.md) the
+boundary the shell now sits on (#58).
+
+`internal/compositor` is what the shell, the desk tools and the light apps
+see: a `Backend` delivering snapshots and taking the base actions, and the
+capability states that decide what the UI shows. The shell asks for the
+optional interfaces (`QuietFocuser`, `WorkspaceMover`, `Keystroker`,
+`Pointer`, `Moder`, `Placer`) and keeps the Hyprland backend itself for
+what the contract does not cover yet. Workspace and window ids are the
+backend's strings, compared only for equality; a New workspace is named by
+the backend (`NextNumbered` on Hyprland).
 
 `internal/hypr` (toolkit-free):
 

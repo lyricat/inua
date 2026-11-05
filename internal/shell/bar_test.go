@@ -6,35 +6,34 @@ import (
 	"testing"
 	"time"
 
-	"github.com/lyricat/inua/internal/hypr"
+	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/system"
 )
 
-func twoMonitors() hypr.Snapshot {
-	return hypr.Snapshot{
-		Monitors: []hypr.Monitor{
-			{Name: "eDP-1", Focused: true, ActiveWorkspaceID: 1},
-			{Name: "HDMI-A-1", ActiveWorkspaceID: 4},
+func twoMonitors() compositor.Snapshot {
+	return compositor.Snapshot{
+		Outputs: []compositor.Output{
+			{Name: "eDP-1", Focused: true, ActiveWorkspace: "1"},
+			{Name: "HDMI-A-1", ActiveWorkspace: "4"},
 		},
-		Workspaces: []hypr.Workspace{
-			{ID: 4, Monitor: "HDMI-A-1"},
-			{ID: 1, Monitor: "eDP-1"},
-			{ID: -98, Name: "special:magic", Monitor: "eDP-1"},
-			{ID: 2, Monitor: "eDP-1"},
+		Workspaces: []compositor.Workspace{
+			{ID: "4", Order: 4, Output: "HDMI-A-1"},
+			{ID: "1", Order: 1, Output: "eDP-1"},
+			{ID: "2", Order: 2, Output: "eDP-1"},
 		},
-		Toplevels: []hypr.Toplevel{
+		Windows: []compositor.Window{
 			win("0x1", "foot", "shell", 1, 0),
 			win("0x2", "mpv", "old video", 4, 3),
 			win("0x3", "firefox", "docs", 4, 1),
 			win("0x4", "code", "editor", 2, 2),
 		},
-		ActiveToplevel: "0x1",
-		FocusedMonitor: "eDP-1",
+		FocusedWindow: "0x1",
+		FocusedOutput: "eDP-1",
 	}
 }
 
-func ids(ws []hypr.Workspace) []int {
-	var out []int
+func ids(ws []compositor.Workspace) []string {
+	var out []string
 	for _, w := range ws {
 		out = append(out, w.ID)
 	}
@@ -46,12 +45,12 @@ func TestBarWorkspaces(t *testing.T) {
 	for _, c := range []struct {
 		connector string
 		all       bool
-		want      []int
+		want      []string
 	}{
-		{"eDP-1", false, []int{1, 2}},
-		{"HDMI-A-1", false, []int{4}},
-		{"HDMI-A-1", true, []int{1, 2, 4}},
-		{"WL-1", false, []int{1, 2, 4}}, // unknown to Hyprland: everything
+		{"eDP-1", false, []string{"1", "2"}},
+		{"HDMI-A-1", false, []string{"4"}},
+		{"HDMI-A-1", true, []string{"1", "2", "4"}},
+		{"WL-1", false, []string{"1", "2", "4"}}, // unknown to the compositor: everything
 	} {
 		if got := ids(BarWorkspaces(snap, c.connector, c.all)); !slices.Equal(got, c.want) {
 			t.Errorf("%s all=%v: %v, want %v", c.connector, c.all, got, c.want)
@@ -70,7 +69,7 @@ func TestBarTitle(t *testing.T) {
 			t.Errorf("%s: %q, want %q", c.connector, got, c.want)
 		}
 	}
-	snap.ActiveToplevel = ""
+	snap.FocusedWindow = ""
 	if got := BarTitle(snap, "eDP-1"); got != "" {
 		t.Errorf("nothing focused: %q", got)
 	}

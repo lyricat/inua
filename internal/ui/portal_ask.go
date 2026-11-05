@@ -137,15 +137,15 @@ func (s *shellUI) syncPortalApps() {
 		return
 	}
 	apps := map[string]uint32{}
-	for _, t := range s.snap.Toplevels {
-		if t.Class == "" {
+	for _, t := range s.snap.Windows {
+		if t.AppID == "" {
 			continue
 		}
 		st := portal.AppRunning
-		if t.Address == s.snap.ActiveToplevel {
+		if t.ID == s.snap.FocusedWindow {
 			st = portal.AppActive
 		}
-		apps[t.Class] = max(apps[t.Class], st)
+		apps[t.AppID] = max(apps[t.AppID], st)
 	}
 	s.portals.background.SetApps(apps)
 }

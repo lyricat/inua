@@ -4,54 +4,49 @@ import (
 	"math"
 	"slices"
 
-	"github.com/lyricat/inua/internal/hypr"
+	"github.com/lyricat/inua/internal/compositor"
 )
 
-// knownMonitor reports whether Hyprland has a monitor with the connector
-// name GDK gave a bar. Without layer-shell (a nested or foreign compositor)
-// the names can differ; such a bar shows everything.
-func knownMonitor(snap hypr.Snapshot, connector string) bool {
-	return slices.ContainsFunc(snap.Monitors, func(m hypr.Monitor) bool { return m.Name == connector })
+// knownMonitor reports whether the compositor has an output with the
+// connector name GDK gave a bar. Without layer-shell (a nested or foreign
+// compositor) the names can differ; such a bar shows everything.
+func knownMonitor(snap compositor.Snapshot, connector string) bool {
+	_, ok := snap.Output(connector)
+	return ok
 }
 
-// BarWorkspaces lists the workspaces the bar on a monitor shows: the normal
-// (positive id) workspaces on that monitor, or on all monitors, by id.
-func BarWorkspaces(snap hypr.Snapshot, connector string, all bool) []hypr.Workspace {
+// BarWorkspaces lists the workspaces the bar on a monitor shows: those on
+// that monitor, or on all monitors, in the compositor's order.
+func BarWorkspaces(snap compositor.Snapshot, connector string, all bool) []compositor.Workspace {
 	all = all || !knownMonitor(snap, connector)
-	var out []hypr.Workspace
+	var out []compositor.Workspace
 	for _, w := range snap.Workspaces {
-		if w.ID > 0 && (all || w.Monitor == connector) {
+		if all || w.Output == connector {
 			out = append(out, w)
 		}
 	}
-	slices.SortFunc(out, func(a, b hypr.Workspace) int { return a.ID - b.ID })
+	slices.SortFunc(out, workspaceOrder)
 	return out
 }
 
 // BarTitle is the window title the bar on a monitor shows: the focused
 // window on the focused monitor, elsewhere the window last focused on that
 // monitor's visible workspace.
-func BarTitle(snap hypr.Snapshot, connector string) string {
-	if !knownMonitor(snap, connector) || connector == snap.FocusedMonitor {
-		for _, t := range snap.Toplevels {
-			if t.Address == snap.ActiveToplevel {
-				return t.Title
-			}
-		}
+func BarTitle(snap compositor.Snapshot, connector string) string {
+	if !knownMonitor(snap, connector) || connector == snap.FocusedOutput {
+		w, _ := snap.Window(snap.FocusedWindow)
+		return w.Title
+	}
+	ws := snap.ActiveWorkspace(connector)
+	if ws == "" {
 		return ""
 	}
-	ws := 0
-	for _, m := range snap.Monitors {
-		if m.Name == connector {
-			ws = m.ActiveWorkspaceID
-		}
-	}
 	title, best := "", -1
-	for i, t := range snap.Toplevels {
-		if t.WorkspaceID != ws {
+	for i, t := range snap.Windows {
+		if t.Workspace != ws {
 			continue
 		}
-		if h := focusHistory(t, len(snap.Toplevels)+i); best < 0 || h < best {
+		if h := focusHistory(t, len(snap.Windows)+i); best < 0 || h < best {
 			title, best = t.Title, h
 		}
 	}

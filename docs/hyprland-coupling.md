@@ -5,6 +5,9 @@
 owner 已允许此次调查进入
 factory；#60–64 不在此次范围。本文只记录依赖、已有行为和待验证的替代方向，
 不定义接口、不改变运行行为，也不承诺其他合成器的兼容性。
+后续步骤：[合成器能力对比与最低基线](compositor-capabilities.md)（#60）、
+[niri 与 Wayfire 实验](compositor-experiments.md)（#61）、
+[能力契约与迁移计划](compositor-contracts.md)（#62）。
 
 后续 #60（FT67）的[合成器能力比较与最低支持基线](compositor-capabilities.md)
 沿用本清单，比较 Hyprland、Sway、niri、Wayfire 和 KWin；其中的退化行为和
