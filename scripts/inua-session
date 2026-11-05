@@ -1,14 +1,15 @@
 #!/bin/sh
 # Used by display managers and by users logging in on a TTY.
-# inua-session [hyprland|niri]: the compositor to run the shell on; Hyprland
-# when none is named. niri is an experiment (docs/compositor-experiments.md).
+# inua-session [hyprland|niri|wayfire]: the compositor to run the shell on;
+# Hyprland when none is named. niri and Wayfire are experiments
+# (docs/compositor-experiments.md).
 set -eu
 
 export PATH="$HOME/.local/bin:/usr/local/bin:$PATH"
 which=${1:-hyprland}
 case "$which" in
-    hyprland|niri) ;;
-    *) echo "inua-session: unknown compositor $which (hyprland or niri)" >&2; exit 2 ;;
+    hyprland|niri|wayfire) ;;
+    *) echo "inua-session: unknown compositor $which (hyprland, niri or wayfire)" >&2; exit 2 ;;
 esac
 for program in inua-shell inua; do
     if ! command -v "$program" >/dev/null 2>&1; then
@@ -30,6 +31,20 @@ if [ "$which" = niri ]; then
         exit 1
     fi
     compositor="niri --session"
+elif [ "$which" = wayfire ]; then
+    if ! command -v wayfire >/dev/null 2>&1; then
+        echo "inua-session: wayfire is not on PATH; install Inua and Wayfire first" >&2
+        exit 1
+    fi
+    # Wayfire starts inua-shell from its autostart plugin, and inua needs
+    # its ipc plugins; the sample config/wayfire/wayfire.ini has both.
+    config="${WAYFIRE_CONFIG_FILE:-${XDG_CONFIG_HOME:-$HOME/.config}/wayfire.ini}"
+    if [ -e "$config" ] && ! { grep -q 'inua-shell' "$config" && grep -Eq '^plugins[[:space:]]*=.*\bipc-rules\b' "$config"; }; then
+        echo "inua-session: $config does not start inua-shell or lacks the ipc-rules plugin; see config/wayfire/wayfire.ini" >&2
+        echo "inua-session: not starting; the Wayfire session is unaffected" >&2
+        exit 1
+    fi
+    compositor=wayfire
 else
     # start-hyprland (Hyprland 0.53 and later) watches over the compositor;
     # an older Hyprland is started itself.

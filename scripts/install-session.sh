@@ -17,8 +17,9 @@ dest=${2:-/}
 
 install -Dm755 "$root/scripts/inua-session" "$dest/usr/local/bin/inua-session"
 install -Dm644 "$root/config/session/inua.desktop" "$dest/usr/share/wayland-sessions/inua.desktop"
-# The niri session shows only where niri is installed (TryExec).
+# The niri and Wayfire sessions show only where those are installed (TryExec).
 install -Dm644 "$root/config/session/inua-niri.desktop" "$dest/usr/share/wayland-sessions/inua-niri.desktop"
+install -Dm644 "$root/config/session/inua-wayfire.desktop" "$dest/usr/share/wayland-sessions/inua-wayfire.desktop"
 # account NAME: whether the system being installed has that user.
 account() {
     if [ "$dest" = / ]; then

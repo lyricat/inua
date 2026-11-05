@@ -4,6 +4,7 @@
 package compositors
 
 import (
-	_ "github.com/lyricat/inua/internal/hypr" // Hyprland
-	_ "github.com/lyricat/inua/internal/niri" // niri
+	_ "github.com/lyricat/inua/internal/hypr"    // Hyprland
+	_ "github.com/lyricat/inua/internal/niri"    // niri
+	_ "github.com/lyricat/inua/internal/wayfire" // Wayfire
 )

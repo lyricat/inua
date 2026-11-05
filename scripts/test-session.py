@@ -161,6 +161,28 @@ class SessionTest(unittest.TestCase):
         result = subprocess.run(["sh", str(ROOT / "scripts/inua-session"), "sway"], env=self.env, text=True, capture_output=True)
         self.assertEqual(result.returncode, 2)
 
+    def test_wayfire_session(self):
+        self.executable("wayfire", '#!/bin/sh\nprintf "wayfire argc=%s\\n" "$#"\nexit 21\n')
+        launch = lambda: subprocess.run(["sh", str(ROOT / "scripts/inua-session"), "wayfire"], env=self.env, text=True, capture_output=True)
+        result = launch()
+        self.assertEqual(result.returncode, 21, result.stderr)
+        self.assertEqual(result.stdout.splitlines(), ["wayfire argc=0"])
+        # A config without the shell or without the IPC plugins is refused.
+        ini = self.home / ".config/wayfire.ini"
+        ini.write_text("[core]\nplugins = ipc ipc-rules vswitch\n")
+        result = launch()
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Wayfire session is unaffected", result.stderr)
+        ini.write_text("[core]\nplugins = vswitch autostart\n[autostart]\ninua = inua-shell\n")
+        self.assertEqual(launch().returncode, 1)
+        # The sample config passes.
+        ini.write_text((ROOT / "config/wayfire/wayfire.ini").read_text())
+        self.assertEqual(launch().returncode, 21)
+        (self.bin / "wayfire").unlink()
+        result = launch()
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("wayfire is not on PATH", result.stderr)
+
     def test_install_and_reinstall_preserve_other_sessions(self):
         dest = Path(self.tmp.name) / "staged root"
         sessions = dest / "usr/share/wayland-sessions"
@@ -178,6 +200,9 @@ class SessionTest(unittest.TestCase):
         niri.read(sessions / "inua-niri.desktop")
         self.assertEqual(niri["Desktop Entry"]["Exec"], "/usr/local/bin/inua-session niri")
         self.assertEqual(niri["Desktop Entry"]["TryExec"], "niri")
+        wayfire = configparser.ConfigParser()
+        wayfire.read(sessions / "inua-wayfire.desktop")
+        self.assertEqual(wayfire["Desktop Entry"]["Exec"], "/usr/local/bin/inua-session wayfire")
         desktop = configparser.ConfigParser()
         desktop.read(sessions / "inua.desktop")
         entry = desktop["Desktop Entry"]
