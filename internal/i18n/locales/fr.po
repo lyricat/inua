@@ -86,8 +86,8 @@ msgstr "Surligneur"
 
 #: internal/annotui/toolbar.go:21
 #: internal/filesui/renamemany.go:158
-#: ui/gpg.ui:420
-#: ui/gpg.ui:784
+#: ui/gpg.ui:522
+#: ui/gpg.ui:886
 msgid "Text"
 msgstr "Texte"
 
@@ -1744,8 +1744,8 @@ msgid "%d mo ago"
 msgstr "il y a %d mois"
 
 #: internal/apps/tailscale/status.go:187
-#: internal/lightui/gpg.go:363
-#: internal/lightui/gpg.go:604
+#: internal/lightui/gpg.go:384
+#: internal/lightui/gpg.go:655
 msgid "expired %s"
 msgstr "%s expiré"
 
@@ -2060,8 +2060,8 @@ msgstr "Autorisé"
 #: internal/ui/passwords.go:647
 #: internal/vmui/window.go:896
 #: ui/disk.ui:697
-#: ui/gpg.ui:662
-#: ui/gpg.ui:908
+#: ui/gpg.ui:764
+#: ui/gpg.ui:1010
 #: ui/settings.ui:3145
 #: ui/vm.ui:639
 msgid "Copy"
@@ -2215,9 +2215,9 @@ msgstr "%s demande à s'appairer. N'appairez que s'il affiche cette clé :"
 #: ui/connectreply.ui:49
 #: ui/files.ui:180
 #: ui/files.ui:278
-#: ui/gpg.ui:1253
-#: ui/gpg.ui:1470
-#: ui/gpg.ui:1564
+#: ui/gpg.ui:1355
+#: ui/gpg.ui:1572
+#: ui/gpg.ui:1666
 #: ui/pass.ui:495
 #: ui/pass.ui:631
 #: ui/pass.ui:862
@@ -2262,7 +2262,7 @@ msgstr "%s a été invité à se connecter."
 #: internal/viewerui/app.go:806
 #: ui/connect.ui:291
 #: ui/files.ui:233
-#: ui/gpg.ui:1343
+#: ui/gpg.ui:1445
 #: ui/settings.ui:5020
 #: ui/sysmon.ui:96
 msgid "Name"
@@ -2807,7 +2807,7 @@ msgid "Opens links"
 msgstr "Ouvre les liens"
 
 #: internal/desktop/defaults.go:35
-#: ui/gpg.ui:1367
+#: ui/gpg.ui:1469
 msgid "Email"
 msgstr "E-mail"
 
@@ -3041,7 +3041,7 @@ msgstr "Supprimer %s définitivement ?"
 #: internal/filesui/cards.go:435
 #: internal/lightui/calculator.go:59
 #: internal/lightui/calculator.go:352
-#: internal/lightui/gpg.go:1517
+#: internal/lightui/gpg.go:1610
 #: internal/lightui/pass.go:950
 #: internal/term/web/strings.go:43
 #: internal/ui/clipboard.go:504
@@ -3050,7 +3050,7 @@ msgstr "Supprimer %s définitivement ?"
 #: internal/vmui/window.go:2015
 #: internal/vmui/window.go:2027
 #: ui/clock.ui:231
-#: ui/gpg.ui:1573
+#: ui/gpg.ui:1675
 #: ui/pass.ui:263
 msgid "Delete"
 msgstr "Supprimer"
@@ -3079,7 +3079,7 @@ msgstr "S’exécute dans %s."
 #: internal/diskui/details.go:578
 #: internal/gamesui/checkers.go:738
 #: internal/gamesui/fortune_host.go:293
-#: internal/lightui/gpg.go:871
+#: internal/lightui/gpg.go:923
 #: internal/lightui/tailscale.go:470
 #: internal/mailui/welcome.go:480
 #: internal/term/web/strings.go:35
@@ -3258,8 +3258,8 @@ msgstr[1] "%s dans %d dossiers · %s supprimables sans risque"
 #: internal/filesui/remote.go:371
 #: internal/filesui/window.go:108
 #: internal/filesui/window.go:304
-#: ui/gpg.ui:446
-#: ui/gpg.ui:811
+#: ui/gpg.ui:548
+#: ui/gpg.ui:913
 #: config/apps/io.github.lyricat.Inua.Files.desktop:3
 msgid "Files"
 msgstr "Fichiers"
@@ -3686,7 +3686,7 @@ msgstr "Copier les chemins (sans sélection : celui du dossier)"
 
 #: internal/filesui/cards.go:693
 #: internal/filesui/window.go:842
-#: internal/lightui/gpg.go:1525
+#: internal/lightui/gpg.go:1618
 #: internal/mailui/picker.go:143
 #: internal/ui/settings_custom.go:42
 #: ui/disk.ui:771
@@ -4934,7 +4934,7 @@ msgstr "Équipe %s"
 
 #: internal/games/checkersnet/texts.go:37
 #: internal/games/fortunenet/texts.go:29
-#: internal/lightui/gpg.go:1186
+#: internal/lightui/gpg.go:1254
 msgid "you"
 msgstr "vous"
 
@@ -8014,7 +8014,7 @@ msgstr "Quitter vers le menu"
 #: internal/mailui/welcome.go:598
 #: internal/term/web/strings.go:24
 #: internal/termui/guide.go:111
-#: ui/gpg.ui:634
+#: ui/gpg.ui:736
 #: ui/settings.ui:4475
 #: ui/vm.ui:510
 #: ui/vm.ui:3278
@@ -8693,7 +8693,7 @@ msgid "Pass"
 msgstr "Pass"
 
 #: internal/lightui/apps.go:25
-#: internal/lightui/gpg.go:273
+#: internal/lightui/gpg.go:294
 #: config/apps/io.github.lyricat.Inua.GPG.desktop:3
 msgid "GPG"
 msgstr "GPG"
@@ -8870,38 +8870,38 @@ msgstr "Copier %s"
 msgid "No colour yet. Pick one from anywhere on the screen."
 msgstr "Pas encore de couleur. Choisissez-en un n’importe où sur l’écran."
 
-#: internal/lightui/gpg.go:145
+#: internal/lightui/gpg.go:152
 msgid "1 year"
 msgstr "1 an"
 
-#: internal/lightui/gpg.go:145
+#: internal/lightui/gpg.go:152
 msgid "2 years"
 msgstr "2 ans"
 
-#: internal/lightui/gpg.go:145
+#: internal/lightui/gpg.go:152
 msgid "5 years"
 msgstr "5 ans"
 
-#: internal/lightui/gpg.go:145
+#: internal/lightui/gpg.go:152
 #: internal/mailui/settings.go:497
 #: internal/shell/idle.go:162
 #: ui/settings.ui:4134
 msgid "Never"
 msgstr "Jamais"
 
-#: internal/lightui/gpg.go:318
+#: internal/lightui/gpg.go:339
 msgid "The keyring cannot be read: %s"
 msgstr "Impossible de lire le trousseau : %s"
 
-#: internal/lightui/gpg.go:360
+#: internal/lightui/gpg.go:381
 msgid "created %s"
 msgstr "créée le %s"
 
-#: internal/lightui/gpg.go:360
-#: internal/lightui/gpg.go:363
-#: internal/lightui/gpg.go:365
-#: internal/lightui/gpg.go:604
-#: internal/lightui/gpg.go:626
+#: internal/lightui/gpg.go:381
+#: internal/lightui/gpg.go:384
+#: internal/lightui/gpg.go:386
+#: internal/lightui/gpg.go:655
+#: internal/lightui/gpg.go:677
 #: internal/shell/notify.go:32
 #: internal/ui/askpass.go:414
 #: internal/ui/askpass.go:482
@@ -8913,155 +8913,159 @@ msgstr "créée le %s"
 msgid "Jan 2, 2006"
 msgstr "2 Jan 2006"
 
-#: internal/lightui/gpg.go:365
+#: internal/lightui/gpg.go:386
 msgid "expires %s"
 msgstr "expire le %s"
 
-#: internal/lightui/gpg.go:379
-#: internal/lightui/gpg.go:763
+#: internal/lightui/gpg.go:400
+#: internal/lightui/gpg.go:814
 msgid "signs only"
 msgstr "signe seulement"
 
-#: internal/lightui/gpg.go:389
+#: internal/lightui/gpg.go:410
 msgid "revoked"
 msgstr "révoquée"
 
-#: internal/lightui/gpg.go:391
+#: internal/lightui/gpg.go:412
 msgid "expired"
 msgstr "expirée"
 
-#: internal/lightui/gpg.go:393
+#: internal/lightui/gpg.go:414
 msgid "disabled"
 msgstr "désactivée"
 
-#: internal/lightui/gpg.go:395
-#: internal/lightui/gpg.go:610
-#: internal/lightui/gpg.go:736
+#: internal/lightui/gpg.go:416
+#: internal/lightui/gpg.go:661
+#: internal/lightui/gpg.go:787
 msgid "yours"
 msgstr "la vôtre"
 
-#: internal/lightui/gpg.go:397
+#: internal/lightui/gpg.go:418
 msgid "verified"
 msgstr "vérifiée"
 
-#: internal/lightui/gpg.go:399
+#: internal/lightui/gpg.go:420
 msgid "partly verified"
 msgstr "vérifiée en partie"
 
-#: internal/lightui/gpg.go:401
+#: internal/lightui/gpg.go:422
 msgid "not verified"
 msgstr "non vérifiée"
 
-#: internal/lightui/gpg.go:464
-#: ui/gpg.ui:306
+#: internal/lightui/gpg.go:485
+#: ui/gpg.ui:408
 msgid "Encrypt to your key as well, so you can open it later"
 msgstr "Chiffrer aussi pour votre clé, pour pouvoir l’ouvrir plus tard"
 
-#: internal/lightui/gpg.go:466
+#: internal/lightui/gpg.go:487
 msgid "This key only signs; it cannot be encrypted to"
 msgstr "Cette clé signe seulement ; on ne peut pas chiffrer pour elle"
 
-#: internal/lightui/gpg.go:517
+#: internal/lightui/gpg.go:538
 msgid "Take off"
 msgstr "Retirer"
 
-#: internal/lightui/gpg.go:528
+#: internal/lightui/gpg.go:549
+#: ui/gpg.ui:140
+msgid "Name, address or key ID"
+msgstr "Nom, adresse ou ID de clé"
+
+#: internal/lightui/gpg.go:551
+msgid "Add another"
+msgstr "Ajouter quelqu’un"
+
+#: internal/lightui/gpg.go:562
+msgid "Anyone who has the passphrase"
+msgstr "Toute personne qui a la phrase secrète"
+
+#: internal/lightui/gpg.go:566
 msgid "%d recipient"
 msgid_plural "%d recipients"
 msgstr[0] "%d destinataire"
 msgstr[1] "%d destinataires"
 
-#: internal/lightui/gpg.go:531
-#: ui/gpg.ui:118
-msgid "Name, address or key ID"
-msgstr "Nom, adresse ou ID de clé"
-
-#: internal/lightui/gpg.go:533
-msgid "Add another"
-msgstr "Ajouter quelqu’un"
-
-#: internal/lightui/gpg.go:582
+#: internal/lightui/gpg.go:633
 msgid "%d more: type to narrow them down"
 msgid_plural "%d more: type to narrow them down"
 msgstr[0] "%d de plus : tapez pour affiner"
 msgstr[1] "%d de plus : tapez pour affiner"
 
-#: internal/lightui/gpg.go:625
+#: internal/lightui/gpg.go:676
 msgid "This key expired on %s, so gpg cannot encrypt to it. Ask %s for an updated key, then import it."
 msgstr "Cette clé a expiré le %s ; gpg ne peut donc pas chiffrer pour elle. Demandez une clé à jour à %s, puis importez-la."
 
-#: internal/lightui/gpg.go:628
-#: internal/lightui/gpg.go:779
+#: internal/lightui/gpg.go:679
+#: internal/lightui/gpg.go:830
 msgid "%s revoked this key; ask for their new one."
 msgstr "%s a révoqué cette clé ; demandez la nouvelle."
 
-#: internal/lightui/gpg.go:630
+#: internal/lightui/gpg.go:681
 msgid "This key cannot encrypt."
 msgstr "Cette clé ne peut pas chiffrer."
 
-#: internal/lightui/gpg.go:640
+#: internal/lightui/gpg.go:691
 msgid "No key matches. Import theirs on the Keys tab."
 msgstr "Aucune clé ne correspond. Importez la sienne dans l’onglet Clés."
 
-#: internal/lightui/gpg.go:642
+#: internal/lightui/gpg.go:693
 msgid "Already added."
 msgstr "Déjà ajouté."
 
-#: internal/lightui/gpg.go:645
+#: internal/lightui/gpg.go:696
 msgid "Your keyring is empty. Import their key on the Keys tab."
 msgstr "Votre trousseau est vide. Importez sa clé dans l’onglet Clés."
 
-#: internal/lightui/gpg.go:647
+#: internal/lightui/gpg.go:698
 msgid "Every key is chosen."
 msgstr "Toutes les clés sont choisies."
 
-#: internal/lightui/gpg.go:702
+#: internal/lightui/gpg.go:753
 msgid "MY KEYS"
 msgstr "MES CLÉS"
 
-#: internal/lightui/gpg.go:702
+#: internal/lightui/gpg.go:753
 msgid "OTHERS"
 msgstr "AUTRES"
 
-#: internal/lightui/gpg.go:702
+#: internal/lightui/gpg.go:753
 msgid "INVALID KEYS"
 msgstr "CLÉS INVALIDES"
 
-#: internal/lightui/gpg.go:709
+#: internal/lightui/gpg.go:760
 msgid "%d key"
 msgid_plural "%d keys"
 msgstr[0] "%d clé"
 msgstr[1] "%d clés"
 
-#: internal/lightui/gpg.go:773
+#: internal/lightui/gpg.go:824
 msgid "Extend it to use it again. Keep it either way: it opens what was encrypted to it."
 msgstr "Prolongez-la pour vous en resservir. Gardez-la de toute façon : elle ouvre ce qui a été chiffré pour elle."
 
-#: internal/lightui/gpg.go:775
+#: internal/lightui/gpg.go:826
 msgid "Keep it: it opens what was encrypted to it."
 msgstr "Gardez-la : elle ouvre ce qui a été chiffré pour elle."
 
-#: internal/lightui/gpg.go:777
+#: internal/lightui/gpg.go:828
 msgid "gpg cannot encrypt to it. Ask %s for an updated key, then import it."
 msgstr "gpg ne peut pas chiffrer pour elle. Demandez une clé à jour à %s, puis importez-la."
 
-#: internal/lightui/gpg.go:800
+#: internal/lightui/gpg.go:851
 msgid "Copy fingerprint"
 msgstr "Copier l’empreinte"
 
-#: internal/lightui/gpg.go:801
+#: internal/lightui/gpg.go:852
 msgid "Copy public key"
 msgstr "Copier la clé publique"
 
-#: internal/lightui/gpg.go:803
+#: internal/lightui/gpg.go:854
 msgid "Encrypt to…"
 msgstr "Chiffrer pour…"
 
-#: internal/lightui/gpg.go:806
+#: internal/lightui/gpg.go:857
 msgid "Extend 2 years"
 msgstr "Prolonger de 2 ans"
 
-#: internal/lightui/gpg.go:811
+#: internal/lightui/gpg.go:862
 #: ui/disk.ui:781
 #: ui/vm.ui:391
 #: ui/vm.ui:1540
@@ -9072,189 +9076,217 @@ msgstr "Prolonger de 2 ans"
 msgid "Delete…"
 msgstr "Supprimer…"
 
-#: internal/lightui/gpg.go:874
+#: internal/lightui/gpg.go:926
 msgid "Copied; taken off the clipboard in 45 seconds"
 msgstr "Copié ; retiré du presse-papiers dans 45 secondes"
 
-#: internal/lightui/gpg.go:927
+#: internal/lightui/gpg.go:980
 msgid "Fingerprint copied"
 msgstr "Empreinte copiée"
 
-#: internal/lightui/gpg.go:939
+#: internal/lightui/gpg.go:992
 msgid "Public key copied"
 msgstr "Clé publique copiée"
 
-#: internal/lightui/gpg.go:1007
+#: internal/lightui/gpg.go:1060
 msgid "Files to encrypt"
 msgstr "Fichiers à chiffrer"
 
-#: internal/lightui/gpg.go:1007
+#: internal/lightui/gpg.go:1060
 msgid "Files to decrypt"
 msgstr "Fichiers à déchiffrer"
 
-#: internal/lightui/gpg.go:1007
+#: internal/lightui/gpg.go:1060
 msgid "Key file to import"
 msgstr "Fichier de clé à importer"
 
-#: internal/lightui/gpg.go:1073
+#: internal/lightui/gpg.go:1126
 msgid "Leave it out"
 msgstr "Retirer"
 
-#: internal/lightui/gpg.go:1108
+#: internal/lightui/gpg.go:1161
 msgid "Saved to %s"
 msgstr "Enregistré dans %s"
 
-#: internal/lightui/gpg.go:1124
+#: internal/lightui/gpg.go:1174
+msgid "Type a passphrase first."
+msgstr "Saisissez d’abord une phrase secrète."
+
+#: internal/lightui/gpg.go:1177
+msgid "The two passphrases differ."
+msgstr "Les deux phrases secrètes diffèrent."
+
+#: internal/lightui/gpg.go:1191
 msgid "Add someone to encrypt to."
 msgstr "Ajoutez quelqu’un pour qui chiffrer."
 
-#: internal/lightui/gpg.go:1138
-#: internal/lightui/gpg.go:1264
+#: internal/lightui/gpg.go:1205
+#: internal/lightui/gpg.go:1336
 msgid "Choose or drop files first."
 msgstr "Choisissez ou déposez d’abord des fichiers."
 
-#: internal/lightui/gpg.go:1149
+#: internal/lightui/gpg.go:1216
 msgid "Type a message first."
 msgstr "Tapez d’abord un message."
 
-#: internal/lightui/gpg.go:1154
+#: internal/lightui/gpg.go:1221
 msgid "Encrypting…"
 msgstr "Chiffrement…"
 
-#: internal/lightui/gpg.go:1191
+#: internal/lightui/gpg.go:1259
 msgid "For %s"
 msgstr "Pour %s"
 
-#: internal/lightui/gpg.go:1193
+#: internal/lightui/gpg.go:1261
 msgid "signed"
 msgstr "signé"
 
-#: internal/lightui/gpg.go:1210
+#: internal/lightui/gpg.go:1264
+msgid "For anyone who has the passphrase"
+msgstr "Pour toute personne qui a la phrase secrète"
+
+#: internal/lightui/gpg.go:1282
 msgid "written in %s"
 msgstr "écrit dans %s"
 
-#: internal/lightui/gpg.go:1214
+#: internal/lightui/gpg.go:1286
 msgid "Move to Trash…"
 msgstr "Mettre à la corbeille…"
 
-#: internal/lightui/gpg.go:1238
+#: internal/lightui/gpg.go:1310
 msgid "%s moved to the trash"
 msgstr "%s mis à la corbeille"
 
-#: internal/lightui/gpg.go:1273
+#: internal/lightui/gpg.go:1345
 msgid "Paste a message first."
 msgstr "Collez d’abord un message."
 
-#: internal/lightui/gpg.go:1280
+#: internal/lightui/gpg.go:1352
 msgid "Decrypting… gpg may ask for your passphrase."
 msgstr "Déchiffrement… gpg peut demander votre phrase secrète."
 
-#: internal/lightui/gpg.go:1329
+#: internal/lightui/gpg.go:1402
+msgid "That passphrase does not open it. Decrypt asks again."
+msgstr "Cette phrase secrète ne l’ouvre pas. Déchiffrer la redemande."
+
+#: internal/lightui/gpg.go:1404
+msgid "Cancelled. Decrypt asks again."
+msgstr "Annulé. Déchiffrer la redemande."
+
+#: internal/lightui/gpg.go:1416
 msgid "Not signed: who sent it is not known"
 msgstr "Non signé : on ne sait pas qui l’a envoyé"
 
-#: internal/lightui/gpg.go:1337
+#: internal/lightui/gpg.go:1424
 msgid "Signed by %s"
 msgstr "Signé par %s"
 
-#: internal/lightui/gpg.go:1340
+#: internal/lightui/gpg.go:1427
 msgid "Jan 2, 2006 15:04"
 msgstr "2 Jan 2006 15:04"
 
-#: internal/lightui/gpg.go:1344
+#: internal/lightui/gpg.go:1431
 msgid "The signature by %s does not match: it was changed after signing"
 msgstr "La signature de %s ne correspond pas : il a été modifié après la signature"
 
-#: internal/lightui/gpg.go:1348
+#: internal/lightui/gpg.go:1435
 msgid "Signed by a key not in your keyring, so it cannot be checked"
 msgstr "Signé par une clé absente de votre trousseau : impossible de vérifier"
 
-#: internal/lightui/gpg.go:1352
+#: internal/lightui/gpg.go:1439
 msgid "Signed by %s, with a key that is no longer valid"
 msgstr "Signé par %s, avec une clé qui n’est plus valide"
 
-#: internal/lightui/gpg.go:1370
+#: internal/lightui/gpg.go:1458
+msgid "Encrypted to %s, and with a passphrase"
+msgstr "Chiffré pour %s, et avec une phrase secrète"
+
+#: internal/lightui/gpg.go:1460
 msgid "Encrypted to %s"
 msgstr "Chiffré pour %s"
 
-#: internal/lightui/gpg.go:1386
-#: ui/gpg.ui:1281
+#: internal/lightui/gpg.go:1462
+msgid "Encrypted with a passphrase"
+msgstr "Chiffré avec une phrase secrète"
+
+#: internal/lightui/gpg.go:1479
+#: ui/gpg.ui:1383
 msgid "Import"
 msgstr "Importer"
 
-#: internal/lightui/gpg.go:1396
+#: internal/lightui/gpg.go:1489
 msgid "No key found in it."
 msgstr "Aucune clé dedans."
 
-#: internal/lightui/gpg.go:1401
+#: internal/lightui/gpg.go:1494
 msgid "Import %d key"
 msgid_plural "Import %d keys"
 msgstr[0] "Importer %d clé"
 msgstr[1] "Importer %d clés"
 
-#: internal/lightui/gpg.go:1413
+#: internal/lightui/gpg.go:1506
 msgid "new"
 msgstr "nouvelle"
 
-#: internal/lightui/gpg.go:1416
+#: internal/lightui/gpg.go:1509
 msgid "holds a secret key"
 msgstr "contient une clé secrète"
 
-#: internal/lightui/gpg.go:1418
+#: internal/lightui/gpg.go:1511
 msgid "updates one you have"
 msgstr "met à jour une des vôtres"
 
-#: internal/lightui/gpg.go:1443
+#: internal/lightui/gpg.go:1536
 msgid "Importing…"
 msgstr "Importation…"
 
-#: internal/lightui/gpg.go:1454
+#: internal/lightui/gpg.go:1547
 msgid "%d key imported"
 msgid_plural "%d keys imported"
 msgstr[0] "%d clé importée"
 msgstr[1] "%d clés importées"
 
-#: internal/lightui/gpg.go:1467
+#: internal/lightui/gpg.go:1560
 msgid "Give a name and an address."
 msgstr "Indiquez un nom et une adresse."
 
-#: internal/lightui/gpg.go:1471
+#: internal/lightui/gpg.go:1564
 msgid "That address has no @."
 msgstr "Cette adresse n’a pas de @."
 
-#: internal/lightui/gpg.go:1477
+#: internal/lightui/gpg.go:1570
 msgid "Creating… gpg asks for a passphrase for the new key."
 msgstr "Création… gpg demande une phrase secrète pour la nouvelle clé."
 
-#: internal/lightui/gpg.go:1491
+#: internal/lightui/gpg.go:1584
 msgid "Your key is created"
 msgstr "Votre clé est créée"
 
-#: internal/lightui/gpg.go:1514
+#: internal/lightui/gpg.go:1607
 msgid "Delete the key of %s?"
 msgstr "Supprimer la clé de %s ?"
 
-#: internal/lightui/gpg.go:1516
+#: internal/lightui/gpg.go:1609
 msgid "It goes from your keyring. Messages it signed then show as signed by a key not in your keyring; importing it again brings that back."
 msgstr "Elle quitte votre trousseau. Les messages qu’elle a signés apparaîtront comme signés par une clé absente de votre trousseau ; la réimporter rétablit cela."
 
-#: internal/lightui/gpg.go:1523
+#: internal/lightui/gpg.go:1616
 msgid "Move %s to the trash?"
 msgstr "Mettre %s à la corbeille ?"
 
-#: internal/lightui/gpg.go:1524
+#: internal/lightui/gpg.go:1617
 msgid "The decrypted copy goes to the trash, where it can be restored from; the encrypted file stays."
 msgstr "La copie déchiffrée va à la corbeille, d’où elle peut être restaurée ; le fichier chiffré reste."
 
-#: internal/lightui/gpg.go:1541
+#: internal/lightui/gpg.go:1634
 msgid "Key deleted"
 msgstr "Clé supprimée"
 
-#: internal/lightui/gpg.go:1551
+#: internal/lightui/gpg.go:1644
 msgid "Extending… gpg asks for your passphrase."
 msgstr "Prolongation… gpg demande votre phrase secrète."
 
-#: internal/lightui/gpg.go:1560
+#: internal/lightui/gpg.go:1653
 msgid "Extended by 2 years"
 msgstr "Prolongée de 2 ans"
 
@@ -11141,8 +11173,8 @@ msgstr ""
 
 #: internal/mailui/details.go:226
 #: internal/mailui/reader.go:826
-#: ui/gpg.ui:653
-#: ui/gpg.ui:897
+#: ui/gpg.ui:755
+#: ui/gpg.ui:999
 #: ui/settings.ui:6550
 msgid "Save…"
 msgstr "Enregistrer…"
@@ -11901,8 +11933,8 @@ msgstr "Les index et les messages ouverts : une copie de ceux des serveurs, l’
 #: internal/mailui/settings.go:655
 #: internal/ui/notify.go:412
 #: ui/colorpicker.ui:93
-#: ui/gpg.ui:509
-#: ui/gpg.ui:1012
+#: ui/gpg.ui:611
+#: ui/gpg.ui:1114
 #: ui/group.ui:52
 msgid "Clear"
 msgstr "Effacer"
@@ -13576,7 +13608,7 @@ msgstr ""
 
 #: internal/term/web/strings.go:39
 #: internal/vmui/window.go:1108
-#: ui/gpg.ui:1489
+#: ui/gpg.ui:1591
 #: ui/vm.ui:3299
 msgid "Create"
 msgstr "Créer"
@@ -13655,7 +13687,7 @@ msgstr "INFOS"
 
 #: internal/term/web/strings.go:61
 #: internal/termui/prefs.go:206
-#: ui/gpg.ui:1043
+#: ui/gpg.ui:1145
 msgid "KEYS"
 msgstr "CLÉS"
 
@@ -14488,6 +14520,8 @@ msgid "Unlock OpenPGP Key"
 msgstr "Déverrouiller la clé OpenPGP"
 
 #: internal/ui/askpass.go:276
+#: ui/gpg.ui:174
+#: ui/gpg.ui:190
 msgid "Passphrase"
 msgstr "Phrase secrète"
 
@@ -18542,132 +18576,144 @@ msgstr "CHIFFRER"
 msgid "<span alpha='55%'>[</span>TO<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>POUR<span alpha='55%'>]</span>"
 
-#: ui/gpg.ui:131
+#: ui/gpg.ui:114
+msgid "Public keys"
+msgstr "Clés publiques"
+
+#: ui/gpg.ui:153
 msgid "All keys"
 msgstr "Toutes les clés"
 
-#: ui/gpg.ui:173
+#: ui/gpg.ui:216
+msgid "Type it again"
+msgstr "Saisissez-la de nouveau"
+
+#: ui/gpg.ui:235
+msgid "No key is needed to open it, only the passphrase. Give it to them apart from the message."
+msgstr "Aucune clé n’est nécessaire pour l’ouvrir, seulement la phrase secrète. Transmettez-la séparément du message."
+
+#: ui/gpg.ui:275
 msgid "<span alpha='55%'>[</span>FROM<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>DE<span alpha='55%'>]</span>"
 
-#: ui/gpg.ui:256
+#: ui/gpg.ui:358
 msgid "Sign"
 msgstr "Signer"
 
-#: ui/gpg.ui:265
+#: ui/gpg.ui:367
 msgid "So they know it is from you and unchanged"
 msgstr "Pour qu’on sache qu’il vient de vous et n’a pas changé"
 
-#: ui/gpg.ui:297
+#: ui/gpg.ui:399
 msgid "Let me read it too"
 msgstr "Pouvoir le lire aussi"
 
-#: ui/gpg.ui:340
+#: ui/gpg.ui:442
 msgid "You have no key of your own"
 msgstr "Vous n’avez pas de clé à vous"
 
-#: ui/gpg.ui:349
+#: ui/gpg.ui:451
 msgid "Without one you cannot sign, or read what you encrypt"
 msgstr "Sans elle, vous ne pouvez ni signer ni lire ce que vous chiffrez"
 
-#: ui/gpg.ui:362
-#: ui/gpg.ui:1103
+#: ui/gpg.ui:464
+#: ui/gpg.ui:1205
 msgid "Create your key"
 msgstr "Créer votre clé"
 
-#: ui/gpg.ui:396
-#: ui/gpg.ui:751
+#: ui/gpg.ui:498
+#: ui/gpg.ui:853
 msgid "<span alpha='55%'>[</span>MESSAGE<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>MESSAGE<span alpha='55%'>]</span>"
 
-#: ui/gpg.ui:470
-#: ui/gpg.ui:835
+#: ui/gpg.ui:572
+#: ui/gpg.ui:937
 msgid "Drop files here, or"
 msgstr "Déposez des fichiers ici, ou"
 
-#: ui/gpg.ui:479
-#: ui/gpg.ui:844
+#: ui/gpg.ui:581
+#: ui/gpg.ui:946
 msgid "Choose files…"
 msgstr "Choisir des fichiers…"
 
-#: ui/gpg.ui:528
+#: ui/gpg.ui:630
 msgid "Encrypt"
 msgstr "Chiffrer"
 
-#: ui/gpg.ui:573
+#: ui/gpg.ui:675
 msgid "<span alpha='55%'>[</span>ENCRYPTED<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>CHIFFRÉ<span alpha='55%'>]</span>"
 
-#: ui/gpg.ui:678
+#: ui/gpg.ui:780
 msgid "DECRYPT"
 msgstr "DÉCHIFFRER"
 
-#: ui/gpg.ui:707
+#: ui/gpg.ui:809
 msgid "The clipboard holds an encrypted message"
 msgstr "Le presse-papiers contient un message chiffré"
 
-#: ui/gpg.ui:719
+#: ui/gpg.ui:821
 msgid "Decrypt it"
 msgstr "Le déchiffrer"
 
-#: ui/gpg.ui:759
+#: ui/gpg.ui:861
 msgid "Decrypted as soon as it is pasted or dropped"
 msgstr "Déchiffré dès qu’il est collé ou déposé"
 
-#: ui/gpg.ui:885
+#: ui/gpg.ui:987
 msgid "<span alpha='55%'>[</span>DECRYPTED<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>DÉCHIFFRÉ<span alpha='55%'>]</span>"
 
-#: ui/gpg.ui:1031
+#: ui/gpg.ui:1133
 msgid "Decrypt"
 msgstr "Déchiffrer"
 
-#: ui/gpg.ui:1081
+#: ui/gpg.ui:1183
 msgid "You have no key of your own yet"
 msgstr "Vous n’avez pas encore de clé à vous"
 
-#: ui/gpg.ui:1090
+#: ui/gpg.ui:1192
 msgid "You need one to sign, and for others to send you messages only you can read"
 msgstr "Il en faut une pour signer, et pour qu’on vous envoie des messages que vous seul pouvez lire"
 
-#: ui/gpg.ui:1130
+#: ui/gpg.ui:1232
 msgid "Import…"
 msgstr "Importer…"
 
-#: ui/gpg.ui:1149
+#: ui/gpg.ui:1251
 msgid "Create key"
 msgstr "Créer une clé"
 
-#: ui/gpg.ui:1194
+#: ui/gpg.ui:1296
 msgid "<span alpha='55%'>[</span>IMPORT<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>IMPORTER<span alpha='55%'>]</span>"
 
-#: ui/gpg.ui:1202
+#: ui/gpg.ui:1304
 msgid "Paste a public key, or choose or drop a key file"
 msgstr "Collez une clé publique, ou choisissez ou déposez un fichier de clé"
 
-#: ui/gpg.ui:1262
+#: ui/gpg.ui:1364
 #: ui/vm.ui:1385
 msgid "Choose file…"
 msgstr "Choisir un fichier…"
 
-#: ui/gpg.ui:1327
+#: ui/gpg.ui:1429
 msgid "<span alpha='55%'>[</span>NEW KEY<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>NOUVELLE CLÉ<span alpha='55%'>]</span>"
 
-#: ui/gpg.ui:1397
+#: ui/gpg.ui:1499
 msgid "Expires"
 msgstr "Expire"
 
-#: ui/gpg.ui:1406
+#: ui/gpg.ui:1508
 msgid "You can extend it before then; an expired key still decrypts"
 msgstr "Vous pouvez la prolonger avant ; une clé expirée déchiffre toujours"
 
-#: ui/gpg.ui:1425
+#: ui/gpg.ui:1527
 msgid "gpg asks for a passphrase to protect the new key. Remember it: without it the key cannot be used."
 msgstr "gpg demande une phrase secrète pour protéger la nouvelle clé. Retenez-la : sans elle, la clé est inutilisable."
 
-#: ui/gpg.ui:1440
+#: ui/gpg.ui:1542
 msgid "Or in a terminal:"
 msgstr "Ou dans un terminal :"
 

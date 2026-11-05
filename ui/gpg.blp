@@ -1,6 +1,7 @@
 // GPG: encrypt and decrypt with GnuPG, in three tabs, each with an
-// action bar at the bottom. Encrypt: a composer (to whom, from which of
-// your keys, a text or files), and what came out in its place. Decrypt:
+// action bar at the bottom. Encrypt: a composer (to whom, by their keys
+// and from which of yours, or with a passphrase; a text or files), and
+// what came out in its place. Decrypt:
 // a message pasted or files, decrypted as they come; who it was for and
 // who signed it in its place. Keys: the keyring, importing a key and
 // creating your own. Go fills them (internal/appui/gpg.go).
@@ -47,7 +48,9 @@ ApplicationWindow gpg {
                   styles ["page"]
                   orientation: vertical;
 
-                  // [TO] chips and a field to type in, the matches under it.
+                  // [TO] who can open it. People, by their keys: chips and a
+                  // field to type in, the matches under it. Or whoever has a
+                  // passphrase, typed twice.
                   Box {
                     styles ["section"]
                     orientation: vertical;
@@ -71,47 +74,123 @@ ApplicationWindow gpg {
                         styles ["section-meta"]
                         hexpand: true;
                         xalign: 0;
+                        ellipsize: end;
                       }
-                    }
 
-                    Box to_box {
-                      styles ["gpg-to"]
-                      spacing: 6;
-
-                      FlowBox to_chips {
-                        hexpand: true;
+                      StackSwitcher {
+                        styles ["segmented"]
+                        stack: to_kind;
                         valign: center;
-                        selection-mode: none;
-                        homogeneous: false;
-                        column-spacing: 6;
-                        row-spacing: 6;
-                        max-children-per-line: 30;
-
-                        Entry to_entry {
-                          styles ["gpg-to-entry"]
-                          hexpand: true;
-                          width-chars: 30;
-                          placeholder-text: _("Name, address or key ID");
-                        }
-                      }
-
-                      ToggleButton to_browse {
-                        styles ["plain", "small"]
-                        valign: start;
-                        icon-name: "pan-down-symbolic";
-                        tooltip-text: _("All keys");
                       }
                     }
 
-                    Box to_suggest {
-                      styles ["gpg-suggest-frame"]
-                      orientation: vertical;
-                      visible: false;
+                    Stack to_kind {
+                      transition-type: crossfade;
+                      transition-duration: 120;
+                      vhomogeneous: false;
+
+                      StackPage {
+                        name: "keys";
+                        title: _("Public keys");
+
+                        child: Box {
+                          orientation: vertical;
+
+                          Box to_box {
+                            styles ["gpg-to"]
+                            spacing: 6;
+
+                            FlowBox to_chips {
+                              hexpand: true;
+                              valign: center;
+                              selection-mode: none;
+                              homogeneous: false;
+                              column-spacing: 6;
+                              row-spacing: 6;
+                              max-children-per-line: 30;
+
+                              Entry to_entry {
+                                styles ["gpg-to-entry"]
+                                hexpand: true;
+                                width-chars: 30;
+                                placeholder-text: _("Name, address or key ID");
+                              }
+                            }
+
+                            ToggleButton to_browse {
+                              styles ["plain", "small"]
+                              valign: start;
+                              icon-name: "pan-down-symbolic";
+                              tooltip-text: _("All keys");
+                            }
+                          }
+
+                          Box to_suggest {
+                            styles ["gpg-suggest-frame"]
+                            orientation: vertical;
+                            visible: false;
+                          }
+                        };
+                      }
+
+                      StackPage {
+                        name: "passphrase";
+                        title: _("Passphrase");
+
+                        child: Box {
+                          orientation: vertical;
+
+                          Box {
+                            styles ["row", "compact"]
+                            spacing: 12;
+
+                            Label {
+                              styles ["title"]
+                              label: _("Passphrase");
+                              hexpand: true;
+                              xalign: 0;
+                            }
+
+                            PasswordEntry pass_new {
+                              width-chars: 30;
+                              show-peek-icon: true;
+                              valign: center;
+                            }
+                          }
+
+                          Box {
+                            styles ["row", "compact"]
+                            spacing: 12;
+
+                            Label {
+                              styles ["title"]
+                              label: _("Type it again");
+                              hexpand: true;
+                              xalign: 0;
+                            }
+
+                            PasswordEntry pass_repeat {
+                              width-chars: 30;
+                              show-peek-icon: true;
+                              valign: center;
+                            }
+                          }
+
+                          Label {
+                            styles ["sub"]
+                            label: _("No key is needed to open it, only the passphrase. Give it to them apart from the message.");
+                            xalign: 0;
+                            wrap: true;
+                            margin-top: 10;
+                          }
+                        };
+                      }
                     }
                   }
 
-                  // [FROM] your key, signing, and a copy for you.
-                  Box {
+                  // [FROM] your key, signing, and a copy for you. Not shown
+                  // with a passphrase.
+                  Box from_section {
                     styles ["section"]
                     orientation: vertical;
 

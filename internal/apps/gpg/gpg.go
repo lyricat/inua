@@ -1,8 +1,9 @@
 // Package gpg encrypts and decrypts text and files with GnuPG for inua's
 // GPG app, through gpg itself: the user's keyring, gpg-agent and its
-// pinentry (inua's passphrase dialog). It lists the keyring, and reads
-// gpg's status lines for who a message was encrypted to and who signed
-// it (docs/feat/gpg.md).
+// pinentry (inua's passphrase dialog). It encrypts to keys, or with a
+// passphrase alone; it lists the keyring, and reads gpg's status lines
+// for who a message was encrypted to and who signed it
+// (docs/feat/gpg.md).
 package gpg
 
 import (
@@ -278,7 +279,7 @@ func ShowKeys(data []byte) ([]Key, error) {
 // Import adds the keys in data to the keyring; it says the fingerprints
 // of the keys added or changed.
 func Import(data []byte) ([]string, error) {
-	_, status, err := runStatus(data, "--import")
+	_, status, err := runStatus(data, "", "--import")
 	var fprs []string
 	for line := range strings.SplitSeq(string(status), "\n") {
 		if rest, ok := strings.CutPrefix(line, "[GNUPG:] IMPORT_OK "); ok {
@@ -311,7 +312,7 @@ func Generate(name, email, expire string) (string, error) {
 	uid := UID{Name: name, Email: email}.String()
 	// --yes: another key for the same name is allowed; the user may keep
 	// one per purpose.
-	_, status, err := runStatus(nil, "--yes", "--quick-generate-key", uid, "default", "default", expire)
+	_, status, err := runStatus(nil, "", "--yes", "--quick-generate-key", uid, "default", "default", expire)
 	for line := range strings.SplitSeq(string(status), "\n") {
 		if rest, ok := strings.CutPrefix(line, "[GNUPG:] KEY_CREATED "); ok {
 			if f := strings.Fields(rest); len(f) > 1 {
@@ -349,26 +350,44 @@ func Delete(fingerprint string) error {
 	return err
 }
 
-// Options are how to encrypt.
+// Options are how to encrypt: to keys, or with a passphrase.
 type Options struct {
 	Recipients []string // fingerprints; the user chose them, so their validity is not asked
 	Signer     string   // a fingerprint of the user's to sign with; "" not to sign
 	Armor      bool     // ASCII armor, for text
+	// Passphrase encrypts with it alone, to no key: whoever has it can
+	// decrypt. Not with Recipients or Signer.
+	Passphrase string
 }
 
 func (o Options) args() ([]string, error) {
-	if len(o.Recipients) == 0 {
+	var args []string
+	switch {
+	case o.Passphrase != "":
+		// gpg is given one passphrase: signing as well, it would try this
+		// one on the user's key.
+		if len(o.Recipients) > 0 || o.Signer != "" {
+			return nil, errors.New("a passphrase and keys together")
+		}
+		if strings.ContainsAny(o.Passphrase, "\r\n") {
+			return nil, errors.New("a passphrase is one line")
+		}
+		// gpg reads it from fd 4 (runStatus): asked by gpg-agent, it would
+		// be typed twice for each file.
+		args = []string{"--pinentry-mode", "loopback", "--passphrase-fd", "4", "--symmetric"}
+	case len(o.Recipients) == 0:
 		return nil, errors.New("no recipient")
-	}
-	args := []string{"--trust-model", "always", "--encrypt"}
-	if o.Signer != "" {
-		args = append(args, "--sign", "--local-user", o.Signer)
+	default:
+		args = []string{"--trust-model", "always", "--encrypt"}
+		if o.Signer != "" {
+			args = append(args, "--sign", "--local-user", o.Signer)
+		}
+		for _, r := range o.Recipients {
+			args = append(args, "--recipient", r)
+		}
 	}
 	if o.Armor {
 		args = append(args, "--armor")
-	}
-	for _, r := range o.Recipients {
-		args = append(args, "--recipient", r)
 	}
 	return args, nil
 }
@@ -379,7 +398,7 @@ func Encrypt(data []byte, o Options) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	out, _, err := runStatus(data, args...)
+	out, _, err := runStatus(data, o.Passphrase, args...)
 	return out, err
 }
 
@@ -397,15 +416,26 @@ func EncryptFile(path string, o Options) (string, error) {
 	if _, err := os.Stat(out); err == nil {
 		return "", fmt.Errorf("%s is already there", filepath.Base(out))
 	}
-	_, _, err = runStatus(nil, append(args, "--output", out, "--", path)...)
+	_, _, err = runStatus(nil, o.Passphrase, append(args, "--output", out, "--", path)...)
 	return out, err
 }
+
+// ErrPassphrase is a passphrase that does not open the message, and
+// ErrCanceled the user closing gpg's dialog: gpg's own last word for
+// both is "Bad session key".
+var (
+	ErrPassphrase = errors.New("wrong passphrase")
+	ErrCanceled   = errors.New("cancelled")
+)
 
 // Result is what decrypting found out.
 type Result struct {
 	Encrypted bool     // it was encrypted, and decrypted (not only signed)
 	To        []string // the key IDs it was encrypted to
-	Signed    bool
+	// Passphrase: it was encrypted with a passphrase, which opens it
+	// without a key.
+	Passphrase bool
+	Signed     bool
 	// Signature: "good", "bad", "unknown" (a signer whose key is not in
 	// the keyring), "expired", "revoked", or "" unsigned.
 	Signature string
@@ -413,6 +443,22 @@ type Result struct {
 	SignerKey string // the signer's key ID, or its fingerprint once checked
 	SignedAt  time.Time
 	FileName  string // the name the encrypted data carries
+
+	badPassphrase, canceled bool // why it failed
+}
+
+// failure is err, the error of a gpg that did not decrypt, said as it
+// is where gpg's last word misleads.
+func (r Result) failure(err error) error {
+	switch {
+	case err == nil:
+		return nil
+	case r.canceled:
+		return ErrCanceled
+	case r.badPassphrase:
+		return ErrPassphrase
+	}
+	return err
 }
 
 // ParseStatus reads gpg's status lines (--status-fd).
@@ -437,6 +483,14 @@ func ParseStatus(status []byte) Result {
 		case "ENC_TO":
 			if !slices.Contains(r.To, arg(0)) {
 				r.To = append(r.To, arg(0))
+			}
+		case "NEED_PASSPHRASE_SYM":
+			r.Passphrase = true
+		case "CANCELED_BY_USER":
+			r.canceled = true
+		case "ERROR": // "symkey_decrypt.maybe_error 11_BAD_PASSPHRASE"
+			if strings.HasPrefix(arg(0), "symkey_decrypt") && strings.Contains(arg(1), "BAD_PASSPHRASE") {
+				r.badPassphrase = true
 			}
 		case "GOODSIG", "BADSIG", "EXPSIG", "EXPKEYSIG", "REVKEYSIG":
 			r.Signed = true
@@ -479,14 +533,15 @@ func unescapePercent(s string) string {
 	return b.String()
 }
 
-// Decrypt decrypts (or only verifies) data.
+// Decrypt decrypts (or only verifies) data. gpg asks for what opens it,
+// a key's passphrase or the message's own, in its dialog.
 func Decrypt(data []byte) ([]byte, Result, error) {
-	out, status, err := runStatus(data, "--decrypt")
+	out, status, err := runStatus(data, "", "--decrypt")
 	r := ParseStatus(status)
 	if err != nil && (r.Encrypted || r.Signed) && len(out) > 0 {
 		err = nil // decrypted, though the signature could not be checked
 	}
-	return out, r, err
+	return out, r, r.failure(err)
 }
 
 // DecryptedName is where a decrypted file goes: beside it, without
@@ -507,14 +562,14 @@ func DecryptFile(path string) (string, Result, error) {
 	if _, err := os.Stat(out); err == nil {
 		return "", Result{}, fmt.Errorf("%s is already there", filepath.Base(out))
 	}
-	_, status, err := runStatus(nil, "--output", out, "--decrypt", "--", path)
+	_, status, err := runStatus(nil, "", "--output", out, "--decrypt", "--", path)
 	r := ParseStatus(status)
 	if err != nil && (r.Encrypted || r.Signed) {
 		if st, e := os.Stat(out); e == nil && st.Size() > 0 {
 			err = nil
 		}
 	}
-	return out, r, err
+	return out, r, r.failure(err)
 }
 
 // testArgs come before every command's own, for tests to give gpg an
@@ -535,8 +590,10 @@ func run(stdin []byte, args ...string) ([]byte, error) {
 	return out.Bytes(), nil
 }
 
-// runStatus runs gpg as run does, its status lines read from fd 3.
-func runStatus(stdin []byte, args ...string) (out, status []byte, err error) {
+// runStatus runs gpg as run does, its status lines read from fd 3. A
+// passphrase, if any, is for gpg to read from fd 4 (--passphrase-fd 4):
+// so it is in no argument list, where every program could read it.
+func runStatus(stdin []byte, passphrase string, args ...string) (out, status []byte, err error) {
 	ctx, cancel := context.WithTimeout(context.Background(), runTime)
 	defer cancel()
 	pr, pw, err := os.Pipe()
@@ -550,12 +607,30 @@ func runStatus(stdin []byte, args ...string) (out, status []byte, err error) {
 	}
 	cmd.Stdout, cmd.Stderr = &outb, &errb
 	cmd.ExtraFiles = []*os.File{pw}
-	if err := cmd.Start(); err != nil {
+	var passR, passW *os.File
+	if passphrase != "" {
+		if passR, passW, err = os.Pipe(); err != nil {
+			pr.Close()
+			pw.Close()
+			return nil, nil, err
+		}
+		cmd.ExtraFiles = append(cmd.ExtraFiles, passR)
+	}
+	err = cmd.Start()
+	pw.Close()
+	if passR != nil {
+		passR.Close()
+		if err == nil {
+			// gpg reads it as it starts; from one that ended before, the
+			// write fails, and gpg's own error says why.
+			io.WriteString(passW, passphrase+"\n")
+		}
+		passW.Close()
+	}
+	if err != nil {
 		pr.Close()
-		pw.Close()
 		return nil, nil, err
 	}
-	pw.Close()
 	done := make(chan struct{})
 	go func() {
 		io.Copy(&statb, pr)

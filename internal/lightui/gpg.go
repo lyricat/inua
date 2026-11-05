@@ -1,6 +1,7 @@
 package lightui
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -22,9 +23,10 @@ import (
 )
 
 // gpgApp encrypts and decrypts with GnuPG (internal/apps/gpg): a
-// composer (to whom, from which of the user's keys, a text or files),
-// a message or files decrypted as they come, saying who it was for and
-// who signed it, and the keyring, to import keys and create one's own.
+// composer (to whom, by their keys and from which of the user's, or
+// with a passphrase; a text or files), a message or files decrypted as
+// they come, saying who it was for and who signed it, and the keyring,
+// to import keys and create one's own.
 type gpgApp struct {
 	c    *appui.Ctx
 	win  *gtk.ApplicationWindow
@@ -44,6 +46,9 @@ type gpgApp struct {
 	chips              []*gtk.Widget
 
 	pages, encView, keysView, msgKind, decKind gtk.Stack
+	toKind                                     gtk.Stack // "keys", or "passphrase": to whoever has it
+	passNew, passRepeat                        gtk.PasswordEntry
+	fromSection                                gtk.Box
 	toChips                                    gtk.FlowBox
 	toEntry                                    gtk.Entry
 	toBrowse                                   gtk.ToggleButton
@@ -79,7 +84,8 @@ type gpgApp struct {
 	onBrowse                  func(gtk.ToggleButton)
 	onFromPop                 func(gtk.Widget)
 	onToClick                 func(gtk.GestureClick, int32, float64, float64)
-	onPage                    func(uintptr, uintptr, uintptr)
+	onPage, onToKind          func(uintptr, uintptr, uintptr)
+	onPassActivate            func(gtk.PasswordEntry)
 	onClipText                gio.AsyncReadyCallback
 	onDrop                    map[string]*func(gtk.DropTarget, uintptr, float64, float64) bool
 	dialog                    *gtk.FileDialog
@@ -106,6 +112,7 @@ func (a *gpgApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	for id, w := range map[string]gobject.Ptr{
 		"pages": &a.pages, "enc_view": &a.encView, "dec_kind": &a.decKind, "dec_result": &a.decResult, "keys_view": &a.keysView, "msg_kind": &a.msgKind,
 		"to_chips": &a.toChips, "to_entry": &a.toEntry, "to_browse": &a.toBrowse,
+		"to_kind": &a.toKind, "pass_new": &a.passNew, "pass_repeat": &a.passRepeat, "from_section": &a.fromSection,
 		"to_suggest": &a.toSuggest, "from_some": &a.fromSome, "from_none": &a.fromNone, "from_list": &a.fromList,
 		"enc_files": &a.encFiles_, "dec_files": &a.decFiles_, "enc_written": &a.encWritten,
 		"dec_written": &a.decWritten, "signature": &a.signature, "keys": &a.keyList, "no_key": &a.noKey,
@@ -185,6 +192,20 @@ func (a *gpgApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	click := gtk.NewGestureClick()
 	click.ConnectPressed(&a.onToClick)
 	toBox.AddController(&click.EventController)
+
+	// Keys or a passphrase. Enter in the passphrase goes on to its
+	// repeat, and there encrypts.
+	a.onToKind = func(uintptr, uintptr, uintptr) { a.showToKind() }
+	gtkx.ConnectNotify(&a.toKind, "visible-child", &a.onToKind)
+	a.onPassActivate = func(e gtk.PasswordEntry) {
+		if e.GoPointer() == a.passNew.GoPointer() {
+			a.passRepeat.GrabFocus()
+		} else {
+			a.runEncrypt()
+		}
+	}
+	a.passNew.ConnectActivate(&a.onPassActivate)
+	a.passRepeat.ConnectActivate(&a.onPassActivate)
 
 	// Decrypting as a message is pasted; a key shown as it is pasted.
 	a.onDecChanged = func(uintptr, uintptr) { a.decInputChanged() }
@@ -524,14 +545,44 @@ func (a *gpgApp) showChips() {
 		child.SetFocusable(false)
 		a.chips = append(a.chips, &child.Widget)
 	}
-	n := len(a.to)
-	a.toCount.SetText(i18n.Nf("%d recipient", "%d recipients", n, n))
-	if n == 0 {
-		a.toCount.SetText("")
+	if len(a.to) == 0 {
 		a.toEntry.SetPlaceholderText(i18n.T("Name, address or key ID"))
 	} else {
 		a.toEntry.SetPlaceholderText(i18n.T("Add another"))
 	}
+	a.showToCount()
+}
+
+// showToCount says beside To who can open it: how many recipients, or
+// whoever has the passphrase.
+func (a *gpgApp) showToCount() {
+	n := len(a.to)
+	switch {
+	case a.byPassphrase():
+		a.toCount.SetText(i18n.T("Anyone who has the passphrase"))
+	case n == 0:
+		a.toCount.SetText("")
+	default:
+		a.toCount.SetText(i18n.Nf("%d recipient", "%d recipients", n, n))
+	}
+}
+
+// byPassphrase is whether the composer encrypts with a passphrase, to no
+// key.
+func (a *gpgApp) byPassphrase() bool { return a.toKind.GetVisibleChildName() == "passphrase" }
+
+// showToKind shows what goes with the way chosen under To. A passphrase
+// has no From: nothing is signed, and the user opens it with the
+// passphrase as anyone does.
+func (a *gpgApp) showToKind() {
+	a.fromSection.SetVisible(!a.byPassphrase())
+	a.encStatus.SetText("")
+	a.showToCount()
+}
+
+func (a *gpgApp) clearPassphrase() {
+	a.passNew.SetText("")
+	a.passRepeat.SetText("")
 }
 
 // suggestions are the keys to offer for what is typed: those that can be
@@ -835,6 +886,7 @@ func (a *gpgApp) button(name string) {
 		a.choose("imp")
 	case "enc-clear":
 		a.encFiles = nil
+		a.clearPassphrase()
 		a.encInput.GetBuffer().SetText("", 0)
 		a.showFiles("enc")
 		a.encStatus.SetText("")
@@ -917,6 +969,7 @@ func (a *gpgApp) button(name string) {
 	case "encrypt-to":
 		a.pages.SetVisibleChildName("encrypt")
 		a.encView.SetVisibleChildName("compose")
+		a.toKind.SetVisibleChildName("keys")
 		if arg != a.from {
 			a.addRecipient(arg)
 		}
@@ -1110,7 +1163,21 @@ func (a *gpgApp) save(which, path string) {
 
 // --- encrypt ---
 
+// options are how to encrypt, as the composer has it; the error says
+// what it still lacks.
 func (a *gpgApp) options(armor bool) (gpg.Options, error) {
+	if a.byPassphrase() {
+		o := gpg.Options{Armor: armor, Passphrase: a.passNew.GetText()}
+		switch {
+		case o.Passphrase == "":
+			a.passNew.GrabFocus()
+			return o, fmt.Errorf("%s", i18n.T("Type a passphrase first."))
+		case o.Passphrase != a.passRepeat.GetText():
+			a.passRepeat.GrabFocus()
+			return o, fmt.Errorf("%s", i18n.T("The two passphrases differ."))
+		}
+		return o, nil
+	}
 	o := gpg.Options{Armor: armor, Recipients: slices.Clone(a.to)}
 	if k := a.keyByID(a.from); k != nil {
 		if a.toSelf.GetActive() && k.CanEncrypt && !slices.Contains(o.Recipients, a.from) {
@@ -1170,7 +1237,8 @@ func (a *gpgApp) runEncrypt() {
 			a.busy = false
 			a.encrypt.SetSensitive(true)
 			a.encStatus.SetText(strings.Join(errs, "\n"))
-			if out == nil && written == nil {
+			// A gpg that failed still gives its output, with nothing in it.
+			if len(out) == 0 && written == nil {
 				return
 			}
 			isText := files == nil
@@ -1191,6 +1259,10 @@ func (a *gpgApp) runEncrypt() {
 			who := i18n.Tf("For %s", strings.Join(names, ", "))
 			if o.Signer != "" {
 				who += " · " + i18n.T("signed")
+			}
+			if o.Passphrase != "" {
+				who = i18n.T("For anyone who has the passphrase")
+				a.clearPassphrase() // not kept past what it encrypted
 			}
 			a.encResultMeta.SetText(who)
 			a.encResultStatus.SetText(strings.Join(errs, "\n"))
@@ -1282,27 +1354,29 @@ func (a *gpgApp) runDecrypt() {
 		var out []byte
 		var res gpg.Result
 		var written, errs []string
+		done := false // something was decrypted, if only an empty message
 		if len(files) > 0 {
 			for _, f := range files {
 				w, r, err := gpg.DecryptFile(f)
 				if err != nil {
-					errs = append(errs, filepath.Base(f)+": "+err.Error())
+					errs = append(errs, filepath.Base(f)+": "+gpgFailure(err))
 					continue
 				}
 				written = append(written, w)
-				res = r
+				res, done = r, true
 			}
 		} else {
 			var err error
 			if out, res, err = gpg.Decrypt([]byte(msg)); err != nil {
-				errs = append(errs, err.Error())
+				errs = append(errs, gpgFailure(err))
 			}
+			done = err == nil
 		}
 		gtkx.Post(func() {
 			a.busy = false
 			a.decrypt.SetSensitive(true)
 			a.decStatus.SetText(strings.Join(errs, "\n"))
-			if out == nil && written == nil {
+			if !done {
 				return
 			}
 			isText := len(files) == 0
@@ -1319,8 +1393,21 @@ func (a *gpgApp) runDecrypt() {
 	}()
 }
 
+// gpgFailure says why gpg did not decrypt. A passphrase that was wrong,
+// or not given, is asked for again by the Decrypt button: gpg-agent does
+// not keep it.
+func gpgFailure(err error) string {
+	switch {
+	case errors.Is(err, gpg.ErrPassphrase):
+		return i18n.T("That passphrase does not open it. Decrypt asks again.")
+	case errors.Is(err, gpg.ErrCanceled):
+		return i18n.T("Cancelled. Decrypt asks again.")
+	}
+	return err.Error()
+}
+
 // showSignature says who signed it, and whether the signature holds, and
-// who it was encrypted to.
+// who it was encrypted to, or that a passphrase opens it.
 func (a *gpgApp) showSignature(r gpg.Result) {
 	for _, c := range []string{"good", "bad", "unknown", "none"} {
 		a.signature.RemoveCssClass(c)
@@ -1365,11 +1452,17 @@ func (a *gpgApp) showSignature(r gpg.Result) {
 			to = append(to, id)
 		}
 	}
-	a.decTo.SetText("")
-	if len(to) > 0 {
-		a.decTo.SetText(i18n.Tf("Encrypted to %s", strings.Join(to, ", ")))
+	how := ""
+	switch {
+	case len(to) > 0 && r.Passphrase:
+		how = i18n.Tf("Encrypted to %s, and with a passphrase", strings.Join(to, ", "))
+	case len(to) > 0:
+		how = i18n.Tf("Encrypted to %s", strings.Join(to, ", "))
+	case r.Passphrase:
+		how = i18n.T("Encrypted with a passphrase")
 	}
-	a.decTo.SetVisible(len(to) > 0)
+	a.decTo.SetText(how)
+	a.decTo.SetVisible(how != "")
 }
 
 // --- import ---

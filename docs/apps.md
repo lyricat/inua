@@ -316,11 +316,15 @@ Encrypt and decrypt with [GnuPG](https://gnupg.org), in three tabs
 
 - **Encrypt:** a composer. **To** finds keys as a mail client finds
   addresses; **From** is your key; **Sign** and **Let me read it too** are
-  on by default. Text comes out armored to copy or save; files are written
-  beside the original as `NAME.gpg`.
+  on by default. Or **To** takes a passphrase, typed twice, in place of
+  keys: whoever has it can open the result, with no key (gpg's symmetric
+  encryption; such a message is not signed). Text comes out armored to
+  copy or save; files are written beside the original as `NAME.gpg`.
 - **Decrypt:** pasted text is decrypted as soon as it is whole, files at
   once, and an encrypted message on the clipboard is offered. The result
-  says who signed it and to whom it was encrypted.
+  says who signed it and to whom it was encrypted, or that a passphrase
+  opens it. gpg asks for that passphrase as it asks for a key's; a wrong
+  one is asked for again by **Decrypt**.
 - **Keys:** yours, others' and invalid ones, with copy, encrypt-to,
   import, and create; an expired key of yours can be extended two years.
 
