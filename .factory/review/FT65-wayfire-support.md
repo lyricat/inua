@@ -1,7 +1,7 @@
 ---
-source: pr #67
-branch: feat/wayfire-compositor-abstraction
-round: 1
+source: issue #68
+branch: feat/compositor-58
+round: 2
 ---
 # Wayfire support (compositor abstraction, IPC client, session)
 
@@ -64,3 +64,16 @@ notes:
 Validation: Codex reviewed all 20 changed files in origin/master...HEAD. Final make test passed (16 Python session tests, go vet, all Go race tests); base comparison passed too. Seven fake-connection reproductions confirmed protocol defects. Earlier missing desktop.Wayfire, session test and premature shell startup failures are fixed; clipboard.TestFindSource passed on both HEAD and base. An initial test attempt hit temporary socket path length limits; shorter test paths passed without source edits. No installations, tracked changes or commits. PR head reconfirmed unchanged before recording; no merge conflicts with origin/master. Fork PR fetched via pull/67/head.
 
 Limits: no real or nested compositor/UI verification, lockscreen or actual compositor integration checks. Screenshot hashes match but do not establish runtime correctness of this head. Tests used throwaway HOME. One existing base-test helper created and cleaned a socket in the system temporary directory, outside the requested run directory; this constraint deviation is recorded rather than hidden.
+
+## factory · 2026-11-05 17:02
+Replaced at the owner's request (2026-11-05): this item is no longer built from PR #67. The owner asked for Wayfire support to be done on the #58 branch instead and for that work to take this item's place. The header now names branch `feat/compositor-58` (head 21d0c12f5bf39b126cb80bd17de232034da002ae) and the tracking issue #68 as the source; PR #67 is left open and untouched, and the two reviews above are of its head, not of this branch.
+
+What the branch has for this item: the Wayfire backend of the compositor contract (`internal/wayfire`, IPC only), the session (`scripts/inua-session`, one "Inua" entry, the compositor chosen in Settings), the sample `config/wayfire/wayfire.ini`, inua's keyboard, touchpad, shortcut and display settings applied over Wayfire's IPC, the Displays page (displays read through wlr-output-management, `internal/wlroutput`), and the launcher's window commands through the backend. The two P1 findings on PR #67 do not apply: there is no foreign-toplevel client, and view ids are the IPC's own.
+
+The branch is the whole of #58's work, not Wayfire alone: it also holds the contract (#62), Hyprland behind it (#63), the niri backend and the settings layer (#64). Only #68 is linked here by the owner.
+
+Tests: `make test` passed on the head before the merge of master (18 session tests, go vet, 111 Go packages with the race detector, throwaway HOME); after the merge, which changed only `scripts/inua-session` and its test, the session tests and the build passed.
+
+Checked by running, headless in throwaway containers: Wayfire 0.11.0 (Arch) and Wayfire 0.9.0 (Debian 13, gtk4-layer-shell 1.0.4): the shell starts, workspaces, dock, launcher (window list, fullscreen, centre, move to workspace), overview, control center, notifications, clipboard paste, a screenshot, the Displays page and display rules (mode, scale, position, mirror, off, and back), the login path through `inua-session` in a fresh home. `docs/compositor-experiments.md` has the table.
+
+Not checked: real monitors and GPU output, a display plugged in while the shell runs, a login through a real display manager, Wayfire 0.10, the overview's pointer drag, dictation, area and window screenshots, screen sharing. On Debian 13 the lock screen is not available (its gtk4-layer-shell has no session lock) and the shell says so.
