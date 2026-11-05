@@ -76,3 +76,8 @@ notes:
 - make generate and make i18n passed in an isolated archive copy; all tracked generated outputs matched HEAD byte for byte. Review checkout remained clean. Installs: none.
 - No visual UI or real desktop pinentry validation this round. File chooser/multi-file partial success, focus and keyboard interactions, switching back to public-key mode with existing keys, translated layouts and GPG older than 2.4.8 remain unverified. Prior scripted pinentry/cache/mixed-recipient probes were not rerun.
 - Moved review/ → ready/ under the configured no-P0/P1 rule, with the P2 retained. No merge or code changes. No linked GitHub issue or PR specified.
+
+## factory · 2026-11-05 23:27
+Owner approved all ready items for shipping and explicitly requested a tag. Merged into master at 7020788; master and annotated tag v0.1.24 (7020788) pushed atomically. Merged reviewed head 6f9967d. Catalog conflicts resolved retaining both sets of messages and translations. No linked issue or PR. Recorded Korean translation P2 remains.
+
+Validation on combined master: make generate and make i18n passed during merge resolution; full make test passed with 18 Python session tests, go vet and 111 Go packages with uncached race tests. Initial full run failed unchanged PTY TestCloseWhileReading (program did not get SIGHUP); the entire PTY package then passed 10 repetitions and full make test passed on retry, without code changes or manual exclusions. 53 built-in SKIP records remain; the previously excluded sockdir tests ran and passed. Throwaway HOME and private writable /tmp used. No installations. No real desktop/UI/compositor integration checked in this ship run. Moved ready/ → done/.
