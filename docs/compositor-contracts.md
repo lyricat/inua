@@ -10,6 +10,10 @@ them with niri (#64). It is a contract, not a universal compositor API: a
 backend implements the base and whichever optional pieces its compositor
 can do, and says which.
 
+[compositor-contract.html](compositor-contract.html) shows the layer as it
+was built, on one page: who talks to whom, one request in each
+compositor's language, and what each compositor has. Open it in a browser.
+
 Package: `internal/compositor`, toolkit-free, imported by `internal/shell`,
 `internal/ui`, `internal/desk` and the light apps. The backends
 (`internal/hypr` today, `internal/niri` in #64) import it and register

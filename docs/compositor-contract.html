@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>inua Compositor Layer</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column in inua's own look (design/ui.md): hairlines
+   instead of boxes, 2px corners, 7px status squares, mono kickers. The
+   layer diagram is a four-row grid that stacks on a phone. */
+:root {
+  --app: #0B1012; --panel: #0D1315; --surface: #121A1C; --surface2: #172124;
+  --t0: #E7E4DA; --t1: #B3B6AF; --t2: #7F8F8C; --line: #243134;
+  --accent: #9FC3C9; --accent-tint: rgba(159, 195, 201, 0.09); --accent-edge: rgba(159, 195, 201, 0.34);
+  --ok: #7FB89E; --warn: #D9A441; --danger: #E0694F;
+  --sans: "Zen Kaku Gothic New", "Noto Sans CJK JP", system-ui, sans-serif;
+  --title: "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "Geist Mono", "IBM Plex Mono", "JetBrains Mono", ui-monospace, monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --app: #F2EDE2; --panel: #EEE8DB; --surface: #FAF7F0; --surface2: #E9E3D6;
+    --t0: #1E1E20; --t1: #4A4843; --t2: #696662; --line: #D6CFBF;
+    --accent: #2F4A6D; --accent-tint: rgba(47, 74, 109, 0.07); --accent-edge: rgba(47, 74, 109, 0.34);
+    --ok: #3F6D5E; --warn: #B7791F; --danger: #B8412D;
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --app: #F2EDE2; --panel: #EEE8DB; --surface: #FAF7F0; --surface2: #E9E3D6;
+  --t0: #1E1E20; --t1: #4A4843; --t2: #696662; --line: #D6CFBF;
+  --accent: #2F4A6D; --accent-tint: rgba(47, 74, 109, 0.07); --accent-edge: rgba(47, 74, 109, 0.34);
+  --ok: #3F6D5E; --warn: #B7791F; --danger: #B8412D;
+  color-scheme: light;
+}
+
+body { margin: 0; background: var(--app); color: var(--t0); font-family: var(--sans); font-size: 15px; line-height: 1.65; }
+.page {
+  max-width: 920px; margin: 0 auto; padding-block: 56px 96px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 64px;
+}
+section, header { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+p { margin: 0; max-width: 66ch; color: var(--t1); }
+p strong, li strong { color: var(--t0); font-weight: 500; }
+h1, h2, h3 { margin: 0; font-family: var(--title); font-weight: 500; text-wrap: balance; color: var(--t0); }
+h1 { font-size: clamp(30px, 6vw, 44px); line-height: 1.12; letter-spacing: -0.01em; }
+h2 { font-size: 22px; line-height: 1.25; }
+h3 { font-size: 15px; }
+.lede { font-size: 17px; color: var(--t1); }
+code, .mono { font-family: var(--mono); font-size: 0.86em; }
+code { color: var(--t0); background: var(--surface); border: 1px solid var(--line); border-radius: 2px; padding: 1px 5px; overflow-wrap: anywhere; }
+
+/* kicker: a 7px square and a tracked mono label in brackets */
+.kicker { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--t2); }
+.kicker::before { content: ""; width: 7px; height: 7px; background: var(--accent); flex: none; }
+.kicker b { font-weight: 500; color: var(--t0); }
+.rule { border: 0; border-top: 1px solid var(--line); margin: 0; }
+
+/* the layer diagram */
+.layers { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+.layer { display: grid; grid-template-columns: 148px minmax(0, 1fr); gap: 20px; padding-block: 20px; border-bottom: 1px solid var(--line); }
+.layer > .name { display: flex; flex-direction: column; gap: 6px; }
+.layer > .name small { font-size: 12px; color: var(--t2); line-height: 1.45; }
+.layer.core { background: var(--accent-tint); box-shadow: inset 2px 0 0 var(--accent); padding-inline: 16px; margin-inline: -16px; }
+.cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.cell { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.cell h3 { font-family: var(--mono); font-size: 12.5px; font-weight: 500; letter-spacing: 0.02em; }
+.cell p { font-size: 13px; line-height: 1.5; color: var(--t1); }
+.chips { display: flex; flex-wrap: wrap; align-items: flex-start; align-content: flex-start; gap: 6px; }
+.chip { font-family: var(--mono); font-size: 12px; color: var(--t1); border: 1px solid var(--line); border-radius: 2px; padding: 3px 8px; background: var(--surface); }
+.flow { display: grid; grid-template-columns: 148px minmax(0, 1fr); gap: 20px; padding-block: 8px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.06em; color: var(--t2); }
+.flow > div { display: flex; flex-wrap: wrap; gap: 6px 28px; }
+.flow .up { color: var(--ok); }
+.flow .down { color: var(--accent); }
+
+/* tables */
+.scroll { overflow-x: auto; min-width: 0; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th, td { text-align: left; vertical-align: top; padding: 9px 14px 9px 0; border-bottom: 1px solid var(--line); }
+th { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--t2); white-space: nowrap; }
+td { color: var(--t1); }
+td:first-child { color: var(--t0); }
+td small { display: block; color: var(--t2); font-size: 12px; line-height: 1.45; }
+table.matrix td:not(:first-child), table.matrix th:not(:first-child) { width: 17%; min-width: 96px; }
+.sq { display: inline-block; width: 7px; height: 7px; margin-right: 8px; vertical-align: 1px; border: 1px solid var(--t2); box-sizing: border-box; }
+.sq.on { background: var(--accent); border-color: var(--accent); }
+.sq.setup { background: var(--warn); border-color: var(--warn); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 24px; font-family: var(--mono); font-size: 12px; color: var(--t2); }
+
+/* one action, three languages */
+.trace { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.trace > div { display: flex; flex-direction: column; gap: 10px; padding: 18px 18px 18px 0; min-width: 0; }
+.trace > div + div { border-left: 1px solid var(--line); padding-left: 18px; }
+.trace p { font-size: 13px; line-height: 1.5; }
+pre { margin: 0; font-family: var(--mono); font-size: 12px; line-height: 1.55; color: var(--t0); background: var(--surface); border: 1px solid var(--line); border-radius: 3px; padding: 10px 12px; overflow-x: auto; }
+.call { align-self: flex-start; max-width: 100%; }
+
+/* numbered steps: these are real sequences */
+ol.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; counter-reset: step; border-top: 1px solid var(--line); }
+ol.steps > li { counter-increment: step; display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 8px; padding-block: 12px; border-bottom: 1px solid var(--line); color: var(--t1); font-size: 14px; }
+ol.steps > li::before { content: counter(step, decimal-leading-zero); font-family: var(--mono); font-size: 11.5px; color: var(--t2); padding-top: 3px; font-variant-numeric: tabular-nums; }
+ul.plain { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; color: var(--t1); max-width: 66ch; font-size: 14px; }
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+.two > div { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+footer { font-family: var(--mono); font-size: 12px; color: var(--t2); border-top: 1px solid var(--line); padding-top: 16px; line-height: 1.6; }
+
+@media (max-width: 700px) {
+  .page { padding-block: 32px 64px; gap: 48px; }
+  .layer, .flow { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .cols, .trace, .two { grid-template-columns: minmax(0, 1fr); }
+  .trace > div { padding-right: 0; }
+  .trace > div + div { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<header>
+  <div class="kicker"><span>[<b>Architecture</b>]</span><span>inua · issue #58</span></div>
+  <h1>One shell, three compositors</h1>
+  <p class="lede">The shell never speaks to Hyprland, niri or Wayfire itself. It reads one picture of the desktop and asks for a small set of actions through a contract. A backend for each compositor turns that into the compositor's own language, and says what else the compositor can do.</p>
+</header>
+
+<section>
+  <div class="kicker"><span>[<b>Layers</b>]</span><span>who talks to whom</span></div>
+  <div class="layers">
+    <div class="layer">
+      <div class="name"><h3>The shell and apps</h3><small>GTK views and their state. They know windows and workspaces, not compositors.</small></div>
+      <div class="chips">
+        <span class="chip">bar</span><span class="chip">dock</span><span class="chip">launcher</span><span class="chip">overview</span><span class="chip">settings</span><span class="chip">clipboard</span><span class="chip">light apps</span><span class="chip">inua compositor dump</span>
+      </div>
+    </div>
+    <div class="flow"><span></span><div><span class="up">↑ state: a snapshot after every change</span><span class="down">↓ actions: focus, close, move, go to</span><span>↕ capabilities: what else is there</span></div></div>
+    <div class="layer core">
+      <div class="name"><h3>The contract</h3><small><span class="mono">internal/compositor</span><br>Types and interfaces only. Imports no backend and no GTK.</small></div>
+      <div class="cols">
+        <div class="cell"><h3>Snapshot</h3><p>Outputs, workspaces and windows, with what is focused. Ids are opaque strings that only the backend understands.</p></div>
+        <div class="cell"><h3>Backend</h3><p>What every compositor must do: deliver snapshots, focus and close a window, go to a workspace, move a window there.</p></div>
+        <div class="cell"><h3>Capabilities</h3><p>The optional parts, each with a state. The shell checks the state before it offers the feature.</p></div>
+      </div>
+    </div>
+    <div class="flow"><span></span><div><span>one backend is live per session, chosen by the environment</span></div></div>
+    <div class="layer">
+      <div class="name"><h3>Backends</h3><small>One package each. All the compositor-specific code lives here.</small></div>
+      <div class="cols">
+        <div class="cell"><h3>internal/hypr</h3><p>Request socket and event socket. Dispatchers, or Lua where Hyprland runs it.</p></div>
+        <div class="cell"><h3>internal/niri</h3><p>JSON lines on <span class="mono">$NIRI_SOCKET</span>, one connection kept open as the event stream.</p></div>
+        <div class="cell"><h3>internal/wayfire</h3><p>Plugin methods on <span class="mono">$WAYFIRE_SOCKET</span>. Displays are read through the wlroots output protocol.</p></div>
+      </div>
+    </div>
+    <div class="layer">
+      <div class="name"><h3>Compositors</h3><small>Versions the shell was run on.</small></div>
+      <div class="cols">
+        <div class="cell"><h3>Hyprland</h3><p>0.57. The default, and the only one with every feature.</p></div>
+        <div class="cell"><h3>niri</h3><p>26.04. Scrolling columns, workspaces per display.</p></div>
+        <div class="cell"><h3>Wayfire</h3><p>0.11 and 0.9 (Debian 13). Floating windows, a 3×3 workspace grid.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="kicker"><span>[<b>State</b>]</span><span>what flows up</span></div>
+  <h2>Every compositor is reduced to the same picture</h2>
+  <p>Each backend listens to its compositor's events, reads the state again, and hands the shell a <strong>Snapshot</strong> only when it changed. The bar, the dock, the launcher and the overview all redraw from that one value. The ids inside it mean something different on each compositor, and the shell never looks inside them.</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>In the snapshot</th><th>Hyprland</th><th>niri</th><th>Wayfire</th></tr></thead>
+      <tbody>
+        <tr><td>Window id</td><td><code>0x55d2…</code><small>the window's address</small></td><td><code>10</code><small>niri's window id</small></td><td><code>3</code><small>the view id</small></td></tr>
+        <tr><td>Workspace id</td><td><code>3</code><small>its number or name</small></td><td><code>2</code><small>an id, not the index shown</small></td><td><code>1:2,0</code><small>workspace set, then the grid cell</small></td></tr>
+        <tr><td>Workspace name</td><td colspan="3">What the user sees and types: "3". The launcher looks the name up in the snapshot to find the id.</td></tr>
+        <tr><td>Window place</td><td>always</td><td>floating windows only</td><td>always<small>derived from the cell the window is on</small></td></tr>
+        <tr><td>A new workspace</td><td>the next free number</td><td>the empty one at the end</td><td>the first empty cell<small>the grid is fixed</small></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="kicker"><span>[<b>Actions</b>]</span><span>what flows down</span></div>
+  <h2>One request, three languages</h2>
+  <p>Typing "move to workspace 3" in the launcher makes the same call on every compositor. The backend decides what that means.</p>
+  <pre class="call">comp.MoveWindow(ctx, window, workspace, follow)</pre>
+  <div class="trace">
+    <div>
+      <h3>Hyprland</h3>
+      <pre>movetoworkspace 3,address:0x55d2…</pre>
+      <p>A dispatcher on the request socket, or the Lua form where Hyprland runs Lua.</p>
+    </div>
+    <div>
+      <h3>niri</h3>
+      <pre>{"Action": {"MoveWindowToWorkspace":
+  {"window_id": 10,
+   "reference": {"Id": 2},
+   "focus": true}}}</pre>
+      <p>One JSON line; niri answers <span class="mono">Handled</span>.</p>
+    </div>
+    <div>
+      <h3>Wayfire</h3>
+      <pre>vswitch/send-view {view-id: 3, x: 2, y: 0}
+window-rules/focus-view {id: 3}</pre>
+      <p>Two plugin methods. Wayfire 0.9 has no <span class="mono">send-view</span>, so there the backend moves the window by whole screens instead.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="kicker"><span>[<b>Capabilities</b>]</span><span>what differs</span></div>
+  <h2>The shell asks before it offers</h2>
+  <p>Beyond the baseline, a compositor may or may not have a feature. The backend reports each one as <strong>supported</strong>, <strong>unavailable</strong> (it can be turned on: a plugin, a line in a config) or <strong>unsupported</strong>. The shell reads that state, so nothing is offered that would silently do nothing.</p>
+  <div class="legend"><span><i class="sq on"></i>works</span><span><i class="sq setup"></i>needs setup</span><span><i class="sq"></i>not there</span></div>
+  <div class="scroll">
+    <table class="matrix">
+      <thead><tr><th>Feature</th><th>Hyprland</th><th>niri</th><th>Wayfire</th></tr></thead>
+      <tbody>
+        <tr><td>Windows, workspaces, focus, close, move<small>the baseline every backend has</small></td><td><i class="sq on"></i>yes</td><td><i class="sq on"></i>yes</td><td><i class="sq on"></i>yes</td></tr>
+        <tr><td>New workspace from the overview</td><td><i class="sq on"></i>yes</td><td><i class="sq on"></i>yes</td><td><i class="sq on"></i>yes</td></tr>
+        <tr><td>Dock click without moving the pointer</td><td><i class="sq on"></i>yes</td><td><i class="sq on"></i>yes</td><td><i class="sq on"></i>yes</td></tr>
+        <tr><td>Fullscreen and centre from the launcher</td><td><i class="sq on"></i>yes</td><td><i class="sq on"></i>yes</td><td><i class="sq on"></i>yes</td></tr>
+        <tr><td>Toggle floating</td><td><i class="sq on"></i>yes</td><td><i class="sq on"></i>yes</td><td><i class="sq"></i>no<small>every window floats</small></td></tr>
+        <tr><td>Keyboard and touchpad settings</td><td><i class="sq on"></i>yes</td><td><i class="sq setup"></i>setup<small>one include line</small></td><td><i class="sq on"></i>yes</td></tr>
+        <tr><td>Shortcuts page</td><td><i class="sq on"></i>yes</td><td><i class="sq setup"></i>setup<small>the same line</small></td><td><i class="sq on"></i>yes</td></tr>
+        <tr><td>Displays page</td><td><i class="sq on"></i>yes</td><td><i class="sq"></i>not yet</td><td><i class="sq on"></i>yes<small>no lid rule</small></td></tr>
+        <tr><td>Live previews in the overview</td><td><i class="sq on"></i>yes</td><td><i class="sq"></i>no</td><td><i class="sq"></i>no</td></tr>
+        <tr><td>Keys sent to one window<small>paste, dictation</small></td><td><i class="sq on"></i>yes</td><td><i class="sq"></i>no<small>typed into the focused window</small></td><td><i class="sq"></i>no<small>typed into the focused window</small></td></tr>
+        <tr><td>Super tap, Super+Tab hold</td><td><i class="sq setup"></i>with Lua</td><td><i class="sq"></i>no</td><td><i class="sq"></i>no</td></tr>
+        <tr><td>Virtual screen for remote desktop</td><td><i class="sq on"></i>yes</td><td><i class="sq"></i>no</td><td><i class="sq"></i>no</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>On Wayfire a "yes" holds while the plugin behind it is loaded. The backend asks Wayfire for its method list at each connection, so unloading a plugin turns the feature off in the shell, and loading it turns it back on.</p>
+  <div class="two">
+    <div>
+      <h3>What the user sees when a feature is missing</h3>
+      <ul class="plain">
+        <li>A settings option is disabled and dimmed, with the reason under it.</li>
+        <li>A launcher command that cannot work is not listed.</li>
+        <li>Where a second way exists, the shell takes it: a paste is typed into the focused window.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>In the code</h3>
+      <pre>if f, ok := s.comp.(compositor.Floater); ok &amp;&amp;
+   s.caps.Has(compositor.CapFloating) {
+    f.ToggleFloating(ctx, window)
+}</pre>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="kicker"><span>[<b>Settings</b>]</span><span>the same values, written three ways</span></div>
+  <h2>inua's settings go through the same layer</h2>
+  <p>Keyboard options, touchpad speed, shortcuts and display rules are kept once, in <code>config.toml</code>. <code>internal/compsettings</code> turns them into a neutral <strong>Settings</strong> value, and each backend applies it in the way its compositor takes settings.</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Backend</th><th>How it applies them</th><th>Where they live</th></tr></thead>
+      <tbody>
+        <tr><td>Hyprland</td><td>Writes <code>hypr/inua.conf</code> or <code>inua.lua</code>, which the user's config sources; Hyprland reloads it.</td><td>The file</td></tr>
+        <tr><td>niri</td><td>Writes <code>inua.kdl</code>, which <code>config.kdl</code> includes last; niri reloads it by itself.</td><td>The file</td></tr>
+        <tr><td>Wayfire</td><td>Sets options and registers shortcuts over the IPC. What an option was before is put back when inua stops setting it.</td><td>Nowhere on disk: applied again each time the shell starts</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="kicker"><span>[<b>Session</b>]</span><span>from the login screen to a live backend</span></div>
+  <h2>How a backend gets chosen</h2>
+  <ol class="steps">
+    <li><span><strong>Settings → Compositor</strong> saves the choice as <code>[session] compositor</code> and writes that compositor's sample config if there is none.</span></li>
+    <li><span>At login, <code>inua-session</code> asks <code>inua session compositor</code> which one to start. If the chosen one is not installed or its config would not start the shell, it starts Hyprland and keeps the reason for the shell to show.</span></li>
+    <li><span>The compositor starts <code>inua-shell</code> from its own config: <span class="mono">exec-once</span>, <span class="mono">spawn-at-startup</span> or <span class="mono">autostart</span>.</span></li>
+    <li><span>The shell calls <code>compositor.Detect()</code>. Each backend looks for its own variable (<span class="mono">HYPRLAND_INSTANCE_SIGNATURE</span>, <span class="mono">NIRI_SOCKET</span>, <span class="mono">WAYFIRE_SOCKET</span>); the one that finds it is the backend for this session.</span></li>
+    <li><span>The backend connects, reports its capabilities, and sends the first snapshot. If the connection drops it reconnects and reports again.</span></li>
+  </ol>
+</section>
+
+<section>
+  <div class="two">
+    <div>
+      <div class="kicker"><span>[<b>Extending</b>]</span></div>
+      <h2>Adding a compositor</h2>
+      <ul class="plain">
+        <li>Write a package that implements <code>Backend</code> and registers itself.</li>
+        <li>Add it to <code>internal/compositors</code>, which links the backends into each program.</li>
+        <li>Implement the optional interfaces the compositor can serve, and report their capabilities.</li>
+        <li>The shell needs no change: what the backend reports decides what appears.</li>
+      </ul>
+    </div>
+    <div>
+      <div class="kicker"><span>[<b>Limits</b>]</span></div>
+      <h2>Still Hyprland's own</h2>
+      <ul class="plain">
+        <li>Live window previews, which use Hyprland's own capture protocol.</li>
+        <li>The key observer behind Super tap and Super+Tab.</li>
+        <li>The virtual screen that Remote Desktop makes on a computer with no monitor.</li>
+        <li>Turning the laptop panel off when the lid closes.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>Source: internal/compositor, internal/hypr, internal/niri, internal/wayfire, internal/compsettings, internal/session · design in docs/compositor-contracts.md · what each compositor did when run, in docs/compositor-experiments.md</footer>
+
+</div>
+</body>
+</html>
