@@ -1,6 +1,7 @@
 # Architecture
 
-inua is a desktop shell that works with Hyprland. Its logic is Go, its interface GTK4
+inua is a desktop shell that works with Hyprland, and as an experiment
+with niri and Wayfire (section 7). Its logic is Go, its interface GTK4
 (the puregotk binding, no cgo), and its layouts Blueprint/`.ui` markup. This
 document follows [design.md](design.md); why this toolkit is in
 [toolkit.md](toolkit.md).
@@ -38,7 +39,8 @@ the view uses the tricky parts of puregotk only through `gtkx`.
 | Path | What | State |
 | --- | --- | --- |
 | `internal/compositor` | The contract between the shell and a compositor ([compositor-contracts.md](compositor-contracts.md)): outputs, workspaces and windows as a snapshot, the base actions, the capability states, the optional interfaces, `Detect` over the registered backends; `compositortest` is the fake for tests | Done, tested |
-| `internal/niri` | The niri backend (#64, an experiment not yet run on a real niri): the JSON IPC, the event stream folded into snapshots, the base actions, New as the output's trailing empty workspace; no previews, keystrokes, binds, key observer, pointer, displays or virtual outputs | Done, tested on a fake socket; no real session yet |
+| `internal/niri` | The niri backend (#64): the JSON IPC, the event stream folded into snapshots, the base actions, New as the output's trailing empty workspace; no previews, geometry for tiled windows, keystrokes, binds, key observer, pointer, displays or virtual outputs | Done, tested on a fake socket and run on niri 26.04 (docs/compositor-experiments.md) |
+| `internal/wayfire` | The Wayfire backend (#68): the plugins' IPC, capabilities probed from the loaded plugins, the workspace grid as workspaces, a view's cell from its place, New as the first empty cell | Done, tested on a fake socket and run on Wayfire 0.11 |
 | `internal/compositors` | Links the backends into a program (`compositor.Detect`) | Done |
 | `internal/hypr` | The Hyprland backend: requests, events, the state store, `Backend` behind the contract (Lua probed at each connection), and what only Hyprland has (Lua listeners, binds, displays, the virtual screen) | Done, tested |
 | `internal/capture/hyprland` | Standalone Wayland client for Hyprland's toplevel export protocol; streams SHM frames to the workspace overview | Implemented; runtime verification needs Hyprland |

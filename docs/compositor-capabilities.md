@@ -24,8 +24,12 @@ describe on that day: Hyprland 0.52.1 (protocol tables; inua itself asks for
   found; needs a session check.
 - **unknown**: nothing found.
 
-Nothing in this document was run on Sway, niri, Wayfire or KWin. The session
-checks are #61's experiments ([compositor-experiments.md](compositor-experiments.md)).
+When this document was written nothing in it had been run on Sway, niri,
+Wayfire or KWin. niri 26.04 and Wayfire 0.11 have since been run
+([compositor-experiments.md](compositor-experiments.md)); what that changed
+here is listed under "Corrections from the sessions" at the end, and the
+tables keep their original marks. Sway and KWin are still documentation
+only.
 
 ## Sources
 
@@ -235,6 +239,34 @@ done with standard protocols.
 
 The owner's decision on this recommendation is required before #64 starts;
 #61's experiments run on both targets regardless.
+
+## Corrections from the sessions
+
+Observed on niri 26.04 and Wayfire 0.11 on 2026-11-05; each replaces the
+matching cell above.
+
+- **niri window geometry**: `Window.layout` places floating windows only.
+  For a tiled window `tile_pos_in_workspace_view` is null, so the Overview's
+  cards have no window layout on niri and geometry is not a capability
+  there.
+- **niri errors**: an action on a window id that does not exist is
+  answered `Ok`. Only malformed requests are `Err`.
+- **niri focus events**: a new window's focus comes inside
+  `WindowOpenedOrChanged`, with no `WindowFocusChanged`.
+- **Wayfire `focus-view`** switches to the view's cell itself and leaves
+  the pointer alone; **`vswitch/send-view`** does not take the focus.
+- **Wayfire list methods** answer with arrays; a new output is announced
+  by `output-layout-changed`, not `output-added`.
+- **Wayfire's packaged version** on Arch is 0.11 with an `ext-toplevel`
+  plugin, so `ext_foreign_toplevel_list_v1` is there on 0.11 where the
+  table (0.9.0) says it is not. Not otherwise used.
+- **On-demand keyboard focus** for a layer surface: given as it appears on
+  Hyprland and Wayfire, only on a click on niri. A new row the matrix did
+  not have; it is `CapOnDemandFocus` in the contract.
+- **Virtual keyboard**: niri honours a virtual keyboard's own keymap for a
+  focused window.
+- **The first integration**: both niri and Wayfire backends exist now, so
+  the recommendation's order no longer decides anything.
 
 ## Open points for #61
 

@@ -147,7 +147,7 @@ The capabilities, each the name of an optional interface or a data field:
 
 | Capability | What it enables | Hyprland | niri (from docs) |
 | --- | --- | --- | --- |
-| `CapGeometry` | `Window.Geometry` present: Overview card layout, picker, dictation hint | yes | yes (`layout`) |
+| `CapGeometry` | `Window.Geometry` present: Overview card layout, picker, dictation hint | yes | no: floating windows only (Wayfire: yes) |
 | `CapMoveWithoutFollow` | Overview drag of a window | yes (Lua) | yes |
 | `CapWorkspaces` (`WorkspaceMover`) | New card, drag onto another output | yes | yes |
 | `CapQuietFocus` (`QuietFocuser`) | dock click without pointer warp | yes | n/a: never warps, so `FocusWindow` is quiet and the backend reports Supported |
@@ -161,6 +161,8 @@ The capabilities, each the name of an optional interface or a data field:
 | `CapPlacement` (`Placer`) | bring here, place beside, tile (apps) | yes | partial (floating only) |
 | `CapModes` (`Moder`) | a key mode that swallows keys (recording, dictation) | yes | no |
 | `CapRules` | compositor styling the sample config installs | yes | layer rules, no blur |
+| `CapConfig` | keyboard, touchpad and shortcut settings reach the compositor through a config inua writes | yes | no |
+| `CapOnDemandFocus` | a layer surface asking for the keyboard on demand is focused as it appears; without it the overview asks exclusively | yes | no (Wayfire: yes) |
 
 ## 4. Optional interfaces
 
@@ -366,8 +368,38 @@ implementation.
   niri" where niri is installed.
 - Outputs have no event in niri's stream: the backend re-reads them when
   the workspaces change and on `Refresh`.
-- **Not done**: no real niri session was available, so nothing in this
-  round was run on niri. The backend is tested on a fake socket that
-  answers as the niri-ipc crate documents. The first real session is the
-  owner's, with the #61 tables; the shell's overview, bar, dock, launcher
-  and lock on niri are unverified.
+- **Run on niri 26.04** (headless, nested; see the experiments document):
+  the backend against the real IPC, then the shell with its bar, dock,
+  launcher, overview, lock and settings. What that changed: geometry is not
+  a niri capability, the overview asks for the keyboard exclusively where
+  on-demand focus waits for a click, the preview capture and
+  `hypr/inua.conf` are Hyprland's only, the sample config turns the hot
+  corners off.
+
+### Wayfire (#68)
+
+`internal/wayfire` is the second non-Hyprland backend: the plugin IPC
+(`ipc`, `ipc-rules`, `vswitch`, `wsets`), the state read again after each
+event as the Hyprland store does, capabilities from `list-methods` (a
+missing plugin makes its capability Unavailable, and it comes back when
+the plugin does), the grid of each output's workspace set as workspaces
+with ids `SET:X,Y`, a view's cell derived from its place, `NewWorkspace`
+as the first empty cell, and the placer by `configure-view`. Not wired:
+keystrokes, binds (`command/register-binding`), displays and the virtual
+output (`wayfire/create-headless-output`), which Wayfire's IPC has and a
+later round can use. `inua-session wayfire`, `config/wayfire/wayfire.ini`
+and the "Inua on Wayfire" entry are the session side. It was run on
+Wayfire 0.11 the same way as niri. It shares nothing with the abstraction
+in PR #67, which predates the contract; that PR's Wayfire knowledge (the
+plugin list, the paired `binding_`/`command_` options) is in the sample
+config.
+
+### The settings pages
+
+A page whose capability the compositor does not have says so instead of
+offering controls that do nothing: `shellUI.unsupported(cap)` reads the
+capability map, the four pages that write Hyprland's config (Keyboard,
+Mouse & Touch, Shortcuts, Displays) show one line naming the compositor,
+Displays shows "Not available" in place of its outputs, About names the
+compositor the shell runs on, and `hypr/inua.conf` is written on Hyprland
+only. The pages are filled again when the capabilities change.

@@ -67,9 +67,15 @@ func (c *conn) read() (map[string]any, error) {
 		return nil, err
 	}
 	logf("<- %s", body)
-	var m map[string]any
-	if err := json.Unmarshal(body, &m); err != nil {
+	// The list methods answer with an array, the others with an object;
+	// an object with "error" is a failure.
+	var v any
+	if err := json.Unmarshal(body, &v); err != nil {
 		return nil, err
+	}
+	m, _ := v.(map[string]any)
+	if m == nil {
+		m = map[string]any{"list": v}
 	}
 	if e, ok := m["error"]; ok {
 		return m, fmt.Errorf("wayfire: %v", e)
@@ -103,6 +109,8 @@ func main() {
 	output := flag.Int("output", -1, "output id for -set-workspace (default: the focused output)")
 	sendView := flag.Int("send-view", 0, "send this view ...")
 	to := flag.String("to", "", "... to the grid cell X,Y")
+	call := flag.String("call", "", "call this method ...")
+	data := flag.String("data", "{}", "... with this JSON object as its data, and stop")
 	reconnect := flag.Bool("reconnect", false, "reconnect with backoff when the socket closes")
 	noFollow := flag.Bool("no-follow", false, "do not watch events")
 	flag.Parse()
@@ -119,6 +127,16 @@ func main() {
 	if err != nil {
 		logf("dial: %v", err)
 		os.Exit(1)
+	}
+	if *call != "" {
+		var d map[string]any
+		if err := json.Unmarshal([]byte(*data), &d); err != nil {
+			logf("-data: %v", err)
+			os.Exit(2)
+		}
+		_, err := c.call(*call, d)
+		logf("%s: %v", *call, err)
+		return
 	}
 	// Capability probe first: a method is there only when its plugin is.
 	methods := map[string]bool{}
@@ -187,14 +205,17 @@ func main() {
 
 	delay := 250 * time.Millisecond
 	for {
-		err := watch(ctx, c)
-		c.c.Close()
-		if ctx.Err() != nil {
-			return
-		}
-		logf("event connection ended: %v", err)
-		if !*reconnect {
-			return
+		if c != nil {
+			err := watch(ctx, c)
+			c.c.Close()
+			c = nil
+			if ctx.Err() != nil {
+				return
+			}
+			logf("event connection ended: %v", err)
+			if !*reconnect {
+				return
+			}
 		}
 		logf("reconnecting in %v", delay)
 		select {
@@ -205,10 +226,14 @@ func main() {
 		if delay < 5*time.Second {
 			delay *= 2
 		}
-		if c, err = dial(ctx, os.Getenv("WAYFIRE_SOCKET")); err != nil {
+		var err error
+		if c, err = dial(ctx, path); err != nil {
 			logf("dial: %v", err)
+			c = nil
 			continue
 		}
+		logf("reconnected to %s", path)
+		delay = 250 * time.Millisecond
 	}
 }
 

@@ -16,12 +16,14 @@ go run ./niri                     # dump, then follow events until Ctrl-C
 go run ./niri -focus-window ID    # focus a window by its id
 go run ./niri -focus-workspace N  # by index (or -focus-workspace-name NAME)
 go run ./niri -move-window ID -to N   # move a window to workspace index N without focusing it
+go run ./niri -request JSON       # send one request, such as '"Layers"'
 go run ./niri -reconnect          # keep reconnecting with backoff after the socket closes
 
 go run ./wayfire                  # dump, then follow events until Ctrl-C
 go run ./wayfire -focus-view ID
 go run ./wayfire -set-workspace X,Y [-output OUTPUT-ID]
 go run ./wayfire -send-view ID -to X,Y
+go run ./wayfire -call METHOD [-data JSON]   # call one method
 go run ./wayfire -reconnect
 ```
 
@@ -34,9 +36,8 @@ niri --version; go run ./niri 2>&1 | tee niri-$(date +%Y%m%d-%H%M).log
 wayfire --version; go run ./wayfire 2>&1 | tee wayfire-$(date +%Y%m%d-%H%M).log
 ```
 
-Neither compositor is installed where this was written, so the programs were
-built and vetted but not run against a compositor; the report says so per
-observation. To run them nested under Hyprland, start the compositor as a
-Wayland client (both pick the Wayland backend when `WAYLAND_DISPLAY` is set),
-open a terminal inside it, and run the program there so it sees that
-compositor's socket.
+They were run on niri 26.04 and Wayfire 0.11, headless in a container; the
+report has what each step did. To run them nested under Hyprland, start
+the compositor as a Wayland client (both pick the Wayland backend when
+`WAYLAND_DISPLAY` is set), open a terminal inside it, and run the program
+there so it sees that compositor's socket.

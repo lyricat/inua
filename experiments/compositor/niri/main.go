@@ -14,7 +14,6 @@ import (
 	"net"
 	"os"
 	"os/signal"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -95,6 +94,7 @@ func main() {
 	focusWorkspaceName := flag.String("focus-workspace-name", "", "focus the workspace with this name")
 	moveWindow := flag.Uint64("move-window", 0, "move this window ...")
 	to := flag.Int("to", 0, "... to the workspace with this index, without focusing it")
+	raw := flag.String("request", "", "send this JSON request and stop")
 	reconnect := flag.Bool("reconnect", false, "reconnect with backoff when the socket closes")
 	noFollow := flag.Bool("no-follow", false, "do not follow events")
 	flag.Parse()
@@ -107,6 +107,16 @@ func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer stop()
 
+	if *raw != "" {
+		var req any
+		if err := json.Unmarshal([]byte(*raw), &req); err != nil {
+			logf("-request: %v", err)
+			os.Exit(2)
+		}
+		_, err := request(sock, req)
+		logf("request: %v", err)
+		return
+	}
 	for _, req := range []string{"Version", "FocusedOutput", "Outputs", "Workspaces", "Windows", "FocusedWindow"} {
 		if _, err := request(sock, req); err != nil {
 			logf("%s: %v", req, err)
@@ -156,9 +166,4 @@ func main() {
 			delay *= 2
 		}
 	}
-}
-
-// parseIndex is kept for -to given as "3" or "idx:3".
-func parseIndex(s string) (int, error) {
-	return strconv.Atoi(strings.TrimPrefix(s, "idx:"))
 }
