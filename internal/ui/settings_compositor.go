@@ -24,20 +24,16 @@ import (
 
 type compositorSettings struct {
 	page    gtk.Box
-	choices map[string]*compositorChoice // by compositor id
-	ids     map[uintptr]string           // a choice's check button → its id
-	note    *gtk.Label                   // under the choices: when it applies, or why not
-	logout  *gtk.Button
+	options map[string]gtk.ToggleButton // the segmented control's, by compositor id
+	ids     map[uintptr]string          // an option → its compositor
+	state   *gtk.Label                  // what runs and what the next login starts
+	hint    *gtk.Label                  // under the choice: why an option is disabled, what is wrong with the chosen one
+	apply   *gtk.Box                    // the row that logs out, while the choice differs from what runs
+	applyN  *gtk.Label
 	login   *gtk.Label // the login manager and the session entry
 	loginN  *gtk.Label // what is wrong with them
 	here    *gtk.Label // the compositor running
 	missing *gtk.Box   // what it cannot do, a row each
-}
-
-type compositorChoice struct {
-	state *gtk.Label
-	check *gtk.CheckButton
-	hint  *gtk.Label
 }
 
 // hintLabel is a line under an option saying why it is disabled or what
@@ -49,6 +45,7 @@ func hintLabel() *gtk.Label {
 	l.SetXalign(0)
 	l.SetWrap(true)
 	l.SetSelectable(true)
+	l.SetMarginBottom(12) // clear of the hairline under the row it belongs to
 	l.SetVisible(false)
 	return l
 }
@@ -62,9 +59,9 @@ func setHint(l *gtk.Label, text string) {
 func (s *shellUI) getCompositorSettings(ui *gtkx.Builder) {
 	p := &s.settings.compositor
 	ui.Get("compositor_page", &p.page)
-	p.choices, p.ids = map[string]*compositorChoice{}, map[uintptr]string{}
+	p.options, p.ids = map[string]gtk.ToggleButton{}, map[uintptr]string{}
 	if s.onCompositorPick == nil {
-		s.onCompositorPick = func(b gtk.CheckButton) {
+		s.onCompositorPick = func(b gtk.ToggleButton) {
 			id, ok := s.settings.compositor.ids[b.GoPointer()]
 			if ok && b.GetActive() && !s.settings.filling {
 				s.chooseCompositor(id)
@@ -73,37 +70,35 @@ func (s *shellUI) getCompositorSettings(ui *gtkx.Builder) {
 		s.onCompositorLogout = func(gtk.Button) { s.logout() }
 	}
 
+	// One row: the choice is a segmented control, its options the
+	// compositors; one that cannot be chosen is disabled, the reason under
+	// the row.
 	sec, body := displaySection(i18n.T("COMPOSITOR"), i18n.T("What the next login runs inua on"))
-	var group *gtk.CheckButton
-	for _, c := range session.Compositors {
-		if body.GetFirstChild() != nil {
-			gtkx.Append(body, &gtk.NewSeparator(gtk.OrientationHorizontalValue).Widget)
-		}
-		row, state := displayRow(c.Name, " ")
-		check := gtk.NewCheckButton()
-		check.SetValign(gtk.AlignCenterValue)
-		if group == nil {
-			group = check
-		} else {
-			check.SetGroup(group)
-		}
-		p.ids[check.GoPointer()] = c.ID
-		check.ConnectToggled(&s.onCompositorPick)
-		gtkx.Append(row, &check.Widget)
-		gtkx.Append(body, &row.Widget)
-		hint := hintLabel()
-		gtkx.Append(body, &hint.Widget)
-		p.choices[c.ID] = &compositorChoice{state: state, check: check, hint: hint}
+	row, state := displayRow(i18n.T("Compositor"), " ")
+	p.state = state
+	names := make([]string, len(session.Compositors))
+	for i, c := range session.Compositors {
+		names[i] = c.Name
 	}
-	gtkx.Append(body, &gtk.NewSeparator(gtk.OrientationHorizontalValue).Widget)
-	row, note := displayRow(i18n.T("Applies at the next login"), " ")
-	p.note = note
-	p.logout = gtk.NewButtonWithLabel(i18n.T("Log out…"))
-	p.logout.AddCssClass("outlined")
-	p.logout.SetValign(gtk.AlignCenterValue)
-	p.logout.ConnectClicked(&s.onCompositorLogout)
-	gtkx.Append(row, &p.logout.Widget)
+	for i, b := range segmented(row, &s.onCompositorPick, names...) {
+		id := session.Compositors[i].ID
+		p.options[id] = b
+		p.ids[b.GoPointer()] = id
+	}
 	gtkx.Append(body, &row.Widget)
+	p.hint = hintLabel()
+	gtkx.Append(body, &p.hint.Widget)
+
+	p.apply = gtk.NewBox(gtk.OrientationVerticalValue, 0)
+	gtkx.Append(p.apply, &gtk.NewSeparator(gtk.OrientationHorizontalValue).Widget)
+	row, p.applyN = displayRow(i18n.T("Applies at the next login"), " ")
+	logout := gtk.NewButtonWithLabel(i18n.T("Log out…"))
+	logout.AddCssClass("outlined")
+	logout.SetValign(gtk.AlignCenterValue)
+	logout.ConnectClicked(&s.onCompositorLogout)
+	gtkx.Append(row, &logout.Widget)
+	gtkx.Append(p.apply, &row.Widget)
+	gtkx.Append(body, &p.apply.Widget)
 	gtkx.Append(&p.page, &sec.Widget)
 
 	sec, body = displaySection(i18n.T("LOGIN"), i18n.T("The login screen starts the Inua session, which starts the compositor"))
@@ -147,7 +142,7 @@ var capabilityNames = []struct {
 func (s *shellUI) showCompositor() {
 	st := &s.settings
 	p := &st.compositor
-	if st.win == nil || p.choices == nil {
+	if st.win == nil || p.options == nil {
 		return
 	}
 	st.filling = true
@@ -157,43 +152,44 @@ func (s *shellUI) showCompositor() {
 	if s.comp != nil {
 		running = s.comp.Name()
 	}
-	for _, c := range session.Compositors {
-		ch := p.choices[c.ID]
-		installed := c.Installed()
-		state := i18n.T("Installed")
-		switch {
-		case c.ID == running:
-			state = i18n.T("Running now")
-		case !installed:
-			state = i18n.T("Not installed")
-		}
-		ch.state.SetText(state)
-		ch.check.SetActive(c.ID == chosen)
-		ch.check.SetSensitive(installed || c.ID == chosen)
-		hint := ""
-		switch problem := c.Problem(); {
-		case !installed:
-			hint = i18n.Tf("Install %s to choose it.", c.Name)
-		case c.ID == chosen && c.ID != session.Default && problem != "":
-			hint = i18n.Tf("%s. The login starts Hyprland instead until this is put right.", problem)
-		}
-		setHint(ch.hint, hint)
-	}
 	name := func(id string) string {
 		c, _ := session.Find(id)
 		return c.Name
 	}
+	var absent, hints []string
+	for _, c := range session.Compositors {
+		b := p.options[c.ID]
+		installed := c.Installed()
+		b.SetActive(c.ID == chosen)
+		// The one chosen stays to be seen chosen, and left, even uninstalled.
+		b.SetSensitive(installed || c.ID == chosen)
+		switch problem := c.Problem(); {
+		case !installed:
+			absent = append(absent, c.Name)
+		case c.ID == chosen && c.ID != session.Default && problem != "":
+			hints = append(hints, i18n.Tf("%s. The login starts Hyprland instead until this is put right.", problem))
+		}
+	}
+	switch len(absent) {
+	case 0:
+	case 1:
+		hints = append([]string{i18n.Tf("%s is not installed: install it to choose it.", absent[0])}, hints...)
+	default:
+		hints = append([]string{i18n.Tf("%s are not installed: install one to choose it.", strings.Join(absent, ", "))}, hints...)
+	}
+	setHint(p.hint, strings.Join(hints, "\n"))
 	switch {
 	case running == "":
-		p.note.SetText(i18n.T("No known compositor is running."))
+		p.state.SetText(i18n.T("No known compositor is running."))
 	case !session.ViaSession():
-		p.note.SetText(i18n.T("This session was not started by the Inua session entry; the choice applies when you log in through it."))
+		p.state.SetText(i18n.Tf("%s is running. This session was not started by the Inua session entry; the choice applies when you log in through it.", name(running)))
 	case chosen == running:
-		p.note.SetText(i18n.Tf("%s is running, and is what the next login starts.", name(running)))
+		p.state.SetText(i18n.Tf("%s is running, and is what the next login starts.", name(running)))
 	default:
-		p.note.SetText(i18n.Tf("%s is running; %s starts at the next login.", name(running), name(chosen)))
+		p.state.SetText(i18n.Tf("%s is running.", name(running)))
 	}
-	p.logout.SetVisible(chosen != running && running != "")
+	p.apply.SetVisible(chosen != running && running != "")
+	p.applyN.SetText(i18n.Tf("%s starts when you log in again.", name(chosen)))
 
 	login := session.LoginStatus()
 	manager := login.Manager

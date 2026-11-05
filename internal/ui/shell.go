@@ -181,7 +181,7 @@ type shellUI struct {
 	onDefaultApp           func(uintptr, uintptr, uintptr)
 	onDisplayDrop          func(uintptr, uintptr, uintptr)
 	onPowerDrop            func(uintptr, uintptr, uintptr) // the Power page's drop-downs
-	onCompositorPick       func(gtk.CheckButton)           // the Compositor page's choices
+	onCompositorPick       func(gtk.ToggleButton)          // the Compositor page's choice
 	onCompositorLogout     func(gtk.Button)
 	onVoiceSwitch          func(gtk.Switch, bool) bool
 	onVoiceMode            func(gtk.ToggleButton)

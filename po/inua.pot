@@ -10064,7 +10064,6 @@ msgstr ""
 
 #: internal/lightui/sysmon.go:992
 #: internal/lightui/workshop_manager.go:50
-#: internal/ui/settings_compositor.go:163
 msgid "Installed"
 msgstr ""
 
@@ -15859,205 +15858,209 @@ msgstr ""
 msgid "What the next login runs inua on"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:99
+#: internal/ui/settings_compositor.go:77
+#: ui/settings.ui:6437
+msgid "Compositor"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:94
 msgid "Applies at the next login"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:101
+#: internal/ui/settings_compositor.go:95
 msgid "Log out…"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:109
+#: internal/ui/settings_compositor.go:104
 msgid "LOGIN"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:109
+#: internal/ui/settings_compositor.go:104
 msgid "The login screen starts the Inua session, which starts the compositor"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:110
+#: internal/ui/settings_compositor.go:105
 msgid "Login manager"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:116
+#: internal/ui/settings_compositor.go:111
 msgid "THIS SESSION"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:116
+#: internal/ui/settings_compositor.go:111
 msgid "What the compositor running now does not give inua"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:117
+#: internal/ui/settings_compositor.go:112
 msgid "Running on"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:130
+#: internal/ui/settings_compositor.go:125
 msgid "Live window previews in the overview"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:131
+#: internal/ui/settings_compositor.go:126
 msgid "Windows laid out as they are, in the overview"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:132
+#: internal/ui/settings_compositor.go:127
 msgid "New workspaces from the overview"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:133
+#: internal/ui/settings_compositor.go:128
 msgid "Dragging windows between workspaces in the overview"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:134
+#: internal/ui/settings_compositor.go:129
 msgid "Super alone for the overview, and its number slots"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:135
+#: internal/ui/settings_compositor.go:130
 msgid "Keyboard settings from inua"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:136
+#: internal/ui/settings_compositor.go:131
 msgid "Touchpad settings from inua"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:137
+#: internal/ui/settings_compositor.go:132
 msgid "Shortcuts set in inua"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:138
+#: internal/ui/settings_compositor.go:133
 msgid "Holding other shortcuts back while one is recorded"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:139
+#: internal/ui/settings_compositor.go:134
 msgid "Display settings from inua"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:140
+#: internal/ui/settings_compositor.go:135
 msgid "Pasting into a window from the clipboard history and dictation"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:141
+#: internal/ui/settings_compositor.go:136
 msgid "A virtual screen for remote desktop without a monitor"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:142
+#: internal/ui/settings_compositor.go:137
 msgid "Moving the pointer for you"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:166
-msgid "Running now"
-msgstr ""
-
-#: internal/ui/settings_compositor.go:168
-#: internal/vmui/window.go:2319
-msgid "Not installed"
-msgstr ""
-
-#: internal/ui/settings_compositor.go:176
-msgid "Install %s to choose it."
-msgstr ""
-
-#: internal/ui/settings_compositor.go:178
+#: internal/ui/settings_compositor.go:170
 msgid "%s. The login starts Hyprland instead until this is put right."
 msgstr ""
 
-#: internal/ui/settings_compositor.go:188
+#: internal/ui/settings_compositor.go:176
+msgid "%s is not installed: install it to choose it."
+msgstr ""
+
+#: internal/ui/settings_compositor.go:178
+msgid "%s are not installed: install one to choose it."
+msgstr ""
+
+#: internal/ui/settings_compositor.go:183
 msgid "No known compositor is running."
 msgstr ""
 
-#: internal/ui/settings_compositor.go:190
-msgid "This session was not started by the Inua session entry; the choice applies when you log in through it."
+#: internal/ui/settings_compositor.go:185
+msgid "%s is running. This session was not started by the Inua session entry; the choice applies when you log in through it."
 msgstr ""
 
-#: internal/ui/settings_compositor.go:192
+#: internal/ui/settings_compositor.go:187
 msgid "%s is running, and is what the next login starts."
 msgstr ""
 
-#: internal/ui/settings_compositor.go:194
-msgid "%s is running; %s starts at the next login."
+#: internal/ui/settings_compositor.go:189
+msgid "%s is running."
 msgstr ""
 
-#: internal/ui/settings_compositor.go:201
+#: internal/ui/settings_compositor.go:192
+msgid "%s starts when you log in again."
+msgstr ""
+
+#: internal/ui/settings_compositor.go:197
 msgid "None enabled"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:203
+#: internal/ui/settings_compositor.go:199
 msgid "the Inua session is installed"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:207
+#: internal/ui/settings_compositor.go:203
 msgid "the Inua session is not installed"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:208
+#: internal/ui/settings_compositor.go:204
 msgid "Install it from inua's source: make install-session (asks for the administrator's password)."
 msgstr ""
 
-#: internal/ui/settings_compositor.go:210
+#: internal/ui/settings_compositor.go:206
 msgid "the Inua session is an older one"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:211
+#: internal/ui/settings_compositor.go:207
 msgid "The installed session script always starts Hyprland. Update it from inua's source: sudo sh scripts/install-session.sh"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:217
+#: internal/ui/settings_compositor.go:213
 msgid "Nothing inua knows"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:228
+#: internal/ui/settings_compositor.go:224
 #: internal/ui/settings_displays.go:193
 msgid "Not available on %s"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:230
+#: internal/ui/settings_compositor.go:226
 msgid "Not available now"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:239
+#: internal/ui/settings_compositor.go:235
 msgid "Everything inua uses"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:239
+#: internal/ui/settings_compositor.go:235
 msgid "Nothing is missing on this compositor."
 msgstr ""
 
-#: internal/ui/settings_compositor.go:256
+#: internal/ui/settings_compositor.go:252
 msgid "%s's config was not written: %s"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:259
+#: internal/ui/settings_compositor.go:255
 msgid "Wrote %s, which starts inua on %s."
 msgstr ""
 
-#: internal/ui/settings_compositor.go:290
+#: internal/ui/settings_compositor.go:286
 msgid "Started on %s"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:291
+#: internal/ui/settings_compositor.go:287
 msgid "The compositor chosen in Settings was passed over."
 msgstr ""
 
-#: internal/ui/settings_compositor.go:329
+#: internal/ui/settings_compositor.go:325
 msgid "Not available on %s now."
 msgstr ""
 
-#: internal/ui/settings_compositor.go:331
+#: internal/ui/settings_compositor.go:327
 msgid "Not available on %s."
 msgstr ""
 
-#: internal/ui/settings_compositor.go:363
+#: internal/ui/settings_compositor.go:359
 msgid "inua writes these to %s"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:366
+#: internal/ui/settings_compositor.go:362
 msgid "Use %s's own"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:370
+#: internal/ui/settings_compositor.go:366
 msgid "Other shortcuts, from %s's own config"
 msgstr ""
 
-#: internal/ui/settings_compositor.go:390
+#: internal/ui/settings_compositor.go:386
 msgid "Not applied to %s: %s"
 msgstr ""
 
@@ -17923,6 +17926,10 @@ msgstr ""
 
 #: internal/vmui/window.go:2317
 msgid "Needs the host"
+msgstr ""
+
+#: internal/vmui/window.go:2319
+msgid "Not installed"
 msgstr ""
 
 #: internal/vmui/window.go:2352
@@ -20059,10 +20066,6 @@ msgstr ""
 
 #: ui/settings.ui:6403
 msgid "Power"
-msgstr ""
-
-#: ui/settings.ui:6437
-msgid "Compositor"
 msgstr ""
 
 #: ui/settings.ui:6471
