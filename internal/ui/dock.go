@@ -313,7 +313,7 @@ func (s *shellUI) forgetPrograms() {
 
 func (s *shellUI) renderDock(b *bar) {
 	d := b.dock
-	items := shell.Dock(s.cfg.Dock.Pinned, s.dockState.apps, s.snap, s.inputMethodWindow)
+	items := shell.Dock(s.cfg.Dock.Pinned, s.dockState.apps, s.windowSnap, s.inputMethodWindow)
 	s.dockState.items = items
 	for _, it := range items {
 		if len(it.Windows) > 0 {
@@ -562,7 +562,7 @@ func (s *shellUI) dockMenuAction(name string) {
 		s.changeSettings(c)
 	case "quit":
 		for _, w := range it.Windows {
-			s.dispatch("closewindow address:" + w.Address)
+			s.closeWayfireWindow(w.Address)
 		}
 	}
 }
@@ -790,6 +790,10 @@ func (s *shellUI) markLaunching(key string) {
 // focusing does unless cursor:no_warps is set: the pointer stays on the
 // dock, where the user clicked.
 func (s *shellUI) focusWindowHere(addr string) {
+	if s.wayfire != nil {
+		s.focusWayfireWindow(addr)
+		return
+	}
 	if s.client == nil {
 		return
 	}

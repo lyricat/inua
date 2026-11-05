@@ -90,6 +90,25 @@ class SessionTest(unittest.TestCase):
             "--user --no-block try-restart xdg-desktop-portal.service",
         ])
 
+    def test_wayfire_session_seeds_config_and_starts_wayfire(self):
+        config_home = self.home / "Wayfire config"
+        self.env["XDG_CONFIG_HOME"] = str(config_home)
+        self.env["INUA_WAYFIRE_CONFIG"] = str(ROOT / "config/session/wayfire.ini")
+        self.env["PATH"] = f"{self.bin}:/run/current-system/sw/bin:/usr/bin:/bin"
+        self.executable("wayfire", '#!/bin/sh\nprintf "%s\\n" "$XDG_CURRENT_DESKTOP" "$@"\n')
+
+        result = subprocess.run(
+            ["sh", str(ROOT / "scripts/inua-wayfire-session")],
+            env=self.env,
+            text=True,
+            capture_output=True,
+        )
+
+        config_file = config_home / "wayfire.ini"
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout.splitlines(), ["Wayfire:Inua", "-c", str(config_file)])
+        self.assertEqual(config_file.read_bytes(), (ROOT / "config/session/wayfire.ini").read_bytes())
+
     def test_config_without_shell_does_not_start_compositor(self):
         self.executable("inua", '#!/bin/sh\necho "hyprland.conf does not start inua-shell"\nexit 1\n')
         result = self.launch()

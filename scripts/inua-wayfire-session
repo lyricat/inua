@@ -1,0 +1,28 @@
+#!/bin/sh
+# Start Inua once, then replace this process with Wayfire.
+set -eu
+
+for program in inua-shell inua wayfire; do
+    if ! command -v "$program" >/dev/null 2>&1; then
+        echo "inua-wayfire-session: $program is not on PATH; install Inua and Wayfire first" >&2
+        exit 127
+    fi
+done
+
+config_dir=${XDG_CONFIG_HOME:-"$HOME/.config"}
+config_file=$config_dir/wayfire.ini
+if [ ! -r "$config_file" ]; then
+    config_source=${INUA_WAYFIRE_CONFIG:-}
+    if [ -z "$config_source" ] || [ ! -r "$config_source" ]; then
+        echo "inua-wayfire-session: missing $config_file; set INUA_WAYFIRE_CONFIG to a readable Wayfire config" >&2
+        exit 1
+    fi
+    mkdir -p "$config_dir"
+    cp "$config_source" "$config_file"
+fi
+
+# Wayfire starts Inua from the [autostart] section of this configuration,
+# after it has created the Wayland display.
+XDG_CURRENT_DESKTOP=Wayfire:Inua
+export XDG_CURRENT_DESKTOP
+exec wayfire -c "$config_file"

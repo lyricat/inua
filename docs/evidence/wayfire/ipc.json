@@ -1,0 +1,92 @@
+{
+  "compositor": {
+    "version": "Wayfire 0.9.0",
+    "renderer": "Mesa llvmpipe, OpenGL ES 3.2",
+    "output": {
+      "name": "HEADLESS-1",
+      "id": 1,
+      "width": 1280,
+      "height": 720,
+      "workspace_grid": [3, 3]
+    }
+  },
+  "wayland_globals": {
+    "zwlr_layer_shell_v1": 4,
+    "zwlr_screencopy_manager_v1": 3,
+    "zwlr_foreign_toplevel_manager_v1": 3,
+    "ext_session_lock_manager_v1": 1
+  },
+  "list-methods": {
+    "method_count": 33,
+    "methods": [
+      "command/clear-bindings",
+      "command/register-binding",
+      "command/unregister-binding",
+      "input/configure-device",
+      "input/list-devices",
+      "list-methods",
+      "vswitch/set-workspace",
+      "wayfire-shell/toggle_menu",
+      "wayfire/configuration",
+      "wayfire/create-headless-output",
+      "wayfire/destroy-headless-output",
+      "wayfire/get-config-option",
+      "wayfire/set-config-options",
+      "wf/alpha/get-view-alpha",
+      "wf/alpha/set-view-alpha",
+      "window-rules/close-view",
+      "window-rules/configure-view",
+      "window-rules/events/watch",
+      "window-rules/focus-view",
+      "window-rules/get-focused-output",
+      "window-rules/get-focused-view",
+      "window-rules/list-outputs",
+      "window-rules/list-views",
+      "window-rules/list-wsets",
+      "window-rules/output-info",
+      "window-rules/view-info",
+      "window-rules/wset-info",
+      "wm-actions/send-to-back",
+      "wm-actions/set-always-on-top",
+      "wm-actions/set-fullscreen",
+      "wm-actions/set-minimized",
+      "wm-actions/set-sticky",
+      "wm-actions/toggle_showdesktop"
+    ]
+  },
+  "initial_state": {
+    "window-rules/list-views": [],
+    "window-rules/list-outputs": [
+      {
+        "geometry": {"height": 720, "width": 1280, "x": 0, "y": 0},
+        "id": 1,
+        "name": "HEADLESS-1",
+        "workarea": {"height": 720, "width": 1280, "x": 0, "y": 0},
+        "workspace": {"grid_height": 3, "grid_width": 3, "x": 0, "y": 0},
+        "wset-index": 1
+      }
+    ],
+    "window-rules/get-focused-view": {"info": null, "result": "ok"}
+  },
+  "test_windows": {
+    "titles": ["Acceptance Window Alpha", "Acceptance Window Beta"],
+    "focus_request": {"method": "window-rules/focus-view", "id": 14, "result": "ok"},
+    "focused_view_after_request": {"id": 14, "title": "Acceptance Window Alpha", "activated": true},
+    "close_request": {"method": "window-rules/close-view", "id": 16, "result": "ok"},
+    "close_observation": "Beta client exited after close-view; subsequent list-views no longer included its test view. Alpha was closed after screenshot capture."
+  },
+  "workspace_switch": {
+    "method": "vswitch/set-workspace",
+    "request": {"x": 0, "y": 1, "output-id": 1},
+    "response": {"result": "ok"},
+    "follow_up_workspace": {"x": 0, "y": 1},
+    "return_to_initial": {"request": {"x": 0, "y": 0, "output-id": 1}, "response": {"result": "ok"}}
+  },
+  "shell": {
+    "startup": "Checkout-built ./bin/inua-shell started with layer-shell 1.3 and attached to HEADLESS-1; log reported layer=true.",
+    "compositor_status": "compositor=wayfire connected=true state_query=true state_events=true focus=true move=true resize=false close=true switch_workspace=true shortcuts=false window_capture=false session_lock=false",
+    "overview_open": {"ok": false, "error": "overview is unavailable on Wayfire: compositor state and output capture are not connected"},
+    "launcher_toggle": {"ok": true},
+    "control_open": {"ok": true}
+  }
+}
