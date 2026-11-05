@@ -313,13 +313,12 @@ func (r *Registrar) Menu(reg Registration, about bool) ([]Entry, error) {
 	}
 	// Two levels: the second only shows which items of the first open one.
 	count := 0
-	node, err := r.layout(ctx, reg, 0, 2, 0, &count)
+	top := make(map[int32]bool)
+	node, err := r.layout(ctx, reg, 0, 2, 0, &count, top)
 	if err != nil {
 		return nil, err
 	}
-	top := make(map[int32]bool, len(node.Children))
 	for i := range node.Children {
-		top[node.Children[i].ID] = true
 		node.Children[i].Children = nil
 	}
 	key := registrationKey(reg.Service, reg.Window)
@@ -332,10 +331,10 @@ func (r *Registrar) Menu(reg Registration, about bool) ([]Entry, error) {
 	return node.Children, nil
 }
 
-// Submenu reads what item id opens, as it is now: the application is told
-// the submenu is about to show, and so is each submenu inside it that came
-// empty, which is how an application says it fills one in when asked. One
-// that stays empty, or that no longer fits the bounds, is left empty.
+// Submenu reads what item id opens, as it is now: the application and each
+// nested submenu are told that they are about to show before their contents
+// are read. One that stays empty, or that no longer fits the bounds, is left
+// empty.
 func (r *Registrar) Submenu(reg Registration, id int32) ([]Entry, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
 	defer cancel()
@@ -349,7 +348,7 @@ func (r *Registrar) Submenu(reg Registration, id int32) ([]Entry, error) {
 
 func (r *Registrar) open(ctx context.Context, reg Registration, id int32, depth int, count *int) (Entry, error) {
 	r.conn.Object(reg.Service, reg.Path).CallWithContext(ctx, menuInterface+".AboutToShow", 0, id)
-	node, err := r.layout(ctx, reg, id, -1, depth, count)
+	node, err := r.layout(ctx, reg, id, -1, depth, count, nil)
 	if err != nil {
 		return Entry{}, err
 	}
@@ -363,23 +362,27 @@ func (r *Registrar) fill(ctx context.Context, reg Registration, entries []Entry,
 		if !e.Submenu {
 			continue
 		}
-		if len(e.Children) > 0 {
-			r.fill(ctx, reg, e.Children, depth+1, count)
-			continue
-		}
-		// The node itself was counted with its parent's layout.
-		*count--
+		before := *count
+		*count -= entryCount(*e)
 		if node, err := r.open(ctx, reg, e.ID, depth, count); err == nil {
 			e.Children = node.Children
 		} else {
-			*count++
+			*count = before
 		}
 	}
 }
 
+func entryCount(entry Entry) int {
+	count := 1
+	for _, child := range entry.Children {
+		count += entryCount(child)
+	}
+	return count
+}
+
 // layout reads the tree under item id, levels deep (-1: all of it), within
 // the bounds count and depth have left.
-func (r *Registrar) layout(ctx context.Context, reg Registration, id, levels int32, depth int, count *int) (Entry, error) {
+func (r *Registrar) layout(ctx context.Context, reg Registration, id, levels int32, depth int, count *int, topIDs map[int32]bool) (Entry, error) {
 	call := r.conn.Object(reg.Service, reg.Path).CallWithContext(ctx, menuInterface+".GetLayout", 0, id, levels, []string{})
 	if call.Err != nil {
 		return Entry{}, call.Err
@@ -396,6 +399,26 @@ func (r *Registrar) layout(ctx context.Context, reg Registration, id, levels int
 	if !ok {
 		*count = before
 		return Entry{}, fmt.Errorf("appmenu: malformed or oversized layout")
+	}
+	if topIDs != nil {
+		children, ok := root[2].([]dbus.Variant)
+		if !ok {
+			*count = before
+			return Entry{}, fmt.Errorf("appmenu: malformed top-level children")
+		}
+		for _, child := range children {
+			childNode, ok := child.Value().([]any)
+			if !ok || len(childNode) != 3 {
+				*count = before
+				return Entry{}, fmt.Errorf("appmenu: malformed top-level item")
+			}
+			childID, ok := childNode[0].(int32)
+			if !ok {
+				*count = before
+				return Entry{}, fmt.Errorf("appmenu: malformed top-level item id")
+			}
+			topIDs[childID] = true
+		}
 	}
 	return node, nil
 }

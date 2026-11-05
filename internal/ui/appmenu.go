@@ -18,8 +18,9 @@ import (
 // The focused application's menu, in the bar of the focused monitor: the
 // first level as buttons, what each opens as a menu read when it opens.
 type appMenuState struct {
-	registrar *appmenu.Registrar
-	menu      *gtk.Popover // the open one, borrowed from its button
+	registrar   *appmenu.Registrar
+	menu        *gtk.Popover // the open one, borrowed from its button
+	menuRequest uint64       // the newest pending submenu read
 }
 
 // appMenuTop is a button of the bar's menu.
@@ -192,6 +193,7 @@ func (s *shellUI) bindAppMenuHandlers() {
 			return
 		}
 		s.appmenu.menu = nil
+		s.appmenu.menuRequest++
 		gtkx.Post(func() { p.Unparent() })
 	}
 }
@@ -199,6 +201,7 @@ func (s *shellUI) bindAppMenuHandlers() {
 // closeAppMenu takes the open menu down and off its button at once: the
 // button it hangs from is about to go, or another menu to open.
 func (s *shellUI) closeAppMenu() {
+	s.appmenu.menuRequest++
 	p := s.appmenu.menu
 	if p == nil {
 		return
@@ -212,6 +215,8 @@ func (s *shellUI) closeAppMenu() {
 // under the button w. It is read each time, so it is the menu as the
 // application has it now, filled in if it is one built when asked for.
 func (s *shellUI) showAppMenu(reg appmenu.Registration, id int32, w *gtk.Widget) {
+	s.appmenu.menuRequest++
+	request := s.appmenu.menuRequest
 	w.Ref() // kept until the menu is built
 	go func() {
 		entries, err := s.appmenu.registrar.Submenu(reg, id)
@@ -224,7 +229,7 @@ func (s *shellUI) showAppMenu(reg appmenu.Registration, id int32, w *gtk.Widget)
 			items := s.appMenuItems(reg, entries)
 			// The bar's menu was redrawn or went to another application
 			// meanwhile.
-			if len(items) == 0 || !w.GetMapped() || !s.appMenuCurrent(reg) {
+			if s.appmenu.menuRequest != request || len(items) == 0 || !w.GetMapped() || !s.appMenuCurrent(reg) {
 				return
 			}
 			s.closeAppMenu()

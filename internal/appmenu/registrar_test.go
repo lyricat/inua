@@ -23,10 +23,11 @@ type testNode struct {
 // menuItem is an item of the test application's menu. A lazy one has its
 // children only once the application was told it is about to show.
 type menuItem struct {
-	id    int32
-	label string
-	lazy  bool
-	kids  []*menuItem
+	id     int32
+	label  string
+	lazy   bool
+	hidden bool
+	kids   []*menuItem
 }
 
 type testMenu struct {
@@ -64,6 +65,9 @@ func (m *testMenu) node(it *menuItem, levels int32) testNode {
 	n := testNode{ID: it.id, Props: map[string]dbus.Variant{}, Children: []dbus.Variant{}}
 	if it.label != "" {
 		n.Props["label"] = dbus.MakeVariant(it.label)
+	}
+	if it.hidden {
+		n.Props["visible"] = dbus.MakeVariant(false)
 	}
 	if it.lazy {
 		n.Props["children-display"] = dbus.MakeVariant("submenu")
@@ -303,10 +307,32 @@ func TestSubmenuAsksLazyItems(t *testing.T) {
 	}
 }
 
+// A populated nested submenu is refreshed when its parent menu opens.
+func TestSubmenuRefreshesPopulatedNestedItems(t *testing.T) {
+	f := start(t)
+	f.menu.mu.Lock()
+	f.menu.find(f.menu.root, 8).lazy = false
+	f.menu.mu.Unlock()
+	f.register(t, f.client, 42, f.path)
+	reg, _ := f.registrar.ForPID(f.pid)
+	if _, err := f.registrar.Menu(reg, true); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := f.registrar.Submenu(reg, 7); err != nil {
+		t.Fatal(err)
+	}
+	if got, want := f.menu.asked(), []int32{0, 7, 8}; !reflect.DeepEqual(got, want) {
+		t.Fatalf("opened populated nested submenu asked %v, want %v", got, want)
+	}
+}
+
 // The application's word that its menu changed is told on when it comes
 // from the connection that registered the menu and is about its first level.
 func TestMenuUpdatesFromTheRegisteredMenu(t *testing.T) {
 	f := start(t)
+	f.menu.mu.Lock()
+	f.menu.root.kids = append(f.menu.root.kids, &menuItem{id: 99, label: "Hidden", hidden: true})
+	f.menu.mu.Unlock()
 	f.register(t, f.client, 42, f.path)
 	reg, _ := f.registrar.ForPID(f.pid)
 	if _, err := f.registrar.Menu(reg, true); err != nil {
@@ -357,6 +383,8 @@ func TestMenuUpdatesFromTheRegisteredMenu(t *testing.T) {
 	emit(f.client, f.path, layoutUpdated, uint32(2), int32(0))
 	expect("LayoutUpdated")
 	emit(f.client, f.path, propertiesUpdated, []changed{{ID: 9, Props: label}}, []removed{})
+	emit(f.client, f.path, propertiesUpdated, []changed{{ID: 99, Props: label}}, []removed{})
+	expect("hidden top-level ItemsPropertiesUpdated")
 	emit(f.client, f.path, propertiesUpdated, []changed{{ID: 7, Props: label}}, []removed{})
 	expect("ItemsPropertiesUpdated")
 	emit(f.client, f.path, propertiesUpdated, []changed{}, []removed{{ID: 1, Props: []string{"enabled"}}})
