@@ -1,7 +1,7 @@
 ---
 source: pr #66
 branch: factory/FT66-global-appmenu
-round: 1
+round: 2
 ---
 # Global appmenu (DBusMenu) for bar
 
@@ -48,3 +48,35 @@ Posted: 2026-11-04T22:40:46Z
 > ok  	github.com/lyricat/inua/internal/style	(cached) pass locally. However, the PR CI / failures are still pre-existing in upstream's test environment ( Unix socket path-length issue on macOS, plus  failures), not introduced by this PR.
 
 The author reports merging latest upstream/master, fixing compilation and passing local tests, and attributes the remaining PR CI failures to upstream test-environment issues. The source comment contains missing identifiers; the quote above preserves it as returned by GitHub without reconstruction. These are the author’s claims, not newly verified test results. This update only records the comment; no re-review was performed and the existing verdict and review/ status are unchanged.
+
+## factory · 2026-11-05 10:05
+Fix round 2, done at the owner's request ("just fix at the PR's br") on the PR's own branch.
+
+Checking the author's comment first: PR #66's head had not moved from 087cd11; the update it describes went to another fork branch, feat/global-app-menu (26434dc), a larger and separate line of work that does not contain the PR head. That branch compiles but fails make test (internal/config TestSampleIsFormat, internal/dbusexport TestNoBareExports) and conflicts with master in internal/lightui/calculator.go. It was not used.
+
+Built on factory/FT66-global-appmenu, after a merge of origin/master (f9cecde):
+- 687c052 fix(appmenu): trust signals by sender, read submenus when they open
+- 7a695a9 fix(bar): bind the application menu and draw it as the shell's menus
+
+Against the review of 087cd11:
+- [P1] internal/ui/appmenu.go:61: the bar has the app_menu binding and its fields; the shell compiles.
+- [P1] internal/ui/appmenu.go:199: the first level is bar buttons with one shared handler, and a section opens as a uikit menu, as the tray's; no callback is made per item.
+- [P2] internal/appmenu/registrar.go:123: NameOwnerChanged counts only from the bus, with its path and argument types checked.
+- [P2] internal/appmenu/registrar.go:150: WindowRegistered carries window, service and path; the introspection XML too.
+- [P2] internal/appmenu/registrar.go:197: a process with several registered windows keeps its menu, the latest registered.
+- [P2] internal/appmenu/registrar.go:211: a section is read when it opens, with AboutToShow for it and for each empty submenu inside it.
+- [P2] internal/ui/appmenu.go:37: the menu is synchronised with every compositor snapshot.
+- [P2] internal/ui/appmenu.go:124: LayoutUpdated and ItemsPropertiesUpdated from the connection that registered a menu reload the bar when they touch the first level.
+
+Also: the registrar's exports go through internal/dbusexport, which master's TestNoBareExports now requires.
+
+Decisions:
+- Distinct menus registered by one process cannot be matched to a window, as the compositor does not give the registered window ID; the latest registration stands for the process.
+- Menu contents are read at each opening rather than tracked; only the first level follows the application's signals.
+- The registrar still starts unconditionally, as in the PR. Qt applications hide their in-window menu bar while a registrar is present, so this changes them for everyone; a setting is the owner's call.
+
+Head: 7a695a9a68ec577d8c8cb246743dd59914ab6071, pushed to the mirror and, fast-forward, to the PR's branch iamcheyan/inua feat/appmenu-global-menu.
+Tests: make test passes with a throwaway HOME. Each registrar finding has a regression test in internal/appmenu/registrar_test.go. PR CI on the new head: checks and term-engine pass; macos fails in internal/term/host with the same tests as on master (f9cecde).
+Installs: none.
+Not checked: the UI was not looked at, and nothing ran against a live compositor or a real application's menu. By hand in a nested session: focus a Qt application, see its menu titles in the bar, open a section, activate an item, switch to another application and see the bar follow.
+The verdict above is for 087cd11; this head has no review yet. Stays in review/ for the next review run.
