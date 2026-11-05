@@ -89,7 +89,7 @@ func TestRoundtripForwardsPendingEventPayload(t *testing.T) {
 			serverErr <- err
 			return
 		}
-		if _, err := server.Write(testWaylandEvent(3, 0, nil)); err != nil {
+		if _, err := server.Write(testWaylandEvent(2, 0, nil)); err != nil {
 			serverErr <- err
 			return
 		}
