@@ -350,7 +350,7 @@ msgstr "%d%%、充電中"
 #: internal/ui/settings.go:338
 #: internal/ui/settings.go:776
 #: internal/ui/settings.go:880
-#: internal/ui/settings_displays.go:418
+#: internal/ui/settings_displays.go:426
 msgid "%d%%"
 msgstr "%d%%"
 
@@ -2117,8 +2117,8 @@ msgstr "サービスを起動しています。"
 #: internal/termui/headmenu.go:164
 #: internal/termui/prefsweb.go:130
 #: internal/ui/settings_bluetooth.go:214
-#: internal/ui/settings_displays.go:294
-#: internal/ui/settings_displays.go:389
+#: internal/ui/settings_displays.go:302
+#: internal/ui/settings_displays.go:397
 #: internal/ui/settings_wifi.go:285
 #: ui/remote.ui:359
 #: ui/settings.ui:5885
@@ -14727,43 +14727,47 @@ msgstr "ワークショップのアプリ"
 msgid "The light apps are not installed (make install)."
 msgstr "ライトアプリはインストールされない(メイクインストール)。"
 
-#: internal/ui/input.go:55
+#: internal/ui/input.go:59
 msgid "Not applied to Hyprland: %s"
 msgstr "Hyprland には適用されません: %s"
 
-#: internal/ui/input.go:113
-#: internal/ui/input.go:130
-#: internal/ui/settings_displays.go:310
+#: internal/ui/input.go:117
+#: internal/ui/input.go:134
+#: internal/ui/settings_displays.go:318
 msgid "Set by inua"
 msgstr "inuaによる設定"
 
-#: internal/ui/input.go:115
-#: internal/ui/input.go:132
-#: internal/ui/settings_displays.go:308
+#: internal/ui/input.go:119
+#: internal/ui/input.go:136
+#: internal/ui/settings_displays.go:316
 msgid "Set in hyprland.conf"
 msgstr "hyprland.confに設定"
 
-#: internal/ui/input.go:117
+#: internal/ui/input.go:121
 msgid "no XKB options"
 msgstr "XKBオプションなし"
 
-#: internal/ui/input.go:125
+#: internal/ui/input.go:129
 msgid "From hyprland.conf"
 msgstr "hyprland.confより"
 
-#: internal/ui/input.go:153
+#: internal/ui/input.go:155
+msgid "These settings are kept, but %s does not take them from inua: set them in its own configuration."
+msgstr ""
+
+#: internal/ui/input.go:167
 msgid "hyprland.lua does not load inua.lua, so these settings do nothing yet. Add this as its last line: %s"
 msgstr "hyprland.lua が inua.lua を読み込んでいないため、これらの設定はまだ効きません。最後の行に次を追加してください:%s"
 
-#: internal/ui/input.go:155
+#: internal/ui/input.go:169
 msgid "hyprland.conf does not load inua.conf, so these settings do nothing yet. Add this as its last line: source = ./%s"
 msgstr "hyprland.conf は inua.conf をロードしないため、これらの設定はまだ何も行いません。これを最後の行として追加します:source = ./%s"
 
-#: internal/ui/input.go:159
+#: internal/ui/input.go:173
 msgid "hyprland.lua sets these again after loading inua.lua, which wins over inua: %s. Move the require line below them."
 msgstr "hyprland.lua は inua.lua を読み込んだ後にこれらを再設定しているため、inua の設定より優先されます:%s。require の行をそれらの下に移動してください。"
 
-#: internal/ui/input.go:161
+#: internal/ui/input.go:175
 msgid "hyprland.conf sets these again after loading inua.conf, which wins over inua: %s. Move the source line below them."
 msgstr "hyprland.conf は、inua.conf をロードした後にこれらを再度設定します。これは、inua: %s よりも優先されます。ソース行をそれらの下に移動します。"
 
@@ -14833,88 +14837,88 @@ msgstr ""
 msgid "Bluetooth off"
 msgstr ""
 
-#: internal/ui/overview.go:184
+#: internal/ui/overview.go:188
 msgid "restore focus"
 msgstr "フォーカスを復元する"
 
-#: internal/ui/overview.go:293
+#: internal/ui/overview.go:298
 msgid "kill window"
 msgstr "ウィンドウをキルする"
 
-#: internal/ui/overview.go:426
+#: internal/ui/overview.go:447
 msgid "MRU: ON"
 msgstr "MRU:オン"
 
-#: internal/ui/overview.go:426
+#: internal/ui/overview.go:447
 msgid "MRU: OFF"
 msgstr "MRU: オフ"
 
-#: internal/ui/overview.go:427
+#: internal/ui/overview.go:448
 msgid "This monitor"
 msgstr "このモニター"
 
-#: internal/ui/overview.go:427
+#: internal/ui/overview.go:448
 msgid "All monitors"
 msgstr "すべてのモニター"
 
-#: internal/ui/overview.go:436
+#: internal/ui/overview.go:457
 msgid "FILTER"
 msgstr "絞り込み"
 
-#: internal/ui/overview.go:438
+#: internal/ui/overview.go:459
 msgid "NO MATCHES"
 msgstr "一致なし"
 
-#: internal/ui/overview.go:440
+#: internal/ui/overview.go:461
 msgid "%d RESULT"
 msgid_plural "%d RESULTS"
 msgstr[0] "%d 件"
 
-#: internal/ui/overview.go:473
+#: internal/ui/overview.go:494
 msgid "No workspaces"
 msgstr "ワークスペースがない"
 
-#: internal/ui/overview.go:475
+#: internal/ui/overview.go:496
 msgid "No matches"
 msgstr "一致しない"
 
-#: internal/ui/overview.go:595
+#: internal/ui/overview.go:616
 msgid "＋  New workspace"
 msgstr "＋  新しいワークスペース"
 
-#: internal/ui/overview.go:954
+#: internal/ui/overview.go:980
 msgid "Filter by window title or app"
 msgstr "ウィンドウのタイトルまたはアプリでフィルタリングする"
 
-#: internal/ui/overview.go:970
+#: internal/ui/overview.go:996
 msgid "TYPE TO FILTER WINDOWS"
 msgstr "入力してウィンドウを絞り込む"
 
-#: internal/ui/overview.go:983
+#: internal/ui/overview.go:1009
 msgid "Type or / to filter windows   Esc · clear / close   Arrows / Tab · select   Middle click · close   Ctrl+Shift+X · kill   Drag · move"
 msgstr "または / を入力してウィンドウをフィルタリングします Esc · クリア / 閉じる 矢印 / Tab · 選択 中クリック · 閉じる Ctrl+Shift+X · kill ドラッグ · 移動"
 
-#: internal/ui/overview.go:1027
+#: internal/ui/overview.go:1053
 msgid "inua overview"
 msgstr "イヌアの概要"
 
-#: internal/ui/overview_manage.go:124
+#: internal/ui/overview_manage.go:125
 msgid "close window"
 msgstr "ウィンドウを閉じる"
 
-#: internal/ui/overview_manage.go:164
+#: internal/ui/overview_manage.go:165
 msgid "%s · %s · Middle click: close"
 msgstr "%[1]s・%[2]s・中クリック:閉じる"
 
-#: internal/ui/overview_manage.go:202
+#: internal/ui/overview_manage.go:203
 msgid "Click a window to force-terminate ONLY that client · Esc / right click cancels"
 msgstr "ウィンドウをクリックしてそのクライアントのみを強制終了・Esc / 右クリックでキャンセル"
 
-#: internal/ui/overview_manage.go:206
+#: internal/ui/overview_manage.go:207
 msgid "Arrows / Tab · select    Type or / · search    Middle click · close    Ctrl+Shift+X · kill    Drag · move"
 msgstr "矢印 / タブ · タイプの選択 または / · 検索 中クリック · 閉じる Ctrl+Shift+X · キル ドラッグ · 移動"
 
-#: internal/ui/overview_manage.go:242
+#: internal/ui/overview_manage.go:243
 msgid "position floating window"
 msgstr "フローティングウィンドウの位置"
 
@@ -15763,114 +15767,127 @@ msgstr "追加されませんでした: テーマには #rrggbb 色の @define-c
 msgid "Not added: %s"
 msgstr "追加されませんでした：%s"
 
-#: internal/ui/settings_displays.go:51
-#: internal/ui/settings_displays.go:416
+#: internal/ui/settings_displays.go:52
+#: internal/ui/settings_displays.go:424
 msgid "Automatic"
 msgstr "自動"
 
-#: internal/ui/settings_displays.go:52
+#: internal/ui/settings_displays.go:53
 msgid "Left of the others"
 msgstr "ほかのディスプレイの左"
 
-#: internal/ui/settings_displays.go:53
+#: internal/ui/settings_displays.go:54
 msgid "Right of the others"
 msgstr "ほかのディスプレイの右"
 
-#: internal/ui/settings_displays.go:54
+#: internal/ui/settings_displays.go:55
 msgid "Above the others"
 msgstr "ほかのディスプレイの上"
 
-#: internal/ui/settings_displays.go:55
+#: internal/ui/settings_displays.go:56
 msgid "Below the others"
 msgstr "ほかのディスプレイの下"
 
-#: internal/ui/settings_displays.go:185
+#: internal/ui/settings_displays.go:186
 msgid "No displays"
 msgstr "ディスプレイなし"
 
-#: internal/ui/settings_displays.go:186
+#: internal/ui/settings_displays.go:188
+#: ui/settings.ui:5638
+msgid "Displays"
+msgstr "ディスプレイ"
+
+#: internal/ui/settings_displays.go:191
 msgid "Hyprland lists no displays"
 msgstr "Hyprland にディスプレイがありません"
 
-#: internal/ui/settings_displays.go:186
+#: internal/ui/settings_displays.go:191
 msgid "Is the shell connected to Hyprland?"
 msgstr "シェルは Hyprland に接続していますか?"
 
-#: internal/ui/settings_displays.go:220
+#: internal/ui/settings_displays.go:193
+msgid "Not available on %s"
+msgstr ""
+
+#: internal/ui/settings_displays.go:193
+msgid "Resolution, scale and arrangement are set in the compositor's own configuration."
+msgstr ""
+
+#: internal/ui/settings_displays.go:228
 msgid "Use this display"
 msgstr "このディスプレイを使う"
 
-#: internal/ui/settings_displays.go:234
+#: internal/ui/settings_displays.go:242
 msgid "Preferred"
 msgstr "推奨"
 
-#: internal/ui/settings_displays.go:245
+#: internal/ui/settings_displays.go:253
 #: ui/remote.ui:760
 msgid "Resolution"
 msgstr "解像度"
 
-#: internal/ui/settings_displays.go:266
+#: internal/ui/settings_displays.go:274
 msgid "%s (Hyprland uses %s)"
 msgstr "%s(Hyprland では %s)"
 
-#: internal/ui/settings_displays.go:271
+#: internal/ui/settings_displays.go:279
 msgid "Scale"
 msgstr "拡大率"
 
-#: internal/ui/settings_displays.go:271
+#: internal/ui/settings_displays.go:279
 msgid "Text and windows larger or smaller"
 msgstr "文字とウィンドウを大きく、または小さく"
 
-#: internal/ui/settings_displays.go:284
+#: internal/ui/settings_displays.go:292
 msgid "Where it is (%s, %s)"
 msgstr "今の位置 (%s, %s)"
 
-#: internal/ui/settings_displays.go:286
+#: internal/ui/settings_displays.go:294
 #: ui/settings.ui:1605
 msgid "Position"
 msgstr "位置"
 
-#: internal/ui/settings_displays.go:297
-#: internal/ui/settings_displays.go:301
+#: internal/ui/settings_displays.go:305
+#: internal/ui/settings_displays.go:309
 msgid "Same picture as %s"
 msgstr "%s と同じ画面"
 
-#: internal/ui/settings_displays.go:303
+#: internal/ui/settings_displays.go:311
 msgid "Mirror"
 msgstr "ミラー"
 
-#: internal/ui/settings_displays.go:313
+#: internal/ui/settings_displays.go:321
 #: ui/settings.ui:6036
 #: ui/settings.ui:6303
 msgid "Use hyprland.conf"
 msgstr "hyprland.confを使用する"
 
-#: internal/ui/settings_displays.go:316
+#: internal/ui/settings_displays.go:324
 msgid "Stop setting this display in inua"
 msgstr "このディスプレイを inua で設定しない"
 
-#: internal/ui/settings_displays.go:374
+#: internal/ui/settings_displays.go:382
 msgid "Built-in display"
 msgstr "内蔵ディスプレイ"
 
-#: internal/ui/settings_displays.go:387
+#: internal/ui/settings_displays.go:395
 msgid "Off while the lid is closed"
 msgstr "ふたを閉じている間はオフ"
 
-#: internal/ui/settings_displays.go:393
-#: internal/ui/settings_displays.go:396
+#: internal/ui/settings_displays.go:401
+#: internal/ui/settings_displays.go:404
 msgid "Shows the same picture as %s"
 msgstr "%s と同じ画面を表示"
 
-#: internal/ui/settings_displays.go:398
+#: internal/ui/settings_displays.go:406
 msgid "%s, at %s"
 msgstr "%s、%s"
 
-#: internal/ui/settings_displays.go:408
+#: internal/ui/settings_displays.go:416
 msgid "%d × %d"
 msgstr "%d × %d"
 
-#: internal/ui/settings_displays.go:410
+#: internal/ui/settings_displays.go:418
 msgid "%d × %d, %s Hz"
 msgstr "%d × %d、%s Hz"
 
@@ -16430,24 +16447,24 @@ msgstr "もう一度撮る"
 msgid "inua recent screenshots"
 msgstr "の最近のスクリーンショット"
 
-#: internal/ui/shotpick.go:203
+#: internal/ui/shotpick.go:204
 msgid "SCREENS"
 msgstr "画面"
 
-#: internal/ui/shotpick.go:203
+#: internal/ui/shotpick.go:204
 msgid "%d screen"
 msgid_plural "%d screens"
 msgstr[0] "%d 画面"
 
-#: internal/ui/shotpick.go:217
+#: internal/ui/shotpick.go:218
 msgid "No windows are open."
 msgstr "開いているウィンドウはありません。"
 
-#: internal/ui/shotpick.go:227
+#: internal/ui/shotpick.go:228
 msgid "WORKSPACE %s"
 msgstr "ワークスペース %s"
 
-#: internal/ui/shotpick.go:231
+#: internal/ui/shotpick.go:232
 msgid "%d window"
 msgid_plural "%d windows"
 msgstr[0] "%d ウィンドウ"
@@ -19598,10 +19615,6 @@ msgstr "<span alpha='55%'>[</span>マイデバイス<span alpha='55%'>]</span>"
 #: ui/settings.ui:5546
 msgid "Paired with this computer"
 msgstr "このコンピュータとペアリング済み"
-
-#: ui/settings.ui:5638
-msgid "Displays"
-msgstr "ディスプレイ"
 
 #: ui/settings.ui:5687
 msgid "<span alpha='55%'>[</span>LID<span alpha='55%'>]</span>"

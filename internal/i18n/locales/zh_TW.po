@@ -350,7 +350,7 @@ msgstr "%d%%，正在充電"
 #: internal/ui/settings.go:338
 #: internal/ui/settings.go:776
 #: internal/ui/settings.go:880
-#: internal/ui/settings_displays.go:418
+#: internal/ui/settings_displays.go:426
 msgid "%d%%"
 msgstr "%d%%"
 
@@ -2117,8 +2117,8 @@ msgstr "服務正在啟動。"
 #: internal/termui/headmenu.go:164
 #: internal/termui/prefsweb.go:130
 #: internal/ui/settings_bluetooth.go:214
-#: internal/ui/settings_displays.go:294
-#: internal/ui/settings_displays.go:389
+#: internal/ui/settings_displays.go:302
+#: internal/ui/settings_displays.go:397
 #: internal/ui/settings_wifi.go:285
 #: ui/remote.ui:359
 #: ui/settings.ui:5885
@@ -14727,43 +14727,47 @@ msgstr "工坊應用程式"
 msgid "The light apps are not installed (make install)."
 msgstr "輕應用程式未安裝(make install)。"
 
-#: internal/ui/input.go:55
+#: internal/ui/input.go:59
 msgid "Not applied to Hyprland: %s"
 msgstr "不適用於 Hyprland:%s"
 
-#: internal/ui/input.go:113
-#: internal/ui/input.go:130
-#: internal/ui/settings_displays.go:310
+#: internal/ui/input.go:117
+#: internal/ui/input.go:134
+#: internal/ui/settings_displays.go:318
 msgid "Set by inua"
 msgstr "由inua設定"
 
-#: internal/ui/input.go:115
-#: internal/ui/input.go:132
-#: internal/ui/settings_displays.go:308
+#: internal/ui/input.go:119
+#: internal/ui/input.go:136
+#: internal/ui/settings_displays.go:316
 msgid "Set in hyprland.conf"
 msgstr "在hyprland.conf中設置"
 
-#: internal/ui/input.go:117
+#: internal/ui/input.go:121
 msgid "no XKB options"
 msgstr "無XKB選項"
 
-#: internal/ui/input.go:125
+#: internal/ui/input.go:129
 msgid "From hyprland.conf"
 msgstr "來自hyprland.conf"
 
-#: internal/ui/input.go:153
+#: internal/ui/input.go:155
+msgid "These settings are kept, but %s does not take them from inua: set them in its own configuration."
+msgstr ""
+
+#: internal/ui/input.go:167
 msgid "hyprland.lua does not load inua.lua, so these settings do nothing yet. Add this as its last line: %s"
 msgstr "hyprland.lua 沒有載入 inua.lua,這些設定暫時不會生效。在它的最後加上這一行:%s"
 
-#: internal/ui/input.go:155
+#: internal/ui/input.go:169
 msgid "hyprland.conf does not load inua.conf, so these settings do nothing yet. Add this as its last line: source = ./%s"
 msgstr "hyprland.conf 不會載入 inua.conf,因此這些設定尚未執行任何操作。將其新增為最後一行:source = ./%s"
 
-#: internal/ui/input.go:159
+#: internal/ui/input.go:173
 msgid "hyprland.lua sets these again after loading inua.lua, which wins over inua: %s. Move the require line below them."
 msgstr "hyprland.lua 在載入 inua.lua 之後又設定了這些,會蓋過 inua 的設定:%s。把 require 那一行移到它們下面。"
 
-#: internal/ui/input.go:161
+#: internal/ui/input.go:175
 msgid "hyprland.conf sets these again after loading inua.conf, which wins over inua: %s. Move the source line below them."
 msgstr "hyprland.conf 在載入 inua.conf 後再次設定這些,這贏得了 inua: %s。將原始程式碼行移到它們下方。"
 
@@ -14833,88 +14837,88 @@ msgstr "藍牙開"
 msgid "Bluetooth off"
 msgstr "藍牙關"
 
-#: internal/ui/overview.go:184
+#: internal/ui/overview.go:188
 msgid "restore focus"
 msgstr "恢復焦點"
 
-#: internal/ui/overview.go:293
+#: internal/ui/overview.go:298
 msgid "kill window"
 msgstr "殺掉窗口"
 
-#: internal/ui/overview.go:426
+#: internal/ui/overview.go:447
 msgid "MRU: ON"
 msgstr "MRU:開"
 
-#: internal/ui/overview.go:426
+#: internal/ui/overview.go:447
 msgid "MRU: OFF"
 msgstr "MRU:關閉"
 
-#: internal/ui/overview.go:427
+#: internal/ui/overview.go:448
 msgid "This monitor"
 msgstr "此顯示器"
 
-#: internal/ui/overview.go:427
+#: internal/ui/overview.go:448
 msgid "All monitors"
 msgstr "所有監視器"
 
-#: internal/ui/overview.go:436
+#: internal/ui/overview.go:457
 msgid "FILTER"
 msgstr "篩選"
 
-#: internal/ui/overview.go:438
+#: internal/ui/overview.go:459
 msgid "NO MATCHES"
 msgstr "沒有相符"
 
-#: internal/ui/overview.go:440
+#: internal/ui/overview.go:461
 msgid "%d RESULT"
 msgid_plural "%d RESULTS"
 msgstr[0] "%d 個結果"
 
-#: internal/ui/overview.go:473
+#: internal/ui/overview.go:494
 msgid "No workspaces"
 msgstr "沒有工作區"
 
-#: internal/ui/overview.go:475
+#: internal/ui/overview.go:496
 msgid "No matches"
 msgstr "沒有匹配項"
 
-#: internal/ui/overview.go:595
+#: internal/ui/overview.go:616
 msgid "＋  New workspace"
 msgstr "＋  新工作區"
 
-#: internal/ui/overview.go:954
+#: internal/ui/overview.go:980
 msgid "Filter by window title or app"
 msgstr "按視窗標題或應用程式過濾"
 
-#: internal/ui/overview.go:970
+#: internal/ui/overview.go:996
 msgid "TYPE TO FILTER WINDOWS"
 msgstr "輸入以篩選視窗"
 
-#: internal/ui/overview.go:983
+#: internal/ui/overview.go:1009
 msgid "Type or / to filter windows   Esc · clear / close   Arrows / Tab · select   Middle click · close   Ctrl+Shift+X · kill   Drag · move"
 msgstr "鍵入 或 / 來過濾視窗 Esc · 清除/關閉箭頭/ Tab · 選擇中按一下 · 關閉 Ctrl+Shift+X · 刪除 拖曳 · 移動"
 
-#: internal/ui/overview.go:1027
+#: internal/ui/overview.go:1053
 msgid "inua overview"
 msgstr "inua概述"
 
-#: internal/ui/overview_manage.go:124
+#: internal/ui/overview_manage.go:125
 msgid "close window"
 msgstr "關閉窗口"
 
-#: internal/ui/overview_manage.go:164
+#: internal/ui/overview_manage.go:165
 msgid "%s · %s · Middle click: close"
 msgstr "%[1]s · %[2]s · 中鍵點選:關閉"
 
-#: internal/ui/overview_manage.go:202
+#: internal/ui/overview_manage.go:203
 msgid "Click a window to force-terminate ONLY that client · Esc / right click cancels"
 msgstr "點選視窗僅強制終止該用戶端 · Esc/右鍵點選取消"
 
-#: internal/ui/overview_manage.go:206
+#: internal/ui/overview_manage.go:207
 msgid "Arrows / Tab · select    Type or / · search    Middle click · close    Ctrl+Shift+X · kill    Drag · move"
 msgstr "箭頭/選項卡·選擇類型或/·搜尋中鍵單擊·關閉Ctrl+Shift+X·刪除拖曳·移動"
 
-#: internal/ui/overview_manage.go:242
+#: internal/ui/overview_manage.go:243
 msgid "position floating window"
 msgstr "位置浮動窗口"
 
@@ -15763,114 +15767,127 @@ msgstr "未新增：主題須包含使用 #rrggbb 色彩的 @define-color 行"
 msgid "Not added: %s"
 msgstr "未新增：%s"
 
-#: internal/ui/settings_displays.go:51
-#: internal/ui/settings_displays.go:416
+#: internal/ui/settings_displays.go:52
+#: internal/ui/settings_displays.go:424
 msgid "Automatic"
 msgstr "自動"
 
-#: internal/ui/settings_displays.go:52
+#: internal/ui/settings_displays.go:53
 msgid "Left of the others"
 msgstr "在其他顯示器左側"
 
-#: internal/ui/settings_displays.go:53
+#: internal/ui/settings_displays.go:54
 msgid "Right of the others"
 msgstr "在其他顯示器右側"
 
-#: internal/ui/settings_displays.go:54
+#: internal/ui/settings_displays.go:55
 msgid "Above the others"
 msgstr "在其他顯示器上方"
 
-#: internal/ui/settings_displays.go:55
+#: internal/ui/settings_displays.go:56
 msgid "Below the others"
 msgstr "在其他顯示器下方"
 
-#: internal/ui/settings_displays.go:185
+#: internal/ui/settings_displays.go:186
 msgid "No displays"
 msgstr "沒有顯示器"
 
-#: internal/ui/settings_displays.go:186
+#: internal/ui/settings_displays.go:188
+#: ui/settings.ui:5638
+msgid "Displays"
+msgstr "顯示器"
+
+#: internal/ui/settings_displays.go:191
 msgid "Hyprland lists no displays"
 msgstr "Hyprland 沒有列出顯示器"
 
-#: internal/ui/settings_displays.go:186
+#: internal/ui/settings_displays.go:191
 msgid "Is the shell connected to Hyprland?"
 msgstr "shell 是否已連接到 Hyprland?"
 
-#: internal/ui/settings_displays.go:220
+#: internal/ui/settings_displays.go:193
+msgid "Not available on %s"
+msgstr ""
+
+#: internal/ui/settings_displays.go:193
+msgid "Resolution, scale and arrangement are set in the compositor's own configuration."
+msgstr ""
+
+#: internal/ui/settings_displays.go:228
 msgid "Use this display"
 msgstr "使用此顯示器"
 
-#: internal/ui/settings_displays.go:234
+#: internal/ui/settings_displays.go:242
 msgid "Preferred"
 msgstr "建議"
 
-#: internal/ui/settings_displays.go:245
+#: internal/ui/settings_displays.go:253
 #: ui/remote.ui:760
 msgid "Resolution"
 msgstr "解析度"
 
-#: internal/ui/settings_displays.go:266
+#: internal/ui/settings_displays.go:274
 msgid "%s (Hyprland uses %s)"
 msgstr "%s(Hyprland 使用 %s)"
 
-#: internal/ui/settings_displays.go:271
+#: internal/ui/settings_displays.go:279
 msgid "Scale"
 msgstr "縮放"
 
-#: internal/ui/settings_displays.go:271
+#: internal/ui/settings_displays.go:279
 msgid "Text and windows larger or smaller"
 msgstr "讓文字和視窗更大或更小"
 
-#: internal/ui/settings_displays.go:284
+#: internal/ui/settings_displays.go:292
 msgid "Where it is (%s, %s)"
 msgstr "目前位置 (%s, %s)"
 
-#: internal/ui/settings_displays.go:286
+#: internal/ui/settings_displays.go:294
 #: ui/settings.ui:1605
 msgid "Position"
 msgstr "位置"
 
-#: internal/ui/settings_displays.go:297
-#: internal/ui/settings_displays.go:301
+#: internal/ui/settings_displays.go:305
+#: internal/ui/settings_displays.go:309
 msgid "Same picture as %s"
 msgstr "與%s顯示相同畫面"
 
-#: internal/ui/settings_displays.go:303
+#: internal/ui/settings_displays.go:311
 msgid "Mirror"
 msgstr "鏡像"
 
-#: internal/ui/settings_displays.go:313
+#: internal/ui/settings_displays.go:321
 #: ui/settings.ui:6036
 #: ui/settings.ui:6303
 msgid "Use hyprland.conf"
 msgstr "使用hyprland.conf"
 
-#: internal/ui/settings_displays.go:316
+#: internal/ui/settings_displays.go:324
 msgid "Stop setting this display in inua"
 msgstr "不再在 inua 中設定此顯示器"
 
-#: internal/ui/settings_displays.go:374
+#: internal/ui/settings_displays.go:382
 msgid "Built-in display"
 msgstr "內建顯示器"
 
-#: internal/ui/settings_displays.go:387
+#: internal/ui/settings_displays.go:395
 msgid "Off while the lid is closed"
 msgstr "闔上蓋子時關閉"
 
-#: internal/ui/settings_displays.go:393
-#: internal/ui/settings_displays.go:396
+#: internal/ui/settings_displays.go:401
+#: internal/ui/settings_displays.go:404
 msgid "Shows the same picture as %s"
 msgstr "顯示與%s相同的畫面"
 
-#: internal/ui/settings_displays.go:398
+#: internal/ui/settings_displays.go:406
 msgid "%s, at %s"
 msgstr "%s,%s"
 
-#: internal/ui/settings_displays.go:408
+#: internal/ui/settings_displays.go:416
 msgid "%d × %d"
 msgstr "%d × %d"
 
-#: internal/ui/settings_displays.go:410
+#: internal/ui/settings_displays.go:418
 msgid "%d × %d, %s Hz"
 msgstr "%d × %d,%s Hz"
 
@@ -16430,24 +16447,24 @@ msgstr "再擷取一張"
 msgid "inua recent screenshots"
 msgstr "inua最近截圖"
 
-#: internal/ui/shotpick.go:203
+#: internal/ui/shotpick.go:204
 msgid "SCREENS"
 msgstr "螢幕"
 
-#: internal/ui/shotpick.go:203
+#: internal/ui/shotpick.go:204
 msgid "%d screen"
 msgid_plural "%d screens"
 msgstr[0] "%d 個螢幕"
 
-#: internal/ui/shotpick.go:217
+#: internal/ui/shotpick.go:218
 msgid "No windows are open."
 msgstr "沒有開啟的視窗。"
 
-#: internal/ui/shotpick.go:227
+#: internal/ui/shotpick.go:228
 msgid "WORKSPACE %s"
 msgstr "工作區 %s"
 
-#: internal/ui/shotpick.go:231
+#: internal/ui/shotpick.go:232
 msgid "%d window"
 msgid_plural "%d windows"
 msgstr[0] "%d 個視窗"
@@ -19598,10 +19615,6 @@ msgstr "<span alpha='55%'>[</span>我的裝置<span alpha='55%'>]</span>"
 #: ui/settings.ui:5546
 msgid "Paired with this computer"
 msgstr "已與這台電腦配對"
-
-#: ui/settings.ui:5638
-msgid "Displays"
-msgstr "顯示器"
 
 #: ui/settings.ui:5687
 msgid "<span alpha='55%'>[</span>LID<span alpha='55%'>]</span>"

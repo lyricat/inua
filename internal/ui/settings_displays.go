@@ -13,6 +13,7 @@ import (
 
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
+	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/config"
 	"github.com/lyricat/inua/internal/display"
 	"github.com/lyricat/inua/internal/gtkx"
@@ -182,8 +183,15 @@ func (s *shellUI) layOutDisplays(outputs []display.Output, off []string) {
 	d.sections = nil
 	clear(d.controls)
 	if len(outputs) == 0 {
-		sec, body := displaySection("", i18n.T("No displays"))
+		title := i18n.T("No displays")
+		if s.unsupported(compositor.CapDisplays) {
+			title = i18n.T("Displays")
+		}
+		sec, body := displaySection("", title)
 		row, _ := displayRow(i18n.T("Hyprland lists no displays"), i18n.T("Is the shell connected to Hyprland?"))
+		if s.unsupported(compositor.CapDisplays) {
+			row, _ = displayRow(i18n.Tf("Not available on %s", s.compositorName()), i18n.T("Resolution, scale and arrangement are set in the compositor's own configuration."))
+		}
 		gtkx.Append(body, &row.Widget)
 		s.addDisplaySection(sec)
 		return

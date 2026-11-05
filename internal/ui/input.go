@@ -17,6 +17,7 @@ import (
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
 	"github.com/lyricat/inua/internal/bootstrap"
+	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/gtkx"
 	"github.com/lyricat/inua/internal/hyprconf"
 	"github.com/lyricat/inua/internal/i18n"
@@ -36,6 +37,9 @@ type hyprApply struct {
 // applyHyprland writes inua.conf from the input settings in the
 // background, and reloads Hyprland if the file changed.
 func (s *shellUI) applyHyprland() {
+	if s.comp != nil && s.hypr == nil {
+		return // another compositor: inua.conf is Hyprland's
+	}
 	c, client := s.cfg, s.hyprClient()
 	path := hyprconf.Target(s.hyprConfig())
 	gen := s.hyprApply.latest.Add(1)
@@ -145,6 +149,16 @@ func (s *shellUI) hyprConfig() string {
 // hyprland.lua), or overrides it.
 func (s *shellUI) showSourceWarning() {
 	st := &s.settings
+	if s.unsupported(compositor.CapConfig) {
+		// The settings are inua's and stay in config.toml; this compositor
+		// does not take them from inua.
+		text := i18n.Tf("These settings are kept, but %s does not take them from inua: set them in its own configuration.", s.compositorName())
+		for _, l := range []*gtk.Label{&st.kbWarn, &st.tpWarn, &st.sc.warn, &st.displays.warn} {
+			l.SetText(text)
+			l.SetVisible(true)
+		}
+		return
+	}
 	conf := s.hyprConfig()
 	_, overrides, err := bootstrap.FindSource(conf, hyprconf.Target(conf))
 	text := ""

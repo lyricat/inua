@@ -162,6 +162,14 @@ const (
 	CapPlacement         Capability = "placement"           // Placer
 	CapModes             Capability = "modes"               // Moder
 	CapRules             Capability = "rules"               // compositor styling rules
+	// CapConfig: inua's keyboard, touchpad and shortcut settings reach
+	// the compositor (a config inua writes and the compositor loads).
+	CapConfig Capability = "config"
+	// CapOnDemandFocus: a layer surface asking for the keyboard on demand
+	// gets it when it appears (Hyprland). Without it the surface is
+	// focused only by a click (niri), so a surface that must take keys at
+	// once asks for the keyboard exclusively.
+	CapOnDemandFocus Capability = "on-demand-focus"
 )
 
 // State is where a capability stands. A capability absent from a
@@ -183,6 +191,9 @@ func (s State) String() string {
 	}
 	return "unsupported"
 }
+
+// MarshalText writes a state by its name, for dumps.
+func (s State) MarshalText() ([]byte, error) { return []byte(s.String()), nil }
 
 type Capabilities map[Capability]State
 

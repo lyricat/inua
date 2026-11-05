@@ -16,9 +16,21 @@ input {
         tap
         natural-scroll
     }
-    // inua's dock click and clipboard paste focus windows for you; keep the
-    // pointer where it is.
-    warp-mouse-to-focus false
+    // inua's dock click focuses windows for you with the pointer left where
+    // it is: do not add warp-mouse-to-focus here.
+}
+
+// The bar's workspace marks sit in the top left corner, where niri would
+// open its own overview when the pointer gets there.
+gestures {
+    hot-corners {
+        off
+    }
+}
+
+// niri's list of keys at start-up would cover the shell.
+hotkey-overlay {
+    skip-at-startup
 }
 
 // inua draws the wallpaper, shows notifications, locks the screen and asks

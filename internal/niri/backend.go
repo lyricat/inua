@@ -65,13 +65,15 @@ func (b *Backend) Refresh() {
 }
 
 // Capabilities: what niri's IPC and protocols give, the same before and
-// after connecting. Keystrokes, previews, binds, the key observer, the
-// pointer, display settings and virtual outputs are not there (see
-// docs/compositor-capabilities.md).
+// after connecting. Geometry is not among them: niri 26.04 places only
+// floating windows (tile_pos_in_workspace_view is null for a tiled one),
+// so a window has a Geometry only when it floats. Keystrokes, previews,
+// binds, the key observer, the pointer, display settings and virtual
+// outputs are not there either (docs/compositor-capabilities.md).
 func (b *Backend) Capabilities() compositor.Capabilities {
 	return compositor.Capabilities{
-		compositor.CapGeometry: compositor.Supported, compositor.CapMoveWithoutFollow: compositor.Supported,
-		compositor.CapWorkspaces: compositor.Supported, compositor.CapQuietFocus: compositor.Supported,
+		compositor.CapMoveWithoutFollow: compositor.Supported,
+		compositor.CapWorkspaces:        compositor.Supported, compositor.CapQuietFocus: compositor.Supported,
 		compositor.CapPlacement: compositor.Supported, compositor.CapRules: compositor.Supported,
 	}
 }

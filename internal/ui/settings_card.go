@@ -57,7 +57,7 @@ func (s *shellUI) fetchSystem() {
 		return
 	}
 	a.fetching = true
-	client := s.hyprClient()
+	client, name := s.hyprClient(), s.compositorName()
 	inua := strings.TrimPrefix(s.opts.Version, "v")
 	link := upgrade.Repo
 	if upgrade.IsRelease(s.opts.Version) {
@@ -77,7 +77,7 @@ func (s *shellUI) fetchSystem() {
 	colors := config.ThemeColors(css)
 	go func() {
 		info := system.ReadSysInfo("/")
-		wm := "Hyprland"
+		wm := name
 		if client != nil {
 			ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 			if b, err := client.Request(ctx, "j/version"); err == nil {

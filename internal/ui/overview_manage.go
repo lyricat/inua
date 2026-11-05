@@ -51,6 +51,7 @@ func (s *shellUI) bindOverviewManagement() {
 		}
 	}
 	o.onSurfacePress = func(g gtk.GestureClick, _ int32, _, _ float64) {
+		s.overview.touched = true
 		widget := g.GetWidget()
 		if widget == nil {
 			return
@@ -456,11 +457,17 @@ func (s *shellUI) saveOverviewHistory() {
 	}
 }
 
-func overviewKeyboardMode() layershell.KeyboardMode {
+func (s *shellUI) overviewKeyboardMode() layershell.KeyboardMode {
 	// An exclusive layer can prevent pointer input reaching sibling overview
 	// surfaces on other outputs. Let the compositor focus whichever surface
-	// the user interacts with instead of grabbing the seat for one output.
-	return layershell.KeyboardOnDemand
+	// the user interacts with instead of grabbing the seat for one output,
+	// where it focuses an on-demand surface as it appears (Hyprland).
+	// Elsewhere (niri) such a surface waits for a click, and the overview
+	// must take keys at once.
+	if s.caps.Has(compositor.CapOnDemandFocus) {
+		return layershell.KeyboardOnDemand
+	}
+	return layershell.KeyboardExclusive
 }
 
 // Track the physical surface under the pointer for keyboard navigation.

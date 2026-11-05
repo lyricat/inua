@@ -4,6 +4,7 @@
 //	inua call [-n instance] <target> <function> [args...]   control a running shell ("-": an argument from stdin)
 //	inua show [-n instance]                                  list what call accepts
 //	inua hypr dump | watch                           inspect Hyprland state
+//	inua compositor dump | watch                     inspect the compositor's state, whichever it is
 //	inua config check [path] | path                  check the settings file
 //	inua config hyprland [path]                      check that Hyprland starts inua-shell and sources inua.conf
 //	inua config apply                                write hypr/inua.conf from [input], [displays] and [[shortcuts]] (the built-in display as the lid is now) and reload Hyprland
@@ -33,6 +34,7 @@ import (
 	"os/exec"
 	"os/signal"
 	"path/filepath"
+	"slices"
 	"strings"
 	"time"
 
@@ -63,6 +65,8 @@ func main() {
 			usage()
 		}
 		err = cmdClipboardCapture(os.Args[3:])
+	case "compositor":
+		err = cmdCompositor(os.Args[2:])
 	case "hypr":
 		err = cmdHypr(os.Args[2:])
 	case "config":
@@ -103,6 +107,7 @@ func usage() {
   inua call [-n instance] <target> <function> [args...]   ("-" reads an argument from stdin)
   inua show [-n instance]
   inua hypr dump|watch
+  inua compositor dump|watch
   inua config check [path] | path
   inua config hyprland [path]
   inua config apply
@@ -201,6 +206,58 @@ func (p printer) OnEvent(e hypr.Event) {
 
 func (p printer) OnConnection(up bool, err error) {
 	fmt.Printf("== connected=%v err=%v\n", up, err)
+}
+
+// compPrinter prints a backend's output as printer does Hyprland's.
+type compPrinter struct{ printer }
+
+func (compPrinter) OnCapabilities(c compositor.Capabilities) {
+	names := make([]string, 0, len(c))
+	for k, v := range c {
+		names = append(names, string(k)+"="+v.String())
+	}
+	slices.Sort(names)
+	fmt.Printf("== capabilities: %s\n", strings.Join(names, " "))
+}
+
+// cmdCompositor shows the state of the compositor this session runs on,
+// as the shell sees it through the contract: once, or as it changes.
+func cmdCompositor(args []string) error {
+	if len(args) != 1 {
+		usage()
+	}
+	b, err := compositor.Detect()
+	if err != nil {
+		return err
+	}
+	switch args[0] {
+	case "dump":
+		sn, ok := b.(compositor.Snapshotter)
+		if !ok {
+			return fmt.Errorf("%s cannot be read once", b.Name())
+		}
+		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+		defer cancel()
+		s, err := sn.Snapshot(ctx)
+		if err != nil {
+			return err
+		}
+		enc := json.NewEncoder(os.Stdout)
+		enc.SetIndent("", "  ")
+		return enc.Encode(struct {
+			Compositor   string
+			Capabilities compositor.Capabilities
+			compositor.Snapshot
+		}{b.Name(), b.Capabilities(), s})
+	case "watch":
+		ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+		defer stop()
+		fmt.Printf("== compositor: %s\n", b.Name())
+		b.Run(ctx, compPrinter{})
+		return nil
+	}
+	usage()
+	return nil
 }
 
 func cmdHypr(args []string) error {

@@ -348,7 +348,7 @@ msgstr ""
 #: internal/ui/settings.go:338
 #: internal/ui/settings.go:776
 #: internal/ui/settings.go:880
-#: internal/ui/settings_displays.go:418
+#: internal/ui/settings_displays.go:426
 msgid "%d%%"
 msgstr ""
 
@@ -2120,8 +2120,8 @@ msgstr ""
 #: internal/termui/headmenu.go:164
 #: internal/termui/prefsweb.go:130
 #: internal/ui/settings_bluetooth.go:214
-#: internal/ui/settings_displays.go:294
-#: internal/ui/settings_displays.go:389
+#: internal/ui/settings_displays.go:302
+#: internal/ui/settings_displays.go:397
 #: internal/ui/settings_wifi.go:285
 #: ui/remote.ui:359
 #: ui/settings.ui:5885
@@ -14806,43 +14806,47 @@ msgstr ""
 msgid "The light apps are not installed (make install)."
 msgstr ""
 
-#: internal/ui/input.go:55
+#: internal/ui/input.go:59
 msgid "Not applied to Hyprland: %s"
 msgstr ""
 
-#: internal/ui/input.go:113
-#: internal/ui/input.go:130
-#: internal/ui/settings_displays.go:310
+#: internal/ui/input.go:117
+#: internal/ui/input.go:134
+#: internal/ui/settings_displays.go:318
 msgid "Set by inua"
 msgstr ""
 
-#: internal/ui/input.go:115
-#: internal/ui/input.go:132
-#: internal/ui/settings_displays.go:308
+#: internal/ui/input.go:119
+#: internal/ui/input.go:136
+#: internal/ui/settings_displays.go:316
 msgid "Set in hyprland.conf"
 msgstr ""
 
-#: internal/ui/input.go:117
+#: internal/ui/input.go:121
 msgid "no XKB options"
 msgstr ""
 
-#: internal/ui/input.go:125
+#: internal/ui/input.go:129
 msgid "From hyprland.conf"
 msgstr ""
 
-#: internal/ui/input.go:153
+#: internal/ui/input.go:155
+msgid "These settings are kept, but %s does not take them from inua: set them in its own configuration."
+msgstr ""
+
+#: internal/ui/input.go:167
 msgid "hyprland.lua does not load inua.lua, so these settings do nothing yet. Add this as its last line: %s"
 msgstr ""
 
-#: internal/ui/input.go:155
+#: internal/ui/input.go:169
 msgid "hyprland.conf does not load inua.conf, so these settings do nothing yet. Add this as its last line: source = ./%s"
 msgstr ""
 
-#: internal/ui/input.go:159
+#: internal/ui/input.go:173
 msgid "hyprland.lua sets these again after loading inua.lua, which wins over inua: %s. Move the require line below them."
 msgstr ""
 
-#: internal/ui/input.go:161
+#: internal/ui/input.go:175
 msgid "hyprland.conf sets these again after loading inua.conf, which wins over inua: %s. Move the source line below them."
 msgstr ""
 
@@ -14912,89 +14916,89 @@ msgstr ""
 msgid "Bluetooth off"
 msgstr ""
 
-#: internal/ui/overview.go:184
+#: internal/ui/overview.go:188
 msgid "restore focus"
 msgstr ""
 
-#: internal/ui/overview.go:293
+#: internal/ui/overview.go:298
 msgid "kill window"
 msgstr ""
 
-#: internal/ui/overview.go:426
+#: internal/ui/overview.go:447
 msgid "MRU: ON"
 msgstr ""
 
-#: internal/ui/overview.go:426
+#: internal/ui/overview.go:447
 msgid "MRU: OFF"
 msgstr ""
 
-#: internal/ui/overview.go:427
+#: internal/ui/overview.go:448
 msgid "This monitor"
 msgstr ""
 
-#: internal/ui/overview.go:427
+#: internal/ui/overview.go:448
 msgid "All monitors"
 msgstr ""
 
-#: internal/ui/overview.go:436
+#: internal/ui/overview.go:457
 msgid "FILTER"
 msgstr ""
 
-#: internal/ui/overview.go:438
+#: internal/ui/overview.go:459
 msgid "NO MATCHES"
 msgstr ""
 
-#: internal/ui/overview.go:440
+#: internal/ui/overview.go:461
 msgid "%d RESULT"
 msgid_plural "%d RESULTS"
 msgstr[0] ""
 msgstr[1] ""
 
-#: internal/ui/overview.go:473
+#: internal/ui/overview.go:494
 msgid "No workspaces"
 msgstr ""
 
-#: internal/ui/overview.go:475
+#: internal/ui/overview.go:496
 msgid "No matches"
 msgstr ""
 
-#: internal/ui/overview.go:595
+#: internal/ui/overview.go:616
 msgid "＋  New workspace"
 msgstr ""
 
-#: internal/ui/overview.go:954
+#: internal/ui/overview.go:980
 msgid "Filter by window title or app"
 msgstr ""
 
-#: internal/ui/overview.go:970
+#: internal/ui/overview.go:996
 msgid "TYPE TO FILTER WINDOWS"
 msgstr ""
 
-#: internal/ui/overview.go:983
+#: internal/ui/overview.go:1009
 msgid "Type or / to filter windows   Esc · clear / close   Arrows / Tab · select   Middle click · close   Ctrl+Shift+X · kill   Drag · move"
 msgstr ""
 
-#: internal/ui/overview.go:1027
+#: internal/ui/overview.go:1053
 msgid "inua overview"
 msgstr ""
 
-#: internal/ui/overview_manage.go:124
+#: internal/ui/overview_manage.go:125
 msgid "close window"
 msgstr ""
 
-#: internal/ui/overview_manage.go:164
+#: internal/ui/overview_manage.go:165
 msgid "%s · %s · Middle click: close"
 msgstr ""
 
-#: internal/ui/overview_manage.go:202
+#: internal/ui/overview_manage.go:203
 msgid "Click a window to force-terminate ONLY that client · Esc / right click cancels"
 msgstr ""
 
-#: internal/ui/overview_manage.go:206
+#: internal/ui/overview_manage.go:207
 msgid "Arrows / Tab · select    Type or / · search    Middle click · close    Ctrl+Shift+X · kill    Drag · move"
 msgstr ""
 
-#: internal/ui/overview_manage.go:242
+#: internal/ui/overview_manage.go:243
 msgid "position floating window"
 msgstr ""
 
@@ -15848,114 +15852,127 @@ msgstr ""
 msgid "Not added: %s"
 msgstr ""
 
-#: internal/ui/settings_displays.go:51
-#: internal/ui/settings_displays.go:416
+#: internal/ui/settings_displays.go:52
+#: internal/ui/settings_displays.go:424
 msgid "Automatic"
 msgstr ""
 
-#: internal/ui/settings_displays.go:52
+#: internal/ui/settings_displays.go:53
 msgid "Left of the others"
 msgstr ""
 
-#: internal/ui/settings_displays.go:53
+#: internal/ui/settings_displays.go:54
 msgid "Right of the others"
 msgstr ""
 
-#: internal/ui/settings_displays.go:54
+#: internal/ui/settings_displays.go:55
 msgid "Above the others"
 msgstr ""
 
-#: internal/ui/settings_displays.go:55
+#: internal/ui/settings_displays.go:56
 msgid "Below the others"
 msgstr ""
 
-#: internal/ui/settings_displays.go:185
+#: internal/ui/settings_displays.go:186
 msgid "No displays"
 msgstr ""
 
-#: internal/ui/settings_displays.go:186
+#: internal/ui/settings_displays.go:188
+#: ui/settings.ui:5638
+msgid "Displays"
+msgstr ""
+
+#: internal/ui/settings_displays.go:191
 msgid "Hyprland lists no displays"
 msgstr ""
 
-#: internal/ui/settings_displays.go:186
+#: internal/ui/settings_displays.go:191
 msgid "Is the shell connected to Hyprland?"
 msgstr ""
 
-#: internal/ui/settings_displays.go:220
+#: internal/ui/settings_displays.go:193
+msgid "Not available on %s"
+msgstr ""
+
+#: internal/ui/settings_displays.go:193
+msgid "Resolution, scale and arrangement are set in the compositor's own configuration."
+msgstr ""
+
+#: internal/ui/settings_displays.go:228
 msgid "Use this display"
 msgstr ""
 
-#: internal/ui/settings_displays.go:234
+#: internal/ui/settings_displays.go:242
 msgid "Preferred"
 msgstr ""
 
-#: internal/ui/settings_displays.go:245
+#: internal/ui/settings_displays.go:253
 #: ui/remote.ui:760
 msgid "Resolution"
 msgstr ""
 
-#: internal/ui/settings_displays.go:266
+#: internal/ui/settings_displays.go:274
 msgid "%s (Hyprland uses %s)"
 msgstr ""
 
-#: internal/ui/settings_displays.go:271
+#: internal/ui/settings_displays.go:279
 msgid "Scale"
 msgstr ""
 
-#: internal/ui/settings_displays.go:271
+#: internal/ui/settings_displays.go:279
 msgid "Text and windows larger or smaller"
 msgstr ""
 
-#: internal/ui/settings_displays.go:284
+#: internal/ui/settings_displays.go:292
 msgid "Where it is (%s, %s)"
 msgstr ""
 
-#: internal/ui/settings_displays.go:286
+#: internal/ui/settings_displays.go:294
 #: ui/settings.ui:1605
 msgid "Position"
 msgstr ""
 
-#: internal/ui/settings_displays.go:297
-#: internal/ui/settings_displays.go:301
+#: internal/ui/settings_displays.go:305
+#: internal/ui/settings_displays.go:309
 msgid "Same picture as %s"
 msgstr ""
 
-#: internal/ui/settings_displays.go:303
+#: internal/ui/settings_displays.go:311
 msgid "Mirror"
 msgstr ""
 
-#: internal/ui/settings_displays.go:313
+#: internal/ui/settings_displays.go:321
 #: ui/settings.ui:6036
 #: ui/settings.ui:6303
 msgid "Use hyprland.conf"
 msgstr ""
 
-#: internal/ui/settings_displays.go:316
+#: internal/ui/settings_displays.go:324
 msgid "Stop setting this display in inua"
 msgstr ""
 
-#: internal/ui/settings_displays.go:374
+#: internal/ui/settings_displays.go:382
 msgid "Built-in display"
 msgstr ""
 
-#: internal/ui/settings_displays.go:387
+#: internal/ui/settings_displays.go:395
 msgid "Off while the lid is closed"
 msgstr ""
 
-#: internal/ui/settings_displays.go:393
-#: internal/ui/settings_displays.go:396
+#: internal/ui/settings_displays.go:401
+#: internal/ui/settings_displays.go:404
 msgid "Shows the same picture as %s"
 msgstr ""
 
-#: internal/ui/settings_displays.go:398
+#: internal/ui/settings_displays.go:406
 msgid "%s, at %s"
 msgstr ""
 
-#: internal/ui/settings_displays.go:408
+#: internal/ui/settings_displays.go:416
 msgid "%d × %d"
 msgstr ""
 
-#: internal/ui/settings_displays.go:410
+#: internal/ui/settings_displays.go:418
 msgid "%d × %d, %s Hz"
 msgstr ""
 
@@ -16520,25 +16537,25 @@ msgstr ""
 msgid "inua recent screenshots"
 msgstr ""
 
-#: internal/ui/shotpick.go:203
+#: internal/ui/shotpick.go:204
 msgid "SCREENS"
 msgstr ""
 
-#: internal/ui/shotpick.go:203
+#: internal/ui/shotpick.go:204
 msgid "%d screen"
 msgid_plural "%d screens"
 msgstr[0] ""
 msgstr[1] ""
 
-#: internal/ui/shotpick.go:217
+#: internal/ui/shotpick.go:218
 msgid "No windows are open."
 msgstr ""
 
-#: internal/ui/shotpick.go:227
+#: internal/ui/shotpick.go:228
 msgid "WORKSPACE %s"
 msgstr ""
 
-#: internal/ui/shotpick.go:231
+#: internal/ui/shotpick.go:232
 msgid "%d window"
 msgid_plural "%d windows"
 msgstr[0] ""
@@ -19695,10 +19712,6 @@ msgstr ""
 
 #: ui/settings.ui:5546
 msgid "Paired with this computer"
-msgstr ""
-
-#: ui/settings.ui:5638
-msgid "Displays"
 msgstr ""
 
 #: ui/settings.ui:5687

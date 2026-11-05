@@ -151,6 +151,7 @@ func (b *Backend) Capabilities() compositor.Capabilities {
 		compositor.CapDisplays: compositor.Supported, compositor.CapVirtualOutput: compositor.Supported,
 		compositor.CapPointer: compositor.Supported, compositor.CapPlacement: compositor.Supported,
 		compositor.CapModes: compositor.Supported, compositor.CapRules: compositor.Supported,
+		compositor.CapOnDemandFocus: compositor.Supported, compositor.CapConfig: compositor.Supported,
 	}
 }
 

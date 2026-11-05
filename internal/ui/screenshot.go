@@ -343,10 +343,10 @@ func (s *shellUI) openShot(mode string) {
 		}
 		dir, err := shotTempDir()
 		var clients []byte
-		if err == nil && client == nil {
-			err = errors.New("the window list needs Hyprland")
-		}
-		if err == nil {
+		// The windows an area snaps to are Hyprland's list; elsewhere the
+		// area is drawn freely.
+		clients = []byte("[]")
+		if err == nil && client != nil {
 			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 			clients, err = client.Request(ctx, "j/clients")
 			cancel()

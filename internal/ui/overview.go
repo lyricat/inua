@@ -63,20 +63,23 @@ type workspaceOverview struct {
 	columns              int
 	refs                 gtkx.Scope
 	searchMode, killMode bool
-	dragging             string
-	movesPending         int
-	dragX, dragY         float64
-	targets              map[uintptr]overviewDropTarget
-	onDragPrepare        func(gtk.DragSource, float64, float64) gdk.ContentProvider
-	onDragBegin          func(gtk.DragSource, uintptr)
-	onDragEnd            func(gtk.DragSource, uintptr, bool)
-	onWindowGesture      func(gtk.GestureClick, int32, float64, float64)
-	onOverviewScroll     func(gtk.EventControllerScroll, float64, float64) bool
-	onOverviewHover      func(gtk.EventControllerMotion, float64, float64)
-	onOverviewRight      func(gtk.GestureClick, int32, float64, float64)
-	onSurfacePress       func(gtk.GestureClick, int32, float64, float64)
-	hint                 *gtk.Label
-	scope                gtk.Button
+	// touched: a key or a press has come since the overview opened, so a
+	// focus change is the user's (onQueryFocus).
+	touched          bool
+	dragging         string
+	movesPending     int
+	dragX, dragY     float64
+	targets          map[uintptr]overviewDropTarget
+	onDragPrepare    func(gtk.DragSource, float64, float64) gdk.ContentProvider
+	onDragBegin      func(gtk.DragSource, uintptr)
+	onDragEnd        func(gtk.DragSource, uintptr, bool)
+	onWindowGesture  func(gtk.GestureClick, int32, float64, float64)
+	onOverviewScroll func(gtk.EventControllerScroll, float64, float64) bool
+	onOverviewHover  func(gtk.EventControllerMotion, float64, float64)
+	onOverviewRight  func(gtk.GestureClick, int32, float64, float64)
+	onSurfacePress   func(gtk.GestureClick, int32, float64, float64)
+	hint             *gtk.Label
+	scope            gtk.Button
 }
 
 type queuedOverviewFrame struct {
@@ -105,6 +108,7 @@ func (s *shellUI) showOverview() {
 	s.overview.activation++
 	s.overview.captureFailed = false
 	s.overview.searchMode = false
+	s.overview.touched = false
 	s.overview.killMode = false
 	s.overview.targets = map[uintptr]overviewDropTarget{}
 	s.overview.dragging = ""
@@ -201,6 +205,7 @@ func (s *shellUI) bindOverviewHandlers() {
 	}
 	s.onOverviewKey = func(_ gtk.EventControllerKey, keyval, _ uint32, mods gdk.ModifierType) bool {
 		o := &s.overview
+		o.touched = true
 		input := s.overviewInput()
 		if (keyval == 'x' || keyval == 'X') && mods&gdk.ControlMaskValue != 0 && mods&gdk.ShiftMaskValue != 0 {
 			s.setOverviewKillMode(true)
@@ -376,7 +381,23 @@ func (s *shellUI) bindOverviewHandlers() {
 		}
 		return s.moveOverviewWindow(address, dest, x, y)
 	}
-	s.overview.onQueryFocus = func(gtk.EventControllerFocus) { s.overview.searchMode = true }
+	// The entry taking the focus means a search, when the user put it
+	// there. A compositor that gives the surface the keyboard only after
+	// it is built (niri, with an exclusive surface) makes GTK focus the
+	// entry by itself: before any key or click, the focus goes back to the
+	// cards.
+	s.overview.onQueryFocus = func(gtk.EventControllerFocus) {
+		o := &s.overview
+		if o.touched {
+			o.searchMode = true
+			return
+		}
+		gtkx.Post(func() {
+			if o.st.Open && !o.touched && !o.searchMode {
+				s.overviewInput().root.GrabFocus()
+			}
+		})
+	}
 	s.loadOverviewHistory()
 	s.bindOverviewManagement()
 }
@@ -700,6 +721,11 @@ func (s *shellUI) updateOverviewCapture() {
 	if o.captureFailed {
 		return
 	}
+	// Live previews are Hyprland's toplevel export; a compositor without
+	// them shows the cards with titles and icons only.
+	if s.hypr == nil || !s.caps.Has(compositor.CapPreviews) {
+		return
+	}
 	var targets, priority []string
 	for i, card := range o.st.Cards {
 		for _, w := range card.Windows {
@@ -1012,7 +1038,7 @@ func (s *shellUI) buildOverview(o *workspaceOverview) {
 		layershell.InitForWindow(w)
 		layershell.SetNamespace(w, "inua-overview")
 		layershell.SetLayer(w, layershell.LayerTop)
-		layershell.SetKeyboardMode(w, overviewKeyboardMode())
+		layershell.SetKeyboardMode(w, s.overviewKeyboardMode())
 		for _, e := range []layershell.Edge{layershell.EdgeTop, layershell.EdgeBottom, layershell.EdgeLeft, layershell.EdgeRight} {
 			layershell.SetAnchor(w, e, true)
 		}

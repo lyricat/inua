@@ -18,6 +18,7 @@ import (
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
 	"github.com/lyricat/inua/internal/capture/hyprland"
+	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/gtkx"
 	"github.com/lyricat/inua/internal/i18n"
 	"github.com/lyricat/inua/internal/shell"
@@ -253,7 +254,7 @@ func (s *shellUI) startPickerStream() {
 			sizes[c.address] = [2]int{c.w, c.h}
 		}
 	}
-	if len(targets) == 0 {
+	if len(targets) == 0 || s.hypr == nil || !s.caps.Has(compositor.CapPreviews) {
 		return
 	}
 	pk.gen++

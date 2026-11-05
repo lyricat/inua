@@ -753,6 +753,9 @@ func (h compHandler) OnCapabilities(caps compositor.Capabilities) {
 	gtkx.Post(func() {
 		h.s.caps = caps
 		h.s.hyprLua = h.s.hypr != nil && h.s.hypr.Lua()
+		if h.s.settings.win != nil {
+			h.s.showSourceWarning() // what the pages can do may have changed
+		}
 	})
 }
 
@@ -887,6 +890,29 @@ func (s *shellUI) focusWindow(id string) {
 // switchWorkspace shows a workspace by its id.
 func (s *shellUI) switchWorkspace(id string) {
 	s.compositorDo("focus workspace "+id, func(ctx context.Context) error { return s.comp.FocusWorkspace(ctx, id) })
+}
+
+// compositorName is the compositor's name as people write it.
+func (s *shellUI) compositorName() string {
+	if s.comp == nil {
+		return "Hyprland"
+	}
+	switch name := s.comp.Name(); name {
+	case "hyprland":
+		return "Hyprland"
+	case "wayfire":
+		return "Wayfire"
+	default:
+		return name
+	}
+}
+
+// unsupported reports whether the compositor the shell runs on cannot do
+// c at all: a settings page then says so instead of offering controls
+// that do nothing. Without a compositor (not connected yet) nothing is
+// known to be missing.
+func (s *shellUI) unsupported(c compositor.Capability) bool {
+	return s.comp != nil && s.caps[c] == compositor.Unsupported
 }
 
 // hyprClient is the Hyprland client for what only Hyprland has; nil on
