@@ -110,3 +110,9 @@ Validation: full make test exit 0: 15/15 Python tests, go vet, race tests across
 Old P1 compilation and callback exhaustion are resolved: vet, no-CGO shell build and 40 rounds rebuilding 100 buttons plus 100 actions passed. Three previous P2 findings (ambiguous PID mapping, stale asynchronous responses, hidden top-level updates) are fixed. Nested refresh is only partially fixed and remains above. Eight existing appmenu tests and three independent probes pass, including sender validation and cross-client unregister; UI ordering/close/callback probes pass. The nested-menu expected-behavior probe fails and confirms the remaining P2. git diff --check passes and checkout is clean.
 
 No installations. Tests used throwaway HOME, isolated runtime and private services. No visual UI, real application/compositor integration, monitor hotplug or registration-flood testing; full native object leak freedom not established. Current master suite was not rerun. Moved review/ to ready/; not merged into master.
+
+
+## factory · 2026-11-05 11:17
+Shipped at the owner’s request. Merged into master at 28a3af1; master and annotated tag v0.1.22 (28a3af1) pushed atomically. PR #66 is merged; completion comment posted.
+Validation on combined master: make generate and make i18n passed with no generated diff; full make test passed (15 Python tests, go vet, 106 Go packages passed with race detector and -count=1). Used throwaway HOME/XDG and external per-package short-socket test launcher; no tests edited or skipped by the launcher. No installations. UI not checked by eye or against real desktop applications.
+Known review P2 remains: nested submenu contents do not refresh at actual opening. No P0/P1 in the accepted review.

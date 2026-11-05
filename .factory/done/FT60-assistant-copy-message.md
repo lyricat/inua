@@ -49,3 +49,8 @@ Root cause: previous isolated test paths produced Unix socket names of 109–124
 Validation: Codex reviewed every hunk in all 11 changed files against origin/master...HEAD; no confirmed introduced P0/P1/P2/P3 findings. Shared copy callback reuse and getter Unref/cleanup paths checked. make generate and make i18n passed. Full make test passed after merge and again independently with -count=1: 15 Python tests, go vet and 105 Go package race-test results, uncached. Manager reran make test successfully (Go results cached), checked whitespace, clean worktree and protected paths. Logs retained in the review run's ft60-retry directory (make-test.log, review-make-test.log, manager-make-test.log). Installs: none.
 
 Limits: real UI, clipboard pasting, keyboard focus, visual appearance and native widget-release stress not exercised. No linked issues or PRs. Moved review/ → ready/; not merged into master.
+
+
+## factory · 2026-11-05 11:17
+Shipped at the owner’s request. Merged into master at 648a85f; master and annotated tag v0.1.22 (28a3af1) pushed atomically. No linked issue or PR.
+Validation on combined master: make generate and make i18n passed with no generated diff; full make test passed (15 Python tests, go vet, 106 Go packages passed with race detector and -count=1). Used throwaway HOME/XDG and external per-package short-socket test launcher; no tests edited or skipped by the launcher. No installations. UI not checked by eye or against real desktop applications.
