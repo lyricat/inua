@@ -8414,7 +8414,7 @@ msgid "Notification center"
 msgstr "通知中心"
 
 #: internal/hyprconf/keys.go:28
-#: ui/bar.ui:136
+#: ui/bar.ui:145
 msgid "Clipboard history"
 msgstr "剪貼簿歷史"
 
@@ -8475,7 +8475,7 @@ msgstr "選擇顏色"
 
 #: internal/hyprconf/keys.go:40
 #: internal/ui/voice_page.go:169
-#: ui/bar.ui:177
+#: ui/bar.ui:186
 #: ui/settings.ui:6335
 msgid "Dictation"
 msgstr "聽寫"
@@ -8631,7 +8631,7 @@ msgstr "計算機"
 
 #: internal/lightui/apps.go:20
 #: internal/ui/widgets.go:588
-#: ui/bar.ui:65
+#: ui/bar.ui:74
 #: config/apps/io.github.lyricat.Inua.Calendar.desktop:3
 msgid "Calendar"
 msgstr "日曆"
@@ -14190,7 +14190,7 @@ msgstr "讓 bash、zsh 和 fish 標記提示字元，以便記住命令"
 
 #: internal/termui/prefs.go:184
 #: internal/ui/notify.go:324
-#: ui/bar.ui:147
+#: ui/bar.ui:156
 #: ui/settings.ui:3325
 msgid "Notifications"
 msgstr "通知"
@@ -14580,11 +14580,11 @@ msgstr "為截圖已隱藏。"
 msgid "The passphrases do not match."
 msgstr "密碼短語不符。"
 
-#: internal/ui/bar.go:472
+#: internal/ui/bar.go:483
 msgid "Workspace %s"
 msgstr "工作空間%s"
 
-#: internal/ui/bar.go:485
+#: internal/ui/bar.go:496
 msgid "WORKSPACE"
 msgstr "工作區"
 
@@ -14955,7 +14955,7 @@ msgid "Search every entry"
 msgstr "搜尋所有項目"
 
 #: internal/ui/passwords.go:283
-#: ui/bar.ui:126
+#: ui/bar.ui:135
 #: ui/settings.ui:1384
 msgid "Passwords"
 msgstr "密碼"
@@ -17830,11 +17830,11 @@ msgstr "詢問，或告訴我該怎麼做"
 msgid "Discard the recording"
 msgstr "放棄錄音"
 
-#: ui/bar.ui:95
+#: ui/bar.ui:104
 msgid "Stop recording"
 msgstr "停止錄製"
 
-#: ui/bar.ui:192
+#: ui/bar.ui:201
 msgid "Control Center"
 msgstr "控制中心"
 

@@ -8414,7 +8414,7 @@ msgid "Notification center"
 msgstr "通知センター"
 
 #: internal/hyprconf/keys.go:28
-#: ui/bar.ui:136
+#: ui/bar.ui:145
 msgid "Clipboard history"
 msgstr "クリップボード履歴"
 
@@ -8475,7 +8475,7 @@ msgstr "色を選ぶ"
 
 #: internal/hyprconf/keys.go:40
 #: internal/ui/voice_page.go:169
-#: ui/bar.ui:177
+#: ui/bar.ui:186
 #: ui/settings.ui:6335
 msgid "Dictation"
 msgstr "ディクテーション"
@@ -8631,7 +8631,7 @@ msgstr "電卓"
 
 #: internal/lightui/apps.go:20
 #: internal/ui/widgets.go:588
-#: ui/bar.ui:65
+#: ui/bar.ui:74
 #: config/apps/io.github.lyricat.Inua.Calendar.desktop:3
 msgid "Calendar"
 msgstr "カレンダー"
@@ -14190,7 +14190,7 @@ msgstr "bash、zsh、fish がプロンプトに印を付け、コマンドを記
 
 #: internal/termui/prefs.go:184
 #: internal/ui/notify.go:324
-#: ui/bar.ui:147
+#: ui/bar.ui:156
 #: ui/settings.ui:3325
 msgid "Notifications"
 msgstr "通知"
@@ -14580,11 +14580,11 @@ msgstr "スクリーンショットのため隠しています。"
 msgid "The passphrases do not match."
 msgstr "パスフレーズが一致しません。"
 
-#: internal/ui/bar.go:472
+#: internal/ui/bar.go:483
 msgid "Workspace %s"
 msgstr "ワークスペース%s"
 
-#: internal/ui/bar.go:485
+#: internal/ui/bar.go:496
 msgid "WORKSPACE"
 msgstr "ワークスペース"
 
@@ -14955,7 +14955,7 @@ msgid "Search every entry"
 msgstr "すべてのエントリーを検索"
 
 #: internal/ui/passwords.go:283
-#: ui/bar.ui:126
+#: ui/bar.ui:135
 #: ui/settings.ui:1384
 msgid "Passwords"
 msgstr "パスワード"
@@ -17830,11 +17830,11 @@ msgstr "何をすべきかを尋ねるか、教えてください"
 msgid "Discard the recording"
 msgstr "録音を破棄"
 
-#: ui/bar.ui:95
+#: ui/bar.ui:104
 msgid "Stop recording"
 msgstr "録画を停止"
 
-#: ui/bar.ui:192
+#: ui/bar.ui:201
 msgid "Control Center"
 msgstr "コントロールセンター"
 

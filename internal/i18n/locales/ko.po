@@ -8414,7 +8414,7 @@ msgid "Notification center"
 msgstr "알림 센터"
 
 #: internal/hyprconf/keys.go:28
-#: ui/bar.ui:136
+#: ui/bar.ui:145
 msgid "Clipboard history"
 msgstr "클립보드 기록"
 
@@ -8475,7 +8475,7 @@ msgstr "색상을 선택하세요"
 
 #: internal/hyprconf/keys.go:40
 #: internal/ui/voice_page.go:169
-#: ui/bar.ui:177
+#: ui/bar.ui:186
 #: ui/settings.ui:6335
 msgid "Dictation"
 msgstr "받아쓰기"
@@ -8631,7 +8631,7 @@ msgstr "계산기"
 
 #: internal/lightui/apps.go:20
 #: internal/ui/widgets.go:588
-#: ui/bar.ui:65
+#: ui/bar.ui:74
 #: config/apps/io.github.lyricat.Inua.Calendar.desktop:3
 msgid "Calendar"
 msgstr "달력"
@@ -14190,7 +14190,7 @@ msgstr "bash, zsh, fish가 프롬프트를 표시해 명령을 기억할 수 있
 
 #: internal/termui/prefs.go:184
 #: internal/ui/notify.go:324
-#: ui/bar.ui:147
+#: ui/bar.ui:156
 #: ui/settings.ui:3325
 msgid "Notifications"
 msgstr "알림"
@@ -14580,11 +14580,11 @@ msgstr "스크린샷을 위해 숨겨집니다."
 msgid "The passphrases do not match."
 msgstr "암호 문구가 일치하지 않습니다."
 
-#: internal/ui/bar.go:472
+#: internal/ui/bar.go:483
 msgid "Workspace %s"
 msgstr "작업공간 %s"
 
-#: internal/ui/bar.go:485
+#: internal/ui/bar.go:496
 msgid "WORKSPACE"
 msgstr "작업 공간"
 
@@ -14955,7 +14955,7 @@ msgid "Search every entry"
 msgstr "모든 항목 검색"
 
 #: internal/ui/passwords.go:283
-#: ui/bar.ui:126
+#: ui/bar.ui:135
 #: ui/settings.ui:1384
 msgid "Passwords"
 msgstr "비밀번호"
@@ -17830,11 +17830,11 @@ msgstr "나에게 무엇을 해야 할지 묻거나 말해주세요"
 msgid "Discard the recording"
 msgstr "녹음 버리기"
 
-#: ui/bar.ui:95
+#: ui/bar.ui:104
 msgid "Stop recording"
 msgstr "녹화 중지"
 
-#: ui/bar.ui:192
+#: ui/bar.ui:201
 msgid "Control Center"
 msgstr "제어 센터"
 
