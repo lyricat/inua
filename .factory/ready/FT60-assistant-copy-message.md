@@ -37,3 +37,15 @@ fix:
 Validation: Codex reviewed all 11 files in origin/master...HEAD and found no confirmed introduced code defects. No merge conflicts. HEAD make test twice and baseline d6a2e5a2 once failed; Python session tests (15) and go vet passed. Translation generation in a temporary copy matched, and whitespace checks passed. Manager reran make test using temporary directories outside the checkout but inside the run directory: still failed, including Unix socket path-length and private D-Bus startup errors. No tracked code edits or commits. Installs: none.
 Limits: UI was not checked by eye; real clipboard pasting, keyboard interaction, streaming copying and reset runtime behavior remain unverified. Earlier build success does not establish a pass for this review environment.
 Remains in review/ for owner decision. No linked issues or PRs. Resolve the test-environment blocker before rerunning review; do not treat this as evidence that FT60 caused a product defect.
+
+## factory · review · 2026-11-05 10:52
+head: 3cb9b42beecf8cacd59f0c3b76424b0b17ae97b0
+verdict: pass
+
+Owner requested retry and explanation of local review failures. Merged origin/master (5c274fcc94fdf4c06838534c1d9ae0cd4a9a883d) into the existing branch, resolving translation catalog conflicts while preserving both changes. Merge commit pushed; no feature fixes were needed.
+
+Root cause: previous isolated test paths produced Unix socket names of 109–124 bytes, above Linux's 107-byte pathname limit, causing socket bind failures and private D-Bus EOF. Earlier checkout-relative temporary directories also violated test assumptions. This retry uses a short absolute TMPDIR outside the checkout, throwaway HOME/XDG directories and isolated bus addresses; latest master additionally includes 5c274fc (test temporary-directory compatibility). The former validation blocker is cleared, not evidence of an FT60 product regression.
+
+Validation: Codex reviewed every hunk in all 11 changed files against origin/master...HEAD; no confirmed introduced P0/P1/P2/P3 findings. Shared copy callback reuse and getter Unref/cleanup paths checked. make generate and make i18n passed. Full make test passed after merge and again independently with -count=1: 15 Python tests, go vet and 105 Go package race-test results, uncached. Manager reran make test successfully (Go results cached), checked whitespace, clean worktree and protected paths. Logs retained in the review run's ft60-retry directory (make-test.log, review-make-test.log, manager-make-test.log). Installs: none.
+
+Limits: real UI, clipboard pasting, keyboard focus, visual appearance and native widget-release stress not exercised. No linked issues or PRs. Moved review/ → ready/; not merged into master.
