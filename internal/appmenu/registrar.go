@@ -9,6 +9,8 @@ import (
 
 	"github.com/godbus/dbus/v5"
 	"github.com/godbus/dbus/v5/introspect"
+
+	"github.com/lyricat/inua/internal/dbusexport"
 )
 
 const (
@@ -17,7 +19,10 @@ const (
 	RegistrarInterface = "com.canonical.AppMenu.Registrar"
 	menuInterface      = "com.canonical.dbusmenu"
 	busInterface       = "org.freedesktop.DBus"
+	busPath            = dbus.ObjectPath("/org/freedesktop/DBus")
 	ownerChanged       = busInterface + ".NameOwnerChanged"
+	layoutUpdated      = menuInterface + ".LayoutUpdated"
+	propertiesUpdated  = menuInterface + ".ItemsPropertiesUpdated"
 	callTimeout        = 2 * time.Second
 	maxMenuNodes       = 4096
 	maxMenuDepth       = 32
@@ -36,7 +41,7 @@ const registrarXML = `<node>
   <method name="RegisterWindow"><arg type="u" direction="in"/><arg type="o" direction="in"/></method>
   <method name="UnregisterWindow"><arg type="u" direction="in"/></method>
   <method name="GetMenuForWindow"><arg type="u" direction="in"/><arg type="s" direction="out"/><arg type="o" direction="out"/></method>
-  <signal name="WindowRegistered"><arg type="u"/><arg type="o"/></signal>
+  <signal name="WindowRegistered"><arg type="u"/><arg type="s"/><arg type="o"/></signal>
   <signal name="WindowUnregistered"><arg type="u"/></signal>
  </interface>` + introspect.IntrospectDeclarationString + `</node>`
 
@@ -49,7 +54,7 @@ func (r *Registrar) GetMenuForWindow(window uint32) (string, dbus.ObjectPath, *d
 			if found.Service != "" {
 				return "", "/", dbus.NewError("org.freedesktop.DBus.Error.Failed", []any{"ambiguous window id"})
 			}
-			found = v
+			found = v.Registration
 		}
 	}
 	if found.Service == "" {
@@ -66,17 +71,34 @@ type Entry struct {
 	Separator bool
 	Toggle    string
 	Checked   bool
-	Children  []Entry
+	// Submenu: the item opens children. An application may fill them in
+	// only when asked (AboutToShow), so Children can be empty until then.
+	Submenu  bool
+	Children []Entry
+}
+
+// registered is a registration, when it was made among the others, and the
+// items of its menu's first level as Menu last read them.
+type registered struct {
+	Registration
+	seq uint64
+	top map[int32]bool
 }
 
 type Registrar struct {
 	conn     *dbus.Conn
 	mu       sync.RWMutex
-	items    map[string]Registration
+	items    map[string]registered
+	seq      uint64
 	onChange func()
+	onUpdate func(Registration)
 }
 
 func (r *Registrar) SetOnChange(fn func()) { r.mu.Lock(); r.onChange = fn; r.mu.Unlock() }
+
+// SetOnUpdate sets what is told when a registered application says the first
+// level of its menu changed.
+func (r *Registrar) SetOnUpdate(fn func(Registration)) { r.mu.Lock(); r.onUpdate = fn; r.mu.Unlock() }
 func (r *Registrar) changed() {
 	r.mu.RLock()
 	fn := r.onChange
@@ -87,24 +109,29 @@ func (r *Registrar) changed() {
 }
 
 func New(conn *dbus.Conn) *Registrar {
-	return &Registrar{conn: conn, items: make(map[string]Registration)}
+	return &Registrar{conn: conn, items: make(map[string]registered)}
 }
 
 // Run owns the registrar name when available and serves the registry.
 func (r *Registrar) Run(ctx context.Context) error {
-	if err := r.conn.Export(r, RegistrarPath, RegistrarInterface); err != nil {
+	if err := dbusexport.Export(r.conn, r, RegistrarPath, RegistrarInterface); err != nil {
 		return err
 	}
-	defer r.conn.Export(nil, RegistrarPath, RegistrarInterface)
-	if err := r.conn.Export(introspect.Introspectable(registrarXML), RegistrarPath, "org.freedesktop.DBus.Introspectable"); err != nil {
+	defer dbusexport.Export(r.conn, nil, RegistrarPath, RegistrarInterface)
+	if err := dbusexport.Export(r.conn, introspect.Introspectable(registrarXML), RegistrarPath, "org.freedesktop.DBus.Introspectable"); err != nil {
 		return err
 	}
-	defer r.conn.Export(nil, RegistrarPath, "org.freedesktop.DBus.Introspectable")
-	match := []dbus.MatchOption{dbus.WithMatchSender(busInterface), dbus.WithMatchMember("NameOwnerChanged")}
-	if err := r.conn.AddMatchSignal(match...); err != nil {
-		return err
+	defer dbusexport.Export(r.conn, nil, RegistrarPath, "org.freedesktop.DBus.Introspectable")
+	for _, match := range [][]dbus.MatchOption{
+		{dbus.WithMatchSender(busInterface), dbus.WithMatchMember("NameOwnerChanged")},
+		{dbus.WithMatchInterface(menuInterface), dbus.WithMatchMember("LayoutUpdated")},
+		{dbus.WithMatchInterface(menuInterface), dbus.WithMatchMember("ItemsPropertiesUpdated")},
+	} {
+		if err := r.conn.AddMatchSignal(match...); err != nil {
+			return err
+		}
+		defer r.conn.RemoveMatchSignal(match...)
 	}
-	defer r.conn.RemoveMatchSignal(match...)
 	sigs := make(chan *dbus.Signal, 32)
 	r.conn.Signal(sigs)
 	defer r.conn.RemoveSignal(sigs)
@@ -120,14 +147,83 @@ func (r *Registrar) Run(ctx context.Context) error {
 			if !ok {
 				return nil
 			}
-			if sig.Name == ownerChanged && len(sig.Body) == 3 {
-				name, _ := sig.Body[0].(string)
-				next, _ := sig.Body[2].(string)
-				if next == "" {
-					r.removeOwner(name)
+			r.handle(sig)
+		}
+	}
+}
+
+// handle takes a signal for what its sender shows it to be: a name's owner
+// has gone only when the bus says so, and a menu has changed only when the
+// connection that registered it says so. Any peer can send a signal of any
+// name straight to this connection.
+func (r *Registrar) handle(sig *dbus.Signal) {
+	switch sig.Name {
+	case ownerChanged:
+		// By type, not dbus.Store, which turns a number into a string.
+		if sig.Sender != busInterface || sig.Path != busPath || len(sig.Body) != 3 {
+			return
+		}
+		name, a := sig.Body[0].(string)
+		_, b := sig.Body[1].(string)
+		next, c := sig.Body[2].(string)
+		if a && b && c && next == "" {
+			r.removeOwner(name)
+		}
+	case layoutUpdated:
+		if len(sig.Body) != 2 {
+			return
+		}
+		_, a := sig.Body[0].(uint32)
+		parent, b := sig.Body[1].(int32)
+		if !a || !b {
+			return
+		}
+		r.updated(sig, func(top map[int32]bool) bool { return parent == 0 || top[parent] })
+	case propertiesUpdated:
+		var changed []struct {
+			ID    int32
+			Props map[string]dbus.Variant
+		}
+		var removed []struct {
+			ID    int32
+			Props []string
+		}
+		if dbus.Store(sig.Body, &changed, &removed) != nil {
+			return
+		}
+		r.updated(sig, func(top map[int32]bool) bool {
+			for _, item := range changed {
+				if top[item.ID] {
+					return true
 				}
 			}
+			for _, item := range removed {
+				if top[item.ID] {
+					return true
+				}
+			}
+			return false
+		})
+	}
+}
+
+// updated tells of a menu signal that comes from a registered menu and, by
+// touches, is about its first level.
+func (r *Registrar) updated(sig *dbus.Signal, touches func(top map[int32]bool) bool) {
+	var regs []Registration
+	r.mu.RLock()
+	fn := r.onUpdate
+	for _, v := range r.items {
+		if v.Service == sig.Sender && v.Path == sig.Path && touches(v.top) {
+			regs = append(regs, v.Registration)
 		}
+	}
+	r.mu.RUnlock()
+	if fn == nil {
+		return
+	}
+	for _, reg := range regs {
+		fn(reg)
 	}
 }
 
@@ -145,9 +241,10 @@ func (r *Registrar) RegisterWindow(sender dbus.Sender, window uint32, path dbus.
 	}
 	key := registrationKey(service, window)
 	r.mu.Lock()
-	r.items[key] = Registration{PID: pid, Window: window, Service: service, Path: path}
+	r.seq++
+	r.items[key] = registered{Registration: Registration{PID: pid, Window: window, Service: service, Path: path}, seq: r.seq}
 	r.mu.Unlock()
-	r.conn.Emit(RegistrarPath, RegistrarInterface+".WindowRegistered", window, path)
+	r.conn.Emit(RegistrarPath, RegistrarInterface+".WindowRegistered", window, service, path)
 	r.changed()
 	return nil
 }
@@ -184,48 +281,123 @@ func (r *Registrar) removeOwner(owner string) {
 	}
 }
 
-// ForPID returns the most recently registered endpoint for a focused process.
+// ForPID returns the most recently registered endpoint of a focused process.
+// A process registers each of its windows, often all at one menu; the
+// compositor does not say which registered window ID the focused window has,
+// so among several endpoints the latest stands for the process.
 func (r *Registrar) ForPID(pid int) (Registration, bool) {
 	if pid <= 0 {
 		return Registration{}, false
 	}
 	r.mu.RLock()
 	defer r.mu.RUnlock()
-	var found Registration
+	var found registered
 	for _, v := range r.items {
-		if int(v.PID) == pid {
-			if found.Service != "" {
-				return Registration{}, false
-			}
+		if int(v.PID) == pid && v.seq > found.seq {
 			found = v
 		}
 	}
-	return found, found.Service != ""
+	return found.Registration, found.Service != ""
 }
 
-// Menu fetches a bounded dbusmenu tree from a registration.
-func (r *Registrar) Menu(reg Registration) ([]Entry, error) {
+// Menu reads the first level of a registration's menu, what a bar shows.
+// With about set, the application is first told the menu is about to show,
+// so one that builds it lazily fills it in; a reading that follows the
+// application's own word of a change leaves that out, as the telling can
+// itself be answered with such a word.
+func (r *Registrar) Menu(reg Registration, about bool) ([]Entry, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
 	defer cancel()
-	obj := r.conn.Object(reg.Service, reg.Path)
-	obj.CallWithContext(ctx, menuInterface+".AboutToShow", 0, int32(0))
-	call := obj.CallWithContext(ctx, menuInterface+".GetLayout", 0, int32(0), int32(-1), []string{})
+	if about {
+		r.conn.Object(reg.Service, reg.Path).CallWithContext(ctx, menuInterface+".AboutToShow", 0, int32(0))
+	}
+	// Two levels: the second only shows which items of the first open one.
+	count := 0
+	node, err := r.layout(ctx, reg, 0, 2, 0, &count)
+	if err != nil {
+		return nil, err
+	}
+	top := make(map[int32]bool, len(node.Children))
+	for i := range node.Children {
+		top[node.Children[i].ID] = true
+		node.Children[i].Children = nil
+	}
+	key := registrationKey(reg.Service, reg.Window)
+	r.mu.Lock()
+	if v, ok := r.items[key]; ok && v.Registration == reg {
+		v.top = top
+		r.items[key] = v
+	}
+	r.mu.Unlock()
+	return node.Children, nil
+}
+
+// Submenu reads what item id opens, as it is now: the application is told
+// the submenu is about to show, and so is each submenu inside it that came
+// empty, which is how an application says it fills one in when asked. One
+// that stays empty, or that no longer fits the bounds, is left empty.
+func (r *Registrar) Submenu(reg Registration, id int32) ([]Entry, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
+	defer cancel()
+	count := 0
+	node, err := r.open(ctx, reg, id, 0, &count)
+	if err != nil {
+		return nil, err
+	}
+	return node.Children, nil
+}
+
+func (r *Registrar) open(ctx context.Context, reg Registration, id int32, depth int, count *int) (Entry, error) {
+	r.conn.Object(reg.Service, reg.Path).CallWithContext(ctx, menuInterface+".AboutToShow", 0, id)
+	node, err := r.layout(ctx, reg, id, -1, depth, count)
+	if err != nil {
+		return Entry{}, err
+	}
+	r.fill(ctx, reg, node.Children, depth+1, count)
+	return node, nil
+}
+
+func (r *Registrar) fill(ctx context.Context, reg Registration, entries []Entry, depth int, count *int) {
+	for i := range entries {
+		e := &entries[i]
+		if !e.Submenu {
+			continue
+		}
+		if len(e.Children) > 0 {
+			r.fill(ctx, reg, e.Children, depth+1, count)
+			continue
+		}
+		// The node itself was counted with its parent's layout.
+		*count--
+		if node, err := r.open(ctx, reg, e.ID, depth, count); err == nil {
+			e.Children = node.Children
+		} else {
+			*count++
+		}
+	}
+}
+
+// layout reads the tree under item id, levels deep (-1: all of it), within
+// the bounds count and depth have left.
+func (r *Registrar) layout(ctx context.Context, reg Registration, id, levels int32, depth int, count *int) (Entry, error) {
+	call := r.conn.Object(reg.Service, reg.Path).CallWithContext(ctx, menuInterface+".GetLayout", 0, id, levels, []string{})
 	if call.Err != nil {
-		return nil, call.Err
+		return Entry{}, call.Err
 	}
 	if len(call.Body) != 2 {
-		return nil, fmt.Errorf("appmenu: GetLayout returned %d values", len(call.Body))
+		return Entry{}, fmt.Errorf("appmenu: GetLayout returned %d values", len(call.Body))
 	}
 	root, ok := call.Body[1].([]any)
 	if !ok {
-		return nil, fmt.Errorf("appmenu: malformed layout type %T", call.Body[1])
+		return Entry{}, fmt.Errorf("appmenu: malformed layout type %T", call.Body[1])
 	}
-	count := 0
-	node, ok := decode(root, 0, &count)
+	before := *count
+	node, ok := decode(root, depth, count)
 	if !ok {
-		return nil, fmt.Errorf("appmenu: malformed or oversized layout")
+		*count = before
+		return Entry{}, fmt.Errorf("appmenu: malformed or oversized layout")
 	}
-	return node.Children, nil
+	return node, nil
 }
 
 // Activate sends the dbusmenu click event to the registered application.
@@ -262,6 +434,9 @@ func decode(raw []any, depth int, count *int) (Entry, bool) {
 	if v, ok := props["toggle-state"].Value().(int32); ok {
 		e.Checked = v == 1
 	}
+	if v, ok := props["children-display"].Value().(string); ok {
+		e.Submenu = v == "submenu"
+	}
 	for _, child := range children {
 		rawChild, ok := child.Value().([]any)
 		if !ok {
@@ -284,6 +459,7 @@ func decode(raw []any, depth int, count *int) (Entry, bool) {
 		}
 		e.Children = append(e.Children, decoded)
 	}
+	e.Submenu = e.Submenu || len(e.Children) > 0
 	return e, true
 }
 
