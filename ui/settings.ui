@@ -5688,7 +5688,7 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
                                       </object>
                                     </child>
                                     <child>
-                                      <object class="GtkLabel">
+                                      <object class="GtkLabel" id="displays_lid_meta">
                                         <style>
                                           <class name="section-meta"/>
                                         </style>

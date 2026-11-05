@@ -365,3 +365,99 @@ func TestNewWorkspace(t *testing.T) {
 		t.Fatalf("Open outside Wayfire: %v", err)
 	}
 }
+
+// Wayfire 0.9 (Debian 13) as it answered: no vswitch/send-view, no
+// list-config-options, whole numbers, and the shell's own surfaces with
+// a workspace set index of 2^64-1.
+func TestWayfire09(t *testing.T) {
+	f := newFakeWayfire(t)
+	f.mu.Lock()
+	f.methods = []string{"list-methods", "window-rules/list-views", "window-rules/list-outputs", "window-rules/focus-view",
+		"window-rules/close-view", "window-rules/configure-view", "window-rules/get-focused-output", "window-rules/events/watch",
+		"vswitch/set-workspace", "wm-actions/set-fullscreen", "wayfire/set-config-options", "wayfire/get-config-option", "command/register-binding"}
+	f.mu.Unlock()
+	f.set("window-rules/list-outputs", `[{"geometry":{"height":720,"width":1280,"x":0,"y":0},"id":1,"name":"HEADLESS-1","workarea":{"height":684,"width":1280,"x":0,"y":36},"workspace":{"grid_height":3,"grid_width":3,"x":0,"y":0},"wset-index":1}]`)
+	f.set("window-rules/list-views", `[
+	 {"activated":true,"app-id":"foot","fullscreen":false,"geometry":{"height":532,"width":704,"x":1568,"y":814},"id":3,"last-focus-timestamp":616750193614926,"mapped":true,"minimized":false,"output-id":1,"output-name":"HEADLESS-1","parent":-1,"pid":173,"role":"toplevel","tiled-edges":0,"title":"foot","type":"toplevel","wset-index":1},
+	 {"activated":false,"app-id":"inua-bar","geometry":{"height":36,"width":1280,"x":0,"y":0},"id":7,"last-focus-timestamp":0,"mapped":true,"output-id":1,"output-name":"HEADLESS-1","pid":90,"role":"desktop-environment","tiled-edges":0,"title":"nil","type":"layer-shell","wset-index":18446744073709551615}]`)
+	b := New(NewClient(f.socket))
+	ctx := context.Background()
+
+	snap, err := b.Snapshot(ctx)
+	if err != nil {
+		t.Fatalf("the shell's own surface lost the whole list: %v", err)
+	}
+	if len(snap.Windows) != 1 || snap.Windows[0].Workspace != "1:1,1" {
+		t.Fatalf("windows %+v", snap.Windows)
+	}
+	caps := b.Capabilities()
+	for _, c := range []compositor.Capability{compositor.CapMoveWithoutFollow, compositor.CapWorkspaces, compositor.CapPlacement, compositor.CapArrange, compositor.CapDisplays} {
+		if caps[c] != compositor.Supported {
+			t.Errorf("%s is %v on Wayfire 0.9", c, caps[c])
+		}
+	}
+
+	// To cell 2,0 from 1,1: a width to the right and a height up, the size kept.
+	if err := b.MoveWindow(ctx, "3", "1:2,0", false); err != nil {
+		t.Fatal(err)
+	}
+	if got, want := f.did(), `window-rules/configure-view {"geometry":{"height":532,"width":704,"x":2848,"y":94},"id":3}`; len(got) != 1 || got[0] != want {
+		t.Fatalf("moved by\n %q, want\n %q", got, want)
+	}
+	// Already there: nothing to do.
+	if err := b.MoveWindow(ctx, "3", "1:1,1", false); err != nil || len(f.did()) != 1 {
+		t.Fatalf("a move to its own cell: %v %q", err, f.did())
+	}
+	// Its options cannot be listed, so it has no shortcuts of its own to show.
+	if binds, err := b.Binds(ctx); err != nil || binds != nil {
+		t.Fatalf("binds %v %v", binds, err)
+	}
+}
+
+// The launcher's window commands: fullscreen on and off by the state the
+// view is in, the centre of the work area on the view's own cell.
+func TestArrange(t *testing.T) {
+	f := newFakeWayfire(t)
+	f.mu.Lock()
+	f.methods = append(slices.Clone(allMethods), "wm-actions/set-fullscreen")
+	f.mu.Unlock()
+	b := New(NewClient(f.socket))
+	ctx := context.Background()
+	if b.Capabilities()[compositor.CapArrange] != compositor.Supported || b.Capabilities()[compositor.CapFloating] == compositor.Supported {
+		t.Fatalf("caps %v", b.Capabilities())
+	}
+	if err := b.ToggleFullscreen(ctx, "5"); err != nil {
+		t.Fatal(err)
+	}
+	f.set("window-rules/list-views", strings.Replace(viewsJSON, `"id":5,`, `"id":5,"fullscreen":true,`, 1))
+	if err := b.ToggleFullscreen(ctx, "5"); err != nil {
+		t.Fatal(err)
+	}
+	// View 5 is on the cell shown, view 3 one to the right and one down.
+	if err := b.CenterWindow(ctx, "5"); err != nil {
+		t.Fatal(err)
+	}
+	if err := b.CenterWindow(ctx, "3"); err != nil {
+		t.Fatal(err)
+	}
+	want := []string{
+		`wm-actions/set-fullscreen {"state":true,"view_id":5}`,
+		`wm-actions/set-fullscreen {"state":false,"view_id":5}`,
+		`window-rules/configure-view {"geometry":{"height":494,"width":696,"x":292,"y":131},"id":5}`,
+		`window-rules/configure-view {"geometry":{"height":494,"width":696,"x":1572,"y":851},"id":3}`,
+	}
+	if got := f.did(); !slices.Equal(got, want) {
+		t.Fatalf("calls\n %q, want\n %q", got, want)
+	}
+	if err := b.ToggleFullscreen(ctx, "99"); err == nil {
+		t.Fatal("a window that is not there was made fullscreen")
+	}
+}
+
+// Wayfire writes a place on a scaled output a hair off whole.
+func TestGeometryRounded(t *testing.T) {
+	var r rect
+	if err := json.Unmarshal([]byte(`{"x":2357.999954223633,"y":192.0000046491623,"width":768.0,"height":481}`), &r); err != nil || r != (rect{2358, 192, 768, 481}) {
+		t.Fatalf("%+v %v", r, err)
+	}
+}

@@ -94,9 +94,10 @@ func (b *Backend) loaded() map[string]bool {
 
 // Capabilities follow the plugins: a capability whose methods are
 // missing is Unavailable (the plugin can be loaded), as is everything
-// while Wayfire cannot be asked. Wayfire has no previews, keystrokes
-// to a window, key observer, modes or pointer moves for a shell; the
-// binds, displays and virtual output it has by IPC are not wired yet.
+// while Wayfire cannot be asked. Wayfire 0.9 has no vswitch/send-view;
+// there a view goes to another cell by its geometry. Wayfire has no
+// window previews, keystrokes to one window, key observer or modes, and
+// its windows all float.
 func (b *Backend) Capabilities() compositor.Capabilities {
 	m := b.loaded()
 	state := func(methods ...string) compositor.State {
@@ -107,15 +108,21 @@ func (b *Backend) Capabilities() compositor.Capabilities {
 		}
 		return compositor.Supported
 	}
+	send := "vswitch/send-view"
+	if !m[send] {
+		send = "window-rules/configure-view"
+	}
 	return compositor.Capabilities{
 		compositor.CapGeometry:          state("window-rules/list-views"),
 		compositor.CapQuietFocus:        state("window-rules/focus-view"),
-		compositor.CapMoveWithoutFollow: state("vswitch/send-view"),
-		compositor.CapWorkspaces:        state("vswitch/set-workspace", "vswitch/send-view"),
-		compositor.CapPlacement:         state("window-rules/configure-view", "vswitch/send-view"),
+		compositor.CapMoveWithoutFollow: state(send),
+		compositor.CapWorkspaces:        state("vswitch/set-workspace", send),
+		compositor.CapPlacement:         state("window-rules/configure-view", send),
+		compositor.CapArrange:           state("wm-actions/set-fullscreen", "window-rules/configure-view"),
 		compositor.CapOnDemandFocus:     state("window-rules/list-views"),
 		compositor.CapKeyboard:          state("wayfire/set-config-options"),
 		compositor.CapTouchpad:          state("wayfire/set-config-options"),
+		compositor.CapDisplays:          state("wayfire/set-config-options", "wayfire/get-config-option"),
 		compositor.CapBinds:             state("command/register-binding"),
 		compositor.CapRules:             compositor.Supported,
 	}
@@ -328,7 +335,7 @@ func (b *Backend) MoveWindow(ctx context.Context, id, workspace string, follow b
 		return err
 	}
 	for _, v := range st.views {
-		if v.ID == n && v.WSet != wset {
+		if v.ID == n && int(v.WSet) != wset {
 			if !b.has("wsets/send-view-to-wset") {
 				return fmt.Errorf("%w: moving a window to another output needs Wayfire's wsets plugin", compositor.ErrUnavailable)
 			}
@@ -337,13 +344,88 @@ func (b *Backend) MoveWindow(ctx context.Context, id, workspace string, follow b
 			}
 		}
 	}
-	if err := b.call(ctx, "vswitch/send-view", map[string]any{"view-id": n, "x": x, "y": y}); err != nil {
+	if err := b.sendView(ctx, st, n, x, y); err != nil {
 		return err
 	}
 	if !follow {
 		return nil
 	}
 	return b.FocusWindow(ctx, id)
+}
+
+// sendView takes a view to a cell of its set without following it:
+// vswitch/send-view where Wayfire has it (0.10 and later), else by moving
+// the view as far as the cell is from the one it is on, a cell being one
+// output away from the next.
+func (b *Backend) sendView(ctx context.Context, st state, id, x, y int) error {
+	if b.has("vswitch/send-view") {
+		return b.call(ctx, "vswitch/send-view", map[string]any{"view-id": id, "x": x, "y": y})
+	}
+	for _, v := range st.views {
+		if v.ID != id {
+			continue
+		}
+		for _, o := range st.outputs {
+			if o.ID != v.OutputID {
+				continue
+			}
+			cx, cy := cellOf(v, o)
+			if cx == x && cy == y {
+				return nil
+			}
+			return b.call(ctx, "window-rules/configure-view", map[string]any{"id": id, "geometry": map[string]any{
+				"x": int(v.Geometry.X) + (x-cx)*int(o.Geometry.Width), "y": int(v.Geometry.Y) + (y-cy)*int(o.Geometry.Height),
+				"width": int(v.Geometry.Width), "height": int(v.Geometry.Height)}})
+		}
+	}
+	return fmt.Errorf("wayfire: no view with id %d", id)
+}
+
+// ToggleFullscreen makes a view fullscreen, or ends that.
+func (b *Backend) ToggleFullscreen(ctx context.Context, id string) error {
+	n, err := viewID(id)
+	if err != nil {
+		return err
+	}
+	st, err := b.current(ctx)
+	if err != nil {
+		return err
+	}
+	for _, v := range st.views {
+		if v.ID == n {
+			return b.call(ctx, "wm-actions/set-fullscreen", map[string]any{"view_id": n, "state": !v.Fullscreen})
+		}
+	}
+	return fmt.Errorf("wayfire: no view with id %d", n)
+}
+
+// CenterWindow puts a view in the middle of its output's work area, on
+// the cell it is on.
+func (b *Backend) CenterWindow(ctx context.Context, id string) error {
+	n, err := viewID(id)
+	if err != nil {
+		return err
+	}
+	st, err := b.current(ctx)
+	if err != nil {
+		return err
+	}
+	for _, v := range st.views {
+		if v.ID != n {
+			continue
+		}
+		for _, o := range st.outputs {
+			if o.ID != v.OutputID {
+				continue
+			}
+			cx, cy := cellOf(v, o)
+			x := int(o.Workarea.X+(o.Workarea.Width-v.Geometry.Width)/2) + (cx-o.Workspace.X)*int(o.Geometry.Width)
+			y := int(o.Workarea.Y+(o.Workarea.Height-v.Geometry.Height)/2) + (cy-o.Workspace.Y)*int(o.Geometry.Height)
+			return b.call(ctx, "window-rules/configure-view", map[string]any{"id": n, "geometry": map[string]any{
+				"x": x, "y": y, "width": int(v.Geometry.Width), "height": int(v.Geometry.Height)}})
+		}
+	}
+	return fmt.Errorf("wayfire: no view with id %d", n)
 }
 
 // NewWorkspace is a cell of the output's grid with no window on it: the
@@ -407,7 +489,7 @@ func (b *Backend) BringHere(ctx context.Context, pid int) error {
 		return err
 	}
 	if x, y := cellOf(v, o); x != o.Workspace.X || y != o.Workspace.Y {
-		if err := b.call(ctx, "vswitch/send-view", map[string]any{"view-id": v.ID, "x": o.Workspace.X, "y": o.Workspace.Y}); err != nil {
+		if err := b.sendView(ctx, st, v.ID, o.Workspace.X, o.Workspace.Y); err != nil {
 			return err
 		}
 	}

@@ -162,6 +162,8 @@ const (
 	CapPlacement         Capability = "placement"           // Placer
 	CapModes             Capability = "modes"               // Moder
 	CapRules             Capability = "rules"               // compositor styling rules
+	CapArrange           Capability = "arrange"             // Arranger
+	CapFloating          Capability = "floating"            // Floater
 	// CapKeyboard and CapTouchpad: inua's keyboard and touchpad settings
 	// reach the compositor (Settings; CapBinds is the shortcuts).
 	CapKeyboard Capability = "keyboard"
@@ -274,6 +276,19 @@ type Placer interface {
 	RoomRight(ctx context.Context, pid int) (Rect, int, error)
 	// Tile tiles a floating window; it reports whether it was floating.
 	Tile(ctx context.Context, pid int) (bool, error)
+}
+
+// Arranger is CapArrange: a window made fullscreen or not, and centred
+// on its screen.
+type Arranger interface {
+	ToggleFullscreen(ctx context.Context, id string) error
+	CenterWindow(ctx context.Context, id string) error
+}
+
+// Floater is CapFloating: a window taken out of the tiling, or put back.
+// A compositor whose windows all float has none.
+type Floater interface {
+	ToggleFloating(ctx context.Context, id string) error
 }
 
 // VirtualOutputs is CapVirtualOutput.

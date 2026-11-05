@@ -14,6 +14,42 @@ type Settings struct {
 	TouchpadSpeed *float64 // -1 to 1
 	TouchpadAccel string   // "adaptive", "flat", or "" for the compositor's
 	Binds         []KeyBind
+	Displays      []DisplayRule
+}
+
+// DisplayRule is what the display settings ask of one display. Output is
+// its connector ("eDP-1"), or "desc:" and its description. Mode is
+// "WIDTHxHEIGHT@HZ" or "" for the display's own choice; Position "XxY" in
+// the layout's logical pixels, "auto", "auto-left", "auto-right",
+// "auto-up", "auto-down", or ""; Scale 0 for the compositor's choice;
+// Mirror the display whose picture it shows.
+type DisplayRule struct {
+	Output   string
+	Disabled bool
+	Mode     string
+	Position string
+	Scale    float64
+	Mirror   string
+}
+
+// Display is a monitor as the display settings show it, on or off: the
+// mode it shows in its own pixels, its place in the layout, its scale,
+// and the modes it has ("3840x2160@60.00").
+type Display struct {
+	Name, Description, Make, Model string
+	Width, Height                  int
+	Refresh                        float64
+	X, Y                           int
+	Scale                          float64
+	Disabled                       bool
+	MirrorOf                       string
+	Modes                          []string
+}
+
+// Displayer is CapDisplays' reading side: the displays for the settings
+// to show. Their rules go with the other settings (Settings.Displays).
+type Displayer interface {
+	Displays(ctx context.Context) ([]Display, error)
 }
 
 // KeyBind is a shortcut inua sets: keys as Keys writes them

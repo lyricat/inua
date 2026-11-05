@@ -396,14 +396,16 @@ generate = %t
 touchpad_accel = %s
 
 [displays]
-# Monitors, set in the settings window (Displays). inua writes them to
-# ~/.config/hypr/inua.conf as monitor rules after hyprland.conf's, so a
-# display listed here is as it says, and one not listed stays as
-# hyprland.conf has it. After editing by hand: `+"`inua config apply`"+`.
+# Monitors, set in the settings window (Displays). On Hyprland inua
+# writes them to ~/.config/hypr/inua.conf as monitor rules after
+# hyprland.conf's; on Wayfire it sets them over the IPC each time the
+# shell starts. A display listed here is as it says, and one not listed
+# stays as the compositor's own config has it. After editing by hand:
+# `+"`inua config apply`"+`.
 
 # While a laptop's lid is closed and another display is connected, turn
 # the built-in display off (its workspaces move to the others); opening
-# the lid turns it on again, beside them.
+# the lid turns it on again, beside them. Hyprland only.
 lid_off = %t
 
 # A display: output is its connector ("DP-1"), or "desc:" and its

@@ -375,6 +375,17 @@ func TestCommands(t *testing.T) {
 	if a := l.Execute(); a.Kind != Run || a.Text != "close-window" || a.Address != "0x1" {
 		t.Errorf("close window: %+v", a)
 	}
+	// A window command the compositor has no way to do is not offered.
+	l.Show(Apps)
+	l.SetQuery("toggle floating")
+	if len(l.Results) == 0 || l.Results[0].Command != "float" {
+		t.Fatalf("toggle floating: %q", titles(l.Results))
+	}
+	l.SetWithout("float")
+	if slices.ContainsFunc(l.Results, func(r Result) bool { return r.Command == "float" }) || !l.Without("float") || l.Without("fullscreen") {
+		t.Errorf("floating still offered: %q", titles(l.Results))
+	}
+	l.SetWithout()
 	l.Show(Apps)
 	l.SetQuery("move to workspace 3")
 	if a := l.Execute(); a.Kind != Run || a.Text != "move-window" || a.Arg != "3" {

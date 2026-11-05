@@ -248,13 +248,21 @@ func cmdCompositor(args []string) error {
 		if err != nil {
 			return err
 		}
+		// The displays as the settings show them, where the backend lists them.
+		var displays []compositor.Display
+		if d, ok := b.(compositor.Displayer); ok {
+			if displays, err = d.Displays(ctx); err != nil {
+				fmt.Fprintln(os.Stderr, "displays:", err)
+			}
+		}
 		enc := json.NewEncoder(os.Stdout)
 		enc.SetIndent("", "  ")
 		return enc.Encode(struct {
 			Compositor   string
 			Capabilities compositor.Capabilities
 			compositor.Snapshot
-		}{b.Name(), b.Capabilities(), s})
+			Displays []compositor.Display `json:",omitempty"`
+		}{b.Name(), b.Capabilities(), s, displays})
 	case "watch":
 		ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 		defer stop()

@@ -22,6 +22,7 @@ import (
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"codeberg.org/puregotk/puregotk/v4/pango"
 
+	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/convert"
 	"github.com/lyricat/inua/internal/desktop"
 	"github.com/lyricat/inua/internal/gtkx"
@@ -282,6 +283,26 @@ func (s *shellUI) executeLauncher() {
 	s.syncLauncher()
 }
 
+// workspaceNamed is the id of the workspace the user calls name ("3"):
+// the one of that name on the focused output, else on any. On Hyprland
+// the two are the same, and a number no workspace has yet names a new
+// one; niri's and Wayfire's ids are their own.
+func (s *shellUI) workspaceNamed(name string) string {
+	id := name
+	for _, ws := range s.snap.Workspaces {
+		if ws.Name != name {
+			continue
+		}
+		if ws.Output == s.snap.FocusedOutput {
+			return ws.ID
+		}
+		if id == name {
+			id = ws.ID
+		}
+	}
+	return id
+}
+
 // runCommand carries out a launcher command (shell.Commands) on the
 // window it was opened over, if it is one for a window.
 func (s *shellUI) runCommand(id, arg, window string) {
@@ -323,20 +344,25 @@ func (s *shellUI) runCommand(id, arg, window string) {
 			log.Printf("restart: %v", err)
 		}
 	case "workspace":
-		s.switchWorkspace(arg)
+		s.switchWorkspace(s.workspaceNamed(arg))
 	case "move-window":
-		id := strings.TrimPrefix(w, "address:")
-		s.compositorDo("move window", func(ctx context.Context) error { return s.comp.MoveWindow(ctx, id, arg, true) })
+		to := s.workspaceNamed(arg)
+		s.compositorDo("move window", func(ctx context.Context) error { return s.comp.MoveWindow(ctx, window, to, true) })
 	case "close-window":
 		s.closeWindow(strings.TrimPrefix(w, "address:"))
 	case "float":
-		s.hyprDispatch("togglefloating "+w, "")
-	case "fullscreen":
-		s.hyprDispatch("focuswindow "+w, "")
-		s.hyprDispatch("fullscreen 0", "")
-	case "center":
-		s.hyprDispatch("focuswindow "+w, "")
-		s.hyprDispatch("centerwindow", "")
+		if f, ok := s.comp.(compositor.Floater); ok {
+			s.compositorDo("toggle floating", func(ctx context.Context) error { return f.ToggleFloating(ctx, window) })
+		}
+	case "fullscreen", "center":
+		if a, ok := s.comp.(compositor.Arranger); ok {
+			s.compositorDo(id+" window", func(ctx context.Context) error {
+				if id == "center" {
+					return a.CenterWindow(ctx, window)
+				}
+				return a.ToggleFullscreen(ctx, window)
+			})
+		}
 	default:
 		log.Printf("launcher: unknown command %q", id)
 	}
@@ -440,7 +466,7 @@ func (s *shellUI) showLauncherCatch() {
 	w := l.catch.GoPointer()
 	layershell.InitForWindow(w)
 	layershell.SetNamespace(w, "inua-launcher-catch")
-	layershell.SetLayer(w, layershell.LayerTop)
+	layershell.SetLayer(w, s.panelLayer())
 	layershell.SetKeyboardMode(w, layershell.KeyboardNone)
 	for _, e := range []layershell.Edge{layershell.EdgeTop, layershell.EdgeBottom, layershell.EdgeLeft, layershell.EdgeRight} {
 		layershell.SetAnchor(w, e, true)
@@ -507,7 +533,7 @@ func (s *shellUI) buildLauncher() {
 	if s.layer {
 		layershell.InitForWindow(w)
 		layershell.SetNamespace(w, "inua-launcher")
-		layershell.SetLayer(w, layershell.LayerTop)
+		layershell.SetLayer(w, s.panelLayer())
 		layershell.SetKeyboardMode(w, layershell.KeyboardExclusive)
 		if mon := s.focusedMonitor(); mon != nil {
 			layershell.SetMonitor(w, mon.GoPointer())
@@ -1150,7 +1176,7 @@ func (s *shellUI) showLauncherActions() {
 			windows = len(it.Windows)
 		}
 	}
-	acts := shell.ItemActions(r, pinned, windows)
+	acts := slices.DeleteFunc(shell.ItemActions(r, pinned, windows), func(a shell.ItemAction) bool { return s.launcher.st.Without(a.ID) })
 	if len(acts) == 0 {
 		return
 	}

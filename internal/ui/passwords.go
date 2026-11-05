@@ -260,13 +260,13 @@ func (s *shellUI) openPasswords(mon *gdk.Monitor) {
 	keys.SetPropagationPhase(gtk.PhaseCaptureValue)
 	keys.ConnectKeyPressed(&s.onPasswordsKey)
 	p.win.AddController(&keys.EventController)
-	p.drop.attach(p.win, &keys.EventController, p.backdrop, &card.Widget, layershell.LayerTop, false)
+	p.drop.attach(p.win, &keys.EventController, p.backdrop, &card.Widget, s.panelLayer(), false)
 	p.drop.resizes = true // an entry's values widen it, the results narrow it again
 	if s.layer {
 		w := p.win.GoPointer()
 		layershell.InitForWindow(w)
 		layershell.SetNamespace(w, "inua-passwords")
-		layershell.SetLayer(w, layershell.LayerTop)
+		layershell.SetLayer(w, s.panelLayer())
 		layershell.SetKeyboardMode(w, layershell.KeyboardExclusive)
 		for _, edge := range []layershell.Edge{layershell.EdgeTop, layershell.EdgeBottom, layershell.EdgeLeft, layershell.EdgeRight} {
 			layershell.SetAnchor(w, edge, true)

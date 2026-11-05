@@ -163,7 +163,7 @@ func (s *shellUI) showSourceWarning() {
 		// compositor takes them, and disabled with the reason under them
 		// when it does not. What it takes can change under us (a line
 		// added to its config, a plugin loaded).
-		s.caps = s.comp.Capabilities()
+		s.setCaps(s.comp.Capabilities())
 		for _, g := range []struct {
 			warn *gtk.Label
 			c    compositor.Capability

@@ -350,7 +350,7 @@ msgstr "%d%%, 충전 중"
 #: internal/ui/settings.go:342
 #: internal/ui/settings.go:785
 #: internal/ui/settings.go:891
-#: internal/ui/settings_displays.go:426
+#: internal/ui/settings_displays.go:460
 msgid "%d%%"
 msgstr "%d%%"
 
@@ -2144,8 +2144,8 @@ msgstr "서비스를 시작하는 중입니다."
 #: internal/termui/headmenu.go:164
 #: internal/termui/prefsweb.go:130
 #: internal/ui/settings_bluetooth.go:214
-#: internal/ui/settings_displays.go:302
-#: internal/ui/settings_displays.go:397
+#: internal/ui/settings_displays.go:331
+#: internal/ui/settings_displays.go:431
 #: internal/ui/settings_wifi.go:285
 #: ui/remote.ui:359
 #: ui/settings.ui:5885
@@ -12986,56 +12986,56 @@ msgstr "[창]"
 msgid "[APPS]"
 msgstr "[앱]"
 
-#: internal/shell/launcher.go:336
+#: internal/shell/launcher.go:352
 msgid "That window has closed"
 msgstr "해당 창이 닫혔습니다."
 
-#: internal/shell/launcher.go:363
+#: internal/shell/launcher.go:379
 msgid "Ask the assistant anything"
 msgstr "어시스턴트에게 무엇이든 물어보세요"
 
-#: internal/shell/launcher.go:365
+#: internal/shell/launcher.go:381
 msgid "No emoji or symbol matches"
 msgstr "이모티콘이나 기호가 일치하지 않습니다."
 
-#: internal/shell/launcher.go:367
+#: internal/shell/launcher.go:383
 msgid "Reading apps…"
 msgstr "앱 읽기..."
 
-#: internal/shell/launcher.go:369
+#: internal/shell/launcher.go:385
 msgid "No app matches"
 msgstr "일치하는 앱이 없습니다."
 
-#: internal/shell/launcher.go:371
+#: internal/shell/launcher.go:387
 msgid "Not connected to Hyprland"
 msgstr "하이프랜드와 연결되지 않음"
 
-#: internal/shell/launcher.go:373
+#: internal/shell/launcher.go:389
 msgid "No windows open"
 msgstr "열린 창 없음"
 
-#: internal/shell/launcher.go:375
+#: internal/shell/launcher.go:391
 msgid "No window matches"
 msgstr "일치하는 창이 없습니다."
 
-#: internal/shell/launcher.go:414
+#: internal/shell/launcher.go:430
 msgid "Enter asks"
 msgstr "Enter로 질문"
 
-#: internal/shell/launcher.go:426
+#: internal/shell/launcher.go:442
 msgid "or start with ?"
 msgstr "아니면 ?로 시작합니까?"
 
-#: internal/shell/launcher.go:429
+#: internal/shell/launcher.go:445
 msgid "%s · Enter copies"
 msgstr "%s · Enter로 복사"
 
-#: internal/shell/launcher.go:479
+#: internal/shell/launcher.go:495
 #: ui/vm.ui:915
 msgid "Ask the assistant"
 msgstr "어시스턴트에게 물어보세요"
 
-#: internal/shell/launcher.go:516
+#: internal/shell/launcher.go:532
 msgid "%s · workspace %s"
 msgstr "%[1]s · 작업 공간 %[2]s"
 
@@ -14760,13 +14760,13 @@ msgstr "하이프랜드에는 적용되지 않음: %s"
 
 #: internal/ui/input.go:126
 #: internal/ui/input.go:143
-#: internal/ui/settings_displays.go:318
+#: internal/ui/settings_displays.go:352
 msgid "Set by inua"
 msgstr "이누아에 의해 설정됨"
 
 #: internal/ui/input.go:128
 #: internal/ui/input.go:145
-#: internal/ui/settings_displays.go:316
+#: internal/ui/settings_displays.go:347
 msgid "Set in hyprland.conf"
 msgstr "Hyprland.conf에 설정"
 
@@ -14794,7 +14794,7 @@ msgstr "hyprland.lua가 inua.lua를 불러온 뒤 이 항목을 다시 설정하
 msgid "hyprland.conf sets these again after loading inua.conf, which wins over inua: %s. Move the source line below them."
 msgstr "hyporland.conf는 inua.conf를 로드한 후 이를 다시 설정하며, 이는 inua: %s를 이깁니다. 소스 줄을 그 아래로 이동하세요."
 
-#: internal/ui/launcher.go:517
+#: internal/ui/launcher.go:543
 msgid "inua launcher"
 msgstr "이누아 런처"
 
@@ -15923,7 +15923,8 @@ msgid "Nothing inua knows"
 msgstr ""
 
 #: internal/ui/settings_compositor.go:224
-#: internal/ui/settings_displays.go:193
+#: internal/ui/settings_displays.go:185
+#: internal/ui/settings_displays.go:217
 msgid "Not available on %s"
 msgstr ""
 
@@ -16004,123 +16005,131 @@ msgstr "추가되지 않음: 테마에는 #rrggbb 색상의 @define-color 줄이
 msgid "Not added: %s"
 msgstr "추가하지 않음: %s"
 
-#: internal/ui/settings_displays.go:52
-#: internal/ui/settings_displays.go:424
+#: internal/ui/settings_displays.go:54
+#: internal/ui/settings_displays.go:458
 msgid "Automatic"
 msgstr "자동"
 
-#: internal/ui/settings_displays.go:53
+#: internal/ui/settings_displays.go:55
 msgid "Left of the others"
 msgstr "다른 디스플레이의 왼쪽"
 
-#: internal/ui/settings_displays.go:54
+#: internal/ui/settings_displays.go:56
 msgid "Right of the others"
 msgstr "다른 디스플레이의 오른쪽"
 
-#: internal/ui/settings_displays.go:55
+#: internal/ui/settings_displays.go:57
 msgid "Above the others"
 msgstr "다른 디스플레이의 위"
 
-#: internal/ui/settings_displays.go:56
+#: internal/ui/settings_displays.go:58
 msgid "Below the others"
 msgstr "다른 디스플레이의 아래"
 
-#: internal/ui/settings_displays.go:186
+#: internal/ui/settings_displays.go:210
 msgid "No displays"
 msgstr "디스플레이 없음"
 
-#: internal/ui/settings_displays.go:188
+#: internal/ui/settings_displays.go:212
 #: ui/settings.ui:5638
 msgid "Displays"
 msgstr "디스플레이"
 
-#: internal/ui/settings_displays.go:191
-msgid "Hyprland lists no displays"
-msgstr "Hyprland에 디스플레이가 없습니다"
+#: internal/ui/settings_displays.go:215
+msgid "%s lists no displays"
+msgstr ""
 
-#: internal/ui/settings_displays.go:191
-msgid "Is the shell connected to Hyprland?"
-msgstr "셸이 Hyprland에 연결되어 있나요?"
+#: internal/ui/settings_displays.go:215
+msgid "Is the shell connected to %s?"
+msgstr ""
 
-#: internal/ui/settings_displays.go:193
+#: internal/ui/settings_displays.go:217
 msgid "Resolution, scale and arrangement are set in the compositor's own configuration."
 msgstr ""
 
-#: internal/ui/settings_displays.go:228
+#: internal/ui/settings_displays.go:252
 msgid "Use this display"
 msgstr "이 디스플레이 사용"
 
-#: internal/ui/settings_displays.go:242
+#: internal/ui/settings_displays.go:266
 msgid "Preferred"
 msgstr "권장"
 
-#: internal/ui/settings_displays.go:253
+#: internal/ui/settings_displays.go:277
 #: ui/remote.ui:760
 msgid "Resolution"
 msgstr "해상도"
 
-#: internal/ui/settings_displays.go:274
+#: internal/ui/settings_displays.go:303
 msgid "%s (Hyprland uses %s)"
 msgstr "%s(Hyprland는 %s 사용)"
 
-#: internal/ui/settings_displays.go:279
+#: internal/ui/settings_displays.go:308
 msgid "Scale"
 msgstr "배율"
 
-#: internal/ui/settings_displays.go:279
+#: internal/ui/settings_displays.go:308
 msgid "Text and windows larger or smaller"
 msgstr "글자와 창을 크게 또는 작게"
 
-#: internal/ui/settings_displays.go:292
+#: internal/ui/settings_displays.go:321
 msgid "Where it is (%s, %s)"
 msgstr "현재 위치 (%s, %s)"
 
-#: internal/ui/settings_displays.go:294
+#: internal/ui/settings_displays.go:323
 #: ui/settings.ui:1605
 msgid "Position"
 msgstr "위치"
 
-#: internal/ui/settings_displays.go:305
-#: internal/ui/settings_displays.go:309
+#: internal/ui/settings_displays.go:334
+#: internal/ui/settings_displays.go:338
 msgid "Same picture as %s"
 msgstr "%s와(과) 같은 화면"
 
-#: internal/ui/settings_displays.go:311
+#: internal/ui/settings_displays.go:340
 msgid "Mirror"
 msgstr "미러링"
 
-#: internal/ui/settings_displays.go:321
+#: internal/ui/settings_displays.go:347
 #: ui/settings.ui:6036
 #: ui/settings.ui:6303
 msgid "Use hyprland.conf"
 msgstr "Hyprland.conf를 사용하십시오."
 
-#: internal/ui/settings_displays.go:324
+#: internal/ui/settings_displays.go:349
+msgid "Set in %s's own configuration"
+msgstr ""
+
+#: internal/ui/settings_displays.go:349
+msgid "Use %s's"
+msgstr ""
+
+#: internal/ui/settings_displays.go:358
 msgid "Stop setting this display in inua"
 msgstr "inua에서 이 디스플레이 설정 중지"
 
-#: internal/ui/settings_displays.go:382
+#: internal/ui/settings_displays.go:416
 msgid "Built-in display"
 msgstr "내장 디스플레이"
 
-#: internal/ui/settings_displays.go:395
+#: internal/ui/settings_displays.go:429
 msgid "Off while the lid is closed"
 msgstr "덮개가 닫혀 있는 동안 꺼짐"
 
-#: internal/ui/settings_displays.go:401
-#: internal/ui/settings_displays.go:404
+#: internal/ui/settings_displays.go:435
+#: internal/ui/settings_displays.go:438
 msgid "Shows the same picture as %s"
 msgstr "%s와(과) 같은 화면 표시"
 
-#: internal/ui/settings_displays.go:406
+#: internal/ui/settings_displays.go:440
 msgid "%s, at %s"
 msgstr "%s, %s"
 
-#: internal/ui/settings_displays.go:416
+#: internal/ui/settings_displays.go:450
 msgid "%d × %d"
 msgstr "%d × %d"
 
-#: internal/ui/settings_displays.go:418
+#: internal/ui/settings_displays.go:452
 msgid "%d × %d, %s Hz"
 msgstr "%d × %d, %s Hz"
 

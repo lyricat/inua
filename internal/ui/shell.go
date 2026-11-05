@@ -532,7 +532,7 @@ func (s *shellUI) start() {
 		log.Printf("compositor: %v", err)
 	} else {
 		s.comp = b
-		s.caps = b.Capabilities()
+		s.setCaps(b.Capabilities())
 		if h, ok := b.(*hypr.Backend); ok {
 			s.hypr = h
 			h.FreshWorkspace = s.freshWorkspace()
@@ -760,7 +760,7 @@ type compHandler struct{ s *shellUI }
 func (h compHandler) OnSnapshot(snap compositor.Snapshot) { gtkx.Post(func() { h.s.apply(snap) }) }
 func (h compHandler) OnCapabilities(caps compositor.Capabilities) {
 	gtkx.Post(func() {
-		h.s.caps = caps
+		h.s.setCaps(caps)
 		h.s.hyprLua = h.s.hypr != nil && h.s.hypr.Lua()
 		if h.s.settings.win != nil {
 			h.s.showSourceWarning() // what the pages can do may have changed
@@ -820,6 +820,9 @@ func (h compHandler) OnConnection(up bool, err error) {
 }
 
 func (s *shellUI) apply(snap compositor.Snapshot) {
+	if s.hypr == nil { // Hyprland says so with events, and keeps its rules itself
+		s.followOutputs(s.snap.Outputs, snap.Outputs)
+	}
 	s.snap = snap
 	s.overview.st.SetSnapshot(snap)
 	for _, b := range s.bars {
@@ -840,8 +843,52 @@ func (s *shellUI) apply(snap compositor.Snapshot) {
 	s.scheduleOverviewRender()
 }
 
-// dispatch runs a Hyprland dispatcher in the background; the outcome shows
-// up as events.
+// panelLayer is the layer of a panel the user calls up over their
+// windows (the launcher, the overview, the clipboard, the passwords).
+// Hyprland shows the top layer over a fullscreen window while it holds
+// the keyboard; niri and Wayfire keep it under one, where the panel
+// would open unseen and take no keys, so there it goes on the overlay.
+func (s *shellUI) panelLayer() layershell.Layer {
+	if s.comp != nil && s.hypr == nil {
+		return layershell.LayerOverlay
+	}
+	return layershell.LayerTop
+}
+
+// setCaps keeps what the compositor can do, and takes the window commands
+// it has no way to do out of the launcher.
+func (s *shellUI) setCaps(caps compositor.Capabilities) {
+	s.caps = caps
+	var without []string
+	if !caps.Has(compositor.CapFloating) {
+		without = append(without, "float")
+	}
+	if !caps.Has(compositor.CapArrange) {
+		without = append(without, "fullscreen", "center")
+	}
+	s.launcher.st.SetWithout(without...)
+}
+
+// followOutputs keeps up with the displays of a compositor that takes
+// its settings from the shell: a display that came is given its rule (a
+// rule for one that is away was passed over), and the Displays page shows
+// them as they now are.
+func (s *shellUI) followOutputs(old, now []compositor.Output) {
+	if slices.Equal(old, now) {
+		return
+	}
+	name := func(o compositor.Output) string { return o.Name }
+	came := slices.ContainsFunc(now, func(o compositor.Output) bool {
+		return !slices.ContainsFunc(old, func(p compositor.Output) bool { return name(p) == name(o) })
+	})
+	if came && len(old) > 0 && len(s.cfg.Displays.Monitors) > 0 {
+		s.applyHyprland()
+	}
+	if s.settings.win != nil {
+		s.showDisplays()
+	}
+}
+
 // refocusPointer moves the pointer to where it is, once a panel that covers
 // the screen has appeared. Hyprland leaves the pointer with the surface it
 // was over until it moves, so a click without moving (a second tap on the

@@ -350,7 +350,7 @@ msgstr "%d %%, en charge"
 #: internal/ui/settings.go:342
 #: internal/ui/settings.go:785
 #: internal/ui/settings.go:891
-#: internal/ui/settings_displays.go:426
+#: internal/ui/settings_displays.go:460
 msgid "%d%%"
 msgstr "%d %%"
 
@@ -2149,8 +2149,8 @@ msgstr "Le service démarre."
 #: internal/termui/headmenu.go:164
 #: internal/termui/prefsweb.go:130
 #: internal/ui/settings_bluetooth.go:214
-#: internal/ui/settings_displays.go:302
-#: internal/ui/settings_displays.go:397
+#: internal/ui/settings_displays.go:331
+#: internal/ui/settings_displays.go:431
 #: internal/ui/settings_wifi.go:285
 #: ui/remote.ui:359
 #: ui/settings.ui:5885
@@ -13057,56 +13057,56 @@ msgstr "[FENÊTRES]"
 msgid "[APPS]"
 msgstr "[APPLICATIONS]"
 
-#: internal/shell/launcher.go:336
+#: internal/shell/launcher.go:352
 msgid "That window has closed"
 msgstr "Cette fenêtre s'est fermée"
 
-#: internal/shell/launcher.go:363
+#: internal/shell/launcher.go:379
 msgid "Ask the assistant anything"
 msgstr "Demandez n'importe quoi à l'assistant"
 
-#: internal/shell/launcher.go:365
+#: internal/shell/launcher.go:381
 msgid "No emoji or symbol matches"
 msgstr "Aucune correspondance d'emoji ou de symbole"
 
-#: internal/shell/launcher.go:367
+#: internal/shell/launcher.go:383
 msgid "Reading apps…"
 msgstr "Lecture d’applications…"
 
-#: internal/shell/launcher.go:369
+#: internal/shell/launcher.go:385
 msgid "No app matches"
 msgstr "Aucune application ne correspond"
 
-#: internal/shell/launcher.go:371
+#: internal/shell/launcher.go:387
 msgid "Not connected to Hyprland"
 msgstr "Non connecté à Hyprland"
 
-#: internal/shell/launcher.go:373
+#: internal/shell/launcher.go:389
 msgid "No windows open"
 msgstr "Aucune fenêtre ouverte"
 
-#: internal/shell/launcher.go:375
+#: internal/shell/launcher.go:391
 msgid "No window matches"
 msgstr "Aucune fenêtre ne correspond"
 
-#: internal/shell/launcher.go:414
+#: internal/shell/launcher.go:430
 msgid "Enter asks"
 msgstr "Entrée pour demander"
 
-#: internal/shell/launcher.go:426
+#: internal/shell/launcher.go:442
 msgid "or start with ?"
 msgstr "ou commencer par ?"
 
-#: internal/shell/launcher.go:429
+#: internal/shell/launcher.go:445
 msgid "%s · Enter copies"
 msgstr "%s · Entrée pour copier"
 
-#: internal/shell/launcher.go:479
+#: internal/shell/launcher.go:495
 #: ui/vm.ui:915
 msgid "Ask the assistant"
 msgstr "Demandez à l'assistant"
 
-#: internal/shell/launcher.go:516
+#: internal/shell/launcher.go:532
 msgid "%s · workspace %s"
 msgstr "%[1]s · espace de travail %[2]s"
 
@@ -14841,13 +14841,13 @@ msgstr "Non appliqué à Hyprland : %s"
 
 #: internal/ui/input.go:126
 #: internal/ui/input.go:143
-#: internal/ui/settings_displays.go:318
+#: internal/ui/settings_displays.go:352
 msgid "Set by inua"
 msgstr "Défini par inua"
 
 #: internal/ui/input.go:128
 #: internal/ui/input.go:145
-#: internal/ui/settings_displays.go:316
+#: internal/ui/settings_displays.go:347
 msgid "Set in hyprland.conf"
 msgstr "Situé dans hyprland.conf"
 
@@ -14875,7 +14875,7 @@ msgstr "hyprland.lua redéfinit ces réglages après avoir chargé inua.lua, ce 
 msgid "hyprland.conf sets these again after loading inua.conf, which wins over inua: %s. Move the source line below them."
 msgstr "hyprland.conf les définit à nouveau après le chargement d'inua.conf, qui l'emporte sur inua : %s. Déplacez la ligne source en dessous d’eux."
 
-#: internal/ui/launcher.go:517
+#: internal/ui/launcher.go:543
 msgid "inua launcher"
 msgstr "lanceur inua"
 
@@ -16010,7 +16010,8 @@ msgid "Nothing inua knows"
 msgstr ""
 
 #: internal/ui/settings_compositor.go:224
-#: internal/ui/settings_displays.go:193
+#: internal/ui/settings_displays.go:185
+#: internal/ui/settings_displays.go:217
 msgid "Not available on %s"
 msgstr ""
 
@@ -16091,123 +16092,131 @@ msgstr "Non ajouté : un thème contient des lignes @define-color avec des coule
 msgid "Not added: %s"
 msgstr "Non ajouté : %s"
 
-#: internal/ui/settings_displays.go:52
-#: internal/ui/settings_displays.go:424
+#: internal/ui/settings_displays.go:54
+#: internal/ui/settings_displays.go:458
 msgid "Automatic"
 msgstr "Automatique"
 
-#: internal/ui/settings_displays.go:53
+#: internal/ui/settings_displays.go:55
 msgid "Left of the others"
 msgstr "À gauche des autres"
 
-#: internal/ui/settings_displays.go:54
+#: internal/ui/settings_displays.go:56
 msgid "Right of the others"
 msgstr "À droite des autres"
 
-#: internal/ui/settings_displays.go:55
+#: internal/ui/settings_displays.go:57
 msgid "Above the others"
 msgstr "Au-dessus des autres"
 
-#: internal/ui/settings_displays.go:56
+#: internal/ui/settings_displays.go:58
 msgid "Below the others"
 msgstr "Au-dessous des autres"
 
-#: internal/ui/settings_displays.go:186
+#: internal/ui/settings_displays.go:210
 msgid "No displays"
 msgstr "Aucun écran"
 
-#: internal/ui/settings_displays.go:188
+#: internal/ui/settings_displays.go:212
 #: ui/settings.ui:5638
 msgid "Displays"
 msgstr "Écrans"
 
-#: internal/ui/settings_displays.go:191
-msgid "Hyprland lists no displays"
-msgstr "Hyprland n’indique aucun écran"
+#: internal/ui/settings_displays.go:215
+msgid "%s lists no displays"
+msgstr ""
 
-#: internal/ui/settings_displays.go:191
-msgid "Is the shell connected to Hyprland?"
-msgstr "Le shell est-il connecté à Hyprland ?"
+#: internal/ui/settings_displays.go:215
+msgid "Is the shell connected to %s?"
+msgstr ""
 
-#: internal/ui/settings_displays.go:193
+#: internal/ui/settings_displays.go:217
 msgid "Resolution, scale and arrangement are set in the compositor's own configuration."
 msgstr ""
 
-#: internal/ui/settings_displays.go:228
+#: internal/ui/settings_displays.go:252
 msgid "Use this display"
 msgstr "Utiliser cet écran"
 
-#: internal/ui/settings_displays.go:242
+#: internal/ui/settings_displays.go:266
 msgid "Preferred"
 msgstr "Préférée"
 
-#: internal/ui/settings_displays.go:253
+#: internal/ui/settings_displays.go:277
 #: ui/remote.ui:760
 msgid "Resolution"
 msgstr "Résolution"
 
-#: internal/ui/settings_displays.go:274
+#: internal/ui/settings_displays.go:303
 msgid "%s (Hyprland uses %s)"
 msgstr "%s (Hyprland utilise %s)"
 
-#: internal/ui/settings_displays.go:279
+#: internal/ui/settings_displays.go:308
 msgid "Scale"
 msgstr "Échelle"
 
-#: internal/ui/settings_displays.go:279
+#: internal/ui/settings_displays.go:308
 msgid "Text and windows larger or smaller"
 msgstr "Texte et fenêtres plus grands ou plus petits"
 
-#: internal/ui/settings_displays.go:292
+#: internal/ui/settings_displays.go:321
 msgid "Where it is (%s, %s)"
 msgstr "Là où il est (%s, %s)"
 
-#: internal/ui/settings_displays.go:294
+#: internal/ui/settings_displays.go:323
 #: ui/settings.ui:1605
 msgid "Position"
 msgstr "Poste"
 
-#: internal/ui/settings_displays.go:305
-#: internal/ui/settings_displays.go:309
+#: internal/ui/settings_displays.go:334
+#: internal/ui/settings_displays.go:338
 msgid "Same picture as %s"
 msgstr "La même image que %s"
 
-#: internal/ui/settings_displays.go:311
+#: internal/ui/settings_displays.go:340
 msgid "Mirror"
 msgstr "Recopie"
 
-#: internal/ui/settings_displays.go:321
+#: internal/ui/settings_displays.go:347
 #: ui/settings.ui:6036
 #: ui/settings.ui:6303
 msgid "Use hyprland.conf"
 msgstr "Utilisez hyprland.conf"
 
-#: internal/ui/settings_displays.go:324
+#: internal/ui/settings_displays.go:349
+msgid "Set in %s's own configuration"
+msgstr ""
+
+#: internal/ui/settings_displays.go:349
+msgid "Use %s's"
+msgstr ""
+
+#: internal/ui/settings_displays.go:358
 msgid "Stop setting this display in inua"
 msgstr "Ne plus régler cet écran dans inua"
 
-#: internal/ui/settings_displays.go:382
+#: internal/ui/settings_displays.go:416
 msgid "Built-in display"
 msgstr "Écran intégré"
 
-#: internal/ui/settings_displays.go:395
+#: internal/ui/settings_displays.go:429
 msgid "Off while the lid is closed"
 msgstr "Éteint tant que l’écran est rabattu"
 
-#: internal/ui/settings_displays.go:401
-#: internal/ui/settings_displays.go:404
+#: internal/ui/settings_displays.go:435
+#: internal/ui/settings_displays.go:438
 msgid "Shows the same picture as %s"
 msgstr "Affiche la même image que %s"
 
-#: internal/ui/settings_displays.go:406
+#: internal/ui/settings_displays.go:440
 msgid "%s, at %s"
 msgstr "%s, à %s"
 
-#: internal/ui/settings_displays.go:416
+#: internal/ui/settings_displays.go:450
 msgid "%d × %d"
 msgstr "%d × %d"
 
-#: internal/ui/settings_displays.go:418
+#: internal/ui/settings_displays.go:452
 msgid "%d × %d, %s Hz"
 msgstr "%d × %d, %s Hz"
 

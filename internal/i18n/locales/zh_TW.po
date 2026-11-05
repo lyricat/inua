@@ -350,7 +350,7 @@ msgstr "%d%%，正在充電"
 #: internal/ui/settings.go:342
 #: internal/ui/settings.go:785
 #: internal/ui/settings.go:891
-#: internal/ui/settings_displays.go:426
+#: internal/ui/settings_displays.go:460
 msgid "%d%%"
 msgstr "%d%%"
 
@@ -2144,8 +2144,8 @@ msgstr "服務正在啟動。"
 #: internal/termui/headmenu.go:164
 #: internal/termui/prefsweb.go:130
 #: internal/ui/settings_bluetooth.go:214
-#: internal/ui/settings_displays.go:302
-#: internal/ui/settings_displays.go:397
+#: internal/ui/settings_displays.go:331
+#: internal/ui/settings_displays.go:431
 #: internal/ui/settings_wifi.go:285
 #: ui/remote.ui:359
 #: ui/settings.ui:5885
@@ -12986,56 +12986,56 @@ msgstr "[視窗]"
 msgid "[APPS]"
 msgstr "[應用]"
 
-#: internal/shell/launcher.go:336
+#: internal/shell/launcher.go:352
 msgid "That window has closed"
 msgstr "該視窗已關閉"
 
-#: internal/shell/launcher.go:363
+#: internal/shell/launcher.go:379
 msgid "Ask the assistant anything"
 msgstr "有什麼事情都可以向助理詢問"
 
-#: internal/shell/launcher.go:365
+#: internal/shell/launcher.go:381
 msgid "No emoji or symbol matches"
 msgstr "沒有表情符號或符號匹配"
 
-#: internal/shell/launcher.go:367
+#: internal/shell/launcher.go:383
 msgid "Reading apps…"
 msgstr "閱讀應用程式…"
 
-#: internal/shell/launcher.go:369
+#: internal/shell/launcher.go:385
 msgid "No app matches"
 msgstr "沒有應用程式匹配"
 
-#: internal/shell/launcher.go:371
+#: internal/shell/launcher.go:387
 msgid "Not connected to Hyprland"
 msgstr "未連接到 Hyprland"
 
-#: internal/shell/launcher.go:373
+#: internal/shell/launcher.go:389
 msgid "No windows open"
 msgstr "沒有開啟的視窗"
 
-#: internal/shell/launcher.go:375
+#: internal/shell/launcher.go:391
 msgid "No window matches"
 msgstr "沒有視窗匹配"
 
-#: internal/shell/launcher.go:414
+#: internal/shell/launcher.go:430
 msgid "Enter asks"
 msgstr "按 Enter 提問"
 
-#: internal/shell/launcher.go:426
+#: internal/shell/launcher.go:442
 msgid "or start with ?"
 msgstr "或開始於？"
 
-#: internal/shell/launcher.go:429
+#: internal/shell/launcher.go:445
 msgid "%s · Enter copies"
 msgstr "%s · 按 Enter 複製"
 
-#: internal/shell/launcher.go:479
+#: internal/shell/launcher.go:495
 #: ui/vm.ui:915
 msgid "Ask the assistant"
 msgstr "詢問助理"
 
-#: internal/shell/launcher.go:516
+#: internal/shell/launcher.go:532
 msgid "%s · workspace %s"
 msgstr "%[1]s·工作區%[2]s"
 
@@ -14760,13 +14760,13 @@ msgstr "不適用於 Hyprland:%s"
 
 #: internal/ui/input.go:126
 #: internal/ui/input.go:143
-#: internal/ui/settings_displays.go:318
+#: internal/ui/settings_displays.go:352
 msgid "Set by inua"
 msgstr "由inua設定"
 
 #: internal/ui/input.go:128
 #: internal/ui/input.go:145
-#: internal/ui/settings_displays.go:316
+#: internal/ui/settings_displays.go:347
 msgid "Set in hyprland.conf"
 msgstr "在hyprland.conf中設置"
 
@@ -14794,7 +14794,7 @@ msgstr "hyprland.lua 在載入 inua.lua 之後又設定了這些,會蓋過 inua 
 msgid "hyprland.conf sets these again after loading inua.conf, which wins over inua: %s. Move the source line below them."
 msgstr "hyprland.conf 在載入 inua.conf 後再次設定這些,這贏得了 inua: %s。將原始程式碼行移到它們下方。"
 
-#: internal/ui/launcher.go:517
+#: internal/ui/launcher.go:543
 msgid "inua launcher"
 msgstr "inua發射器"
 
@@ -15923,7 +15923,8 @@ msgid "Nothing inua knows"
 msgstr ""
 
 #: internal/ui/settings_compositor.go:224
-#: internal/ui/settings_displays.go:193
+#: internal/ui/settings_displays.go:185
+#: internal/ui/settings_displays.go:217
 msgid "Not available on %s"
 msgstr ""
 
@@ -16004,123 +16005,131 @@ msgstr "未新增：主題須包含使用 #rrggbb 色彩的 @define-color 行"
 msgid "Not added: %s"
 msgstr "未新增：%s"
 
-#: internal/ui/settings_displays.go:52
-#: internal/ui/settings_displays.go:424
+#: internal/ui/settings_displays.go:54
+#: internal/ui/settings_displays.go:458
 msgid "Automatic"
 msgstr "自動"
 
-#: internal/ui/settings_displays.go:53
+#: internal/ui/settings_displays.go:55
 msgid "Left of the others"
 msgstr "在其他顯示器左側"
 
-#: internal/ui/settings_displays.go:54
+#: internal/ui/settings_displays.go:56
 msgid "Right of the others"
 msgstr "在其他顯示器右側"
 
-#: internal/ui/settings_displays.go:55
+#: internal/ui/settings_displays.go:57
 msgid "Above the others"
 msgstr "在其他顯示器上方"
 
-#: internal/ui/settings_displays.go:56
+#: internal/ui/settings_displays.go:58
 msgid "Below the others"
 msgstr "在其他顯示器下方"
 
-#: internal/ui/settings_displays.go:186
+#: internal/ui/settings_displays.go:210
 msgid "No displays"
 msgstr "沒有顯示器"
 
-#: internal/ui/settings_displays.go:188
+#: internal/ui/settings_displays.go:212
 #: ui/settings.ui:5638
 msgid "Displays"
 msgstr "顯示器"
 
-#: internal/ui/settings_displays.go:191
-msgid "Hyprland lists no displays"
-msgstr "Hyprland 沒有列出顯示器"
+#: internal/ui/settings_displays.go:215
+msgid "%s lists no displays"
+msgstr ""
 
-#: internal/ui/settings_displays.go:191
-msgid "Is the shell connected to Hyprland?"
-msgstr "shell 是否已連接到 Hyprland?"
+#: internal/ui/settings_displays.go:215
+msgid "Is the shell connected to %s?"
+msgstr ""
 
-#: internal/ui/settings_displays.go:193
+#: internal/ui/settings_displays.go:217
 msgid "Resolution, scale and arrangement are set in the compositor's own configuration."
 msgstr ""
 
-#: internal/ui/settings_displays.go:228
+#: internal/ui/settings_displays.go:252
 msgid "Use this display"
 msgstr "使用此顯示器"
 
-#: internal/ui/settings_displays.go:242
+#: internal/ui/settings_displays.go:266
 msgid "Preferred"
 msgstr "建議"
 
-#: internal/ui/settings_displays.go:253
+#: internal/ui/settings_displays.go:277
 #: ui/remote.ui:760
 msgid "Resolution"
 msgstr "解析度"
 
-#: internal/ui/settings_displays.go:274
+#: internal/ui/settings_displays.go:303
 msgid "%s (Hyprland uses %s)"
 msgstr "%s(Hyprland 使用 %s)"
 
-#: internal/ui/settings_displays.go:279
+#: internal/ui/settings_displays.go:308
 msgid "Scale"
 msgstr "縮放"
 
-#: internal/ui/settings_displays.go:279
+#: internal/ui/settings_displays.go:308
 msgid "Text and windows larger or smaller"
 msgstr "讓文字和視窗更大或更小"
 
-#: internal/ui/settings_displays.go:292
+#: internal/ui/settings_displays.go:321
 msgid "Where it is (%s, %s)"
 msgstr "目前位置 (%s, %s)"
 
-#: internal/ui/settings_displays.go:294
+#: internal/ui/settings_displays.go:323
 #: ui/settings.ui:1605
 msgid "Position"
 msgstr "位置"
 
-#: internal/ui/settings_displays.go:305
-#: internal/ui/settings_displays.go:309
+#: internal/ui/settings_displays.go:334
+#: internal/ui/settings_displays.go:338
 msgid "Same picture as %s"
 msgstr "與%s顯示相同畫面"
 
-#: internal/ui/settings_displays.go:311
+#: internal/ui/settings_displays.go:340
 msgid "Mirror"
 msgstr "鏡像"
 
-#: internal/ui/settings_displays.go:321
+#: internal/ui/settings_displays.go:347
 #: ui/settings.ui:6036
 #: ui/settings.ui:6303
 msgid "Use hyprland.conf"
 msgstr "使用hyprland.conf"
 
-#: internal/ui/settings_displays.go:324
+#: internal/ui/settings_displays.go:349
+msgid "Set in %s's own configuration"
+msgstr ""
+
+#: internal/ui/settings_displays.go:349
+msgid "Use %s's"
+msgstr ""
+
+#: internal/ui/settings_displays.go:358
 msgid "Stop setting this display in inua"
 msgstr "不再在 inua 中設定此顯示器"
 
-#: internal/ui/settings_displays.go:382
+#: internal/ui/settings_displays.go:416
 msgid "Built-in display"
 msgstr "內建顯示器"
 
-#: internal/ui/settings_displays.go:395
+#: internal/ui/settings_displays.go:429
 msgid "Off while the lid is closed"
 msgstr "闔上蓋子時關閉"
 
-#: internal/ui/settings_displays.go:401
-#: internal/ui/settings_displays.go:404
+#: internal/ui/settings_displays.go:435
+#: internal/ui/settings_displays.go:438
 msgid "Shows the same picture as %s"
 msgstr "顯示與%s相同的畫面"
 
-#: internal/ui/settings_displays.go:406
+#: internal/ui/settings_displays.go:440
 msgid "%s, at %s"
 msgstr "%s,%s"
 
-#: internal/ui/settings_displays.go:416
+#: internal/ui/settings_displays.go:450
 msgid "%d × %d"
 msgstr "%d × %d"
 
-#: internal/ui/settings_displays.go:418
+#: internal/ui/settings_displays.go:452
 msgid "%d × %d, %s Hz"
 msgstr "%d × %d,%s Hz"
 

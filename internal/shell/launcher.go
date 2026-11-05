@@ -113,9 +113,25 @@ type Launcher struct {
 	notice    string         // feedback about the last action, cleared by the next input
 	webSearch string         // the web search's address, %s for the words
 	links     []Quicklink
-	armed     string // the command that asked for Enter again
-	assistant bool   // the assistant is installed and on
+	armed     string   // the command that asked for Enter again
+	without   []string // window commands the compositor has no way to do
+	assistant bool     // the assistant is installed and on
 }
+
+// SetWithout names the window commands not to offer ("float" where
+// every window floats).
+func (l *Launcher) SetWithout(commands ...string) {
+	if slices.Equal(l.without, commands) {
+		return
+	}
+	l.without = commands
+	if l.Open && l.Mode == Apps {
+		l.search(false)
+	}
+}
+
+// Without reports whether a command is not offered.
+func (l *Launcher) Without(command string) bool { return slices.Contains(l.without, command) }
 
 // SetAssistant offers the assistant: a last row for any query, and a
 // query starting with "?" asks it at once.
@@ -416,7 +432,7 @@ func (l *Launcher) search(keep bool) {
 			return
 		}
 		// Apps and commands, best first; on a tie the app.
-		l.Results = append(searchApps(l.apps, q), searchCommands(q, l.windowTitle(l.previous))...)
+		l.Results = append(searchApps(l.apps, q), searchCommands(q, l.windowTitle(l.previous), l.without)...)
 		slices.SortStableFunc(l.Results, func(a, b Result) int { return b.score - a.score })
 		// A question ("10 km to mi", "2^10") answers first, then a
 		// quicklink or a web address; the web search comes last.

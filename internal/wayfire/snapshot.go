@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"math"
 	"sort"
 	"strconv"
 	"strings"
@@ -11,7 +12,19 @@ import (
 	"github.com/lyricat/inua/internal/compositor"
 )
 
+// rect is a place in whole logical pixels. Wayfire writes one as numbers
+// that are a hair off whole on a scaled output (2357.99995), which would
+// lose a pixel when cut to an int.
 type rect struct{ X, Y, Width, Height float64 }
+
+func (r *rect) UnmarshalJSON(b []byte) error {
+	var raw struct{ X, Y, Width, Height float64 }
+	if err := json.Unmarshal(b, &raw); err != nil {
+		return err
+	}
+	*r = rect{math.Round(raw.X), math.Round(raw.Y), math.Round(raw.Width), math.Round(raw.Height)}
+	return nil
+}
 
 type cell struct {
 	X          int `json:"x"`
@@ -30,20 +43,37 @@ type output struct {
 }
 
 type view struct {
-	ID        int    `json:"id"`
-	PID       int    `json:"pid"`
-	Title     string `json:"title"`
-	AppID     string `json:"app-id"`
-	Geometry  rect   `json:"geometry"`
-	OutputID  int    `json:"output-id"`
-	Output    string `json:"output-name"`
-	LastFocus int64  `json:"last-focus-timestamp"`
-	Role      string `json:"role"`
-	Mapped    bool   `json:"mapped"`
-	Activated bool   `json:"activated"`
-	TiledEdge int    `json:"tiled-edges"`
-	WSet      int    `json:"wset-index"`
-	Type      string `json:"type"`
+	ID         int    `json:"id"`
+	PID        int    `json:"pid"`
+	Title      string `json:"title"`
+	AppID      string `json:"app-id"`
+	Geometry   rect   `json:"geometry"`
+	OutputID   int    `json:"output-id"`
+	Output     string `json:"output-name"`
+	LastFocus  int64  `json:"last-focus-timestamp"`
+	Role       string `json:"role"`
+	Mapped     bool   `json:"mapped"`
+	Activated  bool   `json:"activated"`
+	TiledEdge  int    `json:"tiled-edges"`
+	Fullscreen bool   `json:"fullscreen"`
+	Minimized  bool   `json:"minimized"`
+	WSet       index  `json:"wset-index"`
+	Type       string `json:"type"`
+}
+
+// index is a workspace set's index, -1 for a view in none (the shell's
+// own surfaces). Wayfire 0.9 writes that one as 2^64-1, which no int
+// takes, and one such view would lose the whole list.
+type index int
+
+func (i *index) UnmarshalJSON(b []byte) error {
+	f, err := strconv.ParseFloat(string(b), 64)
+	if err != nil || f < 0 || f > math.MaxInt32 {
+		*i = -1
+		return nil
+	}
+	*i = index(f)
+	return nil
 }
 
 // state is one read of Wayfire.
@@ -153,7 +183,7 @@ func (s state) snapshot() compositor.Snapshot {
 		}
 		if o, ok := byID[v.OutputID]; ok {
 			x, y := cellOf(v, o)
-			w.Workspace = workspaceID(v.WSet, x, y)
+			w.Workspace = workspaceID(int(v.WSet), x, y)
 			// The place within the window's own cell, in global pixels.
 			w.Geometry = &compositor.Rect{
 				X: int(o.Geometry.X+v.Geometry.X) - (x-o.Workspace.X)*int(o.Geometry.Width),

@@ -81,6 +81,7 @@ func (b *Backend) Capabilities() compositor.Capabilities {
 		compositor.CapMoveWithoutFollow: compositor.Supported,
 		compositor.CapWorkspaces:        compositor.Supported, compositor.CapQuietFocus: compositor.Supported,
 		compositor.CapPlacement: compositor.Supported, compositor.CapRules: compositor.Supported,
+		compositor.CapArrange: compositor.Supported, compositor.CapFloating: compositor.Supported,
 		compositor.CapKeyboard: settings, compositor.CapTouchpad: settings, compositor.CapBinds: settings,
 	}
 }
@@ -235,6 +236,29 @@ func (b *Backend) FocusWindow(ctx context.Context, id string) error {
 // warp-mouse-to-focus is set.
 func (b *Backend) FocusWindowQuietly(ctx context.Context, id string) error {
 	return b.FocusWindow(ctx, id)
+}
+
+// windowAction runs one of niri's actions that take a window's id.
+func (b *Backend) windowAction(ctx context.Context, action, id string) error {
+	n, err := parseID(id)
+	if err != nil {
+		return err
+	}
+	return b.Client.Action(ctx, action, map[string]any{"id": n})
+}
+
+func (b *Backend) ToggleFullscreen(ctx context.Context, id string) error {
+	return b.windowAction(ctx, "FullscreenWindow", id)
+}
+
+// CenterWindow centres a floating window on its screen, a tiled one's
+// column in the view.
+func (b *Backend) CenterWindow(ctx context.Context, id string) error {
+	return b.windowAction(ctx, "CenterWindow", id)
+}
+
+func (b *Backend) ToggleFloating(ctx context.Context, id string) error {
+	return b.windowAction(ctx, "ToggleWindowFloating", id)
 }
 
 func (b *Backend) CloseWindow(ctx context.Context, id string) error {

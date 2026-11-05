@@ -1,6 +1,6 @@
 // Package compsettings turns inua's settings into the neutral form a
 // compositor backend applies (compositor.Settings): the same keyboard,
-// touchpad and shortcut settings whichever compositor runs.
+// touchpad, shortcut and display settings whichever compositor runs.
 package compsettings
 
 import (
@@ -20,6 +20,9 @@ func From(c config.Config) compositor.Settings {
 		// A shortcut with no keys or no command (dictation while it is off)
 		// still takes its old keys away where the compositor can.
 		s.Binds = append(s.Binds, compositor.KeyBind{Keys: sc.Keys, Command: hyprconf.ShortcutCommand(c, sc), Replaces: sc.Replaces})
+	}
+	for _, m := range c.Displays.Monitors {
+		s.Displays = append(s.Displays, compositor.DisplayRule{Output: m.Output, Disabled: m.Disabled, Mode: m.Mode, Position: m.Position, Scale: m.Scale, Mirror: m.Mirror})
 	}
 	return s
 }

@@ -13,7 +13,8 @@ import (
 )
 
 // Wayfire takes inua's settings over its IPC while it runs: the input
-// options by wayfire/set-config-options, the shortcuts as bindings of the
+// and output options by wayfire/set-config-options (the displays are in
+// displays.go), the shortcuts as bindings of the
 // command plugin (command/register-binding). Nothing is written to
 // wayfire.ini; the shell applies them again each time it starts. The ids
 // of the bindings it registered are kept in the runtime directory, so the
@@ -185,6 +186,9 @@ func commandBinds(command map[string]string) (binds []compositor.Bind) {
 
 // Binds are the shortcuts in Wayfire's own config that run commands.
 func (b *Backend) Binds(ctx context.Context) ([]compositor.Bind, error) {
+	if !b.has("wayfire/list-config-options") {
+		return nil, nil // Wayfire 0.9 cannot list its options
+	}
 	opts, err := b.options(ctx)
 	if err != nil {
 		return nil, err
@@ -220,6 +224,9 @@ func (b *Backend) ApplySettings(ctx context.Context, s compositor.Settings) erro
 		if err := b.call(ctx, "wayfire/set-config-options", input); err != nil {
 			return err
 		}
+	}
+	if err := b.applyDisplays(ctx, s.Displays); err != nil {
+		return err
 	}
 	if !b.has("command/register-binding") {
 		if len(s.Binds) > 0 {
@@ -284,7 +291,7 @@ func (b *Backend) Hint(c compositor.Capability) string {
 		if !b.has("command/register-binding") {
 			return "Add command to the plugins in Wayfire's wayfire.ini."
 		}
-	case compositor.CapKeyboard, compositor.CapTouchpad:
+	case compositor.CapKeyboard, compositor.CapTouchpad, compositor.CapDisplays:
 		if !b.has("wayfire/set-config-options") {
 			return "Add ipc and ipc-rules to the plugins in Wayfire's wayfire.ini."
 		}

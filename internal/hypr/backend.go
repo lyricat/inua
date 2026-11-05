@@ -152,7 +152,8 @@ func (b *Backend) Capabilities() compositor.Capabilities {
 		compositor.CapPointer: compositor.Supported, compositor.CapPlacement: compositor.Supported,
 		compositor.CapModes: compositor.Supported, compositor.CapRules: compositor.Supported,
 		compositor.CapOnDemandFocus: compositor.Supported,
-		compositor.CapKeyboard:      compositor.Supported, compositor.CapTouchpad: compositor.Supported,
+		compositor.CapArrange:       compositor.Supported, compositor.CapFloating: compositor.Supported,
+		compositor.CapKeyboard: compositor.Supported, compositor.CapTouchpad: compositor.Supported,
 	}
 }
 
@@ -182,6 +183,27 @@ func (b *Backend) FocusWindow(ctx context.Context, id string) error {
 
 func (b *Backend) CloseWindow(ctx context.Context, id string) error {
 	return b.Dispatch(ctx, "closewindow "+window(id), fmt.Sprintf(`hl.dsp.window.close({window=%q})`, window(id)))
+}
+
+// ToggleFloating takes a window out of the tiling, or puts it back.
+func (b *Backend) ToggleFloating(ctx context.Context, id string) error {
+	return b.Dispatch(ctx, "togglefloating "+window(id), "")
+}
+
+// ToggleFullscreen and CenterWindow act on the focused window, so the
+// window is focused first.
+func (b *Backend) ToggleFullscreen(ctx context.Context, id string) error {
+	if err := b.Dispatch(ctx, "focuswindow "+window(id), ""); err != nil {
+		return err
+	}
+	return b.Dispatch(ctx, "fullscreen 0", "")
+}
+
+func (b *Backend) CenterWindow(ctx context.Context, id string) error {
+	if err := b.Dispatch(ctx, "focuswindow "+window(id), ""); err != nil {
+		return err
+	}
+	return b.Dispatch(ctx, "centerwindow", "")
 }
 
 // Exit ends the Hyprland session.

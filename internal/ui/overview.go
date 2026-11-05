@@ -1037,7 +1037,7 @@ func (s *shellUI) buildOverview(o *workspaceOverview) {
 	if s.layer {
 		layershell.InitForWindow(w)
 		layershell.SetNamespace(w, "inua-overview")
-		layershell.SetLayer(w, layershell.LayerTop)
+		layershell.SetLayer(w, s.panelLayer())
 		layershell.SetKeyboardMode(w, s.overviewKeyboardMode())
 		for _, e := range []layershell.Edge{layershell.EdgeTop, layershell.EdgeBottom, layershell.EdgeLeft, layershell.EdgeRight} {
 			layershell.SetAnchor(w, e, true)

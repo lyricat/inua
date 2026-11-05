@@ -386,6 +386,7 @@ func (s *shellUI) applyBackendSettings(cf compositor.Configurer) {
 				s.setStatus(i18n.Tf("Not applied to %s: %s", s.compositorName(), err.Error()), true)
 			}
 			s.refreshHyprInput() // the shortcuts and hints as they are now
+			s.showDisplays()     // and the displays, which a rule may not have moved
 		})
 	}()
 }

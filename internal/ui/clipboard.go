@@ -343,7 +343,7 @@ func (s *shellUI) openClipboard(mon *gdk.Monitor) {
 		w := c.win.GoPointer()
 		layershell.InitForWindow(w)
 		layershell.SetNamespace(w, "inua-clipboard")
-		layershell.SetLayer(w, layershell.LayerTop)
+		layershell.SetLayer(w, s.panelLayer())
 		layershell.SetKeyboardMode(w, layershell.KeyboardExclusive)
 		for _, edge := range []layershell.Edge{layershell.EdgeTop, layershell.EdgeBottom, layershell.EdgeLeft, layershell.EdgeRight} {
 			layershell.SetAnchor(w, edge, true)
@@ -622,7 +622,15 @@ func (s *shellUI) pasteClipboard(entry clipboard.Entry, action string) {
 		if action == "copy" || (keys != nil && target == "") {
 			return
 		}
-		time.Sleep(150 * time.Millisecond) // the panel has let go of the keyboard
+		// The panel has let go of the keyboard. Keys sent to a window by
+		// name need only that; keys typed into whatever is focused need
+		// the compositor to have given the keyboard back, which Wayfire
+		// 0.9 does between 150 and 300 ms after the panel goes.
+		wait := 150 * time.Millisecond
+		if keys == nil {
+			wait = 350 * time.Millisecond
+		}
+		time.Sleep(wait)
 		mods := "CTRL"
 		if slices.ContainsFunc(terminalClasses, func(t string) bool { return strings.Contains(class, t) }) {
 			mods = "CTRL SHIFT"

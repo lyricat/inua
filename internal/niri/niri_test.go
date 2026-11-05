@@ -281,6 +281,9 @@ func TestBackendStreamAndActions(t *testing.T) {
 		func() error { return b.MoveWorkspace(ctx, "2", "HDMI-A-1") },
 		func() error { return b.FocusOutput(ctx, "HDMI-A-1") },
 		func() error { return b.CloseWindow(ctx, "10") },
+		func() error { return b.ToggleFullscreen(ctx, "10") },
+		func() error { return b.ToggleFloating(ctx, "10") },
+		func() error { return b.CenterWindow(ctx, "10") },
 	} {
 		if err := do(); err != nil {
 			t.Fatal(err)
@@ -290,6 +293,7 @@ func TestBackendStreamAndActions(t *testing.T) {
 		`FocusWindow {"id":10}`, `MoveWindowToWorkspace {"focus":false,"reference":{"Id":2},"window_id":10}`,
 		`FocusWorkspace {"reference":{"Id":2}}`, `MoveWorkspaceToMonitor {"output":"HDMI-A-1","reference":{"Id":2}}`,
 		`FocusMonitor {"output":"HDMI-A-1"}`, `CloseWindow {"id":10}`,
+		`FullscreenWindow {"id":10}`, `ToggleWindowFloating {"id":10}`, `CenterWindow {"id":10}`,
 	}
 	if got := f.did(); !slices.Equal(got, want) {
 		t.Fatalf("actions %q\nwant %q", got, want)
