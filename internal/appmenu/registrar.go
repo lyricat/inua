@@ -281,10 +281,9 @@ func (r *Registrar) removeOwner(owner string) {
 	}
 }
 
-// ForPID returns the most recently registered endpoint of a focused process.
-// A process registers each of its windows, often all at one menu; the
-// compositor does not say which registered window ID the focused window has,
-// so among several endpoints the latest stands for the process.
+// ForPID returns the menu endpoint of a focused process when it is
+// unambiguous. A process may register the same menu endpoint for several
+// windows, but a PID alone cannot choose between different endpoints.
 func (r *Registrar) ForPID(pid int) (Registration, bool) {
 	if pid <= 0 {
 		return Registration{}, false
@@ -293,7 +292,13 @@ func (r *Registrar) ForPID(pid int) (Registration, bool) {
 	defer r.mu.RUnlock()
 	var found registered
 	for _, v := range r.items {
-		if int(v.PID) == pid && v.seq > found.seq {
+		if int(v.PID) != pid {
+			continue
+		}
+		if found.Service != "" && (found.Service != v.Service || found.Path != v.Path) {
+			return Registration{}, false
+		}
+		if v.seq > found.seq {
 			found = v
 		}
 	}

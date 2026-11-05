@@ -219,12 +219,12 @@ func TestForPIDWithSeveralWindows(t *testing.T) {
 		t.Fatalf("two windows at one menu: registration=%+v ok=%v", reg, ok)
 	}
 	f.register(t, f.client, 44, "/Other")
-	if reg, ok := f.registrar.ForPID(f.pid); !ok || reg.Path != "/Other" {
-		t.Fatalf("a later menu: registration=%+v ok=%v", reg, ok)
+	if reg, ok := f.registrar.ForPID(f.pid); ok {
+		t.Fatalf("ambiguous endpoints must be hidden: registration=%+v", reg)
 	}
 	f.unregister(t, f.client, 44)
 	if reg, ok := f.registrar.ForPID(f.pid); !ok || reg.Window != 43 {
-		t.Fatalf("after it went: registration=%+v ok=%v", reg, ok)
+		t.Fatalf("after ambiguous endpoint was removed: registration=%+v ok=%v", reg, ok)
 	}
 }
 
