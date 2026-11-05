@@ -7,7 +7,7 @@ msgstr ""
 
 #: cmd/inua-assistant/answer.go:36
 #: cmd/inua-assistant/transcribe.go:40
-#: internal/assistantui/assistantui.go:323
+#: internal/assistantui/assistantui.go:366
 #: internal/diskui/details.go:332
 #: internal/mailui/assist.go:43
 msgid "The assistant is turned off. Turn it on in Settings → AI."
@@ -1886,7 +1886,7 @@ msgid "Enter your password to run this command as administrator:\n\n%s"
 msgstr "Escribe tu contraseña para ejecutar este comando como administrador:\n\n%s"
 
 #: internal/asker/asker.go:212
-#: internal/assistantui/assistantui.go:688
+#: internal/assistantui/assistantui.go:734
 #: internal/ui/askpass.go:441
 #: internal/ui/portal_ask.go:60
 #: internal/ui/portal_ask.go:80
@@ -1951,15 +1951,15 @@ msgstr "¿Qué dispositivos en mi tailnet están en línea?"
 msgid "What is the weather this afternoon in Kyoto?"
 msgstr "¿Qué tiempo hace esta tarde en Kioto?"
 
-#: internal/assistantui/assistantui.go:159
+#: internal/assistantui/assistantui.go:170
 msgid "%s answers from here"
 msgstr "%s responde desde aquí"
 
-#: internal/assistantui/assistantui.go:384
+#: internal/assistantui/assistantui.go:427
 msgid "Could not start the Console endpoint: %s"
 msgstr "No se pudo iniciar el punto final de la consola: %s"
 
-#: internal/assistantui/assistantui.go:482
+#: internal/assistantui/assistantui.go:528
 #: internal/lightui/clock.go:497
 #: internal/ui/alarms.go:108
 #: ui/disk.ui:179
@@ -1974,77 +1974,104 @@ msgstr "No se pudo iniciar el punto final de la consola: %s"
 msgid "Stop"
 msgstr "Detener"
 
-#: internal/assistantui/assistantui.go:489
+#: internal/assistantui/assistantui.go:535
 msgid "✕ Not done: %s"
 msgstr "✕ No hecho: %s"
 
-#: internal/assistantui/assistantui.go:500
+#: internal/assistantui/assistantui.go:546
 #: internal/mailui/settings.go:497
 #: ui/assistant.ui:202
 msgid "Ask"
 msgstr "Preguntar"
 
-#: internal/assistantui/assistantui.go:505
+#: internal/assistantui/assistantui.go:551
 msgid "Stopped."
 msgstr "Detenido."
 
-#: internal/assistantui/assistantui.go:508
+#: internal/assistantui/assistantui.go:554
 msgid "Something went wrong: %s"
 msgstr "Algo salió mal: %s"
 
-#: internal/assistantui/assistantui.go:511
+#: internal/assistantui/assistantui.go:557
 msgid "(no answer)"
 msgstr "(sin respuesta)"
 
-#: internal/assistantui/assistantui.go:522
+#: internal/assistantui/assistantui.go:568
 msgid "Voice input records with pw-cat, from PipeWire (pipewire-bin on Debian and Ubuntu, pipewire on Arch, pipewire-utils on Fedora)"
 msgstr "La entrada de voz graba con pw-cat, de PipeWire (pipewire-bin en Debian y Ubuntu, pipewire en Arch, pipewire-utils en Fedora)"
 
-#: internal/assistantui/assistantui.go:524
+#: internal/assistantui/assistantui.go:570
 #: internal/ui/settings_ai.go:730
 #: ui/assistant.ui:193
 msgid "Voice input"
 msgstr "Entrada de voz"
 
-#: internal/assistantui/assistantui.go:532
-#: internal/assistantui/assistantui.go:596
+#: internal/assistantui/assistantui.go:578
+#: internal/assistantui/assistantui.go:642
 msgid "Cannot record: %s"
 msgstr "No se puede grabar: %s"
 
-#: internal/assistantui/assistantui.go:546
+#: internal/assistantui/assistantui.go:592
 msgid "Stop and transcribe"
 msgstr "Detener y transcribir"
 
-#: internal/assistantui/assistantui.go:598
+#: internal/assistantui/assistantui.go:644
 msgid "The assistant is not set up."
 msgstr "El asistente no está configurado."
 
-#: internal/assistantui/assistantui.go:602
+#: internal/assistantui/assistantui.go:648
 msgid "Cannot transcribe: %s"
 msgstr "No se puede transcribir: %s"
 
-#: internal/assistantui/assistantui.go:614
+#: internal/assistantui/assistantui.go:660
 msgid "No speech was heard."
 msgstr "No se oyó ninguna voz."
 
-#: internal/assistantui/assistantui.go:688
+#: internal/assistantui/assistantui.go:734
 msgid "Don't"
 msgstr "No permitir"
 
-#: internal/assistantui/assistantui.go:709
+#: internal/assistantui/assistantui.go:755
 msgid "Not allowed"
 msgstr "No permitido"
 
-#: internal/assistantui/assistantui.go:711
+#: internal/assistantui/assistantui.go:757
 msgid "Canceled"
 msgstr "Cancelado"
 
-#: internal/assistantui/assistantui.go:713
+#: internal/assistantui/assistantui.go:759
 #: ui/settings.ui:4189
 msgid "Allowed"
 msgstr "Permitido"
 
-#: internal/assistantui/assistantui.go:802
+#: internal/assistantui/assistantui.go:793
+#: internal/diskui/details.go:581
+#: internal/filesui/window.go:817
+#: internal/gamesui/lobbyhost.go:169
+#: internal/lightui/calculator.go:350
+#: internal/lightui/pass.go:748
+#: internal/lightui/pass.go:773
+#: internal/mailui/details.go:222
+#: internal/shell/launcher_actions.go:59
+#: internal/term/settings/settings.go:119
+#: internal/term/web/strings.go:36
+#: internal/termui/prefsweb.go:92
+#: internal/ui/askpass.go:232
+#: internal/ui/passwords.go:647
+#: internal/vmui/window.go:896
+#: ui/disk.ui:697
+#: ui/gpg.ui:662
+#: ui/gpg.ui:908
+#: ui/settings.ui:3145
+#: ui/vm.ui:639
+msgid "Copy"
+msgstr "Copiar"
+
+#: internal/assistantui/assistantui.go:801
+msgid "Clipboard is unavailable."
+msgstr "El portapapeles no está disponible."
+
+#: internal/assistantui/assistantui.go:872
 msgid "TRY"
 msgstr "INTENTAR"
 
@@ -3062,28 +3089,6 @@ msgstr "Se ejecuta en %s."
 #: internal/vmui/window.go:893
 msgid "Copied"
 msgstr "Copiado"
-
-#: internal/diskui/details.go:581
-#: internal/filesui/window.go:817
-#: internal/gamesui/lobbyhost.go:169
-#: internal/lightui/calculator.go:350
-#: internal/lightui/pass.go:748
-#: internal/lightui/pass.go:773
-#: internal/mailui/details.go:222
-#: internal/shell/launcher_actions.go:59
-#: internal/term/settings/settings.go:119
-#: internal/term/web/strings.go:36
-#: internal/termui/prefsweb.go:92
-#: internal/ui/askpass.go:232
-#: internal/ui/passwords.go:647
-#: internal/vmui/window.go:896
-#: ui/disk.ui:697
-#: ui/gpg.ui:662
-#: ui/gpg.ui:908
-#: ui/settings.ui:3145
-#: ui/vm.ui:639
-msgid "Copy"
-msgstr "Copiar"
 
 #: internal/diskui/details.go:596
 msgid "Cleans %s, %s now."
