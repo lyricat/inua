@@ -18,6 +18,7 @@ import (
 
 	"github.com/lyricat/inua/internal/dbusexport"
 	"github.com/lyricat/inua/internal/dbustest"
+	"github.com/lyricat/inua/internal/sockdir"
 )
 
 func TestParse(t *testing.T) {
@@ -43,7 +44,7 @@ func TestParse(t *testing.T) {
 // user and cookie, asks for a password, and succeeds for "right".
 func fakeHelper(t *testing.T) chan []string {
 	t.Helper()
-	sock := filepath.Join(t.TempDir(), "helper.socket")
+	sock := filepath.Join(sockdir.New(t), "helper.socket")
 	l, err := net.Listen("unix", sock)
 	if err != nil {
 		t.Fatal(err)

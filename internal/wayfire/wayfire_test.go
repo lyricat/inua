@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/lyricat/inua/internal/compositor"
+	"github.com/lyricat/inua/internal/sockdir"
 )
 
 // What Wayfire 0.11 answered in the experiment (docs/compositor-experiments.md):
@@ -48,7 +49,7 @@ type fakeWayfire struct {
 func newFakeWayfire(t *testing.T) *fakeWayfire {
 	t.Helper()
 	f := &fakeWayfire{
-		socket: filepath.Join(t.TempDir(), "wayfire.socket"),
+		socket: filepath.Join(sockdir.New(t), "wayfire.socket"),
 		replies: map[string]string{
 			"window-rules/list-outputs":       outputsJSON,
 			"window-rules/list-views":         viewsJSON,

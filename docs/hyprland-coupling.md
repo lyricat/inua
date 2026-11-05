@@ -9,11 +9,19 @@ factory；#60–64 不在此次范围。本文只记录依赖、已有行为和�
 [niri 与 Wayfire 实验](compositor-experiments.md)（#61）、
 [能力契约与迁移计划](compositor-contracts.md)（#62）。
 
+后续 #60（FT67）的[合成器能力比较与最低支持基线](compositor-capabilities.md)
+沿用本清单，比较 Hyprland、Sway、niri、Wayfire 和 KWin；其中的退化行为和
+首个新增目标均为待 owner 决定的建议，不改变本文记录的现有实现。
+
 证据分为四类：**源码确认**指已追到调用方和底层实现；**推断**指从实现推导的
 迁移风险；**候选**指值得继续调查的协议或行为调整；**未知**指本次没有运行
 证据。源码和模拟服务测试不能证明
 真实合成器上的互操作性。以下实现描述均为源码确认，替代栏全部是候选，未在
 其他合成器上验证。协议 XML 只用于核对协议语义和版本，不作为服务端支持证明。
+
+后续 [FT68 niri／Wayfire 独立 IPC 实验](../experiments/compositor/README.md)
+记录固定版本来源、假 socket 检查和待做的嵌套步骤；不改变本文的支持范围，
+也不把 pending FT67 基线视为已实现。真实 compositor 验证仍未完成。
 
 ## 功能与依赖矩阵
 

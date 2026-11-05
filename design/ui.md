@@ -382,8 +382,8 @@ still say their errors in a status line at the foot of the index
 ## Reordering
 
 A list whose order is the user's is put in order by dragging its items:
-the dock's pinned apps, inua-term's workspaces (column 1). It goes the
-same way in both:
+the dock's pinned apps, inua-term's workspaces (column 1) and sessions
+(column 2, by their headers, with their pane rows). It goes the same way:
 
 - **The item lifts.** A still of it follows the pointer; its own place
   stays open as a gap, so nothing moves when the drag begins.

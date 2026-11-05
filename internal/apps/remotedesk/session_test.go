@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/lyricat/inua/internal/hypr"
+	"github.com/lyricat/inua/internal/sockdir"
 )
 
 // overSSH is a sharing run from a shell outside the session: no display
@@ -127,12 +128,7 @@ func serveHypr(t *testing.T, runtime, sig string, f *fakeHypr) {
 }
 
 func TestSyncVirtualMakesTheScreenAndRestartsSunshine(t *testing.T) {
-	// A short path: a unix socket's must fit in 108 bytes.
-	runtime, err := os.MkdirTemp("", "hy")
-	if err != nil {
-		t.Fatal(err)
-	}
-	t.Cleanup(func() { os.RemoveAll(runtime) })
+	runtime := sockdir.New(t)
 	f := &fakeHypr{monitors: `[]`}
 	serveHypr(t, runtime, "abc_1800000000_1", f)
 
@@ -183,11 +179,7 @@ func TestSyncVirtualWithoutASession(t *testing.T) {
 }
 
 func TestVirtualAtStartWaitsForTheSessionsHyprland(t *testing.T) {
-	runtime, err := os.MkdirTemp("", "hy")
-	if err != nil {
-		t.Fatal(err)
-	}
-	t.Cleanup(func() { os.RemoveAll(runtime) })
+	runtime := sockdir.New(t)
 	s, _, _ := newSharing(t)
 	s.Getenv = func(k string) string { return map[string]string{"XDG_RUNTIME_DIR": runtime}[k] }
 	if err := s.VirtualAtStart(t.Context(), os.Getppid()); err != nil {

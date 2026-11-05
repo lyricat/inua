@@ -1,6 +1,6 @@
 // Calculator: the expression and its result, then the keys. The
 // scientific keys sit to the left and show when Scientific is on. Every
-// key carries its input in `name` ("k:7", "k:sin(", "op:="). History
+// key carries its input in `name`. History
 // slides in a panel at the right listing recent calculations; one
 // recalls its result.
 using Gtk 4.0;
@@ -55,21 +55,38 @@ ApplicationWindow calculator {
 
       Box {
         styles ["calc-display"]
+        spacing: 8;
         orientation: vertical;
         vexpand: true;
         valign: end;
 
-        Label expression {
+        Entry expression {
           styles ["calc-expr"]
           xalign: 1;
-          ellipsize: start;
+          width-chars: 1;
+          tooltip-text: _("Formula");
+          accessibility {
+            label: _("Formula");
+          }
         }
 
-        Label result {
+        Entry result {
           styles ["calc-result"]
           xalign: 1;
-          ellipsize: start;
-          label: "0";
+          width-chars: 1;
+          text: "0";
+          tooltip-text: _("Value");
+          accessibility {
+            label: _("Value");
+          }
+        }
+
+        Label error {
+          styles ["calc-error"]
+          visible: false;
+          xalign: 0;
+          wrap: true;
+          selectable: true;
         }
       }
 

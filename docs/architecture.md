@@ -191,9 +191,13 @@ Hyprland reports focused.
 
 The [feature-by-feature coupling audit](hyprland-coupling.md) traces the
 implemented dependencies, failure behavior, protocol versions and test gaps.
-On it build the [compositor capability comparison and baseline](compositor-capabilities.md),
-the [niri and Wayfire experiments](compositor-experiments.md) and the
-[compositor contracts and migration plan](compositor-contracts.md) (#58).
+The [compositor capability comparison](compositor-capabilities.md) uses that
+inventory to propose a minimum support baseline, and records what real
+sessions on niri and Wayfire corrected. The
+[experiments' report](compositor-experiments.md) has what niri 26.04,
+Wayfire 0.11 and Hyprland 0.57 did, and the
+[compositor contracts and migration plan](compositor-contracts.md) the
+boundary the shell now sits on (#58).
 
 `internal/compositor` is what the shell, the desk tools and the light apps
 see: a `Backend` delivering snapshots and taking the base actions, and the

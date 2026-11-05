@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/lyricat/inua/internal/compositor"
+	"github.com/lyricat/inua/internal/sockdir"
 )
 
 const (
@@ -51,7 +52,7 @@ type fakeNiri struct {
 func newFakeNiri(t *testing.T) *fakeNiri {
 	t.Helper()
 	f := &fakeNiri{
-		socket: filepath.Join(t.TempDir(), "niri.sock"),
+		socket: filepath.Join(sockdir.New(t), "niri.sock"),
 		replies: map[string]string{
 			"Outputs": outputsJSON, "Workspaces": workspacesJSON, "Windows": windowsJSON, "Version": `"26.04"`,
 		},

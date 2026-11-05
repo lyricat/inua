@@ -1,19 +1,22 @@
 # niri and Wayfire: the vertical-slice experiments
 
-This is the third step of #58 (issue #61). Two disposable programs in
-[experiments/compositor](../experiments/compositor/README.md) talk to niri
-and to Wayfire directly and do the slice the issue asks for: list windows and
-workspaces, watch changes, focus a window and switch workspace, and see what
-a disconnect does. This document is how they were run, what each step was
-expected to do and what it did, the comparison with Hyprland, the
-constraints that fell out for the contracts (#62), and a go/no-go per target.
+This is the third step of #58 (issue #61). The disposable probes in
+[experiments/compositor](../experiments/compositor/README.md) (FT68) talk to
+niri and to Wayfire directly and do the slice the issue asks for: list
+windows and workspaces, watch changes, focus a window and switch workspace.
+That directory has the instructions and the fake-socket checks; this
+document is what real sessions did: each step's expectation and
+observation, the comparison with Hyprland, the constraints that fell out
+for the contracts (#62), and a go/no-go per target.
 
 **What was run.** Everything below was observed on 2026-11-05 on
 **niri 26.04 (8ed0da4)** and **Wayfire 0.11.0 (wlroots 0.20.2)**, from Arch
 Linux's packages, in a throwaway container with no display: Wayfire on
 wlroots' headless backend, niri nested in a second headless Wayfire (niri
-has no headless backend of its own). The probes first, then the two
-backends built on them (`inua compositor dump|watch`), then `inua-shell`
+has no headless backend of its own). A probe sending raw requests first
+(a Go program of the same slice as FT68's, since replaced by the
+backends), FT68's own Python probes on the same sessions, then the two
+backends (`inua compositor dump|watch`), then `inua-shell`
 itself with keys and clicks from a virtual keyboard and pointer, and for
 Wayfire real key events from its `stipc` test plugin. Hyprland 0.57.1 was
 run the same way (nested, on the host's render node, since it has no
@@ -25,17 +28,10 @@ backends in `internal/niri` and `internal/wayfire`.
 
 ## Running the experiments
 
-Inside a session of the compositor, from `experiments/compositor`:
-
-```sh
-niri --version && go run ./niri 2>&1 | tee niri.log
-wayfire --version && go run ./wayfire 2>&1 | tee wayfire.log   # needs the ipc and ipc-rules plugins
-```
-
-Each run prints every request, reply and event with a timestamp.
-`-request JSON` (niri) and `-call METHOD -data JSON` (Wayfire) send one
-request; `-reconnect` keeps the event connection across a compositor
-restart. To run headless as here:
+The probes' own READMEs have their commands
+(`python3 experiments/compositor/niri/probe.py --nested-socket … snapshot`,
+`watch`, `focus ID`, `switch ID`); `inua compositor watch` prints what a
+backend makes of the same session. To run headless as here:
 
 ```sh
 # Wayfire
