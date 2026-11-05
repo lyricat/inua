@@ -39,3 +39,7 @@ notes:
 Validation: reviewed all 19 changed files in origin/master...HEAD with Codex. make test fails the new Python session test (base: 15 pass). CGO_ENABLED=0 go vet ./... and CGO_ENABLED=1 go test -race ./... fail undefined desktop.Wayfire; TestFindSource also fails on base. Seven isolated Wayfire reproductions confirmed defects. Tests used throwaway HOME. No unpinned installs or manifest changes; pinned Go dependencies restored only. No tracked code changes or commits.
 
 Limits: screenshot dimensions/hashes match, but runtime evidence cannot validate this non-compiling HEAD and references handlers absent from it. No real or nested compositor session or live UI visual verification; lockscreen, permission boundaries and real compositor integration remain unchecked. PR #67 is from a fork, so its head was fetched via refs/pull/67/head rather than a nonexistent origin branch. No merge conflicts with origin/master.
+
+## lyric · 2026-11-05 09:42
+Tracking issue for this item: https://github.com/lyricat/inua/issues/68, a sub-issue of the overview #58 (a pull request cannot be one).
+Closes #68
