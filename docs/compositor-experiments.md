@@ -177,6 +177,24 @@ Hyprland's preview protocol on other compositors; the shell wrote
 The same key steps on master's build of the shell on Hyprland did not
 move the selection at all, so the keyboard fix helps there too.
 
+## Settings applied through the backends (2026-11-05)
+
+`inua config apply` and the shell's own settings pages, on the same
+headless sessions:
+
+| Check | niri 26.04 | Wayfire 0.11 |
+| --- | --- | --- |
+| Keyboard options and touchpad settings reach the compositor | `inua.kdl` written; niri loads it by itself when the included file changes; `niri validate` passes | `input/xkb_options`, `input/touchpad_cursor_speed`, `input/touchpad_accel_profile` read back as set |
+| What an include replaces | `keyboard`'s fields merge, but an `xkb` block replaces the main file's whole: two layouts became one until `inua.kdl` repeated the layout | not applicable |
+| An optional include of a missing file | valid, with a warning | not applicable |
+| The same key bound in the main file and the include | valid either way | not applicable |
+| A shortcut set in inua runs | written and accepted; not pressed (the test keyboard's Super does not reach niri's binds) | pressed with real key events: the command ran |
+| Applying three times | one file | one binding, not three: the ids of the last apply are taken off first |
+| A binding from the compositor's own config | parsed from `config.kdl` and shown as "From niri" | read from the `command` options; it cannot be taken off at run time (setting the option to none changes nothing), and a new `command/binding_*` option cannot be made over IPC |
+| A registered binding after the client disconnects | not applicable | stays, which is why the ids are kept |
+| Settings pages | Keyboard and Shortcuts disabled, dimmed, with the include line to add; live after the line is added | Keyboard live, "inua writes these to Wayfire over its IPC" |
+| Compositor page | lists the three, the running one marked | a click on Wayfire saved the choice, wrote the sample `wayfire.ini`, and `inua session compositor` answered `wayfire` |
+
 ## Not checked
 
 - Anything that needs a real screen, GPU output or input device: frame

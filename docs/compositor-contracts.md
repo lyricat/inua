@@ -161,7 +161,7 @@ The capabilities, each the name of an optional interface or a data field:
 | `CapPlacement` (`Placer`) | bring here, place beside, tile (apps) | yes | partial (floating only) |
 | `CapModes` (`Moder`) | a key mode that swallows keys (recording, dictation) | yes | no |
 | `CapRules` | compositor styling the sample config installs | yes | layer rules, no blur |
-| `CapConfig` | keyboard, touchpad and shortcut settings reach the compositor through a config inua writes | yes | no |
+| `CapKeyboard`, `CapTouchpad` | inua's keyboard and touchpad settings reach the compositor (`Settings`, `Configurer`) | yes | yes, once `config.kdl` includes `inua.kdl` (Wayfire: yes, over IPC) |
 | `CapOnDemandFocus` | a layer surface asking for the keyboard on demand is focused as it appears; without it the overview asks exclusively | yes | no (Wayfire: yes) |
 
 ## 4. Optional interfaces
@@ -394,12 +394,68 @@ in PR #67, which predates the contract; that PR's Wayfire knowledge (the
 plugin list, the paired `binding_`/`command_` options) is in the sample
 config.
 
+### Settings through the backends
+
+inua's settings are the same on every compositor and each backend applies
+them its own way:
+
+```go
+type Settings struct {
+    KbOptions     *string   // XKB options; nil leaves the compositor's
+    TouchpadSpeed *float64
+    TouchpadAccel string
+    Binds         []KeyBind // {Keys "SUPER+SHIFT+S", Command, Replaces}
+}
+
+type Configurer interface {
+    ApplySettings(ctx context.Context, s Settings) error
+    Binds(ctx context.Context) ([]Bind, error) // the compositor's own shortcuts
+    Source() string                            // where they go, to show
+    Hint(c Capability) string                  // what to do about an Unavailable one
+}
+
+type Exiter interface{ Exit(ctx context.Context) error } // log out
+```
+
+`internal/compsettings` makes `Settings` from `config.toml`. Keys keep the
+form they always had (`SUPER+SHIFT+S`, an XKB key name); each backend
+writes them as its compositor names them.
+
+| Backend | Keyboard and touchpad | Shortcuts | The compositor's own shortcuts | Persistence |
+| --- | --- | --- | --- | --- |
+| Hyprland | `hypr/inua.conf` or `inua.lua` (`hyprconf`, unchanged) | binds and unbinds in the same file | `j/binds` | the file, sourced by the user's config |
+| niri | `inua.kdl` beside `config.kdl`, which includes it last; `xkb` is written with the main file's layout, since niri replaces that block as a whole | `binds {}` in the same file; a later bind of a key wins | parsed from `config.kdl` | the file; niri loads it again by itself |
+| Wayfire | `wayfire/set-config-options` (`input/xkb_options`, `input/touchpad_cursor_speed`, `input/touchpad_accel_profile`) | `command/register-binding`, the ids kept in the runtime directory so the next apply takes them off first | the `command` plugin's `binding_*`/`command_*` options | none in `wayfire.ini`: applied again each time the shell starts |
+
+Known limits: niri cannot take a key away from `config.kdl`, and Wayfire
+cannot take one away from `wayfire.ini` while it runs, so a shortcut
+moved in inua keeps its old key in the compositor's file until the user
+removes it there. Display settings are still Hyprland's alone.
+
 ### The settings pages
 
-A page whose capability the compositor does not have says so instead of
-offering controls that do nothing: `shellUI.unsupported(cap)` reads the
-capability map, the four pages that write Hyprland's config (Keyboard,
-Mouse & Touch, Shortcuts, Displays) show one line naming the compositor,
-Displays shows "Not available" in place of its outputs, About names the
-compositor the shell runs on, and `hypr/inua.conf` is written on Hyprland
-only. The pages are filled again when the capabilities change.
+Every option that depends on the compositor follows a capability. Where
+the compositor takes it, the option works as on Hyprland. Where it does
+not, the option stays visible, disabled and dimmed, with the reason and
+what to do in the page's notice: `shellUI.gatePage` for Keyboard
+(`CapKeyboard`), Mouse & Touch (`CapTouchpad`) and Shortcuts (`CapBinds`),
+"Not available" in place of the outputs on Displays. The capabilities are
+read again when a page is shown, so a line added to niri's config or a
+plugin loaded in Wayfire brings the page alive without a restart. The
+words that name the compositor (the SOURCE line, "Use niri's own", the
+compositor's own shortcuts) are set from the backend.
+
+### Choosing the compositor
+
+Settings → Compositor lists Hyprland, niri and Wayfire: the one running,
+which are installed, the choice for the next login. One that is not
+installed is disabled with the reason under it. The choice is `[session]
+compositor` in `config.toml`; `internal/session` and `inua session
+compositor` answer the session script, which is why one Inua entry in the
+login manager serves every compositor and choosing needs no administrator.
+A first choice of niri or Wayfire writes its sample config when the user
+has none. A chosen compositor that is missing, or whose config does not
+start `inua-shell`, is passed over for Hyprland at login and the shell
+says why in a notification. The page also shows the login manager and
+whether the installed session script is one that reads the choice, and
+lists what the running compositor does not give inua.
