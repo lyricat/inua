@@ -257,8 +257,19 @@ Hyprland 0.57.1 在无显示器的容器里运行过，探针、`internal/niri` 
   没有观察到 `output-added`。
 - **首个新增目标**：niri 和 Wayfire 的后端现在都在，建议的先后不再决定什么。
 - **最低基线**在三个合成器上都已由 shell 实际满足：bar、dock、launcher、
-  Overview（niri／Wayfire 无预览）、锁屏、设置窗口；Displays 与 Shortcuts
-  页面在 niri／Wayfire 上显示“不可用”一行，而不是空白或假成功。
+  Overview（niri／Wayfire 无预览）、锁屏、设置窗口；niri 的 Displays 页面
+  显示“不可用”一行，而不是空白或假成功。
+- **Wayfire 的显示设置**：IPC 只给输出的位置，不给模式；模式经
+  wlr-output-management 读取，设置经 `wayfire/set-config-options` 写入
+  `output:NAME/mode`、`/scale`、`/position`（`off` 与 `mirror NAME` 也是 mode）。
+  给一个输出定了位置，其余未定位的输出会被 Wayfire 重新排到它右边，所以
+  后端同时把其余输出固定在原位。
+- **Wayfire 0.9（Debian 13）**与 0.11 的差别：没有 `vswitch/send-view`（改用
+  `configure-view` 按整屏位移），没有 `list-config-options`，图层表面的
+  `wset-index` 写成 2^64-1，socket 在 `/tmp`；面板关闭后约 0.2 秒键盘才回到
+  窗口。Debian 13 的 gtk4-layer-shell 1.0 没有会话锁。
+- **全屏窗口之上的面板**：niri 与 Wayfire 把 top 图层放在全屏窗口之下，
+  launcher 等面板在这两个合成器上改用 overlay 图层。
 
 ## 本次检查
 

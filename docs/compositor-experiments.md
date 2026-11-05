@@ -195,17 +195,55 @@ headless sessions:
 | Settings pages | Keyboard and Shortcuts disabled, dimmed, with the include line to add; live after the line is added | Keyboard live, "inua writes these to Wayfire over its IPC" |
 | Compositor page | lists the three, the running one marked | a click on Wayfire saved the choice, wrote the sample `wayfire.ini`, and `inua session compositor` answered `wayfire` |
 
+## Wayfire in full: 0.11 and Debian's 0.9 (2026-11-05)
+
+The same branch on **Wayfire 0.11.0** (Arch, software rendering) and on
+**Wayfire 0.9.0 with wlroots 0.18 and gtk4-layer-shell 1.0.4** (Debian
+13; its Wayfire has no software path, so the host's render node was
+passed in), both headless, with real key and pointer events from
+`stipc`. A second headless output made the two-display cases.
+
+| Check | Wayfire 0.11 | Wayfire 0.9 (Debian 13) |
+| --- | --- | --- |
+| The shell starts: bar, nine workspace marks, dock, wallpaper | yes | yes, after two fixes: the session-lock functions are bound only where gtk4-layer-shell has them (1.1), and a layer surface's `wset-index` of 2^64-1 no longer loses the window list |
+| IPC socket | `$XDG_RUNTIME_DIR/wayfire-wayland-1-.socket` | `/tmp/wayfire-wayland-1.socket`; `WAYFIRE_SOCKET` names it either way |
+| Methods missing against 0.11 | none | `vswitch/send-view`, `wayfire/list-config-options`, `window-rules/get_cursor_position`, the view properties |
+| A window sent to another workspace (launcher "move to workspace 3", the overview's move) | `vswitch/send-view` | `configure-view` with the geometry moved by whole outputs: the window is on cell 3 and is followed |
+| Launcher "workspace 1", "move to workspace 3" | goes there: the typed number is the workspace of that name on the focused output, not a compositor id | the same |
+| Launcher Toggle Fullscreen, twice | on, then off; before the fix the second time did nothing, because the launcher (top layer) opened under the fullscreen window and took no keys: panels the user calls up are on the overlay layer on niri and Wayfire | the same |
+| Launcher Center Window | the window is in the middle of the work area | the same call |
+| Launcher Toggle Floating | not offered (every window floats) | not offered |
+| A minimized window | listed in the launcher; choosing it restores and focuses it (`focus-view` does both) | `focus-view` restores it the same way |
+| Displays page | both displays with resolution, scale, position and mirror; picking 150% by a click set `output:HEADLESS-2/scale` and the page showed it | the same options answered the same |
+| Display rules from `config.toml` (`inua config apply`) | mode `1920x1080@60`, scale 1.5, `auto-left`, mirror, off, and all back to what they were when the rules went | the same, value for value |
+| One display placed | Wayfire moved the other, unplaced one to its right; the backend now pins the unplaced ones where they are | the same |
+| Paste from the clipboard panel into a terminal | pasted | pasted once the wait before the keys was 350 ms: 0.9 gives the keyboard back to the window between 150 and 300 ms after the panel goes |
+| Overview, control center, notification banner and center, a screenshot of the screen | all shown; the file was written | the same |
+| Lock | locks and unlocks | not available: gtk4-layer-shell 1.0 has no session lock, and the shell says so |
+| The login path in a fresh home: no settings, Wayfire chosen with no `wayfire.ini`, then with the sample; `scripts/inua-session` with no argument | `hyprland`; `hyprland` with the reason kept; `wayfire`, and Wayfire's `autostart` started the shell with `INUA_SESSION=wayfire` and every capability supported | the same |
+| Globals for previews | `ext_image_copy_capture_manager_v1` with an output source only: no window source, so no live previews | neither |
+
+Wayfire 0.9 logs "The option command/always_binding_… is neither
+specified nor has a default value" for each binding of the sample
+config; they are bound all the same.
+
+niri 26.04 answered `{"Ok":"Handled"}` to `FullscreenWindow`,
+`ToggleWindowFloating` and `CenterWindow` with a window's id, and the
+window's state changed each time.
+
 ## Not checked
 
 - Anything that needs a real screen, GPU output or input device: frame
   timing, blur, fractional scale, a second monitor on niri, hot-plugging,
   the lid.
 - The overview's drag with a pointer (the move it sends was checked through
-  the IPC), the control center, notifications, the tray, the clipboard
-  panel's paste, dictation, screenshots, screen sharing, Mobile Link, on
-  niri and Wayfire.
-- A login through a display manager with `inua-session niri` or
-  `inua-session wayfire`; the script's checks are covered by its tests and
-  the sample configs were started by hand.
-- Wayfire 0.9 or 0.10 (Debian's and Ubuntu's): only 0.11 was run.
+  the IPC), the tray, dictation, area and window screenshots, recording,
+  screen sharing, Mobile Link, on niri and Wayfire; the control center,
+  notifications, the clipboard panel's paste and screenshots on niri.
+- A login through a real display manager: on Wayfire the script was run
+  as one would run it, in a fresh home; on niri its checks are covered by
+  its tests and the sample config was started by hand.
+- Display settings on real monitors (the modes were a headless output's
+  custom ones), and a display plugged in while the shell runs.
+- Wayfire 0.10 (Ubuntu's): 0.9 and 0.11 were run.
 - Sway and KWin: not run at all.

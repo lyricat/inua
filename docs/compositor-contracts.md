@@ -155,7 +155,7 @@ The capabilities, each the name of an optional interface or a data field:
 | `CapKeystrokes` (`Keystroker`) | paste from history, dictation insert | yes | yes, by virtual keyboard after focus (two steps) |
 | `CapBinds` (`Binder`) | Settings → Shortcuts | yes | no (config only) |
 | `CapKeyObserver` (`KeyObserver`) | Super tap, Super+Tab, number slots | yes (Lua) | no |
-| `CapDisplays` (`Displayer`) | Settings → Displays, lid rules | yes | partial (`Output` request; persistence by config) |
+| `CapDisplays` (`Displayer`) | Settings → Displays, lid rules | yes | not wired (Wayfire: yes, without the lid rule) |
 | `CapVirtualOutput` (`VirtualOutputs`) | remote desktop without a monitor | yes | no |
 | `CapPointer` (`Pointer`) | read and move the cursor | yes | no |
 | `CapPlacement` (`Placer`) | bring here, place beside, tile (apps) | yes | partial (floating only) |
@@ -163,6 +163,8 @@ The capabilities, each the name of an optional interface or a data field:
 | `CapRules` | compositor styling the sample config installs | yes | layer rules, no blur |
 | `CapKeyboard`, `CapTouchpad` | inua's keyboard and touchpad settings reach the compositor (`Settings`, `Configurer`) | yes | yes, once `config.kdl` includes `inua.kdl` (Wayfire: yes, over IPC) |
 | `CapOnDemandFocus` | a layer surface asking for the keyboard on demand is focused as it appears; without it the overview asks exclusively | yes | no (Wayfire: yes) |
+| `CapArrange` (`Arranger`) | the launcher's Toggle Fullscreen and Center Window | yes | yes (Wayfire: yes) |
+| `CapFloating` (`Floater`) | the launcher's Toggle Floating; not offered without it | yes | yes (Wayfire: no, its windows all float) |
 
 ## 4. Optional interfaces
 
@@ -379,20 +381,49 @@ implementation.
 ### Wayfire (#68)
 
 `internal/wayfire` is the second non-Hyprland backend: the plugin IPC
-(`ipc`, `ipc-rules`, `vswitch`, `wsets`), the state read again after each
-event as the Hyprland store does, capabilities from `list-methods` (a
-missing plugin makes its capability Unavailable, and it comes back when
-the plugin does), the grid of each output's workspace set as workspaces
-with ids `SET:X,Y`, a view's cell derived from its place, `NewWorkspace`
-as the first empty cell, and the placer by `configure-view`. Not wired:
-keystrokes, binds (`command/register-binding`), displays and the virtual
-output (`wayfire/create-headless-output`), which Wayfire's IPC has and a
-later round can use. `inua-session wayfire`, `config/wayfire/wayfire.ini`
-and the "Inua on Wayfire" entry are the session side. It was run on
-Wayfire 0.11 the same way as niri. It shares nothing with the abstraction
-in PR #67, which predates the contract; that PR's Wayfire knowledge (the
-plugin list, the paired `binding_`/`command_` options) is in the sample
-config.
+(`ipc`, `ipc-rules`, `vswitch`, `wsets`, `wm-actions`, `command`), the
+state read again after each event as the Hyprland store does,
+capabilities from `list-methods` (a missing plugin makes its capability
+Unavailable, and it comes back when the plugin does), the grid of each
+output's workspace set as workspaces with ids `SET:X,Y`, a view's cell
+derived from its place, `NewWorkspace` as the first empty cell, the
+placer by `configure-view`, fullscreen by `wm-actions/set-fullscreen`
+and centring by `configure-view` (`Arranger`). `inua-session wayfire`,
+`config/wayfire/wayfire.ini` and the one "Inua" entry are the session
+side.
+
+It runs on Wayfire 0.11 (Arch) and on Wayfire 0.9 (Debian 13), which
+differ: 0.9 has no `vswitch/send-view`, so there a view goes to another
+cell by `configure-view` with its geometry moved by whole outputs; it
+cannot list its options, so its own shortcuts are not shown; it writes a
+layer surface's `wset-index` as 2^64-1; its socket is in `/tmp`, which
+`WAYFIRE_SOCKET` names either way. Debian 13's gtk4-layer-shell is 1.0,
+which has no session lock: the shell starts and says that locking is
+not there.
+
+Displays: Wayfire's IPC lists an output's place but not its modes, so
+the backend reads the displays through wlr-output-management
+(`internal/wlroutput`, the protocol spoken directly) and sets them as the
+options of each output's section (`output:NAME/mode`, `/scale`,
+`/position`; `off` and `mirror NAME` are modes) by
+`wayfire/set-config-options`. What an option was before inua first set
+it is kept in the runtime directory and put back when the rule goes.
+Wayfire lays the outputs with no place of their own out again to the
+right of the placed ones, so when one is placed the others are pinned
+where they are; "beside the others" (`auto-left`, …) is computed from
+the layout once the modes and scales took. A headless output is left
+out of the list unless the session has no other.
+
+Not wired: keystrokes to one window (a paste is typed into the focused
+window by `wtype`, after the panel has given the keyboard back), live
+previews (Wayfire's image capture has an output source but none for a
+window), the key observer, the virtual output for remote desktop
+(`wayfire/create-headless-output` is there), and turning the built-in
+display off with the lid. It shares nothing with the abstraction in
+PR #67, which predates the contract and which this replaces; that PR's
+Wayfire knowledge (the plugin list, the paired `binding_`/`command_`
+options, Debian's Wayfire 0.9) is in the sample config and in the
+checks above.
 
 ### Settings through the backends
 
@@ -430,7 +461,9 @@ writes them as its compositor names them.
 Known limits: niri cannot take a key away from `config.kdl`, and Wayfire
 cannot take one away from `wayfire.ini` while it runs, so a shortcut
 moved in inua keeps its old key in the compositor's file until the user
-removes it there. Display settings are still Hyprland's alone.
+removes it there. Display settings (`Settings.Displays`, from
+`[displays]`) are applied by Hyprland's file and by Wayfire's backend;
+niri's are not wired and its Displays page says so.
 
 ### The settings pages
 
