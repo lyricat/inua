@@ -51,3 +51,15 @@ Built on the owner's word in a session ("implement FT69, and move to review stat
 **Checked by eye**, headless: the built app on GTK's Broadway with a throwaway HOME and keyring, a private bus and a scripted pinentry, driven in headless Chrome. Seen: both modes of the composer and the switch between them (From comes back with Public keys); "Type a passphrase first." and "The two passphrases differ." with the focus moved; Enter from the first field to the second and Enter to encrypt; the armored result and its head; the clipboard offer on Decrypt; a wrong passphrase (the line in the bar, no result section); the right one after pressing Decrypt ("Encrypted with a passphrase", the text).
 
 **Not checked**: on the real desktop, in Hyprland; inua's own passphrase dialog asking for a message's passphrase (the scripted pinentry stood in for it; gpg's request was read: no key, "Please enter the passphrase for decryption."); files in the window (the chooser was not driven; the same calls are covered by the package tests); the composer with keys in the keyring; the six translations on screen, which are mine and not reviewed by a native speaker; a gpg older than 2.4.8.
+
+## factory · review · 2026-11-05 22:29
+head: 6f9967dfcb3b6dbc0ca1b84cc25a4638d21c30ae
+verdict: fix
+fix:
+- [P1] internal/sockdir/sockdir_test.go:19: Required `make test` did not pass in the review sandbox: TestNewIsShortUnderALongTempDir falls back to /tmp and receives permission denied. This is an environment validation blocker, not an FT69 regression; the baseline code is identical. Provide an authorized private writable /tmp and rerun the full test command before promotion. A follow-up attempt with bwrap failed before tests (missing /proc/sys/kernel/overflowuid); namespace creation was also denied.
+notes:
+- [P2] internal/i18n/locales/ko.po:18253: The Korean explanation translates passphrase as ciphertext (암호문), saying that ciphertext alone suffices to open the message. Use a correct passphrase term, such as 암호 구문, in the new guidance.
+- Reviewed origin/master (648db7a8)...HEAD with Codex: all 14 changed files, including cryptographic paths. No merge conflicts with base.
+- Validation: 15 Python session tests and go vet passed. Initial race run passed 99 packages and failed 7; six of those passed after environment adjustments, but the socket test remained blocked. Full make test success is not established. All 8 GPG package tests passed; isolated real GPG 2.4.8 probes covered cancellation, wrong-passphrase retry, cached decryption and mixed recipients. Generated translations and Blueprint output matched the commit in temporary copies.
+- Installs: none. Project working tree remained clean. No visual UI check; real desktop pinentry interaction and older GPG versions remain unverified.
+- Item remains in review/ for the owner to decide. No linked GitHub issue or PR was specified.
