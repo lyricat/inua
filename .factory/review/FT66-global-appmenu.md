@@ -80,3 +80,18 @@ Tests: make test passes with a throwaway HOME. Each registrar finding has a regr
 Installs: none.
 Not checked: the UI was not looked at, and nothing ran against a live compositor or a real application's menu. By hand in a nested session: focus a Qt application, see its menu titles in the bar, open a section, activate an item, switch to another application and see the bar follow.
 The verdict above is for 087cd11; this head has no review yet. Stays in review/ for the next review run.
+
+## factory · review · 2026-11-05 10:08
+head: 7a695a9a68ec577d8c8cb246743dd59914ab6071
+verdict: fix
+fix:
+- [P1] Makefile:102: required `make test` remains unsuccessful (exit 2) on both HEAD and base. Python: 15/15 passed; go vet passed. HEAD race suite: 98 packages passed, 7 failed, 32 had no tests. Base: 97 passed, 7 failed, 32 had no tests. Failures are temporary Unix socket path limits, not an introduced production defect. Shorten test socket addresses and obtain a passing complete required run before approval. This is a factory validation blocker.
+notes:
+- [P2] internal/appmenu/registrar.go:295: the latest registration is selected for every window of a process. Private-bus reproduction registered window 42 at /Menu and window 43 at /Other. Supplying the PID of focused window 42 selected 43; activation reached /Other and never /Menu. Match the focused window to its endpoint; if only PID is available, allow an unambiguous endpoint and hide an ambiguous menu instead of sending commands to another window.
+- [P2] internal/ui/appmenu.go:227: asynchronous submenu replies are accepted solely by registration and mapped button. Broadway reproduction delayed File, opened Edit, then released File; the old File response replaced Edit. Track request generation and reject responses superseded by a newer open or close.
+- [P2] internal/appmenu/registrar.go:320: top-level IDs are recorded after invisible entries have been removed. A valid ItemsPropertiesUpdated setting hidden item 7 visible therefore invokes zero update callbacks. Keep hidden top-level IDs for update matching, or reload on relevant visibility changes from the registered endpoint.
+- [P2] internal/appmenu/registrar.go:366: nonempty nested submenus bypass AboutToShow. Opening Recent twice produced calls [7, 8, 7], so nested More was refreshed only once. Applications that rebuild cached contents on AboutToShow remain stale. Send AboutToShow and reload when each submenu opens, even when it already has children. Protocol: https://sources.debian.org/src/libdbusmenu-qt/0.9.3%2B16.04.20160218-2/src/com.canonical.dbusmenu.xml
+
+Validation: Codex reviewed all 15 changed files against origin/master (f9cecde). Required make test failed on HEAD and base with temporary Unix socket path limits; Python 15/15 and go vet passed on both. Race suites: HEAD 98 packages passed and 7 failed; base 97 passed and 7 failed. With shorter socket addresses the affected seven packages passed on both, and all seven appmenu tests passed. Four isolated probes reproduced the P2 defects. git diff --check passed; checkout unchanged. Prior compilation, callback ownership, sender validation, signal signature and focus integration findings are addressed. No unpinned installs.
+
+Limits: UI was not checked by eye; live compositor integration, monitor hotplug stress and registration floods unverified. Codex lacked a local review-code skill; directly reviewed D-Bus ownership/decoding and native callback lifetimes. The P1 is a validation-environment blocker, not an identified product regression. Remains in review/ for owner decision.
