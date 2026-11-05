@@ -599,9 +599,7 @@ func (s *shellUI) doPower(name string) {
 	case "poweroff":
 		go run("systemctl poweroff")
 	case "logout":
-		// Hyprland 0.55 runs a Lua configuration, where a dispatcher is an
-		// expression; the classic text form is rejected there.
-		s.hyprDispatch("exit", "hl.dsp.exit()")
+		s.logout()
 	}
 }
 

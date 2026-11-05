@@ -69,7 +69,7 @@ class SessionTest(unittest.TestCase):
     def test_config_is_checked_for_the_shell(self):
         result = self.launch()
         self.assertEqual(result.returncode, 17, result.stderr)
-        self.assertEqual(self.calls.read_text().splitlines(), [f"config hyprland {self.config}", "config apply", "portals dir"])
+        self.assertEqual(self.calls.read_text().splitlines(), ["session compositor", f"config hyprland {self.config}", "config apply", "portals dir"])
 
     def test_portal_directory_given_to_frontend(self):
         portals = self.home / ".local/share/inua/portals"
@@ -132,6 +132,21 @@ class SessionTest(unittest.TestCase):
         result = launch()
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("Hyprland is not on PATH", result.stderr)
+
+    def test_compositor_from_the_settings(self):
+        # No argument: inua says which compositor, as the settings have it.
+        self.executable("niri", '#!/bin/sh\nprintf "niri %s INUA_SESSION=%s\\n" "$*" "$INUA_SESSION"\nexit 19\n')
+        self.executable("inua", f'#!/bin/sh\necho "$*" >> "{self.calls}"\n[ "$1 $2" = "session compositor" ] && echo niri\nexit 0\n')
+        result = self.launch()
+        self.assertEqual(result.returncode, 19, result.stderr)
+        self.assertEqual(result.stdout.splitlines(), ["niri --session INUA_SESSION=niri"])
+        self.assertIn("session compositor", self.calls.read_text())
+        # An inua that cannot say (an older one), or says nonsense: Hyprland.
+        for script in ('#!/bin/sh\n[ "$1" = session ] && exit 1\nexit 0\n', '#!/bin/sh\n[ "$1" = session ] && echo plasma\nexit 0\n'):
+            self.executable("inua", script)
+            result = self.launch()
+            self.assertEqual(result.returncode, 17, result.stderr)
+            self.assertEqual(result.stdout.splitlines(), ["argc=0", "XDG_CONFIG_HOME="])
 
     def test_niri_session(self):
         # inua-session niri runs niri as a session; the Hyprland config is
@@ -196,13 +211,8 @@ class SessionTest(unittest.TestCase):
             )
             self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(hypr.read_text(), "existing session\n")
-        niri = configparser.ConfigParser()
-        niri.read(sessions / "inua-niri.desktop")
-        self.assertEqual(niri["Desktop Entry"]["Exec"], "/usr/local/bin/inua-session niri")
-        self.assertEqual(niri["Desktop Entry"]["TryExec"], "niri")
-        wayfire = configparser.ConfigParser()
-        wayfire.read(sessions / "inua-wayfire.desktop")
-        self.assertEqual(wayfire["Desktop Entry"]["Exec"], "/usr/local/bin/inua-session wayfire")
+        # One entry: the compositor is a setting, not a session of its own.
+        self.assertEqual(sorted(p.name for p in sessions.iterdir()), ["hyprland.desktop", "inua.desktop"])
         desktop = configparser.ConfigParser()
         desktop.read(sessions / "inua.desktop")
         entry = desktop["Desktop Entry"]

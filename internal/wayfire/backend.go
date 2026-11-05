@@ -66,10 +66,30 @@ func (b *Backend) Refresh() {
 }
 
 // has reports whether a method's plugin is loaded, as last probed.
-func (b *Backend) has(method string) bool {
+func (b *Backend) has(method string) bool { return b.loaded()[method] }
+
+// loaded is the methods of the loaded plugins as last probed, probing now
+// when nothing has yet (a one-shot command, a light app placing its
+// window); nil while Wayfire cannot be asked.
+func (b *Backend) loaded() map[string]bool {
+	b.mu.Lock()
+	m := b.methods
+	b.mu.Unlock()
+	if m != nil {
+		return m
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), b.Client.Timeout)
+	defer cancel()
+	probed, err := b.Client.Methods(ctx)
+	if err != nil {
+		return nil
+	}
 	b.mu.Lock()
 	defer b.mu.Unlock()
-	return b.methods[method]
+	if b.methods == nil {
+		b.methods = probed
+	}
+	return b.methods
 }
 
 // Capabilities follow the plugins: a capability whose methods are
@@ -78,22 +98,7 @@ func (b *Backend) has(method string) bool {
 // to a window, key observer, modes or pointer moves for a shell; the
 // binds, displays and virtual output it has by IPC are not wired yet.
 func (b *Backend) Capabilities() compositor.Capabilities {
-	b.mu.Lock()
-	m := b.methods
-	b.mu.Unlock()
-	if m == nil {
-		// Asked before Run (a light app placing its window): probe now.
-		ctx, cancel := context.WithTimeout(context.Background(), b.Client.Timeout)
-		if probed, err := b.Client.Methods(ctx); err == nil {
-			b.mu.Lock()
-			if b.methods == nil {
-				b.methods = probed
-			}
-			m = b.methods
-			b.mu.Unlock()
-		}
-		cancel()
-	}
+	m := b.loaded()
 	state := func(methods ...string) compositor.State {
 		for _, name := range methods {
 			if !m[name] {
@@ -109,6 +114,9 @@ func (b *Backend) Capabilities() compositor.Capabilities {
 		compositor.CapWorkspaces:        state("vswitch/set-workspace", "vswitch/send-view"),
 		compositor.CapPlacement:         state("window-rules/configure-view", "vswitch/send-view"),
 		compositor.CapOnDemandFocus:     state("window-rules/list-views"),
+		compositor.CapKeyboard:          state("wayfire/set-config-options"),
+		compositor.CapTouchpad:          state("wayfire/set-config-options"),
+		compositor.CapBinds:             state("command/register-binding"),
 		compositor.CapRules:             compositor.Supported,
 	}
 }

@@ -71,10 +71,17 @@ func (b *Backend) Refresh() {
 // binds, the key observer, the pointer, display settings and virtual
 // outputs are not there either (docs/compositor-capabilities.md).
 func (b *Backend) Capabilities() compositor.Capabilities {
+	// inua's keyboard, touchpad and shortcut settings reach niri through
+	// a file its config includes: without the include they wait.
+	settings := compositor.Unavailable
+	if included() {
+		settings = compositor.Supported
+	}
 	return compositor.Capabilities{
 		compositor.CapMoveWithoutFollow: compositor.Supported,
 		compositor.CapWorkspaces:        compositor.Supported, compositor.CapQuietFocus: compositor.Supported,
 		compositor.CapPlacement: compositor.Supported, compositor.CapRules: compositor.Supported,
+		compositor.CapKeyboard: settings, compositor.CapTouchpad: settings, compositor.CapBinds: settings,
 	}
 }
 

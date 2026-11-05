@@ -1,5 +1,6 @@
-// Inua on niri: the sample config. Copy it to ~/.config/niri/config.kdl and
-// add your outputs and input settings; niri reloads it when it changes.
+// Inua on niri: the sample config. Choosing niri in inua's settings
+// (Compositor) writes it to ~/.config/niri/config.kdl when you have none;
+// add your outputs and input settings. niri reloads it when it changes.
 // What inua does on Hyprland through its own config (blur behind its
 // surfaces, the shortcut and display pages, the virtual screen, live
 // previews in the overview) it cannot on niri; docs/compositor-capabilities.md
@@ -119,3 +120,9 @@ binds {
     XF86AudioPause allow-when-locked=true { spawn "playerctl" "play-pause"; }
     XF86AudioPlay allow-when-locked=true { spawn "playerctl" "play-pause"; }
 }
+
+// inua's own settings (Settings: Keyboard, Mouse & Touch, Shortcuts) are
+// written to inua.kdl beside this file. It goes last, so what you set in
+// inua wins over what is above; without this line those pages are
+// disabled.
+include optional=true "inua.kdl"

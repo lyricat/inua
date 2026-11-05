@@ -347,9 +347,9 @@ msgid "%d%%, charging"
 msgstr "%d%%, cargando"
 
 #: internal/apps/connect/service.go:520
-#: internal/ui/settings.go:338
-#: internal/ui/settings.go:776
-#: internal/ui/settings.go:880
+#: internal/ui/settings.go:342
+#: internal/ui/settings.go:785
+#: internal/ui/settings.go:891
 #: internal/ui/settings_displays.go:426
 msgid "%d%%"
 msgstr "%d %%"
@@ -2843,7 +2843,7 @@ msgstr "Abre archivos de vídeo"
 
 #: internal/desktop/defaults.go:48
 #: internal/lightui/pass_otp.go:338
-#: internal/ui/settings.go:1042
+#: internal/ui/settings.go:1053
 msgid "Images"
 msgstr "Imágenes"
 
@@ -3125,7 +3125,7 @@ msgstr "Carpeta personal"
 #: internal/lightui/sysmon.go:967
 #: internal/lightui/tailscale.go:526
 #: internal/lightui/tailscale.go:567
-#: internal/ui/settings.go:576
+#: internal/ui/settings.go:585
 #: ui/vm.ui:2981
 msgid "System"
 msgstr "Sistema"
@@ -9362,8 +9362,8 @@ msgid "Top level"
 msgstr "Nivel superior"
 
 #: internal/lightui/pass.go:419
-#: internal/ui/settings.go:905
-#: internal/ui/settings.go:932
+#: internal/ui/settings.go:916
+#: internal/ui/settings.go:943
 msgid "%d entry"
 msgid_plural "%d entries"
 msgstr[0] "%d entrada"
@@ -10061,6 +10061,7 @@ msgstr "Velocidad"
 
 #: internal/lightui/sysmon.go:992
 #: internal/lightui/workshop_manager.go:50
+#: internal/ui/settings_compositor.go:163
 msgid "Installed"
 msgstr "Instalado"
 
@@ -10405,7 +10406,7 @@ msgstr "EN USO"
 #: internal/termui/prefs.go:347
 #: internal/ui/settings_ai.go:272
 #: internal/ui/settings_keyring.go:572
-#: internal/ui/shortcuts.go:150
+#: internal/ui/shortcuts.go:173
 #: internal/ui/voice_page.go:302
 msgid "None"
 msgstr "Ninguno"
@@ -11138,7 +11139,7 @@ msgstr ""
 #: internal/mailui/reader.go:826
 #: ui/gpg.ui:653
 #: ui/gpg.ui:897
-#: ui/settings.ui:6516
+#: ui/settings.ui:6550
 msgid "Save…"
 msgstr "Guardar…"
 
@@ -12747,7 +12748,7 @@ msgid "%d thr"
 msgstr "%d hilos"
 
 #: internal/shell/cardterm.go:136
-#: internal/ui/settings.go:574
+#: internal/ui/settings.go:583
 msgid "Desktop"
 msgstr "Escritorio"
 
@@ -14294,7 +14295,7 @@ msgid "Click a key, then press the new one; Backspace frees it"
 msgstr "Pulsa una tecla y luego la nueva; Retroceso la libera"
 
 #: internal/termui/prefs.go:359
-#: internal/ui/shortcuts.go:197
+#: internal/ui/shortcuts.go:220
 msgid "Press keys…"
 msgstr "Pulsar las teclas…"
 
@@ -14796,7 +14797,7 @@ msgid "Searching…"
 msgstr "Buscando…"
 
 #: internal/ui/control_detail.go:214
-#: internal/ui/settings.go:573
+#: internal/ui/settings.go:582
 msgid "Devices"
 msgstr "Dispositivos"
 
@@ -14815,7 +14816,7 @@ msgid "No devices paired yet"
 msgstr "Aún no hay dispositivos emparejados"
 
 #: internal/ui/drawer.go:217
-#: internal/ui/settings.go:575
+#: internal/ui/settings.go:584
 #: internal/ui/widgets.go:586
 #: ui/settings.ui:181
 #: ui/settings.ui:2054
@@ -14830,47 +14831,43 @@ msgstr "Apps del taller"
 msgid "The light apps are not installed (make install)."
 msgstr "Las aplicaciones ligeras no están instaladas (realizar instalación)."
 
-#: internal/ui/input.go:59
+#: internal/ui/input.go:65
 msgid "Not applied to Hyprland: %s"
 msgstr "No se aplica a Hyprland: %s"
 
-#: internal/ui/input.go:117
-#: internal/ui/input.go:134
+#: internal/ui/input.go:126
+#: internal/ui/input.go:143
 #: internal/ui/settings_displays.go:318
 msgid "Set by inua"
 msgstr "Establecido por inua"
 
-#: internal/ui/input.go:119
-#: internal/ui/input.go:136
+#: internal/ui/input.go:128
+#: internal/ui/input.go:145
 #: internal/ui/settings_displays.go:316
 msgid "Set in hyprland.conf"
 msgstr "Establecido en hyprland.conf"
 
-#: internal/ui/input.go:121
+#: internal/ui/input.go:130
 msgid "no XKB options"
 msgstr "no hay opciones XKB"
 
-#: internal/ui/input.go:129
+#: internal/ui/input.go:138
 msgid "From hyprland.conf"
 msgstr "De hyprland.conf"
 
-#: internal/ui/input.go:155
-msgid "These settings are kept, but %s does not take them from inua: set them in its own configuration."
-msgstr ""
-
-#: internal/ui/input.go:167
+#: internal/ui/input.go:183
 msgid "hyprland.lua does not load inua.lua, so these settings do nothing yet. Add this as its last line: %s"
 msgstr "hyprland.lua no carga inua.lua, así que estos ajustes aún no hacen nada. Añade esto como última línea: %s"
 
-#: internal/ui/input.go:169
+#: internal/ui/input.go:185
 msgid "hyprland.conf does not load inua.conf, so these settings do nothing yet. Add this as its last line: source = ./%s"
 msgstr "hyprland.conf no carga inua.conf, por lo que estas configuraciones no hacen nada todavía. Agregue esto como última línea: fuente = ./%s"
 
-#: internal/ui/input.go:173
+#: internal/ui/input.go:189
 msgid "hyprland.lua sets these again after loading inua.lua, which wins over inua: %s. Move the require line below them."
 msgstr "hyprland.lua vuelve a definir esto después de cargar inua.lua, y se impone a inua: %s. Mueve la línea require debajo."
 
-#: internal/ui/input.go:175
+#: internal/ui/input.go:191
 msgid "hyprland.conf sets these again after loading inua.conf, which wins over inua: %s. Move the source line below them."
 msgstr "hyprland.conf los establece nuevamente después de cargar inua.conf, que gana a inua: %s. Mueva la línea de origen debajo de ellos."
 
@@ -15200,121 +15197,121 @@ msgstr "Captura de pantalla copiada"
 msgid "Screenshot taken"
 msgstr "Captura de pantalla tomada"
 
-#: internal/ui/settings.go:320
+#: internal/ui/settings.go:324
 msgid "Not restarted: %s"
 msgstr "No se reinició: %s"
 
-#: internal/ui/settings.go:345
-#: internal/ui/settings.go:778
+#: internal/ui/settings.go:349
+#: internal/ui/settings.go:787
 msgid "%d px"
 msgstr "%d px"
 
-#: internal/ui/settings.go:572
+#: internal/ui/settings.go:581
 msgid "Connections"
 msgstr "Conexiones"
 
-#: internal/ui/settings.go:684
+#: internal/ui/settings.go:693
 msgid "%s · yours: right-click for more"
 msgstr "%s · tuyo: clic derecho para más"
 
-#: internal/ui/settings.go:701
+#: internal/ui/settings.go:710
 msgid "A CSS file of @define-color lines, kept in themes beside config.toml"
 msgstr "Un archivo CSS de líneas @define-color, guardado en themes junto a config.toml"
 
-#: internal/ui/settings.go:710
+#: internal/ui/settings.go:719
 msgid "Add Theme…"
 msgstr "Añadir tema…"
 
-#: internal/ui/settings.go:810
+#: internal/ui/settings.go:821
 msgid "As the bar (%s)"
 msgstr "Como la barra (%s)"
 
-#: internal/ui/settings.go:827
+#: internal/ui/settings.go:838
 msgid "inua objects"
 msgstr "inua objects"
 
-#: internal/ui/settings.go:828
+#: internal/ui/settings.go:839
 msgid "inua objects soft"
 msgstr "inua objects soft"
 
-#: internal/ui/settings.go:829
+#: internal/ui/settings.go:840
 msgid "inua objects flat"
 msgstr "inua objects flat"
 
-#: internal/ui/settings.go:837
+#: internal/ui/settings.go:848
 msgid "Phosphor"
 msgstr "Phosphor"
 
-#: internal/ui/settings.go:837
-#: internal/ui/settings.go:838
+#: internal/ui/settings.go:848
+#: internal/ui/settings.go:849
 msgid "System theme"
 msgstr "Tema del sistema"
 
-#: internal/ui/settings.go:838
+#: internal/ui/settings.go:849
 #: ui/settings.ui:545
 msgid "As the app style"
 msgstr "Como el estilo de apps"
 
-#: internal/ui/settings.go:931
+#: internal/ui/settings.go:942
 msgid "%s (%s, %s) · %s"
 msgstr "%s (%s, %s) · %s"
 
-#: internal/ui/settings.go:933
+#: internal/ui/settings.go:944
 msgid "%d text"
 msgid_plural "%d texts"
 msgstr[0] "%d texto"
 msgstr[1] "%d textos"
 
-#: internal/ui/settings.go:934
+#: internal/ui/settings.go:945
 msgid "%d image"
 msgid_plural "%d images"
 msgstr[0] "%d imagen"
 msgstr[1] "%d imágenes"
 
-#: internal/ui/settings.go:935
+#: internal/ui/settings.go:946
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: internal/ui/settings.go:1014
+#: internal/ui/settings.go:1025
 #: internal/ui/settings_apps.go:168
 #: internal/ui/settings_card.go:288
 #: internal/ui/settings_portals.go:177
 msgid "Not saved: %s"
 msgstr "No guardado: %s"
 
-#: internal/ui/settings.go:1040
+#: internal/ui/settings.go:1051
 msgid "Choose a wallpaper"
 msgstr "Elige un fondo de pantalla"
 
-#: internal/ui/settings.go:1082
+#: internal/ui/settings.go:1093
 msgid "Off: another notification daemon can show them"
 msgstr "Desactivado: otro demonio de notificación puede mostrarlos"
 
-#: internal/ui/settings.go:1084
+#: internal/ui/settings.go:1095
 msgid "Banners, then the notification center (the bell in the bar, or Super+N)"
 msgstr "Banners y después el centro de notificaciones (campana de la barra o Super+N)"
 
-#: internal/ui/settings.go:1086
+#: internal/ui/settings.go:1097
 msgid "Waiting: another notification daemon is running"
 msgstr "Esperando: se está ejecutando otro demonio de notificación"
 
-#: internal/ui/settings.go:1105
+#: internal/ui/settings.go:1116
 msgid "Nothing pinned"
 msgstr "No hay aplicaciones fijadas"
 
-#: internal/ui/settings.go:1121
+#: internal/ui/settings.go:1132
 msgid "%s (not installed)"
 msgstr "%s (no instalado)"
 
-#: internal/ui/settings.go:1134
+#: internal/ui/settings.go:1145
 msgid "Move earlier"
 msgstr "Mover antes"
 
-#: internal/ui/settings.go:1135
+#: internal/ui/settings.go:1146
 msgid "Move later"
 msgstr "Mover después"
 
-#: internal/ui/settings.go:1136
+#: internal/ui/settings.go:1147
 msgid "Remove from the dock"
 msgstr "Quitar del dock"
 
@@ -15851,6 +15848,216 @@ msgstr "REVISAR"
 msgid "Hyprland, with inua on top."
 msgstr "Hyprland, con inua encima."
 
+#: internal/ui/settings_compositor.go:76
+msgid "COMPOSITOR"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:76
+msgid "What the next login runs inua on"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:99
+msgid "Applies at the next login"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:101
+msgid "Log out…"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:109
+msgid "LOGIN"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:109
+msgid "The login screen starts the Inua session, which starts the compositor"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:110
+msgid "Login manager"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:116
+msgid "THIS SESSION"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:116
+msgid "What the compositor running now does not give inua"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:117
+msgid "Running on"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:130
+msgid "Live window previews in the overview"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:131
+msgid "Windows laid out as they are, in the overview"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:132
+msgid "New workspaces from the overview"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:133
+msgid "Dragging windows between workspaces in the overview"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:134
+msgid "Super alone for the overview, and its number slots"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:135
+msgid "Keyboard settings from inua"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:136
+msgid "Touchpad settings from inua"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:137
+msgid "Shortcuts set in inua"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:138
+msgid "Holding other shortcuts back while one is recorded"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:139
+msgid "Display settings from inua"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:140
+msgid "Pasting into a window from the clipboard history and dictation"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:141
+msgid "A virtual screen for remote desktop without a monitor"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:142
+msgid "Moving the pointer for you"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:166
+msgid "Running now"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:168
+#: internal/vmui/window.go:2319
+msgid "Not installed"
+msgstr "Sin instalar"
+
+#: internal/ui/settings_compositor.go:176
+msgid "Install %s to choose it."
+msgstr ""
+
+#: internal/ui/settings_compositor.go:178
+msgid "%s. The login starts Hyprland instead until this is put right."
+msgstr ""
+
+#: internal/ui/settings_compositor.go:188
+msgid "No known compositor is running."
+msgstr ""
+
+#: internal/ui/settings_compositor.go:190
+msgid "This session was not started by the Inua session entry; the choice applies when you log in through it."
+msgstr ""
+
+#: internal/ui/settings_compositor.go:192
+msgid "%s is running, and is what the next login starts."
+msgstr ""
+
+#: internal/ui/settings_compositor.go:194
+msgid "%s is running; %s starts at the next login."
+msgstr ""
+
+#: internal/ui/settings_compositor.go:201
+msgid "None enabled"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:203
+msgid "the Inua session is installed"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:207
+msgid "the Inua session is not installed"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:208
+msgid "Install it from inua's source: make install-session (asks for the administrator's password)."
+msgstr ""
+
+#: internal/ui/settings_compositor.go:210
+msgid "the Inua session is an older one"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:211
+msgid "The installed session script always starts Hyprland. Update it from inua's source: sudo sh scripts/install-session.sh"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:217
+msgid "Nothing inua knows"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:228
+#: internal/ui/settings_displays.go:193
+msgid "Not available on %s"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:230
+msgid "Not available now"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:239
+msgid "Everything inua uses"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:239
+msgid "Nothing is missing on this compositor."
+msgstr ""
+
+#: internal/ui/settings_compositor.go:256
+msgid "%s's config was not written: %s"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:259
+msgid "Wrote %s, which starts inua on %s."
+msgstr ""
+
+#: internal/ui/settings_compositor.go:290
+msgid "Started on %s"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:291
+msgid "The compositor chosen in Settings was passed over."
+msgstr ""
+
+#: internal/ui/settings_compositor.go:329
+msgid "Not available on %s now."
+msgstr ""
+
+#: internal/ui/settings_compositor.go:331
+msgid "Not available on %s."
+msgstr ""
+
+#: internal/ui/settings_compositor.go:363
+msgid "inua writes these to %s"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:366
+msgid "Use %s's own"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:370
+msgid "Other shortcuts, from %s's own config"
+msgstr ""
+
+#: internal/ui/settings_compositor.go:390
+msgid "Not applied to %s: %s"
+msgstr ""
+
 #: internal/ui/settings_custom.go:97
 msgid "Not moved to the trash: %s"
 msgstr "No se movió a la papelera: %s"
@@ -15913,10 +16120,6 @@ msgstr "Hyprland no muestra ninguna pantalla"
 #: internal/ui/settings_displays.go:191
 msgid "Is the shell connected to Hyprland?"
 msgstr "¿Está el shell conectado a Hyprland?"
-
-#: internal/ui/settings_displays.go:193
-msgid "Not available on %s"
-msgstr ""
 
 #: internal/ui/settings_displays.go:193
 msgid "Resolution, scale and arrangement are set in the compositor's own configuration."
@@ -16512,39 +16715,47 @@ msgstr "DNS"
 msgid "Hardware address"
 msgstr "Dirección física"
 
-#: internal/ui/shortcuts.go:88
+#: internal/ui/shortcuts.go:108
 msgid "Set in inua"
 msgstr "Ambientado en inua"
 
-#: internal/ui/shortcuts.go:90
+#: internal/ui/shortcuts.go:110
 msgid "Turned off in inua"
 msgstr "Apagado en inua"
 
-#: internal/ui/shortcuts.go:93
+#: internal/ui/shortcuts.go:113
 msgid "From Hyprland"
 msgstr "De Hyprland"
 
-#: internal/ui/shortcuts.go:134
+#: internal/ui/shortcuts.go:115
+msgid "From %s"
+msgstr ""
+
+#: internal/ui/shortcuts.go:157
 msgid "Lua function"
 msgstr "Función Lua"
 
-#: internal/ui/shortcuts.go:192
+#: internal/ui/shortcuts.go:215
 msgid "Click, then press the new shortcut"
 msgstr "Haga clic y luego presione el nuevo acceso directo"
 
-#: internal/ui/shortcuts.go:201
+#: internal/ui/shortcuts.go:224
 msgid "Not set"
 msgstr "No establecido"
 
-#: internal/ui/shortcuts.go:227
+#: internal/ui/shortcuts.go:250
 msgid "Remove this command"
 msgstr "Eliminar este comando"
 
-#: internal/ui/shortcuts.go:229
+#: internal/ui/shortcuts.go:252
 msgid "Use hyprland.conf's shortcut again"
 msgstr "Utilice el acceso directo de hyprland.conf nuevamente"
 
-#: internal/ui/shortcuts.go:231
+#: internal/ui/shortcuts.go:254
+msgid "Use %s's own shortcut again"
+msgstr ""
+
+#: internal/ui/shortcuts.go:258
 msgid "Turn the shortcut off"
 msgstr "Desactivar el acceso directo"
 
@@ -16594,7 +16805,7 @@ msgid "%s Upgrade with: inua upgrade"
 msgstr "Actualización %s con: actualización inua"
 
 #: internal/ui/updates.go:99
-#: ui/settings.ui:6662
+#: ui/settings.ui:6696
 msgid "Upgrade"
 msgstr "Actualización"
 
@@ -17710,10 +17921,6 @@ msgstr "Trabajando"
 #: internal/vmui/window.go:2317
 msgid "Needs the host"
 msgstr "Falta algo en el sistema"
-
-#: internal/vmui/window.go:2319
-msgid "Not installed"
-msgstr "Sin instalar"
 
 #: internal/vmui/window.go:2352
 msgid "Custom"
@@ -19667,7 +19874,7 @@ msgid "Press the new shortcut. Esc cancels; Backspace turns it off."
 msgstr "Presione el nuevo acceso directo. Esc cancela; La tecla de retroceso lo desactiva."
 
 #: ui/settings.ui:4866
-#: ui/settings.ui:6561
+#: ui/settings.ui:6595
 msgid "<span alpha='55%'>[</span>INUA<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>INUA<span alpha='55%'>]</span>"
 
@@ -19852,62 +20059,66 @@ msgid "Power"
 msgstr "Energía"
 
 #: ui/settings.ui:6437
+msgid "Compositor"
+msgstr ""
+
+#: ui/settings.ui:6471
 msgid "About"
 msgstr "Acerca de"
 
-#: ui/settings.ui:6475
+#: ui/settings.ui:6509
 msgid "<span alpha='55%'>[</span>SYSTEM<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>SISTEMA<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6483
+#: ui/settings.ui:6517
 msgid "This computer, as a card to share"
 msgstr "Este equipo, como tarjeta para compartir"
 
-#: ui/settings.ui:6495
+#: ui/settings.ui:6529
 msgid "Copy image"
 msgstr "Copiar imagen"
 
-#: ui/settings.ui:6505
+#: ui/settings.ui:6539
 msgid "Copy text"
 msgstr "Copiar texto"
 
-#: ui/settings.ui:6507
+#: ui/settings.ui:6541
 msgid "As Markdown"
 msgstr "Como Markdown"
 
-#: ui/settings.ui:6518
+#: ui/settings.ui:6552
 msgid "As a PNG image"
 msgstr "Como imagen PNG"
 
-#: ui/settings.ui:6569
+#: ui/settings.ui:6603
 msgid "The version, and new releases"
 msgstr "La versión y nuevos lanzamientos."
 
-#: ui/settings.ui:6599
+#: ui/settings.ui:6633
 msgid "Version"
 msgstr "Versión"
 
-#: ui/settings.ui:6635
+#: ui/settings.ui:6669
 msgid "Updates"
 msgstr "Actualizaciones"
 
-#: ui/settings.ui:6671
+#: ui/settings.ui:6705
 msgid "Check for updates"
 msgstr "Buscar actualizaciones"
 
-#: ui/settings.ui:6697
+#: ui/settings.ui:6731
 msgid "Check every day"
 msgstr "Comprobar todos los días"
 
-#: ui/settings.ui:6706
+#: ui/settings.ui:6740
 msgid "A notification says when a new release is out, with a button to upgrade"
 msgstr "Una notificación indica cuándo sale una nueva versión, con un botón para actualizar"
 
-#: ui/settings.ui:6751
+#: ui/settings.ui:6785
 msgid "<span alpha='55%'>[</span>CHANGELOG<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>CAMBIAR REGISTRO<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6759
+#: ui/settings.ui:6793
 msgid "What the latest release changed"
 msgstr "Qué cambió la última versión"
 

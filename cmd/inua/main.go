@@ -5,6 +5,7 @@
 //	inua show [-n instance]                                  list what call accepts
 //	inua hypr dump | watch                           inspect Hyprland state
 //	inua compositor dump | watch                     inspect the compositor's state, whichever it is
+//	inua session compositor                          the compositor the login session starts
 //	inua config check [path] | path                  check the settings file
 //	inua config hyprland [path]                      check that Hyprland starts inua-shell and sources inua.conf
 //	inua config apply                                write hypr/inua.conf from [input], [displays] and [[shortcuts]] (the built-in display as the lid is now) and reload Hyprland
@@ -42,11 +43,13 @@ import (
 	"github.com/lyricat/inua/internal/bootstrap"
 	"github.com/lyricat/inua/internal/clipboard"
 	"github.com/lyricat/inua/internal/compositor"
+	"github.com/lyricat/inua/internal/compsettings"
 	"github.com/lyricat/inua/internal/config"
 	"github.com/lyricat/inua/internal/desktop"
 	"github.com/lyricat/inua/internal/hypr"
 	"github.com/lyricat/inua/internal/hyprconf"
 	"github.com/lyricat/inua/internal/ipc"
+	"github.com/lyricat/inua/internal/session"
 )
 
 // version is the release, set by the release build (-X main.version).
@@ -67,6 +70,8 @@ func main() {
 		err = cmdClipboardCapture(os.Args[3:])
 	case "compositor":
 		err = cmdCompositor(os.Args[2:])
+	case "session":
+		err = cmdSession(os.Args[2:])
 	case "hypr":
 		err = cmdHypr(os.Args[2:])
 	case "config":
@@ -108,6 +113,7 @@ func usage() {
   inua show [-n instance]
   inua hypr dump|watch
   inua compositor dump|watch
+  inua session compositor
   inua config check [path] | path
   inua config hyprland [path]
   inua config apply
@@ -257,6 +263,22 @@ func cmdCompositor(args []string) error {
 		return nil
 	}
 	usage()
+	return nil
+}
+
+// cmdSession answers the session script: which compositor to start, from
+// the settings file. One that is chosen but cannot give the shell (not
+// installed, its config does not start inua-shell) is passed over for the
+// default, with the reason kept for the shell to say after login.
+func cmdSession(args []string) error {
+	if len(args) != 1 || args[0] != "compositor" {
+		usage()
+	}
+	c, _, err := config.Load(config.DefaultPath())
+	if err != nil {
+		c = config.Default() // a broken settings file must not block the login
+	}
+	fmt.Println(session.Start(c.Session.Compositor))
 	return nil
 }
 
@@ -418,6 +440,24 @@ func applyHyprland(path string) error {
 	}
 	for _, w := range warnings {
 		fmt.Printf("%s: %s\n", path, w)
+	}
+	// Another compositor takes the same settings its own way.
+	if b, err := compositor.Detect(); err == nil {
+		if cf, ok := b.(compositor.Configurer); ok {
+			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+			defer cancel()
+			if err := cf.ApplySettings(ctx, compsettings.From(c)); err != nil {
+				return err
+			}
+			fmt.Printf("%s: applied to %s\n", path, cf.Source())
+			for _, cap := range []compositor.Capability{compositor.CapKeyboard, compositor.CapBinds} {
+				if hint := cf.Hint(cap); hint != "" {
+					fmt.Println(hint)
+					break
+				}
+			}
+			return nil
+		}
 	}
 	var client *hypr.Client
 	if paths, err := hypr.PathsFromEnv(); err == nil {

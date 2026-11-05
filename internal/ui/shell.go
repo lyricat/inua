@@ -73,11 +73,13 @@ type shellUI struct {
 	// comp is the compositor this shell runs on (nil: none found); hypr
 	// is the same backend when it is Hyprland, for what only Hyprland
 	// has (Lua listeners, binds, displays, the virtual screen).
-	comp      compositor.Backend
-	hypr      *hypr.Backend
-	caps      compositor.Capabilities
-	snap      compositor.Snapshot
-	connected bool
+	comp compositor.Backend
+	hypr *hypr.Backend
+	// saidFallback: the login's fallback, if any, has been told (sayFallback).
+	saidFallback bool
+	caps         compositor.Capabilities
+	snap         compositor.Snapshot
+	connected    bool
 	// virtual asks for the virtual screen to follow the monitors again
 	// (syncVirtual); a request already waiting covers a new one.
 	virtual chan struct{}
@@ -176,6 +178,8 @@ type shellUI struct {
 	onDefaultApp           func(uintptr, uintptr, uintptr)
 	onDisplayDrop          func(uintptr, uintptr, uintptr)
 	onPowerDrop            func(uintptr, uintptr, uintptr) // the Power page's drop-downs
+	onCompositorPick       func(gtk.CheckButton)           // the Compositor page's choices
+	onCompositorLogout     func(gtk.Button)
 	onVoiceSwitch          func(gtk.Switch, bool) bool
 	onVoiceMode            func(gtk.ToggleButton)
 	onVoiceRuns            func(gtk.ToggleButton)
@@ -800,6 +804,10 @@ func (h compHandler) OnConnection(up bool, err error) {
 		h.s.connected = up
 		if up {
 			h.s.installOverviewKeys()
+			if !h.s.saidFallback {
+				h.s.saidFallback = true
+				h.s.sayFallback()
+			}
 		}
 		h.s.launcher.st.SetConnected(up)
 		h.s.syncLauncher()

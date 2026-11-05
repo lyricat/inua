@@ -18,6 +18,7 @@ import (
 
 	"github.com/lyricat/inua/internal/bootstrap"
 	"github.com/lyricat/inua/internal/compositor"
+	"github.com/lyricat/inua/internal/compsettings"
 	"github.com/lyricat/inua/internal/gtkx"
 	"github.com/lyricat/inua/internal/hyprconf"
 	"github.com/lyricat/inua/internal/i18n"
@@ -38,7 +39,12 @@ type hyprApply struct {
 // background, and reloads Hyprland if the file changed.
 func (s *shellUI) applyHyprland() {
 	if s.comp != nil && s.hypr == nil {
-		return // another compositor: inua.conf is Hyprland's
+		// Another compositor takes the same settings its own way;
+		// inua.conf is Hyprland's.
+		if cf := s.configurer(); cf != nil {
+			s.applyBackendSettings(cf)
+		}
+		return
 	}
 	c, client := s.cfg, s.hyprClient()
 	path := hyprconf.Target(s.hyprConfig())
@@ -63,6 +69,9 @@ func (s *shellUI) applyHyprland() {
 		})
 	}()
 }
+
+// backendSettings are inua's settings as a compositor backend takes them.
+func (s *shellUI) backendSettings() compositor.Settings { return compsettings.From(s.cfg) }
 
 // refreshHyprInput rereads what Hyprland has in effect after it reloads
 // its config, for the settings window.
@@ -149,14 +158,21 @@ func (s *shellUI) hyprConfig() string {
 // hyprland.lua), or overrides it.
 func (s *shellUI) showSourceWarning() {
 	st := &s.settings
-	if s.unsupported(compositor.CapConfig) {
-		// The settings are inua's and stay in config.toml; this compositor
-		// does not take them from inua.
-		text := i18n.Tf("These settings are kept, but %s does not take them from inua: set them in its own configuration.", s.compositorName())
-		for _, l := range []*gtk.Label{&st.kbWarn, &st.tpWarn, &st.sc.warn, &st.displays.warn} {
-			l.SetText(text)
-			l.SetVisible(true)
+	if s.comp != nil && s.hypr == nil {
+		// Another compositor: each page's options are there when the
+		// compositor takes them, and disabled with the reason under them
+		// when it does not. What it takes can change under us (a line
+		// added to its config, a plugin loaded).
+		s.caps = s.comp.Capabilities()
+		for _, g := range []struct {
+			warn *gtk.Label
+			c    compositor.Capability
+		}{{&st.kbWarn, compositor.CapKeyboard}, {&st.tpWarn, compositor.CapTouchpad}, {&st.sc.warn, compositor.CapBinds}} {
+			s.gatePage(g.warn, s.capabilityHint(g.c))
 		}
+		st.displays.warn.SetVisible(false)
+		s.showBackendLabels()
+		s.showCompositor()
 		return
 	}
 	conf := s.hyprConfig()

@@ -1160,6 +1160,9 @@ window.settings { background: @app; font-size: 14px; }
 /* A notice: the hairline in the notice's colour, no fill. Every app's
    window is .settings too, so a status mark in warn is left out. */
 .settings .keyring-problem .title, .settings .sub.warn-text { color: @warn; }
+/* A section whose settings the compositor does not take: there to be
+   seen, dimmed, the page's notice saying why. */
+.settings .section.gated > .section-body { opacity: 0.45; }
 .settings .warn:not(.mark) {
   margin-bottom: 14px;
   padding: 10px 14px;

@@ -504,6 +504,13 @@ enable = false
 # ending processes, power, the clipboard and notifications still ask).
 policy = "ask"
 
+[session]
+# The compositor the Inua login session starts: "hyprland", "niri" or
+# "wayfire" (Settings, Compositor). It applies at the next login. One that
+# is not installed, or whose own config does not start inua-shell, is
+# passed over for Hyprland, and the shell says why.
+compositor = "hyprland"
+
 # Keyboard shortcuts set in the settings window (Shortcuts). inua writes
 # them to ~/.config/hypr/inua.conf: each unbinds its keys from anything
 # else, and the keys its action had in hyprland.conf ("replaces"). Actions

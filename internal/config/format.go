@@ -35,6 +35,7 @@ func Format(c Config) string {
 		c.Assistant.ServeEnable, q(c.Assistant.ServeListen), aiProfiles(c.Assistant.Profiles),
 		q(c.Keyring.Folder), c.Keyring.Notify, q(c.Keyring.Untrusted), c.Keyring.LockAfter,
 		c.MCP.Enable, q(c.MCP.Policy),
+		q(c.Session.Compositor),
 		shortcuts(c.Shortcuts))
 }
 
@@ -627,6 +628,13 @@ enable = %t
 # inua's dialog) or "allow" (change without asking; closing windows,
 # ending processes, power, the clipboard and notifications still ask).
 policy = %s
+
+[session]
+# The compositor the Inua login session starts: "hyprland", "niri" or
+# "wayfire" (Settings, Compositor). It applies at the next login. One that
+# is not installed, or whose own config does not start inua-shell, is
+# passed over for Hyprland, and the shell says why.
+compositor = %s
 
 # Keyboard shortcuts set in the settings window (Shortcuts). inua writes
 # them to ~/.config/hypr/inua.conf: each unbinds its keys from anything

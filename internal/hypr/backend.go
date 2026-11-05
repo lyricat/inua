@@ -151,7 +151,8 @@ func (b *Backend) Capabilities() compositor.Capabilities {
 		compositor.CapDisplays: compositor.Supported, compositor.CapVirtualOutput: compositor.Supported,
 		compositor.CapPointer: compositor.Supported, compositor.CapPlacement: compositor.Supported,
 		compositor.CapModes: compositor.Supported, compositor.CapRules: compositor.Supported,
-		compositor.CapOnDemandFocus: compositor.Supported, compositor.CapConfig: compositor.Supported,
+		compositor.CapOnDemandFocus: compositor.Supported,
+		compositor.CapKeyboard:      compositor.Supported, compositor.CapTouchpad: compositor.Supported,
 	}
 }
 
@@ -181,6 +182,11 @@ func (b *Backend) FocusWindow(ctx context.Context, id string) error {
 
 func (b *Backend) CloseWindow(ctx context.Context, id string) error {
 	return b.Dispatch(ctx, "closewindow "+window(id), fmt.Sprintf(`hl.dsp.window.close({window=%q})`, window(id)))
+}
+
+// Exit ends the Hyprland session.
+func (b *Backend) Exit(ctx context.Context) error {
+	return b.Dispatch(ctx, "exit", "hl.dsp.exit()")
 }
 
 // KillWindow ends a window's client at once, without asking it: the

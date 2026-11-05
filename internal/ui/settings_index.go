@@ -26,6 +26,7 @@ var settingsIcons = map[string]string{
 	"keyboard":      "input-keyboard-symbolic",
 	"mouse":         "input-mouse-symbolic",
 	"power":         "battery-level-80-symbolic",
+	"compositor":    "focus-windows-symbolic",
 	"about":         "help-about-symbolic",
 	"sound":         "audio-volume-high-symbolic",
 	"voice":         "audio-input-microphone-symbolic",

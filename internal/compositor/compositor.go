@@ -162,9 +162,10 @@ const (
 	CapPlacement         Capability = "placement"           // Placer
 	CapModes             Capability = "modes"               // Moder
 	CapRules             Capability = "rules"               // compositor styling rules
-	// CapConfig: inua's keyboard, touchpad and shortcut settings reach
-	// the compositor (a config inua writes and the compositor loads).
-	CapConfig Capability = "config"
+	// CapKeyboard and CapTouchpad: inua's keyboard and touchpad settings
+	// reach the compositor (Settings; CapBinds is the shortcuts).
+	CapKeyboard Capability = "keyboard"
+	CapTouchpad Capability = "touchpad"
 	// CapOnDemandFocus: a layer surface asking for the keyboard on demand
 	// gets it when it appears (Hyprland). Without it the surface is
 	// focused only by a click (niri), so a surface that must take keys at
