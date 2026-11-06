@@ -2885,7 +2885,6 @@ msgid "Size"
 msgstr "尺寸"
 
 #: internal/diskui/details.go:49
-#: internal/ui/appmenu.go:226
 #: internal/ui/settings_menu.go:25
 msgid "File"
 msgid_plural "Files"
@@ -3534,7 +3533,7 @@ msgstr[0] "……還有 %d 項"
 #: internal/termui/keys.go:295
 #: internal/termui/sessionmenu.go:113
 #: internal/termui/wsmenu.go:129
-#: internal/ui/appmenu.go:266
+#: internal/ui/appmenu.go:312
 #: internal/ui/settings_bench.go:132
 #: internal/ui/settings_menu.go:26
 #: internal/ui/settings_wifi_details.go:62
@@ -12888,7 +12887,7 @@ msgid "Start the shell again"
 msgstr "再次啟動shell"
 
 #: internal/shell/commands.go:46
-#: internal/ui/appmenu.go:227
+#: internal/ui/appmenu.go:274
 msgid "Close Window"
 msgstr "關閉窗口"
 
@@ -14018,13 +14017,11 @@ msgid "Choose the workspace's folder"
 msgstr "選擇工作區的資料夾"
 
 #: internal/termui/menubar.go:32
-#: internal/ui/appmenu.go:229
 #: internal/ui/settings_menu.go:28
 msgid "View"
 msgstr "檢視"
 
 #: internal/termui/menubar.go:34
-#: internal/ui/appmenu.go:232
 msgid "Help"
 msgstr "說明"
 
@@ -14420,24 +14417,28 @@ msgstr "鬧鐘 · %02d:%02d"
 msgid "Snooze"
 msgstr "稍後提醒"
 
-#: internal/ui/appmenu.go:228
-msgid "Quit %s"
+#: internal/ui/appmenu.go:270
+msgid "Application"
 msgstr ""
 
-#: internal/ui/appmenu.go:230
-msgid "Fullscreen"
-msgstr "全螢幕"
-
-#: internal/ui/appmenu.go:231
-msgid "Float"
-msgstr "浮動"
-
-#: internal/ui/appmenu.go:233
-#: internal/ui/appmenu.go:252
+#: internal/ui/appmenu.go:273
+#: internal/ui/appmenu.go:298
 msgid "About %s"
 msgstr ""
 
-#: internal/ui/appmenu.go:264
+#: internal/ui/appmenu.go:275
+msgid "Quit %s"
+msgstr ""
+
+#: internal/ui/appmenu.go:277
+msgid "Fullscreen"
+msgstr "全螢幕"
+
+#: internal/ui/appmenu.go:278
+msgid "Float"
+msgstr "浮動"
+
+#: internal/ui/appmenu.go:310
 msgid "Process %d"
 msgstr ""
 
@@ -14638,11 +14639,11 @@ msgstr "為截圖已隱藏。"
 msgid "The passphrases do not match."
 msgstr "密碼短語不符。"
 
-#: internal/ui/bar.go:526
+#: internal/ui/bar.go:527
 msgid "Workspace %s"
 msgstr "工作空間%s"
 
-#: internal/ui/bar.go:539
+#: internal/ui/bar.go:540
 msgid "WORKSPACE"
 msgstr "工作區"
 

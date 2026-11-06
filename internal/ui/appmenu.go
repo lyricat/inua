@@ -183,9 +183,9 @@ func (s *shellUI) loadA11yMenu(b *bar, pid int) {
 			// items; pressing a section to make it build them ends Firefox.
 			// It gets the generic menu instead, and its sections are never
 			// pressed.
-			if !appmenu.FillableMenu(entries) || s.appMenuIsFirefox(pid) {
+			if !appmenu.FillableMenu(entries) || s.appMenuUnreadable(pid) {
 				entries = s.genericAppSections(pid)
-				if len(entries) > 0 && !s.appMenuIsFirefox(pid) && !b.appMenuRetried {
+				if len(entries) > 0 && !s.appMenuUnreadable(pid) && !b.appMenuRetried {
 					// The tree may still be building: look once more, and
 					// replace the generic menu if the application's shows up.
 					b.appMenuRetried = true
@@ -214,18 +214,22 @@ func withDbusmenuActions(entries []appmenu.Entry, reg appmenu.Registration) []ap
 	return entries
 }
 
-// appMenuIsFirefox reports whether pid is Firefox: its accessibility menubar
-// has empty sections, and pressing one to read it brings Firefox down.
-func (s *shellUI) appMenuIsFirefox(pid int) bool {
+// appMenuUnreadable reports whether pid's menu bar cannot be read from its
+// accessibility tree: Firefox's sections are empty and pressing one ends the
+// process, and VS Code draws its menu bar itself and exposes only an overflow
+// item. Neither is pressed; both get the shell's own Application menu.
+func (s *shellUI) appMenuUnreadable(pid int) bool {
 	w, ok := s.appWindowOf(pid)
 	if !ok {
 		return false
 	}
-	if strings.Contains(strings.ToLower(w.AppID), "firefox") {
+	id := strings.ToLower(w.AppID)
+	if strings.Contains(id, "firefox") || id == "code" || id == "vscode" {
 		return true
 	}
-	if e := s.dockState.apps.ForClass(w.AppID); e != nil && strings.Contains(strings.ToLower(e.ID), "firefox") {
-		return true
+	if e := s.dockState.apps.ForClass(w.AppID); e != nil {
+		id = strings.ToLower(e.ID)
+		return strings.Contains(id, "firefox") || id == "code" || strings.HasSuffix(id, ".code")
 	}
 	return false
 }
@@ -262,19 +266,18 @@ func (s *shellUI) genericAppSections(pid int) []appmenu.Entry {
 	action := func(label, kind, window string) appmenu.Entry {
 		return appmenu.Entry{Label: label, Enabled: true, Action: appmenu.Action{Kind: kind, Bus: window, Index: int32(pid)}}
 	}
-	section := func(label string, items ...appmenu.Entry) appmenu.Entry {
-		return appmenu.Entry{Label: label, Enabled: true, Children: items}
-	}
-	return []appmenu.Entry{
-		section(i18n.T("File"),
+	return []appmenu.Entry{{
+		Label:   i18n.T("Application"),
+		Enabled: true,
+		Children: []appmenu.Entry{
+			action(i18n.Tf("About %s", name), appmenu.ActionAbout, w.ID),
 			action(i18n.T("Close Window"), appmenu.ActionCloseWindow, w.ID),
-			action(i18n.Tf("Quit %s", name), appmenu.ActionQuitApp, w.ID)),
-		section(i18n.T("View"),
+			action(i18n.Tf("Quit %s", name), appmenu.ActionQuitApp, w.ID),
+			{Separator: true},
 			action(i18n.T("Fullscreen"), appmenu.ActionFullscreen, w.ID),
-			action(i18n.T("Float"), appmenu.ActionFloat, w.ID)),
-		section(i18n.T("Help"),
-			action(i18n.Tf("About %s", name), appmenu.ActionAbout, w.ID)),
-	}
+			action(i18n.T("Float"), appmenu.ActionFloat, w.ID),
+		},
+	}}
 }
 
 // showAppAbout says what the application behind pid is: its name and icon,
@@ -415,7 +418,7 @@ func (s *shellUI) showAppMenu(b *bar, i int, w *gtk.Widget) {
 		} else if s.appmenu.a11y != nil {
 			if len(entry.Children) > 0 {
 				entries = entry.Children
-			} else if !s.appMenuIsFirefox(pid) {
+			} else if !s.appMenuUnreadable(pid) {
 				entries, err = s.appmenu.a11y.FillSection(entry)
 			}
 		}

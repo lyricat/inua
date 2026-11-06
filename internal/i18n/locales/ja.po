@@ -2885,7 +2885,6 @@ msgid "Size"
 msgstr "サイズ"
 
 #: internal/diskui/details.go:49
-#: internal/ui/appmenu.go:226
 #: internal/ui/settings_menu.go:25
 msgid "File"
 msgid_plural "Files"
@@ -3534,7 +3533,7 @@ msgstr[0] "…ほか %d 件"
 #: internal/termui/keys.go:295
 #: internal/termui/sessionmenu.go:113
 #: internal/termui/wsmenu.go:129
-#: internal/ui/appmenu.go:266
+#: internal/ui/appmenu.go:312
 #: internal/ui/settings_bench.go:132
 #: internal/ui/settings_menu.go:26
 #: internal/ui/settings_wifi_details.go:62
@@ -12888,7 +12887,7 @@ msgid "Start the shell again"
 msgstr "シェルを再度開始する"
 
 #: internal/shell/commands.go:46
-#: internal/ui/appmenu.go:227
+#: internal/ui/appmenu.go:274
 msgid "Close Window"
 msgstr "ウィンドウを閉じる"
 
@@ -14018,13 +14017,11 @@ msgid "Choose the workspace's folder"
 msgstr "ワークスペースのフォルダを選ぶ"
 
 #: internal/termui/menubar.go:32
-#: internal/ui/appmenu.go:229
 #: internal/ui/settings_menu.go:28
 msgid "View"
 msgstr "表示"
 
 #: internal/termui/menubar.go:34
-#: internal/ui/appmenu.go:232
 msgid "Help"
 msgstr "ヘルプ"
 
@@ -14420,24 +14417,28 @@ msgstr "アラーム · %02d:%02d"
 msgid "Snooze"
 msgstr "スヌーズ"
 
-#: internal/ui/appmenu.go:228
-msgid "Quit %s"
+#: internal/ui/appmenu.go:270
+msgid "Application"
 msgstr ""
 
-#: internal/ui/appmenu.go:230
-msgid "Fullscreen"
-msgstr "全画面"
-
-#: internal/ui/appmenu.go:231
-msgid "Float"
-msgstr "フローティング"
-
-#: internal/ui/appmenu.go:233
-#: internal/ui/appmenu.go:252
+#: internal/ui/appmenu.go:273
+#: internal/ui/appmenu.go:298
 msgid "About %s"
 msgstr ""
 
-#: internal/ui/appmenu.go:264
+#: internal/ui/appmenu.go:275
+msgid "Quit %s"
+msgstr ""
+
+#: internal/ui/appmenu.go:277
+msgid "Fullscreen"
+msgstr "全画面"
+
+#: internal/ui/appmenu.go:278
+msgid "Float"
+msgstr "フローティング"
+
+#: internal/ui/appmenu.go:310
 msgid "Process %d"
 msgstr ""
 
@@ -14638,11 +14639,11 @@ msgstr "スクリーンショットのため隠しています。"
 msgid "The passphrases do not match."
 msgstr "パスフレーズが一致しません。"
 
-#: internal/ui/bar.go:526
+#: internal/ui/bar.go:527
 msgid "Workspace %s"
 msgstr "ワークスペース%s"
 
-#: internal/ui/bar.go:539
+#: internal/ui/bar.go:540
 msgid "WORKSPACE"
 msgstr "ワークスペース"
 
