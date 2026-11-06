@@ -75,7 +75,23 @@ type Entry struct {
 	// only when asked (AboutToShow), so Children can be empty until then.
 	Submenu  bool
 	Children []Entry
+	// Action says how to invoke the entry: through the application's
+	// accessibility tree, or its dbusmenu.
+	Action Action
 }
+
+// Action says how to invoke an entry.
+type Action struct {
+	Kind  string          // ActionA11y or ActionDbusmenu; empty when the entry only groups children
+	Bus   string          // the connection that owns the menu
+	Path  dbus.ObjectPath // the menu or accessible object
+	Index int32           // an action index (AT-SPI) or an item id (dbusmenu)
+}
+
+const (
+	ActionA11y     = "atspi"
+	ActionDbusmenu = "dbusmenu"
+)
 
 // registered is a registration, when it was made among the others, and the
 // items of its menu's first level as Menu last read them.
