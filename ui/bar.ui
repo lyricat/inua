@@ -229,7 +229,7 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
                     <property name="focusable">false</property>
                     <property name="tooltip-text" translatable="yes">Control Center</property>
                     <child>
-                      <object class="GtkBox">
+                      <object class="GtkBox" id="status_icons">
                         <property name="spacing">9</property>
                         <child>
                           <object class="GtkImage" id="net_icon">

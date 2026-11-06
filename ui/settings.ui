@@ -411,6 +411,118 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
                                             <property name="hexpand">true</property>
                                             <property name="valign">3</property>
                                             <child>
+                                              <object class="GtkBox">
+                                                <property name="spacing">12</property>
+                                                <child>
+                                                  <object class="GtkLabel">
+                                                    <style>
+                                                      <class name="title"/>
+                                                    </style>
+                                                    <property name="label" translatable="yes">Icon size</property>
+                                                    <property name="xalign">0</property>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkLabel" id="bar_icon_size_val">
+                                                    <style>
+                                                      <class name="readout"/>
+                                                    </style>
+                                                    <property name="xalign">0</property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkScale" id="bar_icon_size">
+                                            <property name="name">bar_icon_size</property>
+                                            <property name="hexpand">true</property>
+                                            <property name="valign">3</property>
+                                            <property name="draw-value">false</property>
+                                            <property name="adjustment">
+                                              <object class="GtkAdjustment">
+                                                <property name="lower">12</property>
+                                                <property name="upper">24</property>
+                                                <property name="step-increment">1</property>
+                                                <property name="page-increment">4</property>
+                                              </object>
+                                            </property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSeparator"></object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkBox">
+                                        <style>
+                                          <class name="row"/>
+                                        </style>
+                                        <property name="spacing">16</property>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="orientation">1</property>
+                                            <property name="hexpand">true</property>
+                                            <property name="valign">3</property>
+                                            <child>
+                                              <object class="GtkBox">
+                                                <property name="spacing">12</property>
+                                                <child>
+                                                  <object class="GtkLabel">
+                                                    <style>
+                                                      <class name="title"/>
+                                                    </style>
+                                                    <property name="label" translatable="yes">Icon spacing</property>
+                                                    <property name="xalign">0</property>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkLabel" id="bar_icon_spacing_val">
+                                                    <style>
+                                                      <class name="readout"/>
+                                                    </style>
+                                                    <property name="xalign">0</property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkScale" id="bar_icon_spacing">
+                                            <property name="name">bar_icon_spacing</property>
+                                            <property name="hexpand">true</property>
+                                            <property name="valign">3</property>
+                                            <property name="draw-value">false</property>
+                                            <property name="adjustment">
+                                              <object class="GtkAdjustment">
+                                                <property name="lower">2</property>
+                                                <property name="upper">12</property>
+                                                <property name="step-increment">1</property>
+                                                <property name="page-increment">2</property>
+                                              </object>
+                                            </property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSeparator"></object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkBox">
+                                        <style>
+                                          <class name="row"/>
+                                        </style>
+                                        <property name="spacing">16</property>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="orientation">1</property>
+                                            <property name="hexpand">true</property>
+                                            <property name="valign">3</property>
+                                            <child>
                                               <object class="GtkLabel">
                                                 <style>
                                                   <class name="title"/>

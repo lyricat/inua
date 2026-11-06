@@ -157,22 +157,23 @@ func (s *shellUI) trayImage(it sni.Item) *gtk.Image {
 	case name != "" && theme.HasIcon(name):
 		img = gtk.NewImageFromIconName(name)
 	case len(pix) > 0:
-		tex := pixmapTexture(pix)
+		tex := pixmapTexture(pix, s.cfg.Bar.IconSize)
 		img = gtk.NewImageFromPaintable(tex)
 		tex.Unref()
 	default:
 		img = gtk.NewImageFromIconName("application-x-executable-symbolic")
 	}
-	img.SetPixelSize(trayIconSize)
+	img.SetPixelSize(int32(s.cfg.Bar.IconSize))
 	return img
 }
 
 // pixmapTexture turns the best-fitting pixmap into a texture: the smallest
 // one that is sharp at twice the icon size, else the largest.
-func pixmapTexture(pix []sni.Pixmap) *gdk.MemoryTexture {
+func pixmapTexture(pix []sni.Pixmap, iconSize int) *gdk.MemoryTexture {
 	best := pix[0]
 	for _, p := range pix[1:] {
-		fits, bestFits := p.Width >= 2*trayIconSize, best.Width >= 2*trayIconSize
+		size := int32(iconSize)
+		fits, bestFits := p.Width >= 2*size, best.Width >= 2*size
 		if (fits && (!bestFits || p.Width < best.Width)) || (!fits && !bestFits && p.Width > best.Width) {
 			best = p
 		}

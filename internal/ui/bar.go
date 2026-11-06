@@ -48,6 +48,7 @@ type bar struct {
 	tray        gtk.Box
 	appMenu     gtk.Box // the focused application's menu (appmenu.go)
 	status      gtk.Button
+	statusIcons gtk.Box
 	netIcon     gtk.Image
 	btIcon      gtk.Image
 	volIcon     gtk.Image
@@ -202,6 +203,7 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	ui.Get("tray", &b.tray)
 	ui.Get("app_menu", &b.appMenu)
 	ui.Get("status", &b.status)
+	ui.Get("status_icons", &b.statusIcons)
 	ui.Get("net_icon", &b.netIcon)
 	ui.Get("bt_icon", &b.btIcon)
 	ui.Get("vol_icon", &b.volIcon)
@@ -211,6 +213,7 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	ui.Close()
 	b.setEdgeGap(s.cfg.Style.EdgeGaps)
 	b.setDensity(s.cfg.Bar.Density)
+	b.setIconMetrics(s.cfg.Bar.IconSize, s.cfg.Bar.IconSpacing)
 	b.status.ConnectClicked(&s.onControlButton)
 	b.notes.ConnectClicked(&s.onNotesButton)
 	b.voice.ConnectClicked(&s.onVoiceButton)
@@ -486,6 +489,23 @@ func (b *bar) setHypr(s *shellUI, snap compositor.Snapshot) {
 		s.syncAppMenu(b)
 	} else {
 		s.clearAppMenu(b)
+	}
+}
+
+// setIconMetrics keeps the right side's icons and the gap between them
+// uniform: the end's boxes and the status button's icons.
+func (b *bar) setIconMetrics(size, gap int) {
+	outer := int32(gap - 2)
+	b.end.SetSpacing(outer)
+	b.tray.SetSpacing(outer)
+	if b.statusIcons.GoPointer() != 0 {
+		b.statusIcons.SetSpacing(int32(gap))
+	}
+	px := int32(size)
+	for _, img := range []*gtk.Image{&b.notesIcon, &b.voiceIcon, &b.netIcon, &b.btIcon, &b.volIcon, &b.batIcon} {
+		if img.GoPointer() != 0 {
+			img.SetPixelSize(px)
+		}
 	}
 }
 

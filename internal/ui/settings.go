@@ -87,7 +87,9 @@ type settings struct {
 	appTheme                                                                gtk.DropDown
 	appThemes, appThemeLabels                                               []string // appTheme's choices, "" first
 	tpSpeed, transparency, radius                                           gtk.Scale
-	transparencyVal, radiusVal, clipStats                                   gtk.Label
+	barIconSize, barIconSpacing                                             gtk.Scale
+	transparencyVal, radiusVal, barIconSizeVal, barIconSpacingVal           gtk.Label
+	clipStats                                                               gtk.Label
 	clipClear, clipReveal                                                   gtk.Button
 
 	// Keyboard and touchpad: where the settings come from, and why they
@@ -232,6 +234,8 @@ func (s *shellUI) bindSettingsHandlers() {
 			c.Background.Fit = pick(fitChoices, i, c.Background.Fit)
 		case "ws":
 			c.Bar.Workspaces = pick(wsChoices, i, c.Bar.Workspaces)
+		case "clock_language":
+			c.Bar.ClockLanguage = pick(s.settings.clockLanguageNames, i, c.Bar.ClockLanguage)
 		case "overview_scope":
 			c.Overview.PerMonitor = i == 0
 		case "title_mode":
@@ -377,6 +381,20 @@ func (s *shellUI) bindSettingsHandlers() {
 			s.changeSettings(c)
 			return false
 		}
+		if r.GetName() == "bar_icon_size" {
+			val := int(math.Round(v))
+			c.Bar.IconSize = val
+			s.settings.barIconSizeVal.SetText(i18n.Tf("%d px", val))
+			s.changeSettings(c)
+			return false
+		}
+		if r.GetName() == "bar_icon_spacing" {
+			val := int(math.Round(v))
+			c.Bar.IconSpacing = val
+			s.settings.barIconSpacingVal.SetText(i18n.Tf("%d px", val))
+			s.changeSettings(c)
+			return false
+		}
 		v = math.Round(max(-1, min(v, 1))*20) / 20 // the steps of 0.05
 		c.Input.TouchpadSpeed = &v
 		s.changeSettings(c)
@@ -492,6 +510,10 @@ func (s *shellUI) openSettings() {
 	ui.Get("transparency_val", &st.transparencyVal)
 	ui.Get("radius", &st.radius)
 	ui.Get("radius_val", &st.radiusVal)
+	ui.Get("bar_icon_size", &st.barIconSize)
+	ui.Get("bar_icon_spacing", &st.barIconSpacing)
+	ui.Get("bar_icon_size_val", &st.barIconSizeVal)
+	ui.Get("bar_icon_spacing_val", &st.barIconSpacingVal)
 	st.textScales = nil // a new dropdown, without its choices
 	st.iconSets, st.appIconSets, st.styleTiles = nil, nil, nil
 	st.appThemes, st.appThemeLabels = nil, nil
@@ -595,6 +617,8 @@ func (s *shellUI) openSettings() {
 	st.tpSpeed.ConnectChangeValue(&s.onSettingsScale)
 	st.transparency.ConnectChangeValue(&s.onSettingsScale)
 	st.radius.ConnectChangeValue(&s.onSettingsScale)
+	st.barIconSize.ConnectChangeValue(&s.onSettingsScale)
+	st.barIconSpacing.ConnectChangeValue(&s.onSettingsScale)
 	s.buildSwatches()
 	st.hyprKb = s.hyprKbOptions()
 	st.sc.binds = s.hyprBinds()
@@ -838,6 +862,10 @@ func (s *shellUI) showSettings() {
 	st.transparencyVal.SetText(i18n.Tf("%d%%", c.Style.Transparency))
 	st.radius.SetValue(float64(c.Style.Radius))
 	st.radiusVal.SetText(i18n.Tf("%d px", c.Style.Radius))
+	st.barIconSize.SetValue(float64(c.Bar.IconSize))
+	st.barIconSizeVal.SetText(i18n.Tf("%d px", c.Bar.IconSize))
+	st.barIconSpacing.SetValue(float64(c.Bar.IconSpacing))
+	st.barIconSpacingVal.SetText(i18n.Tf("%d px", c.Bar.IconSpacing))
 	st.animations.SetActive(c.Style.Animations == nil || *c.Style.Animations)
 	s.showIconSets()
 	s.showTextScale()

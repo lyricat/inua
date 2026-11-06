@@ -56,6 +56,9 @@ type Bar struct {
 	Enable bool `toml:"enable"`
 	// Density is "default" or "compact"; compact reduces the bar's height and spacing.
 	Density string `toml:"density"`
+	// IconSize and IconSpacing set the right-side bar icons and the gap between them.
+	IconSize    int `toml:"icon_size"`
+	IconSpacing int `toml:"icon_spacing"`
 	// Clock is a strftime format (see Strftime).
 	Clock string `toml:"clock"`
 	// ClockLanguage is the clock's localized date language: "auto" follows
@@ -1030,6 +1033,14 @@ func (c *Config) validate() []string {
 	oneOf("bar.clock_language", &c.Bar.ClockLanguage, d.Bar.ClockLanguage, ClockLanguages...)
 	oneOf("bar.title_mode", &c.Bar.TitleMode, d.Bar.TitleMode, "app", "window")
 	oneOf("bar.density", &c.Bar.Density, d.Bar.Density, "default", "compact")
+	if c.Bar.IconSize < 12 || c.Bar.IconSize > 24 {
+		w = append(w, fmt.Sprintf("bar.icon_size = %d: want 12 to 24; using %d", c.Bar.IconSize, d.Bar.IconSize))
+		c.Bar.IconSize = d.Bar.IconSize
+	}
+	if c.Bar.IconSpacing < 2 || c.Bar.IconSpacing > 12 {
+		w = append(w, fmt.Sprintf("bar.icon_spacing = %d: want 2 to 12; using %d", c.Bar.IconSpacing, d.Bar.IconSpacing))
+		c.Bar.IconSpacing = d.Bar.IconSpacing
+	}
 	oneOf("launcher.mode", &c.Launcher.Mode, d.Launcher.Mode, "apps", "windows")
 	if !ValidSearchURL(c.Launcher.Search) {
 		w = append(w, fmt.Sprintf("launcher.search = %q: want a web address with %%s for the words; using %q", c.Launcher.Search, d.Launcher.Search))
