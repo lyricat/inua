@@ -14,6 +14,7 @@ import (
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
 	"github.com/lyricat/inua/internal/appui"
+	"github.com/lyricat/inua/internal/dbusmenu"
 	"github.com/lyricat/inua/internal/gtkx"
 	"github.com/lyricat/inua/internal/i18n"
 	"github.com/lyricat/inua/internal/term/host"
@@ -30,6 +31,7 @@ type App struct {
 	c      *appui.Ctx
 	win    *gtk.ApplicationWindow
 	client *host.Client
+	menu   *dbusmenu.Published // the menu the bar shows while this window has the focus
 
 	state *host.State
 	info  map[int]host.PaneInfo
@@ -161,6 +163,7 @@ func (a *App) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	if runtime.GOOS == "darwin" {
 		a.menuBar()
 	}
+	a.publishMenu()
 	if os.Getenv("INUA_TERM_SMOKE") != "" {
 		a.smokeTest()
 	}
@@ -389,6 +392,8 @@ func (a *App) fail(err error) {
 // the window is.
 func (a *App) closeWindow() {
 	log.Printf("term: the window closes")
+	a.menu.Close()
+	a.menu = nil
 	if a.client != nil && a.uiDone {
 		a.client.SetUI(a.uiNow())
 	}

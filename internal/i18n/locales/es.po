@@ -347,9 +347,9 @@ msgid "%d%%, charging"
 msgstr "%d%%, cargando"
 
 #: internal/apps/connect/service.go:520
-#: internal/ui/settings.go:350
-#: internal/ui/settings.go:798
-#: internal/ui/settings.go:905
+#: internal/ui/settings.go:352
+#: internal/ui/settings.go:803
+#: internal/ui/settings.go:910
 #: internal/ui/settings_displays.go:460
 msgid "%d%%"
 msgstr "%d %%"
@@ -2825,11 +2825,11 @@ msgstr "Abre carpetas"
 
 #: internal/desktop/defaults.go:39
 #: internal/term/web/strings.go:101
-#: internal/termui/app.go:115
-#: internal/termui/app.go:151
-#: internal/termui/app.go:357
-#: internal/termui/app.go:359
-#: internal/termui/menubar.go:40
+#: internal/termui/app.go:117
+#: internal/termui/app.go:153
+#: internal/termui/app.go:360
+#: internal/termui/app.go:362
+#: internal/termui/menubar.go:29
 #: internal/termui/prefs.go:160
 #: internal/termui/quick.go:29
 #: internal/termui/quick.go:47
@@ -2870,7 +2870,7 @@ msgstr "Abre archivos de vídeo"
 
 #: internal/desktop/defaults.go:48
 #: internal/lightui/pass_otp.go:338
-#: internal/ui/settings.go:1067
+#: internal/ui/settings.go:1072
 msgid "Images"
 msgstr "Imágenes"
 
@@ -2911,6 +2911,7 @@ msgid "Size"
 msgstr "Tamaño"
 
 #: internal/diskui/details.go:49
+#: internal/ui/settings_menu.go:25
 msgid "File"
 msgid_plural "Files"
 msgstr[0] "Archivo"
@@ -3130,7 +3131,7 @@ msgstr "Carpeta personal"
 #: internal/lightui/sysmon.go:969
 #: internal/lightui/tailscale.go:527
 #: internal/lightui/tailscale.go:568
-#: internal/ui/settings.go:596
+#: internal/ui/settings.go:599
 #: ui/vm.ui:2981
 msgid "System"
 msgstr "Sistema"
@@ -3568,6 +3569,7 @@ msgstr[1] "… y %d más"
 #: internal/termui/sessionmenu.go:113
 #: internal/termui/wsmenu.go:129
 #: internal/ui/settings_bench.go:132
+#: internal/ui/settings_menu.go:26
 #: internal/ui/settings_wifi_details.go:62
 #: ui/mail-compose.ui:292
 #: ui/mail.ui:395
@@ -3729,7 +3731,7 @@ msgid "Terminal here"
 msgstr "Terminal aquí"
 
 #: internal/filesui/cards.go:702
-#: internal/termui/menubar.go:44
+#: internal/termui/menubar.go:33
 #: ui/screenshot.ui:180
 #: ui/shotdrawer.ui:122
 msgid "Window"
@@ -8802,7 +8804,7 @@ msgid "Remove %s"
 msgstr "Eliminar %s"
 
 #: internal/lightui/clock.go:404
-#: internal/termui/menubar.go:42
+#: internal/termui/menubar.go:31
 #: ui/pass.ui:252
 msgid "Edit"
 msgstr "Editar"
@@ -9399,8 +9401,8 @@ msgid "Top level"
 msgstr "Nivel superior"
 
 #: internal/lightui/pass.go:420
-#: internal/ui/settings.go:930
-#: internal/ui/settings.go:957
+#: internal/ui/settings.go:935
+#: internal/ui/settings.go:962
 msgid "%d entry"
 msgid_plural "%d entries"
 msgstr[0] "%d entrada"
@@ -9734,7 +9736,7 @@ msgstr "No se pudo buscar: %s"
 #: internal/lightui/sysmon.go:55
 #: internal/lightui/sysmon.go:55
 #: internal/shell/launcher_actions.go:45
-#: internal/termui/menubar.go:34
+#: internal/termui/menubar.go:27
 #: internal/ui/dock.go:533
 #: internal/ui/portal_ask.go:80
 msgid "Quit"
@@ -12784,7 +12786,7 @@ msgid "%d thr"
 msgstr "%d hilos"
 
 #: internal/shell/cardterm.go:136
-#: internal/ui/settings.go:594
+#: internal/ui/settings.go:597
 msgid "Desktop"
 msgstr "Escritorio"
 
@@ -13801,7 +13803,7 @@ msgid "Session %d"
 msgstr "Sesión %d"
 
 #: internal/term/web/strings.go:97
-#: internal/termui/menubar.go:41
+#: internal/termui/menubar.go:30
 #: internal/termui/prefs.go:181
 msgid "Shell"
 msgstr "Shell"
@@ -14090,11 +14092,12 @@ msgstr "Te está esperando: %s. Cerrar el panel lo termina."
 msgid "Choose the workspace's folder"
 msgstr "Elige la carpeta del espacio de trabajo"
 
-#: internal/termui/menubar.go:43
+#: internal/termui/menubar.go:32
+#: internal/ui/settings_menu.go:28
 msgid "View"
 msgstr ""
 
-#: internal/termui/menubar.go:45
+#: internal/termui/menubar.go:34
 msgid "Help"
 msgstr ""
 
@@ -14835,7 +14838,7 @@ msgid "Searching…"
 msgstr "Buscando…"
 
 #: internal/ui/control_detail.go:214
-#: internal/ui/settings.go:593
+#: internal/ui/settings.go:596
 msgid "Devices"
 msgstr "Dispositivos"
 
@@ -14854,7 +14857,7 @@ msgid "No devices paired yet"
 msgstr "Aún no hay dispositivos emparejados"
 
 #: internal/ui/drawer.go:217
-#: internal/ui/settings.go:595
+#: internal/ui/settings.go:598
 #: internal/ui/widgets.go:586
 #: ui/settings.ui:181
 #: ui/settings.ui:2191
@@ -15235,121 +15238,121 @@ msgstr "Captura de pantalla copiada"
 msgid "Screenshot taken"
 msgstr "Captura de pantalla tomada"
 
-#: internal/ui/settings.go:332
+#: internal/ui/settings.go:334
 msgid "Not restarted: %s"
 msgstr "No se reinició: %s"
 
-#: internal/ui/settings.go:357
-#: internal/ui/settings.go:800
+#: internal/ui/settings.go:359
+#: internal/ui/settings.go:805
 msgid "%d px"
 msgstr "%d px"
 
-#: internal/ui/settings.go:592
+#: internal/ui/settings.go:595
 msgid "Connections"
 msgstr "Conexiones"
 
-#: internal/ui/settings.go:704
+#: internal/ui/settings.go:709
 msgid "%s · yours: right-click for more"
 msgstr "%s · tuyo: clic derecho para más"
 
-#: internal/ui/settings.go:721
+#: internal/ui/settings.go:726
 msgid "A CSS file of @define-color lines, kept in themes beside config.toml"
 msgstr "Un archivo CSS de líneas @define-color, guardado en themes junto a config.toml"
 
-#: internal/ui/settings.go:730
+#: internal/ui/settings.go:735
 msgid "Add Theme…"
 msgstr "Añadir tema…"
 
-#: internal/ui/settings.go:835
+#: internal/ui/settings.go:840
 msgid "As the bar (%s)"
 msgstr "Como la barra (%s)"
 
-#: internal/ui/settings.go:852
+#: internal/ui/settings.go:857
 msgid "inua objects"
 msgstr "inua objects"
 
-#: internal/ui/settings.go:853
+#: internal/ui/settings.go:858
 msgid "inua objects soft"
 msgstr "inua objects soft"
 
-#: internal/ui/settings.go:854
+#: internal/ui/settings.go:859
 msgid "inua objects flat"
 msgstr "inua objects flat"
 
-#: internal/ui/settings.go:862
+#: internal/ui/settings.go:867
 msgid "Phosphor"
 msgstr "Phosphor"
 
-#: internal/ui/settings.go:862
-#: internal/ui/settings.go:863
+#: internal/ui/settings.go:867
+#: internal/ui/settings.go:868
 msgid "System theme"
 msgstr "Tema del sistema"
 
-#: internal/ui/settings.go:863
+#: internal/ui/settings.go:868
 #: ui/settings.ui:588
 msgid "As the app style"
 msgstr "Como el estilo de apps"
 
-#: internal/ui/settings.go:956
+#: internal/ui/settings.go:961
 msgid "%s (%s, %s) · %s"
 msgstr "%s (%s, %s) · %s"
 
-#: internal/ui/settings.go:958
+#: internal/ui/settings.go:963
 msgid "%d text"
 msgid_plural "%d texts"
 msgstr[0] "%d texto"
 msgstr[1] "%d textos"
 
-#: internal/ui/settings.go:959
+#: internal/ui/settings.go:964
 msgid "%d image"
 msgid_plural "%d images"
 msgstr[0] "%d imagen"
 msgstr[1] "%d imágenes"
 
-#: internal/ui/settings.go:960
+#: internal/ui/settings.go:965
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: internal/ui/settings.go:1039
+#: internal/ui/settings.go:1044
 #: internal/ui/settings_apps.go:168
 #: internal/ui/settings_card.go:288
 #: internal/ui/settings_portals.go:177
 msgid "Not saved: %s"
 msgstr "No guardado: %s"
 
-#: internal/ui/settings.go:1065
+#: internal/ui/settings.go:1070
 msgid "Choose a wallpaper"
 msgstr "Elige un fondo de pantalla"
 
-#: internal/ui/settings.go:1107
+#: internal/ui/settings.go:1112
 msgid "Off: another notification daemon can show them"
 msgstr "Desactivado: otro demonio de notificación puede mostrarlos"
 
-#: internal/ui/settings.go:1109
+#: internal/ui/settings.go:1114
 msgid "Banners, then the notification center (the bell in the bar, or Super+N)"
 msgstr "Banners y después el centro de notificaciones (campana de la barra o Super+N)"
 
-#: internal/ui/settings.go:1111
+#: internal/ui/settings.go:1116
 msgid "Waiting: another notification daemon is running"
 msgstr "Esperando: se está ejecutando otro demonio de notificación"
 
-#: internal/ui/settings.go:1130
+#: internal/ui/settings.go:1135
 msgid "Nothing pinned"
 msgstr "No hay aplicaciones fijadas"
 
-#: internal/ui/settings.go:1146
+#: internal/ui/settings.go:1151
 msgid "%s (not installed)"
 msgstr "%s (no instalado)"
 
-#: internal/ui/settings.go:1159
+#: internal/ui/settings.go:1164
 msgid "Move earlier"
 msgstr "Mover antes"
 
-#: internal/ui/settings.go:1160
+#: internal/ui/settings.go:1165
 msgid "Move later"
 msgstr "Mover después"
 
-#: internal/ui/settings.go:1161
+#: internal/ui/settings.go:1166
 msgid "Remove from the dock"
 msgstr "Quitar del dock"
 

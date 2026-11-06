@@ -21,6 +21,7 @@ import (
 
 	"github.com/lyricat/inua/internal/clipboard"
 	"github.com/lyricat/inua/internal/config"
+	"github.com/lyricat/inua/internal/dbusmenu"
 	"github.com/lyricat/inua/internal/desktop"
 	"github.com/lyricat/inua/internal/gtkx"
 	"github.com/lyricat/inua/internal/i18n"
@@ -36,6 +37,7 @@ type settings struct {
 	win     *gtk.ApplicationWindow // nil while closed
 	overlay *gtk.Overlay           // over the window's page, for the Benchmark dialog; made on its first use
 	refs    gtkx.Scope
+	menu    *dbusmenu.Published // the menu the bar shows while this window has the focus
 
 	status, clockPreview gtk.Label
 	pages                gtk.Stack
@@ -53,29 +55,29 @@ type settings struct {
 	setThemes map[string]*gtk.IconTheme
 	themeMenu string // the theme of yours a right click opened a menu for
 
-	bgGenerate, title, menu, tray, barPass, tpAccel, notifyOn, critFocus gtk.Switch
-	noteHistory, animations                                              gtk.Switch
-	bgOwn                                                                gtk.Box // the image's rows, hidden while inua draws
-	bgAnother                                                            gtk.Button
-	barOn, dockOn, dockHide, dockDrawer, dockFlushBar, overviewDock      gtk.Switch
-	clipEnable, clipBar, clipPaste                                       gtk.Switch
-	dockSize, dockPosition, barDensity                                   gtk.DropDown
-	dockPinned                                                           gtk.Box
-	bgImage, bgColor, clock, terminal, lock, screenshot                  gtk.Entry
-	clipSensitive                                                        gtk.Entry
-	bgFit, ws, launchMode, swap, caps, icons, appIcons, banner           gtk.DropDown
-	titleMode                                                            gtk.DropDown
-	clipLimit                                                            gtk.DropDown
-	clipLimits                                                           []int // clipLimit's choices
-	textScale                                                            gtk.DropDown
-	textScales                                                           []int    // textScale's choices
-	iconSets                                                             []string // icons' choices
-	appIconSets                                                          []string // appIcons' choices
-	appTheme                                                             gtk.DropDown
-	appThemes, appThemeLabels                                            []string // appTheme's choices, "" first
-	tpSpeed, transparency, radius                                        gtk.Scale
-	transparencyVal, radiusVal, clipStats                                gtk.Label
-	clipClear, clipReveal                                                gtk.Button
+	bgGenerate, title, barMenu, tray, barPass, tpAccel, notifyOn, critFocus gtk.Switch
+	noteHistory, animations                                                 gtk.Switch
+	bgOwn                                                                   gtk.Box // the image's rows, hidden while inua draws
+	bgAnother                                                               gtk.Button
+	barOn, dockOn, dockHide, dockDrawer, dockFlushBar, overviewDock         gtk.Switch
+	clipEnable, clipBar, clipPaste                                          gtk.Switch
+	dockSize, dockPosition, barDensity                                      gtk.DropDown
+	dockPinned                                                              gtk.Box
+	bgImage, bgColor, clock, terminal, lock, screenshot                     gtk.Entry
+	clipSensitive                                                           gtk.Entry
+	bgFit, ws, launchMode, swap, caps, icons, appIcons, banner              gtk.DropDown
+	titleMode                                                               gtk.DropDown
+	clipLimit                                                               gtk.DropDown
+	clipLimits                                                              []int // clipLimit's choices
+	textScale                                                               gtk.DropDown
+	textScales                                                              []int    // textScale's choices
+	iconSets                                                                []string // icons' choices
+	appIconSets                                                             []string // appIcons' choices
+	appTheme                                                                gtk.DropDown
+	appThemes, appThemeLabels                                               []string // appTheme's choices, "" first
+	tpSpeed, transparency, radius                                           gtk.Scale
+	transparencyVal, radiusVal, clipStats                                   gtk.Label
+	clipClear, clipReveal                                                   gtk.Button
 
 	// Keyboard and touchpad: where the settings come from, and why they
 	// would do nothing.
@@ -441,7 +443,7 @@ func (s *shellUI) openSettings() {
 	ui.Get("clock_preview", &st.clockPreview)
 	ui.Get("title", &st.title)
 	ui.Get("tray", &st.tray)
-	ui.Get("bar_menu", &st.menu)
+	ui.Get("bar_menu", &st.barMenu)
 	ui.Get("bar_pass", &st.barPass)
 	ui.Get("bg_image", &st.bgImage)
 	ui.Get("bg_color", &st.bgColor)
@@ -556,7 +558,7 @@ func (s *shellUI) openSettings() {
 		st.drops[d.GoPointer()] = d
 		gtkx.ConnectNotify(d, "selected", &s.onSettingsDrop)
 	}
-	for _, sw := range []*gtk.Switch{&st.bgGenerate, &st.title, &st.menu, &st.tray, &st.barPass, &st.tpAccel, &st.notifyOn, &st.critFocus, &st.noteHistory, &st.animations, &st.barOn, &st.dockOn, &st.dockHide, &st.dockDrawer, &st.dockFlushBar, &st.overviewDock, &st.clipEnable, &st.clipBar, &st.clipPaste, &st.displays.lidOff} {
+	for _, sw := range []*gtk.Switch{&st.bgGenerate, &st.title, &st.barMenu, &st.tray, &st.barPass, &st.tpAccel, &st.notifyOn, &st.critFocus, &st.noteHistory, &st.animations, &st.barOn, &st.dockOn, &st.dockHide, &st.dockDrawer, &st.dockFlushBar, &st.overviewDock, &st.clipEnable, &st.clipBar, &st.clipPaste, &st.displays.lidOff} {
 		sw.ConnectStateSet(&s.onSettingsSwitch)
 	}
 	for _, b := range []*gtk.Button{&choose, &clearImage, &st.bgAnother, &iconPreview, &stylePreview, &st.kbReset, &st.tpReset, &st.langRestart, &st.clipClear, &st.clipReveal} {
@@ -576,6 +578,7 @@ func (s *shellUI) openSettings() {
 	st.win.AddController(&keys.EventController)
 	st.win.ConnectCloseRequest(&s.onSettingsClose)
 
+	s.publishSettingsMenu()
 	st.win.SetApplication(s.app)
 	s.showSettings()
 	s.setStatus("", false)
@@ -642,6 +645,8 @@ func (s *shellUI) closeSettings() {
 		s.saveSettings()
 	}
 	s.releaseSearch()
+	st.menu.Close()
+	st.menu = nil
 	st.win.Destroy()
 	st.refs.Release()
 	st.win, st.swatches, st.entries, st.drops, st.sticky, st.overlay = nil, nil, nil, nil, nil, nil
@@ -776,7 +781,7 @@ func (s *shellUI) showSettings() {
 	st.bgOwn.SetVisible(!c.Background.Generate)
 	st.bgAnother.SetVisible(c.Background.Generate)
 	st.title.SetActive(c.Bar.Title)
-	st.menu.SetActive(c.Bar.Menu)
+	st.barMenu.SetActive(c.Bar.Menu)
 	st.titleMode.SetSelected(uint32(max(0, slices.Index(barTitleModes, c.Bar.TitleMode))))
 	st.tray.SetActive(c.Bar.Tray)
 	st.barPass.SetActive(c.Bar.Pass)
