@@ -56,6 +56,8 @@ type bar struct {
 	refs        gtkx.Scope
 
 	appMenuReg     appmenu.Registration // whose menu it shows, if any
+	appMenuPID     int                  // the process whose accessibility menu it shows, if any
+	appMenuEntries []appmenu.Entry      // the first level, as last read
 	appMenuTop     []appMenuTop         // the buttons, as last drawn
 	appMenuLoading bool                 // the menu is being read
 	appMenuStale   bool                 // and changed meanwhile
