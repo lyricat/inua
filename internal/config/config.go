@@ -62,7 +62,10 @@ type Bar struct {
 	// or "all".
 	Workspaces string `toml:"workspaces"`
 	Title      bool   `toml:"title"`
-	Tray       bool   `toml:"tray"`
+	// Menu shows the focused application's menu in the bar, when the
+	// application publishes one.
+	Menu bool `toml:"menu"`
+	Tray bool `toml:"tray"`
 	// Pass shows a button that searches the password store (the Pass
 	// app's) and copies from it, when there is a store.
 	Pass bool `toml:"pass"`
@@ -903,6 +906,7 @@ func Default() Config {
 			Clock:      "%a %b %-d  %H:%M",
 			Workspaces: "monitor",
 			Title:      true,
+			Menu:       true,
 			Tray:       true,
 			Pass:       true,
 		},

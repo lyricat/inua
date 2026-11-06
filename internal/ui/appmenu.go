@@ -69,7 +69,11 @@ func (s *shellUI) syncAppMenu(b *bar) {
 	}
 	var want appmenu.Registration
 	if b.connector() == s.snap.FocusedOutput {
-		want, _ = s.appmenu.registrar.ForPID(focusedPID(s.snap))
+		pid := focusedPID(s.snap)
+		want, _ = s.appmenu.registrar.ForPID(pid)
+		if want == (appmenu.Registration{}) {
+			want, _ = s.appmenu.registrar.Native(pid)
+		}
 	}
 	if b.appMenuReg == want {
 		return

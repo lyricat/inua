@@ -35,6 +35,9 @@ workspaces = "monitor"
 # Show the focused window's title.
 title = true
 
+# Show the focused application's menu in the bar, when it publishes one.
+menu = true
+
 # Show tray (StatusNotifierItem) icons.
 tray = true
 
