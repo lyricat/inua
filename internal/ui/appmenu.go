@@ -17,16 +17,18 @@ import (
 
 // Each bar's application menu: the menu of the application its monitor
 // speaks for, the first level as buttons, what each opens as a menu read
-// when it opens.
+// when it opens. A menu comes from the Canonical registrar, from an inua
+// application's own published menu, or from the application's
+// accessibility tree (Firefox, Qt and GTK applications).
 type appMenuState struct {
 	registrar   *appmenu.Registrar
+	a11y        *appmenu.A11y
 	menu        *gtk.Popover // the open one, borrowed from its button
 	menuRequest uint64       // the newest pending submenu read
 }
 
 // appMenuTop is a button of the bar's menu.
 type appMenuTop struct {
-	id      int32
 	label   string
 	enabled bool
 	submenu bool
@@ -41,7 +43,7 @@ func (s *shellUI) startAppMenu() {
 	s.appmenu.registrar = appmenu.New(conn)
 	s.appmenu.registrar.SetOnChange(func() { gtkx.Post(s.syncAppMenus) })
 	s.appmenu.registrar.SetOnUpdate(func(reg appmenu.Registration) {
-		gtkx.Post(func() { s.reloadAppMenu(reg) })
+		gtkx.Post(func() { s.reloadAppMenu(reg, 0) })
 	})
 	go func() {
 		if err := s.appmenu.registrar.Run(context.Background()); err != nil {
@@ -64,38 +66,50 @@ func (s *shellUI) syncAppMenu(b *bar) {
 	if s.appmenu.registrar == nil {
 		return
 	}
-	var want appmenu.Registration
+	var reg appmenu.Registration
+	pid := 0
 	if w, ok := shell.BarWindow(s.snap, b.connector()); ok {
-		want, _ = s.appmenu.registrar.ForPID(w.PID)
+		pid = w.PID
+		reg, _ = s.appmenu.registrar.ForPID(pid)
+		if reg == (appmenu.Registration{}) {
+			reg, _ = s.appmenu.registrar.Native(pid)
+		}
 	}
-	if b.appMenuReg == want {
+	if b.appMenuReg == reg && b.appMenuPID == pid {
 		return
 	}
 	s.clearAppMenu(b)
-	b.appMenuReg = want
-	if want != (appmenu.Registration{}) {
+	b.appMenuReg, b.appMenuPID = reg, pid
+	switch {
+	case reg != (appmenu.Registration{}):
 		s.loadAppMenu(b, true)
+	case pid > 0:
+		s.loadA11yMenu(b, pid)
 	}
 }
 
 // clearAppMenu takes a bar's menu away, with the open menu if it is this
 // bar's; what is still being read for it is dropped when it comes.
 func (s *shellUI) clearAppMenu(b *bar) {
-	if b.appMenuReg != (appmenu.Registration{}) {
+	if b.appMenuReg != (appmenu.Registration{}) || b.appMenuPID > 0 {
 		s.closeAppMenu()
 	}
 	b.appMenuReg = appmenu.Registration{}
+	b.appMenuPID = 0
 	b.appMenuTop = nil
+	b.appMenuEntries = nil
 	gtkx.Clear(&b.appMenu)
 	b.appMenu.SetVisible(false)
 }
 
 // reloadAppMenu reads a shown menu's first level again: the application said
 // it changed, or an item was activated and may have changed it.
-func (s *shellUI) reloadAppMenu(reg appmenu.Registration) {
+func (s *shellUI) reloadAppMenu(reg appmenu.Registration, pid int) {
 	for _, b := range s.bars {
-		if b.appMenuReg == reg {
+		if reg != (appmenu.Registration{}) && b.appMenuReg == reg {
 			s.loadAppMenu(b, false)
+		} else if reg == (appmenu.Registration{}) && pid > 0 && b.appMenuPID == pid && b.appMenuReg == (appmenu.Registration{}) {
+			s.loadA11yMenu(b, pid)
 		}
 	}
 }
@@ -113,6 +127,9 @@ func (s *shellUI) loadAppMenu(b *bar, about bool) {
 	reg := b.appMenuReg
 	go func() {
 		entries, err := s.appmenu.registrar.Menu(reg, about)
+		if err == nil {
+			entries = withDbusmenuActions(entries, reg)
+		}
 		gtkx.Post(func() {
 			b.appMenuLoading = false
 			if b.appMenuStale || b.appMenuReg != reg {
@@ -131,6 +148,42 @@ func (s *shellUI) loadAppMenu(b *bar, about bool) {
 	}()
 }
 
+// loadA11yMenu reads a bar's menu through the application's accessibility
+// tree, for toolkits that publish no dbusmenu.
+func (s *shellUI) loadA11yMenu(b *bar, pid int) {
+	if s.appmenu.a11y == nil {
+		s.appmenu.a11y = appmenu.NewA11y()
+	}
+	a11y := s.appmenu.a11y
+	go func() {
+		entries, err := a11y.Menu(pid)
+		gtkx.Post(func() {
+			if b.appMenuPID != pid || b.appMenuReg != (appmenu.Registration{}) {
+				return
+			}
+			if err != nil {
+				log.Printf("appmenu accessibility %d: %v", pid, err)
+				return
+			}
+			if !appmenu.FillableMenu(entries) {
+				entries = nil
+			}
+			s.renderAppMenu(b, entries)
+		})
+	}()
+}
+
+// withDbusmenuActions gives registrar entries the endpoint that activates
+// them, so a bar can invoke an entry the same way whichever source it came
+// from.
+func withDbusmenuActions(entries []appmenu.Entry, reg appmenu.Registration) []appmenu.Entry {
+	for i := range entries {
+		entries[i].Children = withDbusmenuActions(entries[i].Children, reg)
+		entries[i].Action = appmenu.Action{Kind: appmenu.ActionDbusmenu, Bus: reg.Service, Path: reg.Path, Index: entries[i].ID}
+	}
+	return entries
+}
+
 // renderAppMenu shows a menu's first level as the bar's buttons. A menu
 // that reads as before is left alone, with the menu open under it.
 func (s *shellUI) renderAppMenu(b *bar, entries []appmenu.Entry) {
@@ -139,18 +192,20 @@ func (s *shellUI) renderAppMenu(b *bar, entries []appmenu.Entry) {
 		if e.Separator || e.Label == "" {
 			continue
 		}
-		top = append(top, appMenuTop{id: e.ID, label: e.Label, enabled: e.Enabled, submenu: e.Submenu})
+		top = append(top, appMenuTop{label: e.Label, enabled: e.Enabled, submenu: e.Submenu})
 	}
 	if slices.Equal(top, b.appMenuTop) {
+		b.appMenuEntries = entries
 		return
 	}
 	s.closeAppMenu()
 	b.appMenuTop = top
+	b.appMenuEntries = entries
 	gtkx.Clear(&b.appMenu)
-	for _, t := range top {
+	for i, t := range top {
 		btn := gtk.NewButton()
 		btn.SetLabel(t.label)
-		btn.SetName(strconv.Itoa(int(t.id)))
+		btn.SetName(strconv.Itoa(i))
 		btn.SetFocusable(false)
 		btn.SetSensitive(t.enabled)
 		btn.ConnectClicked(&s.onAppMenuClicked)
@@ -161,19 +216,19 @@ func (s *shellUI) renderAppMenu(b *bar, entries []appmenu.Entry) {
 
 func (s *shellUI) bindAppMenuHandlers() {
 	s.onAppMenuClicked = func(btn gtk.Button) {
-		id, err := strconv.Atoi(btn.GetName())
+		i, err := strconv.Atoi(btn.GetName())
 		if err != nil {
 			return
 		}
 		for _, b := range s.bars {
-			i := slices.IndexFunc(b.appMenuTop, func(t appMenuTop) bool { return int(t.id) == id })
-			if i < 0 || b.appMenuReg == (appmenu.Registration{}) {
+			if i < 0 || i >= len(b.appMenuEntries) {
 				continue
 			}
-			if b.appMenuTop[i].submenu {
-				s.showAppMenu(b, int32(id), &btn.Widget)
+			entry := b.appMenuEntries[i]
+			if len(entry.Children) > 0 || entry.Submenu || (b.appMenuPID > 0 && appmenu.Fillable(entry)) {
+				s.showAppMenu(b, i, &btn.Widget)
 			} else {
-				s.activateAppMenu(b.connector(), b.appMenuReg, int32(id))
+				s.activateEntry(b.connector(), b.appMenuReg, b.appMenuPID, entry)
 			}
 			return
 		}
@@ -207,23 +262,40 @@ func (s *shellUI) closeAppMenu() {
 // showAppMenu reads what a button of the bar's menu opens and pops it up
 // under the button w. It is read each time, so it is the menu as the
 // application has it now, filled in if it is one built when asked for.
-func (s *shellUI) showAppMenu(b *bar, id int32, w *gtk.Widget) {
-	connector, reg := b.connector(), b.appMenuReg
+func (s *shellUI) showAppMenu(b *bar, i int, w *gtk.Widget) {
+	connector, reg, pid := b.connector(), b.appMenuReg, b.appMenuPID
+	if i < 0 || i >= len(b.appMenuEntries) {
+		return
+	}
+	entry := b.appMenuEntries[i]
 	s.appmenu.menuRequest++
 	request := s.appmenu.menuRequest
 	w.Ref() // kept until the menu is built
 	go func() {
-		entries, err := s.appmenu.registrar.Submenu(reg, id)
+		var entries []appmenu.Entry
+		var err error
+		if reg != (appmenu.Registration{}) {
+			entries, err = s.appmenu.registrar.Submenu(reg, entry.ID)
+			if err == nil {
+				entries = withDbusmenuActions(entries, reg)
+			}
+		} else if s.appmenu.a11y != nil {
+			if len(entry.Children) > 0 {
+				entries = entry.Children
+			} else {
+				entries, err = s.appmenu.a11y.FillSection(entry)
+			}
+		}
 		gtkx.Post(func() {
 			defer w.Unref()
 			if err != nil {
-				log.Printf("appmenu %s: %v", reg.Service, err)
+				log.Printf("appmenu open %q: %v", entry.Label, err)
 				return
 			}
-			items := s.appMenuItems(connector, reg, entries)
+			items := s.appMenuItems(connector, reg, pid, entries)
 			// The bar's menu was redrawn or went to another application
 			// meanwhile.
-			if s.appmenu.menuRequest != request || len(items) == 0 || !w.GetMapped() || !s.appMenuCurrent(connector, reg) {
+			if s.appmenu.menuRequest != request || len(items) == 0 || !w.GetMapped() || !s.appMenuCurrent(connector, reg, pid) {
 				return
 			}
 			s.closeAppMenu()
@@ -237,19 +309,15 @@ func (s *shellUI) showAppMenu(b *bar, id int32, w *gtk.Widget) {
 	}()
 }
 
-// appMenuCurrent is whether reg is still the menu of the application the
-// bar on connector speaks for.
-func (s *shellUI) appMenuCurrent(connector string, reg appmenu.Registration) bool {
+// appMenuCurrent is whether reg (or pid's accessibility menu) is still the
+// menu of the application the bar on connector speaks for.
+func (s *shellUI) appMenuCurrent(connector string, reg appmenu.Registration, pid int) bool {
 	b := s.barByConnector(connector)
-	if b == nil || b.appMenuReg != reg {
+	if b == nil || b.appMenuReg != reg || b.appMenuPID != pid {
 		return false
 	}
 	w, ok := shell.BarWindow(s.snap, connector)
-	if !ok {
-		return false
-	}
-	current, ok := s.appmenu.registrar.ForPID(w.PID)
-	return ok && current == reg
+	return ok && w.PID == pid
 }
 
 // barByConnector is the bar on a monitor, or nil when the monitor is gone.
@@ -262,11 +330,11 @@ func (s *shellUI) barByConnector(connector string) *bar {
 	return nil
 }
 
-// appMenuItems turns dbusmenu entries into a menu's lines, as the tray's
-// are: a toggle's mark, a submenu's lines, a hairline for a separator (none
-// at either end or twice); a disabled entry, or a submenu the application
-// left empty, greys out.
-func (s *shellUI) appMenuItems(connector string, reg appmenu.Registration, entries []appmenu.Entry) []uikit.Item {
+// appMenuItems turns menu entries into a menu's lines, as the tray's are: a
+// toggle's mark, a submenu's lines, a hairline for a separator (none at
+// either end or twice); a disabled entry, or a submenu the application left
+// empty, greys out.
+func (s *shellUI) appMenuItems(connector string, reg appmenu.Registration, pid int, entries []appmenu.Entry) []uikit.Item {
 	var out []uikit.Item
 	for _, e := range entries {
 		if e.Separator {
@@ -285,13 +353,13 @@ func (s *shellUI) appMenuItems(connector string, reg appmenu.Registration, entri
 			it.Mark = "off"
 		}
 		switch {
-		case e.Submenu:
+		case e.Submenu || len(e.Children) > 0:
 			if e.Enabled {
-				it.Items = s.appMenuItems(connector, reg, e.Children)
+				it.Items = s.appMenuItems(connector, reg, pid, e.Children)
 			}
 		case e.Enabled:
-			id := e.ID
-			it.Run = func() { s.activateAppMenu(connector, reg, id) }
+			entry := e
+			it.Run = func() { s.activateEntry(connector, reg, pid, entry) }
 		}
 		out = append(out, it)
 	}
@@ -301,16 +369,26 @@ func (s *shellUI) appMenuItems(connector string, reg appmenu.Registration, entri
 	return out
 }
 
-// activateAppMenu clicks an item, if the application it belongs to is still
-// the one the bar's monitor speaks for.
-func (s *shellUI) activateAppMenu(connector string, reg appmenu.Registration, id int32) {
-	if !s.appMenuCurrent(connector, reg) {
+// activateEntry invokes an entry, if the application it belongs to is
+// still the one the bar's monitor speaks for.
+func (s *shellUI) activateEntry(connector string, reg appmenu.Registration, pid int, e appmenu.Entry) {
+	if !s.appMenuCurrent(connector, reg, pid) {
 		return
 	}
 	go func() {
-		if err := s.appmenu.registrar.Activate(reg, id); err != nil {
+		var err error
+		switch e.Action.Kind {
+		case appmenu.ActionA11y:
+			if s.appmenu.a11y == nil {
+				return
+			}
+			err = s.appmenu.a11y.ActivateIn(e)
+		case appmenu.ActionDbusmenu:
+			err = s.appmenu.registrar.Activate(appmenu.Registration{Service: e.Action.Bus, Path: e.Action.Path}, e.Action.Index)
+		}
+		if err != nil {
 			log.Printf("appmenu activate: %v", err)
 		}
-		gtkx.Post(func() { s.reloadAppMenu(reg) })
+		gtkx.Post(func() { s.reloadAppMenu(reg, pid) })
 	}()
 }

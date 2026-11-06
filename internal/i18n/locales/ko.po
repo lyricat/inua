@@ -132,7 +132,7 @@ msgid "Black"
 msgstr "검정"
 
 #: internal/apps/calendar/calendar.go:69
-#: internal/lightui/clock.go:219
+#: internal/lightui/clock.go:220
 #: internal/ui/control.go:322
 #: internal/ui/lock.go:248
 #: internal/ui/widgets.go:987
@@ -172,7 +172,7 @@ msgstr "일"
 #: internal/apps/clock/clock.go:69
 #: internal/config/strftime.go:50
 #: internal/i18n/time.go:11
-#: internal/lightui/weather.go:358
+#: internal/lightui/weather.go:360
 #: internal/mailui/window.go:1438
 #: internal/shell/notify.go:28
 #: internal/ui/agenda.go:371
@@ -223,7 +223,7 @@ msgid "Weekends"
 msgstr "주말"
 
 #: internal/apps/clock/clock.go:112
-#: internal/lightui/weather.go:360
+#: internal/lightui/weather.go:362
 #: internal/ui/widgets.go:1047
 #: ui/agenda.ui:80
 #: ui/calendar.ui:39
@@ -373,7 +373,7 @@ msgstr "%s에서 온 파일"
 #: internal/apps/connect/share.go:129
 #: internal/filesui/cards.go:678
 #: internal/filesui/picker.go:488
-#: internal/filesui/window.go:801
+#: internal/filesui/window.go:808
 #: internal/lightui/workshop_blocks.go:427
 #: internal/lightui/workshop_manager.go:63
 #: internal/mailui/actions.go:533
@@ -1216,7 +1216,7 @@ msgstr "프로젝트의 기록, 브랜치, stash입니다. 푸시하지 않은 �
 #: internal/filesui/pane.go:1068
 #: internal/filesui/sidebar.go:50
 #: internal/filesui/tabs.go:97
-#: internal/filesui/window.go:307
+#: internal/filesui/window.go:314
 #: internal/mailui/window.go:779
 msgid "Trash"
 msgstr "휴지통"
@@ -1739,8 +1739,8 @@ msgid "%d mo ago"
 msgstr "%d개월 전"
 
 #: internal/apps/tailscale/status.go:187
-#: internal/lightui/gpg.go:384
-#: internal/lightui/gpg.go:655
+#: internal/lightui/gpg.go:385
+#: internal/lightui/gpg.go:656
 msgid "expired %s"
 msgstr "만료된 %s"
 
@@ -1828,7 +1828,7 @@ msgid "Thunderstorm"
 msgstr "뇌우"
 
 #: internal/apps/weather/weather.go:214
-#: internal/lightui/sysmon.go:1081
+#: internal/lightui/sysmon.go:1083
 #: internal/vmui/window.go:2335
 msgid "Unknown"
 msgstr "알 수 없음"
@@ -1955,7 +1955,7 @@ msgid "Could not start the Console endpoint: %s"
 msgstr "콘솔 끝점을 시작할 수 없습니다: %s"
 
 #: internal/assistantui/assistantui.go:528
-#: internal/lightui/clock.go:497
+#: internal/lightui/clock.go:498
 #: internal/ui/alarms.go:108
 #: ui/disk.ui:179
 #: ui/mail-compose.ui:375
@@ -2041,11 +2041,11 @@ msgstr "허용됨"
 
 #: internal/assistantui/assistantui.go:793
 #: internal/diskui/details.go:581
-#: internal/filesui/window.go:817
+#: internal/filesui/window.go:824
 #: internal/gamesui/lobbyhost.go:169
-#: internal/lightui/calculator.go:350
-#: internal/lightui/pass.go:748
-#: internal/lightui/pass.go:773
+#: internal/lightui/calculator.go:351
+#: internal/lightui/pass.go:749
+#: internal/lightui/pass.go:774
 #: internal/mailui/details.go:222
 #: internal/shell/launcher_actions.go:59
 #: internal/term/settings/settings.go:119
@@ -2134,7 +2134,7 @@ msgid "The service is starting."
 msgstr "서비스를 시작하는 중입니다."
 
 #: internal/connectui/window.go:387
-#: internal/lightui/video.go:530
+#: internal/lightui/video.go:531
 #: internal/mailui/settings.go:530
 #: internal/shell/notify.go:44
 #: internal/shell/status.go:103
@@ -2186,7 +2186,7 @@ msgstr "%s에서 페어링을 요청합니다. 이 키가 표시될 때만 페�
 #: internal/filesui/renamemany.go:37
 #: internal/games/fortunenet/texts.go:76
 #: internal/gamesui/fortune_host.go:334
-#: internal/lightui/workshop.go:982
+#: internal/lightui/workshop.go:983
 #: internal/mailui/dialog.go:92
 #: internal/remoteui/window.go:811
 #: internal/term/web/strings.go:29
@@ -2251,8 +2251,8 @@ msgstr "%s에 연결을 요청했습니다."
 #: internal/filesui/archive.go:76
 #: internal/filesui/remotesetup.go:226
 #: internal/filesui/renamemany.go:168
-#: internal/lightui/sysmon.go:966
-#: internal/lightui/tailscale.go:631
+#: internal/lightui/sysmon.go:968
+#: internal/lightui/tailscale.go:632
 #: internal/ui/settings_ai.go:486
 #: internal/viewerui/app.go:806
 #: ui/connect.ui:291
@@ -2268,7 +2268,7 @@ msgid "What it runs: systemctl suspend"
 msgstr "실행할 명령: systemctl suspend"
 
 #: internal/connectui/window.go:560
-#: internal/lightui/pass.go:1200
+#: internal/lightui/pass.go:1201
 #: internal/lightui/workshop_manager.go:115
 #: internal/mailui/actions.go:469
 #: internal/mailui/compose.go:474
@@ -2842,7 +2842,7 @@ msgstr "Super+Return, 그리고 터미널에서 실행되는 앱"
 #: internal/desktop/defaults.go:41
 #: internal/lightui/apps.go:30
 #: internal/lightui/music.go:293
-#: internal/lightui/music.go:1104
+#: internal/lightui/music.go:1105
 #: config/apps/io.github.lyricat.Inua.Music.desktop:3
 msgid "Music"
 msgstr "음악"
@@ -2854,7 +2854,7 @@ msgstr "오디오 파일 열기"
 #: internal/desktop/defaults.go:45
 #: internal/lightui/apps.go:31
 #: internal/lightui/video.go:257
-#: internal/lightui/video.go:511
+#: internal/lightui/video.go:512
 #: config/apps/io.github.lyricat.Inua.Video.desktop:3
 msgid "Video"
 msgstr "비디오"
@@ -3033,9 +3033,9 @@ msgstr "%s을(를) 영구히 삭제할까요?"
 #: internal/diskui/details.go:528
 #: internal/filesui/cards.go:435
 #: internal/lightui/calculator.go:59
-#: internal/lightui/calculator.go:352
-#: internal/lightui/gpg.go:1610
-#: internal/lightui/pass.go:950
+#: internal/lightui/calculator.go:353
+#: internal/lightui/gpg.go:1611
+#: internal/lightui/pass.go:951
 #: internal/term/web/strings.go:43
 #: internal/ui/clipboard.go:504
 #: internal/vmui/window.go:1996
@@ -3072,8 +3072,8 @@ msgstr "%s에서 실행됩니다."
 #: internal/diskui/details.go:578
 #: internal/gamesui/checkers.go:738
 #: internal/gamesui/fortune_host.go:293
-#: internal/lightui/gpg.go:923
-#: internal/lightui/tailscale.go:470
+#: internal/lightui/gpg.go:924
+#: internal/lightui/tailscale.go:471
 #: internal/mailui/welcome.go:480
 #: internal/term/web/strings.go:35
 #: internal/ui/askpass.go:571
@@ -3115,14 +3115,14 @@ msgstr "%s이(가) %s을(를) 지웠습니다: %s 확보."
 #: internal/filesui/cards.go:682
 #: internal/filesui/sidebar.go:36
 #: internal/filesui/tabs.go:99
-#: internal/filesui/window.go:311
+#: internal/filesui/window.go:318
 msgid "Home"
 msgstr "홈"
 
 #: internal/diskui/window.go:329
-#: internal/lightui/sysmon.go:967
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:567
+#: internal/lightui/sysmon.go:969
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:568
 #: internal/ui/settings.go:588
 #: ui/vm.ui:2981
 msgid "System"
@@ -3246,8 +3246,8 @@ msgstr[0] "%s · 폴더 %d개 · %s 안전하게 삭제 가능"
 #: internal/filesui/app.go:86
 #: internal/filesui/cards.go:689
 #: internal/filesui/remote.go:371
-#: internal/filesui/window.go:108
-#: internal/filesui/window.go:304
+#: internal/filesui/window.go:110
+#: internal/filesui/window.go:311
 #: ui/gpg.ui:548
 #: ui/gpg.ui:913
 #: config/apps/io.github.lyricat.Inua.Files.desktop:3
@@ -3488,8 +3488,8 @@ msgstr "휴지통으로 가지 않으며 되돌릴 수 없습니다."
 
 #: internal/filesui/cards.go:452
 #: internal/filesui/sidebar.go:51
-#: internal/filesui/window.go:774
-#: internal/filesui/window.go:780
+#: internal/filesui/window.go:781
+#: internal/filesui/window.go:787
 #: internal/mailui/actions.go:265
 #: internal/shell/commands.go:32
 #: ui/filespane.ui:288
@@ -3671,8 +3671,8 @@ msgid "Copy the paths (none selected: the folder's)"
 msgstr "경로 복사(선택 없으면 폴더 경로)"
 
 #: internal/filesui/cards.go:693
-#: internal/filesui/window.go:842
-#: internal/lightui/gpg.go:1618
+#: internal/filesui/window.go:849
+#: internal/lightui/gpg.go:1619
 #: internal/mailui/picker.go:143
 #: internal/ui/settings_custom.go:42
 #: ui/disk.ui:771
@@ -3700,17 +3700,17 @@ msgid "Copy / move to the other pane"
 msgstr "다른 창으로 복사 / 이동"
 
 #: internal/filesui/cards.go:698
-#: internal/filesui/window.go:803
+#: internal/filesui/window.go:810
 msgid "Open with…"
 msgstr "다른 앱으로 열기…"
 
 #: internal/filesui/cards.go:699
-#: internal/filesui/window.go:856
+#: internal/filesui/window.go:863
 msgid "Bookmark"
 msgstr "북마크"
 
 #: internal/filesui/cards.go:700
-#: internal/filesui/window.go:789
+#: internal/filesui/window.go:796
 msgid "Terminal here"
 msgstr "여기에서 터미널 열기"
 
@@ -3730,7 +3730,7 @@ msgid "Next / previous tab"
 msgstr "다음 / 이전 탭"
 
 #: internal/filesui/cards.go:705
-#: internal/filesui/window.go:806
+#: internal/filesui/window.go:813
 msgid "Middle click"
 msgstr "가운데 클릭"
 
@@ -3744,7 +3744,7 @@ msgstr "목록 / 격자 / 열"
 
 #: internal/filesui/cards.go:707
 #: internal/filesui/picker.go:501
-#: internal/filesui/window.go:794
+#: internal/filesui/window.go:801
 msgid "Hidden files"
 msgstr "숨김 파일"
 
@@ -3757,7 +3757,7 @@ msgid "Sidebar"
 msgstr "사이드바"
 
 #: internal/filesui/cards.go:710
-#: internal/filesui/window.go:848
+#: internal/filesui/window.go:855
 msgid "Details"
 msgstr "세부 정보"
 
@@ -3771,7 +3771,7 @@ msgstr "새 창, 창 닫기"
 
 #: internal/filesui/cards.go:713
 #: internal/filesui/picker.go:502
-#: internal/filesui/window.go:795
+#: internal/filesui/window.go:802
 msgid "Reload"
 msgstr "새로 고침"
 
@@ -3842,7 +3842,7 @@ msgid "Columns"
 msgstr "열"
 
 #: internal/filesui/columns.go:176
-#: internal/lightui/pass.go:1012
+#: internal/lightui/pass.go:1013
 msgid "NAME"
 msgstr "이름"
 
@@ -3851,7 +3851,7 @@ msgid "FOLDERS"
 msgstr "폴더"
 
 #: internal/filesui/details.go:51
-#: internal/lightui/sysmon.go:791
+#: internal/lightui/sysmon.go:793
 #: internal/mailui/window.go:248
 #: internal/term/web/strings.go:52
 msgid "FILES"
@@ -3956,14 +3956,14 @@ msgstr "깨진 링크"
 #: internal/filesui/remotesetup.go:68
 #: internal/filesui/remotesetup.go:75
 #: internal/filesui/remotesetup.go:83
-#: internal/lightui/sysmon.go:792
+#: internal/lightui/sysmon.go:794
 #: internal/viewerui/app.go:807
 #: ui/vm.ui:322
 msgid "Folder"
 msgstr "폴더"
 
 #: internal/filesui/kinds.go:38
-#: internal/lightui/sysmon.go:792
+#: internal/lightui/sysmon.go:794
 #: internal/ui/settings_keyring.go:326
 msgid "Program"
 msgstr "프로그램"
@@ -4057,8 +4057,8 @@ msgid "done"
 msgstr "완료"
 
 #: internal/filesui/pane.go:1554
-#: internal/lightui/pass.go:1215
-#: internal/lightui/sysmon.go:971
+#: internal/lightui/pass.go:1216
+#: internal/lightui/sysmon.go:973
 #: internal/ui/settings_keyring.go:508
 #: internal/ui/shotdrawer.go:327
 msgid "Jan 2 15:04"
@@ -4108,14 +4108,14 @@ msgid "A file of the same name is in this folder; the app will write over it."
 msgstr ""
 
 #: internal/filesui/picker.go:494
-#: internal/filesui/window.go:837
+#: internal/filesui/window.go:844
 #: internal/termui/sessionmenu.go:81
 #: internal/termui/wsmenu.go:69
 msgid "Rename…"
 msgstr "이름 바꾸기…"
 
 #: internal/filesui/picker.go:500
-#: internal/filesui/window.go:785
+#: internal/filesui/window.go:792
 msgid "New folder…"
 msgstr "새 폴더…"
 
@@ -4152,7 +4152,7 @@ msgstr "%s에 로그인"
 #: internal/filesui/remotesetup.go:54
 #: internal/filesui/remotesetup.go:60
 #: internal/filesui/remotesetup.go:66
-#: internal/lightui/sysmon.go:784
+#: internal/lightui/sysmon.go:786
 msgid "User"
 msgstr "사용자"
 
@@ -4599,12 +4599,12 @@ msgid "Eject"
 msgstr "꺼내기"
 
 #: internal/filesui/sidebar.go:143
-#: internal/filesui/window.go:806
+#: internal/filesui/window.go:813
 msgid "Open in a new tab"
 msgstr "새 탭에서 열기"
 
 #: internal/filesui/sidebar.go:144
-#: internal/filesui/window.go:807
+#: internal/filesui/window.go:814
 msgid "Open in a new window"
 msgstr "새 창에서 열기"
 
@@ -4632,109 +4632,109 @@ msgstr "어시스턴트가 폴더를 정리하려면 설정 → AI에서 명령 
 msgid "Asked the assistant to tidy %s."
 msgstr "어시스턴트에게 %s 정리를 맡겼습니다."
 
-#: internal/filesui/window.go:777
+#: internal/filesui/window.go:784
 msgid "Restore"
 msgstr "복원"
 
-#: internal/filesui/window.go:778
-#: internal/filesui/window.go:843
+#: internal/filesui/window.go:785
+#: internal/filesui/window.go:850
 msgid "Delete for good…"
 msgstr "영구 삭제…"
 
-#: internal/filesui/window.go:786
+#: internal/filesui/window.go:793
 msgid "New file…"
 msgstr "새 파일…"
 
-#: internal/filesui/window.go:787
-#: internal/lightui/calculator.go:351
+#: internal/filesui/window.go:794
+#: internal/lightui/calculator.go:352
 #: internal/term/settings/settings.go:120
 #: internal/termui/paste.go:339
 msgid "Paste"
 msgstr "붙여넣기"
 
-#: internal/filesui/window.go:790
-#: internal/filesui/window.go:822
+#: internal/filesui/window.go:797
+#: internal/filesui/window.go:829
 msgid "Tidy with AI…"
 msgstr "AI로 정리…"
 
-#: internal/filesui/window.go:791
+#: internal/filesui/window.go:798
 msgid "Copy the folder's path"
 msgstr "폴더 경로 복사"
 
-#: internal/filesui/window.go:809
+#: internal/filesui/window.go:816
 msgid "Open in the other pane"
 msgstr "다른 창에서 열기"
 
-#: internal/filesui/window.go:813
+#: internal/filesui/window.go:820
 msgid "Show in its folder"
 msgstr "해당 폴더에서 보기"
 
-#: internal/filesui/window.go:816
-#: internal/lightui/calculator.go:349
+#: internal/filesui/window.go:823
+#: internal/lightui/calculator.go:350
 msgid "Cut"
 msgstr "잘라내기"
 
-#: internal/filesui/window.go:818
+#: internal/filesui/window.go:825
 msgid "Copy the path"
 msgstr "경로 복사"
 
-#: internal/filesui/window.go:821
+#: internal/filesui/window.go:828
 msgid "Paste into the folder"
 msgstr "폴더에 붙여넣기"
 
-#: internal/filesui/window.go:826
+#: internal/filesui/window.go:833
 msgid "Extract here"
 msgstr "여기에 압축 풀기"
 
-#: internal/filesui/window.go:828
+#: internal/filesui/window.go:835
 msgid "Compress…"
 msgstr "압축…"
 
-#: internal/filesui/window.go:831
+#: internal/filesui/window.go:838
 msgid "Copy to the other pane"
 msgstr "다른 창으로 복사"
 
-#: internal/filesui/window.go:832
+#: internal/filesui/window.go:839
 msgid "Move to the other pane"
 msgstr "다른 창으로 이동"
 
-#: internal/filesui/window.go:839
+#: internal/filesui/window.go:846
 msgid "Rename %d item…"
 msgid_plural "Rename %d items…"
 msgstr[0] "항목 %d개 이름 바꾸기…"
 
-#: internal/filesui/window.go:854
+#: internal/filesui/window.go:861
 msgid "Remove the bookmark"
 msgstr "북마크 제거"
 
-#: internal/filesui/window.go:909
+#: internal/filesui/window.go:916
 msgid "Cut %d item: paste to move it."
 msgid_plural "Cut %d items: paste to move them."
 msgstr[0] "%d개 항목을 잘라냈습니다. 붙여넣으면 이동합니다."
 
-#: internal/filesui/window.go:911
+#: internal/filesui/window.go:918
 msgid "Copied %d item."
 msgid_plural "Copied %d items."
 msgstr[0] "%d개 항목을 복사했습니다."
 
-#: internal/filesui/window.go:919
+#: internal/filesui/window.go:926
 msgid "Copied %d path."
 msgid_plural "Copied %d paths."
 msgstr[0] "%d개 경로를 복사했습니다."
 
-#: internal/filesui/window.go:1001
+#: internal/filesui/window.go:1008
 msgid "Bookmarked %s."
 msgstr "%s을(를) 북마크했습니다."
 
-#: internal/filesui/window.go:1003
+#: internal/filesui/window.go:1010
 msgid "Removed the bookmark of %s."
 msgstr "%s의 북마크를 제거했습니다."
 
-#: internal/filesui/window.go:1028
+#: internal/filesui/window.go:1035
 msgid "Copied %s."
 msgstr "%s을(를) 복사했습니다."
 
-#: internal/filesui/window.go:1057
+#: internal/filesui/window.go:1064
 msgid "No terminal was found: install xdg-terminal-exec or set $TERMINAL."
 msgstr "터미널을 찾을 수 없습니다. xdg-terminal-exec를 설치하거나 $TERMINAL을 설정하세요."
 
@@ -4903,7 +4903,7 @@ msgstr "%s팀"
 
 #: internal/games/checkersnet/texts.go:37
 #: internal/games/fortunenet/texts.go:29
-#: internal/lightui/gpg.go:1254
+#: internal/lightui/gpg.go:1255
 msgid "you"
 msgstr "나"
 
@@ -5060,7 +5060,7 @@ msgstr "카드 상점"
 
 #: internal/games/fortune.go:65
 #: internal/gamesui/fortune_menu.go:172
-#: internal/lightui/clock.go:492
+#: internal/lightui/clock.go:493
 #: internal/termui/guide.go:161
 #: internal/ui/voice_page.go:186
 #: ui/clock.ui:339
@@ -7292,7 +7292,7 @@ msgstr ""
 
 #: internal/games/lobby/texts.go:12
 #: internal/gamesui/lobbywin.go:236
-#: internal/lightui/sysmon.go:995
+#: internal/lightui/sysmon.go:997
 msgid "Free"
 msgstr "무료"
 
@@ -8244,7 +8244,7 @@ msgid "Hit the three yellow mission targets to light a mission; the hyperspace r
 msgstr "세 개의 노란색 미션 타겟을 맞추면 미션이 켜집니다. 초공간 경사로가 왼쪽에 있습니다."
 
 #: internal/gamesui/pinball.go:241
-#: internal/lightui/clock.go:583
+#: internal/lightui/clock.go:584
 msgid "PAUSED"
 msgstr "일시 중지됨"
 
@@ -8610,7 +8610,7 @@ msgid "Clock"
 msgstr "시계"
 
 #: internal/lightui/apps.go:17
-#: internal/lightui/weather.go:224
+#: internal/lightui/weather.go:226
 #: internal/ui/agenda.go:334
 #: internal/ui/widgets.go:584
 #: internal/ui/widgets.go:1066
@@ -8665,71 +8665,71 @@ msgstr "GPG"
 msgid "Change sign"
 msgstr "변경 표시"
 
-#: internal/lightui/calculator.go:354
+#: internal/lightui/calculator.go:355
 #: internal/term/web/strings.go:94
 msgid "Select all"
 msgstr ""
 
-#: internal/lightui/calculator.go:414
+#: internal/lightui/calculator.go:415
 msgid "Enter a valid expression."
 msgstr ""
 
-#: internal/lightui/calculator.go:444
+#: internal/lightui/calculator.go:445
 msgid "No calculations yet"
 msgstr "아직 계산이 없습니다."
 
-#: internal/lightui/calculator.go:466
+#: internal/lightui/calculator.go:467
 msgid "Use %s"
 msgstr "%s를 사용한다"
 
-#: internal/lightui/calendar.go:132
+#: internal/lightui/calendar.go:138
 #: internal/ui/agenda.go:228
 #: internal/ui/widgets.go:1019
 msgid "January 2006"
 msgstr "2006년 1월"
 
-#: internal/lightui/calendar.go:134
+#: internal/lightui/calendar.go:140
 #: internal/ui/agenda.go:246
 msgid "WK"
 msgstr "주"
 
-#: internal/lightui/calendar.go:139
+#: internal/lightui/calendar.go:145
 #: internal/lightui/clock.go:149
 #: internal/ui/agenda.go:247
 msgid "Su"
 msgstr "일"
 
-#: internal/lightui/calendar.go:139
+#: internal/lightui/calendar.go:145
 #: internal/lightui/clock.go:149
 #: internal/ui/agenda.go:247
 msgid "Mo"
 msgstr "월"
 
-#: internal/lightui/calendar.go:139
+#: internal/lightui/calendar.go:145
 #: internal/lightui/clock.go:149
 #: internal/ui/agenda.go:247
 msgid "Tu"
 msgstr "화"
 
-#: internal/lightui/calendar.go:139
+#: internal/lightui/calendar.go:145
 #: internal/lightui/clock.go:149
 #: internal/ui/agenda.go:247
 msgid "We"
 msgstr "수"
 
-#: internal/lightui/calendar.go:139
+#: internal/lightui/calendar.go:145
 #: internal/lightui/clock.go:149
 #: internal/ui/agenda.go:247
 msgid "Th"
 msgstr "목"
 
-#: internal/lightui/calendar.go:139
+#: internal/lightui/calendar.go:145
 #: internal/lightui/clock.go:149
 #: internal/ui/agenda.go:247
 msgid "Fr"
 msgstr "금"
 
-#: internal/lightui/calendar.go:139
+#: internal/lightui/calendar.go:145
 #: internal/lightui/clock.go:149
 #: internal/ui/agenda.go:247
 msgid "Sa"
@@ -8747,89 +8747,89 @@ msgstr "분"
 msgid "SEC"
 msgstr "초"
 
-#: internal/lightui/clock.go:260
+#: internal/lightui/clock.go:261
 msgid "Day"
 msgstr "일"
 
-#: internal/lightui/clock.go:263
+#: internal/lightui/clock.go:264
 msgid "Night"
 msgstr "밤"
 
-#: internal/lightui/clock.go:338
+#: internal/lightui/clock.go:339
 msgid "No city by that name"
 msgstr "그 이름의 도시는 없습니다"
 
-#: internal/lightui/clock.go:370
-#: internal/lightui/weather.go:247
+#: internal/lightui/clock.go:371
+#: internal/lightui/weather.go:249
 msgid "Remove %s"
 msgstr "%s 제거"
 
-#: internal/lightui/clock.go:403
+#: internal/lightui/clock.go:404
 #: internal/termui/menubar.go:42
 #: ui/pass.ui:252
 msgid "Edit"
 msgstr "편집하다"
 
-#: internal/lightui/clock.go:493
+#: internal/lightui/clock.go:494
 #: ui/music.ui:332
 msgid "Reset"
 msgstr "초기화"
 
-#: internal/lightui/clock.go:498
-#: internal/lightui/clock.go:507
+#: internal/lightui/clock.go:499
+#: internal/lightui/clock.go:508
 #: ui/clock.ui:329
 msgid "Lap"
 msgstr "랩"
 
-#: internal/lightui/clock.go:546
+#: internal/lightui/clock.go:547
 msgid "LAP %d"
 msgstr "랩 %d"
 
-#: internal/lightui/clock.go:566
-#: internal/lightui/clock.go:576
-#: internal/lightui/sysmon.go:57
-#: internal/lightui/sysmon.go:57
+#: internal/lightui/clock.go:567
+#: internal/lightui/clock.go:577
+#: internal/lightui/sysmon.go:58
+#: internal/lightui/sysmon.go:58
 #: ui/clock.ui:463
 msgid "Pause"
 msgstr "일시 정지"
 
-#: internal/lightui/clock.go:569
-#: internal/lightui/clock.go:577
+#: internal/lightui/clock.go:570
+#: internal/lightui/clock.go:578
 msgid "ENDS AT %s"
 msgstr "%s에서 종료"
 
-#: internal/lightui/clock.go:582
-#: internal/lightui/sysmon.go:869
-#: internal/lightui/sysmon.go:869
+#: internal/lightui/clock.go:583
+#: internal/lightui/sysmon.go:871
+#: internal/lightui/sysmon.go:871
 #: internal/vmui/window.go:2465
 msgid "Resume"
 msgstr "계속"
 
-#: internal/lightui/clock.go:594
+#: internal/lightui/clock.go:595
 msgid "Timer done"
 msgstr "타이머 완료"
 
-#: internal/lightui/clock.go:595
+#: internal/lightui/clock.go:596
 msgid "Your timer has ended."
 msgstr "귀하의 타이머가 종료되었습니다."
 
-#: internal/lightui/colorpicker.go:121
+#: internal/lightui/colorpicker.go:123
 msgid "HEX"
 msgstr "HEX"
 
-#: internal/lightui/colorpicker.go:121
+#: internal/lightui/colorpicker.go:123
 msgid "RGB"
 msgstr "RGB"
 
-#: internal/lightui/colorpicker.go:121
+#: internal/lightui/colorpicker.go:123
 msgid "HSL"
 msgstr "HSL"
 
-#: internal/lightui/colorpicker.go:135
+#: internal/lightui/colorpicker.go:137
 msgid "Copy %s"
 msgstr "%s 복사"
 
-#: internal/lightui/colorpicker.go:140
+#: internal/lightui/colorpicker.go:142
 msgid "No colour yet. Pick one from anywhere on the screen."
 msgstr "아직 색상이 없습니다. 화면 어디에서나 하나를 선택하세요."
 
@@ -8852,19 +8852,19 @@ msgstr "5년"
 msgid "Never"
 msgstr "만료 없음"
 
-#: internal/lightui/gpg.go:339
+#: internal/lightui/gpg.go:340
 msgid "The keyring cannot be read: %s"
 msgstr "키링을 읽을 수 없습니다: %s"
 
-#: internal/lightui/gpg.go:381
+#: internal/lightui/gpg.go:382
 msgid "created %s"
 msgstr "%s 생성"
 
-#: internal/lightui/gpg.go:381
-#: internal/lightui/gpg.go:384
-#: internal/lightui/gpg.go:386
-#: internal/lightui/gpg.go:655
-#: internal/lightui/gpg.go:677
+#: internal/lightui/gpg.go:382
+#: internal/lightui/gpg.go:385
+#: internal/lightui/gpg.go:387
+#: internal/lightui/gpg.go:656
+#: internal/lightui/gpg.go:678
 #: internal/shell/notify.go:32
 #: internal/ui/askpass.go:414
 #: internal/ui/askpass.go:482
@@ -8876,156 +8876,156 @@ msgstr "%s 생성"
 msgid "Jan 2, 2006"
 msgstr "2006년 1월 2일"
 
-#: internal/lightui/gpg.go:386
+#: internal/lightui/gpg.go:387
 msgid "expires %s"
 msgstr "%s 만료"
 
-#: internal/lightui/gpg.go:400
-#: internal/lightui/gpg.go:814
+#: internal/lightui/gpg.go:401
+#: internal/lightui/gpg.go:815
 msgid "signs only"
 msgstr "서명 전용"
 
-#: internal/lightui/gpg.go:410
+#: internal/lightui/gpg.go:411
 msgid "revoked"
 msgstr "폐기됨"
 
-#: internal/lightui/gpg.go:412
+#: internal/lightui/gpg.go:413
 msgid "expired"
 msgstr "만료됨"
 
-#: internal/lightui/gpg.go:414
+#: internal/lightui/gpg.go:415
 msgid "disabled"
 msgstr "비활성"
 
-#: internal/lightui/gpg.go:416
-#: internal/lightui/gpg.go:661
-#: internal/lightui/gpg.go:787
+#: internal/lightui/gpg.go:417
+#: internal/lightui/gpg.go:662
+#: internal/lightui/gpg.go:788
 msgid "yours"
 msgstr "내 키"
 
-#: internal/lightui/gpg.go:418
+#: internal/lightui/gpg.go:419
 msgid "verified"
 msgstr "검증됨"
 
-#: internal/lightui/gpg.go:420
+#: internal/lightui/gpg.go:421
 msgid "partly verified"
 msgstr "일부 검증됨"
 
-#: internal/lightui/gpg.go:422
+#: internal/lightui/gpg.go:423
 msgid "not verified"
 msgstr "검증 안 됨"
 
-#: internal/lightui/gpg.go:485
+#: internal/lightui/gpg.go:486
 #: ui/gpg.ui:408
 msgid "Encrypt to your key as well, so you can open it later"
 msgstr "내 키로도 암호화해 나중에 열 수 있게 합니다"
 
-#: internal/lightui/gpg.go:487
+#: internal/lightui/gpg.go:488
 msgid "This key only signs; it cannot be encrypted to"
 msgstr "이 키는 서명 전용이라 암호화 대상이 될 수 없습니다"
 
-#: internal/lightui/gpg.go:538
+#: internal/lightui/gpg.go:539
 msgid "Take off"
 msgstr "빼기"
 
-#: internal/lightui/gpg.go:549
+#: internal/lightui/gpg.go:550
 #: ui/gpg.ui:140
 msgid "Name, address or key ID"
 msgstr "이름, 주소 또는 키 ID"
 
-#: internal/lightui/gpg.go:551
+#: internal/lightui/gpg.go:552
 msgid "Add another"
 msgstr "더 추가"
 
-#: internal/lightui/gpg.go:562
+#: internal/lightui/gpg.go:563
 msgid "Anyone who has the passphrase"
 msgstr "암호문을 가진 누구나"
 
-#: internal/lightui/gpg.go:566
+#: internal/lightui/gpg.go:567
 msgid "%d recipient"
 msgid_plural "%d recipients"
 msgstr[0] "받는 사람 %d명"
 
-#: internal/lightui/gpg.go:633
+#: internal/lightui/gpg.go:634
 msgid "%d more: type to narrow them down"
 msgid_plural "%d more: type to narrow them down"
 msgstr[0] "%d개 더: 입력해 좁히세요"
 
-#: internal/lightui/gpg.go:676
+#: internal/lightui/gpg.go:677
 msgid "This key expired on %s, so gpg cannot encrypt to it. Ask %s for an updated key, then import it."
 msgstr "이 키는 %s에 만료되어 gpg가 암호화할 수 없습니다. %s에게 갱신된 키를 받아 가져오세요."
 
-#: internal/lightui/gpg.go:679
-#: internal/lightui/gpg.go:830
+#: internal/lightui/gpg.go:680
+#: internal/lightui/gpg.go:831
 msgid "%s revoked this key; ask for their new one."
 msgstr "%s이(가) 이 키를 폐기했습니다. 새 키를 받으세요."
 
-#: internal/lightui/gpg.go:681
+#: internal/lightui/gpg.go:682
 msgid "This key cannot encrypt."
 msgstr "이 키로는 암호화할 수 없습니다."
 
-#: internal/lightui/gpg.go:691
+#: internal/lightui/gpg.go:692
 msgid "No key matches. Import theirs on the Keys tab."
 msgstr "맞는 키가 없습니다. 키 탭에서 상대의 키를 가져오세요."
 
-#: internal/lightui/gpg.go:693
+#: internal/lightui/gpg.go:694
 msgid "Already added."
 msgstr "이미 추가했습니다."
 
-#: internal/lightui/gpg.go:696
+#: internal/lightui/gpg.go:697
 msgid "Your keyring is empty. Import their key on the Keys tab."
 msgstr "키링이 비어 있습니다. 키 탭에서 상대의 키를 가져오세요."
 
-#: internal/lightui/gpg.go:698
+#: internal/lightui/gpg.go:699
 msgid "Every key is chosen."
 msgstr "모든 키를 골랐습니다."
 
-#: internal/lightui/gpg.go:753
+#: internal/lightui/gpg.go:754
 msgid "MY KEYS"
 msgstr "내 키"
 
-#: internal/lightui/gpg.go:753
+#: internal/lightui/gpg.go:754
 msgid "OTHERS"
 msgstr "다른 사람"
 
-#: internal/lightui/gpg.go:753
+#: internal/lightui/gpg.go:754
 msgid "INVALID KEYS"
 msgstr "유효하지 않은 키"
 
-#: internal/lightui/gpg.go:760
+#: internal/lightui/gpg.go:761
 msgid "%d key"
 msgid_plural "%d keys"
 msgstr[0] "키 %d개"
 
-#: internal/lightui/gpg.go:824
+#: internal/lightui/gpg.go:825
 msgid "Extend it to use it again. Keep it either way: it opens what was encrypted to it."
 msgstr "연장하면 다시 쓸 수 있습니다. 어떤 경우든 보관하세요. 이 키로 암호화된 것을 엽니다."
 
-#: internal/lightui/gpg.go:826
+#: internal/lightui/gpg.go:827
 msgid "Keep it: it opens what was encrypted to it."
 msgstr "보관하세요. 이 키로 암호화된 것을 엽니다."
 
-#: internal/lightui/gpg.go:828
+#: internal/lightui/gpg.go:829
 msgid "gpg cannot encrypt to it. Ask %s for an updated key, then import it."
 msgstr "gpg가 이 키로 암호화할 수 없습니다. %s에게 갱신된 키를 받아 가져오세요."
 
-#: internal/lightui/gpg.go:851
+#: internal/lightui/gpg.go:852
 msgid "Copy fingerprint"
 msgstr "지문 복사"
 
-#: internal/lightui/gpg.go:852
+#: internal/lightui/gpg.go:853
 msgid "Copy public key"
 msgstr "공개 키 복사"
 
-#: internal/lightui/gpg.go:854
+#: internal/lightui/gpg.go:855
 msgid "Encrypt to…"
 msgstr "이 키로 암호화…"
 
-#: internal/lightui/gpg.go:857
+#: internal/lightui/gpg.go:858
 msgid "Extend 2 years"
 msgstr "2년 연장"
 
-#: internal/lightui/gpg.go:862
+#: internal/lightui/gpg.go:863
 #: ui/disk.ui:781
 #: ui/vm.ui:391
 #: ui/vm.ui:1540
@@ -9036,215 +9036,215 @@ msgstr "2년 연장"
 msgid "Delete…"
 msgstr "삭제…"
 
-#: internal/lightui/gpg.go:926
+#: internal/lightui/gpg.go:927
 msgid "Copied; taken off the clipboard in 45 seconds"
 msgstr "복사했습니다. 45초 뒤 클립보드에서 지워집니다"
 
-#: internal/lightui/gpg.go:980
+#: internal/lightui/gpg.go:981
 msgid "Fingerprint copied"
 msgstr "지문을 복사했습니다"
 
-#: internal/lightui/gpg.go:992
+#: internal/lightui/gpg.go:993
 msgid "Public key copied"
 msgstr "공개 키를 복사했습니다"
 
-#: internal/lightui/gpg.go:1060
+#: internal/lightui/gpg.go:1061
 msgid "Files to encrypt"
 msgstr "암호화할 파일"
 
-#: internal/lightui/gpg.go:1060
+#: internal/lightui/gpg.go:1061
 msgid "Files to decrypt"
 msgstr "복호화할 파일"
 
-#: internal/lightui/gpg.go:1060
+#: internal/lightui/gpg.go:1061
 msgid "Key file to import"
 msgstr "가져올 키 파일"
 
-#: internal/lightui/gpg.go:1126
+#: internal/lightui/gpg.go:1127
 msgid "Leave it out"
 msgstr "빼기"
 
-#: internal/lightui/gpg.go:1161
+#: internal/lightui/gpg.go:1162
 msgid "Saved to %s"
 msgstr "%s에 저장했습니다"
 
-#: internal/lightui/gpg.go:1174
+#: internal/lightui/gpg.go:1175
 msgid "Type a passphrase first."
 msgstr "먼저 암호문을 입력하세요."
 
-#: internal/lightui/gpg.go:1177
+#: internal/lightui/gpg.go:1178
 msgid "The two passphrases differ."
 msgstr "두 암호문이 서로 다릅니다."
 
-#: internal/lightui/gpg.go:1191
+#: internal/lightui/gpg.go:1192
 msgid "Add someone to encrypt to."
 msgstr "암호화할 받는 사람을 추가하세요."
 
-#: internal/lightui/gpg.go:1205
-#: internal/lightui/gpg.go:1336
+#: internal/lightui/gpg.go:1206
+#: internal/lightui/gpg.go:1337
 msgid "Choose or drop files first."
 msgstr "먼저 파일을 고르거나 끌어다 놓으세요."
 
-#: internal/lightui/gpg.go:1216
+#: internal/lightui/gpg.go:1217
 msgid "Type a message first."
 msgstr "먼저 메시지를 입력하세요."
 
-#: internal/lightui/gpg.go:1221
+#: internal/lightui/gpg.go:1222
 msgid "Encrypting…"
 msgstr "암호화하는 중…"
 
-#: internal/lightui/gpg.go:1259
+#: internal/lightui/gpg.go:1260
 msgid "For %s"
 msgstr "받는 사람: %s"
 
-#: internal/lightui/gpg.go:1261
+#: internal/lightui/gpg.go:1262
 msgid "signed"
 msgstr "서명됨"
 
-#: internal/lightui/gpg.go:1264
+#: internal/lightui/gpg.go:1265
 msgid "For anyone who has the passphrase"
 msgstr "받는 사람: 암호문을 가진 누구나"
 
-#: internal/lightui/gpg.go:1282
+#: internal/lightui/gpg.go:1283
 msgid "written in %s"
 msgstr "%s에 저장됨"
 
-#: internal/lightui/gpg.go:1286
+#: internal/lightui/gpg.go:1287
 msgid "Move to Trash…"
 msgstr "휴지통으로 이동…"
 
-#: internal/lightui/gpg.go:1310
+#: internal/lightui/gpg.go:1311
 msgid "%s moved to the trash"
 msgstr "%s을(를) 휴지통으로 옮겼습니다"
 
-#: internal/lightui/gpg.go:1345
+#: internal/lightui/gpg.go:1346
 msgid "Paste a message first."
 msgstr "먼저 메시지를 붙여 넣으세요."
 
-#: internal/lightui/gpg.go:1352
+#: internal/lightui/gpg.go:1353
 msgid "Decrypting… gpg may ask for your passphrase."
 msgstr "복호화하는 중… gpg가 암호 문구를 물을 수 있습니다."
 
-#: internal/lightui/gpg.go:1402
+#: internal/lightui/gpg.go:1403
 msgid "That passphrase does not open it. Decrypt asks again."
 msgstr "그 암호문으로는 열 수 없습니다. ‘복호화’를 누르면 다시 묻습니다."
 
-#: internal/lightui/gpg.go:1404
+#: internal/lightui/gpg.go:1405
 msgid "Cancelled. Decrypt asks again."
 msgstr "취소했습니다. ‘복호화’를 누르면 다시 묻습니다."
 
-#: internal/lightui/gpg.go:1416
+#: internal/lightui/gpg.go:1417
 msgid "Not signed: who sent it is not known"
 msgstr "서명 없음: 누가 보냈는지 알 수 없습니다"
 
-#: internal/lightui/gpg.go:1424
+#: internal/lightui/gpg.go:1425
 msgid "Signed by %s"
 msgstr "%s 서명"
 
-#: internal/lightui/gpg.go:1427
+#: internal/lightui/gpg.go:1428
 msgid "Jan 2, 2006 15:04"
 msgstr "2006년 1월 2일 15:04"
 
-#: internal/lightui/gpg.go:1431
+#: internal/lightui/gpg.go:1432
 msgid "The signature by %s does not match: it was changed after signing"
 msgstr "%s의 서명이 맞지 않습니다: 서명 후 바뀌었습니다"
 
-#: internal/lightui/gpg.go:1435
+#: internal/lightui/gpg.go:1436
 msgid "Signed by a key not in your keyring, so it cannot be checked"
 msgstr "키링에 없는 키로 서명되어 확인할 수 없습니다"
 
-#: internal/lightui/gpg.go:1439
+#: internal/lightui/gpg.go:1440
 msgid "Signed by %s, with a key that is no longer valid"
 msgstr "%s 서명, 더 이상 유효하지 않은 키"
 
-#: internal/lightui/gpg.go:1458
+#: internal/lightui/gpg.go:1459
 msgid "Encrypted to %s, and with a passphrase"
 msgstr "%s에게, 그리고 암호문으로도 암호화됨"
 
-#: internal/lightui/gpg.go:1460
+#: internal/lightui/gpg.go:1461
 msgid "Encrypted to %s"
 msgstr "%s에게 암호화됨"
 
-#: internal/lightui/gpg.go:1462
+#: internal/lightui/gpg.go:1463
 msgid "Encrypted with a passphrase"
 msgstr "암호문으로 암호화됨"
 
-#: internal/lightui/gpg.go:1479
+#: internal/lightui/gpg.go:1480
 #: ui/gpg.ui:1383
 msgid "Import"
 msgstr "가져오기"
 
-#: internal/lightui/gpg.go:1489
+#: internal/lightui/gpg.go:1490
 msgid "No key found in it."
 msgstr "키를 찾지 못했습니다."
 
-#: internal/lightui/gpg.go:1494
+#: internal/lightui/gpg.go:1495
 msgid "Import %d key"
 msgid_plural "Import %d keys"
 msgstr[0] "키 %d개 가져오기"
 
-#: internal/lightui/gpg.go:1506
+#: internal/lightui/gpg.go:1507
 msgid "new"
 msgstr "새 키"
 
-#: internal/lightui/gpg.go:1509
+#: internal/lightui/gpg.go:1510
 msgid "holds a secret key"
 msgstr "비밀 키 포함"
 
-#: internal/lightui/gpg.go:1511
+#: internal/lightui/gpg.go:1512
 msgid "updates one you have"
 msgstr "가진 키를 갱신"
 
-#: internal/lightui/gpg.go:1536
+#: internal/lightui/gpg.go:1537
 msgid "Importing…"
 msgstr "가져오는 중…"
 
-#: internal/lightui/gpg.go:1547
+#: internal/lightui/gpg.go:1548
 msgid "%d key imported"
 msgid_plural "%d keys imported"
 msgstr[0] "키 %d개를 가져왔습니다"
 
-#: internal/lightui/gpg.go:1560
+#: internal/lightui/gpg.go:1561
 msgid "Give a name and an address."
 msgstr "이름과 주소를 입력하세요."
 
-#: internal/lightui/gpg.go:1564
+#: internal/lightui/gpg.go:1565
 msgid "That address has no @."
 msgstr "주소에 @가 없습니다."
 
-#: internal/lightui/gpg.go:1570
+#: internal/lightui/gpg.go:1571
 msgid "Creating… gpg asks for a passphrase for the new key."
 msgstr "만드는 중… gpg가 새 키의 암호 문구를 묻습니다."
 
-#: internal/lightui/gpg.go:1584
+#: internal/lightui/gpg.go:1585
 msgid "Your key is created"
 msgstr "키를 만들었습니다"
 
-#: internal/lightui/gpg.go:1607
+#: internal/lightui/gpg.go:1608
 msgid "Delete the key of %s?"
 msgstr "%s의 키를 삭제할까요?"
 
-#: internal/lightui/gpg.go:1609
+#: internal/lightui/gpg.go:1610
 msgid "It goes from your keyring. Messages it signed then show as signed by a key not in your keyring; importing it again brings that back."
 msgstr "키링에서 빠집니다. 이 키로 서명된 메시지는 키링에 없는 키의 서명으로 표시되며, 다시 가져오면 돌아옵니다."
 
-#: internal/lightui/gpg.go:1616
+#: internal/lightui/gpg.go:1617
 msgid "Move %s to the trash?"
 msgstr "%s을(를) 휴지통으로 옮길까요?"
 
-#: internal/lightui/gpg.go:1617
+#: internal/lightui/gpg.go:1618
 msgid "The decrypted copy goes to the trash, where it can be restored from; the encrypted file stays."
 msgstr "복호화한 사본은 휴지통으로 가며 거기서 복원할 수 있습니다. 암호화된 파일은 남습니다."
 
-#: internal/lightui/gpg.go:1634
+#: internal/lightui/gpg.go:1635
 msgid "Key deleted"
 msgstr "키를 삭제했습니다"
 
-#: internal/lightui/gpg.go:1644
+#: internal/lightui/gpg.go:1645
 msgid "Extending… gpg asks for your passphrase."
 msgstr "연장하는 중… gpg가 암호 문구를 묻습니다."
 
-#: internal/lightui/gpg.go:1653
+#: internal/lightui/gpg.go:1654
 msgid "Extended by 2 years"
 msgstr "2년 연장했습니다"
 
@@ -9257,165 +9257,165 @@ msgstr "GStreamer가 설치되어 있지 않습니다. 플러그인을 설치하
 msgid "Presets"
 msgstr "프리셋"
 
-#: internal/lightui/music.go:486
+#: internal/lightui/music.go:487
 msgid "Cannot play %s: %s"
 msgstr "%s을(를) 재생할 수 없습니다: %s"
 
-#: internal/lightui/music.go:560
+#: internal/lightui/music.go:561
 #: internal/ui/widgets.go:1097
 #: ui/music.ui:86
 msgid "Nothing playing"
 msgstr "재생 중인 것 없음"
 
-#: internal/lightui/music.go:610
+#: internal/lightui/music.go:611
 msgid "MONO"
 msgstr "모노"
 
-#: internal/lightui/music.go:612
+#: internal/lightui/music.go:613
 msgid "STEREO"
 msgstr "스테레오"
 
-#: internal/lightui/music.go:679
+#: internal/lightui/music.go:680
 msgid "PRE"
 msgstr "PRE"
 
-#: internal/lightui/music.go:788
+#: internal/lightui/music.go:789
 #: ui/music.ui:270
 msgid "Repeat: off (R)"
 msgstr "반복: 끔 (R)"
 
-#: internal/lightui/music.go:791
+#: internal/lightui/music.go:792
 msgid "Repeat: the playlist (R)"
 msgstr "반복: 재생 목록 (R)"
 
-#: internal/lightui/music.go:793
+#: internal/lightui/music.go:794
 msgid "Repeat: this track (R)"
 msgstr "반복: 이 곡 (R)"
 
-#: internal/lightui/music.go:1016
+#: internal/lightui/music.go:1017
 msgid "%d track"
 msgid_plural "%d tracks"
 msgstr[0] "%d곡"
 
-#: internal/lightui/music.go:1103
-#: internal/lightui/sysmon.go:792
+#: internal/lightui/music.go:1104
+#: internal/lightui/sysmon.go:794
 msgid "Open files"
 msgstr "파일 열기"
 
-#: internal/lightui/music.go:1103
+#: internal/lightui/music.go:1104
 #: ui/music.ui:424
 msgid "Add files"
 msgstr "파일 추가"
 
-#: internal/lightui/music.go:1107
+#: internal/lightui/music.go:1108
 #: ui/music.ui:434
 msgid "Add a folder"
 msgstr "폴더 추가"
 
-#: internal/lightui/music.go:1110
+#: internal/lightui/music.go:1111
 msgid "Load a playlist"
 msgstr "재생 목록 불러오기"
 
-#: internal/lightui/music.go:1111
+#: internal/lightui/music.go:1112
 msgid "Playlists"
 msgstr "재생 목록"
 
-#: internal/lightui/music.go:1114
+#: internal/lightui/music.go:1115
 msgid "Save the playlist"
 msgstr "재생 목록 저장"
 
-#: internal/lightui/music.go:1115
+#: internal/lightui/music.go:1116
 msgid "Playlist"
 msgstr "재생 목록"
 
-#: internal/lightui/pass.go:347
+#: internal/lightui/pass.go:348
 msgid "A password store: a folder with a .gpg-id"
 msgstr "비밀번호 저장소: .gpg-id가 있는 폴더"
 
-#: internal/lightui/pass.go:355
+#: internal/lightui/pass.go:356
 msgid "%s is not a password store: it has no .gpg-id (pass init makes one)."
 msgstr "%s은(는) 비밀번호 저장소가 아닙니다: .gpg-id가 없습니다 (pass init으로 만듭니다)."
 
-#: internal/lightui/pass.go:375
+#: internal/lightui/pass.go:376
 msgid "No password store. pass init YOUR-GPG-KEY-ID makes one in ~/.password-store; another folder can be added below."
 msgstr "비밀번호 저장소가 없습니다. pass init GPG-키-ID로 ~/.password-store에 만들 수 있고, 아래에서 다른 폴더를 추가할 수 있습니다."
 
-#: internal/lightui/pass.go:402
+#: internal/lightui/pass.go:403
 msgid "The store is empty. + makes an entry."
 msgstr "저장소가 비어 있습니다. +로 항목을 만듭니다."
 
-#: internal/lightui/pass.go:405
-#: internal/lightui/pass.go:804
-#: internal/lightui/pass.go:876
-#: internal/lightui/pass.go:1135
+#: internal/lightui/pass.go:406
+#: internal/lightui/pass.go:805
+#: internal/lightui/pass.go:877
+#: internal/lightui/pass.go:1136
 msgid "Choose an entry."
 msgstr "항목을 고르세요."
 
-#: internal/lightui/pass.go:411
+#: internal/lightui/pass.go:412
 msgid "Top level"
 msgstr "최상위"
 
-#: internal/lightui/pass.go:419
+#: internal/lightui/pass.go:420
 #: internal/ui/settings.go:920
 #: internal/ui/settings.go:947
 msgid "%d entry"
 msgid_plural "%d entries"
 msgstr[0] "%d개"
 
-#: internal/lightui/pass.go:424
+#: internal/lightui/pass.go:425
 msgid "Right-click to rename or move"
 msgstr "오른쪽 클릭으로 이름 바꾸기 또는 이동"
 
-#: internal/lightui/pass.go:487
+#: internal/lightui/pass.go:488
 #: internal/ui/passwords.go:488
 msgid "Nothing matches. Each word is looked for in the whole path."
 msgstr "일치하는 항목이 없습니다. 각 단어는 경로 전체에서 찾습니다."
 
-#: internal/lightui/pass.go:489
+#: internal/lightui/pass.go:490
 msgid "And %d more: another word narrows them."
 msgid_plural "And %d more: another word narrows them."
 msgstr[0] "그 밖에 %d개. 단어를 더하면 좁혀집니다."
 
-#: internal/lightui/pass.go:635
+#: internal/lightui/pass.go:636
 msgid "Decrypting %s"
 msgstr "%s 복호화하는 중"
 
-#: internal/lightui/pass.go:691
+#: internal/lightui/pass.go:692
 #: internal/lightui/pass_otp.go:187
 msgid "Replace the one-time code"
 msgstr "일회용 코드 바꾸기"
 
-#: internal/lightui/pass.go:693
+#: internal/lightui/pass.go:694
 #: internal/lightui/pass_otp.go:190
 #: ui/pass.ui:230
 #: ui/pass.ui:670
 msgid "Add a one-time code"
 msgstr "일회용 코드 추가"
 
-#: internal/lightui/pass.go:698
+#: internal/lightui/pass.go:699
 #: internal/ui/passwords.go:561
 msgid "USERNAME"
 msgstr "사용자 이름"
 
-#: internal/lightui/pass.go:701
+#: internal/lightui/pass.go:702
 #: internal/ui/passwords.go:564
 msgid "PASSWORD"
 msgstr "비밀번호"
 
-#: internal/lightui/pass.go:706
-#: internal/lightui/pass.go:758
+#: internal/lightui/pass.go:707
+#: internal/lightui/pass.go:759
 #: internal/ui/passwords.go:567
 #: internal/ui/passwords.go:570
 #: ui/pass.ui:802
 msgid "ONE-TIME CODE"
 msgstr "일회용 코드"
 
-#: internal/lightui/pass.go:713
+#: internal/lightui/pass.go:714
 #: internal/ui/passwords.go:577
 msgid "NOTES"
 msgstr "메모"
 
-#: internal/lightui/pass.go:742
+#: internal/lightui/pass.go:743
 #: internal/mailui/formatted.go:184
 #: internal/term/desktop/desktop_linux.go:43
 #: internal/ui/passwords.go:644
@@ -9424,124 +9424,124 @@ msgstr "메모"
 msgid "Show"
 msgstr "보기"
 
-#: internal/lightui/pass.go:744
+#: internal/lightui/pass.go:745
 #: internal/ui/notify.go:410
 #: internal/ui/passwords.go:642
 msgid "Hide"
 msgstr "숨기기"
 
-#: internal/lightui/pass.go:787
+#: internal/lightui/pass.go:788
 #: internal/lightui/pass_otp.go:245
 #: internal/ui/passwords.go:661
 msgid "%d second left"
 msgid_plural "%d seconds left"
 msgstr[0] "%d초 남음"
 
-#: internal/lightui/pass.go:932
+#: internal/lightui/pass.go:933
 msgid "Rename or move the category “%s”"
 msgstr "카테고리 “%s” 이름 바꾸기 또는 이동"
 
-#: internal/lightui/pass.go:933
+#: internal/lightui/pass.go:934
 msgid "Its new path. Another name renames it; a path under another category moves it there, with all its entries."
 msgstr "새 경로. 다른 이름이면 이름이 바뀌고, 다른 카테고리 아래 경로면 모든 항목과 함께 그곳으로 옮겨집니다."
 
-#: internal/lightui/pass.go:934
-#: internal/lightui/pass.go:938
+#: internal/lightui/pass.go:935
+#: internal/lightui/pass.go:939
 #: internal/term/web/strings.go:65
 msgid "Move"
 msgstr "이동"
 
-#: internal/lightui/pass.go:936
+#: internal/lightui/pass.go:937
 msgid "Rename or move “%s”"
 msgstr "“%s” 이름 바꾸기 또는 이동"
 
-#: internal/lightui/pass.go:937
+#: internal/lightui/pass.go:938
 msgid "Its new path. The first part is its category: change it to move the entry, the rest to rename it."
 msgstr "새 경로. 첫 부분이 카테고리입니다. 그 부분을 바꾸면 이동, 나머지를 바꾸면 이름 바꾸기입니다."
 
-#: internal/lightui/pass.go:940
+#: internal/lightui/pass.go:941
 #: ui/pass.ui:137
 msgid "New entry"
 msgstr "새 항목"
 
-#: internal/lightui/pass.go:941
+#: internal/lightui/pass.go:942
 msgid "Its path: the first part is its category. Its content comes next."
 msgstr "경로: 첫 부분이 카테고리입니다. 내용은 그다음에."
 
-#: internal/lightui/pass.go:946
+#: internal/lightui/pass.go:947
 #: internal/termui/guide.go:163
 #: ui/vm.ui:3289
 msgid "Next"
 msgstr "다음"
 
-#: internal/lightui/pass.go:948
+#: internal/lightui/pass.go:949
 msgid "Delete “%s”?"
 msgstr "“%s”을(를) 삭제할까요?"
 
-#: internal/lightui/pass.go:949
+#: internal/lightui/pass.go:950
 msgid "pass removes its file; a git store keeps it in its history."
 msgstr "pass가 파일을 지웁니다. git 저장소라면 기록에 남습니다."
 
-#: internal/lightui/pass.go:985
-#: internal/lightui/pass.go:1015
+#: internal/lightui/pass.go:986
+#: internal/lightui/pass.go:1016
 #: internal/mailui/reader.go:549
 #: internal/mailui/reader.go:794
 #: internal/viewerui/app.go:805
 msgid "FILE"
 msgstr "파일"
 
-#: internal/lightui/pass.go:1011
+#: internal/lightui/pass.go:1012
 msgid "CATEGORY"
 msgstr "카테고리"
 
-#: internal/lightui/pass.go:1025
+#: internal/lightui/pass.go:1026
 msgid "and %d more"
 msgid_plural "and %d more"
 msgstr[0] "외 %d개"
 
-#: internal/lightui/pass.go:1069
+#: internal/lightui/pass.go:1070
 msgid "That is where it is."
 msgstr "이미 그곳에 있습니다."
 
-#: internal/lightui/pass.go:1071
+#: internal/lightui/pass.go:1072
 msgid "A category cannot move into itself."
 msgstr "카테고리를 자기 안으로 옮길 수 없습니다."
 
-#: internal/lightui/pass.go:1073
+#: internal/lightui/pass.go:1074
 msgid "That path is already in the store."
 msgstr "그 경로는 이미 저장소에 있습니다."
 
-#: internal/lightui/pass.go:1075
+#: internal/lightui/pass.go:1076
 msgid "It is no longer in the store."
 msgstr "더 이상 저장소에 없습니다."
 
-#: internal/lightui/pass.go:1077
+#: internal/lightui/pass.go:1078
 msgid "Each part of the path needs a name, without a leading dot."
 msgstr "경로의 각 부분에는 점으로 시작하지 않는 이름이 필요합니다."
 
-#: internal/lightui/pass.go:1184
+#: internal/lightui/pass.go:1185
 msgid "TRUSTED APPS"
 msgstr "신뢰하는 앱"
 
-#: internal/lightui/pass.go:1184
+#: internal/lightui/pass.go:1185
 #: internal/lightui/workshop_manager.go:50
 #: internal/ui/settings_keyring.go:551
 msgid "%d app"
 msgid_plural "%d apps"
 msgstr[0] "앱 %d개"
 
-#: internal/lightui/pass.go:1186
+#: internal/lightui/pass.go:1187
 msgid "None: an app reading it is asked about first."
 msgstr "없음: 읽으려는 앱은 먼저 묻습니다."
 
-#: internal/lightui/pass.go:1192
+#: internal/lightui/pass.go:1193
 #: internal/ui/askpass.go:405
 #: internal/ui/settings_keyring.go:624
 msgid "Flatpak: %s"
 msgstr "Flatpak: %s"
 
-#: internal/lightui/pass.go:1197
-#: internal/lightui/pass.go:1219
+#: internal/lightui/pass.go:1198
+#: internal/lightui/pass.go:1220
 #: internal/ui/settings_keyring.go:469
 #: internal/ui/settings_keyring.go:477
 #: internal/ui/settings_keyring.go:629
@@ -9549,50 +9549,50 @@ msgstr "Flatpak: %s"
 msgid "%s · %s"
 msgstr "%s · %s"
 
-#: internal/lightui/pass.go:1204
+#: internal/lightui/pass.go:1205
 #: internal/ui/settings_keyring.go:649
 msgid "Stop trusting it: it is asked about at its next read"
 msgstr "신뢰를 그만둡니다. 다음 읽기 때 묻습니다"
 
-#: internal/lightui/pass.go:1209
+#: internal/lightui/pass.go:1210
 msgid "LAST READS"
 msgstr "최근 읽기"
 
-#: internal/lightui/pass.go:1211
+#: internal/lightui/pass.go:1212
 msgid "No app has read it yet."
 msgstr "아직 읽은 앱이 없습니다."
 
-#: internal/lightui/pass.go:1217
+#: internal/lightui/pass.go:1218
 msgid "%s · %d times"
 msgid_plural "%s · %d times"
 msgstr[0] "%s · %d회"
 
-#: internal/lightui/pass.go:1229
+#: internal/lightui/pass.go:1230
 #: internal/ui/settings_keyring.go:694
 msgid "trusted"
 msgstr "신뢰됨"
 
-#: internal/lightui/pass.go:1231
+#: internal/lightui/pass.go:1232
 #: internal/ui/settings_keyring.go:696
 msgid "allowed once"
 msgstr "한 번 허용됨"
 
-#: internal/lightui/pass.go:1233
+#: internal/lightui/pass.go:1234
 #: internal/ui/settings_keyring.go:698
 msgid "allowed, and trusted from now on"
 msgstr "허용됨, 이제부터 신뢰"
 
-#: internal/lightui/pass.go:1235
+#: internal/lightui/pass.go:1236
 #: internal/ui/settings_keyring.go:700
 msgid "denied"
 msgstr "거부됨"
 
-#: internal/lightui/pass.go:1237
+#: internal/lightui/pass.go:1238
 #: internal/ui/settings_keyring.go:702
 msgid "allowed: no one to ask"
 msgstr "허용됨: 물어볼 곳 없음"
 
-#: internal/lightui/pass.go:1239
+#: internal/lightui/pass.go:1240
 msgid "read"
 msgstr "읽음"
 
@@ -9634,56 +9634,56 @@ msgstr "QR 코드가 있는 이미지"
 msgid "Reading the QR code…"
 msgstr "QR 코드 읽는 중…"
 
-#: internal/lightui/stocks.go:275
+#: internal/lightui/stocks.go:277
 msgid "Search for a symbol to add it."
 msgstr "추가할 기호를 검색한다."
 
-#: internal/lightui/stocks.go:282
+#: internal/lightui/stocks.go:284
 #: internal/mailui/window.go:994
 msgid "Loading %s…"
 msgstr "%s 로딩 중..."
 
-#: internal/lightui/stocks.go:295
+#: internal/lightui/stocks.go:297
 msgid "%s could not be read.\n%s"
 msgstr "%[1]s를 읽을 수 없습니다.\n%[2]s"
 
-#: internal/lightui/stocks.go:318
+#: internal/lightui/stocks.go:320
 msgid "Previous close"
 msgstr "이전 마감"
 
-#: internal/lightui/stocks.go:320
+#: internal/lightui/stocks.go:322
 msgid "Range start"
 msgstr "범위 시작"
 
-#: internal/lightui/stocks.go:323
+#: internal/lightui/stocks.go:325
 #: internal/ui/settings_ai.go:100
 msgid "High"
 msgstr "높음"
 
-#: internal/lightui/stocks.go:323
+#: internal/lightui/stocks.go:325
 #: internal/ui/settings_ai.go:100
 msgid "Low"
 msgstr "낮음"
 
-#: internal/lightui/stocks.go:329
+#: internal/lightui/stocks.go:331
 msgid "As of %s"
 msgstr "%s 기준"
 
-#: internal/lightui/stocks.go:329
+#: internal/lightui/stocks.go:331
 msgid "Jan 2, 15:04"
 msgstr "1월 2일 15:04"
 
-#: internal/lightui/stocks.go:405
+#: internal/lightui/stocks.go:407
 msgid "Nothing by that name"
 msgstr "그 이름에는 아무것도 없습니다"
 
-#: internal/lightui/stocks.go:407
-#: internal/lightui/weather.go:473
+#: internal/lightui/stocks.go:409
+#: internal/lightui/weather.go:475
 msgid "Could not search: %s"
 msgstr "검색할 수 없습니다: %s"
 
-#: internal/lightui/sysmon.go:54
-#: internal/lightui/sysmon.go:54
+#: internal/lightui/sysmon.go:55
+#: internal/lightui/sysmon.go:55
 #: internal/shell/launcher_actions.go:45
 #: internal/termui/menubar.go:34
 #: internal/ui/dock.go:533
@@ -9691,470 +9691,470 @@ msgstr "검색할 수 없습니다: %s"
 msgid "Quit"
 msgstr "종료"
 
-#: internal/lightui/sysmon.go:54
+#: internal/lightui/sysmon.go:55
 msgid "Asks it to quit. It can save its work first."
 msgstr "종료를 요청합니다. 먼저 작업을 저장할 수 있습니다."
 
-#: internal/lightui/sysmon.go:55
-#: internal/lightui/sysmon.go:55
+#: internal/lightui/sysmon.go:56
+#: internal/lightui/sysmon.go:56
 msgid "Interrupt"
 msgstr "인터럽트"
 
-#: internal/lightui/sysmon.go:55
+#: internal/lightui/sysmon.go:56
 msgid "As Ctrl+C in a terminal."
 msgstr "터미널에서는 Ctrl+C와 같습니다."
 
-#: internal/lightui/sysmon.go:56
-#: internal/lightui/sysmon.go:56
+#: internal/lightui/sysmon.go:57
+#: internal/lightui/sysmon.go:57
 msgid "Hang Up"
 msgstr "전화 끊기"
 
-#: internal/lightui/sysmon.go:56
+#: internal/lightui/sysmon.go:57
 msgid "As closing its terminal. Many services reload instead."
 msgstr "터미널을 닫는 것과 같습니다. 대신 많은 서비스가 다시 로드됩니다."
 
-#: internal/lightui/sysmon.go:57
+#: internal/lightui/sysmon.go:58
 msgid "Stops it running until it is resumed."
 msgstr "재개될 때까지 실행을 중지합니다."
 
-#: internal/lightui/sysmon.go:58
-#: internal/lightui/sysmon.go:58
+#: internal/lightui/sysmon.go:59
+#: internal/lightui/sysmon.go:59
 msgid "Force Quit"
 msgstr "강제 종료"
 
-#: internal/lightui/sysmon.go:58
+#: internal/lightui/sysmon.go:59
 msgid "Ends it at once. Work it has not saved is lost."
 msgstr "한 번에 종료됩니다. 저장하지 않은 작업은 손실됩니다."
 
-#: internal/lightui/sysmon.go:59
+#: internal/lightui/sysmon.go:60
 msgid "Quit with Children"
 msgstr "아이들과 함께 그만두세요"
 
-#: internal/lightui/sysmon.go:59
 #: internal/lightui/sysmon.go:60
+#: internal/lightui/sysmon.go:61
 msgid "Quit All"
 msgstr "모두 종료"
 
-#: internal/lightui/sysmon.go:60
+#: internal/lightui/sysmon.go:61
 msgid "Quit All by Name"
 msgstr "이름으로 모두 종료"
 
-#: internal/lightui/sysmon.go:144
-#: internal/lightui/sysmon.go:726
+#: internal/lightui/sysmon.go:145
+#: internal/lightui/sysmon.go:728
 #: ui/sysmon.ui:84
 msgid "CPU"
 msgstr "CPU"
 
-#: internal/lightui/sysmon.go:146
-#: internal/lightui/sysmon.go:726
-#: internal/lightui/sysmon.go:787
-#: internal/lightui/sysmon.go:991
+#: internal/lightui/sysmon.go:147
+#: internal/lightui/sysmon.go:728
+#: internal/lightui/sysmon.go:789
+#: internal/lightui/sysmon.go:993
 msgid "MEMORY"
 msgstr "메모리"
 
-#: internal/lightui/sysmon.go:148
+#: internal/lightui/sysmon.go:149
 msgid "GPU"
 msgstr "GPU"
 
-#: internal/lightui/sysmon.go:150
-#: internal/lightui/sysmon.go:1037
+#: internal/lightui/sysmon.go:151
+#: internal/lightui/sysmon.go:1039
 #: internal/shell/dock.go:286
 #: internal/shell/dock.go:329
 msgid "NETWORK"
 msgstr "네트워크"
 
-#: internal/lightui/sysmon.go:151
+#: internal/lightui/sysmon.go:152
 #: internal/ui/settings_card.go:526
 msgid "DISK"
 msgstr "디스크"
 
-#: internal/lightui/sysmon.go:153
+#: internal/lightui/sysmon.go:154
 msgid "BATTERY"
 msgstr "배터리"
 
-#: internal/lightui/sysmon.go:393
+#: internal/lightui/sysmon.go:395
 msgid "%d threads"
 msgstr "%d 스레드"
 
-#: internal/lightui/sysmon.go:398
+#: internal/lightui/sysmon.go:400
 msgid "load %.2f %.2f %.2f"
 msgstr "로드 %.2[1]f %.2[2]f %.2[3]f"
 
-#: internal/lightui/sysmon.go:408
+#: internal/lightui/sysmon.go:410
 msgid "CPU %d: %.0f%%"
 msgstr "CPU %[1]d: %.0[2]f%%"
 
-#: internal/lightui/sysmon.go:417
+#: internal/lightui/sysmon.go:419
 msgid "of %s · cache %s"
 msgstr "%[1]s · 캐시 %[2]s의"
 
-#: internal/lightui/sysmon.go:419
+#: internal/lightui/sysmon.go:421
 msgid " · swap %s of %s"
 msgstr "· %[2]s의 %[1]s 교환"
 
-#: internal/lightui/sysmon.go:434
+#: internal/lightui/sysmon.go:436
 msgid " · video memory %s of %s"
 msgstr "· %[2]s의 비디오 메모리 %[1]s"
 
-#: internal/lightui/sysmon.go:446
+#: internal/lightui/sysmon.go:448
 msgid "↑ %s · received %s, sent %s"
 msgstr "↑ %[1]s · %[2]s를 수신하고 %[3]s를 전송함"
 
-#: internal/lightui/sysmon.go:453
+#: internal/lightui/sysmon.go:455
 msgid "of %s on / · %s free"
 msgstr "%[1]s의 / · %[2]s 무료"
 
-#: internal/lightui/sysmon.go:455
+#: internal/lightui/sysmon.go:457
 msgid " · read %s · write %s"
 msgstr "· %[1]s 읽기 · %[2]s 쓰기"
 
-#: internal/lightui/sysmon.go:471
+#: internal/lightui/sysmon.go:473
 msgid "health %.0f%%"
 msgstr "헬스 %.0f%%"
 
-#: internal/lightui/sysmon.go:476
+#: internal/lightui/sysmon.go:478
 msgid "UP %s"
 msgstr "UP %s"
 
-#: internal/lightui/sysmon.go:538
+#: internal/lightui/sysmon.go:540
 msgid "%d PROCESSES"
 msgstr "%d 프로세스"
 
-#: internal/lightui/sysmon.go:540
+#: internal/lightui/sysmon.go:542
 msgid "%d OF %d PROCESSES"
 msgstr "%[2]d 프로세스의 %[1]d"
 
-#: internal/lightui/sysmon.go:544
+#: internal/lightui/sysmon.go:546
 msgid "No process matches."
 msgstr "일치하는 프로세스가 없습니다."
 
-#: internal/lightui/sysmon.go:580
+#: internal/lightui/sysmon.go:582
 msgid "Details and the ways to end %s"
 msgstr "%s를 종료하는 세부 사항 및 방법"
 
-#: internal/lightui/sysmon.go:608
+#: internal/lightui/sysmon.go:610
 msgid "Not sent: an administrator's password is needed."
 msgstr "전송되지 않음: 관리자의 비밀번호가 필요합니다."
 
-#: internal/lightui/sysmon.go:652
+#: internal/lightui/sysmon.go:654
 msgid "Process %d has ended."
 msgstr "프로세스 %d가 종료되었습니다."
 
-#: internal/lightui/sysmon.go:726
+#: internal/lightui/sysmon.go:728
 msgid "THREADS"
 msgstr "스레드"
 
-#: internal/lightui/sysmon.go:742
+#: internal/lightui/sysmon.go:744
 msgid "END OR PAUSE"
 msgstr "종료 또는 일시 중지"
 
-#: internal/lightui/sysmon.go:783
+#: internal/lightui/sysmon.go:785
 msgid "PROCESS"
 msgstr "프로세스"
 
-#: internal/lightui/sysmon.go:784
+#: internal/lightui/sysmon.go:786
 msgid "Parent"
 msgstr "부모"
 
-#: internal/lightui/sysmon.go:784
+#: internal/lightui/sysmon.go:786
 msgid "State"
 msgstr "상태"
 
-#: internal/lightui/sysmon.go:784
+#: internal/lightui/sysmon.go:786
 msgid "Started"
 msgstr "시작됨"
 
-#: internal/lightui/sysmon.go:784
+#: internal/lightui/sysmon.go:786
 msgid "CPU time"
 msgstr "CPU 시간"
 
-#: internal/lightui/sysmon.go:784
+#: internal/lightui/sysmon.go:786
 msgid "Priority"
 msgstr "우선순위"
 
-#: internal/lightui/sysmon.go:784
+#: internal/lightui/sysmon.go:786
 msgid "Unit"
 msgstr "단위"
 
-#: internal/lightui/sysmon.go:788
+#: internal/lightui/sysmon.go:790
 msgid "Resident"
 msgstr "레지던트"
 
-#: internal/lightui/sysmon.go:788
+#: internal/lightui/sysmon.go:790
 msgid "Private"
 msgstr "개인"
 
-#: internal/lightui/sysmon.go:788
+#: internal/lightui/sysmon.go:790
 msgid "Shared"
 msgstr "공유됨"
 
-#: internal/lightui/sysmon.go:788
+#: internal/lightui/sysmon.go:790
 msgid "Swapped out"
 msgstr "교체됨"
 
-#: internal/lightui/sysmon.go:788
+#: internal/lightui/sysmon.go:790
 msgid "Peak"
 msgstr "피크"
 
-#: internal/lightui/sysmon.go:792
+#: internal/lightui/sysmon.go:794
 msgid "Command"
 msgstr "명령"
 
-#: internal/lightui/sysmon.go:792
+#: internal/lightui/sysmon.go:794
 msgid "Disk read"
 msgstr "디스크 읽기"
 
-#: internal/lightui/sysmon.go:792
+#: internal/lightui/sysmon.go:794
 msgid "Disk written"
 msgstr "디스크 기록"
 
-#: internal/lightui/sysmon.go:806
+#: internal/lightui/sysmon.go:808
 msgid "PID %d · %s"
 msgstr "PID %[1]d · %[2]s"
 
-#: internal/lightui/sysmon.go:808
+#: internal/lightui/sysmon.go:810
 msgid "PID %d · ENDED"
 msgstr "PID %d · 종료됨"
 
-#: internal/lightui/sysmon.go:819
-#: internal/lightui/sysmon.go:1102
-#: internal/lightui/sysmon.go:1109
+#: internal/lightui/sysmon.go:821
+#: internal/lightui/sysmon.go:1104
+#: internal/lightui/sysmon.go:1111
 msgid "Not readable: not your process"
 msgstr "읽을 수 없음: 프로세스가 아님"
 
-#: internal/lightui/sysmon.go:842
+#: internal/lightui/sysmon.go:844
 msgid "%s · %s ago"
 msgstr "%[1]s · %[2]s 전"
 
-#: internal/lightui/sysmon.go:842
+#: internal/lightui/sysmon.go:844
 #: internal/ui/settings_keyring.go:298
 msgid "Jan 2 15:04:05"
 msgstr "1월 2일 15:04:05"
 
-#: internal/lightui/sysmon.go:845
+#: internal/lightui/sysmon.go:847
 msgid "nice %d"
 msgstr "좋은 %d"
 
-#: internal/lightui/sysmon.go:869
+#: internal/lightui/sysmon.go:871
 msgid "It is paused. Lets it go on."
 msgstr "일시 중지되었습니다. 계속하자."
 
-#: internal/lightui/sysmon.go:873
+#: internal/lightui/sysmon.go:875
 msgid "Also its %d child process, the youngest first."
 msgid_plural "Also its %d child processes, the youngest first."
 msgstr[0] "또한 %d 자식 프로세스는 가장 어린 것이 먼저입니다."
 
-#: internal/lightui/sysmon.go:876
+#: internal/lightui/sysmon.go:878
 msgid "All %d processes named %s."
 msgstr "%[2]s로 명명된 모든 %[1]d 프로세스."
 
-#: internal/lightui/sysmon.go:898
+#: internal/lightui/sysmon.go:900
 msgid "This process has ended."
 msgstr "이 프로세스는 종료되었다."
 
-#: internal/lightui/sysmon.go:929
+#: internal/lightui/sysmon.go:931
 msgid "Asked %s to quit."
 msgstr "%s에게 종료를 요청했습니다."
 
-#: internal/lightui/sysmon.go:931
+#: internal/lightui/sysmon.go:933
 msgid "Interrupted %s."
 msgstr "중단된 %s."
 
-#: internal/lightui/sysmon.go:933
+#: internal/lightui/sysmon.go:935
 msgid "Hung up on %s."
 msgstr "%s에서 전화를 끊었습니다."
 
-#: internal/lightui/sysmon.go:935
+#: internal/lightui/sysmon.go:937
 msgid "Ended %s."
 msgstr "%s가 종료되었습니다."
 
-#: internal/lightui/sysmon.go:937
+#: internal/lightui/sysmon.go:939
 msgid "Paused %s."
 msgstr "일시중지된 %s."
 
-#: internal/lightui/sysmon.go:939
+#: internal/lightui/sysmon.go:941
 msgid "Resumed %s."
 msgstr "%s가 재개되었습니다."
 
-#: internal/lightui/sysmon.go:943
+#: internal/lightui/sysmon.go:945
 msgid "Asked %s and its %d child to quit."
 msgid_plural "Asked %s and its %d children to quit."
 msgstr[0] "%[1]s와 그 %[2]d 자식에게 종료를 요청했습니다."
 
-#: internal/lightui/sysmon.go:946
+#: internal/lightui/sysmon.go:948
 msgid "Asked %d processes named %s to quit."
 msgstr "%[2]s라는 이름의 %[1]d 프로세스를 종료하도록 요청했습니다."
 
-#: internal/lightui/sysmon.go:964
+#: internal/lightui/sysmon.go:966
 msgid "COMPUTER"
 msgstr "컴퓨터"
 
-#: internal/lightui/sysmon.go:965
-#: internal/lightui/sysmon.go:977
+#: internal/lightui/sysmon.go:967
+#: internal/lightui/sysmon.go:979
 #: internal/shell/cardterm.go:113
 #: internal/ui/settings_ai.go:497
 msgid "Model"
 msgstr "모델"
 
-#: internal/lightui/sysmon.go:968
+#: internal/lightui/sysmon.go:970
 #: internal/shell/cardterm.go:136
 msgid "Kernel"
 msgstr "커널"
 
-#: internal/lightui/sysmon.go:971
+#: internal/lightui/sysmon.go:973
 msgid "%s · since %s"
 msgstr "%[1]s · %[2]s 이후"
 
-#: internal/lightui/sysmon.go:973
+#: internal/lightui/sysmon.go:975
 msgid "Up"
 msgstr "업"
 
-#: internal/lightui/sysmon.go:976
+#: internal/lightui/sysmon.go:978
 msgid "PROCESSOR"
 msgstr "프로세서"
 
-#: internal/lightui/sysmon.go:978
+#: internal/lightui/sysmon.go:980
 msgid "Cores"
 msgstr "코어"
 
-#: internal/lightui/sysmon.go:978
+#: internal/lightui/sysmon.go:980
 msgid "%s, %s"
 msgstr "%[1]s, %[2]s"
 
-#: internal/lightui/sysmon.go:978
+#: internal/lightui/sysmon.go:980
 msgid "%d core"
 msgid_plural "%d cores"
 msgstr[0] "%d 코어"
 
-#: internal/lightui/sysmon.go:978
+#: internal/lightui/sysmon.go:980
 msgid "%d thread"
 msgid_plural "%d threads"
 msgstr[0] "%d 스레드"
 
-#: internal/lightui/sysmon.go:981
+#: internal/lightui/sysmon.go:983
 msgid "up to %s"
 msgstr "%s까지"
 
-#: internal/lightui/sysmon.go:984
+#: internal/lightui/sysmon.go:986
 msgid "now %s"
 msgstr "이제 %s"
 
-#: internal/lightui/sysmon.go:987
+#: internal/lightui/sysmon.go:989
 msgid "Speed"
 msgstr "속도"
 
-#: internal/lightui/sysmon.go:992
+#: internal/lightui/sysmon.go:994
 #: internal/lightui/workshop_manager.go:50
 msgid "Installed"
 msgstr "설치됨"
 
-#: internal/lightui/sysmon.go:993
+#: internal/lightui/sysmon.go:995
 #: internal/ui/voice_models.go:152
 msgid "In use"
 msgstr "사용 중"
 
-#: internal/lightui/sysmon.go:994
+#: internal/lightui/sysmon.go:996
 msgid "Cache"
 msgstr "캐시"
 
-#: internal/lightui/sysmon.go:994
+#: internal/lightui/sysmon.go:996
 msgid "%s · given back when needed"
 msgstr "%s · 필요할 때 돌려받음"
 
-#: internal/lightui/sysmon.go:997
+#: internal/lightui/sysmon.go:999
 msgid "Swap"
 msgstr "스왑"
 
-#: internal/lightui/sysmon.go:997
-#: internal/lightui/sysmon.go:1009
-#: internal/lightui/sysmon.go:1023
+#: internal/lightui/sysmon.go:999
+#: internal/lightui/sysmon.go:1011
+#: internal/lightui/sysmon.go:1025
 msgid "%s of %s"
 msgstr "%[2]s의 %[1]s"
 
-#: internal/lightui/sysmon.go:1001
+#: internal/lightui/sysmon.go:1003
 msgid "GRAPHICS"
 msgstr "그래픽"
 
-#: internal/lightui/sysmon.go:1003
+#: internal/lightui/sysmon.go:1005
 #: internal/ui/voice_page.go:200
 msgid "Card"
 msgstr "카드"
 
-#: internal/lightui/sysmon.go:1004
+#: internal/lightui/sysmon.go:1006
 msgid "Driver"
 msgstr "드라이버"
 
-#: internal/lightui/sysmon.go:1006
+#: internal/lightui/sysmon.go:1008
 msgid "Busy"
 msgstr "바쁜"
 
-#: internal/lightui/sysmon.go:1009
+#: internal/lightui/sysmon.go:1011
 msgid "Video memory"
 msgstr "비디오 메모리"
 
-#: internal/lightui/sysmon.go:1015
+#: internal/lightui/sysmon.go:1017
 msgid "STORAGE"
 msgstr "저장"
 
-#: internal/lightui/sysmon.go:1039
+#: internal/lightui/sysmon.go:1041
 msgid "wired"
 msgstr "유선"
 
-#: internal/lightui/sysmon.go:1041
+#: internal/lightui/sysmon.go:1043
 #: ui/control.ui:273
 #: ui/settings.ui:5171
 #: ui/settings.ui:5247
 msgid "Wi-Fi"
 msgstr "Wi-Fi"
 
-#: internal/lightui/sysmon.go:1043
+#: internal/lightui/sysmon.go:1045
 msgid "down"
 msgstr "아래로"
 
-#: internal/lightui/sysmon.go:1045
+#: internal/lightui/sysmon.go:1047
 msgid "up"
 msgstr "위로"
 
-#: internal/lightui/sysmon.go:1049
-#: internal/lightui/tailscale.go:633
+#: internal/lightui/sysmon.go:1051
+#: internal/lightui/tailscale.go:634
 msgid "Addresses"
 msgstr "주소"
 
-#: internal/lightui/sysmon.go:1052
+#: internal/lightui/sysmon.go:1054
 msgid "Hardware"
 msgstr "하드웨어"
 
-#: internal/lightui/sysmon.go:1055
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:570
+#: internal/lightui/sysmon.go:1057
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:571
 msgid "Traffic"
 msgstr "교통"
 
-#: internal/lightui/sysmon.go:1055
+#: internal/lightui/sysmon.go:1057
 msgid "received %s · sent %s"
 msgstr "%[1]s 수신 · %[2]s 전송"
 
-#: internal/lightui/sysmon.go:1061
+#: internal/lightui/sysmon.go:1063
 msgid "SENSORS"
 msgstr "센서"
 
-#: internal/lightui/sysmon.go:1080
+#: internal/lightui/sysmon.go:1082
 msgid "Charging"
 msgstr "충전 중"
 
-#: internal/lightui/sysmon.go:1080
+#: internal/lightui/sysmon.go:1082
 msgid "Discharging"
 msgstr "방전"
 
-#: internal/lightui/sysmon.go:1080
+#: internal/lightui/sysmon.go:1082
 msgid "Full"
 msgstr "전체"
 
-#: internal/lightui/sysmon.go:1081
+#: internal/lightui/sysmon.go:1083
 msgid "Not charging"
 msgstr "충전되지 않음"
 
-#: internal/lightui/sysmon.go:1088
+#: internal/lightui/sysmon.go:1090
 msgid "%.1f s"
 msgstr "%.1fs"
 
@@ -10218,174 +10218,174 @@ msgstr "%s 온."
 msgid "%s off."
 msgstr "%s 오프."
 
-#: internal/lightui/tailscale.go:304
+#: internal/lightui/tailscale.go:305
 msgid "Not changed: allow this app to manage Tailscale first."
 msgstr "변경되지 않음: 이 앱이 먼저 Tailscale을 관리하도록 허용합니다."
 
-#: internal/lightui/tailscale.go:306
+#: internal/lightui/tailscale.go:307
 msgid "Tailscale is not running."
 msgstr "Tailscale이 실행되고 있지 않습니다."
 
-#: internal/lightui/tailscale.go:348
+#: internal/lightui/tailscale.go:349
 #: internal/shell/status.go:99
 #: internal/shell/status.go:116
 #: internal/shell/status.go:131
 msgid "Unavailable"
 msgstr "사용 불가"
 
-#: internal/lightui/tailscale.go:359
+#: internal/lightui/tailscale.go:360
 msgid "%d of %d devices online"
 msgstr "%[2]d 장치의 %[1]d 온라인"
 
-#: internal/lightui/tailscale.go:372
+#: internal/lightui/tailscale.go:373
 msgid "Tailscale's service is not running."
 msgstr "Tailscale의 서비스가 실행되고 있지 않습니다."
 
-#: internal/lightui/tailscale.go:372
+#: internal/lightui/tailscale.go:373
 msgid "Start…"
 msgstr "시작..."
 
-#: internal/lightui/tailscale.go:373
+#: internal/lightui/tailscale.go:374
 msgid "Started Tailscale."
 msgstr "Tailscale을 시작했습니다."
 
-#: internal/lightui/tailscale.go:377
+#: internal/lightui/tailscale.go:378
 msgid "This device is logged out of its tailnet."
 msgstr "이 장치는 테일넷에서 로그아웃되었습니다."
 
-#: internal/lightui/tailscale.go:377
+#: internal/lightui/tailscale.go:378
 msgid "Log In"
 msgstr "로그인"
 
-#: internal/lightui/tailscale.go:380
+#: internal/lightui/tailscale.go:381
 msgid "An admin of the tailnet has to approve this device."
 msgstr "테일넷의 관리자가 이 장치를 승인해야 합니다."
 
-#: internal/lightui/tailscale.go:380
-#: internal/lightui/tailscale.go:667
+#: internal/lightui/tailscale.go:381
+#: internal/lightui/tailscale.go:668
 msgid "Admin Console"
 msgstr "관리 콘솔"
 
-#: internal/lightui/tailscale.go:383
+#: internal/lightui/tailscale.go:384
 msgid "To change Tailscale from here, allow it once; it asks for an administrator's password."
 msgstr "여기에서 Tailscale을 변경하려면 한 번 허용하십시오. 관리자의 비밀번호를 묻습니다."
 
-#: internal/lightui/tailscale.go:383
+#: internal/lightui/tailscale.go:384
 msgid "Allow…"
 msgstr "허용..."
 
-#: internal/lightui/tailscale.go:385
+#: internal/lightui/tailscale.go:386
 msgid "This app may now manage Tailscale."
 msgstr "이제 이 앱은 Tailscale을 관리할 수 있습니다."
 
-#: internal/lightui/tailscale.go:417
+#: internal/lightui/tailscale.go:418
 msgid "No device matches."
 msgstr "일치하는 장치가 없습니다."
 
-#: internal/lightui/tailscale.go:419
+#: internal/lightui/tailscale.go:420
 msgid "No other devices in the tailnet yet."
 msgstr "테일넷에는 아직 다른 장치가 없습니다."
 
-#: internal/lightui/tailscale.go:436
+#: internal/lightui/tailscale.go:437
 msgid "exit node in use"
 msgstr "사용 중인 출구 노드"
 
-#: internal/lightui/tailscale.go:438
+#: internal/lightui/tailscale.go:439
 msgid "exit node"
 msgstr "출구 노드"
 
-#: internal/lightui/tailscale.go:448
+#: internal/lightui/tailscale.go:449
 msgid "Details, ping, exit node and sending files"
 msgstr "세부사항, 핑, 종료 노드 및 파일 전송"
 
-#: internal/lightui/tailscale.go:508
+#: internal/lightui/tailscale.go:509
 msgid "Copy IP"
 msgstr "IP 복사"
 
-#: internal/lightui/tailscale.go:508
+#: internal/lightui/tailscale.go:509
 msgid "Copy Name"
 msgstr "이름 복사"
 
-#: internal/lightui/tailscale.go:508
+#: internal/lightui/tailscale.go:509
 #: ui/connect.ui:622
 msgid "Ping"
 msgstr "Ping"
 
-#: internal/lightui/tailscale.go:516
-#: internal/lightui/tailscale.go:578
+#: internal/lightui/tailscale.go:517
+#: internal/lightui/tailscale.go:579
 msgid "Use as Exit Node"
 msgstr "출구 노드로 사용"
 
-#: internal/lightui/tailscale.go:525
+#: internal/lightui/tailscale.go:526
 msgid "DEVICE"
 msgstr "장치"
 
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:564
-#: internal/lightui/tailscale.go:632
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:565
+#: internal/lightui/tailscale.go:633
 msgid "MagicDNS"
 msgstr "MagicDNS"
 
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:565
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:566
 msgid "IPv4"
 msgstr "IPv4"
 
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:566
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:567
 msgid "IPv6"
 msgstr "IPv6"
 
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:568
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:569
 msgid "Status"
 msgstr "상태"
 
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:569
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:570
 #: internal/term/web/strings.go:32
 msgid "Connection"
 msgstr "연결"
 
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:571
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:572
 msgid "Key expires"
 msgstr "키 만료"
 
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:572
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:573
 msgid "Tags"
 msgstr "태그"
 
-#: internal/lightui/tailscale.go:529
+#: internal/lightui/tailscale.go:530
 msgid "SEND FILES"
 msgstr "파일 보내기"
 
-#: internal/lightui/tailscale.go:545
+#: internal/lightui/tailscale.go:546
 msgid "NO LONGER IN THE TAILNET"
 msgstr "더 이상 테일넷에 있지 않습니다."
 
-#: internal/lightui/tailscale.go:567
+#: internal/lightui/tailscale.go:568
 msgid "%s · host name %s"
 msgstr "%[1]s · 호스트 이름 %[2]s"
 
-#: internal/lightui/tailscale.go:573
+#: internal/lightui/tailscale.go:574
 msgid "Drop files on this panel to send them to %s with Taildrop. They wait on it until saved."
 msgstr "Taildrop을 사용하여 파일을 %s로 보내려면 이 패널에 파일을 놓습니다. 그들은 구원받을 때까지 기다립니다."
 
-#: internal/lightui/tailscale.go:576
+#: internal/lightui/tailscale.go:577
 msgid "Stop Using as Exit Node"
 msgstr "종료 노드로 사용 중지"
 
-#: internal/lightui/tailscale.go:585
+#: internal/lightui/tailscale.go:586
 msgid "SEND THIS DEVICE'S TRAFFIC THROUGH"
 msgstr "이 장치의 트래픽을 다음을 통해 보냅니다."
 
-#: internal/lightui/tailscale.go:595
+#: internal/lightui/tailscale.go:596
 msgid "IN USE"
 msgstr "사용 중"
 
-#: internal/lightui/tailscale.go:602
+#: internal/lightui/tailscale.go:603
 #: internal/termui/prefs.go:347
 #: internal/ui/settings_ai.go:272
 #: internal/ui/settings_keyring.go:572
@@ -10394,168 +10394,168 @@ msgstr "사용 중"
 msgid "None"
 msgstr "없음"
 
-#: internal/lightui/tailscale.go:602
+#: internal/lightui/tailscale.go:603
 msgid "Traffic goes out from this device as usual."
 msgstr "평소와 같이 이 장치에서 트래픽이 발생합니다."
 
-#: internal/lightui/tailscale.go:610
+#: internal/lightui/tailscale.go:611
 msgid "No device in the tailnet offers to be an exit node. Turn on Offer as Exit Node on one, then approve it in the admin console."
 msgstr "테일넷의 어떤 장치도 출구 노드가 될 수 없습니다. 하나의 종료 노드로 제공을 켠 다음 관리 콘솔에서 승인하세요."
 
-#: internal/lightui/tailscale.go:617
+#: internal/lightui/tailscale.go:618
 msgid "Allow local network access"
 msgstr "로컬 네트워크 액세스 허용"
 
-#: internal/lightui/tailscale.go:618
+#: internal/lightui/tailscale.go:619
 msgid "Reach printers and other devices on this network while the exit node carries the rest."
 msgstr "출구 노드가 나머지를 전달하는 동안 이 네트워크의 프린터 및 기타 장치에 도달합니다."
 
-#: internal/lightui/tailscale.go:629
+#: internal/lightui/tailscale.go:630
 #: ui/tailscale.ui:170
 msgid "THIS DEVICE"
 msgstr "이 장치는"
 
-#: internal/lightui/tailscale.go:636
+#: internal/lightui/tailscale.go:637
 msgid "Tailnet"
 msgstr "Tailscale 네트워크"
 
-#: internal/lightui/tailscale.go:638
+#: internal/lightui/tailscale.go:639
 msgid "SETTINGS"
 msgstr "설정"
 
-#: internal/lightui/tailscale.go:647
+#: internal/lightui/tailscale.go:648
 msgid "RECEIVED FILES"
 msgstr "수신된 파일"
 
-#: internal/lightui/tailscale.go:650
+#: internal/lightui/tailscale.go:651
 msgid "Files sent to this device show here once this app may manage Tailscale."
 msgstr "이 앱이 Tailscale을 관리할 수 있게 되면 이 장치로 전송된 파일이 여기에 표시됩니다."
 
-#: internal/lightui/tailscale.go:654
+#: internal/lightui/tailscale.go:655
 msgid "None waiting. Files other devices send with Taildrop show here."
 msgstr "기다리는 사람은 없습니다. Taildrop을 사용하여 다른 장치에서 보내는 파일이 여기에 표시됩니다."
 
-#: internal/lightui/tailscale.go:659
+#: internal/lightui/tailscale.go:660
 msgid "Save to Downloads"
 msgstr "다운로드에 저장"
 
-#: internal/lightui/tailscale.go:662
+#: internal/lightui/tailscale.go:663
 msgid "ACCOUNT"
 msgstr "계정"
 
-#: internal/lightui/tailscale.go:663
+#: internal/lightui/tailscale.go:664
 #: internal/shell/commands.go:31
 msgid "Log Out"
 msgstr "로그아웃"
 
-#: internal/lightui/tailscale.go:665
+#: internal/lightui/tailscale.go:666
 msgid "Sure?"
 msgstr "확인할까요?"
 
-#: internal/lightui/tailscale.go:750
+#: internal/lightui/tailscale.go:751
 msgid "No exit node: traffic goes out from this device."
 msgstr "출구 노드 없음: 트래픽이 이 장치에서 나갑니다."
 
-#: internal/lightui/tailscale.go:752
-#: internal/lightui/tailscale.go:763
+#: internal/lightui/tailscale.go:753
+#: internal/lightui/tailscale.go:764
 msgid "Traffic now goes through %s."
 msgstr "이제 트래픽은 %s를 통과합니다."
 
-#: internal/lightui/tailscale.go:761
+#: internal/lightui/tailscale.go:762
 msgid "Stopped using %s as exit node."
 msgstr "%s를 종료 노드로 사용하는 것이 중지되었습니다."
 
-#: internal/lightui/tailscale.go:783
+#: internal/lightui/tailscale.go:784
 msgid "Logged out."
 msgstr "로그아웃되었습니다."
 
-#: internal/lightui/tailscale.go:806
+#: internal/lightui/tailscale.go:807
 msgid "Pinging %s…"
 msgstr "%s를 핑하는..."
 
-#: internal/lightui/tailscale.go:820
+#: internal/lightui/tailscale.go:821
 msgid "%s did not answer"
 msgstr "%s가 응답하지 않았습니다."
 
-#: internal/lightui/tailscale.go:823
+#: internal/lightui/tailscale.go:824
 msgid "%s answered in %.0f ms"
 msgstr "%[1]s가 %.0[2]f ms에 응답했습니다."
 
-#: internal/lightui/tailscale.go:824
+#: internal/lightui/tailscale.go:825
 msgid "Direct, %s"
 msgstr "다이렉트, %s"
 
-#: internal/lightui/tailscale.go:826
+#: internal/lightui/tailscale.go:827
 msgid "Relayed through %s"
 msgstr "%s를 통해 중계됨"
 
-#: internal/lightui/tailscale.go:842
+#: internal/lightui/tailscale.go:843
 msgid "Sending %s to %s…"
 msgstr "%[1]s를 %[2]s로 보내는 중..."
 
-#: internal/lightui/tailscale.go:867
+#: internal/lightui/tailscale.go:868
 msgid "Sent %s to %s."
 msgstr "%[1]s를 %[2]s로 전송했습니다."
 
-#: internal/lightui/tailscale.go:904
+#: internal/lightui/tailscale.go:905
 msgid "Saved %s to %s."
 msgstr "%[1]s를 %[2]s에 저장했습니다."
 
-#: internal/lightui/tailscale.go:915
+#: internal/lightui/tailscale.go:916
 msgid "Opening the login page…"
 msgstr "로그인 페이지를 여는 중..."
 
-#: internal/lightui/tailscale.go:942
+#: internal/lightui/tailscale.go:943
 msgid "No password prompt is running in this session (a polkit agent); run in a terminal: sudo %s"
 msgstr "이 세션에서는 비밀번호 프롬프트가 실행되지 않습니다(polkit 에이전트). 터미널에서 실행: sudo %s"
 
-#: internal/lightui/tailscale.go:944
+#: internal/lightui/tailscale.go:945
 msgid "not done: no administrator's password was given"
 msgstr "완료되지 않음: 관리자 비밀번호가 제공되지 않았습니다."
 
-#: internal/lightui/video.go:306
+#: internal/lightui/video.go:307
 msgid "Resumed at %s"
 msgstr "%s부터 이어서 재생"
 
-#: internal/lightui/video.go:395
+#: internal/lightui/video.go:396
 msgid "Playing a video"
 msgstr "비디오 재생 중"
 
-#: internal/lightui/video.go:418
+#: internal/lightui/video.go:419
 msgid "Cannot play it: %s"
 msgstr "재생할 수 없습니다: %s"
 
-#: internal/lightui/video.go:576
+#: internal/lightui/video.go:577
 msgid "Speed %s×"
 msgstr "속도 %s×"
 
-#: internal/lightui/video.go:685
+#: internal/lightui/video.go:686
 msgid "Open a video"
 msgstr "비디오 열기"
 
-#: internal/lightui/video.go:693
+#: internal/lightui/video.go:694
 msgid "Videos"
 msgstr "비디오"
 
-#: internal/lightui/weather.go:256
+#: internal/lightui/weather.go:258
 msgid "Add a city to see its weather."
 msgstr "날씨를 보려면 도시를 추가하세요."
 
-#: internal/lightui/weather.go:256
+#: internal/lightui/weather.go:258
 #: ui/clock.ui:122
 #: ui/weather.ui:95
 msgid "Add a city"
 msgstr "도시 추가"
 
-#: internal/lightui/weather.go:262
+#: internal/lightui/weather.go:264
 msgid "Reading the weather…"
 msgstr "날씨를 읽는 중..."
 
-#: internal/lightui/weather.go:274
+#: internal/lightui/weather.go:276
 msgid "The weather could not be read.\n%s"
 msgstr "날씨를 읽을 수 없습니다.\n%s"
 
-#: internal/lightui/weather.go:274
+#: internal/lightui/weather.go:276
 #: internal/mailui/panel.go:307
 #: internal/ui/passwords.go:534
 #: ui/mail-compose.ui:456
@@ -10563,43 +10563,43 @@ msgstr "날씨를 읽을 수 없습니다.\n%s"
 msgid "Try again"
 msgstr "다시 시도해 보세요"
 
-#: internal/lightui/weather.go:323
+#: internal/lightui/weather.go:325
 msgid "H %s   L %s"
 msgstr "H %[1]s L %[2]s"
 
-#: internal/lightui/weather.go:332
+#: internal/lightui/weather.go:334
 msgid "NOW"
 msgstr "지금"
 
-#: internal/lightui/weather.go:395
+#: internal/lightui/weather.go:397
 msgid "FEELS LIKE"
 msgstr "체감 온도"
 
-#: internal/lightui/weather.go:396
+#: internal/lightui/weather.go:398
 msgid "HUMIDITY"
 msgstr "습도"
 
-#: internal/lightui/weather.go:397
+#: internal/lightui/weather.go:399
 msgid "WIND"
 msgstr "바람"
 
-#: internal/lightui/weather.go:398
+#: internal/lightui/weather.go:400
 msgid "RAIN"
 msgstr "비"
 
-#: internal/lightui/weather.go:403
+#: internal/lightui/weather.go:405
 msgid "SUNRISE"
 msgstr "일출"
 
-#: internal/lightui/weather.go:404
+#: internal/lightui/weather.go:406
 msgid "SUNSET"
 msgstr "일몰"
 
-#: internal/lightui/weather.go:426
+#: internal/lightui/weather.go:428
 msgid "UPDATED %s · OPEN-METEO"
 msgstr "업데이트된 %s · OPEN-METEO"
 
-#: internal/lightui/weather.go:471
+#: internal/lightui/weather.go:473
 msgid "No place by that name"
 msgstr "그 이름의 장소는 없습니다"
 
@@ -10608,35 +10608,35 @@ msgstr "그 이름의 장소는 없습니다"
 msgid "Workshop"
 msgstr "워크숍"
 
-#: internal/lightui/workshop.go:209
+#: internal/lightui/workshop.go:210
 msgid "Starting %s…"
 msgstr "%s 시작 중…"
 
-#: internal/lightui/workshop.go:222
+#: internal/lightui/workshop.go:223
 msgid "%s could not start"
 msgstr "%s을(를) 시작할 수 없습니다"
 
-#: internal/lightui/workshop.go:233
+#: internal/lightui/workshop.go:234
 msgid "It ended without an error."
 msgstr "오류 없이 끝났습니다."
 
-#: internal/lightui/workshop.go:237
+#: internal/lightui/workshop.go:238
 msgid "%s stopped"
 msgstr "%s이(가) 멈췄습니다"
 
-#: internal/lightui/workshop.go:288
+#: internal/lightui/workshop.go:289
 msgid "Start again"
 msgstr "다시 시작"
 
-#: internal/lightui/workshop.go:294
+#: internal/lightui/workshop.go:295
 msgid "It starts again by itself when a file of it changes."
 msgstr "파일이 바뀌면 저절로 다시 시작합니다."
 
-#: internal/lightui/workshop.go:689
+#: internal/lightui/workshop.go:690
 msgid "Unknown building block %q"
 msgstr "알 수 없는 블록 %q"
 
-#: internal/lightui/workshop.go:987
+#: internal/lightui/workshop.go:988
 #: internal/term/web/strings.go:81
 #: internal/ui/askpass.go:300
 #: internal/ui/settings_card.go:624
@@ -14614,11 +14614,11 @@ msgstr "스크린샷을 위해 숨겨집니다."
 msgid "The passphrases do not match."
 msgstr "암호 문구가 일치하지 않습니다."
 
-#: internal/ui/bar.go:473
+#: internal/ui/bar.go:475
 msgid "Workspace %s"
 msgstr "작업공간 %s"
 
-#: internal/ui/bar.go:486
+#: internal/ui/bar.go:488
 msgid "WORKSPACE"
 msgstr "작업 공간"
 

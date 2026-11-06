@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"codeberg.org/puregotk/puregotk/v4/gdk"
+	"codeberg.org/puregotk/puregotk/v4/gio"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"codeberg.org/puregotk/puregotk/v4/pango"
@@ -225,6 +226,7 @@ func (a *sysmonApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 		return false
 	}
 	glib.TimeoutAdd(250, &a.onFirst, 0)
+	menuWindow(c, win, []appui.MenuGroup{{Title: "View", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{{Name: "sysmon-processes", Label: "Processes", Activate: func(gio.SimpleAction, uintptr) { a.pages.SetVisibleChildName("processes") }}, {Name: "sysmon-system", Label: "System", Activate: func(gio.SimpleAction, uintptr) { a.pages.SetVisibleChildName("system") }}}}}}})
 	return win
 }
 

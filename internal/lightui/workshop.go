@@ -193,6 +193,7 @@ func (a *workshopApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 		})
 	}
 	a.start()
+	menuWindow(c, a.win, []appui.MenuGroup{{Title: "View", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{{Name: "workshop-restart", Label: "Restart", Activate: func(gio.SimpleAction, uintptr) { a.start() }}}}}}})
 	return a.win
 }
 

@@ -314,6 +314,7 @@ func (a *musicApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	})
 	a.publish()
 	glib.TimeoutAdd(250, &a.onTick, 0)
+	menuWindow(c, a.win, []appui.MenuGroup{{Title: "File", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{{Name: "music-open", Label: "Open files", Activate: func(gio.SimpleAction, uintptr) { a.choose("open") }}, {Name: "music-add", Label: "Add files", Activate: func(gio.SimpleAction, uintptr) { a.choose("add") }}, {Name: "music-load", Label: "Load a playlist", Activate: func(gio.SimpleAction, uintptr) { a.choose("load") }}, {Name: "music-save", Label: "Save the playlist", Activate: func(gio.SimpleAction, uintptr) { a.choose("save") }}, {Name: "music-play-pause", Label: "Play or pause", Activate: func(gio.SimpleAction, uintptr) { a.playPause() }}, {Name: "music-next", Label: "Next track", Activate: func(gio.SimpleAction, uintptr) { a.skip(true) }}}}}}})
 	return a.win
 }
 

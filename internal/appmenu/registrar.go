@@ -75,7 +75,41 @@ type Entry struct {
 	// only when asked (AboutToShow), so Children can be empty until then.
 	Submenu  bool
 	Children []Entry
+	// Action says how to invoke the entry: through the application's
+	// accessibility tree, or its dbusmenu.
+	Action Action
+	// PID is the process whose accessibility tree the entry came from,
+	// kept so a section can be found again on that tree after an open and
+	// close has replaced its nodes.
+	PID int
+	// Open is the menus that must be open for Action to work, outermost
+	// first: a section an accessibility application builds only while it
+	// is open answers with items that act while it opens, not after it
+	// closes. Opening them again and pressing the item by label is how such
+	// an item is invoked.
+	Open []OpenStep
 }
+
+// OpenStep is one menu to open before an entry can be pressed: the label
+// that finds it in the level above, and the action that opens it (the
+// first step's action is used as read; later ones are found by label).
+type OpenStep struct {
+	Label  string
+	Action Action
+}
+
+// Action says how to invoke an entry.
+type Action struct {
+	Kind  string          // ActionA11y or ActionDbusmenu; empty when the entry only groups children
+	Bus   string          // the connection that owns the menu
+	Path  dbus.ObjectPath // the menu or accessible object
+	Index int32           // an action index (AT-SPI) or an item id (dbusmenu)
+}
+
+const (
+	ActionA11y     = "atspi"
+	ActionDbusmenu = "dbusmenu"
+)
 
 // registered is a registration, when it was made among the others, and the
 // items of its menu's first level as Menu last read them.
