@@ -35,6 +35,9 @@ workspaces = "monitor"
 # Show the focused application's icon and label.
 title = true
 
+# Show the focused application's menu in the bar, when it publishes one.
+menu = true
+
 # The label beside the icon: "app" for the application's name, "window"
 # for the focused window's title.
 title_mode = "app"

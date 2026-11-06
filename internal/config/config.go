@@ -62,6 +62,9 @@ type Bar struct {
 	// or "all".
 	Workspaces string `toml:"workspaces"`
 	Title      bool   `toml:"title"`
+	// Menu shows the focused application's menu in the bar, when the
+	// application publishes one.
+	Menu bool `toml:"menu"`
 	// TitleMode is "app" for the application's name or "window" for its
 	// focused window's title.
 	TitleMode string `toml:"title_mode"`
@@ -914,6 +917,7 @@ func Default() Config {
 			Clock:      "%a %b %-d  %H:%M",
 			Workspaces: "monitor",
 			Title:      true,
+			Menu:       true,
 			TitleMode:  "app",
 			Tray:       true,
 			Pass:       true,

@@ -30,6 +30,7 @@ type bar struct {
 	win         gtk.ApplicationWindow
 	frame       gtk.Overlay // the island, and the panel hanging from it
 	island      gtk.CenterBox
+	end         gtk.Box // the bar's right end, where the clock goes for the menu
 	workspaces  gtk.Box
 	widgetsMark gtk.Button // the widget page's place, before the workspaces
 	appIcon     gtk.Image
@@ -170,6 +171,7 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	ui.Get("bar", &b.win)
 	ui.Get("frame", &b.frame)
 	ui.Get("island", &b.island)
+	ui.Get("end", &b.end)
 	ui.Get("workspaces", &b.workspaces)
 	ui.Get("widgets", &b.widgetsMark)
 	ui.Get("app_icon", &b.appIcon)
@@ -393,6 +395,31 @@ func (b *bar) setClock(s *shellUI, now time.Time) {
 	b.clock.SetText(config.Strftime(s.cfg.Bar.Clock, now))
 }
 
+// clockAtEnd reports whether the clock is at the bar's right end.
+func (b *bar) clockAtEnd() bool {
+	if w := b.island.GetCenterWidget(); w != nil {
+		w.Unref() // GetCenterWidget takes a reference
+		return false
+	}
+	return true
+}
+
+// setClockAtEnd puts the clock at the bar's right end while the bar shows
+// the focused application's menu, and in the middle otherwise: the menu's
+// titles take the left of the bar.
+func (b *bar) setClockAtEnd(atEnd bool) {
+	if b.clockAtEnd() == atEnd {
+		return
+	}
+	if atEnd {
+		b.island.SetCenterWidget(nil)
+		gtkx.Append(&b.end, &b.clockButton.Widget)
+		return
+	}
+	b.end.Remove(&b.clockButton.Widget)
+	b.island.SetCenterWidget(&b.clockButton.Widget)
+}
+
 func (b *bar) setHypr(s *shellUI, snap compositor.Snapshot) {
 	name := b.connector()
 	activeWorkspace := snap.ActiveWorkspace(name)
@@ -431,7 +458,11 @@ func (b *bar) setHypr(s *shellUI, snap compositor.Snapshot) {
 	order := s.overview.st
 	order.MRU = s.cfg.Overview.MRU
 	b.setWorkspaces(s, order.BarWorkspaces(snap, name, s.cfg.Bar.Workspaces == "all"))
-	s.syncAppMenu(b)
+	if s.cfg.Bar.Menu {
+		s.syncAppMenu(b)
+	} else {
+		s.clearAppMenu(b)
+	}
 }
 
 // scrollWorkspaces goes n notches' way (down the next, up the previous)

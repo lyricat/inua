@@ -259,6 +259,7 @@ func (s *shellUI) applyConfig(c config.Config) {
 		b.clipboard.SetVisible(c.Clipboard.Enable && c.Clipboard.Bar)
 		b.passwords.SetVisible(c.Bar.Pass && s.passwords.hasStore)
 		b.widgetsMark.SetVisible(c.Widgets.Enable)
+		b.setClockAtEnd(c.Bar.Menu)
 		b.setHypr(s, s.snap)
 		s.syncWallpaper(b)
 	}
