@@ -8,7 +8,7 @@ import (
 
 // narrowSettingsWidth is where the settings window stops fitting two
 // columns comfortably: below it the index is an icon rail.
-const narrowSettingsWidth = 760
+const narrowSettingsWidth = 900
 
 // watchSettingsWidth follows the settings window's width so that a small
 // screen keeps the page's controls in view. It also takes a window wider
@@ -37,17 +37,26 @@ func (s *shellUI) watchSettingsSurface() {
 	if sf == nil {
 		return
 	}
+	available := int32(0)
 	if mon := gdk.DisplayGetDefault().GetMonitorAtSurface(sf); mon != nil {
 		var g gdk.Rectangle
 		mon.GetGeometry(&g)
+		available = g.Width - 16
 		var width, height int32
 		st.win.GetDefaultSize(&width, &height)
-		if g.Width > 32 && width > g.Width-16 {
-			st.win.SetDefaultSize(g.Width-16, min(height, g.Height-16))
+		if g.Width > 32 && width > available {
+			st.win.SetDefaultSize(available, min(height, g.Height-16))
 		}
 	}
 	sf.ConnectLayout(&st.onSettingsLayout)
-	s.setSettingsNarrow(st.win.GetWidth() < narrowSettingsWidth)
+	width := st.win.GetWidth()
+	if width == 0 {
+		width = available
+	}
+	// The window's own width is the truth once laid out; the monitor's
+	// decides before the first frame, so a small screen starts collapsed
+	// instead of after the window has already opened too wide.
+	s.setSettingsNarrow(int(width) < narrowSettingsWidth)
 }
 
 // setSettingsNarrow turns the index into an icon rail while the window is

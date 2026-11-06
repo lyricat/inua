@@ -1100,7 +1100,8 @@ window.settings { background: @app; font-size: 14px; }
    its labels and controls need. */
 .settings.narrow .index list { padding: 0 6px; }
 .settings.narrow .index row { padding: 0 6px; }
-.settings.narrow .page { padding: 14px 18px 24px; }
+.settings.narrow .page { padding: 12px 12px 20px; }
+.settings.narrow .row { padding: 10px 0; }
 .settings.narrow .section-head.sticky { margin: 0 18px; }
 
 .settings .section { margin-bottom: 22px; }
