@@ -37,3 +37,14 @@ notes:
 Owner requested: factory: move github issue #69 #71 #72 to review
 
 Returned PR #69 from ready to review. Current PR head: 059d35b759414f3012735cacacc6e674abbea13d; the previous review covered 81b1cbf357418b0ac18d0cea82cca04d37811133, not this head. Preserve the existing branch and review history. No new review or merge performed.
+
+## factory · review · 2026-11-06 23:02
+head: 44431c881c8cb1f418171531d42b49303e261071
+verdict: pass
+notes:
+- [P2] internal/ui/bar.go:417: Focusing Settings in default app mode displays `io.github.lyricat.Inua` and a generic icon, even after desktop-entry loading, because Settings has no matching desktop entry. An isolated GTK check reproduced it. Handle shell.AppID with the built-in Settings entry, translated name and icon, as the Dock does.
+- Codex reviewed all 21 changed files against origin/master...HEAD. No P0/P1 findings; moved to ready under factory policy. The P2 remains for owner consideration.
+- The previous asynchronous-index refresh P2 is fixed: dockApps changes the label to Terminal without another window event. Window-title mode, combined title/icon visibility and existing per-monitor selection were checked.
+- Merged origin/master into fork PR head 059d35b, resolved catalog conflicts preserving both sides, and pushed merge 44431c8 to this repository's feat/bar-app-label-upstream branch. The fork PR itself is unchanged; use the board branch for shipping.
+- `make test` passed with temporary HOME and isolated runtime/network: 18 Python tests, go vet, 112 Go packages with race tests, uncached. 53 skip records cover missing terminal-engine dependencies, environmental conditions and helper cases. Generated layouts, translations and formatting checked.
+- No installs. UI was not checked by eye; real multi-monitor sessions were not exercised. Initial merge-validation AppArmor sandbox query failure was resolved by isolating the mount before a successful rerun.
