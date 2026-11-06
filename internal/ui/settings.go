@@ -74,6 +74,8 @@ type settings struct {
 	bgImage, bgColor, clock, terminal, lock, screenshot                     gtk.Entry
 	clipSensitive                                                           gtk.Entry
 	bgFit, ws, overviewScope, launchMode, swap, caps, icons, appIcons       gtk.DropDown
+	clockLanguage                                                           gtk.DropDown
+	clockLanguageNames                                                      []string
 	banner                                                                  gtk.DropDown
 	titleMode                                                               gtk.DropDown
 	clipLimit                                                               gtk.DropDown
@@ -465,6 +467,12 @@ func (s *shellUI) openSettings() {
 	ui.Get("bg_image", &st.bgImage)
 	ui.Get("bg_color", &st.bgColor)
 	ui.Get("clock", &st.clock)
+	ui.Get("clock_language", &st.clockLanguage)
+	st.clockLanguageNames = slices.Clone(config.ClockLanguages)
+	languageLabels := []string{i18n.T("Follow interface language"), "English", "简体中文", "繁體中文", "日本語", "한국어", "Español", "Français"}
+	languageList := gtk.NewStringList(languageLabels)
+	st.clockLanguage.SetModel(languageList)
+	languageList.Unref()
 	ui.Get("terminal", &st.terminal)
 	ui.Get("lock", &st.lock)
 	ui.Get("screenshot", &st.screenshot)
@@ -574,7 +582,7 @@ func (s *shellUI) openSettings() {
 		st.entries[e.GoPointer()] = e
 		gtkx.ConnectChanged(e, &s.onSettingsEntry)
 	}
-	for _, d := range []*gtk.DropDown{&st.bgFit, &st.ws, &st.overviewScope, &st.titleMode, &st.barDensity, &st.launchMode, &st.swap, &st.caps, &st.icons, &st.appIcons, &st.appTheme, &st.textScale, &st.language, &st.banner, &st.dockSize, &st.dockPosition, &st.clipLimit} {
+	for _, d := range []*gtk.DropDown{&st.bgFit, &st.ws, &st.clockLanguage, &st.overviewScope, &st.titleMode, &st.barDensity, &st.launchMode, &st.swap, &st.caps, &st.icons, &st.appIcons, &st.appTheme, &st.textScale, &st.language, &st.banner, &st.dockSize, &st.dockPosition, &st.clipLimit} {
 		st.drops[d.GoPointer()] = d
 		gtkx.ConnectNotify(d, "selected", &s.onSettingsDrop)
 	}
@@ -809,6 +817,7 @@ func (s *shellUI) showSettings() {
 	setEntry(&st.bgImage, c.Background.Image)
 	setEntry(&st.bgColor, c.Background.Color)
 	setEntry(&st.clock, c.Bar.Clock)
+	st.clockLanguage.SetSelected(uint32(max(0, slices.Index(st.clockLanguageNames, c.Bar.ClockLanguage))))
 	setEntry(&st.terminal, c.Launcher.Terminal)
 	setEntry(&st.lock, c.Control.Lock)
 	setEntry(&st.screenshot, c.Control.Screenshot)
@@ -852,7 +861,7 @@ func (s *shellUI) showSettings() {
 	s.showAboutSettings()
 	st.keyring.notify.SetActive(c.Keyring.Notify)
 	s.showKeyringSettings()
-	st.clockPreview.SetText(config.Strftime(c.Bar.Clock, time.Now()))
+	st.clockPreview.SetText(config.StrftimeIn(c.Bar.Clock, time.Now(), c.Bar.ClockLanguage))
 	for _, e := range st.entries {
 		e.RemoveCssClass("invalid")
 	}
@@ -1024,7 +1033,7 @@ func (s *shellUI) settingsEntryChanged(e *gtk.Entry) {
 	case "clock":
 		valid = strings.TrimSpace(text) != ""
 		c.Bar.Clock = text
-		st.clockPreview.SetText(config.Strftime(text, time.Now()))
+		st.clockPreview.SetText(config.StrftimeIn(text, time.Now(), c.Bar.ClockLanguage))
 	case "terminal":
 		c.Launcher.Terminal = text
 	case "lock":

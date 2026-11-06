@@ -248,6 +248,7 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	b.setStatus(&s.sys)
 	b.setHypr(s, s.snap)
 	b.setClock(s, time.Now())
+	b.setClockAtEnd(s.cfg.Bar.Menu)
 	b.tray.SetVisible(s.cfg.Bar.Tray)
 	s.renderTray(b)
 
@@ -392,7 +393,7 @@ func (b *bar) release() {
 }
 
 func (b *bar) setClock(s *shellUI, now time.Time) {
-	b.clock.SetText(config.Strftime(s.cfg.Bar.Clock, now))
+	b.clock.SetText(config.StrftimeIn(s.cfg.Bar.Clock, now, s.cfg.Bar.ClockLanguage))
 }
 
 // clockAtEnd reports whether the clock is at the bar's right end.

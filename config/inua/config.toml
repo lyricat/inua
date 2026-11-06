@@ -27,6 +27,9 @@ density = "default"
 # A '-' drops zero padding (%-d, %-H). With seconds, the clock ticks every
 # second.
 clock = "%a %b %-d  %H:%M"
+# The clock's date language: "auto" follows the interface, or English,
+# Simplified or Traditional Chinese, Japanese, Korean, Spanish or French.
+clock_language = "auto"
 
 # "monitor": each bar shows the workspaces of its own monitor.
 # "all": every bar shows every workspace.

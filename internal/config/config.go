@@ -58,6 +58,9 @@ type Bar struct {
 	Density string `toml:"density"`
 	// Clock is a strftime format (see Strftime).
 	Clock string `toml:"clock"`
+	// ClockLanguage is the clock's localized date language: "auto" follows
+	// the interface language; explicit values are ClockLanguages.
+	ClockLanguage string `toml:"clock_language"`
 	// Workspaces is "monitor" (each bar shows its monitor's workspaces)
 	// or "all".
 	Workspaces string `toml:"workspaces"`
@@ -892,6 +895,10 @@ func (d Displays) WithoutMonitor(output string) []Monitor {
 // center (its own size, centred).
 var Fits = []string{"cover", "contain", "tile", "center"}
 
+// ClockLanguages are the date languages the clock can use: the interface's
+// own, then the catalogs.
+var ClockLanguages = []string{"auto", "en", "zh_CN", "zh_TW", "ja", "ko", "es", "fr"}
+
 // IconSets are the line icons' sets: "phosphor", Phosphor's regular icons
 // (ui/icons), or "system", the system's icon theme. Sets of the user's
 // follow them (IconSetNames); an installed icon theme can be named too.
@@ -918,15 +925,16 @@ func Default() Config {
 		Language: "auto",
 		Session:  Session{Compositor: "hyprland"},
 		Bar: Bar{
-			Enable:     true,
-			Density:    "default",
-			Clock:      "%a %b %-d  %H:%M",
-			Workspaces: "monitor",
-			Title:      true,
-			Menu:       true,
-			TitleMode:  "app",
-			Tray:       true,
-			Pass:       true,
+			Enable:        true,
+			Density:       "default",
+			Clock:         "%a %b %-d  %H:%M",
+			ClockLanguage: "auto",
+			Workspaces:    "monitor",
+			Title:         true,
+			Menu:          true,
+			TitleMode:     "app",
+			Tray:          true,
+			Pass:          true,
 		},
 		Launcher: Launcher{Mode: "apps", Search: "https://www.google.com/search?q=%s", Quicklinks: slices.Clone(DefaultQuicklinks)},
 		Overview: Overview{MRU: false, PerMonitor: true, ShowDock: true, Hints: true, LauncherWorkspace: true},
@@ -1019,6 +1027,7 @@ func (c *Config) validate() []string {
 		*v = def
 	}
 	oneOf("bar.workspaces", &c.Bar.Workspaces, d.Bar.Workspaces, "monitor", "all", "none")
+	oneOf("bar.clock_language", &c.Bar.ClockLanguage, d.Bar.ClockLanguage, ClockLanguages...)
 	oneOf("bar.title_mode", &c.Bar.TitleMode, d.Bar.TitleMode, "app", "window")
 	oneOf("bar.density", &c.Bar.Density, d.Bar.Density, "default", "compact")
 	oneOf("launcher.mode", &c.Launcher.Mode, d.Launcher.Mode, "apps", "windows")

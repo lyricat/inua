@@ -15,7 +15,7 @@ import (
 func Format(c Config) string {
 	return fmt.Sprintf(template,
 		q(c.Language),
-		c.Bar.Enable, q(c.Bar.Density), q(c.Bar.Clock), q(c.Bar.Workspaces), c.Bar.Title, c.Bar.Menu, q(c.Bar.TitleMode), c.Bar.Tray, c.Bar.Pass,
+		c.Bar.Enable, q(c.Bar.Density), q(c.Bar.Clock), q(c.Bar.ClockLanguage), q(c.Bar.Workspaces), c.Bar.Title, c.Bar.Menu, q(c.Bar.TitleMode), c.Bar.Tray, c.Bar.Pass,
 		q(c.Launcher.Mode), q(c.Launcher.Terminal), q(c.Launcher.Search), quicklinks(c.Launcher.Quicklinks), c.Overview.MRU, c.Overview.PerMonitor, c.Overview.ShowDock, c.Overview.Hints, c.Overview.LauncherWorkspace,
 		q(c.Control.Lock), q(c.Control.Screenshot),
 		q(c.Screenshot.Folder), c.Screenshot.Copy, q(c.Screenshot.Recordings),
@@ -218,6 +218,9 @@ density = %s
 # A '-' drops zero padding (%%-d, %%-H). With seconds, the clock ticks every
 # second.
 clock = %s
+# The clock's date language: "auto" follows the interface, or English,
+# Simplified or Traditional Chinese, Japanese, Korean, Spanish or French.
+clock_language = %s
 
 # "monitor": each bar shows the workspaces of its own monitor.
 # "all": every bar shows every workspace.

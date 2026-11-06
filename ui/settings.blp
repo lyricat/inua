@@ -938,6 +938,36 @@ ApplicationWindow settings {
 
                       Label {
                         styles ["title"]
+                        label:  _("Date language");
+                        xalign: 0;
+                      }
+                      Label {
+                        styles ["sub"]
+                        label:  _("The clock's weekday and month names");
+                        xalign: 0;
+                        wrap: true;
+                      }
+                    }
+
+                    DropDown clock_language {
+                      name: "clock_language";
+                      valign: center;
+                    }
+                  }
+
+                  Separator {}
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+
+                      Label {
+                        styles ["title"]
                         label:  _("Workspaces");
                         xalign: 0;
                       }
