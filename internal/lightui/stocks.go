@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"codeberg.org/puregotk/puregotk/v4/gdk"
+	"codeberg.org/puregotk/puregotk/v4/gio"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
@@ -130,6 +131,7 @@ func (a *stocksApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	a.loadList()
 	a.loadShown()
 	glib.TimeoutAdd(5000, &a.onTick, 0)
+	menuWindow(c, win, []appui.MenuGroup{{Title: "View", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{{Name: "stocks-refresh", Label: "Refresh", Activate: func(gio.SimpleAction, uintptr) { a.loadList(); a.loadShown() }}, {Name: "stocks-search", Label: "Find a stock", Activate: func(gio.SimpleAction, uintptr) { a.search.GrabFocus() }}}}}}})
 	return win
 }
 
