@@ -21,6 +21,7 @@ import (
 
 	"github.com/lyricat/inua/internal/clipboard"
 	"github.com/lyricat/inua/internal/config"
+	"github.com/lyricat/inua/internal/dbusmenu"
 	"github.com/lyricat/inua/internal/desktop"
 	"github.com/lyricat/inua/internal/gtkx"
 	"github.com/lyricat/inua/internal/i18n"
@@ -36,6 +37,7 @@ type settings struct {
 	win     *gtk.ApplicationWindow // nil while closed
 	overlay *gtk.Overlay           // over the window's page, for the Benchmark dialog; made on its first use
 	refs    gtkx.Scope
+	menu    *dbusmenu.Published // the menu the bar shows while this window has the focus
 
 	status, clockPreview gtk.Label
 	pages                gtk.Stack
@@ -578,6 +580,7 @@ func (s *shellUI) openSettings() {
 	st.win.AddController(&keys.EventController)
 	st.win.ConnectCloseRequest(&s.onSettingsClose)
 
+	s.publishSettingsMenu()
 	st.win.SetApplication(s.app)
 	s.showSettings()
 	s.setStatus("", false)
@@ -645,6 +648,8 @@ func (s *shellUI) closeSettings() {
 		s.saveSettings()
 	}
 	s.releaseSearch()
+	st.menu.Close()
+	st.menu = nil
 	st.win.Destroy()
 	st.refs.Release()
 	st.win, st.swatches, st.entries, st.drops, st.sticky, st.overlay = nil, nil, nil, nil, nil, nil

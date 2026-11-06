@@ -348,9 +348,9 @@ msgid "%d%%, charging"
 msgstr "%d%%、充電中"
 
 #: internal/apps/connect/service.go:520
-#: internal/ui/settings.go:351
-#: internal/ui/settings.go:801
-#: internal/ui/settings.go:908
+#: internal/ui/settings.go:353
+#: internal/ui/settings.go:806
+#: internal/ui/settings.go:913
 #: internal/ui/settings_displays.go:460
 msgid "%d%%"
 msgstr "%d%%"
@@ -1610,7 +1610,7 @@ msgstr "ノートPCのスピーカー"
 
 #: internal/apps/pass/draft.go:152
 msgid "No password could be made: %v"
-msgstr "パスワードを作れませんでした: %v"
+msgstr ""
 
 #: internal/apps/pass/entry.go:94
 #: internal/apps/pass/otp.go:38
@@ -2086,6 +2086,7 @@ msgstr "トライ"
 #: internal/gamesui/menubar.go:36
 #: internal/mailui/menubar.go:39
 #: internal/remoteui/menubar.go:47
+#: internal/ui/settings_menu.go:25
 #: internal/viewerui/menubar.go:36
 #: internal/vmui/menubar.go:36
 msgid "File"
@@ -2112,7 +2113,7 @@ msgstr "ウィンドウを閉じる"
 #: internal/assistantui/assistantui.go:916
 #: internal/diskui/menubar.go:38
 #: internal/lightui/clock.go:404
-#: internal/termui/menubar.go:42
+#: internal/termui/menubar.go:31
 #: internal/viewerui/menubar.go:41
 #: ui/pass.ui:252
 msgid "Edit"
@@ -2128,7 +2129,8 @@ msgstr ""
 #: internal/gamesui/menubar.go:33
 #: internal/mailui/menubar.go:44
 #: internal/remoteui/menubar.go:56
-#: internal/termui/menubar.go:43
+#: internal/termui/menubar.go:32
+#: internal/ui/settings_menu.go:28
 #: internal/viewerui/menubar.go:46
 #: internal/vmui/menubar.go:48
 msgid "View"
@@ -2906,11 +2908,11 @@ msgstr "フォルダーを開く"
 
 #: internal/desktop/defaults.go:39
 #: internal/term/web/strings.go:101
-#: internal/termui/app.go:115
-#: internal/termui/app.go:151
-#: internal/termui/app.go:357
-#: internal/termui/app.go:359
-#: internal/termui/menubar.go:40
+#: internal/termui/app.go:117
+#: internal/termui/app.go:153
+#: internal/termui/app.go:360
+#: internal/termui/app.go:362
+#: internal/termui/menubar.go:29
 #: internal/termui/prefs.go:160
 #: internal/termui/quick.go:29
 #: internal/termui/quick.go:47
@@ -2951,7 +2953,7 @@ msgstr "動画ファイルを開く"
 
 #: internal/desktop/defaults.go:48
 #: internal/lightui/pass_otp.go:330
-#: internal/ui/settings.go:1070
+#: internal/ui/settings.go:1075
 msgid "Images"
 msgstr "画像"
 
@@ -3225,7 +3227,7 @@ msgstr "ホーム"
 #: internal/lightui/sysmon.go:969
 #: internal/lightui/tailscale.go:527
 #: internal/lightui/tailscale.go:568
-#: internal/ui/settings.go:598
+#: internal/ui/settings.go:601
 #: ui/vm.ui:2981
 msgid "System"
 msgstr "システム"
@@ -3651,6 +3653,7 @@ msgstr[0] "…ほか %d 件"
 #: internal/termui/sessionmenu.go:113
 #: internal/termui/wsmenu.go:129
 #: internal/ui/settings_bench.go:132
+#: internal/ui/settings_menu.go:26
 #: internal/ui/settings_wifi_details.go:62
 #: ui/mail-compose.ui:292
 #: ui/mail.ui:395
@@ -3814,7 +3817,7 @@ msgid "Terminal here"
 msgstr "ここで端末を開く"
 
 #: internal/filesui/cards.go:702
-#: internal/termui/menubar.go:44
+#: internal/termui/menubar.go:33
 #: ui/screenshot.ui:180
 #: ui/shotdrawer.ui:122
 msgid "Window"
@@ -9465,8 +9468,8 @@ msgid "Top level"
 msgstr "最上位"
 
 #: internal/lightui/pass.go:432
-#: internal/ui/settings.go:933
-#: internal/ui/settings.go:960
+#: internal/ui/settings.go:938
+#: internal/ui/settings.go:965
 msgid "%d entry"
 msgid_plural "%d entries"
 msgstr[0] "%d 件"
@@ -9711,15 +9714,15 @@ msgstr "読み取り"
 
 #: internal/lightui/pass_edit.go:311
 msgid "Blank line"
-msgstr "空行"
+msgstr ""
 
 #: internal/lightui/pass_edit.go:317
 msgid "Remove the line"
-msgstr "この行を削除"
+msgstr ""
 
 #: internal/lightui/pass_edit.go:364
 msgid "Replace the password with a new one"
-msgstr "パスワードを新しいものに置き換える"
+msgstr ""
 
 #: internal/lightui/pass_otp.go:100
 msgid "It is not an image this app reads (PNG or JPEG)."
@@ -9906,7 +9909,7 @@ msgstr "検索できませんでした: %s"
 #: internal/lightui/sysmon.go:55
 #: internal/lightui/sysmon.go:55
 #: internal/shell/launcher_actions.go:45
-#: internal/termui/menubar.go:34
+#: internal/termui/menubar.go:27
 #: internal/ui/dock.go:540
 #: internal/ui/portal_ask.go:80
 msgid "Quit"
@@ -11382,7 +11385,7 @@ msgid "Mark All Read"
 msgstr ""
 
 #: internal/mailui/menubar.go:53
-#: internal/termui/menubar.go:45
+#: internal/termui/menubar.go:34
 msgid "Help"
 msgstr ""
 
@@ -13003,7 +13006,7 @@ msgid "%d thr"
 msgstr "%d スレッド"
 
 #: internal/shell/cardterm.go:136
-#: internal/ui/settings.go:596
+#: internal/ui/settings.go:599
 msgid "Desktop"
 msgstr "デスクトップ"
 
@@ -14014,7 +14017,7 @@ msgid "Session %d"
 msgstr "セッション %d"
 
 #: internal/term/web/strings.go:97
-#: internal/termui/menubar.go:41
+#: internal/termui/menubar.go:30
 #: internal/termui/prefs.go:181
 msgid "Shell"
 msgstr "シェル"
@@ -15035,7 +15038,7 @@ msgid "Searching…"
 msgstr "検索中…"
 
 #: internal/ui/control_detail.go:214
-#: internal/ui/settings.go:595
+#: internal/ui/settings.go:598
 msgid "Devices"
 msgstr "デバイス"
 
@@ -15054,7 +15057,7 @@ msgid "No devices paired yet"
 msgstr "ペアリング済みのデバイスはまだありません"
 
 #: internal/ui/drawer.go:217
-#: internal/ui/settings.go:597
+#: internal/ui/settings.go:600
 #: internal/ui/widgets.go:586
 #: ui/settings.ui:181
 #: ui/settings.ui:2191
@@ -15431,119 +15434,119 @@ msgstr "スクリーンショットがコピーされました"
 msgid "Screenshot taken"
 msgstr "撮影されたスクリーンショット"
 
-#: internal/ui/settings.go:333
+#: internal/ui/settings.go:335
 msgid "Not restarted: %s"
 msgstr "再起動できませんでした: %s"
 
-#: internal/ui/settings.go:358
-#: internal/ui/settings.go:803
+#: internal/ui/settings.go:360
+#: internal/ui/settings.go:808
 msgid "%d px"
 msgstr "%d px"
 
-#: internal/ui/settings.go:594
+#: internal/ui/settings.go:597
 msgid "Connections"
 msgstr "接続"
 
-#: internal/ui/settings.go:707
+#: internal/ui/settings.go:712
 msgid "%s · yours: right-click for more"
 msgstr "%s · 自分のテーマ：右クリックでその他"
 
-#: internal/ui/settings.go:724
+#: internal/ui/settings.go:729
 msgid "A CSS file of @define-color lines, kept in themes beside config.toml"
 msgstr "@define-color 行の CSS ファイル。config.toml の隣の themes に置かれます"
 
-#: internal/ui/settings.go:733
+#: internal/ui/settings.go:738
 msgid "Add Theme…"
 msgstr "テーマを追加…"
 
-#: internal/ui/settings.go:838
+#: internal/ui/settings.go:843
 msgid "As the bar (%s)"
 msgstr "バーと同じ（%s）"
 
-#: internal/ui/settings.go:855
+#: internal/ui/settings.go:860
 msgid "inua objects"
 msgstr "inua objects"
 
-#: internal/ui/settings.go:856
+#: internal/ui/settings.go:861
 msgid "inua objects soft"
 msgstr "inua objects soft"
 
-#: internal/ui/settings.go:857
+#: internal/ui/settings.go:862
 msgid "inua objects flat"
 msgstr "inua objects flat"
 
-#: internal/ui/settings.go:865
+#: internal/ui/settings.go:870
 msgid "Phosphor"
 msgstr "Phosphor"
 
-#: internal/ui/settings.go:865
-#: internal/ui/settings.go:866
+#: internal/ui/settings.go:870
+#: internal/ui/settings.go:871
 msgid "System theme"
 msgstr "システムテーマ"
 
-#: internal/ui/settings.go:866
+#: internal/ui/settings.go:871
 #: ui/settings.ui:588
 msgid "As the app style"
 msgstr "アプリのスタイルどおり"
 
-#: internal/ui/settings.go:959
+#: internal/ui/settings.go:964
 msgid "%s (%s, %s) · %s"
 msgstr "%s(%s、%s)· %s"
 
-#: internal/ui/settings.go:961
+#: internal/ui/settings.go:966
 msgid "%d text"
 msgid_plural "%d texts"
 msgstr[0] "テキスト %d 件"
 
-#: internal/ui/settings.go:962
+#: internal/ui/settings.go:967
 msgid "%d image"
 msgid_plural "%d images"
 msgstr[0] "画像 %d 件"
 
-#: internal/ui/settings.go:963
+#: internal/ui/settings.go:968
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: internal/ui/settings.go:1042
+#: internal/ui/settings.go:1047
 #: internal/ui/settings_apps.go:168
 #: internal/ui/settings_card.go:288
 #: internal/ui/settings_portals.go:177
 msgid "Not saved: %s"
 msgstr "保存されていません: %s"
 
-#: internal/ui/settings.go:1068
+#: internal/ui/settings.go:1073
 msgid "Choose a wallpaper"
 msgstr "壁紙を選択してください"
 
-#: internal/ui/settings.go:1110
+#: internal/ui/settings.go:1115
 msgid "Off: another notification daemon can show them"
 msgstr "オフ: 別の通知デーモンがそれらを表示できる"
 
-#: internal/ui/settings.go:1112
+#: internal/ui/settings.go:1117
 msgid "Banners, then the notification center (the bell in the bar, or Super+N)"
 msgstr "バナー表示後に通知センターへ（バーのベル、または Super+N）"
 
-#: internal/ui/settings.go:1114
+#: internal/ui/settings.go:1119
 msgid "Waiting: another notification daemon is running"
 msgstr "待機中: 別の通知デーモンが実行中です"
 
-#: internal/ui/settings.go:1133
+#: internal/ui/settings.go:1138
 msgid "Nothing pinned"
 msgstr "固定したアプリはありません"
 
-#: internal/ui/settings.go:1149
+#: internal/ui/settings.go:1154
 msgid "%s (not installed)"
 msgstr "%s (未インストール)"
 
-#: internal/ui/settings.go:1162
+#: internal/ui/settings.go:1167
 msgid "Move earlier"
 msgstr "前に移動"
 
-#: internal/ui/settings.go:1163
+#: internal/ui/settings.go:1168
 msgid "Move later"
 msgstr "後ろに移動"
 
-#: internal/ui/settings.go:1164
+#: internal/ui/settings.go:1169
 msgid "Remove from the dock"
 msgstr "ドックから削除"
 
@@ -19255,32 +19258,32 @@ msgstr "復号できませんでした"
 
 #: ui/pass.ui:433
 msgid "Rows"
-msgstr "行"
+msgstr ""
 
 #: ui/pass.ui:434
 msgid "A row for each line"
-msgstr "1行ずつ編集"
+msgstr ""
 
 #: ui/pass.ui:441
 msgid "The whole entry as text"
-msgstr "エントリ全体をテキストで"
+msgstr ""
 
 #: ui/pass.ui:466
 msgid "The first line is the password. The lines after it are kept as written, blank ones too: “key: value” lines are fields, an otpauth:// line a one-time code."
-msgstr "1行目がパスワードです。2行目以降は空行も含めて書いたとおりに保存されます。「キー: 値」の行はフィールド、otpauth:// の行はワンタイムコードです。"
+msgstr ""
 
 #: ui/pass.ui:531
 #: ui/pass.ui:534
 msgid "Generate a password"
-msgstr "パスワードを生成"
+msgstr ""
 
 #: ui/pass.ui:546
 msgid "OTHER LINES"
-msgstr "ほかの行"
+msgstr ""
 
 #: ui/pass.ui:574
 msgid "Add a line"
-msgstr "行を追加"
+msgstr ""
 
 #: ui/pass.ui:601
 msgid "The first line is the password; lines “key: value” are fields; an otpauth:// line is a one-time code."
@@ -19578,11 +19581,11 @@ msgstr "角の丸み"
 
 #: ui/settings.ui:418
 msgid "Animations"
-msgstr "アニメーション"
+msgstr ""
 
 #: ui/settings.ui:427
 msgid "Motion in inua and the compositor; off makes changes immediate"
-msgstr "inua とコンポジタの動き。オフにすると変更が即時になります"
+msgstr ""
 
 #: ui/settings.ui:472
 msgid "<span alpha='55%'>[</span>ICONS<span alpha='55%'>]</span>"
@@ -19766,23 +19769,23 @@ msgstr "すべてのモニター"
 
 #: ui/settings.ui:1341
 msgid "Application in bar"
-msgstr "バーのアプリケーション"
+msgstr ""
 
 #: ui/settings.ui:1350
 msgid "Show the current application's icon and label"
-msgstr "現在のアプリケーションのアイコンと名前を表示"
+msgstr ""
 
 #: ui/settings.ui:1384
 msgid "Application label"
-msgstr "アプリケーションのラベル"
+msgstr ""
 
 #: ui/settings.ui:1393
 msgid "Choose the name shown beside the app icon"
-msgstr "アプリアイコンの横に表示する名前を選択"
+msgstr ""
 
 #: ui/settings.ui:1407
 msgid "Application name"
-msgstr "アプリケーション名"
+msgstr ""
 
 #: ui/settings.ui:1408
 msgid "Window title"
@@ -19790,11 +19793,11 @@ msgstr "ウィンドウタイトル"
 
 #: ui/settings.ui:1435
 msgid "Transparent on empty workspaces"
-msgstr "空のワークスペースで透明にする"
+msgstr ""
 
 #: ui/settings.ui:1444
 msgid "The bar panel is transparent when the current workspace has no windows"
-msgstr "現在のワークスペースにウィンドウがないとき、バーのパネルを透明にします"
+msgstr ""
 
 #: ui/settings.ui:1478
 msgid "Tray icons"

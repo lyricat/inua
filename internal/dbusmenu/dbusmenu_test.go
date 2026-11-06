@@ -37,6 +37,27 @@ func TestNativeDiscovery(t *testing.T) {
 	}
 }
 
+// A menu published by Publish is found for the process that published it,
+// without an X11 window registered with the Canonical registrar.
+func TestPublishedMenuFound(t *testing.T) {
+	addr := dbustest.Start(t)
+	t.Setenv("DBUS_SESSION_BUS_ADDRESS", addr)
+	p, err := dbusmenu.Publish([]dbusmenu.Node{{Label: "File", Enabled: true}}, func(string) {})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer p.Close()
+	r := appmenu.New(dbustest.Conn(t, addr))
+	reg, ok := r.Native(os.Getpid())
+	if !ok {
+		t.Fatal("not found")
+	}
+	entries, err := r.Menu(reg, true)
+	if err != nil || len(entries) != 1 || entries[0].Label != "File" {
+		t.Fatalf("menu=%+v err=%v", entries, err)
+	}
+}
+
 func TestPublishMenuRoundTrip(t *testing.T) {
 	addr := dbustest.Start(t)
 	serverConn := dbustest.Conn(t, addr)

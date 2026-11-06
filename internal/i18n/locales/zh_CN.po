@@ -348,9 +348,9 @@ msgid "%d%%, charging"
 msgstr "%d%%，正在充电"
 
 #: internal/apps/connect/service.go:520
-#: internal/ui/settings.go:351
-#: internal/ui/settings.go:801
-#: internal/ui/settings.go:908
+#: internal/ui/settings.go:353
+#: internal/ui/settings.go:806
+#: internal/ui/settings.go:913
 #: internal/ui/settings_displays.go:460
 msgid "%d%%"
 msgstr "%d%%"
@@ -1610,7 +1610,7 @@ msgstr "笔记本扬声器"
 
 #: internal/apps/pass/draft.go:152
 msgid "No password could be made: %v"
-msgstr "无法生成密码：%v"
+msgstr ""
 
 #: internal/apps/pass/entry.go:94
 #: internal/apps/pass/otp.go:38
@@ -2086,6 +2086,7 @@ msgstr "尝试"
 #: internal/gamesui/menubar.go:36
 #: internal/mailui/menubar.go:39
 #: internal/remoteui/menubar.go:47
+#: internal/ui/settings_menu.go:25
 #: internal/viewerui/menubar.go:36
 #: internal/vmui/menubar.go:36
 msgid "File"
@@ -2112,7 +2113,7 @@ msgstr "关闭窗口"
 #: internal/assistantui/assistantui.go:916
 #: internal/diskui/menubar.go:38
 #: internal/lightui/clock.go:404
-#: internal/termui/menubar.go:42
+#: internal/termui/menubar.go:31
 #: internal/viewerui/menubar.go:41
 #: ui/pass.ui:252
 msgid "Edit"
@@ -2128,7 +2129,8 @@ msgstr ""
 #: internal/gamesui/menubar.go:33
 #: internal/mailui/menubar.go:44
 #: internal/remoteui/menubar.go:56
-#: internal/termui/menubar.go:43
+#: internal/termui/menubar.go:32
+#: internal/ui/settings_menu.go:28
 #: internal/viewerui/menubar.go:46
 #: internal/vmui/menubar.go:48
 msgid "View"
@@ -2906,11 +2908,11 @@ msgstr "打开文件夹"
 
 #: internal/desktop/defaults.go:39
 #: internal/term/web/strings.go:101
-#: internal/termui/app.go:115
-#: internal/termui/app.go:151
-#: internal/termui/app.go:357
-#: internal/termui/app.go:359
-#: internal/termui/menubar.go:40
+#: internal/termui/app.go:117
+#: internal/termui/app.go:153
+#: internal/termui/app.go:360
+#: internal/termui/app.go:362
+#: internal/termui/menubar.go:29
 #: internal/termui/prefs.go:160
 #: internal/termui/quick.go:29
 #: internal/termui/quick.go:47
@@ -2951,7 +2953,7 @@ msgstr "打开视频文件"
 
 #: internal/desktop/defaults.go:48
 #: internal/lightui/pass_otp.go:330
-#: internal/ui/settings.go:1070
+#: internal/ui/settings.go:1075
 msgid "Images"
 msgstr "图像"
 
@@ -3225,7 +3227,7 @@ msgstr "主文件夹"
 #: internal/lightui/sysmon.go:969
 #: internal/lightui/tailscale.go:527
 #: internal/lightui/tailscale.go:568
-#: internal/ui/settings.go:598
+#: internal/ui/settings.go:601
 #: ui/vm.ui:2981
 msgid "System"
 msgstr "系统"
@@ -3651,6 +3653,7 @@ msgstr[0] "……还有 %d 项"
 #: internal/termui/sessionmenu.go:113
 #: internal/termui/wsmenu.go:129
 #: internal/ui/settings_bench.go:132
+#: internal/ui/settings_menu.go:26
 #: internal/ui/settings_wifi_details.go:62
 #: ui/mail-compose.ui:292
 #: ui/mail.ui:395
@@ -3814,7 +3817,7 @@ msgid "Terminal here"
 msgstr "在此打开终端"
 
 #: internal/filesui/cards.go:702
-#: internal/termui/menubar.go:44
+#: internal/termui/menubar.go:33
 #: ui/screenshot.ui:180
 #: ui/shotdrawer.ui:122
 msgid "Window"
@@ -9465,8 +9468,8 @@ msgid "Top level"
 msgstr "顶层"
 
 #: internal/lightui/pass.go:432
-#: internal/ui/settings.go:933
-#: internal/ui/settings.go:960
+#: internal/ui/settings.go:938
+#: internal/ui/settings.go:965
 msgid "%d entry"
 msgid_plural "%d entries"
 msgstr[0] "%d 条"
@@ -9711,15 +9714,15 @@ msgstr "已读取"
 
 #: internal/lightui/pass_edit.go:311
 msgid "Blank line"
-msgstr "空行"
+msgstr ""
 
 #: internal/lightui/pass_edit.go:317
 msgid "Remove the line"
-msgstr "删除此行"
+msgstr ""
 
 #: internal/lightui/pass_edit.go:364
 msgid "Replace the password with a new one"
-msgstr "用新密码替换此密码"
+msgstr ""
 
 #: internal/lightui/pass_otp.go:100
 msgid "It is not an image this app reads (PNG or JPEG)."
@@ -9906,7 +9909,7 @@ msgstr "无法搜索:%s"
 #: internal/lightui/sysmon.go:55
 #: internal/lightui/sysmon.go:55
 #: internal/shell/launcher_actions.go:45
-#: internal/termui/menubar.go:34
+#: internal/termui/menubar.go:27
 #: internal/ui/dock.go:540
 #: internal/ui/portal_ask.go:80
 msgid "Quit"
@@ -11382,7 +11385,7 @@ msgid "Mark All Read"
 msgstr ""
 
 #: internal/mailui/menubar.go:53
-#: internal/termui/menubar.go:45
+#: internal/termui/menubar.go:34
 msgid "Help"
 msgstr ""
 
@@ -13003,7 +13006,7 @@ msgid "%d thr"
 msgstr "%d 线程"
 
 #: internal/shell/cardterm.go:136
-#: internal/ui/settings.go:596
+#: internal/ui/settings.go:599
 msgid "Desktop"
 msgstr "桌面"
 
@@ -14014,7 +14017,7 @@ msgid "Session %d"
 msgstr "会话 %d"
 
 #: internal/term/web/strings.go:97
-#: internal/termui/menubar.go:41
+#: internal/termui/menubar.go:30
 #: internal/termui/prefs.go:181
 msgid "Shell"
 msgstr "Shell"
@@ -15035,7 +15038,7 @@ msgid "Searching…"
 msgstr "正在搜索…"
 
 #: internal/ui/control_detail.go:214
-#: internal/ui/settings.go:595
+#: internal/ui/settings.go:598
 msgid "Devices"
 msgstr "设备"
 
@@ -15054,7 +15057,7 @@ msgid "No devices paired yet"
 msgstr "还没有配对的设备"
 
 #: internal/ui/drawer.go:217
-#: internal/ui/settings.go:597
+#: internal/ui/settings.go:600
 #: internal/ui/widgets.go:586
 #: ui/settings.ui:181
 #: ui/settings.ui:2191
@@ -15431,119 +15434,119 @@ msgstr "截图已复制"
 msgid "Screenshot taken"
 msgstr "截图"
 
-#: internal/ui/settings.go:333
+#: internal/ui/settings.go:335
 msgid "Not restarted: %s"
 msgstr "未重新启动：%s"
 
-#: internal/ui/settings.go:358
-#: internal/ui/settings.go:803
+#: internal/ui/settings.go:360
+#: internal/ui/settings.go:808
 msgid "%d px"
 msgstr "%d 像素"
 
-#: internal/ui/settings.go:594
+#: internal/ui/settings.go:597
 msgid "Connections"
 msgstr "连接"
 
-#: internal/ui/settings.go:707
+#: internal/ui/settings.go:712
 msgid "%s · yours: right-click for more"
 msgstr "%s · 你的主题：右键查看更多"
 
-#: internal/ui/settings.go:724
+#: internal/ui/settings.go:729
 msgid "A CSS file of @define-color lines, kept in themes beside config.toml"
 msgstr "由 @define-color 行组成的 CSS 文件，放在 config.toml 旁的 themes 中"
 
-#: internal/ui/settings.go:733
+#: internal/ui/settings.go:738
 msgid "Add Theme…"
 msgstr "添加主题…"
 
-#: internal/ui/settings.go:838
+#: internal/ui/settings.go:843
 msgid "As the bar (%s)"
 msgstr "同栏（%s）"
 
-#: internal/ui/settings.go:855
+#: internal/ui/settings.go:860
 msgid "inua objects"
 msgstr "inua objects"
 
-#: internal/ui/settings.go:856
+#: internal/ui/settings.go:861
 msgid "inua objects soft"
 msgstr "inua objects soft"
 
-#: internal/ui/settings.go:857
+#: internal/ui/settings.go:862
 msgid "inua objects flat"
 msgstr "inua objects flat"
 
-#: internal/ui/settings.go:865
+#: internal/ui/settings.go:870
 msgid "Phosphor"
 msgstr "Phosphor"
 
-#: internal/ui/settings.go:865
-#: internal/ui/settings.go:866
+#: internal/ui/settings.go:870
+#: internal/ui/settings.go:871
 msgid "System theme"
 msgstr "系统主题"
 
-#: internal/ui/settings.go:866
+#: internal/ui/settings.go:871
 #: ui/settings.ui:588
 msgid "As the app style"
 msgstr "跟随应用风格"
 
-#: internal/ui/settings.go:959
+#: internal/ui/settings.go:964
 msgid "%s (%s, %s) · %s"
 msgstr "%s(%s,%s)· %s"
 
-#: internal/ui/settings.go:961
+#: internal/ui/settings.go:966
 msgid "%d text"
 msgid_plural "%d texts"
 msgstr[0] "%d 段文字"
 
-#: internal/ui/settings.go:962
+#: internal/ui/settings.go:967
 msgid "%d image"
 msgid_plural "%d images"
 msgstr[0] "%d 张图片"
 
-#: internal/ui/settings.go:963
+#: internal/ui/settings.go:968
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: internal/ui/settings.go:1042
+#: internal/ui/settings.go:1047
 #: internal/ui/settings_apps.go:168
 #: internal/ui/settings_card.go:288
 #: internal/ui/settings_portals.go:177
 msgid "Not saved: %s"
 msgstr "未保存：%s"
 
-#: internal/ui/settings.go:1068
+#: internal/ui/settings.go:1073
 msgid "Choose a wallpaper"
 msgstr "选择壁纸"
 
-#: internal/ui/settings.go:1110
+#: internal/ui/settings.go:1115
 msgid "Off: another notification daemon can show them"
 msgstr "关闭：另一个通知守护进程可以显示它们"
 
-#: internal/ui/settings.go:1112
+#: internal/ui/settings.go:1117
 msgid "Banners, then the notification center (the bell in the bar, or Super+N)"
 msgstr "先显示横幅，再收进通知中心（顶栏铃铛或 Super+N）"
 
-#: internal/ui/settings.go:1114
+#: internal/ui/settings.go:1119
 msgid "Waiting: another notification daemon is running"
 msgstr "等待：另一个通知守护进程正在运行"
 
-#: internal/ui/settings.go:1133
+#: internal/ui/settings.go:1138
 msgid "Nothing pinned"
 msgstr "尚未固定应用"
 
-#: internal/ui/settings.go:1149
+#: internal/ui/settings.go:1154
 msgid "%s (not installed)"
 msgstr "%s(未安装)"
 
-#: internal/ui/settings.go:1162
+#: internal/ui/settings.go:1167
 msgid "Move earlier"
 msgstr "向前移动"
 
-#: internal/ui/settings.go:1163
+#: internal/ui/settings.go:1168
 msgid "Move later"
 msgstr "向后移动"
 
-#: internal/ui/settings.go:1164
+#: internal/ui/settings.go:1169
 msgid "Remove from the dock"
 msgstr "从程序坞移除"
 
@@ -19255,32 +19258,32 @@ msgstr "无法解密"
 
 #: ui/pass.ui:433
 msgid "Rows"
-msgstr "逐行"
+msgstr ""
 
 #: ui/pass.ui:434
 msgid "A row for each line"
-msgstr "每行一栏"
+msgstr ""
 
 #: ui/pass.ui:441
 msgid "The whole entry as text"
-msgstr "以文本编辑整个条目"
+msgstr ""
 
 #: ui/pass.ui:466
 msgid "The first line is the password. The lines after it are kept as written, blank ones too: “key: value” lines are fields, an otpauth:// line a one-time code."
-msgstr "第一行是密码。之后的各行按原样保存，空行也保留：“键: 值”形式的行是字段，otpauth:// 行是一次性验证码。"
+msgstr ""
 
 #: ui/pass.ui:531
 #: ui/pass.ui:534
 msgid "Generate a password"
-msgstr "生成密码"
+msgstr ""
 
 #: ui/pass.ui:546
 msgid "OTHER LINES"
-msgstr "其他行"
+msgstr ""
 
 #: ui/pass.ui:574
 msgid "Add a line"
-msgstr "添加一行"
+msgstr ""
 
 #: ui/pass.ui:601
 msgid "The first line is the password; lines “key: value” are fields; an otpauth:// line is a one-time code."
@@ -19578,11 +19581,11 @@ msgstr "圆角半径"
 
 #: ui/settings.ui:418
 msgid "Animations"
-msgstr "动画"
+msgstr ""
 
 #: ui/settings.ui:427
 msgid "Motion in inua and the compositor; off makes changes immediate"
-msgstr "inua 与合成器的动效；关闭后变化立即生效"
+msgstr ""
 
 #: ui/settings.ui:472
 msgid "<span alpha='55%'>[</span>ICONS<span alpha='55%'>]</span>"
@@ -19766,23 +19769,23 @@ msgstr "所有监视器"
 
 #: ui/settings.ui:1341
 msgid "Application in bar"
-msgstr "顶栏中的应用程序"
+msgstr ""
 
 #: ui/settings.ui:1350
 msgid "Show the current application's icon and label"
-msgstr "显示当前应用程序的图标和名称"
+msgstr ""
 
 #: ui/settings.ui:1384
 msgid "Application label"
-msgstr "应用程序标签"
+msgstr ""
 
 #: ui/settings.ui:1393
 msgid "Choose the name shown beside the app icon"
-msgstr "选择显示在应用图标旁的名称"
+msgstr ""
 
 #: ui/settings.ui:1407
 msgid "Application name"
-msgstr "应用程序名称"
+msgstr ""
 
 #: ui/settings.ui:1408
 msgid "Window title"
@@ -19790,11 +19793,11 @@ msgstr "窗口标题"
 
 #: ui/settings.ui:1435
 msgid "Transparent on empty workspaces"
-msgstr "空工作区透明"
+msgstr ""
 
 #: ui/settings.ui:1444
 msgid "The bar panel is transparent when the current workspace has no windows"
-msgstr "当前工作区没有窗口时，顶栏面板会变为透明"
+msgstr ""
 
 #: ui/settings.ui:1478
 msgid "Tray icons"
