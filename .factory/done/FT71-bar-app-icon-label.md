@@ -48,3 +48,8 @@ notes:
 - Merged origin/master into fork PR head 059d35b, resolved catalog conflicts preserving both sides, and pushed merge 44431c8 to this repository's feat/bar-app-label-upstream branch. The fork PR itself is unchanged; use the board branch for shipping.
 - `make test` passed with temporary HOME and isolated runtime/network: 18 Python tests, go vet, 112 Go packages with race tests, uncached. 53 skip records cover missing terminal-engine dependencies, environmental conditions and helper cases. Generated layouts, translations and formatting checked.
 - No installs. UI was not checked by eye; real multi-monitor sessions were not exercised. Initial merge-validation AppArmor sandbox query failure was resolved by isolating the mount before a successful rerun.
+
+## factory · 2026-11-07 00:33
+Merged into master at 6f1a24e; pushed successfully. PR #69 is marked merged on GitHub.
+Combined validation: make generate, make i18n, make test (uncached Go race tests, go vet, 18 Python tests), and git diff --check passed. Tests used throwaway HOME and isolated runtime/network/D-Bus/securityfs.
+FT74 integration resolved the BarWindow conflict preserving FT71 label selection and FT74 per-monitor fallback, with the corresponding test assertion updated. No unpinned installs. UI was not checked by eye; real multi-monitor rendering remains unverified. FT71 Settings label/icon P2 remains.

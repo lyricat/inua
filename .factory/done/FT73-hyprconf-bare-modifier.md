@@ -27,3 +27,8 @@ notes:
 - Existing limitation, not an introduced finding: internal/hyprconf/keys.go:353 voice submap still emits a bare SUPER Lua bind when voice is enabled and its shortcut is SUPER; the same behavior exists on master. Consider follow-up coverage/filtering for this path.
 - Installed Hyprland 0.53.3 passed classic validation; the author's Hyprland 0.57 compatibility report was not independently verified. UI was not checked by eye.
 - No unpinned installs, dependency manifest changes, source edits or code commits. Fork PR head fetched through pull/71/head; header branch retained.
+
+## factory · 2026-11-07 00:33
+Merged into master at e04c6d1; pushed successfully. PR #71 is marked merged on GitHub.
+Combined validation: make generate, make i18n, make test (uncached Go race tests, go vet, 18 Python tests), and git diff --check passed. Tests used throwaway HOME and isolated runtime/network/D-Bus/securityfs.
+FT74 integration resolved the BarWindow conflict preserving FT71 label selection and FT74 per-monitor fallback, with the corresponding test assertion updated. No unpinned installs. UI was not checked by eye; real multi-monitor rendering remains unverified. FT71 Settings label/icon P2 remains.

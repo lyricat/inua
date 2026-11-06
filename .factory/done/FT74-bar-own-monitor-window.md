@@ -27,3 +27,8 @@ notes:
 - 24 temporary overlay probe scenarios passed, including lagging focus snapshots, explicit output priority, workspace fallback and missing focused window. git diff --check passed; tracked worktree remains clean.
 - No unpinned tools installed. UI was not checked by eye; real multi-monitor rendering remains unverified.
 - Moved review/ → ready/; owner approval required before ship.
+
+## factory · 2026-11-07 00:33
+Merged into master at e97ebcc; pushed successfully. PR #72 is marked merged on GitHub.
+Combined validation: make generate, make i18n, make test (uncached Go race tests, go vet, 18 Python tests), and git diff --check passed. Tests used throwaway HOME and isolated runtime/network/D-Bus/securityfs.
+FT74 integration resolved the BarWindow conflict preserving FT71 label selection and FT74 per-monitor fallback, with the corresponding test assertion updated. No unpinned installs. UI was not checked by eye; real multi-monitor rendering remains unverified. FT71 Settings label/icon P2 remains.
