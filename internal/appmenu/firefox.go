@@ -3,6 +3,8 @@ package appmenu
 import (
 	"context"
 	"encoding/xml"
+	"os"
+	"strconv"
 	"strings"
 
 	"github.com/godbus/dbus/v5"
@@ -36,7 +38,7 @@ func (r *Registrar) Firefox(pid int) (Registration, bool) {
 			continue
 		}
 		var owner uint32
-		if r.conn.BusObject().CallWithContext(ctx, busInterface+".GetConnectionUnixProcessID", 0, name).Store(&owner) != nil || int(owner) != pid {
+		if r.conn.BusObject().CallWithContext(ctx, busInterface+".GetConnectionUnixProcessID", 0, name).Store(&owner) != nil || !sameProcessTree(int(owner), pid) {
 			continue
 		}
 		path, err := menuChildPath(r.conn, name, firefoxMenuRoot)
@@ -49,6 +51,50 @@ func (r *Registrar) Firefox(pid int) (Registration, bool) {
 		found = Registration{PID: uint32(pid), Service: name, Path: path}
 	}
 	return found, found.Service != ""
+}
+
+// sameProcessTree reports whether a and b are one process tree: Firefox's
+// menu name belongs to its parent process, while its window is a content
+// process, a child of it.
+func sameProcessTree(a, b int) bool {
+	if a == b {
+		return true
+	}
+	return ancestorOf(a, b) || ancestorOf(b, a)
+}
+
+// ancestorOf reports whether anc is pid or one of its parents.
+func ancestorOf(anc, pid int) bool {
+	for i := 0; i < 16 && pid > 1; i++ {
+		if pid == anc {
+			return true
+		}
+		ppid, ok := parentPID(pid)
+		if !ok {
+			return false
+		}
+		pid = ppid
+	}
+	return false
+}
+
+// parentPID reads a process's parent from /proc/PID/stat.
+func parentPID(pid int) (int, bool) {
+	b, err := os.ReadFile("/proc/" + strconv.Itoa(pid) + "/stat")
+	if err != nil {
+		return 0, false
+	}
+	s := string(b)
+	i := strings.LastIndexByte(s, ')')
+	if i < 0 {
+		return 0, false
+	}
+	fields := strings.Fields(s[i+1:])
+	if len(fields) < 2 {
+		return 0, false
+	}
+	ppid, err := strconv.Atoi(fields[1])
+	return ppid, err == nil
 }
 
 // menuChildPath is the first child object under root ("/com/canonical/menu/0"),
