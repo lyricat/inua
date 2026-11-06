@@ -38,6 +38,17 @@ func TestRender(t *testing.T) {
 	}
 }
 
+func TestRenderAnimationsOff(t *testing.T) {
+	off := false
+	text, _ := Render(compositor.Settings{Animations: &off}, nil)
+	if !strings.Contains(text, "animations {\n    off\n}") {
+		t.Fatalf("animations off not rendered:\n%s", text)
+	}
+	if text, _ := Render(compositor.Settings{}, nil); strings.Contains(text, "animations {") {
+		t.Fatalf("unset animation setting changed niri defaults:\n%s", text)
+	}
+}
+
 func TestXKBAndInclude(t *testing.T) {
 	config := `input {
     keyboard {
