@@ -5,6 +5,8 @@ import (
 	"log"
 	"slices"
 	"strconv"
+	"strings"
+	"time"
 
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
@@ -158,7 +160,18 @@ func (s *shellUI) loadA11yMenu(b *bar, pid int) {
 	}
 	a11y := s.appmenu.a11y
 	go func() {
-		entries, err := a11y.Menu(pid)
+		var entries []appmenu.Entry
+		var err error
+		// Electron and GTK applications build their accessibility tree a
+		// moment after the window is mapped; reading once too early would
+		// settle on the generic menu for an application that has one.
+		for try := 0; try < 4; try++ {
+			entries, err = a11y.Menu(pid)
+			if appmenu.FillableMenu(entries) {
+				break
+			}
+			time.Sleep(250 * time.Millisecond)
+		}
 		gtkx.Post(func() {
 			if b.appMenuPID != pid || b.appMenuReg != (appmenu.Registration{}) {
 				return
@@ -166,10 +179,24 @@ func (s *shellUI) loadA11yMenu(b *bar, pid int) {
 			if err != nil {
 				log.Printf("appmenu accessibility %d: %v", pid, err)
 			}
-			if !appmenu.FillableMenu(entries) {
-				// No source gave this window a menu: the bar shows the
-				// generic one every window has.
+			// Firefox's AT-SPI menubar is a row of named sections with no
+			// items; pressing a section to make it build them ends Firefox.
+			// It gets the generic menu instead, and its sections are never
+			// pressed.
+			if !appmenu.FillableMenu(entries) || s.appMenuIsFirefox(pid) {
 				entries = s.genericAppSections(pid)
+				if len(entries) > 0 && !s.appMenuIsFirefox(pid) && !b.appMenuRetried {
+					// The tree may still be building: look once more, and
+					// replace the generic menu if the application's shows up.
+					b.appMenuRetried = true
+					time.AfterFunc(1500*time.Millisecond, func() {
+						gtkx.Post(func() {
+							if b.appMenuPID == pid && b.appMenuReg == (appmenu.Registration{}) {
+								s.loadA11yMenu(b, pid)
+							}
+						})
+					})
+				}
 			}
 			s.renderAppMenu(b, entries)
 		})
@@ -185,6 +212,22 @@ func withDbusmenuActions(entries []appmenu.Entry, reg appmenu.Registration) []ap
 		entries[i].Action = appmenu.Action{Kind: appmenu.ActionDbusmenu, Bus: reg.Service, Path: reg.Path, Index: entries[i].ID}
 	}
 	return entries
+}
+
+// appMenuIsFirefox reports whether pid is Firefox: its accessibility menubar
+// has empty sections, and pressing one to read it brings Firefox down.
+func (s *shellUI) appMenuIsFirefox(pid int) bool {
+	w, ok := s.appWindowOf(pid)
+	if !ok {
+		return false
+	}
+	if strings.Contains(strings.ToLower(w.AppID), "firefox") {
+		return true
+	}
+	if e := s.dockState.apps.ForClass(w.AppID); e != nil && strings.Contains(strings.ToLower(e.ID), "firefox") {
+		return true
+	}
+	return false
 }
 
 // appWindowOf is the window of process pid the bar names.
@@ -372,7 +415,7 @@ func (s *shellUI) showAppMenu(b *bar, i int, w *gtk.Widget) {
 		} else if s.appmenu.a11y != nil {
 			if len(entry.Children) > 0 {
 				entries = entry.Children
-			} else {
+			} else if !s.appMenuIsFirefox(pid) {
 				entries, err = s.appmenu.a11y.FillSection(entry)
 			}
 		}
