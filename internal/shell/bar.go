@@ -29,28 +29,34 @@ func BarWorkspaces(snap compositor.Snapshot, connector string, all bool) []compo
 	return out
 }
 
-// BarTitle is the window title the bar on a monitor shows: the focused
-// window on the focused monitor, elsewhere the window last focused on that
+// BarWindow is the window the bar on a monitor shows: the focused window
+// on the focused monitor, elsewhere the window last focused on that
 // monitor's visible workspace.
-func BarTitle(snap compositor.Snapshot, connector string) string {
+func BarWindow(snap compositor.Snapshot, connector string) (compositor.Window, bool) {
 	if !knownMonitor(snap, connector) || connector == snap.FocusedOutput {
-		w, _ := snap.Window(snap.FocusedWindow)
-		return w.Title
+		return snap.Window(snap.FocusedWindow)
 	}
 	ws := snap.ActiveWorkspace(connector)
 	if ws == "" {
-		return ""
+		return compositor.Window{}, false
 	}
-	title, best := "", -1
-	for i, t := range snap.Windows {
-		if t.Workspace != ws {
+	best := -1
+	var window compositor.Window
+	for i, w := range snap.Windows {
+		if w.Workspace != ws {
 			continue
 		}
-		if h := focusHistory(t, len(snap.Windows)+i); best < 0 || h < best {
-			title, best = t.Title, h
+		if h := focusHistory(w, len(snap.Windows)+i); best < 0 || h < best {
+			window, best = w, h
 		}
 	}
-	return title
+	return window, best >= 0
+}
+
+// BarTitle is the title of the window the bar on a monitor shows.
+func BarTitle(snap compositor.Snapshot, connector string) string {
+	w, _ := BarWindow(snap, connector)
+	return w.Title
 }
 
 // BarReach finds which of the bar's buttons at its end, left to right, a

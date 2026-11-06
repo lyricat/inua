@@ -64,6 +64,7 @@ type settings struct {
 	bgImage, bgColor, clock, terminal, lock, screenshot             gtk.Entry
 	clipSensitive                                                   gtk.Entry
 	bgFit, ws, launchMode, swap, caps, icons, appIcons, banner      gtk.DropDown
+	titleMode                                                       gtk.DropDown
 	clipLimit                                                       gtk.DropDown
 	clipLimits                                                      []int // clipLimit's choices
 	textScale                                                       gtk.DropDown
@@ -126,12 +127,13 @@ var themeKanji = map[string]string{
 }
 
 var (
-	fitChoices   = config.Fits
-	wsChoices    = []string{"monitor", "all"}
-	barDensities = []string{"default", "compact"}
-	modeChoices  = []string{"apps", "windows"}
-	swapChoices  = []string{"", "left", "both"}
-	capsChoices  = []string{"", "escape", "ctrl"}
+	fitChoices    = config.Fits
+	wsChoices     = []string{"monitor", "all"}
+	barTitleModes = []string{"app", "window"}
+	barDensities  = []string{"default", "compact"}
+	modeChoices   = []string{"apps", "windows"}
+	swapChoices   = []string{"", "left", "both"}
+	capsChoices   = []string{"", "escape", "ctrl"}
 )
 
 func (s *shellUI) bindSettingsHandlers() {
@@ -209,6 +211,8 @@ func (s *shellUI) bindSettingsHandlers() {
 			c.Background.Fit = pick(fitChoices, i, c.Background.Fit)
 		case "ws":
 			c.Bar.Workspaces = pick(wsChoices, i, c.Bar.Workspaces)
+		case "title_mode":
+			c.Bar.TitleMode = pick(barTitleModes, i, c.Bar.TitleMode)
 		case "bar_density":
 			c.Bar.Density = pick(barDensities, i, c.Bar.Density)
 		case "launch_mode":
@@ -442,6 +446,7 @@ func (s *shellUI) openSettings() {
 	ui.Get("screenshot", &st.screenshot)
 	ui.Get("bg_fit", &st.bgFit)
 	ui.Get("ws", &st.ws)
+	ui.Get("title_mode", &st.titleMode)
 	ui.Get("bar_density", &st.barDensity)
 	ui.Get("launch_mode", &st.launchMode)
 	ui.Get("icons", &st.icons)
@@ -541,7 +546,7 @@ func (s *shellUI) openSettings() {
 		st.entries[e.GoPointer()] = e
 		gtkx.ConnectChanged(e, &s.onSettingsEntry)
 	}
-	for _, d := range []*gtk.DropDown{&st.bgFit, &st.ws, &st.barDensity, &st.launchMode, &st.swap, &st.caps, &st.icons, &st.appIcons, &st.appTheme, &st.textScale, &st.language, &st.banner, &st.dockSize, &st.dockPosition, &st.clipLimit} {
+	for _, d := range []*gtk.DropDown{&st.bgFit, &st.ws, &st.titleMode, &st.barDensity, &st.launchMode, &st.swap, &st.caps, &st.icons, &st.appIcons, &st.appTheme, &st.textScale, &st.language, &st.banner, &st.dockSize, &st.dockPosition, &st.clipLimit} {
 		st.drops[d.GoPointer()] = d
 		gtkx.ConnectNotify(d, "selected", &s.onSettingsDrop)
 	}
@@ -765,6 +770,7 @@ func (s *shellUI) showSettings() {
 	st.bgOwn.SetVisible(!c.Background.Generate)
 	st.bgAnother.SetVisible(c.Background.Generate)
 	st.title.SetActive(c.Bar.Title)
+	st.titleMode.SetSelected(uint32(max(0, slices.Index(barTitleModes, c.Bar.TitleMode))))
 	st.tray.SetActive(c.Bar.Tray)
 	st.barPass.SetActive(c.Bar.Pass)
 	setEntry(&st.bgImage, c.Background.Image)

@@ -62,7 +62,10 @@ type Bar struct {
 	// or "all".
 	Workspaces string `toml:"workspaces"`
 	Title      bool   `toml:"title"`
-	Tray       bool   `toml:"tray"`
+	// TitleMode is "app" for the application's name or "window" for its
+	// focused window's title.
+	TitleMode string `toml:"title_mode"`
+	Tray      bool   `toml:"tray"`
 	// Pass shows a button that searches the password store (the Pass
 	// app's) and copies from it, when there is a store.
 	Pass bool `toml:"pass"`
@@ -903,6 +906,7 @@ func Default() Config {
 			Clock:      "%a %b %-d  %H:%M",
 			Workspaces: "monitor",
 			Title:      true,
+			TitleMode:  "app",
 			Tray:       true,
 			Pass:       true,
 		},
@@ -997,6 +1001,7 @@ func (c *Config) validate() []string {
 		*v = def
 	}
 	oneOf("bar.workspaces", &c.Bar.Workspaces, d.Bar.Workspaces, "monitor", "all")
+	oneOf("bar.title_mode", &c.Bar.TitleMode, d.Bar.TitleMode, "app", "window")
 	oneOf("bar.density", &c.Bar.Density, d.Bar.Density, "default", "compact")
 	oneOf("launcher.mode", &c.Launcher.Mode, d.Launcher.Mode, "apps", "windows")
 	if !ValidSearchURL(c.Launcher.Search) {
