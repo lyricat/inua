@@ -136,6 +136,8 @@ func newSharing(t *testing.T) (*Sharing, *fakeSunshine, *[]string) {
 		Access:   func(string) error { return nil },
 		Hostname: func() (string, error) { return "desk", nil },
 		Instance: func() (hypr.Instance, error) { return hypr.Instance{}, hypr.ErrNoInstance },
+		// No GPU here: what the test machine has does not reach the config.
+		RenderNode: func() string { return "" },
 	}
 	f := &fakeSunshine{t: t, dir: dir, pinned: map[string]string{}}
 	var srv *httptest.Server
@@ -366,6 +368,59 @@ func TestSunshineCapturesHyprlandWithoutThePortal(t *testing.T) {
 	}
 	if conf, _ := os.ReadFile(filepath.Join(s.Dir, "sunshine.conf")); strings.Contains(string(conf), "capture") {
 		t.Errorf("not Hyprland, yet a capture:\n%s", conf)
+	}
+}
+
+func TestSunshineCapturesOnARealGPU(t *testing.T) {
+	s, _, _ := newSharing(t)
+	s.RenderNode = func() string { return "/dev/dri/renderD129" }
+	if err := s.Start(t.Context()); err != nil {
+		t.Fatal(err)
+	}
+	conf, _ := os.ReadFile(filepath.Join(s.Dir, "sunshine.conf"))
+	if !strings.Contains(string(conf), "\nadapter_name = /dev/dri/renderD129\n") {
+		t.Errorf("a real GPU, no adapter_name:\n%s", conf)
+	}
+
+	s, _, _ = newSharing(t) // an emulated screen only: Sunshine picks
+	if err := s.Start(t.Context()); err != nil {
+		t.Fatal(err)
+	}
+	if conf, _ := os.ReadFile(filepath.Join(s.Dir, "sunshine.conf")); strings.Contains(string(conf), "adapter_name") {
+		t.Errorf("no real GPU, yet an adapter_name:\n%s", conf)
+	}
+}
+
+func TestTheRenderNodeIsTheFirstRealGPU(t *testing.T) {
+	drm := t.TempDir()
+	for _, dev := range []struct{ node, driver string }{
+		{"renderD128", "virtio-pci"}, {"renderD129", "i915"}, {"card1-Virtual-1", ""}, {"version", ""},
+	} {
+		dir := filepath.Join(drm, dev.node, "device")
+		if err := os.MkdirAll(dir, 0o755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(filepath.Join(dir, "uevent"), []byte("DRIVER="+dev.driver+"\n"), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if got := renderNodeIn(drm); got != "/dev/dri/renderD129" {
+		t.Errorf("render node = %q, want the passed-through GPU", got)
+	}
+
+	emu := t.TempDir() // a machine with an emulated screen and nothing else
+	dir := filepath.Join(emu, "renderD128", "device")
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(dir, "uevent"), []byte("DRIVER=virtio-pci\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if got := renderNodeIn(emu); got != "" {
+		t.Errorf("render node = %q, want none", got)
+	}
+	if got := renderNodeIn(filepath.Join(emu, "nowhere")); got != "" {
+		t.Errorf("render node = %q without sysfs, want none", got)
 	}
 }
 
