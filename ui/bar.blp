@@ -35,12 +35,6 @@ ApplicationWindow bar {
           }
         }
 
-        Box app_menu {
-          styles ["app-menu"]
-          spacing: 2;
-          valign: center;
-        }
-
         Box app_title {
           styles ["app-title"]
           spacing: 7;
@@ -58,6 +52,12 @@ ApplicationWindow bar {
             ellipsize: end;
             max-width-chars: 48;
           }
+        }
+
+        Box app_menu {
+          styles ["app-menu"]
+          spacing: 2;
+          valign: center;
         }
       };
 

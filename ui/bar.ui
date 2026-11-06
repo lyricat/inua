@@ -45,15 +45,6 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
                   </object>
                 </child>
                 <child>
-                  <object class="GtkBox" id="app_menu">
-                    <style>
-                      <class name="app-menu"/>
-                    </style>
-                    <property name="spacing">2</property>
-                    <property name="valign">3</property>
-                  </object>
-                </child>
-                <child>
                   <object class="GtkBox" id="app_title">
                     <style>
                       <class name="app-title"/>
@@ -79,6 +70,15 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
                         <property name="max-width-chars">48</property>
                       </object>
                     </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox" id="app_menu">
+                    <style>
+                      <class name="app-menu"/>
+                    </style>
+                    <property name="spacing">2</property>
+                    <property name="valign">3</property>
                   </object>
                 </child>
               </object>
