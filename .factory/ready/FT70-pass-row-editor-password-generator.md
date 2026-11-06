@@ -35,3 +35,15 @@ Tests: make test passes independently for both Claude Code and the manager with 
 An initial coder test run lacked a private XDG_RUNTIME_DIR and failed Hyprland config tests; rerunning with the private directory passed.
 Installs: none.
 Not checked: UI was not inspected by eye; owner should check Rows/Text layout, generator icon and replacement menu. Accessibility was disabled in the UI test; generator failure is covered at the model level, not the window error display.
+
+## factory · review · 2026-11-06 18:31
+head: 051b2de405f2f1d31e1a25e44ae9404090a84da1
+verdict: pass
+notes:
+- Codex reviewed all 19 changed files in origin/master...HEAD; no qualifying findings. Password randomness, sampling, explicit replacement, secret disclosure and draft preservation paths checked.
+- Codex validation: make test passed with isolated HOME, TMPDIR and XDG_RUN2026-11-06 18:31_DIR (18 Python tests, go vet, race-enabled tests across 112 Go packages).
+- make generate and make i18n passed in a temporary source copy; 51 generated files matched. Private Broadway overlay checks passed for multiline paste, CRLF, mode switching, cancel, generation failure and simulated save failure.
+- Initial direct GTK paste probe did not activate on its first attempt; reproduced on a plain GTK entry and not attributed to this change.
+- git diff --check passed; worktree remains clean. Installs: none.
+- UI not checked by eye; owner should inspect Rows/Text layout, generator icon and replacement menu. Accessibility definitions checked, but no screen-reader validation.
+- review/ → ready/; awaiting owner approval to ship. No linked GitHub issues or PRs.
