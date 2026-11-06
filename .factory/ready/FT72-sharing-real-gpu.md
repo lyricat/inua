@@ -16,3 +16,13 @@ The author reports go vet and remote-desktop package tests passing, and a workin
 The PR comes from a fork. Its head was copied unchanged to the repository branch above for factory review.
 Imported head: 2cc1861671577309e930dbc1c13c5a113d4879df
 No implementation changes, review, or merge performed during intake.
+
+## factory · review · 2026-11-06 19:22
+head: 2cc1861671577309e930dbc1c13c5a113d4879df
+verdict: pass
+notes:
+- Codex reviewed all three changed files and relevant callers against origin/master (70207886b4317419a0d1cb07009098f549ad6ea9); no qualifying findings. The branch merges cleanly with base.
+- Validation: make test passed (18 script tests, go vet ./..., go test -race ./...); git diff --check passed. Tests used a throwaway HOME; worktree remains clean.
+- Installs: none. No dependency downloads.
+- Review-code skill was unavailable to the coder; it used the supplied evidence-based review criteria.
+- Not independently checked: UI appearance, real Sunshine/Moonlight streaming, Intel GPU passthrough, and resolution of black-screen capture or descriptor exhaustion. Owner should verify these on real hardware before shipping.
