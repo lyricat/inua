@@ -429,6 +429,32 @@ func TestRenderLua(t *testing.T) {
 	}
 }
 
+func TestRenderOverviewModifierShortcut(t *testing.T) {
+	c := config.Default()
+	c.Shortcuts = []config.Shortcut{{Action: "overview", Keys: "SUPER"}}
+
+	classic := Render(c, Devices{})
+	for _, want := range []string{
+		"bindr = SUPER, SUPER_L, exec, inua call overview toggle\n",
+		"bindr = SUPER, SUPER_R, exec, inua call overview toggle\n",
+	} {
+		if !strings.Contains(classic, want) {
+			t.Errorf("classic config missing %q in\n%s", want, classic)
+		}
+	}
+	for _, invalid := range []string{"unbind = , SUPER\n", "bind = , SUPER,", "bindr = , SUPER,"} {
+		if strings.Contains(classic, invalid) {
+			t.Errorf("classic config contains invalid bare modifier %q in\n%s", invalid, classic)
+		}
+	}
+	lua := RenderLua(c, Devices{})
+	for _, invalid := range []string{`pcall(hl.unbind, "SUPER")`, `hl.bind("SUPER",`} {
+		if strings.Contains(lua, invalid) {
+			t.Errorf("Lua config contains invalid bare modifier %q in\n%s", invalid, lua)
+		}
+	}
+}
+
 // Hyprland reads hyprland.lua when it runs Lua and the file is there, or
 // when there is no hyprland.conf; inua writes the file that config loads.
 func TestConfigFile(t *testing.T) {
