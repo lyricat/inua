@@ -88,6 +88,7 @@ msgstr "형광펜"
 #: internal/filesui/renamemany.go:158
 #: ui/gpg.ui:522
 #: ui/gpg.ui:886
+#: ui/pass.ui:440
 msgid "Text"
 msgstr "텍스트"
 
@@ -1606,6 +1607,10 @@ msgstr "보컬"
 msgid "Laptop speakers"
 msgstr "노트북 스피커"
 
+#: internal/apps/pass/draft.go:152
+msgid "No password could be made: %v"
+msgstr "비밀번호를 만들지 못했습니다: %v"
+
 #: internal/apps/pass/entry.go:94
 #: internal/apps/pass/otp.go:38
 msgid "Not an otpauth:// link."
@@ -1868,6 +1873,7 @@ msgstr "암호 필요"
 #: internal/filesui/remotesetup.go:67
 #: internal/mailui/welcome.go:571
 #: ui/lock.ui:76
+#: ui/pass.ui:507
 #: ui/polkit.ui:691
 msgid "Password"
 msgstr "비밀번호"
@@ -2044,8 +2050,8 @@ msgstr "허용됨"
 #: internal/filesui/window.go:817
 #: internal/gamesui/lobbyhost.go:169
 #: internal/lightui/calculator.go:350
-#: internal/lightui/pass.go:748
-#: internal/lightui/pass.go:773
+#: internal/lightui/pass.go:753
+#: internal/lightui/pass.go:778
 #: internal/mailui/details.go:222
 #: internal/shell/launcher_actions.go:59
 #: internal/term/settings/settings.go:119
@@ -2213,9 +2219,9 @@ msgstr "%s에서 페어링을 요청합니다. 이 키가 표시될 때만 페�
 #: ui/gpg.ui:1355
 #: ui/gpg.ui:1572
 #: ui/gpg.ui:1666
-#: ui/pass.ui:495
-#: ui/pass.ui:631
-#: ui/pass.ui:862
+#: ui/pass.ui:677
+#: ui/pass.ui:813
+#: ui/pass.ui:1044
 #: ui/polkit.ui:742
 #: ui/remote.ui:1044
 #: ui/vm.ui:3268
@@ -2268,7 +2274,7 @@ msgid "What it runs: systemctl suspend"
 msgstr "실행할 명령: systemctl suspend"
 
 #: internal/connectui/window.go:560
-#: internal/lightui/pass.go:1200
+#: internal/lightui/pass.go:1152
 #: internal/lightui/workshop_manager.go:115
 #: internal/mailui/actions.go:469
 #: internal/mailui/compose.go:474
@@ -2864,7 +2870,7 @@ msgid "Opens video files"
 msgstr "동영상 파일 열기"
 
 #: internal/desktop/defaults.go:48
-#: internal/lightui/pass_otp.go:338
+#: internal/lightui/pass_otp.go:330
 #: internal/ui/settings.go:1053
 msgid "Images"
 msgstr "이미지"
@@ -3035,7 +3041,7 @@ msgstr "%s을(를) 영구히 삭제할까요?"
 #: internal/lightui/calculator.go:59
 #: internal/lightui/calculator.go:352
 #: internal/lightui/gpg.go:1610
-#: internal/lightui/pass.go:950
+#: internal/lightui/pass.go:902
 #: internal/term/web/strings.go:43
 #: internal/ui/clipboard.go:504
 #: internal/vmui/window.go:1996
@@ -3523,7 +3529,7 @@ msgstr "병합"
 
 #: internal/filesui/cards.go:497
 #: internal/filesui/picker.go:369
-#: internal/lightui/pass_otp.go:188
+#: internal/lightui/pass_otp.go:180
 msgid "Replace"
 msgstr "바꾸기"
 
@@ -3842,7 +3848,7 @@ msgid "Columns"
 msgstr "열"
 
 #: internal/filesui/columns.go:176
-#: internal/lightui/pass.go:1012
+#: internal/lightui/pass.go:964
 msgid "NAME"
 msgstr "이름"
 
@@ -4057,7 +4063,7 @@ msgid "done"
 msgstr "완료"
 
 #: internal/filesui/pane.go:1554
-#: internal/lightui/pass.go:1215
+#: internal/lightui/pass.go:1167
 #: internal/lightui/sysmon.go:971
 #: internal/ui/settings_keyring.go:508
 #: internal/ui/shotdrawer.go:327
@@ -8648,7 +8654,7 @@ msgid "System Monitor"
 msgstr "시스템 모니터"
 
 #: internal/lightui/apps.go:24
-#: internal/lightui/pass.go:266
+#: internal/lightui/pass.go:270
 #: internal/lightui/pass_otp.go:113
 #: ui/pass.ui:29
 #: config/apps/io.github.lyricat.Inua.Pass.desktop:3
@@ -9328,220 +9334,224 @@ msgstr "재생 목록 저장"
 msgid "Playlist"
 msgstr "재생 목록"
 
-#: internal/lightui/pass.go:347
+#: internal/lightui/pass.go:352
 msgid "A password store: a folder with a .gpg-id"
 msgstr "비밀번호 저장소: .gpg-id가 있는 폴더"
 
-#: internal/lightui/pass.go:355
+#: internal/lightui/pass.go:360
 msgid "%s is not a password store: it has no .gpg-id (pass init makes one)."
 msgstr "%s은(는) 비밀번호 저장소가 아닙니다: .gpg-id가 없습니다 (pass init으로 만듭니다)."
 
-#: internal/lightui/pass.go:375
+#: internal/lightui/pass.go:380
 msgid "No password store. pass init YOUR-GPG-KEY-ID makes one in ~/.password-store; another folder can be added below."
 msgstr "비밀번호 저장소가 없습니다. pass init GPG-키-ID로 ~/.password-store에 만들 수 있고, 아래에서 다른 폴더를 추가할 수 있습니다."
 
-#: internal/lightui/pass.go:402
+#: internal/lightui/pass.go:407
 msgid "The store is empty. + makes an entry."
 msgstr "저장소가 비어 있습니다. +로 항목을 만듭니다."
 
-#: internal/lightui/pass.go:405
-#: internal/lightui/pass.go:804
-#: internal/lightui/pass.go:876
-#: internal/lightui/pass.go:1135
+#: internal/lightui/pass.go:410
+#: internal/lightui/pass.go:809
+#: internal/lightui/pass.go:1087
+#: internal/lightui/pass_edit.go:193
 msgid "Choose an entry."
 msgstr "항목을 고르세요."
 
-#: internal/lightui/pass.go:411
+#: internal/lightui/pass.go:416
 msgid "Top level"
 msgstr "최상위"
 
-#: internal/lightui/pass.go:419
+#: internal/lightui/pass.go:424
 #: internal/ui/settings.go:916
 #: internal/ui/settings.go:943
 msgid "%d entry"
 msgid_plural "%d entries"
 msgstr[0] "%d개"
 
-#: internal/lightui/pass.go:424
+#: internal/lightui/pass.go:429
 msgid "Right-click to rename or move"
 msgstr "오른쪽 클릭으로 이름 바꾸기 또는 이동"
 
-#: internal/lightui/pass.go:487
+#: internal/lightui/pass.go:492
 #: internal/ui/passwords.go:488
 msgid "Nothing matches. Each word is looked for in the whole path."
 msgstr "일치하는 항목이 없습니다. 각 단어는 경로 전체에서 찾습니다."
 
-#: internal/lightui/pass.go:489
+#: internal/lightui/pass.go:494
 msgid "And %d more: another word narrows them."
 msgid_plural "And %d more: another word narrows them."
 msgstr[0] "그 밖에 %d개. 단어를 더하면 좁혀집니다."
 
-#: internal/lightui/pass.go:635
+#: internal/lightui/pass.go:640
 msgid "Decrypting %s"
 msgstr "%s 복호화하는 중"
 
-#: internal/lightui/pass.go:691
-#: internal/lightui/pass_otp.go:187
+#: internal/lightui/pass.go:696
+#: internal/lightui/pass_otp.go:179
 msgid "Replace the one-time code"
 msgstr "일회용 코드 바꾸기"
 
-#: internal/lightui/pass.go:693
-#: internal/lightui/pass_otp.go:190
+#: internal/lightui/pass.go:698
+#: internal/lightui/pass_otp.go:182
 #: ui/pass.ui:230
-#: ui/pass.ui:670
+#: ui/pass.ui:852
 msgid "Add a one-time code"
 msgstr "일회용 코드 추가"
 
-#: internal/lightui/pass.go:698
+#: internal/lightui/pass.go:703
 #: internal/ui/passwords.go:561
 msgid "USERNAME"
 msgstr "사용자 이름"
 
-#: internal/lightui/pass.go:701
+#: internal/lightui/pass.go:706
 #: internal/ui/passwords.go:564
+#: ui/pass.ui:495
 msgid "PASSWORD"
 msgstr "비밀번호"
 
-#: internal/lightui/pass.go:706
-#: internal/lightui/pass.go:758
+#: internal/lightui/pass.go:711
+#: internal/lightui/pass.go:763
 #: internal/ui/passwords.go:567
 #: internal/ui/passwords.go:570
-#: ui/pass.ui:802
+#: ui/pass.ui:984
 msgid "ONE-TIME CODE"
 msgstr "일회용 코드"
 
-#: internal/lightui/pass.go:713
+#: internal/lightui/pass.go:718
 #: internal/ui/passwords.go:577
 msgid "NOTES"
 msgstr "메모"
 
-#: internal/lightui/pass.go:742
+#: internal/lightui/pass.go:747
+#: internal/lightui/pass_edit.go:351
 #: internal/mailui/formatted.go:184
 #: internal/term/desktop/desktop_linux.go:43
 #: internal/ui/passwords.go:644
 #: internal/vmui/window.go:2709
 #: internal/vmui/window.go:2710
+#: ui/pass.ui:520
 msgid "Show"
 msgstr "보기"
 
-#: internal/lightui/pass.go:744
+#: internal/lightui/pass.go:749
+#: internal/lightui/pass_edit.go:348
 #: internal/ui/notify.go:410
 #: internal/ui/passwords.go:642
 msgid "Hide"
 msgstr "숨기기"
 
-#: internal/lightui/pass.go:787
-#: internal/lightui/pass_otp.go:245
+#: internal/lightui/pass.go:792
+#: internal/lightui/pass_otp.go:237
 #: internal/ui/passwords.go:661
 msgid "%d second left"
 msgid_plural "%d seconds left"
 msgstr[0] "%d초 남음"
 
-#: internal/lightui/pass.go:932
+#: internal/lightui/pass.go:884
 msgid "Rename or move the category “%s”"
 msgstr "카테고리 “%s” 이름 바꾸기 또는 이동"
 
-#: internal/lightui/pass.go:933
+#: internal/lightui/pass.go:885
 msgid "Its new path. Another name renames it; a path under another category moves it there, with all its entries."
 msgstr "새 경로. 다른 이름이면 이름이 바뀌고, 다른 카테고리 아래 경로면 모든 항목과 함께 그곳으로 옮겨집니다."
 
-#: internal/lightui/pass.go:934
-#: internal/lightui/pass.go:938
+#: internal/lightui/pass.go:886
+#: internal/lightui/pass.go:890
 #: internal/term/web/strings.go:65
 msgid "Move"
 msgstr "이동"
 
-#: internal/lightui/pass.go:936
+#: internal/lightui/pass.go:888
 msgid "Rename or move “%s”"
 msgstr "“%s” 이름 바꾸기 또는 이동"
 
-#: internal/lightui/pass.go:937
+#: internal/lightui/pass.go:889
 msgid "Its new path. The first part is its category: change it to move the entry, the rest to rename it."
 msgstr "새 경로. 첫 부분이 카테고리입니다. 그 부분을 바꾸면 이동, 나머지를 바꾸면 이름 바꾸기입니다."
 
-#: internal/lightui/pass.go:940
+#: internal/lightui/pass.go:892
 #: ui/pass.ui:137
 msgid "New entry"
 msgstr "새 항목"
 
-#: internal/lightui/pass.go:941
+#: internal/lightui/pass.go:893
 msgid "Its path: the first part is its category. Its content comes next."
 msgstr "경로: 첫 부분이 카테고리입니다. 내용은 그다음에."
 
-#: internal/lightui/pass.go:946
+#: internal/lightui/pass.go:898
 #: internal/termui/guide.go:163
 #: ui/vm.ui:3289
 msgid "Next"
 msgstr "다음"
 
-#: internal/lightui/pass.go:948
+#: internal/lightui/pass.go:900
 msgid "Delete “%s”?"
 msgstr "“%s”을(를) 삭제할까요?"
 
-#: internal/lightui/pass.go:949
+#: internal/lightui/pass.go:901
 msgid "pass removes its file; a git store keeps it in its history."
 msgstr "pass가 파일을 지웁니다. git 저장소라면 기록에 남습니다."
 
-#: internal/lightui/pass.go:985
-#: internal/lightui/pass.go:1015
+#: internal/lightui/pass.go:937
+#: internal/lightui/pass.go:967
 #: internal/mailui/reader.go:549
 #: internal/mailui/reader.go:794
 #: internal/viewerui/app.go:805
 msgid "FILE"
 msgstr "파일"
 
-#: internal/lightui/pass.go:1011
+#: internal/lightui/pass.go:963
 msgid "CATEGORY"
 msgstr "카테고리"
 
-#: internal/lightui/pass.go:1025
+#: internal/lightui/pass.go:977
 msgid "and %d more"
 msgid_plural "and %d more"
 msgstr[0] "외 %d개"
 
-#: internal/lightui/pass.go:1069
+#: internal/lightui/pass.go:1021
 msgid "That is where it is."
 msgstr "이미 그곳에 있습니다."
 
-#: internal/lightui/pass.go:1071
+#: internal/lightui/pass.go:1023
 msgid "A category cannot move into itself."
 msgstr "카테고리를 자기 안으로 옮길 수 없습니다."
 
-#: internal/lightui/pass.go:1073
+#: internal/lightui/pass.go:1025
 msgid "That path is already in the store."
 msgstr "그 경로는 이미 저장소에 있습니다."
 
-#: internal/lightui/pass.go:1075
+#: internal/lightui/pass.go:1027
 msgid "It is no longer in the store."
 msgstr "더 이상 저장소에 없습니다."
 
-#: internal/lightui/pass.go:1077
+#: internal/lightui/pass.go:1029
 msgid "Each part of the path needs a name, without a leading dot."
 msgstr "경로의 각 부분에는 점으로 시작하지 않는 이름이 필요합니다."
 
-#: internal/lightui/pass.go:1184
+#: internal/lightui/pass.go:1136
 msgid "TRUSTED APPS"
 msgstr "신뢰하는 앱"
 
-#: internal/lightui/pass.go:1184
+#: internal/lightui/pass.go:1136
 #: internal/lightui/workshop_manager.go:50
 #: internal/ui/settings_keyring.go:551
 msgid "%d app"
 msgid_plural "%d apps"
 msgstr[0] "앱 %d개"
 
-#: internal/lightui/pass.go:1186
+#: internal/lightui/pass.go:1138
 msgid "None: an app reading it is asked about first."
 msgstr "없음: 읽으려는 앱은 먼저 묻습니다."
 
-#: internal/lightui/pass.go:1192
+#: internal/lightui/pass.go:1144
 #: internal/ui/askpass.go:405
 #: internal/ui/settings_keyring.go:624
 msgid "Flatpak: %s"
 msgstr "Flatpak: %s"
 
-#: internal/lightui/pass.go:1197
-#: internal/lightui/pass.go:1219
+#: internal/lightui/pass.go:1149
+#: internal/lightui/pass.go:1171
 #: internal/ui/settings_keyring.go:469
 #: internal/ui/settings_keyring.go:477
 #: internal/ui/settings_keyring.go:629
@@ -9549,88 +9559,100 @@ msgstr "Flatpak: %s"
 msgid "%s · %s"
 msgstr "%s · %s"
 
-#: internal/lightui/pass.go:1204
+#: internal/lightui/pass.go:1156
 #: internal/ui/settings_keyring.go:649
 msgid "Stop trusting it: it is asked about at its next read"
 msgstr "신뢰를 그만둡니다. 다음 읽기 때 묻습니다"
 
-#: internal/lightui/pass.go:1209
+#: internal/lightui/pass.go:1161
 msgid "LAST READS"
 msgstr "최근 읽기"
 
-#: internal/lightui/pass.go:1211
+#: internal/lightui/pass.go:1163
 msgid "No app has read it yet."
 msgstr "아직 읽은 앱이 없습니다."
 
-#: internal/lightui/pass.go:1217
+#: internal/lightui/pass.go:1169
 msgid "%s · %d times"
 msgid_plural "%s · %d times"
 msgstr[0] "%s · %d회"
 
-#: internal/lightui/pass.go:1229
+#: internal/lightui/pass.go:1181
 #: internal/ui/settings_keyring.go:694
 msgid "trusted"
 msgstr "신뢰됨"
 
-#: internal/lightui/pass.go:1231
+#: internal/lightui/pass.go:1183
 #: internal/ui/settings_keyring.go:696
 msgid "allowed once"
 msgstr "한 번 허용됨"
 
-#: internal/lightui/pass.go:1233
+#: internal/lightui/pass.go:1185
 #: internal/ui/settings_keyring.go:698
 msgid "allowed, and trusted from now on"
 msgstr "허용됨, 이제부터 신뢰"
 
-#: internal/lightui/pass.go:1235
+#: internal/lightui/pass.go:1187
 #: internal/ui/settings_keyring.go:700
 msgid "denied"
 msgstr "거부됨"
 
-#: internal/lightui/pass.go:1237
+#: internal/lightui/pass.go:1189
 #: internal/ui/settings_keyring.go:702
 msgid "allowed: no one to ask"
 msgstr "허용됨: 물어볼 곳 없음"
 
-#: internal/lightui/pass.go:1239
+#: internal/lightui/pass.go:1191
 msgid "read"
 msgstr "읽음"
+
+#: internal/lightui/pass_edit.go:311
+msgid "Blank line"
+msgstr "빈 줄"
+
+#: internal/lightui/pass_edit.go:317
+msgid "Remove the line"
+msgstr "이 줄 삭제"
+
+#: internal/lightui/pass_edit.go:364
+msgid "Replace the password with a new one"
+msgstr "비밀번호를 새것으로 바꾸기"
 
 #: internal/lightui/pass_otp.go:100
 msgid "It is not an image this app reads (PNG or JPEG)."
 msgstr "이 앱이 읽는 이미지(PNG 또는 JPEG)가 아닙니다."
 
-#: internal/lightui/pass_otp.go:191
+#: internal/lightui/pass_otp.go:183
 #: internal/lightui/workshop_manager.go:88
 #: internal/ui/widgets.go:945
 #: ui/connect.ui:967
-#: ui/pass.ui:871
+#: ui/pass.ui:1053
 #: ui/remote.ui:1053
 msgid "Add"
 msgstr "추가"
 
-#: internal/lightui/pass_otp.go:264
+#: internal/lightui/pass_otp.go:256
 msgid "Reading the screen needs grim."
 msgstr "화면을 읽으려면 grim이 필요합니다."
 
-#: internal/lightui/pass_otp.go:268
+#: internal/lightui/pass_otp.go:260
 msgid "Selecting an area needs slurp."
 msgstr "영역을 선택하려면 slurp이 필요합니다."
 
-#: internal/lightui/pass_otp.go:272
+#: internal/lightui/pass_otp.go:264
 msgid "No area was chosen."
 msgstr "영역을 고르지 않았습니다."
 
-#: internal/lightui/pass_otp.go:287
-#: internal/lightui/pass_otp.go:324
+#: internal/lightui/pass_otp.go:279
+#: internal/lightui/pass_otp.go:316
 msgid "The screen could not be read."
 msgstr "화면을 읽지 못했습니다."
 
-#: internal/lightui/pass_otp.go:336
+#: internal/lightui/pass_otp.go:328
 msgid "An image with a QR code"
 msgstr "QR 코드가 있는 이미지"
 
-#: internal/lightui/pass_otp.go:359
+#: internal/lightui/pass_otp.go:351
 msgid "Reading the QR code…"
 msgstr "QR 코드 읽는 중…"
 
@@ -10650,7 +10672,7 @@ msgstr "OK"
 #: internal/ui/settings_ai.go:530
 #: ui/clock.ui:252
 #: ui/connect.ui:421
-#: ui/pass.ui:504
+#: ui/pass.ui:686
 msgid "Save"
 msgstr "저장"
 
@@ -18790,51 +18812,80 @@ msgstr "gpg가 inua 대화 상자에서 암호 문구를 물을 수 있습니다
 msgid "It could not be decrypted"
 msgstr "복호화하지 못했습니다"
 
-#: ui/pass.ui:425
+#: ui/pass.ui:433
+msgid "Rows"
+msgstr "행"
+
+#: ui/pass.ui:434
+msgid "A row for each line"
+msgstr "줄마다 한 행"
+
+#: ui/pass.ui:441
+msgid "The whole entry as text"
+msgstr "항목 전체를 텍스트로"
+
+#: ui/pass.ui:466
+msgid "The first line is the password. The lines after it are kept as written, blank ones too: “key: value” lines are fields, an otpauth:// line a one-time code."
+msgstr "첫 줄이 비밀번호입니다. 그 뒤의 줄은 빈 줄까지 쓴 그대로 저장됩니다. “키: 값” 줄은 필드, otpauth:// 줄은 일회용 코드입니다."
+
+#: ui/pass.ui:531
+#: ui/pass.ui:534
+msgid "Generate a password"
+msgstr "비밀번호 생성"
+
+#: ui/pass.ui:546
+msgid "OTHER LINES"
+msgstr "다른 줄"
+
+#: ui/pass.ui:574
+msgid "Add a line"
+msgstr "줄 추가"
+
+#: ui/pass.ui:601
 msgid "The first line is the password; lines “key: value” are fields; an otpauth:// line is a one-time code."
 msgstr "첫 줄은 비밀번호, “키: 값” 줄은 필드, otpauth:// 줄은 일회용 코드입니다."
 
-#: ui/pass.ui:482
+#: ui/pass.ui:664
 msgid "One-time code…"
 msgstr "일회용 코드…"
 
-#: ui/pass.ui:598
+#: ui/pass.ui:780
 msgid "category/name"
 msgstr "카테고리/이름"
 
-#: ui/pass.ui:680
+#: ui/pass.ui:862
 msgid "Paste the secret the site shows, or its otpauth:// link. Or read its QR code: from the screen, an area of it, or an image."
 msgstr "사이트가 보여 주는 시크릿이나 otpauth:// 링크를 붙여넣으세요. 또는 QR 코드를 읽으세요: 화면, 화면의 일부, 이미지에서."
 
-#: ui/pass.ui:690
+#: ui/pass.ui:872
 msgid "JBSW Y3DP EHPK 3PXP, or otpauth://…"
 msgstr "JBSW Y3DP EHPK 3PXP 또는 otpauth://…"
 
-#: ui/pass.ui:702
+#: ui/pass.ui:884
 msgid "The Pass windows step aside while the screen is read"
 msgstr "화면을 읽는 동안 Pass 창이 비켜 납니다"
 
-#: ui/pass.ui:713
+#: ui/pass.ui:895
 msgid "Scan the screen"
 msgstr "화면 스캔"
 
-#: ui/pass.ui:726
+#: ui/pass.ui:908
 msgid "Drag out the area with the QR code"
 msgstr "QR 코드가 있는 영역을 끌어서 고르세요"
 
-#: ui/pass.ui:737
+#: ui/pass.ui:919
 msgid "Select an area"
 msgstr "영역 선택"
 
-#: ui/pass.ui:760
+#: ui/pass.ui:942
 msgid "From an image…"
 msgstr "이미지에서…"
 
-#: ui/pass.ui:775
+#: ui/pass.ui:957
 msgid "Issuer, e.g. GitHub"
 msgstr "발급자(예: GitHub)"
 
-#: ui/pass.ui:780
+#: ui/pass.ui:962
 msgid "Account, e.g. you@example.org"
 msgstr "계정(예: you@example.org)"
 

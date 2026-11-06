@@ -201,6 +201,8 @@ go-jump                               arrow-bend-up-right
 # Pass: a one-time code from a QR code, read off the screen
 pass-qr-code                          qr-code
 pass-scan                             scan
+# Pass: a new password, made at random
+pass-generate                         dice-five
 # Music and Video
 media-playback-stop                   stop
 media-eject                           eject

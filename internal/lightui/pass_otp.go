@@ -145,14 +145,6 @@ func (a *passApp) otpButton(name string) bool {
 	return true
 }
 
-// editorText is the editor's text.
-func (a *passApp) editorText() string {
-	buf := a.editor.GetBuffer()
-	var start, end gtk.TextIter
-	buf.GetBounds(&start, &end)
-	return buf.GetText(&start, &end, true)
-}
-
 // openOTP opens the dialog over the editor: with the code the text has,
 // to replace; else empty, its issuer and account guessed from the
 // entry's name and fields.
@@ -251,9 +243,9 @@ func (a *passApp) addOTP() {
 	if o.uri == "" || o.reading {
 		return
 	}
-	a.editor.GetBuffer().SetText(pass.WithOTP(a.editorText(), o.uri), -1)
+	a.setEditorText(pass.WithOTP(a.editorText(), o.uri))
 	a.closeOTP()
-	a.editor.GrabFocus()
+	a.focusEditor(-1)
 }
 
 // scanScreen reads the QR codes on the screen, or on an area of it the
