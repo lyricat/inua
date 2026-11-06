@@ -238,13 +238,20 @@ func (s *shellUI) openAppTitleMenu(b *bar) {
 	}
 	w, ok := shell.BarWindow(s.snap, b.connector())
 	if !ok {
+		// No window on this bar: the system's own menu, as an empty
+		// workspace has.
+		s.showTitleMenu(b, s.systemMenuItems())
 		return
 	}
 	sections := s.genericAppSections(w.PID)
 	if len(sections) == 0 {
 		return
 	}
-	items := s.appMenuItems(b.connector(), b.appMenuReg, w.PID, sections[0].Children)
+	s.showTitleMenu(b, s.appMenuItems(b.connector(), b.appMenuReg, w.PID, sections[0].Children))
+}
+
+// showTitleMenu hangs items under the application's icon and name.
+func (s *shellUI) showTitleMenu(b *bar, items []uikit.Item) {
 	if len(items) == 0 {
 		return
 	}
@@ -253,6 +260,33 @@ func (s *shellUI) openAppTitleMenu(b *bar) {
 	pop.Unref() // the button owns it
 	pop.Popup()
 	b.appPopover = *pop
+}
+
+// systemMenuItems is the system's menu on an empty workspace: the shell's
+// own actions, then the power actions the control center offers.
+func (s *shellUI) systemMenuItems() []uikit.Item {
+	items := []uikit.Item{
+		{Label: i18n.T("Settings"), Run: func() { s.openSettings() }},
+		{Label: i18n.T("Launcher"), Run: func() { s.showLauncher(shell.Apps) }},
+		{Label: i18n.T("Screenshot"), Run: func() { s.screenshotRequest("area") }},
+		{Label: i18n.T("Control Center"), Run: func() { s.toggleControl() }},
+		{Separator: true},
+		{Label: i18n.T("Lock Screen"), Run: func() {
+			if err := s.lockScreen(); err != nil {
+				log.Printf("system menu: lock: %v", err)
+			}
+		}},
+		{Label: i18n.T("Log Out"), Run: func() { s.doPower("logout") }},
+	}
+	if s.control.canHibernate {
+		items = append(items, uikit.Item{Label: i18n.T("Hibernate"), Run: func() { s.doPower("hibernate") }})
+	}
+	return append(items,
+		uikit.Item{Separator: true},
+		uikit.Item{Label: i18n.T("Suspend"), Run: func() { s.doPower("suspend") }},
+		uikit.Item{Label: i18n.T("Restart"), Run: func() { s.doPower("reboot") }},
+		uikit.Item{Label: i18n.T("Shut Down"), Run: func() { s.doPower("poweroff") }},
+	)
 }
 
 // appMenuUnreadable reports whether pid's menu bar cannot be read: VS Code

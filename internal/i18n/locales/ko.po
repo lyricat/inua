@@ -3103,6 +3103,7 @@ msgstr "홈"
 #: internal/lightui/sysmon.go:969
 #: internal/lightui/tailscale.go:527
 #: internal/lightui/tailscale.go:568
+#: internal/ui/bar.go:468
 #: internal/ui/settings.go:628
 #: ui/vm.ui:2981
 msgid "System"
@@ -3533,7 +3534,7 @@ msgstr[0] "… 그 외 %d개"
 #: internal/termui/keys.go:295
 #: internal/termui/sessionmenu.go:113
 #: internal/termui/wsmenu.go:129
-#: internal/ui/appmenu.go:312
+#: internal/ui/appmenu.go:402
 #: internal/ui/settings_bench.go:132
 #: internal/ui/settings_menu.go:26
 #: internal/ui/settings_wifi_details.go:62
@@ -8375,6 +8376,7 @@ msgstr "우주 핀볼"
 
 #: internal/hyprconf/keys.go:23
 #: internal/shell/dock.go:312
+#: internal/ui/appmenu.go:270
 #: ui/settings.ui:2273
 msgid "Launcher"
 msgstr "실행기"
@@ -8396,7 +8398,7 @@ msgid "Notification center"
 msgstr "알림 센터"
 
 #: internal/hyprconf/keys.go:28
-#: ui/bar.ui:164
+#: ui/bar.ui:174
 msgid "Clipboard history"
 msgstr "클립보드 기록"
 
@@ -8415,6 +8417,7 @@ msgstr "포커스 온 또는 오프"
 #: internal/term/settings/settings.go:126
 #: internal/term/web/strings.go:96
 #: internal/termui/headmenu.go:110
+#: internal/ui/appmenu.go:269
 #: ui/control.ui:58
 #: ui/settings.ui:30
 msgid "Settings"
@@ -8457,7 +8460,7 @@ msgstr "색상을 선택하세요"
 
 #: internal/hyprconf/keys.go:40
 #: internal/ui/voice_page.go:169
-#: ui/bar.ui:205
+#: ui/bar.ui:215
 #: ui/settings.ui:6653
 msgid "Dictation"
 msgstr "받아쓰기"
@@ -8629,7 +8632,7 @@ msgstr "계산기"
 
 #: internal/lightui/apps.go:20
 #: internal/ui/widgets.go:583
-#: ui/bar.ui:93
+#: ui/bar.ui:103
 #: config/apps/io.github.lyricat.Inua.Calendar.desktop:3
 msgid "Calendar"
 msgstr "달력"
@@ -10443,6 +10446,7 @@ msgstr "계정"
 
 #: internal/lightui/tailscale.go:664
 #: internal/shell/commands.go:31
+#: internal/ui/appmenu.go:279
 msgid "Log Out"
 msgstr "로그아웃"
 
@@ -12718,6 +12722,7 @@ msgid "Desktop"
 msgstr "데스크톱"
 
 #: internal/shell/commands.go:27
+#: internal/ui/appmenu.go:274
 msgid "Lock Screen"
 msgstr "화면 잠금"
 
@@ -12736,6 +12741,7 @@ msgstr "일시 중지, 먼저 잠금"
 
 #: internal/shell/commands.go:29
 #: internal/termui/restart.go:44
+#: internal/ui/appmenu.go:287
 #: internal/ui/control.go:541
 #: ui/control.ui:168
 msgid "Restart"
@@ -12750,6 +12756,7 @@ msgid "Press Enter again to restart"
 msgstr "Enter를 다시 누르면 다시 시작합니다"
 
 #: internal/shell/commands.go:30
+#: internal/ui/appmenu.go:288
 msgid "Shut Down"
 msgstr "종료"
 
@@ -12887,7 +12894,7 @@ msgid "Start the shell again"
 msgstr "셸을 다시 시작합니다."
 
 #: internal/shell/commands.go:46
-#: internal/ui/appmenu.go:274
+#: internal/ui/appmenu.go:364
 msgid "Close Window"
 msgstr "창 닫기"
 
@@ -12965,6 +12972,7 @@ msgid "Find apps, windows and answers"
 msgstr "앱, 창 및 답변 찾기"
 
 #: internal/shell/dock.go:313
+#: internal/ui/appmenu.go:271
 #: internal/ui/screenshot.go:1144
 #: ui/settings.ui:2233
 msgid "Screenshot"
@@ -13139,12 +13147,14 @@ msgid "Performance"
 msgstr "성능"
 
 #: internal/shell/power.go:24
+#: internal/ui/appmenu.go:286
 #: internal/ui/control.go:539
 #: ui/control.ui:120
 msgid "Suspend"
 msgstr "절전"
 
 #: internal/shell/power.go:26
+#: internal/ui/appmenu.go:282
 #: internal/ui/control.go:540
 #: ui/control.ui:144
 msgid "Hibernate"
@@ -14222,7 +14232,7 @@ msgstr "bash, zsh, fish가 프롬프트를 표시해 명령을 기억할 수 있
 
 #: internal/termui/prefs.go:184
 #: internal/ui/notify.go:324
-#: ui/bar.ui:175
+#: ui/bar.ui:185
 #: ui/settings.ui:3643
 msgid "Notifications"
 msgstr "알림"
@@ -14417,28 +14427,33 @@ msgstr "알람 · %02d:%02d"
 msgid "Snooze"
 msgstr "다시 알림"
 
-#: internal/ui/appmenu.go:270
+#: internal/ui/appmenu.go:272
+#: ui/bar.ui:230
+msgid "Control Center"
+msgstr "제어 센터"
+
+#: internal/ui/appmenu.go:360
 msgid "Application"
 msgstr "애플리케이션"
 
-#: internal/ui/appmenu.go:273
-#: internal/ui/appmenu.go:298
+#: internal/ui/appmenu.go:363
+#: internal/ui/appmenu.go:388
 msgid "About %s"
 msgstr ""
 
-#: internal/ui/appmenu.go:275
+#: internal/ui/appmenu.go:365
 msgid "Quit %s"
 msgstr ""
 
-#: internal/ui/appmenu.go:277
+#: internal/ui/appmenu.go:367
 msgid "Fullscreen"
 msgstr "전체 화면"
 
-#: internal/ui/appmenu.go:278
+#: internal/ui/appmenu.go:368
 msgid "Float"
 msgstr "떠 있는 창"
 
-#: internal/ui/appmenu.go:310
+#: internal/ui/appmenu.go:400
 msgid "Process %d"
 msgstr ""
 
@@ -14639,11 +14654,11 @@ msgstr "스크린샷을 위해 숨겨집니다."
 msgid "The passphrases do not match."
 msgstr "암호 문구가 일치하지 않습니다."
 
-#: internal/ui/bar.go:527
+#: internal/ui/bar.go:548
 msgid "Workspace %s"
 msgstr "작업공간 %s"
 
-#: internal/ui/bar.go:540
+#: internal/ui/bar.go:561
 msgid "WORKSPACE"
 msgstr "작업 공간"
 
@@ -15014,7 +15029,7 @@ msgid "Search every entry"
 msgstr "모든 항목 검색"
 
 #: internal/ui/passwords.go:283
-#: ui/bar.ui:154
+#: ui/bar.ui:164
 #: ui/settings.ui:1565
 msgid "Passwords"
 msgstr "비밀번호"
@@ -18133,13 +18148,9 @@ msgstr "나에게 무엇을 해야 할지 묻거나 말해주세요"
 msgid "Discard the recording"
 msgstr "녹음 버리기"
 
-#: ui/bar.ui:123
+#: ui/bar.ui:133
 msgid "Stop recording"
 msgstr "녹화 중지"
-
-#: ui/bar.ui:220
-msgid "Control Center"
-msgstr "제어 센터"
 
 #: ui/calculator.ui:32
 msgid "Scientific"
