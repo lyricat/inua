@@ -67,7 +67,10 @@ type Bar struct {
 	TitleMode string `toml:"title_mode"`
 	// TransparentEmpty removes the bar panel on a workspace with no windows.
 	TransparentEmpty bool `toml:"transparent_empty"`
-	Tray             bool `toml:"tray"`
+	// Menu shows the focused application's menu in the bar, when the
+	// application publishes one.
+	Menu bool `toml:"menu"`
+	Tray bool `toml:"tray"`
 	// Pass shows a button that searches the password store (the Pass
 	// app's) and copies from it, when there is a store.
 	Pass bool `toml:"pass"`
@@ -918,6 +921,7 @@ func Default() Config {
 			Title:            true,
 			TitleMode:        "app",
 			TransparentEmpty: false,
+			Menu:             true,
 			Tray:             true,
 			Pass:             true,
 		},

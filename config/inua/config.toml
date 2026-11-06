@@ -42,6 +42,9 @@ title_mode = "app"
 # Draw the bar panel transparently when its workspace has no windows.
 transparent_empty = false
 
+# Show the focused application's menu in the bar, when it publishes one.
+menu = true
+
 # Show tray (StatusNotifierItem) icons.
 tray = true
 
