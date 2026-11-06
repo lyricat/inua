@@ -133,7 +133,15 @@ func (s *shellUI) loadAppMenu(b *bar, about bool) {
 	b.appMenuLoading = true
 	reg := b.appMenuReg
 	go func() {
-		entries, err := s.appmenu.registrar.Menu(reg, about)
+		var entries []appmenu.Entry
+		var err error
+		if appmenu.IsFirefoxService(reg) {
+			// Firefox's item ids change with every layout read, so read the
+			// whole tree once and keep its children for opening.
+			entries, err = s.appmenu.registrar.MenuFull(reg, about)
+		} else {
+			entries, err = s.appmenu.registrar.Menu(reg, about)
+		}
 		if err == nil {
 			entries = withDbusmenuActions(entries, reg)
 		}
@@ -429,9 +437,13 @@ func (s *shellUI) showAppMenu(b *bar, i int, w *gtk.Widget) {
 		var entries []appmenu.Entry
 		var err error
 		if reg != (appmenu.Registration{}) {
-			entries, err = s.appmenu.registrar.Submenu(reg, entry.ID)
-			if err == nil {
-				entries = withDbusmenuActions(entries, reg)
+			if len(entry.Children) > 0 {
+				entries = entry.Children
+			} else {
+				entries, err = s.appmenu.registrar.Submenu(reg, entry.ID)
+				if err == nil {
+					entries = withDbusmenuActions(entries, reg)
+				}
 			}
 		} else if s.appmenu.a11y != nil {
 			if len(entry.Children) > 0 {
