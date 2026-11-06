@@ -58,6 +58,32 @@ func TestBarWorkspaces(t *testing.T) {
 	}
 }
 
+func TestBarWindow(t *testing.T) {
+	snap := twoMonitors()
+	for _, tc := range []struct {
+		connector string
+		wantID    string
+	}{
+		{"eDP-1", "0x1"},
+		{"HDMI-A-1", "0x3"},
+		{"WL-1", "0x1"},
+	} {
+		got, ok := BarWindow(snap, tc.connector)
+		if !ok || got.ID != tc.wantID {
+			t.Errorf("%s: window=%+v, ok=%v; want %q", tc.connector, got, ok, tc.wantID)
+		}
+	}
+	snap.FocusedWindow = "missing"
+	if got, ok := BarWindow(snap, "eDP-1"); ok || got.ID != "" {
+		t.Errorf("missing focused window: %+v, %v", got, ok)
+	}
+	snap.FocusedWindow = "0x1"
+	snap.Outputs[1].ActiveWorkspace = "missing"
+	if got, ok := BarWindow(snap, "HDMI-A-1"); ok || got.ID != "" {
+		t.Errorf("missing active workspace: %+v, %v", got, ok)
+	}
+}
+
 func TestBarTitle(t *testing.T) {
 	snap := twoMonitors()
 	for _, c := range []struct{ connector, want string }{
