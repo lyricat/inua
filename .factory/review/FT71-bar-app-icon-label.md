@@ -32,3 +32,8 @@ notes:
 - `make test` passed: 18 Python tests, go vet, race tests (111 packages passed; 35 had no tests). Blueprint outputs and translation references checked. Isolated UI probe confirmed the finding and checked window mode, title visibility, no-focus hiding and 16px file icons; initial probe setup failures were corrected, not repository test failures.
 - No installs. UI was not checked by eye; real multi-monitor behavior was not exercised.
 - PR #69 is a fork PR; its head was fetched via pull/69/head for review. No code changes or branch push.
+
+## factory · 2026-11-06 22:40
+Owner requested: factory: move github issue #69 #71 #72 to review
+
+Returned PR #69 from ready to review. Current PR head: 059d35b759414f3012735cacacc6e674abbea13d; the previous review covered 81b1cbf357418b0ac18d0cea82cca04d37811133, not this head. Preserve the existing branch and review history. No new review or merge performed.
