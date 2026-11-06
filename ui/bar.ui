@@ -82,7 +82,7 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
               </object>
             </property>
             <property name="end-widget">
-              <object class="GtkBox">
+              <object class="GtkBox" id="end">
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkBox" id="tray">
