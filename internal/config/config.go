@@ -930,6 +930,8 @@ func Default() Config {
 		Bar: Bar{
 			Enable:        true,
 			Density:       "default",
+			IconSize:      16,
+			IconSpacing:   4,
 			Clock:         "%a %b %-d  %H:%M",
 			ClockLanguage: "auto",
 			Workspaces:    "monitor",
