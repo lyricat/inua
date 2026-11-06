@@ -41,10 +41,23 @@ ApplicationWindow bar {
           valign: center;
         }
 
-        Label title {
-          styles ["title"]
-          ellipsize: end;
-          max-width-chars: 48;
+        Box app_title {
+          styles ["app-title"]
+          spacing: 7;
+          valign: center;
+
+          Image app_icon {
+            styles ["app-icon"]
+            pixel-size: 16;
+            valign: center;
+            visible: false;
+          }
+
+          Label title {
+            styles ["title"]
+            ellipsize: end;
+            max-width-chars: 48;
+          }
         }
       };
 
