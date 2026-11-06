@@ -26,3 +26,9 @@ notes:
 - Installs: none. No dependency downloads.
 - Review-code skill was unavailable to the coder; it used the supplied evidence-based review criteria.
 - Not independently checked: UI appearance, real Sunshine/Moonlight streaming, Intel GPU passthrough, and resolution of black-screen capture or descriptor exhaustion. Owner should verify these on real hardware before shipping.
+
+## factory · 2026-11-06 22:41
+Shipped on the owner's instruction to merge ready items if fine. Reviewed branch heads matched their passing reviews. Merged into master at 894a494 and pushed.
+Validation on combined master: make generate, make i18n, make test and git diff --check passed; generated files unchanged. Tests used isolated HOME, TMPDIR and XDG_RUNTIME_DIR. Installs: none.
+PR #70 already marked merged by GitHub after master push; explicit close was unnecessary and refused as already merged.
+UI not inspected by eye; real Sunshine/Moonlight streaming and GPU passthrough not independently tested. ready/ → done/.

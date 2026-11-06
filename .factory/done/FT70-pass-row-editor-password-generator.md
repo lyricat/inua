@@ -47,3 +47,9 @@ notes:
 - git diff --check passed; worktree remains clean. Installs: none.
 - UI not checked by eye; owner should inspect Rows/Text layout, generator icon and replacement menu. Accessibility definitions checked, but no screen-reader validation.
 - review/ → ready/; awaiting owner approval to ship. No linked GitHub issues or PRs.
+
+## factory · 2026-11-06 22:41
+Shipped on the owner's instruction to merge ready items if fine. Reviewed branch heads matched their passing reviews. Merged into master at f2ab92e and pushed.
+Validation on combined master: make generate, make i18n, make test and git diff --check passed; generated files unchanged. Tests used isolated HOME, TMPDIR and XDG_RUNTIME_DIR. Installs: none.
+No linked issues or PRs.
+UI not inspected by eye; real Sunshine/Moonlight streaming and GPU passthrough not independently tested. ready/ → done/.
