@@ -390,7 +390,7 @@ func (s *shellUI) activateEntry(connector string, reg appmenu.Registration, pid 
 			if s.appmenu.a11y == nil {
 				return
 			}
-			err = s.appmenu.a11y.Activate(e)
+			err = s.appmenu.a11y.ActivateIn(e)
 		case appmenu.ActionDbusmenu:
 			err = s.appmenu.registrar.Activate(appmenu.Registration{Service: e.Action.Bus, Path: e.Action.Path}, e.Action.Index)
 		}

@@ -1,6 +1,7 @@
 package appmenu
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/godbus/dbus/v5"
@@ -103,6 +104,83 @@ func TestMenuForLabelledSections(t *testing.T) {
 	}
 	if got[0].Action.Index != 0 || got[0].Children[0].Action.Index != 0 {
 		t.Fatalf("action indexes = %+v, %+v", got[0].Action, got[0].Children[0].Action)
+	}
+}
+
+// Chromium and Electron put the menu bar under many generic containers:
+// VS Code's is about sixteen levels down, behind the title bar. The walk
+// must reach it instead of stopping at the window.
+func TestMenuForDeepMenuBar(t *testing.T) {
+	m := newTree()
+	m.node("/root", 75, "Code").child("/root", "/w0")
+	prev := "/w0"
+	for i := 1; i < 20; i++ {
+		next := fmt.Sprintf("/w%d", i)
+		m.node(prev, 39, "").child(prev, next)
+		prev = next
+	}
+	m.node(prev, roleMenuBar, "Application").child(prev, "/file")
+	m.node("/file", roleMenu, "File").child("/file", "/new")
+	m.node("/new", roleMenuItem, "New Text File")
+
+	got, err := menuFor(m, 42)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(got) != 1 || got[0].Label != "File" || len(got[0].Children) != 1 || got[0].Children[0].Label != "New Text File" {
+		t.Fatalf("deep menu = %+v", got)
+	}
+}
+
+// A section's items carry the menus that must be open to press them, so a
+// section closed after reading can be opened again on the click.
+func TestWithOpen(t *testing.T) {
+	section := Entry{
+		Label:  "File",
+		Action: Action{Kind: ActionA11y, Bus: ":1.7", Path: "/bar/file", Index: 0},
+		Open:   []OpenStep{{Label: "Application", Action: Action{Kind: ActionA11y}}},
+	}
+	got := withOpen(section, []Entry{{Label: "New"}, {Label: "Open"}})
+	if len(got) != 2 {
+		t.Fatalf("entries = %d", len(got))
+	}
+	for _, e := range got {
+		if len(e.Open) != 2 || e.Open[0].Label != "Application" || e.Open[1].Label != "File" || e.Open[1].Action.Path != "/bar/file" {
+			t.Fatalf("%q open = %+v", e.Label, e.Open)
+		}
+	}
+}
+
+func TestFindEntry(t *testing.T) {
+	es := []Entry{{Label: "New"}, {Label: "Open Recent"}}
+	if e, ok := findEntry(es, "Open Recent"); !ok || e.Label != "Open Recent" {
+		t.Fatalf("got %+v %v", e, ok)
+	}
+	if _, ok := findEntry(es, "Missing"); ok {
+		t.Fatal("found a missing entry")
+	}
+}
+
+// Chromium and Electron answer an opened section with one popup menu of
+// the section's own name: its items are the section's, not a submenu
+// named like the section.
+func TestFillSectionUnwrapsItsPopup(t *testing.T) {
+	got, err := unwrapSelf(Entry{Label: "File"}, []Entry{{
+		Label:    "File",
+		Children: []Entry{{Label: "New Text File", Enabled: true}},
+	}}, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(got) != 1 || got[0].Label != "New Text File" {
+		t.Fatalf("unwrapped = %+v", got)
+	}
+	// A section with a genuinely same-named submenu keeps it when there is
+	// more than that one entry.
+	kept := []Entry{{Label: "File", Children: []Entry{{Label: "New"}}}, {Label: "Recent"}}
+	got, _ = unwrapSelf(Entry{Label: "File"}, kept, nil)
+	if len(got) != 2 {
+		t.Fatalf("kept = %+v", got)
 	}
 }
 

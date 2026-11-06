@@ -39,6 +39,12 @@ const (
 	stateEnabled = 8
 
 	a11yTimeout = 2 * time.Second
+
+	// a11yMenuDepth bounds the walk to a menubar. Chromium and Electron
+	// put theirs deep under the window: VS Code's is about sixteen levels
+	// down, behind the title bar's generic containers, while Firefox and
+	// Qt answer within a handful.
+	a11yMenuDepth = 32
 )
 
 // a11yRef is one accessible: the connection it lives on and its object path.
@@ -140,28 +146,75 @@ func (a *A11y) FillSection(entry Entry) ([]Entry, error) {
 	if err != nil {
 		return nil, err
 	}
-	ref := a11yRef{Name: entry.Action.Bus, Path: entry.Action.Path}
-	if kids, err := src.children(ref); err == nil && len(kids) > 0 {
-		return decodeA11y(src, ref, 0, 0)
-	}
 	a.mu.Lock()
 	defer a.mu.Unlock()
+	es, err := fillSection(src, entry)
+	for i := range es {
+		es[i].PID = entry.PID
+	}
+	return withOpen(entry, es), err
+}
+
+// fillSection is FillSection on an already connected bus, without the open
+// chain its items carry back to the bar.
+func fillSection(src a11ySource, entry Entry) ([]Entry, error) {
+	ref := a11yRef{Name: entry.Action.Bus, Path: entry.Action.Path}
 	if kids, err := src.children(ref); err == nil && len(kids) > 0 {
-		return decodeA11y(src, ref, 0, 0)
+		es, err := decodeA11y(src, ref, 0, 0)
+		return unwrapSelf(entry, es, err)
 	}
 	if err := src.doAction(ref, entry.Action.Index); err != nil {
 		return nil, err
 	}
-	defer src.doAction(ref, entry.Action.Index) // closed again: the shell's panel is what shows
+	// Closed again before returning: the shell's panel is what shows, and
+	// the next open must find the section shut. Wait for it: a section
+	// pressed again while it is still closing loses the press.
+	defer closeSection(src, ref, entry.Action.Index)
 	for i := 0; i < fillTries; i++ {
 		time.Sleep(fillGap)
 		kids, err := src.children(ref)
 		if err != nil || len(kids) == 0 {
 			continue
 		}
-		return decodeA11y(src, ref, 0, 0)
+		es, err := decodeA11y(src, ref, 0, 0)
+		return unwrapSelf(entry, es, err)
 	}
 	return nil, nil
+}
+
+// closeSection closes a section and waits until it is shut.
+func closeSection(src a11ySource, ref a11yRef, index int32) {
+	src.doAction(ref, index)
+	for i := 0; i < fillTries; i++ {
+		if kids, err := src.children(ref); err != nil || len(kids) == 0 {
+			return
+		}
+		time.Sleep(fillGap)
+	}
+}
+
+// withOpen gives a section's items the open chain that activates them, so
+// pressing one later can open the section again and find it by label.
+func withOpen(section Entry, entries []Entry) []Entry {
+	step := OpenStep{Label: section.Label, Action: section.Action}
+	for i := range entries {
+		entries[i].PID = section.PID
+		entries[i].Open = append(append([]OpenStep{}, section.Open...), step)
+	}
+	return entries
+}
+
+// unwrapSelf drops the popup menu a section opens around its items:
+// Chromium and Electron answer an opened section with one menu of the same
+// name, which would otherwise be a submenu named like the section itself.
+func unwrapSelf(section Entry, kids []Entry, err error) ([]Entry, error) {
+	if err != nil || len(kids) != 1 || len(kids[0].Children) == 0 {
+		return kids, err
+	}
+	if strings.TrimSpace(kids[0].Label) != strings.TrimSpace(section.Label) {
+		return kids, err
+	}
+	return kids[0].Children, nil
 }
 
 // Menu returns the focused process's menubar entries, top level first.
@@ -173,7 +226,20 @@ func (a *A11y) Menu(pid int) ([]Entry, error) {
 	if err != nil {
 		return nil, err
 	}
-	return menuFor(src, pid)
+	es, err := menuFor(src, pid)
+	for i := range es {
+		stampPID(&es[i], pid)
+	}
+	return es, err
+}
+
+// stampPID gives an entry and its children the process whose accessibility
+// tree they came from, so a later open can find them afresh.
+func stampPID(e *Entry, pid int) {
+	e.PID = pid
+	for i := range e.Children {
+		stampPID(&e.Children[i], pid)
+	}
 }
 
 // Activate invokes the action an entry carries.
@@ -187,6 +253,119 @@ func (a *A11y) Activate(entry Entry) error {
 	}
 	ref := a11yRef{Name: entry.Action.Bus, Path: entry.Action.Path}
 	return src.doAction(ref, entry.Action.Index)
+}
+
+// ActivateIn invokes an entry that needs its menus open: the open chain is
+// replayed outermost first, each menu found by label in the one above, the
+// item pressed, and the menus closed again if they are still open.
+func (a *A11y) ActivateIn(entry Entry) error {
+	if len(entry.Open) == 0 {
+		return a.Activate(entry)
+	}
+	if entry.Action.Kind != ActionA11y || entry.Action.Bus == "" || entry.Action.Path == "" {
+		return fmt.Errorf("appmenu: entry %q has no accessibility action", entry.Label)
+	}
+	src, err := a.source()
+	if err != nil {
+		return err
+	}
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	steps := append([]OpenStep{}, entry.Open...)
+	if entry.PID > 0 {
+		// Opening and closing a section replaces its nodes: find the first
+		// section again instead of pressing the path read before.
+		if fresh, err := menuFor(src, entry.PID); err == nil {
+			if e, ok := findEntry(fresh, steps[0].Label); ok && e.Action.Kind == ActionA11y {
+				steps[0] = OpenStep{Label: steps[0].Label, Action: e.Action}
+			}
+		}
+	}
+	if steps[0].Action.Kind != ActionA11y || steps[0].Action.Bus == "" || steps[0].Action.Path == "" {
+		return fmt.Errorf("appmenu: %q has no accessibility action", steps[0].Label)
+	}
+	var opened []Action
+	defer func() { closeOpened(src, opened) }()
+	level, err := readOpened(src, steps[0])
+	if err != nil {
+		return err
+	}
+	opened = append(opened, steps[0].Action)
+	for _, step := range steps[1:] {
+		found, ok := findEntry(level, step.Label)
+		if !ok {
+			return fmt.Errorf("appmenu: %q is not in its menu", step.Label)
+		}
+		if found.Action.Kind != ActionA11y || found.Action.Bus == "" || found.Action.Path == "" {
+			return fmt.Errorf("appmenu: %q has no accessibility action", step.Label)
+		}
+		opened = append(opened, found.Action)
+		level, err = readOpened(src, OpenStep{Label: step.Label, Action: found.Action})
+		if err != nil {
+			return err
+		}
+	}
+	item, ok := findEntry(level, entry.Label)
+	if !ok {
+		return fmt.Errorf("appmenu: %q is not in its menu", entry.Label)
+	}
+	if err := src.doAction(refOf(item.Action), item.Action.Index); err != nil {
+		return err
+	}
+	// Let the application act, and close its menu itself, before the
+	// sections are put back: closing in the same breath cancels the click
+	// in Chromium and Electron.
+	time.Sleep(600 * time.Millisecond)
+	return nil
+}
+
+func refOf(a Action) a11yRef { return a11yRef{Name: a.Bus, Path: a.Path} }
+
+// closeOpened closes menus that are still open, innermost first.
+func closeOpened(src a11ySource, opened []Action) {
+	for i := len(opened) - 1; i >= 0; i-- {
+		if kids, err := src.children(refOf(opened[i])); err == nil && len(kids) > 0 {
+			src.doAction(refOf(opened[i]), opened[i].Index)
+		}
+	}
+}
+
+// readOpened reads the items of a section just opened, waiting for one
+// that fills them in after the press.
+func readOpened(src a11ySource, step OpenStep) ([]Entry, error) {
+	section := Entry{Label: step.Label}
+	ref := refOf(step.Action)
+	for attempt := 0; attempt < 3; attempt++ {
+		// A section just closed may still be closing: a press then is lost.
+		// Press only when it is shut, and try again if it stays shut.
+		if kids, err := src.children(ref); err != nil || len(kids) == 0 {
+			if err := src.doAction(ref, step.Action.Index); err != nil {
+				return nil, err
+			}
+		}
+		for i := 0; i < fillTries; i++ {
+			time.Sleep(fillGap) // the menu fills in after it shows
+			kids, err := src.children(ref)
+			if err == nil && len(kids) > 0 {
+				// The menu's nodes are still being laid out just after it
+				// shows; an item pressed before they settle does nothing.
+				time.Sleep(200 * time.Millisecond)
+				es, err := decodeA11y(src, ref, 0, 0)
+				return unwrapSelf(section, es, err)
+			}
+		}
+	}
+	return nil, fmt.Errorf("appmenu: %q did not open", step.Label)
+}
+
+// findEntry finds an item by its label in a level of the menu.
+func findEntry(entries []Entry, label string) (Entry, bool) {
+	for _, e := range entries {
+		if e.Label == label {
+			return e, true
+		}
+	}
+	return Entry{}, false
 }
 
 // menuFor walks the accessibility tree of one process to its menubar.
@@ -210,7 +389,7 @@ func menuFor(src a11ySource, pid int) ([]Entry, error) {
 		return candidates[i].Name < candidates[j].Name
 	})
 	for _, app := range candidates {
-		bar, ok := findRole(src, app, roleMenuBar, 6, map[string]bool{})
+		bar, ok := findRole(src, app, roleMenuBar, a11yMenuDepth, map[string]bool{})
 		if !ok {
 			continue
 		}
