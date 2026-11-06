@@ -2888,6 +2888,7 @@ msgid "Size"
 msgstr ""
 
 #: internal/diskui/details.go:49
+#: internal/ui/appmenu.go:364
 #: internal/ui/settings_menu.go:25
 msgid "File"
 msgid_plural "Files"
@@ -3546,7 +3547,7 @@ msgstr[1] ""
 #: internal/termui/keys.go:295
 #: internal/termui/sessionmenu.go:113
 #: internal/termui/wsmenu.go:129
-#: internal/ui/appmenu.go:402
+#: internal/ui/appmenu.go:408
 #: internal/ui/settings_bench.go:132
 #: internal/ui/settings_menu.go:26
 #: internal/ui/settings_wifi_details.go:62
@@ -8411,7 +8412,7 @@ msgstr ""
 
 #: internal/hyprconf/keys.go:23
 #: internal/shell/dock.go:312
-#: internal/ui/appmenu.go:270
+#: internal/ui/appmenu.go:271
 #: ui/settings.ui:2273
 msgid "Launcher"
 msgstr ""
@@ -8452,7 +8453,7 @@ msgstr ""
 #: internal/term/settings/settings.go:126
 #: internal/term/web/strings.go:96
 #: internal/termui/headmenu.go:110
-#: internal/ui/appmenu.go:269
+#: internal/ui/appmenu.go:270
 #: ui/control.ui:58
 #: ui/settings.ui:30
 msgid "Settings"
@@ -8802,6 +8803,7 @@ msgstr ""
 
 #: internal/lightui/clock.go:404
 #: internal/termui/menubar.go:31
+#: internal/ui/appmenu.go:367
 #: ui/pass.ui:252
 msgid "Edit"
 msgstr ""
@@ -10497,7 +10499,7 @@ msgstr ""
 
 #: internal/lightui/tailscale.go:664
 #: internal/shell/commands.go:31
-#: internal/ui/appmenu.go:279
+#: internal/ui/appmenu.go:280
 msgid "Log Out"
 msgstr ""
 
@@ -12789,7 +12791,7 @@ msgid "Desktop"
 msgstr ""
 
 #: internal/shell/commands.go:27
-#: internal/ui/appmenu.go:274
+#: internal/ui/appmenu.go:275
 msgid "Lock Screen"
 msgstr ""
 
@@ -12808,7 +12810,7 @@ msgstr ""
 
 #: internal/shell/commands.go:29
 #: internal/termui/restart.go:44
-#: internal/ui/appmenu.go:287
+#: internal/ui/appmenu.go:288
 #: internal/ui/control.go:541
 #: ui/control.ui:168
 msgid "Restart"
@@ -12823,7 +12825,7 @@ msgid "Press Enter again to restart"
 msgstr ""
 
 #: internal/shell/commands.go:30
-#: internal/ui/appmenu.go:288
+#: internal/ui/appmenu.go:289
 msgid "Shut Down"
 msgstr ""
 
@@ -12961,7 +12963,7 @@ msgid "Start the shell again"
 msgstr ""
 
 #: internal/shell/commands.go:46
-#: internal/ui/appmenu.go:364
+#: internal/ui/appmenu.go:365
 msgid "Close Window"
 msgstr ""
 
@@ -12976,6 +12978,7 @@ msgid "Toggle Fullscreen"
 msgstr ""
 
 #: internal/shell/commands.go:49
+#: internal/ui/appmenu.go:373
 msgid "Center Window"
 msgstr ""
 
@@ -13039,7 +13042,7 @@ msgid "Find apps, windows and answers"
 msgstr ""
 
 #: internal/shell/dock.go:313
-#: internal/ui/appmenu.go:271
+#: internal/ui/appmenu.go:272
 #: internal/ui/screenshot.go:1144
 #: ui/settings.ui:2233
 msgid "Screenshot"
@@ -13216,14 +13219,14 @@ msgid "Performance"
 msgstr ""
 
 #: internal/shell/power.go:24
-#: internal/ui/appmenu.go:286
+#: internal/ui/appmenu.go:287
 #: internal/ui/control.go:539
 #: ui/control.ui:120
 msgid "Suspend"
 msgstr ""
 
 #: internal/shell/power.go:26
-#: internal/ui/appmenu.go:282
+#: internal/ui/appmenu.go:283
 #: internal/ui/control.go:540
 #: ui/control.ui:144
 msgid "Hibernate"
@@ -14098,11 +14101,13 @@ msgid "Choose the workspace's folder"
 msgstr ""
 
 #: internal/termui/menubar.go:32
+#: internal/ui/appmenu.go:370
 #: internal/ui/settings_menu.go:28
 msgid "View"
 msgstr ""
 
 #: internal/termui/menubar.go:34
+#: internal/ui/appmenu.go:374
 msgid "Help"
 msgstr ""
 
@@ -14503,33 +14508,37 @@ msgstr ""
 msgid "Snooze"
 msgstr ""
 
-#: internal/ui/appmenu.go:272
+#: internal/ui/appmenu.go:273
 #: ui/bar.ui:230
 msgid "Control Center"
 msgstr ""
 
-#: internal/ui/appmenu.go:360
-msgid "Application"
-msgstr ""
-
-#: internal/ui/appmenu.go:363
-#: internal/ui/appmenu.go:388
-msgid "About %s"
-msgstr ""
-
-#: internal/ui/appmenu.go:365
+#: internal/ui/appmenu.go:366
 msgid "Quit %s"
 msgstr ""
 
-#: internal/ui/appmenu.go:367
+#: internal/ui/appmenu.go:368
+msgid "Copy Window Title"
+msgstr ""
+
+#: internal/ui/appmenu.go:369
+msgid "Copy Window Class"
+msgstr ""
+
+#: internal/ui/appmenu.go:371
 msgid "Fullscreen"
 msgstr ""
 
-#: internal/ui/appmenu.go:368
+#: internal/ui/appmenu.go:372
 msgid "Float"
 msgstr ""
 
-#: internal/ui/appmenu.go:400
+#: internal/ui/appmenu.go:375
+#: internal/ui/appmenu.go:394
+msgid "About %s"
+msgstr ""
+
+#: internal/ui/appmenu.go:406
 msgid "Process %d"
 msgstr ""
 

@@ -116,6 +116,9 @@ const (
 	ActionQuitApp     = "quit-app"
 	ActionFullscreen  = "fullscreen"
 	ActionFloat       = "float"
+	ActionCenter      = "center"
+	ActionCopyTitle   = "copy-title"
+	ActionCopyClass   = "copy-class"
 )
 
 // registered is a registration, when it was made among the others, and the

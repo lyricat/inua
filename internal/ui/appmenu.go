@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
 	"github.com/lyricat/inua/internal/appmenu"
@@ -356,18 +357,23 @@ func (s *shellUI) genericAppSections(pid int) []appmenu.Entry {
 	action := func(label, kind, window string) appmenu.Entry {
 		return appmenu.Entry{Label: label, Enabled: true, Action: appmenu.Action{Kind: kind, Bus: window, Index: int32(pid)}}
 	}
-	return []appmenu.Entry{{
-		Label:   i18n.T("Application"),
-		Enabled: true,
-		Children: []appmenu.Entry{
-			action(i18n.Tf("About %s", name), appmenu.ActionAbout, w.ID),
+	section := func(label string, items ...appmenu.Entry) appmenu.Entry {
+		return appmenu.Entry{Label: label, Enabled: true, Children: items}
+	}
+	return []appmenu.Entry{
+		section(i18n.T("File"),
 			action(i18n.T("Close Window"), appmenu.ActionCloseWindow, w.ID),
-			action(i18n.Tf("Quit %s", name), appmenu.ActionQuitApp, w.ID),
-			{Separator: true},
+			action(i18n.Tf("Quit %s", name), appmenu.ActionQuitApp, w.ID)),
+		section(i18n.T("Edit"),
+			action(i18n.T("Copy Window Title"), appmenu.ActionCopyTitle, w.ID),
+			action(i18n.T("Copy Window Class"), appmenu.ActionCopyClass, w.ID)),
+		section(i18n.T("View"),
 			action(i18n.T("Fullscreen"), appmenu.ActionFullscreen, w.ID),
 			action(i18n.T("Float"), appmenu.ActionFloat, w.ID),
-		},
-	}}
+			action(i18n.T("Center Window"), appmenu.ActionCenter, w.ID)),
+		section(i18n.T("Help"),
+			action(i18n.Tf("About %s", name), appmenu.ActionAbout, w.ID)),
+	}
 }
 
 // showAppAbout says what the application behind pid is: its name and icon,
@@ -633,6 +639,26 @@ func (s *shellUI) activateEntry(connector string, reg appmenu.Registration, pid 
 		case appmenu.ActionFloat:
 			if f, ok := s.comp.(compositor.Floater); ok {
 				s.compositorDo("toggle floating", func(ctx context.Context) error { return f.ToggleFloating(ctx, e.Action.Bus) })
+			}
+		case appmenu.ActionCenter:
+			if a, ok := s.comp.(compositor.Arranger); ok {
+				s.compositorDo("center window", func(ctx context.Context) error { return a.CenterWindow(ctx, e.Action.Bus) })
+			}
+		case appmenu.ActionCopyTitle:
+			if w, ok := s.appWindowOf(pid); ok {
+				gtkx.Post(func() {
+					if c := gdk.DisplayGetDefault().GetClipboard(); c != nil {
+						c.SetText(w.Title)
+					}
+				})
+			}
+		case appmenu.ActionCopyClass:
+			if w, ok := s.appWindowOf(pid); ok {
+				gtkx.Post(func() {
+					if c := gdk.DisplayGetDefault().GetClipboard(); c != nil {
+						c.SetText(w.AppID)
+					}
+				})
 			}
 		case appmenu.ActionA11y:
 			if s.appmenu.a11y == nil {
