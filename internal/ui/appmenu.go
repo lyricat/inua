@@ -78,6 +78,9 @@ func (s *shellUI) syncAppMenu(b *bar) {
 		if reg == (appmenu.Registration{}) {
 			reg, _ = s.appmenu.registrar.Native(pid)
 		}
+		if reg == (appmenu.Registration{}) {
+			reg, _ = s.appmenu.registrar.Firefox(pid)
+		}
 	}
 	if b.appMenuReg == reg && b.appMenuPID == pid {
 		return
@@ -214,22 +217,37 @@ func withDbusmenuActions(entries []appmenu.Entry, reg appmenu.Registration) []ap
 	return entries
 }
 
-// appMenuUnreadable reports whether pid's menu bar cannot be read from its
-// accessibility tree: Firefox's sections are empty and pressing one ends the
-// process, and VS Code draws its menu bar itself and exposes only an overflow
-// item. Neither is pressed; both get the shell's own Application menu.
+// appMenuUnreadable reports whether pid's menu bar cannot be read: VS Code
+// draws its menu bar itself and exposes only an overflow item on the
+// accessibility bus.
 func (s *shellUI) appMenuUnreadable(pid int) bool {
 	w, ok := s.appWindowOf(pid)
 	if !ok {
 		return false
 	}
 	id := strings.ToLower(w.AppID)
-	if strings.Contains(id, "firefox") || id == "code" || id == "vscode" {
+	if id == "code" || id == "vscode" {
 		return true
 	}
 	if e := s.dockState.apps.ForClass(w.AppID); e != nil {
 		id = strings.ToLower(e.ID)
-		return strings.Contains(id, "firefox") || id == "code" || strings.HasSuffix(id, ".code")
+		return id == "code" || strings.HasSuffix(id, ".code")
+	}
+	return false
+}
+
+// appMenuNeverPress reports whether an entry's accessibility action must
+// never be pressed: pressing a Firefox section ends Firefox.
+func (s *shellUI) appMenuNeverPress(pid int) bool {
+	w, ok := s.appWindowOf(pid)
+	if !ok {
+		return false
+	}
+	if strings.Contains(strings.ToLower(w.AppID), "firefox") {
+		return true
+	}
+	if e := s.dockState.apps.ForClass(w.AppID); e != nil {
+		return strings.Contains(strings.ToLower(e.ID), "firefox")
 	}
 	return false
 }
@@ -418,7 +436,7 @@ func (s *shellUI) showAppMenu(b *bar, i int, w *gtk.Widget) {
 		} else if s.appmenu.a11y != nil {
 			if len(entry.Children) > 0 {
 				entries = entry.Children
-			} else if !s.appMenuUnreadable(pid) {
+			} else if !s.appMenuNeverPress(pid) {
 				entries, err = s.appmenu.a11y.FillSection(entry)
 			}
 		}
