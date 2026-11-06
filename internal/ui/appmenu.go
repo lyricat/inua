@@ -9,7 +9,9 @@ import (
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
 	"github.com/lyricat/inua/internal/appmenu"
+	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/gtkx"
+	"github.com/lyricat/inua/internal/i18n"
 	"github.com/lyricat/inua/internal/shell"
 	"github.com/lyricat/inua/internal/system"
 	"github.com/lyricat/inua/internal/uikit"
@@ -163,10 +165,11 @@ func (s *shellUI) loadA11yMenu(b *bar, pid int) {
 			}
 			if err != nil {
 				log.Printf("appmenu accessibility %d: %v", pid, err)
-				return
 			}
 			if !appmenu.FillableMenu(entries) {
-				entries = nil
+				// No source gave this window a menu: the bar shows the
+				// generic one every window has.
+				entries = s.genericAppSections(pid)
 			}
 			s.renderAppMenu(b, entries)
 		})
@@ -182,6 +185,93 @@ func withDbusmenuActions(entries []appmenu.Entry, reg appmenu.Registration) []ap
 		entries[i].Action = appmenu.Action{Kind: appmenu.ActionDbusmenu, Bus: reg.Service, Path: reg.Path, Index: entries[i].ID}
 	}
 	return entries
+}
+
+// appWindowOf is the window of process pid the bar names.
+func (s *shellUI) appWindowOf(pid int) (compositor.Window, bool) {
+	for _, w := range s.snap.Windows {
+		if w.PID == pid {
+			return w, true
+		}
+	}
+	return compositor.Window{}, false
+}
+
+// appNameOf is what the bar calls an application: its desktop entry's
+// name, else its class.
+func (s *shellUI) appNameOf(w compositor.Window) string {
+	if e := s.dockState.apps.ForClass(w.AppID); e != nil {
+		return e.Name
+	}
+	return w.AppID
+}
+
+// genericAppSections is the menu an application without one of its own is
+// given: the commands that work for every window, in the places a Mac puts
+// them. Their actions ask the shell or the compositor, so they do not
+// depend on the toolkit's own menu model.
+func (s *shellUI) genericAppSections(pid int) []appmenu.Entry {
+	w, ok := s.appWindowOf(pid)
+	if !ok {
+		return nil
+	}
+	name := s.appNameOf(w)
+	action := func(label, kind, window string) appmenu.Entry {
+		return appmenu.Entry{Label: label, Enabled: true, Action: appmenu.Action{Kind: kind, Bus: window, Index: int32(pid)}}
+	}
+	section := func(label string, items ...appmenu.Entry) appmenu.Entry {
+		return appmenu.Entry{Label: label, Enabled: true, Children: items}
+	}
+	return []appmenu.Entry{
+		section(i18n.T("File"),
+			action(i18n.T("Close Window"), appmenu.ActionCloseWindow, w.ID),
+			action(i18n.Tf("Quit %s", name), appmenu.ActionQuitApp, w.ID)),
+		section(i18n.T("View"),
+			action(i18n.T("Fullscreen"), appmenu.ActionFullscreen, w.ID),
+			action(i18n.T("Float"), appmenu.ActionFloat, w.ID)),
+		section(i18n.T("Help"),
+			action(i18n.Tf("About %s", name), appmenu.ActionAbout, w.ID)),
+	}
+}
+
+// showAppAbout says what the application behind pid is: its name and icon,
+// the window the bar names, and its process.
+func (s *shellUI) showAppAbout(pid int) {
+	w, ok := s.appWindowOf(pid)
+	if !ok {
+		return
+	}
+	name, icon := s.appNameOf(w), w.AppID
+	if e := s.dockState.apps.ForClass(w.AppID); e != nil {
+		icon = e.Icon
+	}
+	win := gtk.NewWindow()
+	win.AddCssClass("about")
+	win.SetDefaultSize(360, -1)
+	win.SetResizable(false)
+	win.SetTitle(i18n.Tf("About %s", name))
+	body := gtk.NewBox(gtk.OrientationVerticalValue, 10)
+	body.AddCssClass("about-body")
+	mark := gtk.NewImage()
+	mark.AddCssClass("about-icon")
+	setIcon(mark, icon)
+	mark.SetPixelSize(64)
+	title := gtk.NewLabel(name)
+	title.AddCssClass("about-name")
+	window := gtk.NewLabel(w.Title)
+	window.AddCssClass("about-window")
+	window.SetEllipsize(3)
+	process := gtk.NewLabel(i18n.Tf("Process %d", pid))
+	process.AddCssClass("about-process")
+	okButton := gtk.NewButtonWithLabel(i18n.T("Close"))
+	onClose := func(gtk.Button) { win.Destroy() }
+	okButton.ConnectClicked(&onClose)
+	for _, child := range []*gtk.Widget{&mark.Widget, &title.Widget, &window.Widget, &process.Widget, &okButton.Widget} {
+		body.Append(child)
+	}
+	win.SetChild(&body.Widget)
+	body.Unref()
+	win.Present()
 }
 
 // renderAppMenu shows a menu's first level as the bar's buttons. A menu
@@ -378,6 +468,24 @@ func (s *shellUI) activateEntry(connector string, reg appmenu.Registration, pid 
 	go func() {
 		var err error
 		switch e.Action.Kind {
+		case appmenu.ActionAbout:
+			gtkx.Post(func() { s.showAppAbout(pid) })
+		case appmenu.ActionCloseWindow:
+			s.closeWindow(e.Action.Bus)
+		case appmenu.ActionQuitApp:
+			for _, w := range s.snap.Windows {
+				if w.PID == pid {
+					s.closeWindow(w.ID)
+				}
+			}
+		case appmenu.ActionFullscreen:
+			if a, ok := s.comp.(compositor.Arranger); ok {
+				s.compositorDo("fullscreen window", func(ctx context.Context) error { return a.ToggleFullscreen(ctx, e.Action.Bus) })
+			}
+		case appmenu.ActionFloat:
+			if f, ok := s.comp.(compositor.Floater); ok {
+				s.compositorDo("toggle floating", func(ctx context.Context) error { return f.ToggleFloating(ctx, e.Action.Bus) })
+			}
 		case appmenu.ActionA11y:
 			if s.appmenu.a11y == nil {
 				return

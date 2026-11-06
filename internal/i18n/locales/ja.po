@@ -2906,6 +2906,7 @@ msgid "Size"
 msgstr "サイズ"
 
 #: internal/diskui/details.go:49
+#: internal/ui/appmenu.go:226
 #: internal/ui/settings_menu.go:25
 msgid "File"
 msgid_plural "Files"
@@ -3554,6 +3555,7 @@ msgstr[0] "…ほか %d 件"
 #: internal/termui/keys.go:295
 #: internal/termui/sessionmenu.go:113
 #: internal/termui/wsmenu.go:129
+#: internal/ui/appmenu.go:266
 #: internal/ui/settings_bench.go:132
 #: internal/ui/settings_menu.go:26
 #: internal/ui/settings_wifi_details.go:62
@@ -12891,6 +12893,7 @@ msgid "Start the shell again"
 msgstr "シェルを再度開始する"
 
 #: internal/shell/commands.go:46
+#: internal/ui/appmenu.go:227
 msgid "Close Window"
 msgstr "ウィンドウを閉じる"
 
@@ -14020,13 +14023,15 @@ msgid "Choose the workspace's folder"
 msgstr "ワークスペースのフォルダを選ぶ"
 
 #: internal/termui/menubar.go:32
+#: internal/ui/appmenu.go:229
 #: internal/ui/settings_menu.go:28
 msgid "View"
-msgstr ""
+msgstr "表示"
 
 #: internal/termui/menubar.go:34
+#: internal/ui/appmenu.go:232
 msgid "Help"
-msgstr ""
+msgstr "ヘルプ"
 
 #: internal/termui/palette.go:20
 msgid "Focus the pane in that direction"
@@ -14419,6 +14424,27 @@ msgstr "アラーム · %02d:%02d"
 #: internal/ui/alarms.go:108
 msgid "Snooze"
 msgstr "スヌーズ"
+
+#: internal/ui/appmenu.go:228
+msgid "Quit %s"
+msgstr ""
+
+#: internal/ui/appmenu.go:230
+msgid "Fullscreen"
+msgstr "全画面"
+
+#: internal/ui/appmenu.go:231
+msgid "Float"
+msgstr "フローティング"
+
+#: internal/ui/appmenu.go:233
+#: internal/ui/appmenu.go:252
+msgid "About %s"
+msgstr ""
+
+#: internal/ui/appmenu.go:264
+msgid "Process %d"
+msgstr ""
 
 #: internal/ui/askpass.go:80
 msgid "password: want one JSON request"

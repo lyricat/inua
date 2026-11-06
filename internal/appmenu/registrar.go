@@ -109,6 +109,12 @@ type Action struct {
 const (
 	ActionA11y     = "atspi"
 	ActionDbusmenu = "dbusmenu"
+	// Actions the shell itself runs for the menu every window has.
+	ActionAbout       = "about"
+	ActionCloseWindow = "close-window"
+	ActionQuitApp     = "quit-app"
+	ActionFullscreen  = "fullscreen"
+	ActionFloat       = "float"
 )
 
 // registered is a registration, when it was made among the others, and the

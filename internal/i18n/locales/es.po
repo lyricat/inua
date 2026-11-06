@@ -2911,6 +2911,7 @@ msgid "Size"
 msgstr "Tamaño"
 
 #: internal/diskui/details.go:49
+#: internal/ui/appmenu.go:226
 #: internal/ui/settings_menu.go:25
 msgid "File"
 msgid_plural "Files"
@@ -3568,6 +3569,7 @@ msgstr[1] "… y %d más"
 #: internal/termui/keys.go:295
 #: internal/termui/sessionmenu.go:113
 #: internal/termui/wsmenu.go:129
+#: internal/ui/appmenu.go:266
 #: internal/ui/settings_bench.go:132
 #: internal/ui/settings_menu.go:26
 #: internal/ui/settings_wifi_details.go:62
@@ -12960,6 +12962,7 @@ msgid "Start the shell again"
 msgstr "Iniciar el shell nuevamente"
 
 #: internal/shell/commands.go:46
+#: internal/ui/appmenu.go:227
 msgid "Close Window"
 msgstr "Cerrar ventana"
 
@@ -14093,13 +14096,15 @@ msgid "Choose the workspace's folder"
 msgstr "Elige la carpeta del espacio de trabajo"
 
 #: internal/termui/menubar.go:32
+#: internal/ui/appmenu.go:229
 #: internal/ui/settings_menu.go:28
 msgid "View"
-msgstr ""
+msgstr "Ver"
 
 #: internal/termui/menubar.go:34
+#: internal/ui/appmenu.go:232
 msgid "Help"
-msgstr ""
+msgstr "Ayuda"
 
 #: internal/termui/palette.go:20
 msgid "Focus the pane in that direction"
@@ -14497,6 +14502,27 @@ msgstr "Alarma · %02d:%02d"
 #: internal/ui/alarms.go:108
 msgid "Snooze"
 msgstr "Posponer"
+
+#: internal/ui/appmenu.go:228
+msgid "Quit %s"
+msgstr ""
+
+#: internal/ui/appmenu.go:230
+msgid "Fullscreen"
+msgstr "Pantalla completa"
+
+#: internal/ui/appmenu.go:231
+msgid "Float"
+msgstr "Flotante"
+
+#: internal/ui/appmenu.go:233
+#: internal/ui/appmenu.go:252
+msgid "About %s"
+msgstr ""
+
+#: internal/ui/appmenu.go:264
+msgid "Process %d"
+msgstr ""
 
 #: internal/ui/askpass.go:80
 msgid "password: want one JSON request"

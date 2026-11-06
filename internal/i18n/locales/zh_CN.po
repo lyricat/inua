@@ -2906,6 +2906,7 @@ msgid "Size"
 msgstr "尺寸"
 
 #: internal/diskui/details.go:49
+#: internal/ui/appmenu.go:226
 #: internal/ui/settings_menu.go:25
 msgid "File"
 msgid_plural "Files"
@@ -3554,6 +3555,7 @@ msgstr[0] "……还有 %d 项"
 #: internal/termui/keys.go:295
 #: internal/termui/sessionmenu.go:113
 #: internal/termui/wsmenu.go:129
+#: internal/ui/appmenu.go:266
 #: internal/ui/settings_bench.go:132
 #: internal/ui/settings_menu.go:26
 #: internal/ui/settings_wifi_details.go:62
@@ -12891,6 +12893,7 @@ msgid "Start the shell again"
 msgstr "再次启动shell"
 
 #: internal/shell/commands.go:46
+#: internal/ui/appmenu.go:227
 msgid "Close Window"
 msgstr "关闭窗口"
 
@@ -14020,13 +14023,15 @@ msgid "Choose the workspace's folder"
 msgstr "选择工作区的文件夹"
 
 #: internal/termui/menubar.go:32
+#: internal/ui/appmenu.go:229
 #: internal/ui/settings_menu.go:28
 msgid "View"
-msgstr ""
+msgstr "视图"
 
 #: internal/termui/menubar.go:34
+#: internal/ui/appmenu.go:232
 msgid "Help"
-msgstr ""
+msgstr "帮助"
 
 #: internal/termui/palette.go:20
 msgid "Focus the pane in that direction"
@@ -14419,6 +14424,27 @@ msgstr "闹钟 · %02d:%02d"
 #: internal/ui/alarms.go:108
 msgid "Snooze"
 msgstr "稍后提醒"
+
+#: internal/ui/appmenu.go:228
+msgid "Quit %s"
+msgstr ""
+
+#: internal/ui/appmenu.go:230
+msgid "Fullscreen"
+msgstr "全屏"
+
+#: internal/ui/appmenu.go:231
+msgid "Float"
+msgstr "浮动"
+
+#: internal/ui/appmenu.go:233
+#: internal/ui/appmenu.go:252
+msgid "About %s"
+msgstr ""
+
+#: internal/ui/appmenu.go:264
+msgid "Process %d"
+msgstr ""
 
 #: internal/ui/askpass.go:80
 msgid "password: want one JSON request"
