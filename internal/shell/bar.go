@@ -29,31 +29,48 @@ func BarWorkspaces(snap compositor.Snapshot, connector string, all bool) []compo
 	return out
 }
 
-// BarWindow is the window the bar on a monitor shows: the focused window
-// on the focused monitor, elsewhere the window last focused on that
-// monitor's visible workspace.
+// BarWindow is the window a monitor's bar speaks for: the focused window
+// when it is that monitor's, elsewhere the window last focused on the
+// monitor's visible workspace. A bar never takes the focused window of
+// another monitor, so moving the focus across monitors leaves it unchanged;
+// a snapshot keeps the four queries it takes apart, and the focused output
+// may already be the new one when the active window is still the old one.
 func BarWindow(snap compositor.Snapshot, connector string) (compositor.Window, bool) {
-	if !knownMonitor(snap, connector) || connector == snap.FocusedOutput {
+	if !knownMonitor(snap, connector) {
 		return snap.Window(snap.FocusedWindow)
+	}
+	if w, ok := snap.Window(snap.FocusedWindow); ok && windowOnMonitor(snap, w, connector) {
+		return w, true
 	}
 	ws := snap.ActiveWorkspace(connector)
 	if ws == "" {
 		return compositor.Window{}, false
 	}
-	best := -1
-	var window compositor.Window
-	for i, w := range snap.Windows {
-		if w.Workspace != ws {
+	var best compositor.Window
+	rank := -1
+	for i, t := range snap.Windows {
+		if t.Workspace != ws {
 			continue
 		}
-		if h := focusHistory(w, len(snap.Windows)+i); best < 0 || h < best {
-			window, best = w, h
+		if h := focusHistory(t, len(snap.Windows)+i); rank < 0 || h < rank {
+			best, rank = t, h
 		}
 	}
-	return window, best >= 0
+	return best, rank >= 0
 }
 
-// BarTitle is the title of the window the bar on a monitor shows.
+// windowOnMonitor reports whether w is on the monitor named connector. A
+// window's output is set, or the workspace it is on says which monitor
+// shows it.
+func windowOnMonitor(snap compositor.Snapshot, w compositor.Window, connector string) bool {
+	if w.Output != "" {
+		return w.Output == connector
+	}
+	ws, ok := snap.Workspace(w.Workspace)
+	return ok && ws.Output == connector
+}
+
+// BarTitle is the window title the bar on a monitor shows.
 func BarTitle(snap compositor.Snapshot, connector string) string {
 	w, _ := BarWindow(snap, connector)
 	return w.Title
