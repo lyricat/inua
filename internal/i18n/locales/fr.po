@@ -14497,7 +14497,7 @@ msgstr "Répéter"
 
 #: internal/ui/appmenu.go:270
 msgid "Application"
-msgstr ""
+msgstr "Application"
 
 #: internal/ui/appmenu.go:273
 #: internal/ui/appmenu.go:298

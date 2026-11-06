@@ -14419,7 +14419,7 @@ msgstr "다시 알림"
 
 #: internal/ui/appmenu.go:270
 msgid "Application"
-msgstr ""
+msgstr "애플리케이션"
 
 #: internal/ui/appmenu.go:273
 #: internal/ui/appmenu.go:298
