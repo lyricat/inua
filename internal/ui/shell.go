@@ -38,6 +38,7 @@ import (
 	"github.com/lyricat/inua/internal/layershell"
 	"github.com/lyricat/inua/internal/portalconf"
 	"github.com/lyricat/inua/internal/shell"
+	"github.com/lyricat/inua/internal/system"
 	layouts "github.com/lyricat/inua/ui"
 )
 
@@ -99,6 +100,7 @@ type shellUI struct {
 	clockGen  uintptr // the running clock timer; see restartClock
 	launcher  launcher
 	overview  workspaceOverview
+	distro    system.Distribution
 	control   control
 	clipboard clipboardPanel
 	passwords passwordsPanel
@@ -380,7 +382,7 @@ func Run(opts Options) int {
 	// The settings' file choosers through inua's picker, when it is on.
 	restore := gtkx.ForcePortals(portalconf.PickerOn())
 	app := gtk.NewApplication(shell.AppID, gio.GApplicationNonUniqueValue)
-	s := &shellUI{opts: opts, cfg: opts.Config, app: app, bars: map[uintptr]*bar{}}
+	s := &shellUI{opts: opts, cfg: opts.Config, app: app, bars: map[uintptr]*bar{}, distro: system.ReadDistribution("/")}
 	s.pass.slot = make(chan struct{}, 1) // before the control socket serves
 	activate := func(gio.Application) {
 		restore() // the display is open

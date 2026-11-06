@@ -454,9 +454,25 @@ func (b *bar) setHypr(s *shellUI, snap compositor.Snapshot) {
 		}
 		b.title.SetText(label)
 		setIcon(&b.appIcon, icon)
+		b.appIcon.SetVisible(true)
+	} else {
+		// An empty workspace names the system: its icon and version, as the
+		// bar's own menu does.
+		d := s.distro
+		name := d.Name
+		if name == "" {
+			name = i18n.T("System")
+		}
+		if d.Version != "" {
+			name += " " + d.Version
+		}
+		b.title.SetText(name)
+		if d.Logo != "" {
+			setIcon(&b.appIcon, d.Logo)
+		}
+		b.appIcon.SetVisible(d.Logo != "")
 	}
-	b.title.SetVisible(s.cfg.Bar.Title && hasWindow)
-	b.appIcon.SetVisible(s.cfg.Bar.Title && hasWindow)
+	b.title.SetVisible(s.cfg.Bar.Title)
 	order := s.overview.st
 	order.MRU = s.cfg.Overview.MRU
 	b.workspaces.SetVisible(s.cfg.Bar.Workspaces != "none")
