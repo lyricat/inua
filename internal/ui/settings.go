@@ -34,10 +34,17 @@ import (
 // shell at once (applyConfig) and is saved to the settings file shortly
 // after the last one.
 type settings struct {
-	win     *gtk.ApplicationWindow // nil while closed
-	overlay *gtk.Overlay           // over the window's page, for the Benchmark dialog; made on its first use
-	refs    gtkx.Scope
-	menu    *dbusmenu.Published // the menu the bar shows while this window has the focus
+	win               *gtk.ApplicationWindow // nil while closed
+	overlay           *gtk.Overlay           // over the window's page, for the Benchmark dialog; made on its first use
+	refs              gtkx.Scope
+	menu              *dbusmenu.Published // the menu the bar shows while this window has the focus
+	rail              gtk.Box             // the index column, collapsed on a narrow window
+	indexTitle        gtk.Label
+	indexLabels       []*gtk.Label
+	indexHeads        []*gtk.Label
+	narrow            bool
+	onSettingsLayout  func(gdk.Surface, int32, int32)
+	onSettingsRealize func(gtk.Widget)
 
 	status, clockPreview gtk.Label
 	pages                gtk.Stack
@@ -66,7 +73,8 @@ type settings struct {
 	dockPinned                                                              gtk.Box
 	bgImage, bgColor, clock, terminal, lock, screenshot                     gtk.Entry
 	clipSensitive                                                           gtk.Entry
-	bgFit, ws, launchMode, swap, caps, icons, appIcons, banner              gtk.DropDown
+	bgFit, ws, overviewScope, launchMode, swap, caps, icons, appIcons       gtk.DropDown
+	banner                                                                  gtk.DropDown
 	titleMode                                                               gtk.DropDown
 	clipLimit                                                               gtk.DropDown
 	clipLimits                                                              []int // clipLimit's choices
@@ -131,7 +139,7 @@ var themeKanji = map[string]string{
 
 var (
 	fitChoices    = config.Fits
-	wsChoices     = []string{"monitor", "all"}
+	wsChoices     = []string{"monitor", "all", "none"}
 	barTitleModes = []string{"app", "window"}
 	barDensities  = []string{"default", "compact"}
 	modeChoices   = []string{"apps", "windows"}
@@ -222,6 +230,8 @@ func (s *shellUI) bindSettingsHandlers() {
 			c.Background.Fit = pick(fitChoices, i, c.Background.Fit)
 		case "ws":
 			c.Bar.Workspaces = pick(wsChoices, i, c.Bar.Workspaces)
+		case "overview_scope":
+			c.Overview.PerMonitor = i == 0
 		case "title_mode":
 			c.Bar.TitleMode = pick(barTitleModes, i, c.Bar.TitleMode)
 		case "bar_density":
@@ -444,6 +454,8 @@ func (s *shellUI) openSettings() {
 	ui.Get("status", &st.status)
 	ui.Get("pages", &st.pages)
 	ui.Get("index", &st.index)
+	ui.Get("index_panel", &st.rail)
+	ui.Get("index_title", &st.indexTitle)
 	ui.Get("themes", &st.themes)
 	ui.Get("clock_preview", &st.clockPreview)
 	ui.Get("title", &st.title)
@@ -458,6 +470,7 @@ func (s *shellUI) openSettings() {
 	ui.Get("screenshot", &st.screenshot)
 	ui.Get("bg_fit", &st.bgFit)
 	ui.Get("ws", &st.ws)
+	ui.Get("overview_scope", &st.overviewScope)
 	ui.Get("title_mode", &st.titleMode)
 	ui.Get("bar_density", &st.barDensity)
 	ui.Get("launch_mode", &st.launchMode)
@@ -561,7 +574,7 @@ func (s *shellUI) openSettings() {
 		st.entries[e.GoPointer()] = e
 		gtkx.ConnectChanged(e, &s.onSettingsEntry)
 	}
-	for _, d := range []*gtk.DropDown{&st.bgFit, &st.ws, &st.titleMode, &st.barDensity, &st.launchMode, &st.swap, &st.caps, &st.icons, &st.appIcons, &st.appTheme, &st.textScale, &st.language, &st.banner, &st.dockSize, &st.dockPosition, &st.clipLimit} {
+	for _, d := range []*gtk.DropDown{&st.bgFit, &st.ws, &st.overviewScope, &st.titleMode, &st.barDensity, &st.launchMode, &st.swap, &st.caps, &st.icons, &st.appIcons, &st.appTheme, &st.textScale, &st.language, &st.banner, &st.dockSize, &st.dockPosition, &st.clipLimit} {
 		st.drops[d.GoPointer()] = d
 		gtkx.ConnectNotify(d, "selected", &s.onSettingsDrop)
 	}
@@ -590,6 +603,7 @@ func (s *shellUI) openSettings() {
 	s.showSettings()
 	s.setStatus("", false)
 	st.win.Present()
+	s.watchSettingsWidth()
 }
 
 // settingsGroups are the index's groups, each a kicker over its pages, in
@@ -804,6 +818,11 @@ func (s *shellUI) showSettings() {
 	}
 	st.bgFit.SetSelected(uint32(max(0, slices.Index(fitChoices, c.Background.Fit))))
 	st.ws.SetSelected(uint32(max(0, slices.Index(wsChoices, c.Bar.Workspaces))))
+	if c.Overview.PerMonitor {
+		st.overviewScope.SetSelected(0)
+	} else {
+		st.overviewScope.SetSelected(1)
+	}
 	st.launchMode.SetSelected(uint32(max(0, slices.Index(modeChoices, c.Launcher.Mode))))
 	st.barDensity.SetSelected(uint32(max(0, slices.Index(barDensities, c.Bar.Density))))
 	st.transparency.SetValue(float64(c.Style.Transparency))

@@ -1090,6 +1090,12 @@ window.settings { background: @app; font-size: 14px; }
 .settings .found { background: alpha(@accent, 0.12); box-shadow: inset 2px 0 @accent; }
 
 .settings .page { padding: 18px 32px 32px; }
+/* A narrow window: the index is an icon rail, and the page takes the room
+   its labels and controls need. */
+.settings.narrow .index list { padding: 0 6px; }
+.settings.narrow .index row { padding: 0 6px; }
+.settings.narrow .page { padding: 14px 18px 24px; }
+.settings.narrow .section-head.sticky { margin: 0 18px; }
 
 .settings .section { margin-bottom: 22px; }
 /* The copy of the current section's head held at the top of the page. */

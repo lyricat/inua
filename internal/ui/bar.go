@@ -457,6 +457,7 @@ func (b *bar) setHypr(s *shellUI, snap compositor.Snapshot) {
 	b.appIcon.SetVisible(s.cfg.Bar.Title && hasWindow)
 	order := s.overview.st
 	order.MRU = s.cfg.Overview.MRU
+	b.workspaces.SetVisible(s.cfg.Bar.Workspaces != "none")
 	b.setWorkspaces(s, order.BarWorkspaces(snap, name, s.cfg.Bar.Workspaces == "all"))
 	if s.cfg.Bar.Menu {
 		s.syncAppMenu(b)

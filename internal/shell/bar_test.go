@@ -73,8 +73,10 @@ func TestBarWindow(t *testing.T) {
 			t.Errorf("%s: window=%+v, ok=%v; want %q", tc.connector, got, ok, tc.wantID)
 		}
 	}
+	// Without a focused window the bar keeps the last focused one of its
+	// monitor's visible workspace.
 	snap.FocusedWindow = "missing"
-	if got, ok := BarWindow(snap, "eDP-1"); ok || got.ID != "" {
+	if got, ok := BarWindow(snap, "eDP-1"); !ok || got.ID != "0x1" {
 		t.Errorf("missing focused window: %+v, %v", got, ok)
 	}
 	snap.FocusedWindow = "0x1"

@@ -1018,7 +1018,7 @@ func (c *Config) validate() []string {
 		w = append(w, fmt.Sprintf("%s = %q: want %s; using %q", key, *v, strings.Join(allowed, " or "), def))
 		*v = def
 	}
-	oneOf("bar.workspaces", &c.Bar.Workspaces, d.Bar.Workspaces, "monitor", "all")
+	oneOf("bar.workspaces", &c.Bar.Workspaces, d.Bar.Workspaces, "monitor", "all", "none")
 	oneOf("bar.title_mode", &c.Bar.TitleMode, d.Bar.TitleMode, "app", "window")
 	oneOf("bar.density", &c.Bar.Density, d.Bar.Density, "default", "compact")
 	oneOf("launcher.mode", &c.Launcher.Mode, d.Launcher.Mode, "apps", "windows")

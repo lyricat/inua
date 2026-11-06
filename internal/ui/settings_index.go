@@ -46,6 +46,7 @@ func (s *shellUI) buildSettingsIndex() {
 		k.AddCssClass("index-group")
 		k.SetXalign(0)
 		heads[g.pages[0]] = k
+		st.indexHeads = append(st.indexHeads, k)
 	}
 	for _, name := range settingsPages {
 		child := st.pages.GetChildByName(name)
@@ -58,6 +59,7 @@ func (s *shellUI) buildSettingsIndex() {
 		gtkx.Append(box, &img.Widget)
 		label := gtk.NewLabel(st.pages.GetPage(child).GetTitle())
 		label.SetXalign(0)
+		st.indexLabels = append(st.indexLabels, label)
 		gtkx.Append(box, &label.Widget)
 		row := gtk.NewListBoxRow()
 		row.SetName(name)
