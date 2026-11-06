@@ -244,7 +244,7 @@ func (s *shellUI) openAppTitleMenu(b *bar) {
 	if len(sections) == 0 {
 		return
 	}
-	items := s.appMenuItems(b.connector(), appmenu.Registration{}, w.PID, sections[0].Children)
+	items := s.appMenuItems(b.connector(), b.appMenuReg, w.PID, sections[0].Children)
 	if len(items) == 0 {
 		return
 	}
