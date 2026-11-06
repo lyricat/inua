@@ -177,6 +177,10 @@ type Style struct {
 	// Radius is the corner radius of the same surfaces and the menus, 0
 	// (square) to 20 pixels; the dock's is half as much again.
 	Radius int `toml:"radius"`
+	// Animations enables motion in inua's own surfaces and asks the
+	// compositor to animate windows and workspaces. Off makes changes
+	// immediate.
+	Animations *bool `toml:"animations"`
 }
 
 // AppIconTheme is the icon theme the other apps' icons come from:
@@ -893,6 +897,10 @@ var Languages = []string{"auto", "en", "zh_CN", "zh_TW", "ja", "ko", "es", "fr"}
 var Themes = []string{"yoru", "washi", "aojashin", "suimen", "rinko", "bunko", "denko"}
 
 // Default returns the settings used when the file says nothing.
+func boolPointer(v bool) *bool { return &v }
+
+func AnimationEnabled(v *bool) bool { return v == nil || *v }
+
 func Default() Config {
 	return Config{
 		Language: "auto",
@@ -912,7 +920,7 @@ func Default() Config {
 			Lock:       "inua call lock now",
 			Screenshot: "inua call screenshot area",
 		},
-		Style:      Style{Theme: "yoru", CSS: "style.css", Icons: "phosphor", AppStyle: ObjectsTheme, EdgeGaps: true, TextScale: 100, Transparency: 16, Radius: 4},
+		Style:      Style{Theme: "yoru", CSS: "style.css", Icons: "phosphor", AppStyle: ObjectsTheme, EdgeGaps: true, TextScale: 100, Transparency: 16, Radius: 4, Animations: boolPointer(true)},
 		Background: Background{Enable: true, Fit: "cover", Generate: true},
 		Displays:   Displays{LidOff: true},
 		Notify:     Notify{Enable: true, Banner: 5, CriticalInFocus: true, Updates: true},
