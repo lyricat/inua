@@ -24,41 +24,43 @@ import (
 
 // bar is one bar.ui instance, one per monitor, alive while the monitor is.
 type bar struct {
-	mon         *gdk.Monitor           // our reference, dropped in dropBar
-	wallpaper   *gtk.ApplicationWindow // this monitor's background, if inua draws it
-	dock        *dock                  // this monitor's dock, if shown
-	win         gtk.ApplicationWindow
-	frame       gtk.Overlay // the island, and the panel hanging from it
-	island      gtk.CenterBox
-	end         gtk.Box // the bar's right end, where the clock goes for the menu
-	workspaces  gtk.Box
-	widgetsMark gtk.Button // the widget page's place, before the workspaces
-	appButton   gtk.Button
-	appPopover  gtk.Popover
-	appIcon     gtk.Image
-	title       gtk.Label
-	clock       gtk.Label
-	clipboard   gtk.Button
-	passwords   gtk.Button
-	notes       gtk.Button
-	notesIcon   gtk.Image
-	voice       gtk.Button
-	voiceIcon   gtk.Image
-	unread      gtk.Box
-	tray        gtk.Box
-	appMenu     gtk.Box // the focused application's menu (appmenu.go)
-	status      gtk.Button
-	statusIcons gtk.Box
-	netIcon     gtk.Image
-	btIcon      gtk.Image
-	volIcon     gtk.Image
-	battery     gtk.Box
-	batIcon     gtk.Image
-	batLabel    gtk.Label
-	rec         gtk.Button
-	clockButton gtk.Button // opens the calendar panel
-	recTime     gtk.Label
-	refs        gtkx.Scope
+	mon           *gdk.Monitor           // our reference, dropped in dropBar
+	wallpaper     *gtk.ApplicationWindow // this monitor's background, if inua draws it
+	dock          *dock                  // this monitor's dock, if shown
+	win           gtk.ApplicationWindow
+	frame         gtk.Overlay // the island, and the panel hanging from it
+	island        gtk.CenterBox
+	end           gtk.Box // the bar's right end, where the clock goes for the menu
+	workspaces    gtk.Box
+	widgetsMark   gtk.Button // the widget page's place, before the workspaces
+	appButton     gtk.Button
+	appPopover    gtk.Popover
+	appIcon       gtk.Image
+	title         gtk.Label
+	clock         gtk.Label
+	clipboard     gtk.Button
+	passwords     gtk.Button
+	notes         gtk.Button
+	notesIcon     gtk.Image
+	passwordIcon  gtk.Image
+	clipboardIcon gtk.Image
+	voice         gtk.Button
+	voiceIcon     gtk.Image
+	unread        gtk.Box
+	tray          gtk.Box
+	appMenu       gtk.Box // the focused application's menu (appmenu.go)
+	status        gtk.Button
+	statusIcons   gtk.Box
+	netIcon       gtk.Image
+	btIcon        gtk.Image
+	volIcon       gtk.Image
+	battery       gtk.Box
+	batIcon       gtk.Image
+	batLabel      gtk.Label
+	rec           gtk.Button
+	clockButton   gtk.Button // opens the calendar panel
+	recTime       gtk.Label
+	refs          gtkx.Scope
 
 	appMenuReg     appmenu.Registration // whose menu it shows, if any
 	appMenuPID     int                  // the process whose accessibility menu it shows, if any
@@ -197,6 +199,8 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	ui.Get("rec_time", &b.recTime)
 	ui.Get("clock_button", &b.clockButton)
 	ui.Get("notes_icon", &b.notesIcon)
+	ui.Get("password_icon", &b.passwordIcon)
+	ui.Get("clipboard_icon", &b.clipboardIcon)
 	ui.Get("voice", &b.voice)
 	ui.Get("voice_icon", &b.voiceIcon)
 	ui.Get("unread", &b.unread)
@@ -499,10 +503,13 @@ func (b *bar) setIconMetrics(size, gap int) {
 	b.end.SetSpacing(outer)
 	b.tray.SetSpacing(outer)
 	if b.statusIcons.GoPointer() != 0 {
-		b.statusIcons.SetSpacing(int32(gap))
+		// An icon button adds 10 px padding and a 1 px border on each
+		// side, so icons in one status button need the same gap to look
+		// like the icons in separate buttons.
+		b.statusIcons.SetSpacing(int32(gap + 20))
 	}
 	px := int32(size)
-	for _, img := range []*gtk.Image{&b.notesIcon, &b.voiceIcon, &b.netIcon, &b.btIcon, &b.volIcon, &b.batIcon} {
+	for _, img := range []*gtk.Image{&b.appIcon, &b.passwordIcon, &b.clipboardIcon, &b.notesIcon, &b.voiceIcon, &b.netIcon, &b.btIcon, &b.volIcon, &b.batIcon} {
 		if img.GoPointer() != 0 {
 			img.SetPixelSize(px)
 		}

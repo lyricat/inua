@@ -120,14 +120,20 @@ ApplicationWindow bar {
           focusable: false;
           visible: false;
           tooltip-text: _("Passwords");
-          icon-name: "dialog-password-symbolic";
+
+          Image password_icon {
+            icon-name: "dialog-password-symbolic";
+          }
         }
 
         Button clipboard {
           styles ["clipboard"]
           focusable: false;
           tooltip-text: _("Clipboard history");
-          icon-name: "edit-paste-symbolic";
+
+          Image clipboard_icon {
+            icon-name: "edit-paste-symbolic";
+          }
         }
 
         // Opens the notification center: a bell, a moon while Focus is on,
