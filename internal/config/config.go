@@ -93,6 +93,12 @@ type Overview struct {
 	MRU        bool `toml:"mru"`
 	PerMonitor bool `toml:"per_monitor"`
 	ShowDock   bool `toml:"show_dock"`
+	// Hints shows the line under the overview's cards: the controls, and
+	// the window under the pointer.
+	Hints bool `toml:"hints"`
+	// LauncherWorkspace makes the control shortcut, while the overview is
+	// open, go to a new workspace with the launcher and back.
+	LauncherWorkspace bool `toml:"launcher_workspace"`
 }
 
 // Quicklink is a site the launcher searches by keyword.
@@ -923,7 +929,7 @@ func Default() Config {
 			Pass:       true,
 		},
 		Launcher: Launcher{Mode: "apps", Search: "https://www.google.com/search?q=%s", Quicklinks: slices.Clone(DefaultQuicklinks)},
-		Overview: Overview{MRU: false, PerMonitor: true, ShowDock: true},
+		Overview: Overview{MRU: false, PerMonitor: true, ShowDock: true, Hints: true, LauncherWorkspace: true},
 		Control: Control{
 			Lock:       "inua call lock now",
 			Screenshot: "inua call screenshot area",

@@ -1008,6 +1008,7 @@ func (s *shellUI) buildOverview(o *workspaceOverview) {
 	gtkx.Append(&o.content, &scroll.Widget)
 	hint := gtk.NewLabel(i18n.T("Type or / to filter windows   Esc · clear / close   Arrows / Tab · select   Middle click · close   Ctrl+Shift+X · kill   Drag · move"))
 	o.hint = hint
+	hint.SetVisible(s.cfg.Overview.Hints)
 	hint.AddCssClass("overview-hint")
 	gtkx.Append(&o.content, &hint.Widget)
 	stage := gtk.NewOverlay()

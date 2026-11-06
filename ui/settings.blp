@@ -1226,6 +1226,66 @@ ApplicationWindow settings {
 
                       Label {
                         styles ["title"]
+                        label:  _("Overview hints");
+                        xalign: 0;
+                      }
+                      Label {
+                        styles ["sub"]
+                        label:  _("The line under the cards: the controls, and the window under the pointer");
+                        xalign: 0;
+                        wrap: true;
+                      }
+                    }
+
+                    Switch overview_hints {
+                      name: "overview_hints";
+                      valign: center;
+                    }
+                  }
+
+                  Separator {}
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+
+                      Label {
+                        styles ["title"]
+                        label:  _("Overview shortcut");
+                        xalign: 0;
+                      }
+                      Label {
+                        styles ["sub"]
+                        label:  _("The control shortcut in the overview: a new workspace with the launcher, and back");
+                        xalign: 0;
+                        wrap: true;
+                      }
+                    }
+
+                    Switch overview_launcher {
+                      name: "overview_launcher";
+                      valign: center;
+                    }
+                  }
+
+                  Separator {}
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+
+                      Label {
+                        styles ["title"]
                         label:  _("Hide automatically");
                         xalign: 0;
                       }

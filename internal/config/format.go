@@ -16,7 +16,7 @@ func Format(c Config) string {
 	return fmt.Sprintf(template,
 		q(c.Language),
 		c.Bar.Enable, q(c.Bar.Density), q(c.Bar.Clock), q(c.Bar.Workspaces), c.Bar.Title, c.Bar.Menu, q(c.Bar.TitleMode), c.Bar.Tray, c.Bar.Pass,
-		q(c.Launcher.Mode), q(c.Launcher.Terminal), q(c.Launcher.Search), quicklinks(c.Launcher.Quicklinks), c.Overview.MRU, c.Overview.PerMonitor, c.Overview.ShowDock,
+		q(c.Launcher.Mode), q(c.Launcher.Terminal), q(c.Launcher.Search), quicklinks(c.Launcher.Quicklinks), c.Overview.MRU, c.Overview.PerMonitor, c.Overview.ShowDock, c.Overview.Hints, c.Overview.LauncherWorkspace,
 		q(c.Control.Lock), q(c.Control.Screenshot),
 		q(c.Screenshot.Folder), c.Screenshot.Copy, q(c.Screenshot.Recordings),
 		c.OSD.Enable, q(c.OSD.Position),
@@ -265,6 +265,12 @@ mru = %t
 per_monitor = %t
 # Show the dock above the workspace overview while it is open.
 show_dock = %t
+# Show the line under the overview's cards: the controls, and the window
+# under the pointer.
+hints = %t
+# The control shortcut in the overview: a new workspace with the launcher,
+# and the same shortcut back to the overview.
+launcher_workspace = %t
 
 [control]
 # Shell commands run by the control center's buttons.

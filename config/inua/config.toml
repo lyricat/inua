@@ -109,6 +109,12 @@ mru = false
 per_monitor = true
 # Show the dock above the workspace overview while it is open.
 show_dock = true
+# Show the line under the overview's cards: the controls, and the window
+# under the pointer.
+hints = true
+# The control shortcut in the overview: a new workspace with the launcher,
+# and the same shortcut back to the overview.
+launcher_workspace = true
 
 [control]
 # Shell commands run by the control center's buttons.
