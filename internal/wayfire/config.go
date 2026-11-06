@@ -210,18 +210,39 @@ func bindsFile() string {
 // bound there: the command plugin reads its options only when it loads,
 // so a shortcut moved in inua keeps its old key too until the ini drops it.
 func (b *Backend) ApplySettings(ctx context.Context, s compositor.Settings) error {
-	input := map[string]any{}
+	options := map[string]any{}
 	if s.KbOptions != nil {
-		input["input/xkb_options"] = *s.KbOptions
+		options["input/xkb_options"] = *s.KbOptions
 	}
 	if s.TouchpadSpeed != nil {
-		input["input/touchpad_cursor_speed"] = *s.TouchpadSpeed
+		options["input/touchpad_cursor_speed"] = *s.TouchpadSpeed
 	}
 	if s.TouchpadAccel != "" {
-		input["input/touchpad_accel_profile"] = s.TouchpadAccel
+		options["input/touchpad_accel_profile"] = s.TouchpadAccel
 	}
-	if len(input) > 0 {
-		if err := b.call(ctx, "wayfire/set-config-options", input); err != nil {
+
+	// Wayfire's motion comes from plugins. Only set a plugin option when
+	// this compositor reports that it is installed.
+	if s.Animations != nil && b.has("wayfire/list-config-options") {
+		body, err := b.Client.Call(ctx, "wayfire/list-config-options", nil)
+		if err != nil {
+			return err
+		}
+		var listed struct {
+			Options map[string]map[string]json.RawMessage `json:"options"`
+		}
+		if err := json.Unmarshal(body, &listed); err != nil {
+			return fmt.Errorf("wayfire: list-config-options: %w", err)
+		}
+		for _, key := range []string{"animate/enabled", "fade/enabled", "zoom/enabled", "fire/enabled", "extra-animations/enabled"} {
+			section, option, _ := strings.Cut(key, "/")
+			if _, ok := listed.Options[section][option]; ok {
+				options[key] = *s.Animations
+			}
+		}
+	}
+	if len(options) > 0 {
+		if err := b.call(ctx, "wayfire/set-config-options", options); err != nil {
 			return err
 		}
 	}

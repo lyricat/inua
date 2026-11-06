@@ -26,7 +26,7 @@ notifications, a dock, a wallpaper, settings, and a set of apps.
 
 | | |
 | --- | --- |
-| **Bar** | Workspaces, the focused window, the clock and calendar, the tray. One per monitor. |
+| **Bar** | Workspaces, the window of its own monitor (the focused one there, else the last focused there) with its application menu, the clock and calendar, the tray. One per monitor. |
 | **Launcher** | Apps, windows and commands in one search; also arithmetic, units, currencies, emoji (`:`) and the assistant (`?`). |
 | **Overview** | Live previews of every workspace (Hyprland 0.55+). |
 | **Control center** | Wi-Fi, Bluetooth, Focus, Tailscale, brightness, volume, media and power. |
