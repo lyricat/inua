@@ -45,29 +45,39 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
                   </object>
                 </child>
                 <child>
-                  <object class="GtkBox" id="app_title">
+                  <object class="GtkButton" id="app_title">
                     <style>
                       <class name="app-title"/>
+                      <class name="plain"/>
+                      <class name="tight"/>
                     </style>
-                    <property name="spacing">7</property>
+                    <property name="name">app-title</property>
+                    <property name="has-frame">false</property>
+                    <property name="focusable">false</property>
                     <property name="valign">3</property>
                     <child>
-                      <object class="GtkImage" id="app_icon">
-                        <style>
-                          <class name="app-icon"/>
-                        </style>
-                        <property name="pixel-size">16</property>
+                      <object class="GtkBox">
+                        <property name="spacing">7</property>
                         <property name="valign">3</property>
-                        <property name="visible">false</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="title">
-                        <style>
-                          <class name="title"/>
-                        </style>
-                        <property name="ellipsize">3</property>
-                        <property name="max-width-chars">48</property>
+                        <child>
+                          <object class="GtkImage" id="app_icon">
+                            <style>
+                              <class name="app-icon"/>
+                            </style>
+                            <property name="pixel-size">16</property>
+                            <property name="valign">3</property>
+                            <property name="visible">false</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="title">
+                            <style>
+                              <class name="title"/>
+                            </style>
+                            <property name="ellipsize">3</property>
+                            <property name="max-width-chars">48</property>
+                          </object>
+                        </child>
                       </object>
                     </child>
                   </object>

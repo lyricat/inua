@@ -33,6 +33,8 @@ type bar struct {
 	end         gtk.Box // the bar's right end, where the clock goes for the menu
 	workspaces  gtk.Box
 	widgetsMark gtk.Button // the widget page's place, before the workspaces
+	appButton   gtk.Button
+	appPopover  gtk.Popover
 	appIcon     gtk.Image
 	title       gtk.Label
 	clock       gtk.Label
@@ -175,6 +177,7 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	ui.Get("end", &b.end)
 	ui.Get("workspaces", &b.workspaces)
 	ui.Get("widgets", &b.widgetsMark)
+	ui.Get("app_title", &b.appButton)
 	ui.Get("app_icon", &b.appIcon)
 	overviewClick := gtk.NewGestureClick()
 	overviewClick.SetButton(3)
@@ -246,6 +249,7 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	if s.control.open && !s.control.closing {
 		b.status.AddCssClass("open")
 	}
+	b.appButton.ConnectClicked(&s.onAppTitle)
 	b.setStatus(&s.sys)
 	b.setHypr(s, s.snap)
 	b.setClock(s, time.Now())
@@ -473,6 +477,7 @@ func (b *bar) setHypr(s *shellUI, snap compositor.Snapshot) {
 		b.appIcon.SetVisible(d.Logo != "")
 	}
 	b.title.SetVisible(s.cfg.Bar.Title)
+	b.appButton.SetVisible(s.cfg.Bar.Title)
 	order := s.overview.st
 	order.MRU = s.cfg.Overview.MRU
 	b.workspaces.SetVisible(s.cfg.Bar.Workspaces != "none")

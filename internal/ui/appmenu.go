@@ -225,6 +225,36 @@ func withDbusmenuActions(entries []appmenu.Entry, reg appmenu.Registration) []ap
 	return entries
 }
 
+// openAppTitleMenu hangs the menu every window has (About, Close, Quit,
+// Fullscreen, Float) under the application's icon and name.
+func (s *shellUI) openAppTitleMenu(b *bar) {
+	if b.appPopover.GoPointer() != 0 {
+		if b.appPopover.GetVisible() {
+			b.appPopover.Popdown()
+			return
+		}
+		b.appPopover.Unparent()
+		b.appPopover = gtk.Popover{}
+	}
+	w, ok := shell.BarWindow(s.snap, b.connector())
+	if !ok {
+		return
+	}
+	sections := s.genericAppSections(w.PID)
+	if len(sections) == 0 {
+		return
+	}
+	items := s.appMenuItems(b.connector(), appmenu.Registration{}, w.PID, sections[0].Children)
+	if len(items) == 0 {
+		return
+	}
+	pop := uikit.NewMenu(items, uikit.Below)
+	pop.SetParent(&b.appButton.Widget)
+	pop.Unref() // the button owns it
+	pop.Popup()
+	b.appPopover = *pop
+}
+
 // appMenuUnreadable reports whether pid's menu bar cannot be read: VS Code
 // draws its menu bar itself and exposes only an overflow item on the
 // accessibility bus.
@@ -377,6 +407,14 @@ func (s *shellUI) renderAppMenu(b *bar, entries []appmenu.Entry) {
 }
 
 func (s *shellUI) bindAppMenuHandlers() {
+	s.onAppTitle = func(btn gtk.Button) {
+		for _, b := range s.bars {
+			if b.appButton.GoPointer() == btn.GoPointer() {
+				s.openAppTitleMenu(b)
+				return
+			}
+		}
+	}
 	s.onAppMenuClicked = func(btn gtk.Button) {
 		i, err := strconv.Atoi(btn.GetName())
 		if err != nil {
