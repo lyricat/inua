@@ -170,6 +170,7 @@ type shellUI struct {
 	onTrayPressed          func(gtk.GestureClick, int32, float64, float64)
 	onTrayMenuClosed       func(gtk.Popover)
 	onAppMenuClicked       func(gtk.Button)
+	onLauncherRight        func(gtk.GestureClick, int32, float64, float64)
 	onAppMenuClosed        func(gtk.Popover)
 	onSettingsEntry        func(uintptr, uintptr)
 	onSettingsSwitch       func(gtk.Switch, bool) bool
