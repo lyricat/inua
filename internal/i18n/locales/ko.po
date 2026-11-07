@@ -2885,7 +2885,7 @@ msgid "Size"
 msgstr "크기"
 
 #: internal/diskui/details.go:49
-#: internal/ui/appmenu.go:364
+#: internal/ui/appmenu.go:368
 #: internal/ui/settings_menu.go:25
 msgid "File"
 msgid_plural "Files"
@@ -3104,7 +3104,7 @@ msgstr "홈"
 #: internal/lightui/sysmon.go:969
 #: internal/lightui/tailscale.go:527
 #: internal/lightui/tailscale.go:568
-#: internal/ui/bar.go:471
+#: internal/ui/bar.go:478
 #: internal/ui/settings.go:652
 #: ui/vm.ui:2981
 msgid "System"
@@ -3535,7 +3535,7 @@ msgstr[0] "… 그 외 %d개"
 #: internal/termui/keys.go:295
 #: internal/termui/sessionmenu.go:113
 #: internal/termui/wsmenu.go:129
-#: internal/ui/appmenu.go:408
+#: internal/ui/appmenu.go:412
 #: internal/ui/settings_bench.go:132
 #: internal/ui/settings_menu.go:26
 #: internal/ui/settings_wifi_details.go:62
@@ -8377,7 +8377,7 @@ msgstr "우주 핀볼"
 
 #: internal/hyprconf/keys.go:23
 #: internal/shell/dock.go:312
-#: internal/ui/appmenu.go:271
+#: internal/ui/appmenu.go:275
 #: ui/settings.ui:2385
 msgid "Launcher"
 msgstr "실행기"
@@ -8399,7 +8399,7 @@ msgid "Notification center"
 msgstr "알림 센터"
 
 #: internal/hyprconf/keys.go:28
-#: ui/bar.ui:174
+#: ui/bar.ui:178
 msgid "Clipboard history"
 msgstr "클립보드 기록"
 
@@ -8418,7 +8418,7 @@ msgstr "포커스 온 또는 오프"
 #: internal/term/settings/settings.go:126
 #: internal/term/web/strings.go:96
 #: internal/termui/headmenu.go:110
-#: internal/ui/appmenu.go:270
+#: internal/ui/appmenu.go:274
 #: ui/control.ui:58
 #: ui/settings.ui:30
 msgid "Settings"
@@ -8461,7 +8461,7 @@ msgstr "색상을 선택하세요"
 
 #: internal/hyprconf/keys.go:40
 #: internal/ui/voice_page.go:169
-#: ui/bar.ui:215
+#: ui/bar.ui:223
 #: ui/settings.ui:6765
 msgid "Dictation"
 msgstr "받아쓰기"
@@ -8768,7 +8768,7 @@ msgstr "%s 제거"
 
 #: internal/lightui/clock.go:404
 #: internal/termui/menubar.go:31
-#: internal/ui/appmenu.go:367
+#: internal/ui/appmenu.go:371
 #: ui/pass.ui:252
 msgid "Edit"
 msgstr "편집하다"
@@ -10448,7 +10448,7 @@ msgstr "계정"
 
 #: internal/lightui/tailscale.go:664
 #: internal/shell/commands.go:31
-#: internal/ui/appmenu.go:280
+#: internal/ui/appmenu.go:284
 msgid "Log Out"
 msgstr "로그아웃"
 
@@ -12724,7 +12724,7 @@ msgid "Desktop"
 msgstr "데스크톱"
 
 #: internal/shell/commands.go:27
-#: internal/ui/appmenu.go:275
+#: internal/ui/appmenu.go:279
 msgid "Lock Screen"
 msgstr "화면 잠금"
 
@@ -12743,7 +12743,7 @@ msgstr "일시 중지, 먼저 잠금"
 
 #: internal/shell/commands.go:29
 #: internal/termui/restart.go:44
-#: internal/ui/appmenu.go:288
+#: internal/ui/appmenu.go:292
 #: internal/ui/control.go:541
 #: ui/control.ui:168
 msgid "Restart"
@@ -12758,7 +12758,7 @@ msgid "Press Enter again to restart"
 msgstr "Enter를 다시 누르면 다시 시작합니다"
 
 #: internal/shell/commands.go:30
-#: internal/ui/appmenu.go:289
+#: internal/ui/appmenu.go:293
 msgid "Shut Down"
 msgstr "종료"
 
@@ -12896,7 +12896,7 @@ msgid "Start the shell again"
 msgstr "셸을 다시 시작합니다."
 
 #: internal/shell/commands.go:46
-#: internal/ui/appmenu.go:365
+#: internal/ui/appmenu.go:369
 msgid "Close Window"
 msgstr "창 닫기"
 
@@ -12911,7 +12911,7 @@ msgid "Toggle Fullscreen"
 msgstr "전체 화면 전환"
 
 #: internal/shell/commands.go:49
-#: internal/ui/appmenu.go:373
+#: internal/ui/appmenu.go:377
 msgid "Center Window"
 msgstr "창 가운데로 이동"
 
@@ -12975,7 +12975,7 @@ msgid "Find apps, windows and answers"
 msgstr "앱, 창 및 답변 찾기"
 
 #: internal/shell/dock.go:313
-#: internal/ui/appmenu.go:272
+#: internal/ui/appmenu.go:276
 #: internal/ui/screenshot.go:1144
 #: ui/settings.ui:2345
 msgid "Screenshot"
@@ -13150,14 +13150,14 @@ msgid "Performance"
 msgstr "성능"
 
 #: internal/shell/power.go:24
-#: internal/ui/appmenu.go:287
+#: internal/ui/appmenu.go:291
 #: internal/ui/control.go:539
 #: ui/control.ui:120
 msgid "Suspend"
 msgstr "절전"
 
 #: internal/shell/power.go:26
-#: internal/ui/appmenu.go:283
+#: internal/ui/appmenu.go:287
 #: internal/ui/control.go:540
 #: ui/control.ui:144
 msgid "Hibernate"
@@ -14030,13 +14030,13 @@ msgid "Choose the workspace's folder"
 msgstr "작업 공간의 폴더 선택"
 
 #: internal/termui/menubar.go:32
-#: internal/ui/appmenu.go:370
+#: internal/ui/appmenu.go:374
 #: internal/ui/settings_menu.go:28
 msgid "View"
 msgstr "보기"
 
 #: internal/termui/menubar.go:34
-#: internal/ui/appmenu.go:374
+#: internal/ui/appmenu.go:378
 msgid "Help"
 msgstr "도움말"
 
@@ -14237,7 +14237,7 @@ msgstr "bash, zsh, fish가 프롬프트를 표시해 명령을 기억할 수 있
 
 #: internal/termui/prefs.go:184
 #: internal/ui/notify.go:324
-#: ui/bar.ui:185
+#: ui/bar.ui:193
 #: ui/settings.ui:3755
 msgid "Notifications"
 msgstr "알림"
@@ -14432,37 +14432,37 @@ msgstr "알람 · %02d:%02d"
 msgid "Snooze"
 msgstr "다시 알림"
 
-#: internal/ui/appmenu.go:273
-#: ui/bar.ui:230
+#: internal/ui/appmenu.go:277
+#: ui/bar.ui:238
 msgid "Control Center"
 msgstr "제어 센터"
 
-#: internal/ui/appmenu.go:366
+#: internal/ui/appmenu.go:370
 msgid "Quit %s"
 msgstr ""
 
-#: internal/ui/appmenu.go:368
+#: internal/ui/appmenu.go:372
 msgid "Copy Window Title"
 msgstr "창 제목 복사"
 
-#: internal/ui/appmenu.go:369
+#: internal/ui/appmenu.go:373
 msgid "Copy Window Class"
 msgstr "창 클래스 복사"
 
-#: internal/ui/appmenu.go:371
+#: internal/ui/appmenu.go:375
 msgid "Fullscreen"
 msgstr "전체 화면"
 
-#: internal/ui/appmenu.go:372
+#: internal/ui/appmenu.go:376
 msgid "Float"
 msgstr "떠 있는 창"
 
-#: internal/ui/appmenu.go:375
-#: internal/ui/appmenu.go:394
+#: internal/ui/appmenu.go:379
+#: internal/ui/appmenu.go:398
 msgid "About %s"
 msgstr ""
 
-#: internal/ui/appmenu.go:406
+#: internal/ui/appmenu.go:410
 msgid "Process %d"
 msgstr ""
 
@@ -14663,11 +14663,11 @@ msgstr "스크린샷을 위해 숨겨집니다."
 msgid "The passphrases do not match."
 msgstr "암호 문구가 일치하지 않습니다."
 
-#: internal/ui/bar.go:568
+#: internal/ui/bar.go:578
 msgid "Workspace %s"
 msgstr "작업공간 %s"
 
-#: internal/ui/bar.go:581
+#: internal/ui/bar.go:591
 msgid "WORKSPACE"
 msgstr "작업 공간"
 
@@ -14877,7 +14877,7 @@ msgstr "hyprland.lua가 inua.lua를 불러온 뒤 이 항목을 다시 설정하
 msgid "hyprland.conf sets these again after loading inua.conf, which wins over inua: %s. Move the source line below them."
 msgstr "hyporland.conf는 inua.conf를 로드한 후 이를 다시 설정하며, 이는 inua: %s를 이깁니다. 소스 줄을 그 아래로 이동하세요."
 
-#: internal/ui/launcher.go:546
+#: internal/ui/launcher.go:562
 msgid "inua launcher"
 msgstr "이누아 런처"
 
