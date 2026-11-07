@@ -474,8 +474,14 @@ func (s *shellUI) bindAppMenuHandlers() {
 		if err != nil {
 			return
 		}
+		parent := btn.GetParent()
+		if parent == nil {
+			return
+		}
 		for _, b := range s.bars {
-			if i < 0 || i >= len(b.appMenuEntries) {
+			// The buttons of a bar's menu are its box's children; another
+			// bar's menu may have a button with the same index.
+			if b.appMenu.GoPointer() != parent.GoPointer() || i < 0 || i >= len(b.appMenuEntries) {
 				continue
 			}
 			entry := b.appMenuEntries[i]
