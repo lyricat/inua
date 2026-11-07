@@ -89,3 +89,6 @@ Codex reviewed all 28 changed files in origin/master...HEAD. The previous bare-e
 Validation: make test passed in an isolated throwaway HOME/runtime after correcting temporary-path, device and AppArmor isolation configuration: 18 Python tests, go vet, and race tests across 113 Go packages passed. Export audit and publication lifecycle tests passed. Private-bus and callback probes confirmed the findings; diff whitespace and Go formatting checks passed.
 Installs: none. UI was not visually checked or exercised on the live desktop. The coder could not locate its review-code skill; concrete-example review standards were supplied in its task. D-Bus boundaries were inspected with no additional confirmed security finding. Source PR #73 has separate upstream changes, which were not incorporated or reviewed here.
 Item stays in review/ for the owner to decide; add a note and move to new/ for fixes. No recovery was needed.
+
+## Lyric · 2026-11-07 11:44
+Move ft75 back to new
