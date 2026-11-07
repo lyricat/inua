@@ -13,7 +13,11 @@ gaps between them, and the status button into the corner, so the pointer
 thrown at the edge lands on one. Scrolling on the status button, its
 reach as well, adjusts the volume 5% a notch; on the workspaces, it goes
 to the next workspace the bar shows (down) or the previous one (up), a
-notch a step, stopping at the ends. One per monitor.
+notch a step, stopping at the ends. One per monitor. Each bar follows the
+last focused window on its visible workspace; on Hyprland, that window
+keeps a blue outline when focus moves to another display. The active window
+keeps Hyprland's own outline. The app menu
+stays with the window represented by its bar.
 
 ## Engawa
 
@@ -64,8 +68,10 @@ One search for apps and open windows (Super+Space), ranked by
 prefix, word starts and subsequences; Enter launches or focuses, Tab
 opens the selected result's other actions (an app's own, such as
 Firefox's New Private Window, a new window of it, keeping it in the
-dock, quitting it; closing, floating or centring a window), Esc returns focus where it
-was. It also answers: arithmetic (`2^10 + 3`),
+dock, quitting it; closing, floating or centring a window). Right-click a
+result to open those actions, including pinning or removing an app from the
+dock, launching a new window, running its desktop actions, and quitting it.
+Esc returns focus where it was. It also answers: arithmetic (`2^10 + 3`),
 units (`10 km to mi`, `32 f in c`) and currencies (`100 usd to jpy`, ECB
 rates, or the Bank of England's when Frankfurter is down) and crypto
 (`1 eth to usd`, `100 usd to btc`, Coinbase's prices);
