@@ -50,3 +50,22 @@ func (r *Registrar) Native(pid int) (Registration, bool) {
 	}
 	return Registration{PID: uint32(pid), Service: found, Path: nativeMenuPath}, true
 }
+
+// Focused finds the menu of the focused process: the one it registered with
+// the registrar first, the one an inua application published second. A
+// process that registered windows with menus the registrar cannot choose
+// between gets none, not a published one in their place.
+func (r *Registrar) Focused(pid int) (Registration, bool) {
+	if reg, ok, seen := r.forPID(pid); seen {
+		return reg, ok
+	}
+	return r.Native(pid)
+}
+
+// Current is whether reg is still the menu Focused finds for pid: a menu
+// read or opened for an application that lost the focus, or whose menu went
+// away or was replaced meanwhile, is no longer acted on.
+func (r *Registrar) Current(reg Registration, pid int) bool {
+	current, ok := r.Focused(pid)
+	return ok && current == reg
+}
