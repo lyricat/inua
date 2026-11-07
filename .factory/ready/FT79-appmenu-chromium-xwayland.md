@@ -49,3 +49,14 @@ Commits: 06358115 merges origin/master (conflict in internal/ui/appmenu.go with 
 Tests: new `TestFocusedChromiumMenu` (found, read, clicked; registered menu first; two windows and two connections show none; replacement found) and `TestNativeNameTellsOfChange`. `make generate` and `make i18n` changed nothing. `make test` passed with a throwaway HOME (Python tests, go vet, Go race tests).
 
 Not checked: the UI was not looked at, and no Chromium over XWayland was run here; the unresponsive-endpoint timing was not re-measured. Installs: none.
+
+## factory · review · 2026-11-07 22:00
+head: 07d5e72e57801f92e9a0c20ba693598bbe8dd9c1
+verdict: pass
+notes:
+- [P2] internal/ui/appmenu.go:84: A missing Chromium menu remains cached until focus changes. Reproduction: same-PID endpoints /4000001 and /4000002 are rejected as ambiguous; removing the second, emitting LayoutUpdated and updating 20 snapshots still shows no menu, although Focused now returns /4000001. Invalidate discovery on relevant endpoint/window changes and provide bounded retries after no result.
+- [P2] internal/ui/appmenu.go:357: Activation does not recheck focus after asynchronous Current validation. Reproduction: start item 17 on window A, block Current on D-Bus, focus B and clear A's cached menu, then release validation; A still receives clicked(17). Recheck window/request generation on the main thread after validation before sending the click.
+- No P0/P1 product findings. Factory gate passes with P2 notes; the coder's generic fix recommendation is not the factory verdict.
+- Codex reviewed all four files in origin/master (8db50f3)...HEAD. Merge check clean. Previous blocking guard and synchronous-discovery defects verified fixed: discovery returns asynchronously (~15 microseconds), repeated snapshots do not rescan, stale results are discarded, ambiguity rejected, unresponsive endpoint times out (~2.002 seconds).
+- Final make test passed with isolated HOME/runtime: Python 18 tests, go vet, Go race tests (113 packages passed, 97 cached). Temporary overlay probes reproduced the P2 findings. Initial AppArmor read-only query failure also reproduced on base and resolved by correcting isolation; a probe synchronization error was corrected. No remaining product test failure.
+- HEAD and tracked files unchanged. Installs: none. UI not visually checked; real Chromium/XWayland and browser endpoint lifecycle not integration-tested.
