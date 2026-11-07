@@ -55,6 +55,7 @@ type bar struct {
 	clockButton gtk.Button // opens the calendar panel
 	recTime     gtk.Label
 	refs        gtkx.Scope
+	focusRing   *focusRing
 
 	appMenuReg     appmenu.Registration // whose menu it shows, if any
 	appMenuTop     []appMenuTop         // the buttons, as last drawn
@@ -157,6 +158,7 @@ func (s *shellUI) dropBar(b *bar) {
 	delete(s.bars, b.mon.GoPointer())
 	dropWallpaper(b)
 	dropDock(b)
+	b.dropFocusRing()
 	b.win.Destroy()
 	b.refs.Release()
 	b.mon.Unref()
@@ -409,6 +411,7 @@ func (b *bar) setHypr(s *shellUI, snap compositor.Snapshot) {
 		b.win.AddCssClass("empty")
 	}
 	win, hasWindow := shell.BarWindow(snap, name)
+	b.setFocusRing(s, snap, win, hasWindow)
 	if hasWindow {
 		appName, icon := win.AppID, win.AppID
 		if appName == "" {
