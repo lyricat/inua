@@ -1115,5 +1115,9 @@ func overviewWindowLayout(w compositor.Window, boxX, boxY, boxW, boxH, thumbW, t
 	offsetY := (thumbH - boxH*scale) / 2
 	x, y = (ax-boxX)*scale+offsetX, (ay-boxY)*scale+offsetY
 	pw, ph = max(24, ww*scale), max(24, wh*scale)
+	// Keep windows that are partly outside the captured content box visible:
+	// otherwise tiled windows at the monitor edge disappear from the preview.
+	x = max(-pw+24, min(x, thumbW-24))
+	y = max(-ph+24, min(y, thumbH-24))
 	return x, y, pw, ph
 }
