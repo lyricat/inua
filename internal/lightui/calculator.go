@@ -216,7 +216,7 @@ func (a *calcApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	}
 	a.show(nil)
 	a.expr.GrabFocusWithoutSelecting()
-	menuWindow(c, win, []appui.MenuGroup{{Title: "Edit", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{{Name: "calc-copy", Label: "Copy result", Activate: func(gio.SimpleAction, uintptr) { a.copy(a.active) }}, {Name: "calc-history", Label: "History", Activate: func(gio.SimpleAction, uintptr) { a.historyReveal.SetRevealChild(true) }}}}}}})
+	menuWindow(c, win, []appui.MenuGroup{{Title: "Edit", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{{Name: "calc-copy", Label: "Copy result", Activate: func(gio.SimpleAction, uintptr) { a.copy(&a.result) }}, {Name: "calc-history", Label: "History", Activate: func(gio.SimpleAction, uintptr) { a.historyReveal.SetRevealChild(true) }}}}}}})
 	return win
 }
 
