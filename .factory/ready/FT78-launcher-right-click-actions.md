@@ -44,3 +44,12 @@ notes:
 - Full make test passed: 18 Python tests, go vet, 112 Go race-tested packages passed (uncached), 34 packages without tests. hyprconf passed. git diff --check and gofmt checks passed.
 - make i18n succeeded in an isolated copy; comparison against committed catalogs returned 1 with source-line differences 559 -> 561. Worktree remained clean.
 - No installs. UI not visually or interactively tested; focus, event ordering and animations remain unverified at runtime. No merge to master or tag performed.
+
+## factory · review · 2026-11-07 16:16
+head: ade5b27227bd5945d0ab0ef2841964c6b8acc51a
+verdict: pass
+notes:
+- Owner authorized directly fixing the remaining CI issue. Codex regenerated and committed only seven source-location references (launcher.go:559 -> 561) in po/inua.pot and six locale catalogs; manager inspected the complete diff. No functional changes.
+- Prior full Codex review of 3fdac202 applies with this catalog-only delta; the sole remaining P1 generated-file gate is resolved. Moved review -> ready.
+- Codex validation: full make test passed (18 Python tests, go vet, Go race tests) with isolated HOME and XDG_RUNTIME_DIR mode 0700. Post-commit make generate and make i18n produced no tracked changes; git diff --check passed; worktree clean.
+- Fix pushed to factory/FT78-launcher-right-click-actions, not the upstream author's branch. No installs. Remote CI and live desktop UI not verified. No merge to master or tag.
