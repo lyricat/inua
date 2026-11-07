@@ -8,7 +8,6 @@ import (
 	"sync"
 
 	"github.com/godbus/dbus/v5"
-
 	"github.com/lyricat/inua/internal/dbusexport"
 )
 
