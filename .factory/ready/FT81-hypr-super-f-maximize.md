@@ -17,3 +17,12 @@ PR description (quoted):
 > The sample Hyprland config bound Super+F to fullscreen, which covers the bar and dock. Bind it to fullscreen state 1 (maximized): the window fills its workspace while panels stay visible, and pressing it again restores the window.
 > 
 > Verified by loading the Lua binding in the running Hyprland (no config errors) and by the classic dispatcher's documented state 1.
+
+## factory · review · 2026-11-07 13:57
+head: a85ab17f0c0608555344cd9e8aefa297db7917f5
+verdict: pass
+notes:
+- No qualifying introduced defects found. Codex reviewed the complete origin/master...HEAD diff: one line in config/hypr/hyprland.conf, changing Super+F to fullscreen state 1. Branch merges cleanly with origin/master; HEAD and tracked files unchanged.
+- Validation: final make test exited 0: Python 18 tests passed, go vet passed, Go race tests passed for 112 packages (96 cached); 34 packages had no tests. Initial isolation-environment failures involving /dev/null and AppArmor queries were resolved without product changes. Hyprland 0.53.3 --verify-config returned config ok, exit 0.
+- Non-pinned installs: none. UI not visually checked; panel preservation and repeated keypress behavior were not independently exercised on a desktop.
+- The diff changes only the classic sample configuration, not a Lua binding. The PR author's Lua verification claim was not independently verified; no broader Lua support is certified by this review.
