@@ -54,6 +54,19 @@ func TestSampleIsDefaults(t *testing.T) {
 	}
 }
 
+func TestAnimationsDefaultAndOverride(t *testing.T) {
+	if Default().Style.Animations == nil || !*Default().Style.Animations {
+		t.Fatal("animations should be enabled by default")
+	}
+	c, warnings, err := Load(write(t, "[style]\nanimations = false\n"))
+	if err != nil || len(warnings) != 0 {
+		t.Fatalf("Load: warnings=%v err=%v", warnings, err)
+	}
+	if c.Style.Animations == nil || *c.Style.Animations {
+		t.Fatal("animations=false was not kept")
+	}
+}
+
 func TestPartialOverride(t *testing.T) {
 	path := write(t, `
 [bar]

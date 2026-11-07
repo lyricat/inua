@@ -52,7 +52,7 @@ msgstr "正确的方法："
 
 #: cmd/inua-keyring/main.go:117
 #: internal/ui/settings_keyring.go:324
-#: ui/settings.ui:3993
+#: ui/settings.ui:4036
 msgid "Keyring"
 msgstr "钥匙环"
 
@@ -133,7 +133,7 @@ msgid "Black"
 msgstr "黑"
 
 #: internal/apps/calendar/calendar.go:69
-#: internal/lightui/clock.go:219
+#: internal/lightui/clock.go:220
 #: internal/ui/control.go:322
 #: internal/ui/lock.go:248
 #: internal/ui/widgets.go:987
@@ -173,7 +173,7 @@ msgstr "周日"
 #: internal/apps/clock/clock.go:69
 #: internal/config/strftime.go:50
 #: internal/i18n/time.go:11
-#: internal/lightui/weather.go:358
+#: internal/lightui/weather.go:360
 #: internal/mailui/window.go:1438
 #: internal/shell/notify.go:28
 #: internal/ui/agenda.go:371
@@ -224,7 +224,7 @@ msgid "Weekends"
 msgstr "周末"
 
 #: internal/apps/clock/clock.go:112
-#: internal/lightui/weather.go:360
+#: internal/lightui/weather.go:362
 #: internal/ui/widgets.go:1047
 #: ui/agenda.ui:80
 #: ui/calendar.ui:39
@@ -348,9 +348,9 @@ msgid "%d%%, charging"
 msgstr "%d%%，正在充电"
 
 #: internal/apps/connect/service.go:520
-#: internal/ui/settings.go:346
-#: internal/ui/settings.go:791
-#: internal/ui/settings.go:897
+#: internal/ui/settings.go:348
+#: internal/ui/settings.go:794
+#: internal/ui/settings.go:901
 #: internal/ui/settings_displays.go:460
 msgid "%d%%"
 msgstr "%d%%"
@@ -374,7 +374,7 @@ msgstr "来自 %s 的文件"
 #: internal/apps/connect/share.go:129
 #: internal/filesui/cards.go:678
 #: internal/filesui/picker.go:488
-#: internal/filesui/window.go:801
+#: internal/filesui/window.go:808
 #: internal/lightui/workshop_blocks.go:427
 #: internal/lightui/workshop_manager.go:63
 #: internal/mailui/actions.go:533
@@ -587,7 +587,7 @@ msgstr "开发"
 #: internal/mailui/settings.go:548
 #: ui/mail-compose.ui:269
 #: ui/mail.ui:384
-#: ui/settings.ui:2318
+#: ui/settings.ui:2361
 msgid "AI"
 msgstr "人工智能"
 
@@ -1217,7 +1217,7 @@ msgstr "项目的历史、分支和 stash；未推送的内容只存在于这里
 #: internal/filesui/pane.go:1068
 #: internal/filesui/sidebar.go:50
 #: internal/filesui/tabs.go:97
-#: internal/filesui/window.go:307
+#: internal/filesui/window.go:314
 #: internal/mailui/window.go:779
 msgid "Trash"
 msgstr "垃圾箱"
@@ -1744,8 +1744,8 @@ msgid "%d mo ago"
 msgstr "%d 个月前"
 
 #: internal/apps/tailscale/status.go:187
-#: internal/lightui/gpg.go:384
-#: internal/lightui/gpg.go:655
+#: internal/lightui/gpg.go:385
+#: internal/lightui/gpg.go:656
 msgid "expired %s"
 msgstr "过期%s"
 
@@ -1833,7 +1833,7 @@ msgid "Thunderstorm"
 msgstr "雷暴"
 
 #: internal/apps/weather/weather.go:214
-#: internal/lightui/sysmon.go:1081
+#: internal/lightui/sysmon.go:1083
 #: internal/vmui/window.go:2335
 msgid "Unknown"
 msgstr "未知"
@@ -1927,7 +1927,7 @@ msgstr "正在用这些工具运行脚本"
 
 #: internal/assistantui/assistantui.go:38
 #: ui/assistant.ui:35
-#: ui/settings.ui:2397
+#: ui/settings.ui:2440
 #: config/apps/io.github.lyricat.Inua.Assistant.desktop:3
 msgid "Assistant"
 msgstr "助手"
@@ -1961,7 +1961,7 @@ msgid "Could not start the Console endpoint: %s"
 msgstr "无法启动控制台端点：%s"
 
 #: internal/assistantui/assistantui.go:528
-#: internal/lightui/clock.go:497
+#: internal/lightui/clock.go:498
 #: internal/ui/alarms.go:108
 #: ui/disk.ui:179
 #: ui/mail-compose.ui:375
@@ -2041,17 +2041,17 @@ msgid "Canceled"
 msgstr "已取消"
 
 #: internal/assistantui/assistantui.go:759
-#: ui/settings.ui:4240
+#: ui/settings.ui:4283
 msgid "Allowed"
 msgstr "允许"
 
 #: internal/assistantui/assistantui.go:793
 #: internal/diskui/details.go:581
-#: internal/filesui/window.go:817
+#: internal/filesui/window.go:824
 #: internal/gamesui/lobbyhost.go:169
-#: internal/lightui/calculator.go:350
-#: internal/lightui/pass.go:753
-#: internal/lightui/pass.go:778
+#: internal/lightui/calculator.go:351
+#: internal/lightui/pass.go:754
+#: internal/lightui/pass.go:779
 #: internal/mailui/details.go:222
 #: internal/shell/launcher_actions.go:59
 #: internal/term/settings/settings.go:119
@@ -2063,7 +2063,7 @@ msgstr "允许"
 #: ui/disk.ui:697
 #: ui/gpg.ui:764
 #: ui/gpg.ui:1010
-#: ui/settings.ui:3196
+#: ui/settings.ui:3239
 #: ui/vm.ui:639
 msgid "Copy"
 msgstr "复制"
@@ -2140,7 +2140,7 @@ msgid "The service is starting."
 msgstr "服务正在启动。"
 
 #: internal/connectui/window.go:387
-#: internal/lightui/video.go:530
+#: internal/lightui/video.go:531
 #: internal/mailui/settings.go:530
 #: internal/shell/notify.go:44
 #: internal/shell/status.go:103
@@ -2154,7 +2154,7 @@ msgstr "服务正在启动。"
 #: internal/ui/settings_displays.go:431
 #: internal/ui/settings_wifi.go:285
 #: ui/remote.ui:359
-#: ui/settings.ui:5936
+#: ui/settings.ui:5979
 msgid "Off"
 msgstr "关闭"
 
@@ -2192,7 +2192,7 @@ msgstr "%s 请求配对。仅当它显示此密钥时才配对："
 #: internal/filesui/renamemany.go:37
 #: internal/games/fortunenet/texts.go:76
 #: internal/gamesui/fortune_host.go:334
-#: internal/lightui/workshop.go:982
+#: internal/lightui/workshop.go:983
 #: internal/mailui/dialog.go:92
 #: internal/remoteui/window.go:811
 #: internal/term/web/strings.go:29
@@ -2257,14 +2257,14 @@ msgstr "已请求 %s 连接。"
 #: internal/filesui/archive.go:76
 #: internal/filesui/remotesetup.go:226
 #: internal/filesui/renamemany.go:168
-#: internal/lightui/sysmon.go:966
-#: internal/lightui/tailscale.go:631
+#: internal/lightui/sysmon.go:968
+#: internal/lightui/tailscale.go:632
 #: internal/ui/settings_ai.go:486
 #: internal/viewerui/app.go:806
 #: ui/connect.ui:291
 #: ui/files.ui:233
 #: ui/gpg.ui:1445
-#: ui/settings.ui:5071
+#: ui/settings.ui:5114
 #: ui/sysmon.ui:96
 msgid "Name"
 msgstr "名称"
@@ -2274,7 +2274,7 @@ msgid "What it runs: systemctl suspend"
 msgstr "运行的内容：systemctl suspend"
 
 #: internal/connectui/window.go:560
-#: internal/lightui/pass.go:1152
+#: internal/lightui/pass.go:1153
 #: internal/lightui/workshop_manager.go:115
 #: internal/mailui/actions.go:469
 #: internal/mailui/compose.go:474
@@ -2836,7 +2836,7 @@ msgstr "打开文件夹"
 #: internal/termui/quick.go:47
 #: internal/termui/quick.go:145
 #: internal/termui/tiles.go:756
-#: ui/settings.ui:2129
+#: ui/settings.ui:2172
 #: config/apps/io.github.lyricat.Inua.Term.desktop:3
 msgid "Terminal"
 msgstr "终端"
@@ -2848,7 +2848,7 @@ msgstr "Super+Return，以及在终端中运行的应用"
 #: internal/desktop/defaults.go:41
 #: internal/lightui/apps.go:30
 #: internal/lightui/music.go:293
-#: internal/lightui/music.go:1104
+#: internal/lightui/music.go:1105
 #: config/apps/io.github.lyricat.Inua.Music.desktop:3
 msgid "Music"
 msgstr "音乐"
@@ -2860,7 +2860,7 @@ msgstr "打开音频文件"
 #: internal/desktop/defaults.go:45
 #: internal/lightui/apps.go:31
 #: internal/lightui/video.go:257
-#: internal/lightui/video.go:511
+#: internal/lightui/video.go:512
 #: config/apps/io.github.lyricat.Inua.Video.desktop:3
 msgid "Video"
 msgstr "视频"
@@ -2871,7 +2871,7 @@ msgstr "打开视频文件"
 
 #: internal/desktop/defaults.go:48
 #: internal/lightui/pass_otp.go:330
-#: internal/ui/settings.go:1059
+#: internal/ui/settings.go:1063
 msgid "Images"
 msgstr "图像"
 
@@ -3039,9 +3039,9 @@ msgstr "永久删除 %s？"
 #: internal/diskui/details.go:528
 #: internal/filesui/cards.go:435
 #: internal/lightui/calculator.go:59
-#: internal/lightui/calculator.go:352
-#: internal/lightui/gpg.go:1610
-#: internal/lightui/pass.go:902
+#: internal/lightui/calculator.go:353
+#: internal/lightui/gpg.go:1611
+#: internal/lightui/pass.go:903
 #: internal/term/web/strings.go:43
 #: internal/ui/clipboard.go:504
 #: internal/vmui/window.go:1996
@@ -3078,8 +3078,8 @@ msgstr "在 %s 中运行。"
 #: internal/diskui/details.go:578
 #: internal/gamesui/checkers.go:738
 #: internal/gamesui/fortune_host.go:293
-#: internal/lightui/gpg.go:923
-#: internal/lightui/tailscale.go:470
+#: internal/lightui/gpg.go:924
+#: internal/lightui/tailscale.go:471
 #: internal/mailui/welcome.go:480
 #: internal/term/web/strings.go:35
 #: internal/ui/askpass.go:571
@@ -3121,15 +3121,15 @@ msgstr "%s 移除了 %s：释放了 %s。"
 #: internal/filesui/cards.go:682
 #: internal/filesui/sidebar.go:36
 #: internal/filesui/tabs.go:99
-#: internal/filesui/window.go:311
+#: internal/filesui/window.go:318
 msgid "Home"
 msgstr "主文件夹"
 
 #: internal/diskui/window.go:329
-#: internal/lightui/sysmon.go:967
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:567
-#: internal/ui/settings.go:590
+#: internal/lightui/sysmon.go:969
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:568
+#: internal/ui/settings.go:593
 #: ui/vm.ui:2981
 msgid "System"
 msgstr "系统"
@@ -3252,8 +3252,8 @@ msgstr[0] "%s，%d 个文件夹 · %s 可安全删除"
 #: internal/filesui/app.go:86
 #: internal/filesui/cards.go:689
 #: internal/filesui/remote.go:371
-#: internal/filesui/window.go:108
-#: internal/filesui/window.go:304
+#: internal/filesui/window.go:110
+#: internal/filesui/window.go:311
 #: ui/gpg.ui:548
 #: ui/gpg.ui:913
 #: config/apps/io.github.lyricat.Inua.Files.desktop:3
@@ -3494,8 +3494,8 @@ msgstr "它们不会进入垃圾箱，且无法撤销。"
 
 #: internal/filesui/cards.go:452
 #: internal/filesui/sidebar.go:51
-#: internal/filesui/window.go:774
-#: internal/filesui/window.go:780
+#: internal/filesui/window.go:781
+#: internal/filesui/window.go:787
 #: internal/mailui/actions.go:265
 #: internal/shell/commands.go:32
 #: ui/filespane.ui:288
@@ -3563,8 +3563,8 @@ msgstr[0] "……还有 %d 项"
 #: internal/ui/settings_wifi_details.go:62
 #: ui/mail-compose.ui:292
 #: ui/mail.ui:395
-#: ui/settings.ui:3345
-#: ui/settings.ui:4826
+#: ui/settings.ui:3388
+#: ui/settings.ui:4869
 #: ui/vm.ui:3503
 msgid "Close"
 msgstr "关闭"
@@ -3677,8 +3677,8 @@ msgid "Copy the paths (none selected: the folder's)"
 msgstr "复制路径（未选择时复制文件夹路径）"
 
 #: internal/filesui/cards.go:693
-#: internal/filesui/window.go:842
-#: internal/lightui/gpg.go:1618
+#: internal/filesui/window.go:849
+#: internal/lightui/gpg.go:1619
 #: internal/mailui/picker.go:143
 #: internal/ui/settings_custom.go:42
 #: ui/disk.ui:771
@@ -3706,17 +3706,17 @@ msgid "Copy / move to the other pane"
 msgstr "复制 / 移动到另一窗格"
 
 #: internal/filesui/cards.go:698
-#: internal/filesui/window.go:803
+#: internal/filesui/window.go:810
 msgid "Open with…"
 msgstr "打开方式……"
 
 #: internal/filesui/cards.go:699
-#: internal/filesui/window.go:856
+#: internal/filesui/window.go:863
 msgid "Bookmark"
 msgstr "添加书签"
 
 #: internal/filesui/cards.go:700
-#: internal/filesui/window.go:789
+#: internal/filesui/window.go:796
 msgid "Terminal here"
 msgstr "在此打开终端"
 
@@ -3736,7 +3736,7 @@ msgid "Next / previous tab"
 msgstr "下一个 / 上一个标签页"
 
 #: internal/filesui/cards.go:705
-#: internal/filesui/window.go:806
+#: internal/filesui/window.go:813
 msgid "Middle click"
 msgstr "中键点击"
 
@@ -3750,7 +3750,7 @@ msgstr "列表 / 网格 / 分栏"
 
 #: internal/filesui/cards.go:707
 #: internal/filesui/picker.go:501
-#: internal/filesui/window.go:794
+#: internal/filesui/window.go:801
 msgid "Hidden files"
 msgstr "隐藏文件"
 
@@ -3763,7 +3763,7 @@ msgid "Sidebar"
 msgstr "侧边栏"
 
 #: internal/filesui/cards.go:710
-#: internal/filesui/window.go:848
+#: internal/filesui/window.go:855
 msgid "Details"
 msgstr "详细信息"
 
@@ -3777,7 +3777,7 @@ msgstr "新窗口，关闭窗口"
 
 #: internal/filesui/cards.go:713
 #: internal/filesui/picker.go:502
-#: internal/filesui/window.go:795
+#: internal/filesui/window.go:802
 msgid "Reload"
 msgstr "重新加载"
 
@@ -3848,7 +3848,7 @@ msgid "Columns"
 msgstr "列"
 
 #: internal/filesui/columns.go:176
-#: internal/lightui/pass.go:964
+#: internal/lightui/pass.go:965
 msgid "NAME"
 msgstr "名称"
 
@@ -3857,7 +3857,7 @@ msgid "FOLDERS"
 msgstr "文件夹"
 
 #: internal/filesui/details.go:51
-#: internal/lightui/sysmon.go:791
+#: internal/lightui/sysmon.go:793
 #: internal/mailui/window.go:248
 #: internal/term/web/strings.go:52
 msgid "FILES"
@@ -3962,14 +3962,14 @@ msgstr "损坏的链接"
 #: internal/filesui/remotesetup.go:68
 #: internal/filesui/remotesetup.go:75
 #: internal/filesui/remotesetup.go:83
-#: internal/lightui/sysmon.go:792
+#: internal/lightui/sysmon.go:794
 #: internal/viewerui/app.go:807
 #: ui/vm.ui:322
 msgid "Folder"
 msgstr "目录"
 
 #: internal/filesui/kinds.go:38
-#: internal/lightui/sysmon.go:792
+#: internal/lightui/sysmon.go:794
 #: internal/ui/settings_keyring.go:326
 msgid "Program"
 msgstr "程序"
@@ -4063,8 +4063,8 @@ msgid "done"
 msgstr "完成"
 
 #: internal/filesui/pane.go:1554
-#: internal/lightui/pass.go:1167
-#: internal/lightui/sysmon.go:971
+#: internal/lightui/pass.go:1168
+#: internal/lightui/sysmon.go:973
 #: internal/ui/settings_keyring.go:508
 #: internal/ui/shotdrawer.go:327
 msgid "Jan 2 15:04"
@@ -4114,14 +4114,14 @@ msgid "A file of the same name is in this folder; the app will write over it."
 msgstr ""
 
 #: internal/filesui/picker.go:494
-#: internal/filesui/window.go:837
+#: internal/filesui/window.go:844
 #: internal/termui/sessionmenu.go:81
 #: internal/termui/wsmenu.go:69
 msgid "Rename…"
 msgstr "重命名……"
 
 #: internal/filesui/picker.go:500
-#: internal/filesui/window.go:785
+#: internal/filesui/window.go:792
 msgid "New folder…"
 msgstr "新建文件夹……"
 
@@ -4158,7 +4158,7 @@ msgstr "登录 %s"
 #: internal/filesui/remotesetup.go:54
 #: internal/filesui/remotesetup.go:60
 #: internal/filesui/remotesetup.go:66
-#: internal/lightui/sysmon.go:784
+#: internal/lightui/sysmon.go:786
 msgid "User"
 msgstr "用户"
 
@@ -4605,12 +4605,12 @@ msgid "Eject"
 msgstr "弹出"
 
 #: internal/filesui/sidebar.go:143
-#: internal/filesui/window.go:806
+#: internal/filesui/window.go:813
 msgid "Open in a new tab"
 msgstr "在新标签页中打开"
 
 #: internal/filesui/sidebar.go:144
-#: internal/filesui/window.go:807
+#: internal/filesui/window.go:814
 msgid "Open in a new window"
 msgstr "在新窗口中打开"
 
@@ -4638,109 +4638,109 @@ msgstr "在“设置”→“AI”中打开“运行命令”，助手才能整�
 msgid "Asked the assistant to tidy %s."
 msgstr "已让助手整理 %s。"
 
-#: internal/filesui/window.go:777
+#: internal/filesui/window.go:784
 msgid "Restore"
 msgstr "恢复"
 
-#: internal/filesui/window.go:778
-#: internal/filesui/window.go:843
+#: internal/filesui/window.go:785
+#: internal/filesui/window.go:850
 msgid "Delete for good…"
 msgstr "永久删除……"
 
-#: internal/filesui/window.go:786
+#: internal/filesui/window.go:793
 msgid "New file…"
 msgstr "新建文件……"
 
-#: internal/filesui/window.go:787
-#: internal/lightui/calculator.go:351
+#: internal/filesui/window.go:794
+#: internal/lightui/calculator.go:352
 #: internal/term/settings/settings.go:120
 #: internal/termui/paste.go:339
 msgid "Paste"
 msgstr "粘贴"
 
-#: internal/filesui/window.go:790
-#: internal/filesui/window.go:822
+#: internal/filesui/window.go:797
+#: internal/filesui/window.go:829
 msgid "Tidy with AI…"
 msgstr "用 AI 整理…"
 
-#: internal/filesui/window.go:791
+#: internal/filesui/window.go:798
 msgid "Copy the folder's path"
 msgstr "复制文件夹路径"
 
-#: internal/filesui/window.go:809
+#: internal/filesui/window.go:816
 msgid "Open in the other pane"
 msgstr "在另一窗格中打开"
 
-#: internal/filesui/window.go:813
+#: internal/filesui/window.go:820
 msgid "Show in its folder"
 msgstr "在所在文件夹中显示"
 
-#: internal/filesui/window.go:816
-#: internal/lightui/calculator.go:349
+#: internal/filesui/window.go:823
+#: internal/lightui/calculator.go:350
 msgid "Cut"
 msgstr "剪切"
 
-#: internal/filesui/window.go:818
+#: internal/filesui/window.go:825
 msgid "Copy the path"
 msgstr "复制路径"
 
-#: internal/filesui/window.go:821
+#: internal/filesui/window.go:828
 msgid "Paste into the folder"
 msgstr "粘贴到该文件夹"
 
-#: internal/filesui/window.go:826
+#: internal/filesui/window.go:833
 msgid "Extract here"
 msgstr "解压到此处"
 
-#: internal/filesui/window.go:828
+#: internal/filesui/window.go:835
 msgid "Compress…"
 msgstr "压缩……"
 
-#: internal/filesui/window.go:831
+#: internal/filesui/window.go:838
 msgid "Copy to the other pane"
 msgstr "复制到另一窗格"
 
-#: internal/filesui/window.go:832
+#: internal/filesui/window.go:839
 msgid "Move to the other pane"
 msgstr "移动到另一窗格"
 
-#: internal/filesui/window.go:839
+#: internal/filesui/window.go:846
 msgid "Rename %d item…"
 msgid_plural "Rename %d items…"
 msgstr[0] "重命名 %d 个项目……"
 
-#: internal/filesui/window.go:854
+#: internal/filesui/window.go:861
 msgid "Remove the bookmark"
 msgstr "移除书签"
 
-#: internal/filesui/window.go:909
+#: internal/filesui/window.go:916
 msgid "Cut %d item: paste to move it."
 msgid_plural "Cut %d items: paste to move them."
 msgstr[0] "已剪切 %d 项：粘贴即可移动。"
 
-#: internal/filesui/window.go:911
+#: internal/filesui/window.go:918
 msgid "Copied %d item."
 msgid_plural "Copied %d items."
 msgstr[0] "已复制 %d 项。"
 
-#: internal/filesui/window.go:919
+#: internal/filesui/window.go:926
 msgid "Copied %d path."
 msgid_plural "Copied %d paths."
 msgstr[0] "已复制 %d 个路径。"
 
-#: internal/filesui/window.go:1001
+#: internal/filesui/window.go:1008
 msgid "Bookmarked %s."
 msgstr "已为 %s 添加书签。"
 
-#: internal/filesui/window.go:1003
+#: internal/filesui/window.go:1010
 msgid "Removed the bookmark of %s."
 msgstr "已移除 %s 的书签。"
 
-#: internal/filesui/window.go:1028
+#: internal/filesui/window.go:1035
 msgid "Copied %s."
 msgstr "已复制 %s。"
 
-#: internal/filesui/window.go:1057
+#: internal/filesui/window.go:1064
 msgid "No terminal was found: install xdg-terminal-exec or set $TERMINAL."
 msgstr "未找到终端：请安装 xdg-terminal-exec 或设置 $TERMINAL。"
 
@@ -4909,7 +4909,7 @@ msgstr "%s 队"
 
 #: internal/games/checkersnet/texts.go:37
 #: internal/games/fortunenet/texts.go:29
-#: internal/lightui/gpg.go:1254
+#: internal/lightui/gpg.go:1255
 msgid "you"
 msgstr "你"
 
@@ -5066,7 +5066,7 @@ msgstr "卡牌商店"
 
 #: internal/games/fortune.go:65
 #: internal/gamesui/fortune_menu.go:172
-#: internal/lightui/clock.go:492
+#: internal/lightui/clock.go:493
 #: internal/termui/guide.go:161
 #: internal/ui/voice_page.go:186
 #: ui/clock.ui:339
@@ -7298,7 +7298,7 @@ msgstr ""
 
 #: internal/games/lobby/texts.go:12
 #: internal/gamesui/lobbywin.go:236
-#: internal/lightui/sysmon.go:995
+#: internal/lightui/sysmon.go:997
 msgid "Free"
 msgstr "可用"
 
@@ -7985,7 +7985,7 @@ msgstr "返回菜单"
 #: internal/term/web/strings.go:24
 #: internal/termui/guide.go:111
 #: ui/gpg.ui:736
-#: ui/settings.ui:4526
+#: ui/settings.ui:4569
 #: ui/vm.ui:510
 #: ui/vm.ui:3278
 msgid "Back"
@@ -8250,7 +8250,7 @@ msgid "Hit the three yellow mission targets to light a mission; the hyperspace r
 msgstr "击中三个黄色任务目标即可点亮任务；超空间坡道位于左侧。"
 
 #: internal/gamesui/pinball.go:241
-#: internal/lightui/clock.go:583
+#: internal/lightui/clock.go:584
 msgid "PAUSED"
 msgstr "暂停"
 
@@ -8349,7 +8349,7 @@ msgstr "多球"
 
 #: internal/gamesui/pinball.go:776
 #: ui/control.ui:78
-#: ui/settings.ui:1937
+#: ui/settings.ui:1980
 msgid "Lock"
 msgstr "锁"
 
@@ -8399,7 +8399,7 @@ msgstr "太空弹球"
 
 #: internal/hyprconf/keys.go:23
 #: internal/shell/dock.go:312
-#: ui/settings.ui:2006
+#: ui/settings.ui:2049
 msgid "Launcher"
 msgstr "启动器"
 
@@ -8445,7 +8445,7 @@ msgid "Settings"
 msgstr "设置"
 
 #: internal/hyprconf/keys.go:32
-#: ui/settings.ui:734
+#: ui/settings.ui:777
 msgid "Restart the shell"
 msgstr "重新启动外壳"
 
@@ -8482,7 +8482,7 @@ msgstr "选择颜色"
 #: internal/hyprconf/keys.go:40
 #: internal/ui/voice_page.go:169
 #: ui/bar.ui:205
-#: ui/settings.ui:6386
+#: ui/settings.ui:6429
 msgid "Dictation"
 msgstr "听写"
 
@@ -8610,13 +8610,13 @@ msgstr ""
 #: internal/lightui/apps.go:16
 #: internal/ui/alarms.go:106
 #: internal/ui/widgets.go:582
-#: ui/settings.ui:1188
+#: ui/settings.ui:1231
 #: config/apps/io.github.lyricat.Inua.Clock.desktop:3
 msgid "Clock"
 msgstr "时钟"
 
 #: internal/lightui/apps.go:17
-#: internal/lightui/weather.go:224
+#: internal/lightui/weather.go:226
 #: internal/ui/agenda.go:334
 #: internal/ui/widgets.go:584
 #: internal/ui/widgets.go:1066
@@ -8671,71 +8671,71 @@ msgstr "GPG"
 msgid "Change sign"
 msgstr "改变符号"
 
-#: internal/lightui/calculator.go:354
+#: internal/lightui/calculator.go:355
 #: internal/term/web/strings.go:94
 msgid "Select all"
 msgstr ""
 
-#: internal/lightui/calculator.go:414
+#: internal/lightui/calculator.go:415
 msgid "Enter a valid expression."
 msgstr ""
 
-#: internal/lightui/calculator.go:444
+#: internal/lightui/calculator.go:445
 msgid "No calculations yet"
 msgstr "尚未计算"
 
-#: internal/lightui/calculator.go:466
+#: internal/lightui/calculator.go:467
 msgid "Use %s"
 msgstr "使用%s"
 
-#: internal/lightui/calendar.go:132
+#: internal/lightui/calendar.go:138
 #: internal/ui/agenda.go:228
 #: internal/ui/widgets.go:1019
 msgid "January 2006"
 msgstr "2006年1月"
 
-#: internal/lightui/calendar.go:134
+#: internal/lightui/calendar.go:140
 #: internal/ui/agenda.go:246
 msgid "WK"
 msgstr "周"
 
-#: internal/lightui/calendar.go:139
+#: internal/lightui/calendar.go:145
 #: internal/lightui/clock.go:149
 #: internal/ui/agenda.go:247
 msgid "Su"
 msgstr "日"
 
-#: internal/lightui/calendar.go:139
+#: internal/lightui/calendar.go:145
 #: internal/lightui/clock.go:149
 #: internal/ui/agenda.go:247
 msgid "Mo"
 msgstr "一"
 
-#: internal/lightui/calendar.go:139
+#: internal/lightui/calendar.go:145
 #: internal/lightui/clock.go:149
 #: internal/ui/agenda.go:247
 msgid "Tu"
 msgstr "二"
 
-#: internal/lightui/calendar.go:139
+#: internal/lightui/calendar.go:145
 #: internal/lightui/clock.go:149
 #: internal/ui/agenda.go:247
 msgid "We"
 msgstr "三"
 
-#: internal/lightui/calendar.go:139
+#: internal/lightui/calendar.go:145
 #: internal/lightui/clock.go:149
 #: internal/ui/agenda.go:247
 msgid "Th"
 msgstr "四"
 
-#: internal/lightui/calendar.go:139
+#: internal/lightui/calendar.go:145
 #: internal/lightui/clock.go:149
 #: internal/ui/agenda.go:247
 msgid "Fr"
 msgstr "五"
 
-#: internal/lightui/calendar.go:139
+#: internal/lightui/calendar.go:145
 #: internal/lightui/clock.go:149
 #: internal/ui/agenda.go:247
 msgid "Sa"
@@ -8753,89 +8753,89 @@ msgstr "分钟"
 msgid "SEC"
 msgstr "秒"
 
-#: internal/lightui/clock.go:260
+#: internal/lightui/clock.go:261
 msgid "Day"
 msgstr "日"
 
-#: internal/lightui/clock.go:263
+#: internal/lightui/clock.go:264
 msgid "Night"
 msgstr "夜"
 
-#: internal/lightui/clock.go:338
+#: internal/lightui/clock.go:339
 msgid "No city by that name"
 msgstr "没有同名的城市"
 
-#: internal/lightui/clock.go:370
-#: internal/lightui/weather.go:247
+#: internal/lightui/clock.go:371
+#: internal/lightui/weather.go:249
 msgid "Remove %s"
 msgstr "移除%s"
 
-#: internal/lightui/clock.go:403
+#: internal/lightui/clock.go:404
 #: internal/termui/menubar.go:42
 #: ui/pass.ui:252
 msgid "Edit"
 msgstr "编辑"
 
-#: internal/lightui/clock.go:493
+#: internal/lightui/clock.go:494
 #: ui/music.ui:332
 msgid "Reset"
 msgstr "重置"
 
-#: internal/lightui/clock.go:498
-#: internal/lightui/clock.go:507
+#: internal/lightui/clock.go:499
+#: internal/lightui/clock.go:508
 #: ui/clock.ui:329
 msgid "Lap"
 msgstr "计次"
 
-#: internal/lightui/clock.go:546
+#: internal/lightui/clock.go:547
 msgid "LAP %d"
 msgstr "第 %d 次"
 
-#: internal/lightui/clock.go:566
-#: internal/lightui/clock.go:576
-#: internal/lightui/sysmon.go:57
-#: internal/lightui/sysmon.go:57
+#: internal/lightui/clock.go:567
+#: internal/lightui/clock.go:577
+#: internal/lightui/sysmon.go:58
+#: internal/lightui/sysmon.go:58
 #: ui/clock.ui:463
 msgid "Pause"
 msgstr "暂停"
 
-#: internal/lightui/clock.go:569
-#: internal/lightui/clock.go:577
+#: internal/lightui/clock.go:570
+#: internal/lightui/clock.go:578
 msgid "ENDS AT %s"
 msgstr "结束于%s"
 
-#: internal/lightui/clock.go:582
-#: internal/lightui/sysmon.go:869
-#: internal/lightui/sysmon.go:869
+#: internal/lightui/clock.go:583
+#: internal/lightui/sysmon.go:871
+#: internal/lightui/sysmon.go:871
 #: internal/vmui/window.go:2465
 msgid "Resume"
 msgstr "继续"
 
-#: internal/lightui/clock.go:594
+#: internal/lightui/clock.go:595
 msgid "Timer done"
 msgstr "定时器完成"
 
-#: internal/lightui/clock.go:595
+#: internal/lightui/clock.go:596
 msgid "Your timer has ended."
 msgstr "您的计时器已结束。"
 
-#: internal/lightui/colorpicker.go:121
+#: internal/lightui/colorpicker.go:123
 msgid "HEX"
 msgstr "HEX"
 
-#: internal/lightui/colorpicker.go:121
+#: internal/lightui/colorpicker.go:123
 msgid "RGB"
 msgstr "RGB"
 
-#: internal/lightui/colorpicker.go:121
+#: internal/lightui/colorpicker.go:123
 msgid "HSL"
 msgstr "HSL"
 
-#: internal/lightui/colorpicker.go:135
+#: internal/lightui/colorpicker.go:137
 msgid "Copy %s"
 msgstr "复制 %s"
 
-#: internal/lightui/colorpicker.go:140
+#: internal/lightui/colorpicker.go:142
 msgid "No colour yet. Pick one from anywhere on the screen."
 msgstr "还没有颜色。从屏幕上的任意位置选择一个。"
 
@@ -8854,23 +8854,23 @@ msgstr "5 年"
 #: internal/lightui/gpg.go:152
 #: internal/mailui/settings.go:497
 #: internal/shell/idle.go:162
-#: ui/settings.ui:4185
+#: ui/settings.ui:4228
 msgid "Never"
 msgstr "永不过期"
 
-#: internal/lightui/gpg.go:339
+#: internal/lightui/gpg.go:340
 msgid "The keyring cannot be read: %s"
 msgstr "无法读取密钥环：%s"
 
-#: internal/lightui/gpg.go:381
+#: internal/lightui/gpg.go:382
 msgid "created %s"
 msgstr "创建于 %s"
 
-#: internal/lightui/gpg.go:381
-#: internal/lightui/gpg.go:384
-#: internal/lightui/gpg.go:386
-#: internal/lightui/gpg.go:655
-#: internal/lightui/gpg.go:677
+#: internal/lightui/gpg.go:382
+#: internal/lightui/gpg.go:385
+#: internal/lightui/gpg.go:387
+#: internal/lightui/gpg.go:656
+#: internal/lightui/gpg.go:678
 #: internal/shell/notify.go:32
 #: internal/ui/askpass.go:414
 #: internal/ui/askpass.go:482
@@ -8882,156 +8882,156 @@ msgstr "创建于 %s"
 msgid "Jan 2, 2006"
 msgstr "2006年1月2日"
 
-#: internal/lightui/gpg.go:386
+#: internal/lightui/gpg.go:387
 msgid "expires %s"
 msgstr "%s 过期"
 
-#: internal/lightui/gpg.go:400
-#: internal/lightui/gpg.go:814
+#: internal/lightui/gpg.go:401
+#: internal/lightui/gpg.go:815
 msgid "signs only"
 msgstr "仅签名"
 
-#: internal/lightui/gpg.go:410
+#: internal/lightui/gpg.go:411
 msgid "revoked"
 msgstr "已吊销"
 
-#: internal/lightui/gpg.go:412
+#: internal/lightui/gpg.go:413
 msgid "expired"
 msgstr "已过期"
 
-#: internal/lightui/gpg.go:414
+#: internal/lightui/gpg.go:415
 msgid "disabled"
 msgstr "已停用"
 
-#: internal/lightui/gpg.go:416
-#: internal/lightui/gpg.go:661
-#: internal/lightui/gpg.go:787
+#: internal/lightui/gpg.go:417
+#: internal/lightui/gpg.go:662
+#: internal/lightui/gpg.go:788
 msgid "yours"
 msgstr "你的"
 
-#: internal/lightui/gpg.go:418
+#: internal/lightui/gpg.go:419
 msgid "verified"
 msgstr "已验证"
 
-#: internal/lightui/gpg.go:420
+#: internal/lightui/gpg.go:421
 msgid "partly verified"
 msgstr "部分验证"
 
-#: internal/lightui/gpg.go:422
+#: internal/lightui/gpg.go:423
 msgid "not verified"
 msgstr "未验证"
 
-#: internal/lightui/gpg.go:485
+#: internal/lightui/gpg.go:486
 #: ui/gpg.ui:408
 msgid "Encrypt to your key as well, so you can open it later"
 msgstr "也加密给你的密钥，以便你之后能打开"
 
-#: internal/lightui/gpg.go:487
+#: internal/lightui/gpg.go:488
 msgid "This key only signs; it cannot be encrypted to"
 msgstr "这个密钥仅用于签名，不能作为加密对象"
 
-#: internal/lightui/gpg.go:538
+#: internal/lightui/gpg.go:539
 msgid "Take off"
 msgstr "移除"
 
-#: internal/lightui/gpg.go:549
+#: internal/lightui/gpg.go:550
 #: ui/gpg.ui:140
 msgid "Name, address or key ID"
 msgstr "姓名、地址或密钥 ID"
 
-#: internal/lightui/gpg.go:551
+#: internal/lightui/gpg.go:552
 msgid "Add another"
 msgstr "再添加"
 
-#: internal/lightui/gpg.go:562
+#: internal/lightui/gpg.go:563
 msgid "Anyone who has the passphrase"
 msgstr "任何知道密码的人"
 
-#: internal/lightui/gpg.go:566
+#: internal/lightui/gpg.go:567
 msgid "%d recipient"
 msgid_plural "%d recipients"
 msgstr[0] "%d 个收件人"
 
-#: internal/lightui/gpg.go:633
+#: internal/lightui/gpg.go:634
 msgid "%d more: type to narrow them down"
 msgid_plural "%d more: type to narrow them down"
 msgstr[0] "还有 %d 个：输入以缩小范围"
 
-#: internal/lightui/gpg.go:676
+#: internal/lightui/gpg.go:677
 msgid "This key expired on %s, so gpg cannot encrypt to it. Ask %s for an updated key, then import it."
 msgstr "这个密钥已于 %s 过期，gpg 无法用它加密。请向 %s 要一份更新后的密钥，然后导入。"
 
-#: internal/lightui/gpg.go:679
-#: internal/lightui/gpg.go:830
+#: internal/lightui/gpg.go:680
+#: internal/lightui/gpg.go:831
 msgid "%s revoked this key; ask for their new one."
 msgstr "%s 已吊销这个密钥；请向对方要新的。"
 
-#: internal/lightui/gpg.go:681
+#: internal/lightui/gpg.go:682
 msgid "This key cannot encrypt."
 msgstr "这个密钥不能加密。"
 
-#: internal/lightui/gpg.go:691
+#: internal/lightui/gpg.go:692
 msgid "No key matches. Import theirs on the Keys tab."
 msgstr "没有匹配的密钥。请在“密钥”页导入对方的密钥。"
 
-#: internal/lightui/gpg.go:693
+#: internal/lightui/gpg.go:694
 msgid "Already added."
 msgstr "已经添加了。"
 
-#: internal/lightui/gpg.go:696
+#: internal/lightui/gpg.go:697
 msgid "Your keyring is empty. Import their key on the Keys tab."
 msgstr "密钥环是空的。请在“密钥”页导入对方的密钥。"
 
-#: internal/lightui/gpg.go:698
+#: internal/lightui/gpg.go:699
 msgid "Every key is chosen."
 msgstr "所有密钥都已选上。"
 
-#: internal/lightui/gpg.go:753
+#: internal/lightui/gpg.go:754
 msgid "MY KEYS"
 msgstr "我的密钥"
 
-#: internal/lightui/gpg.go:753
+#: internal/lightui/gpg.go:754
 msgid "OTHERS"
 msgstr "他人的"
 
-#: internal/lightui/gpg.go:753
+#: internal/lightui/gpg.go:754
 msgid "INVALID KEYS"
 msgstr "无效密钥"
 
-#: internal/lightui/gpg.go:760
+#: internal/lightui/gpg.go:761
 msgid "%d key"
 msgid_plural "%d keys"
 msgstr[0] "%d 个密钥"
 
-#: internal/lightui/gpg.go:824
+#: internal/lightui/gpg.go:825
 msgid "Extend it to use it again. Keep it either way: it opens what was encrypted to it."
 msgstr "延长后可再次使用。无论如何请保留：它能打开加密给它的内容。"
 
-#: internal/lightui/gpg.go:826
+#: internal/lightui/gpg.go:827
 msgid "Keep it: it opens what was encrypted to it."
 msgstr "请保留：它能打开加密给它的内容。"
 
-#: internal/lightui/gpg.go:828
+#: internal/lightui/gpg.go:829
 msgid "gpg cannot encrypt to it. Ask %s for an updated key, then import it."
 msgstr "gpg 无法用它加密。请向 %s 要一份更新后的密钥，然后导入。"
 
-#: internal/lightui/gpg.go:851
+#: internal/lightui/gpg.go:852
 msgid "Copy fingerprint"
 msgstr "复制指纹"
 
-#: internal/lightui/gpg.go:852
+#: internal/lightui/gpg.go:853
 msgid "Copy public key"
 msgstr "复制公钥"
 
-#: internal/lightui/gpg.go:854
+#: internal/lightui/gpg.go:855
 msgid "Encrypt to…"
 msgstr "加密给…"
 
-#: internal/lightui/gpg.go:857
+#: internal/lightui/gpg.go:858
 msgid "Extend 2 years"
 msgstr "延长 2 年"
 
-#: internal/lightui/gpg.go:862
+#: internal/lightui/gpg.go:863
 #: ui/disk.ui:781
 #: ui/vm.ui:391
 #: ui/vm.ui:1540
@@ -9042,215 +9042,215 @@ msgstr "延长 2 年"
 msgid "Delete…"
 msgstr "删除…"
 
-#: internal/lightui/gpg.go:926
+#: internal/lightui/gpg.go:927
 msgid "Copied; taken off the clipboard in 45 seconds"
 msgstr "已复制；45 秒后从剪贴板移除"
 
-#: internal/lightui/gpg.go:980
+#: internal/lightui/gpg.go:981
 msgid "Fingerprint copied"
 msgstr "已复制指纹"
 
-#: internal/lightui/gpg.go:992
+#: internal/lightui/gpg.go:993
 msgid "Public key copied"
 msgstr "已复制公钥"
 
-#: internal/lightui/gpg.go:1060
+#: internal/lightui/gpg.go:1061
 msgid "Files to encrypt"
 msgstr "要加密的文件"
 
-#: internal/lightui/gpg.go:1060
+#: internal/lightui/gpg.go:1061
 msgid "Files to decrypt"
 msgstr "要解密的文件"
 
-#: internal/lightui/gpg.go:1060
+#: internal/lightui/gpg.go:1061
 msgid "Key file to import"
 msgstr "要导入的密钥文件"
 
-#: internal/lightui/gpg.go:1126
+#: internal/lightui/gpg.go:1127
 msgid "Leave it out"
 msgstr "移除"
 
-#: internal/lightui/gpg.go:1161
+#: internal/lightui/gpg.go:1162
 msgid "Saved to %s"
 msgstr "已保存到 %s"
 
-#: internal/lightui/gpg.go:1174
+#: internal/lightui/gpg.go:1175
 msgid "Type a passphrase first."
 msgstr "请先输入密码。"
 
-#: internal/lightui/gpg.go:1177
+#: internal/lightui/gpg.go:1178
 msgid "The two passphrases differ."
 msgstr "两次输入的密码不一致。"
 
-#: internal/lightui/gpg.go:1191
+#: internal/lightui/gpg.go:1192
 msgid "Add someone to encrypt to."
 msgstr "请添加加密对象。"
 
-#: internal/lightui/gpg.go:1205
-#: internal/lightui/gpg.go:1336
+#: internal/lightui/gpg.go:1206
+#: internal/lightui/gpg.go:1337
 msgid "Choose or drop files first."
 msgstr "请先选择或拖入文件。"
 
-#: internal/lightui/gpg.go:1216
+#: internal/lightui/gpg.go:1217
 msgid "Type a message first."
 msgstr "请先输入消息。"
 
-#: internal/lightui/gpg.go:1221
+#: internal/lightui/gpg.go:1222
 msgid "Encrypting…"
 msgstr "正在加密…"
 
-#: internal/lightui/gpg.go:1259
+#: internal/lightui/gpg.go:1260
 msgid "For %s"
 msgstr "给 %s"
 
-#: internal/lightui/gpg.go:1261
+#: internal/lightui/gpg.go:1262
 msgid "signed"
 msgstr "已签名"
 
-#: internal/lightui/gpg.go:1264
+#: internal/lightui/gpg.go:1265
 msgid "For anyone who has the passphrase"
 msgstr "给任何知道密码的人"
 
-#: internal/lightui/gpg.go:1282
+#: internal/lightui/gpg.go:1283
 msgid "written in %s"
 msgstr "已写入 %s"
 
-#: internal/lightui/gpg.go:1286
+#: internal/lightui/gpg.go:1287
 msgid "Move to Trash…"
 msgstr "移到回收站…"
 
-#: internal/lightui/gpg.go:1310
+#: internal/lightui/gpg.go:1311
 msgid "%s moved to the trash"
 msgstr "已将 %s 移到回收站"
 
-#: internal/lightui/gpg.go:1345
+#: internal/lightui/gpg.go:1346
 msgid "Paste a message first."
 msgstr "请先粘贴消息。"
 
-#: internal/lightui/gpg.go:1352
+#: internal/lightui/gpg.go:1353
 msgid "Decrypting… gpg may ask for your passphrase."
 msgstr "正在解密… gpg 可能会询问密码短语。"
 
-#: internal/lightui/gpg.go:1402
+#: internal/lightui/gpg.go:1403
 msgid "That passphrase does not open it. Decrypt asks again."
 msgstr "这个密码打不开它。点“解密”会再次询问。"
 
-#: internal/lightui/gpg.go:1404
+#: internal/lightui/gpg.go:1405
 msgid "Cancelled. Decrypt asks again."
 msgstr "已取消。点“解密”会再次询问。"
 
-#: internal/lightui/gpg.go:1416
+#: internal/lightui/gpg.go:1417
 msgid "Not signed: who sent it is not known"
 msgstr "未签名：不知道是谁发送的"
 
-#: internal/lightui/gpg.go:1424
+#: internal/lightui/gpg.go:1425
 msgid "Signed by %s"
 msgstr "由 %s 签名"
 
-#: internal/lightui/gpg.go:1427
+#: internal/lightui/gpg.go:1428
 msgid "Jan 2, 2006 15:04"
 msgstr "2006年1月2日 15:04"
 
-#: internal/lightui/gpg.go:1431
+#: internal/lightui/gpg.go:1432
 msgid "The signature by %s does not match: it was changed after signing"
 msgstr "%s 的签名不符：签名后被改动过"
 
-#: internal/lightui/gpg.go:1435
+#: internal/lightui/gpg.go:1436
 msgid "Signed by a key not in your keyring, so it cannot be checked"
 msgstr "签名所用的密钥不在你的密钥环里，无法核对"
 
-#: internal/lightui/gpg.go:1439
+#: internal/lightui/gpg.go:1440
 msgid "Signed by %s, with a key that is no longer valid"
 msgstr "由 %s 签名，所用的密钥已失效"
 
-#: internal/lightui/gpg.go:1458
+#: internal/lightui/gpg.go:1459
 msgid "Encrypted to %s, and with a passphrase"
 msgstr "加密给 %s，也可用密码打开"
 
-#: internal/lightui/gpg.go:1460
+#: internal/lightui/gpg.go:1461
 msgid "Encrypted to %s"
 msgstr "加密给 %s"
 
-#: internal/lightui/gpg.go:1462
+#: internal/lightui/gpg.go:1463
 msgid "Encrypted with a passphrase"
 msgstr "用密码加密"
 
-#: internal/lightui/gpg.go:1479
+#: internal/lightui/gpg.go:1480
 #: ui/gpg.ui:1383
 msgid "Import"
 msgstr "导入"
 
-#: internal/lightui/gpg.go:1489
+#: internal/lightui/gpg.go:1490
 msgid "No key found in it."
 msgstr "里面没有密钥。"
 
-#: internal/lightui/gpg.go:1494
+#: internal/lightui/gpg.go:1495
 msgid "Import %d key"
 msgid_plural "Import %d keys"
 msgstr[0] "导入 %d 个密钥"
 
-#: internal/lightui/gpg.go:1506
+#: internal/lightui/gpg.go:1507
 msgid "new"
 msgstr "新的"
 
-#: internal/lightui/gpg.go:1509
+#: internal/lightui/gpg.go:1510
 msgid "holds a secret key"
 msgstr "含私钥"
 
-#: internal/lightui/gpg.go:1511
+#: internal/lightui/gpg.go:1512
 msgid "updates one you have"
 msgstr "更新已有的"
 
-#: internal/lightui/gpg.go:1536
+#: internal/lightui/gpg.go:1537
 msgid "Importing…"
 msgstr "正在导入…"
 
-#: internal/lightui/gpg.go:1547
+#: internal/lightui/gpg.go:1548
 msgid "%d key imported"
 msgid_plural "%d keys imported"
 msgstr[0] "已导入 %d 个密钥"
 
-#: internal/lightui/gpg.go:1560
+#: internal/lightui/gpg.go:1561
 msgid "Give a name and an address."
 msgstr "请填写姓名和地址。"
 
-#: internal/lightui/gpg.go:1564
+#: internal/lightui/gpg.go:1565
 msgid "That address has no @."
 msgstr "这个地址没有 @。"
 
-#: internal/lightui/gpg.go:1570
+#: internal/lightui/gpg.go:1571
 msgid "Creating… gpg asks for a passphrase for the new key."
 msgstr "正在创建… gpg 会为新密钥询问密码短语。"
 
-#: internal/lightui/gpg.go:1584
+#: internal/lightui/gpg.go:1585
 msgid "Your key is created"
 msgstr "密钥已创建"
 
-#: internal/lightui/gpg.go:1607
+#: internal/lightui/gpg.go:1608
 msgid "Delete the key of %s?"
 msgstr "删除 %s 的密钥？"
 
-#: internal/lightui/gpg.go:1609
+#: internal/lightui/gpg.go:1610
 msgid "It goes from your keyring. Messages it signed then show as signed by a key not in your keyring; importing it again brings that back."
 msgstr "它会从密钥环中移除。之后它签名的消息会显示为由不在密钥环中的密钥签名；重新导入即可恢复。"
 
-#: internal/lightui/gpg.go:1616
+#: internal/lightui/gpg.go:1617
 msgid "Move %s to the trash?"
 msgstr "把 %s 移到回收站？"
 
-#: internal/lightui/gpg.go:1617
+#: internal/lightui/gpg.go:1618
 msgid "The decrypted copy goes to the trash, where it can be restored from; the encrypted file stays."
 msgstr "解密出的副本会移到回收站，可从那里恢复；加密文件保留。"
 
-#: internal/lightui/gpg.go:1634
+#: internal/lightui/gpg.go:1635
 msgid "Key deleted"
 msgstr "已删除密钥"
 
-#: internal/lightui/gpg.go:1644
+#: internal/lightui/gpg.go:1645
 msgid "Extending… gpg asks for your passphrase."
 msgstr "正在延长… gpg 会询问你的密码短语。"
 
-#: internal/lightui/gpg.go:1653
+#: internal/lightui/gpg.go:1654
 msgid "Extended by 2 years"
 msgstr "已延长 2 年"
 
@@ -9263,166 +9263,166 @@ msgstr "未安装 GStreamer：请安装它的插件（Ubuntu 上为 gstreamer1.0
 msgid "Presets"
 msgstr "预设"
 
-#: internal/lightui/music.go:486
+#: internal/lightui/music.go:487
 msgid "Cannot play %s: %s"
 msgstr "无法播放 %s：%s"
 
-#: internal/lightui/music.go:560
+#: internal/lightui/music.go:561
 #: internal/ui/widgets.go:1097
 #: ui/music.ui:86
 msgid "Nothing playing"
 msgstr "未在播放"
 
-#: internal/lightui/music.go:610
+#: internal/lightui/music.go:611
 msgid "MONO"
 msgstr "单声道"
 
-#: internal/lightui/music.go:612
+#: internal/lightui/music.go:613
 msgid "STEREO"
 msgstr "立体声"
 
-#: internal/lightui/music.go:679
+#: internal/lightui/music.go:680
 msgid "PRE"
 msgstr "前级"
 
-#: internal/lightui/music.go:788
+#: internal/lightui/music.go:789
 #: ui/music.ui:270
 msgid "Repeat: off (R)"
 msgstr "重复：关 (R)"
 
-#: internal/lightui/music.go:791
+#: internal/lightui/music.go:792
 msgid "Repeat: the playlist (R)"
 msgstr "重复：整个播放列表 (R)"
 
-#: internal/lightui/music.go:793
+#: internal/lightui/music.go:794
 msgid "Repeat: this track (R)"
 msgstr "重复：这首 (R)"
 
-#: internal/lightui/music.go:1016
+#: internal/lightui/music.go:1017
 msgid "%d track"
 msgid_plural "%d tracks"
 msgstr[0] "%d 首"
 
-#: internal/lightui/music.go:1103
-#: internal/lightui/sysmon.go:792
+#: internal/lightui/music.go:1104
+#: internal/lightui/sysmon.go:794
 msgid "Open files"
 msgstr "打开的文件"
 
-#: internal/lightui/music.go:1103
+#: internal/lightui/music.go:1104
 #: ui/music.ui:424
 msgid "Add files"
 msgstr "添加文件"
 
-#: internal/lightui/music.go:1107
+#: internal/lightui/music.go:1108
 #: ui/music.ui:434
 msgid "Add a folder"
 msgstr "添加文件夹"
 
-#: internal/lightui/music.go:1110
+#: internal/lightui/music.go:1111
 msgid "Load a playlist"
 msgstr "载入播放列表"
 
-#: internal/lightui/music.go:1111
+#: internal/lightui/music.go:1112
 msgid "Playlists"
 msgstr "播放列表"
 
-#: internal/lightui/music.go:1114
+#: internal/lightui/music.go:1115
 msgid "Save the playlist"
 msgstr "保存播放列表"
 
-#: internal/lightui/music.go:1115
+#: internal/lightui/music.go:1116
 msgid "Playlist"
 msgstr "播放列表"
 
-#: internal/lightui/pass.go:352
+#: internal/lightui/pass.go:353
 msgid "A password store: a folder with a .gpg-id"
 msgstr "密码库：含有 .gpg-id 的文件夹"
 
-#: internal/lightui/pass.go:360
+#: internal/lightui/pass.go:361
 msgid "%s is not a password store: it has no .gpg-id (pass init makes one)."
 msgstr "%s 不是密码库：没有 .gpg-id（pass init 可以创建）。"
 
-#: internal/lightui/pass.go:380
+#: internal/lightui/pass.go:381
 msgid "No password store. pass init YOUR-GPG-KEY-ID makes one in ~/.password-store; another folder can be added below."
 msgstr "没有密码库。pass init 你的GPG密钥ID 会在 ~/.password-store 创建一个；也可以在下方添加其他文件夹。"
 
-#: internal/lightui/pass.go:407
+#: internal/lightui/pass.go:408
 msgid "The store is empty. + makes an entry."
 msgstr "密码库是空的。+ 可新建条目。"
 
-#: internal/lightui/pass.go:410
-#: internal/lightui/pass.go:809
-#: internal/lightui/pass.go:1087
+#: internal/lightui/pass.go:411
+#: internal/lightui/pass.go:810
+#: internal/lightui/pass.go:1088
 #: internal/lightui/pass_edit.go:193
 msgid "Choose an entry."
 msgstr "选择一个条目。"
 
-#: internal/lightui/pass.go:416
+#: internal/lightui/pass.go:417
 msgid "Top level"
 msgstr "顶层"
 
-#: internal/lightui/pass.go:424
-#: internal/ui/settings.go:922
-#: internal/ui/settings.go:949
+#: internal/lightui/pass.go:425
+#: internal/ui/settings.go:926
+#: internal/ui/settings.go:953
 msgid "%d entry"
 msgid_plural "%d entries"
 msgstr[0] "%d 条"
 
-#: internal/lightui/pass.go:429
+#: internal/lightui/pass.go:430
 msgid "Right-click to rename or move"
 msgstr "右键点击以重命名或移动"
 
-#: internal/lightui/pass.go:492
+#: internal/lightui/pass.go:493
 #: internal/ui/passwords.go:488
 msgid "Nothing matches. Each word is looked for in the whole path."
 msgstr "没有匹配项。每个词都会在整个路径中查找。"
 
-#: internal/lightui/pass.go:494
+#: internal/lightui/pass.go:495
 msgid "And %d more: another word narrows them."
 msgid_plural "And %d more: another word narrows them."
 msgstr[0] "还有 %d 个：再加一个词可缩小范围。"
 
-#: internal/lightui/pass.go:640
+#: internal/lightui/pass.go:641
 msgid "Decrypting %s"
 msgstr "正在解密 %s"
 
-#: internal/lightui/pass.go:696
+#: internal/lightui/pass.go:697
 #: internal/lightui/pass_otp.go:179
 msgid "Replace the one-time code"
 msgstr "替换一次性验证码"
 
-#: internal/lightui/pass.go:698
+#: internal/lightui/pass.go:699
 #: internal/lightui/pass_otp.go:182
 #: ui/pass.ui:230
 #: ui/pass.ui:852
 msgid "Add a one-time code"
 msgstr "添加一次性验证码"
 
-#: internal/lightui/pass.go:703
+#: internal/lightui/pass.go:704
 #: internal/ui/passwords.go:561
 msgid "USERNAME"
 msgstr "用户名"
 
-#: internal/lightui/pass.go:706
+#: internal/lightui/pass.go:707
 #: internal/ui/passwords.go:564
 #: ui/pass.ui:495
 msgid "PASSWORD"
 msgstr "密码"
 
-#: internal/lightui/pass.go:711
-#: internal/lightui/pass.go:763
+#: internal/lightui/pass.go:712
+#: internal/lightui/pass.go:764
 #: internal/ui/passwords.go:567
 #: internal/ui/passwords.go:570
 #: ui/pass.ui:984
 msgid "ONE-TIME CODE"
 msgstr "一次性验证码"
 
-#: internal/lightui/pass.go:718
+#: internal/lightui/pass.go:719
 #: internal/ui/passwords.go:577
 msgid "NOTES"
 msgstr "备注"
 
-#: internal/lightui/pass.go:747
+#: internal/lightui/pass.go:748
 #: internal/lightui/pass_edit.go:351
 #: internal/mailui/formatted.go:184
 #: internal/term/desktop/desktop_linux.go:43
@@ -9433,125 +9433,125 @@ msgstr "备注"
 msgid "Show"
 msgstr "显示"
 
-#: internal/lightui/pass.go:749
+#: internal/lightui/pass.go:750
 #: internal/lightui/pass_edit.go:348
 #: internal/ui/notify.go:410
 #: internal/ui/passwords.go:642
 msgid "Hide"
 msgstr "隐藏"
 
-#: internal/lightui/pass.go:792
+#: internal/lightui/pass.go:793
 #: internal/lightui/pass_otp.go:237
 #: internal/ui/passwords.go:661
 msgid "%d second left"
 msgid_plural "%d seconds left"
 msgstr[0] "剩 %d 秒"
 
-#: internal/lightui/pass.go:884
+#: internal/lightui/pass.go:885
 msgid "Rename or move the category “%s”"
 msgstr "重命名或移动类别“%s”"
 
-#: internal/lightui/pass.go:885
+#: internal/lightui/pass.go:886
 msgid "Its new path. Another name renames it; a path under another category moves it there, with all its entries."
 msgstr "新路径。换个名字即重命名；放到另一个类别下的路径，即连同所有条目移动过去。"
 
-#: internal/lightui/pass.go:886
-#: internal/lightui/pass.go:890
+#: internal/lightui/pass.go:887
+#: internal/lightui/pass.go:891
 #: internal/term/web/strings.go:65
 msgid "Move"
 msgstr "移动"
 
-#: internal/lightui/pass.go:888
+#: internal/lightui/pass.go:889
 msgid "Rename or move “%s”"
 msgstr "重命名或移动“%s”"
 
-#: internal/lightui/pass.go:889
+#: internal/lightui/pass.go:890
 msgid "Its new path. The first part is its category: change it to move the entry, the rest to rename it."
 msgstr "新路径。第一段是类别：改它即移动条目，改其余部分即重命名。"
 
-#: internal/lightui/pass.go:892
+#: internal/lightui/pass.go:893
 #: ui/pass.ui:137
 msgid "New entry"
 msgstr "新建条目"
 
-#: internal/lightui/pass.go:893
+#: internal/lightui/pass.go:894
 msgid "Its path: the first part is its category. Its content comes next."
 msgstr "路径：第一段是类别。接着填写内容。"
 
-#: internal/lightui/pass.go:898
+#: internal/lightui/pass.go:899
 #: internal/termui/guide.go:163
 #: ui/vm.ui:3289
 msgid "Next"
 msgstr "下一步"
 
-#: internal/lightui/pass.go:900
+#: internal/lightui/pass.go:901
 msgid "Delete “%s”?"
 msgstr "删除“%s”？"
 
-#: internal/lightui/pass.go:901
+#: internal/lightui/pass.go:902
 msgid "pass removes its file; a git store keeps it in its history."
 msgstr "pass 会删除它的文件；git 管理的密码库会在历史中保留。"
 
-#: internal/lightui/pass.go:937
-#: internal/lightui/pass.go:967
+#: internal/lightui/pass.go:938
+#: internal/lightui/pass.go:968
 #: internal/mailui/reader.go:549
 #: internal/mailui/reader.go:794
 #: internal/viewerui/app.go:805
 msgid "FILE"
 msgstr "文件"
 
-#: internal/lightui/pass.go:963
+#: internal/lightui/pass.go:964
 msgid "CATEGORY"
 msgstr "类别"
 
-#: internal/lightui/pass.go:977
+#: internal/lightui/pass.go:978
 msgid "and %d more"
 msgid_plural "and %d more"
 msgstr[0] "还有 %d 个"
 
-#: internal/lightui/pass.go:1021
+#: internal/lightui/pass.go:1022
 msgid "That is where it is."
 msgstr "它已经在那里了。"
 
-#: internal/lightui/pass.go:1023
+#: internal/lightui/pass.go:1024
 msgid "A category cannot move into itself."
 msgstr "类别不能移动到自身内部。"
 
-#: internal/lightui/pass.go:1025
+#: internal/lightui/pass.go:1026
 msgid "That path is already in the store."
 msgstr "这个路径已经在密码库里了。"
 
-#: internal/lightui/pass.go:1027
+#: internal/lightui/pass.go:1028
 msgid "It is no longer in the store."
 msgstr "它已经不在密码库里了。"
 
-#: internal/lightui/pass.go:1029
+#: internal/lightui/pass.go:1030
 msgid "Each part of the path needs a name, without a leading dot."
 msgstr "路径的每一段都要有名字，且不能以点开头。"
 
-#: internal/lightui/pass.go:1136
+#: internal/lightui/pass.go:1137
 msgid "TRUSTED APPS"
 msgstr "受信任的应用"
 
-#: internal/lightui/pass.go:1136
+#: internal/lightui/pass.go:1137
 #: internal/lightui/workshop_manager.go:50
 #: internal/ui/settings_keyring.go:551
 msgid "%d app"
 msgid_plural "%d apps"
 msgstr[0] "%d 个应用"
 
-#: internal/lightui/pass.go:1138
+#: internal/lightui/pass.go:1139
 msgid "None: an app reading it is asked about first."
 msgstr "无：读取它的应用会先询问。"
 
-#: internal/lightui/pass.go:1144
+#: internal/lightui/pass.go:1145
 #: internal/ui/askpass.go:405
 #: internal/ui/settings_keyring.go:624
 msgid "Flatpak: %s"
 msgstr "Flatpak：%s"
 
-#: internal/lightui/pass.go:1149
-#: internal/lightui/pass.go:1171
+#: internal/lightui/pass.go:1150
+#: internal/lightui/pass.go:1172
 #: internal/ui/settings_keyring.go:469
 #: internal/ui/settings_keyring.go:477
 #: internal/ui/settings_keyring.go:629
@@ -9559,50 +9559,50 @@ msgstr "Flatpak：%s"
 msgid "%s · %s"
 msgstr "%s · %s"
 
-#: internal/lightui/pass.go:1156
+#: internal/lightui/pass.go:1157
 #: internal/ui/settings_keyring.go:649
 msgid "Stop trusting it: it is asked about at its next read"
 msgstr "不再信任：它下次读取时会询问"
 
-#: internal/lightui/pass.go:1161
+#: internal/lightui/pass.go:1162
 msgid "LAST READS"
 msgstr "最近读取"
 
-#: internal/lightui/pass.go:1163
+#: internal/lightui/pass.go:1164
 msgid "No app has read it yet."
 msgstr "尚无应用读取过它。"
 
-#: internal/lightui/pass.go:1169
+#: internal/lightui/pass.go:1170
 msgid "%s · %d times"
 msgid_plural "%s · %d times"
 msgstr[0] "%s · %d 次"
 
-#: internal/lightui/pass.go:1181
+#: internal/lightui/pass.go:1182
 #: internal/ui/settings_keyring.go:694
 msgid "trusted"
 msgstr "已信任"
 
-#: internal/lightui/pass.go:1183
+#: internal/lightui/pass.go:1184
 #: internal/ui/settings_keyring.go:696
 msgid "allowed once"
 msgstr "允许一次"
 
-#: internal/lightui/pass.go:1185
+#: internal/lightui/pass.go:1186
 #: internal/ui/settings_keyring.go:698
 msgid "allowed, and trusted from now on"
 msgstr "已允许，今后信任"
 
-#: internal/lightui/pass.go:1187
+#: internal/lightui/pass.go:1188
 #: internal/ui/settings_keyring.go:700
 msgid "denied"
 msgstr "已拒绝"
 
-#: internal/lightui/pass.go:1189
+#: internal/lightui/pass.go:1190
 #: internal/ui/settings_keyring.go:702
 msgid "allowed: no one to ask"
 msgstr "已允许：无人可询问"
 
-#: internal/lightui/pass.go:1191
+#: internal/lightui/pass.go:1192
 msgid "read"
 msgstr "已读取"
 
@@ -9656,56 +9656,56 @@ msgstr "含二维码的图片"
 msgid "Reading the QR code…"
 msgstr "正在读取二维码…"
 
-#: internal/lightui/stocks.go:275
+#: internal/lightui/stocks.go:277
 msgid "Search for a symbol to add it."
 msgstr "搜索符号以添加它。"
 
-#: internal/lightui/stocks.go:282
+#: internal/lightui/stocks.go:284
 #: internal/mailui/window.go:994
 msgid "Loading %s…"
 msgstr "正在加载%s…"
 
-#: internal/lightui/stocks.go:295
+#: internal/lightui/stocks.go:297
 msgid "%s could not be read.\n%s"
 msgstr "无法读取%[1]s。\n%[2]s"
 
-#: internal/lightui/stocks.go:318
+#: internal/lightui/stocks.go:320
 msgid "Previous close"
 msgstr "上次收盘"
 
-#: internal/lightui/stocks.go:320
+#: internal/lightui/stocks.go:322
 msgid "Range start"
 msgstr "范围起始"
 
-#: internal/lightui/stocks.go:323
+#: internal/lightui/stocks.go:325
 #: internal/ui/settings_ai.go:100
 msgid "High"
 msgstr "高"
 
-#: internal/lightui/stocks.go:323
+#: internal/lightui/stocks.go:325
 #: internal/ui/settings_ai.go:100
 msgid "Low"
 msgstr "低"
 
-#: internal/lightui/stocks.go:329
+#: internal/lightui/stocks.go:331
 msgid "As of %s"
 msgstr "更新于 %s"
 
-#: internal/lightui/stocks.go:329
+#: internal/lightui/stocks.go:331
 msgid "Jan 2, 15:04"
 msgstr "1月2日 15:04"
 
-#: internal/lightui/stocks.go:405
+#: internal/lightui/stocks.go:407
 msgid "Nothing by that name"
 msgstr "没有任何叫这个名字的东西"
 
-#: internal/lightui/stocks.go:407
-#: internal/lightui/weather.go:473
+#: internal/lightui/stocks.go:409
+#: internal/lightui/weather.go:475
 msgid "Could not search: %s"
 msgstr "无法搜索:%s"
 
-#: internal/lightui/sysmon.go:54
-#: internal/lightui/sysmon.go:54
+#: internal/lightui/sysmon.go:55
+#: internal/lightui/sysmon.go:55
 #: internal/shell/launcher_actions.go:45
 #: internal/termui/menubar.go:34
 #: internal/ui/dock.go:540
@@ -9713,470 +9713,470 @@ msgstr "无法搜索:%s"
 msgid "Quit"
 msgstr "退出"
 
-#: internal/lightui/sysmon.go:54
+#: internal/lightui/sysmon.go:55
 msgid "Asks it to quit. It can save its work first."
 msgstr "请它退出，它可以先保存工作。"
 
-#: internal/lightui/sysmon.go:55
-#: internal/lightui/sysmon.go:55
+#: internal/lightui/sysmon.go:56
+#: internal/lightui/sysmon.go:56
 msgid "Interrupt"
 msgstr "中断"
 
-#: internal/lightui/sysmon.go:55
+#: internal/lightui/sysmon.go:56
 msgid "As Ctrl+C in a terminal."
 msgstr "如同在终端里按 Ctrl+C。"
 
-#: internal/lightui/sysmon.go:56
-#: internal/lightui/sysmon.go:56
+#: internal/lightui/sysmon.go:57
+#: internal/lightui/sysmon.go:57
 msgid "Hang Up"
 msgstr "挂断"
 
-#: internal/lightui/sysmon.go:56
+#: internal/lightui/sysmon.go:57
 msgid "As closing its terminal. Many services reload instead."
 msgstr "如同关闭它的终端。许多服务会改为重新加载。"
 
-#: internal/lightui/sysmon.go:57
+#: internal/lightui/sysmon.go:58
 msgid "Stops it running until it is resumed."
 msgstr "让它停下，直到继续运行。"
 
-#: internal/lightui/sysmon.go:58
-#: internal/lightui/sysmon.go:58
+#: internal/lightui/sysmon.go:59
+#: internal/lightui/sysmon.go:59
 msgid "Force Quit"
 msgstr "强制退出"
 
-#: internal/lightui/sysmon.go:58
+#: internal/lightui/sysmon.go:59
 msgid "Ends it at once. Work it has not saved is lost."
 msgstr "立即结束。未保存的工作会丢失。"
 
-#: internal/lightui/sysmon.go:59
+#: internal/lightui/sysmon.go:60
 msgid "Quit with Children"
 msgstr "连同子进程退出"
 
-#: internal/lightui/sysmon.go:59
 #: internal/lightui/sysmon.go:60
+#: internal/lightui/sysmon.go:61
 msgid "Quit All"
 msgstr "全部退出"
 
-#: internal/lightui/sysmon.go:60
+#: internal/lightui/sysmon.go:61
 msgid "Quit All by Name"
 msgstr "按名称全部退出"
 
-#: internal/lightui/sysmon.go:144
-#: internal/lightui/sysmon.go:726
+#: internal/lightui/sysmon.go:145
+#: internal/lightui/sysmon.go:728
 #: ui/sysmon.ui:84
 msgid "CPU"
 msgstr "CPU"
 
-#: internal/lightui/sysmon.go:146
-#: internal/lightui/sysmon.go:726
-#: internal/lightui/sysmon.go:787
-#: internal/lightui/sysmon.go:991
+#: internal/lightui/sysmon.go:147
+#: internal/lightui/sysmon.go:728
+#: internal/lightui/sysmon.go:789
+#: internal/lightui/sysmon.go:993
 msgid "MEMORY"
 msgstr "内存"
 
-#: internal/lightui/sysmon.go:148
+#: internal/lightui/sysmon.go:149
 msgid "GPU"
 msgstr "GPU"
 
-#: internal/lightui/sysmon.go:150
-#: internal/lightui/sysmon.go:1037
+#: internal/lightui/sysmon.go:151
+#: internal/lightui/sysmon.go:1039
 #: internal/shell/dock.go:286
 #: internal/shell/dock.go:329
 msgid "NETWORK"
 msgstr "网络"
 
-#: internal/lightui/sysmon.go:151
+#: internal/lightui/sysmon.go:152
 #: internal/ui/settings_card.go:526
 msgid "DISK"
 msgstr "磁盘"
 
-#: internal/lightui/sysmon.go:153
+#: internal/lightui/sysmon.go:154
 msgid "BATTERY"
 msgstr "电池"
 
-#: internal/lightui/sysmon.go:393
+#: internal/lightui/sysmon.go:395
 msgid "%d threads"
 msgstr "%d 个线程"
 
-#: internal/lightui/sysmon.go:398
+#: internal/lightui/sysmon.go:400
 msgid "load %.2f %.2f %.2f"
 msgstr "负载 %.2f %.2f %.2f"
 
-#: internal/lightui/sysmon.go:408
+#: internal/lightui/sysmon.go:410
 msgid "CPU %d: %.0f%%"
 msgstr "CPU %d：%.0f%%"
 
-#: internal/lightui/sysmon.go:417
+#: internal/lightui/sysmon.go:419
 msgid "of %s · cache %s"
 msgstr "共 %s · 缓存 %s"
 
-#: internal/lightui/sysmon.go:419
+#: internal/lightui/sysmon.go:421
 msgid " · swap %s of %s"
 msgstr " · 交换 %s / %s"
 
-#: internal/lightui/sysmon.go:434
+#: internal/lightui/sysmon.go:436
 msgid " · video memory %s of %s"
 msgstr " · 显存 %s / %s"
 
-#: internal/lightui/sysmon.go:446
+#: internal/lightui/sysmon.go:448
 msgid "↑ %s · received %s, sent %s"
 msgstr "↑ %s · 已接收 %s，已发送 %s"
 
-#: internal/lightui/sysmon.go:453
+#: internal/lightui/sysmon.go:455
 msgid "of %s on / · %s free"
 msgstr "/ 共 %s · 可用 %s"
 
-#: internal/lightui/sysmon.go:455
+#: internal/lightui/sysmon.go:457
 msgid " · read %s · write %s"
 msgstr " · 读 %s · 写 %s"
 
-#: internal/lightui/sysmon.go:471
+#: internal/lightui/sysmon.go:473
 msgid "health %.0f%%"
 msgstr "健康度 %.0f%%"
 
-#: internal/lightui/sysmon.go:476
+#: internal/lightui/sysmon.go:478
 msgid "UP %s"
 msgstr "已运行 %s"
 
-#: internal/lightui/sysmon.go:538
+#: internal/lightui/sysmon.go:540
 msgid "%d PROCESSES"
 msgstr "%d 个进程"
 
-#: internal/lightui/sysmon.go:540
+#: internal/lightui/sysmon.go:542
 msgid "%d OF %d PROCESSES"
 msgstr "%d / %d 个进程"
 
-#: internal/lightui/sysmon.go:544
+#: internal/lightui/sysmon.go:546
 msgid "No process matches."
 msgstr "没有匹配的进程。"
 
-#: internal/lightui/sysmon.go:580
+#: internal/lightui/sysmon.go:582
 msgid "Details and the ways to end %s"
 msgstr "%s 的详情与结束方式"
 
-#: internal/lightui/sysmon.go:608
+#: internal/lightui/sysmon.go:610
 msgid "Not sent: an administrator's password is needed."
 msgstr "未发送：需要管理员密码。"
 
-#: internal/lightui/sysmon.go:652
+#: internal/lightui/sysmon.go:654
 msgid "Process %d has ended."
 msgstr "进程 %d 已结束。"
 
-#: internal/lightui/sysmon.go:726
+#: internal/lightui/sysmon.go:728
 msgid "THREADS"
 msgstr "线程"
 
-#: internal/lightui/sysmon.go:742
+#: internal/lightui/sysmon.go:744
 msgid "END OR PAUSE"
 msgstr "结束或暂停"
 
-#: internal/lightui/sysmon.go:783
+#: internal/lightui/sysmon.go:785
 msgid "PROCESS"
 msgstr "进程"
 
-#: internal/lightui/sysmon.go:784
+#: internal/lightui/sysmon.go:786
 msgid "Parent"
 msgstr "父进程"
 
-#: internal/lightui/sysmon.go:784
+#: internal/lightui/sysmon.go:786
 msgid "State"
 msgstr "状态"
 
-#: internal/lightui/sysmon.go:784
+#: internal/lightui/sysmon.go:786
 msgid "Started"
 msgstr "启动于"
 
-#: internal/lightui/sysmon.go:784
+#: internal/lightui/sysmon.go:786
 msgid "CPU time"
 msgstr "CPU 时间"
 
-#: internal/lightui/sysmon.go:784
+#: internal/lightui/sysmon.go:786
 msgid "Priority"
 msgstr "优先级"
 
-#: internal/lightui/sysmon.go:784
+#: internal/lightui/sysmon.go:786
 msgid "Unit"
 msgstr "单元"
 
-#: internal/lightui/sysmon.go:788
+#: internal/lightui/sysmon.go:790
 msgid "Resident"
 msgstr "常驻"
 
-#: internal/lightui/sysmon.go:788
+#: internal/lightui/sysmon.go:790
 msgid "Private"
 msgstr "私有"
 
-#: internal/lightui/sysmon.go:788
+#: internal/lightui/sysmon.go:790
 msgid "Shared"
 msgstr "共享"
 
-#: internal/lightui/sysmon.go:788
+#: internal/lightui/sysmon.go:790
 msgid "Swapped out"
 msgstr "已换出"
 
-#: internal/lightui/sysmon.go:788
+#: internal/lightui/sysmon.go:790
 msgid "Peak"
 msgstr "峰值"
 
-#: internal/lightui/sysmon.go:792
+#: internal/lightui/sysmon.go:794
 msgid "Command"
 msgstr "命令"
 
-#: internal/lightui/sysmon.go:792
+#: internal/lightui/sysmon.go:794
 msgid "Disk read"
 msgstr "磁盘读取"
 
-#: internal/lightui/sysmon.go:792
+#: internal/lightui/sysmon.go:794
 msgid "Disk written"
 msgstr "磁盘写入"
 
-#: internal/lightui/sysmon.go:806
+#: internal/lightui/sysmon.go:808
 msgid "PID %d · %s"
 msgstr "PID %d · %s"
 
-#: internal/lightui/sysmon.go:808
+#: internal/lightui/sysmon.go:810
 msgid "PID %d · ENDED"
 msgstr "PID %d · 已结束"
 
-#: internal/lightui/sysmon.go:819
-#: internal/lightui/sysmon.go:1102
-#: internal/lightui/sysmon.go:1109
+#: internal/lightui/sysmon.go:821
+#: internal/lightui/sysmon.go:1104
+#: internal/lightui/sysmon.go:1111
 msgid "Not readable: not your process"
 msgstr "无法读取：不是你的进程"
 
-#: internal/lightui/sysmon.go:842
+#: internal/lightui/sysmon.go:844
 msgid "%s · %s ago"
 msgstr "%s · %s 前"
 
-#: internal/lightui/sysmon.go:842
+#: internal/lightui/sysmon.go:844
 #: internal/ui/settings_keyring.go:298
 msgid "Jan 2 15:04:05"
 msgstr "1月2日 15:04:05"
 
-#: internal/lightui/sysmon.go:845
+#: internal/lightui/sysmon.go:847
 msgid "nice %d"
 msgstr "nice %d"
 
-#: internal/lightui/sysmon.go:869
+#: internal/lightui/sysmon.go:871
 msgid "It is paused. Lets it go on."
 msgstr "它已暂停。让它继续运行。"
 
-#: internal/lightui/sysmon.go:873
+#: internal/lightui/sysmon.go:875
 msgid "Also its %d child process, the youngest first."
 msgid_plural "Also its %d child processes, the youngest first."
 msgstr[0] "还有它的 %d 个子进程，从最新的开始。"
 
-#: internal/lightui/sysmon.go:876
+#: internal/lightui/sysmon.go:878
 msgid "All %d processes named %s."
 msgstr "名为 %[2]s 的全部 %[1]d 个进程。"
 
-#: internal/lightui/sysmon.go:898
+#: internal/lightui/sysmon.go:900
 msgid "This process has ended."
 msgstr "这个进程已结束。"
 
-#: internal/lightui/sysmon.go:929
+#: internal/lightui/sysmon.go:931
 msgid "Asked %s to quit."
 msgstr "已请 %s 退出。"
 
-#: internal/lightui/sysmon.go:931
+#: internal/lightui/sysmon.go:933
 msgid "Interrupted %s."
 msgstr "已中断 %s。"
 
-#: internal/lightui/sysmon.go:933
+#: internal/lightui/sysmon.go:935
 msgid "Hung up on %s."
 msgstr "已挂断 %s。"
 
-#: internal/lightui/sysmon.go:935
+#: internal/lightui/sysmon.go:937
 msgid "Ended %s."
 msgstr "已结束 %s。"
 
-#: internal/lightui/sysmon.go:937
+#: internal/lightui/sysmon.go:939
 msgid "Paused %s."
 msgstr "已暂停 %s。"
 
-#: internal/lightui/sysmon.go:939
+#: internal/lightui/sysmon.go:941
 msgid "Resumed %s."
 msgstr "已继续 %s。"
 
-#: internal/lightui/sysmon.go:943
+#: internal/lightui/sysmon.go:945
 msgid "Asked %s and its %d child to quit."
 msgid_plural "Asked %s and its %d children to quit."
 msgstr[0] "已请 %s 和它的 %d 个子进程退出。"
 
-#: internal/lightui/sysmon.go:946
+#: internal/lightui/sysmon.go:948
 msgid "Asked %d processes named %s to quit."
 msgstr "已请名为 %[2]s 的 %[1]d 个进程退出。"
 
-#: internal/lightui/sysmon.go:964
+#: internal/lightui/sysmon.go:966
 msgid "COMPUTER"
 msgstr "电脑"
 
-#: internal/lightui/sysmon.go:965
-#: internal/lightui/sysmon.go:977
+#: internal/lightui/sysmon.go:967
+#: internal/lightui/sysmon.go:979
 #: internal/shell/cardterm.go:113
 #: internal/ui/settings_ai.go:497
 msgid "Model"
 msgstr "模型"
 
-#: internal/lightui/sysmon.go:968
+#: internal/lightui/sysmon.go:970
 #: internal/shell/cardterm.go:136
 msgid "Kernel"
 msgstr "内核"
 
-#: internal/lightui/sysmon.go:971
+#: internal/lightui/sysmon.go:973
 msgid "%s · since %s"
 msgstr "%s · 自 %s 起"
 
-#: internal/lightui/sysmon.go:973
+#: internal/lightui/sysmon.go:975
 msgid "Up"
 msgstr "已运行"
 
-#: internal/lightui/sysmon.go:976
+#: internal/lightui/sysmon.go:978
 msgid "PROCESSOR"
 msgstr "处理器"
 
-#: internal/lightui/sysmon.go:978
+#: internal/lightui/sysmon.go:980
 msgid "Cores"
 msgstr "核心"
 
-#: internal/lightui/sysmon.go:978
+#: internal/lightui/sysmon.go:980
 msgid "%s, %s"
 msgstr "%s，%s"
 
-#: internal/lightui/sysmon.go:978
+#: internal/lightui/sysmon.go:980
 msgid "%d core"
 msgid_plural "%d cores"
 msgstr[0] "%d 个核心"
 
-#: internal/lightui/sysmon.go:978
+#: internal/lightui/sysmon.go:980
 msgid "%d thread"
 msgid_plural "%d threads"
 msgstr[0] "%d 个线程"
 
-#: internal/lightui/sysmon.go:981
+#: internal/lightui/sysmon.go:983
 msgid "up to %s"
 msgstr "最高 %s"
 
-#: internal/lightui/sysmon.go:984
+#: internal/lightui/sysmon.go:986
 msgid "now %s"
 msgstr "当前 %s"
 
-#: internal/lightui/sysmon.go:987
+#: internal/lightui/sysmon.go:989
 msgid "Speed"
 msgstr "频率"
 
-#: internal/lightui/sysmon.go:992
+#: internal/lightui/sysmon.go:994
 #: internal/lightui/workshop_manager.go:50
 msgid "Installed"
 msgstr "总量"
 
-#: internal/lightui/sysmon.go:993
+#: internal/lightui/sysmon.go:995
 #: internal/ui/voice_models.go:152
 msgid "In use"
 msgstr "已用"
 
-#: internal/lightui/sysmon.go:994
+#: internal/lightui/sysmon.go:996
 msgid "Cache"
 msgstr "缓存"
 
-#: internal/lightui/sysmon.go:994
+#: internal/lightui/sysmon.go:996
 msgid "%s · given back when needed"
 msgstr "%s · 需要时会释放"
 
-#: internal/lightui/sysmon.go:997
+#: internal/lightui/sysmon.go:999
 msgid "Swap"
 msgstr "交换"
 
-#: internal/lightui/sysmon.go:997
-#: internal/lightui/sysmon.go:1009
-#: internal/lightui/sysmon.go:1023
+#: internal/lightui/sysmon.go:999
+#: internal/lightui/sysmon.go:1011
+#: internal/lightui/sysmon.go:1025
 msgid "%s of %s"
 msgstr "%s / %s"
 
-#: internal/lightui/sysmon.go:1001
+#: internal/lightui/sysmon.go:1003
 msgid "GRAPHICS"
 msgstr "显卡"
 
-#: internal/lightui/sysmon.go:1003
+#: internal/lightui/sysmon.go:1005
 #: internal/ui/voice_page.go:200
 msgid "Card"
 msgstr "显卡"
 
-#: internal/lightui/sysmon.go:1004
+#: internal/lightui/sysmon.go:1006
 msgid "Driver"
 msgstr "驱动"
 
-#: internal/lightui/sysmon.go:1006
+#: internal/lightui/sysmon.go:1008
 msgid "Busy"
 msgstr "占用"
 
-#: internal/lightui/sysmon.go:1009
+#: internal/lightui/sysmon.go:1011
 msgid "Video memory"
 msgstr "显存"
 
-#: internal/lightui/sysmon.go:1015
+#: internal/lightui/sysmon.go:1017
 msgid "STORAGE"
 msgstr "存储"
 
-#: internal/lightui/sysmon.go:1039
+#: internal/lightui/sysmon.go:1041
 msgid "wired"
 msgstr "有线"
 
-#: internal/lightui/sysmon.go:1041
+#: internal/lightui/sysmon.go:1043
 #: ui/control.ui:273
-#: ui/settings.ui:5179
-#: ui/settings.ui:5255
+#: ui/settings.ui:5222
+#: ui/settings.ui:5298
 msgid "Wi-Fi"
 msgstr "Wi-Fi"
 
-#: internal/lightui/sysmon.go:1043
+#: internal/lightui/sysmon.go:1045
 msgid "down"
 msgstr "未连接"
 
-#: internal/lightui/sysmon.go:1045
+#: internal/lightui/sysmon.go:1047
 msgid "up"
 msgstr "已连接"
 
-#: internal/lightui/sysmon.go:1049
-#: internal/lightui/tailscale.go:633
+#: internal/lightui/sysmon.go:1051
+#: internal/lightui/tailscale.go:634
 msgid "Addresses"
 msgstr "地址"
 
-#: internal/lightui/sysmon.go:1052
+#: internal/lightui/sysmon.go:1054
 msgid "Hardware"
 msgstr "硬件地址"
 
-#: internal/lightui/sysmon.go:1055
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:570
+#: internal/lightui/sysmon.go:1057
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:571
 msgid "Traffic"
 msgstr "流量"
 
-#: internal/lightui/sysmon.go:1055
+#: internal/lightui/sysmon.go:1057
 msgid "received %s · sent %s"
 msgstr "已接收 %s · 已发送 %s"
 
-#: internal/lightui/sysmon.go:1061
+#: internal/lightui/sysmon.go:1063
 msgid "SENSORS"
 msgstr "传感器"
 
-#: internal/lightui/sysmon.go:1080
+#: internal/lightui/sysmon.go:1082
 msgid "Charging"
 msgstr "充电中"
 
-#: internal/lightui/sysmon.go:1080
+#: internal/lightui/sysmon.go:1082
 msgid "Discharging"
 msgstr "放电中"
 
-#: internal/lightui/sysmon.go:1080
+#: internal/lightui/sysmon.go:1082
 msgid "Full"
 msgstr "已充满"
 
-#: internal/lightui/sysmon.go:1081
+#: internal/lightui/sysmon.go:1083
 msgid "Not charging"
 msgstr "未充电"
 
-#: internal/lightui/sysmon.go:1088
+#: internal/lightui/sysmon.go:1090
 msgid "%.1f s"
 msgstr "%.1f 秒"
 
@@ -10240,174 +10240,174 @@ msgstr "%s上。"
 msgid "%s off."
 msgstr "%s 关闭。"
 
-#: internal/lightui/tailscale.go:304
+#: internal/lightui/tailscale.go:305
 msgid "Not changed: allow this app to manage Tailscale first."
 msgstr "Not changed: allow this app to manage Tailscale first."
 
-#: internal/lightui/tailscale.go:306
+#: internal/lightui/tailscale.go:307
 msgid "Tailscale is not running."
 msgstr "Tailscale没有运行。"
 
-#: internal/lightui/tailscale.go:348
+#: internal/lightui/tailscale.go:349
 #: internal/shell/status.go:99
 #: internal/shell/status.go:116
 #: internal/shell/status.go:131
 msgid "Unavailable"
 msgstr "不可用"
 
-#: internal/lightui/tailscale.go:359
+#: internal/lightui/tailscale.go:360
 msgid "%d of %d devices online"
 msgstr "%[1]d的%[2]d设备上线"
 
-#: internal/lightui/tailscale.go:372
+#: internal/lightui/tailscale.go:373
 msgid "Tailscale's service is not running."
 msgstr "Tailscale的服务未运行。"
 
-#: internal/lightui/tailscale.go:372
+#: internal/lightui/tailscale.go:373
 msgid "Start…"
 msgstr "开始……"
 
-#: internal/lightui/tailscale.go:373
+#: internal/lightui/tailscale.go:374
 msgid "Started Tailscale."
 msgstr "开始Tailscale。"
 
-#: internal/lightui/tailscale.go:377
+#: internal/lightui/tailscale.go:378
 msgid "This device is logged out of its tailnet."
 msgstr "该设备已从其尾网注销。"
 
-#: internal/lightui/tailscale.go:377
+#: internal/lightui/tailscale.go:378
 msgid "Log In"
 msgstr "登录"
 
-#: internal/lightui/tailscale.go:380
+#: internal/lightui/tailscale.go:381
 msgid "An admin of the tailnet has to approve this device."
 msgstr "尾网的管理员必须批准该设备。"
 
-#: internal/lightui/tailscale.go:380
-#: internal/lightui/tailscale.go:667
+#: internal/lightui/tailscale.go:381
+#: internal/lightui/tailscale.go:668
 msgid "Admin Console"
 msgstr "管理控制台"
 
-#: internal/lightui/tailscale.go:383
+#: internal/lightui/tailscale.go:384
 msgid "To change Tailscale from here, allow it once; it asks for an administrator's password."
 msgstr "要从此处更改 Tailscale，请允许一次；它要求输入管理员密码。"
 
-#: internal/lightui/tailscale.go:383
+#: internal/lightui/tailscale.go:384
 msgid "Allow…"
 msgstr "允许……"
 
-#: internal/lightui/tailscale.go:385
+#: internal/lightui/tailscale.go:386
 msgid "This app may now manage Tailscale."
 msgstr "该应用程序现在可以管理Tailscale。"
 
-#: internal/lightui/tailscale.go:417
+#: internal/lightui/tailscale.go:418
 msgid "No device matches."
 msgstr "没有设备匹配。"
 
-#: internal/lightui/tailscale.go:419
+#: internal/lightui/tailscale.go:420
 msgid "No other devices in the tailnet yet."
 msgstr "尾网中还没有其他设备。"
 
-#: internal/lightui/tailscale.go:436
+#: internal/lightui/tailscale.go:437
 msgid "exit node in use"
 msgstr "出口节点使用中"
 
-#: internal/lightui/tailscale.go:438
+#: internal/lightui/tailscale.go:439
 msgid "exit node"
 msgstr "出口节点"
 
-#: internal/lightui/tailscale.go:448
+#: internal/lightui/tailscale.go:449
 msgid "Details, ping, exit node and sending files"
 msgstr "详情、ping、出口节点及发送文件"
 
-#: internal/lightui/tailscale.go:508
+#: internal/lightui/tailscale.go:509
 msgid "Copy IP"
 msgstr "复制IP"
 
-#: internal/lightui/tailscale.go:508
+#: internal/lightui/tailscale.go:509
 msgid "Copy Name"
 msgstr "复制名称"
 
-#: internal/lightui/tailscale.go:508
+#: internal/lightui/tailscale.go:509
 #: ui/connect.ui:622
 msgid "Ping"
 msgstr "Ping"
 
-#: internal/lightui/tailscale.go:516
-#: internal/lightui/tailscale.go:578
+#: internal/lightui/tailscale.go:517
+#: internal/lightui/tailscale.go:579
 msgid "Use as Exit Node"
 msgstr "用作出口节点"
 
-#: internal/lightui/tailscale.go:525
+#: internal/lightui/tailscale.go:526
 msgid "DEVICE"
 msgstr "设备"
 
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:564
-#: internal/lightui/tailscale.go:632
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:565
+#: internal/lightui/tailscale.go:633
 msgid "MagicDNS"
 msgstr "MagicDNS"
 
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:565
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:566
 msgid "IPv4"
 msgstr "IPv4"
 
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:566
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:567
 msgid "IPv6"
 msgstr "IPv6"
 
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:568
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:569
 msgid "Status"
 msgstr "状态"
 
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:569
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:570
 #: internal/term/web/strings.go:32
 msgid "Connection"
 msgstr "连接"
 
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:571
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:572
 msgid "Key expires"
 msgstr "密钥过期"
 
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:572
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:573
 msgid "Tags"
 msgstr "标签"
 
-#: internal/lightui/tailscale.go:529
+#: internal/lightui/tailscale.go:530
 msgid "SEND FILES"
 msgstr "发送文件"
 
-#: internal/lightui/tailscale.go:545
+#: internal/lightui/tailscale.go:546
 msgid "NO LONGER IN THE TAILNET"
 msgstr "不再在尾网上"
 
-#: internal/lightui/tailscale.go:567
+#: internal/lightui/tailscale.go:568
 msgid "%s · host name %s"
 msgstr "%[1]s · 主机名 %[2]s"
 
-#: internal/lightui/tailscale.go:573
+#: internal/lightui/tailscale.go:574
 msgid "Drop files on this panel to send them to %s with Taildrop. They wait on it until saved."
 msgstr "将文件拖放到该面板上以使用Taildrop将它们发送到%s。他们等待它直到被保存。"
 
-#: internal/lightui/tailscale.go:576
+#: internal/lightui/tailscale.go:577
 msgid "Stop Using as Exit Node"
 msgstr "停止用作出口节点"
 
-#: internal/lightui/tailscale.go:585
+#: internal/lightui/tailscale.go:586
 msgid "SEND THIS DEVICE'S TRAFFIC THROUGH"
 msgstr "通过该设备发送流量"
 
-#: internal/lightui/tailscale.go:595
+#: internal/lightui/tailscale.go:596
 msgid "IN USE"
 msgstr "使用中"
 
-#: internal/lightui/tailscale.go:602
+#: internal/lightui/tailscale.go:603
 #: internal/termui/prefs.go:347
 #: internal/ui/settings_ai.go:272
 #: internal/ui/settings_keyring.go:572
@@ -10416,168 +10416,168 @@ msgstr "使用中"
 msgid "None"
 msgstr "无"
 
-#: internal/lightui/tailscale.go:602
+#: internal/lightui/tailscale.go:603
 msgid "Traffic goes out from this device as usual."
 msgstr "Traffic goes out from this device as usual."
 
-#: internal/lightui/tailscale.go:610
+#: internal/lightui/tailscale.go:611
 msgid "No device in the tailnet offers to be an exit node. Turn on Offer as Exit Node on one, then approve it in the admin console."
 msgstr "尾网中没有设备愿意作为出口节点。在其中之一上启用 Offer 作为出口节点，然后在管理控制台中批准它。"
 
-#: internal/lightui/tailscale.go:617
+#: internal/lightui/tailscale.go:618
 msgid "Allow local network access"
 msgstr "允许本地网络访问"
 
-#: internal/lightui/tailscale.go:618
+#: internal/lightui/tailscale.go:619
 msgid "Reach printers and other devices on this network while the exit node carries the rest."
 msgstr "Reach printers and other devices on this network while the exit node carries the rest."
 
-#: internal/lightui/tailscale.go:629
+#: internal/lightui/tailscale.go:630
 #: ui/tailscale.ui:170
 msgid "THIS DEVICE"
 msgstr "该装置"
 
-#: internal/lightui/tailscale.go:636
+#: internal/lightui/tailscale.go:637
 msgid "Tailnet"
 msgstr "Tailscale 网络"
 
-#: internal/lightui/tailscale.go:638
+#: internal/lightui/tailscale.go:639
 msgid "SETTINGS"
 msgstr "设置"
 
-#: internal/lightui/tailscale.go:647
+#: internal/lightui/tailscale.go:648
 msgid "RECEIVED FILES"
 msgstr "收到的文件"
 
-#: internal/lightui/tailscale.go:650
+#: internal/lightui/tailscale.go:651
 msgid "Files sent to this device show here once this app may manage Tailscale."
 msgstr "Files sent to this device show here once this app may manage Tailscale."
 
-#: internal/lightui/tailscale.go:654
+#: internal/lightui/tailscale.go:655
 msgid "None waiting. Files other devices send with Taildrop show here."
 msgstr "无人等待。 Files other devices send with Taildrop show here."
 
-#: internal/lightui/tailscale.go:659
+#: internal/lightui/tailscale.go:660
 msgid "Save to Downloads"
 msgstr "保存到下载"
 
-#: internal/lightui/tailscale.go:662
+#: internal/lightui/tailscale.go:663
 msgid "ACCOUNT"
 msgstr "账户"
 
-#: internal/lightui/tailscale.go:663
+#: internal/lightui/tailscale.go:664
 #: internal/shell/commands.go:31
 msgid "Log Out"
 msgstr "退出登录"
 
-#: internal/lightui/tailscale.go:665
+#: internal/lightui/tailscale.go:666
 msgid "Sure?"
 msgstr "确认？"
 
-#: internal/lightui/tailscale.go:750
+#: internal/lightui/tailscale.go:751
 msgid "No exit node: traffic goes out from this device."
 msgstr "No exit node: traffic goes out from this device."
 
-#: internal/lightui/tailscale.go:752
-#: internal/lightui/tailscale.go:763
+#: internal/lightui/tailscale.go:753
+#: internal/lightui/tailscale.go:764
 msgid "Traffic now goes through %s."
 msgstr "流量现在经过%s。"
 
-#: internal/lightui/tailscale.go:761
+#: internal/lightui/tailscale.go:762
 msgid "Stopped using %s as exit node."
 msgstr "停止使用 %s 作为出口节点。"
 
-#: internal/lightui/tailscale.go:783
+#: internal/lightui/tailscale.go:784
 msgid "Logged out."
 msgstr "已注销。"
 
-#: internal/lightui/tailscale.go:806
+#: internal/lightui/tailscale.go:807
 msgid "Pinging %s…"
 msgstr "ping %s……"
 
-#: internal/lightui/tailscale.go:820
+#: internal/lightui/tailscale.go:821
 msgid "%s did not answer"
 msgstr "%s 未接听"
 
-#: internal/lightui/tailscale.go:823
+#: internal/lightui/tailscale.go:824
 msgid "%s answered in %.0f ms"
 msgstr "%[1]s 在 %.0[2]f 毫秒中回答"
 
-#: internal/lightui/tailscale.go:824
+#: internal/lightui/tailscale.go:825
 msgid "Direct, %s"
 msgstr "直接,%s"
 
-#: internal/lightui/tailscale.go:826
+#: internal/lightui/tailscale.go:827
 msgid "Relayed through %s"
 msgstr "通过 %s 中继"
 
-#: internal/lightui/tailscale.go:842
+#: internal/lightui/tailscale.go:843
 msgid "Sending %s to %s…"
 msgstr "发送%[1]s到%[2]s..."
 
-#: internal/lightui/tailscale.go:867
+#: internal/lightui/tailscale.go:868
 msgid "Sent %s to %s."
 msgstr "将%[1]s发送至%[2]s。"
 
-#: internal/lightui/tailscale.go:904
+#: internal/lightui/tailscale.go:905
 msgid "Saved %s to %s."
 msgstr "将 %[1]s 保存到 %[2]s。"
 
-#: internal/lightui/tailscale.go:915
+#: internal/lightui/tailscale.go:916
 msgid "Opening the login page…"
 msgstr "正在打开登录页面……"
 
-#: internal/lightui/tailscale.go:942
+#: internal/lightui/tailscale.go:943
 msgid "No password prompt is running in this session (a polkit agent); run in a terminal: sudo %s"
 msgstr "此会话中没有运行密码提示(polkit 代理);在终端中运行: sudo %s"
 
-#: internal/lightui/tailscale.go:944
+#: internal/lightui/tailscale.go:945
 msgid "not done: no administrator's password was given"
 msgstr "not done: no administrator's password was given"
 
-#: internal/lightui/video.go:306
+#: internal/lightui/video.go:307
 msgid "Resumed at %s"
 msgstr "从 %s 继续"
 
-#: internal/lightui/video.go:395
+#: internal/lightui/video.go:396
 msgid "Playing a video"
 msgstr "正在播放视频"
 
-#: internal/lightui/video.go:418
+#: internal/lightui/video.go:419
 msgid "Cannot play it: %s"
 msgstr "无法播放：%s"
 
-#: internal/lightui/video.go:576
+#: internal/lightui/video.go:577
 msgid "Speed %s×"
 msgstr "速度 %s×"
 
-#: internal/lightui/video.go:685
+#: internal/lightui/video.go:686
 msgid "Open a video"
 msgstr "打开视频"
 
-#: internal/lightui/video.go:693
+#: internal/lightui/video.go:694
 msgid "Videos"
 msgstr "视频"
 
-#: internal/lightui/weather.go:256
+#: internal/lightui/weather.go:258
 msgid "Add a city to see its weather."
 msgstr "添加城市以查看其天气。"
 
-#: internal/lightui/weather.go:256
+#: internal/lightui/weather.go:258
 #: ui/clock.ui:122
 #: ui/weather.ui:95
 msgid "Add a city"
 msgstr "添加城市"
 
-#: internal/lightui/weather.go:262
+#: internal/lightui/weather.go:264
 msgid "Reading the weather…"
 msgstr "读取天气……"
 
-#: internal/lightui/weather.go:274
+#: internal/lightui/weather.go:276
 msgid "The weather could not be read.\n%s"
 msgstr "无法读取天气。\n%s"
 
-#: internal/lightui/weather.go:274
+#: internal/lightui/weather.go:276
 #: internal/mailui/panel.go:307
 #: internal/ui/passwords.go:534
 #: ui/mail-compose.ui:456
@@ -10585,43 +10585,43 @@ msgstr "无法读取天气。\n%s"
 msgid "Try again"
 msgstr "再试一次"
 
-#: internal/lightui/weather.go:323
+#: internal/lightui/weather.go:325
 msgid "H %s   L %s"
 msgstr "H %[1]s L %[2]s"
 
-#: internal/lightui/weather.go:332
+#: internal/lightui/weather.go:334
 msgid "NOW"
 msgstr "现在"
 
-#: internal/lightui/weather.go:395
+#: internal/lightui/weather.go:397
 msgid "FEELS LIKE"
 msgstr "体感温度"
 
-#: internal/lightui/weather.go:396
+#: internal/lightui/weather.go:398
 msgid "HUMIDITY"
 msgstr "湿度"
 
-#: internal/lightui/weather.go:397
+#: internal/lightui/weather.go:399
 msgid "WIND"
 msgstr "风"
 
-#: internal/lightui/weather.go:398
+#: internal/lightui/weather.go:400
 msgid "RAIN"
 msgstr "雨"
 
-#: internal/lightui/weather.go:403
+#: internal/lightui/weather.go:405
 msgid "SUNRISE"
 msgstr "日出"
 
-#: internal/lightui/weather.go:404
+#: internal/lightui/weather.go:406
 msgid "SUNSET"
 msgstr "日落"
 
-#: internal/lightui/weather.go:426
+#: internal/lightui/weather.go:428
 msgid "UPDATED %s · OPEN-METEO"
 msgstr "更新了 %s·OPEN-METEO"
 
-#: internal/lightui/weather.go:471
+#: internal/lightui/weather.go:473
 msgid "No place by that name"
 msgstr "没有叫这个名字的地方"
 
@@ -10630,35 +10630,35 @@ msgstr "没有叫这个名字的地方"
 msgid "Workshop"
 msgstr "工坊"
 
-#: internal/lightui/workshop.go:209
+#: internal/lightui/workshop.go:210
 msgid "Starting %s…"
 msgstr "正在启动 %s…"
 
-#: internal/lightui/workshop.go:222
+#: internal/lightui/workshop.go:223
 msgid "%s could not start"
 msgstr "%s 无法启动"
 
-#: internal/lightui/workshop.go:233
+#: internal/lightui/workshop.go:234
 msgid "It ended without an error."
 msgstr "它已结束，没有错误。"
 
-#: internal/lightui/workshop.go:237
+#: internal/lightui/workshop.go:238
 msgid "%s stopped"
 msgstr "%s 已停止"
 
-#: internal/lightui/workshop.go:288
+#: internal/lightui/workshop.go:289
 msgid "Start again"
 msgstr "重新启动"
 
-#: internal/lightui/workshop.go:294
+#: internal/lightui/workshop.go:295
 msgid "It starts again by itself when a file of it changes."
 msgstr "它的文件改变时会自动重新启动。"
 
-#: internal/lightui/workshop.go:689
+#: internal/lightui/workshop.go:690
 msgid "Unknown building block %q"
 msgstr "未知的组件 %q"
 
-#: internal/lightui/workshop.go:987
+#: internal/lightui/workshop.go:988
 #: internal/term/web/strings.go:81
 #: internal/ui/askpass.go:300
 #: internal/ui/settings_card.go:624
@@ -10711,7 +10711,7 @@ msgid "A folder with an app.toml; it is copied."
 msgstr "带有 app.toml 的文件夹；会被复制。"
 
 #: internal/lightui/workshop_manager.go:90
-#: ui/settings.ui:881
+#: ui/settings.ui:924
 msgid "Choose…"
 msgstr "选择……"
 
@@ -11141,7 +11141,7 @@ msgstr ""
 #: internal/mailui/reader.go:826
 #: ui/gpg.ui:755
 #: ui/gpg.ui:999
-#: ui/settings.ui:6601
+#: ui/settings.ui:6644
 msgid "Save…"
 msgstr "保存…"
 
@@ -12414,8 +12414,8 @@ msgstr "这台电脑没有用于配对的身份：%v"
 
 #: internal/remoteui/window.go:173
 #: internal/shell/card.go:80
-#: ui/settings.ui:5225
-#: ui/settings.ui:5506
+#: ui/settings.ui:5268
+#: ui/settings.ui:5549
 msgid "This computer"
 msgstr "这台电脑"
 
@@ -12737,7 +12737,7 @@ msgid "%d thr"
 msgstr "%d 线程"
 
 #: internal/shell/cardterm.go:136
-#: internal/ui/settings.go:588
+#: internal/ui/settings.go:591
 msgid "Desktop"
 msgstr "桌面"
 
@@ -12746,7 +12746,7 @@ msgid "Lock Screen"
 msgstr "锁屏"
 
 #: internal/shell/commands.go:27
-#: ui/settings.ui:4137
+#: ui/settings.ui:4180
 msgid "Lock now"
 msgstr "立即锁定"
 
@@ -12989,7 +12989,7 @@ msgstr "查找应用程序、窗口和答案"
 
 #: internal/shell/dock.go:313
 #: internal/ui/screenshot.go:1144
-#: ui/settings.ui:1966
+#: ui/settings.ui:2009
 msgid "Screenshot"
 msgstr "截图"
 
@@ -13647,7 +13647,7 @@ msgid "Key panel"
 msgstr "按键面板"
 
 #: internal/term/web/strings.go:63
-#: ui/settings.ui:5827
+#: ui/settings.ui:5870
 msgid "Keyboard"
 msgstr "键盘"
 
@@ -13837,7 +13837,7 @@ msgid "Wait, let me think."
 msgstr ""
 
 #: internal/term/web/strings.go:122
-#: ui/settings.ui:1247
+#: ui/settings.ui:1290
 msgid "Workspaces"
 msgstr "工作区"
 
@@ -14245,7 +14245,7 @@ msgstr "让 bash、zsh 和 fish 标记提示符，以便记住命令"
 #: internal/termui/prefs.go:184
 #: internal/ui/notify.go:324
 #: ui/bar.ui:175
-#: ui/settings.ui:3376
+#: ui/settings.ui:3419
 msgid "Notifications"
 msgstr "通知"
 
@@ -14636,11 +14636,11 @@ msgstr "为截图已隐藏。"
 msgid "The passphrases do not match."
 msgstr "密码短语不匹配。"
 
-#: internal/ui/bar.go:491
+#: internal/ui/bar.go:494
 msgid "Workspace %s"
 msgstr "工作空间%s"
 
-#: internal/ui/bar.go:504
+#: internal/ui/bar.go:507
 msgid "WORKSPACE"
 msgstr "工作区"
 
@@ -14667,7 +14667,7 @@ msgstr "搜索剪贴板历史"
 
 #: internal/ui/clipboard.go:360
 #: ui/connect.ui:728
-#: ui/settings.ui:3640
+#: ui/settings.ui:3683
 msgid "Clipboard"
 msgstr "剪贴板"
 
@@ -14770,13 +14770,13 @@ msgstr "范围内没有网络。"
 #: internal/ui/control_detail.go:182
 #: internal/ui/settings_bluetooth.go:224
 #: internal/ui/settings_wifi.go:305
-#: ui/settings.ui:5420
-#: ui/settings.ui:5649
+#: ui/settings.ui:5463
+#: ui/settings.ui:5692
 msgid "Searching…"
 msgstr "正在搜索…"
 
 #: internal/ui/control_detail.go:214
-#: internal/ui/settings.go:587
+#: internal/ui/settings.go:590
 msgid "Devices"
 msgstr "设备"
 
@@ -14795,10 +14795,10 @@ msgid "No devices paired yet"
 msgstr "还没有配对的设备"
 
 #: internal/ui/drawer.go:217
-#: internal/ui/settings.go:589
+#: internal/ui/settings.go:592
 #: internal/ui/widgets.go:586
 #: ui/settings.ui:181
-#: ui/settings.ui:2105
+#: ui/settings.ui:2148
 msgid "Apps"
 msgstr "应用程序"
 
@@ -15012,7 +15012,7 @@ msgstr "搜索所有条目"
 
 #: internal/ui/passwords.go:283
 #: ui/bar.ui:154
-#: ui/settings.ui:1435
+#: ui/settings.ui:1478
 msgid "Passwords"
 msgstr "密码"
 
@@ -15172,119 +15172,119 @@ msgstr "截图已复制"
 msgid "Screenshot taken"
 msgstr "截图"
 
-#: internal/ui/settings.go:328
+#: internal/ui/settings.go:330
 msgid "Not restarted: %s"
 msgstr "未重新启动：%s"
 
-#: internal/ui/settings.go:353
-#: internal/ui/settings.go:793
+#: internal/ui/settings.go:355
+#: internal/ui/settings.go:796
 msgid "%d px"
 msgstr "%d 像素"
 
-#: internal/ui/settings.go:586
+#: internal/ui/settings.go:589
 msgid "Connections"
 msgstr "连接"
 
-#: internal/ui/settings.go:698
+#: internal/ui/settings.go:701
 msgid "%s · yours: right-click for more"
 msgstr "%s · 你的主题：右键查看更多"
 
-#: internal/ui/settings.go:715
+#: internal/ui/settings.go:718
 msgid "A CSS file of @define-color lines, kept in themes beside config.toml"
 msgstr "由 @define-color 行组成的 CSS 文件，放在 config.toml 旁的 themes 中"
 
-#: internal/ui/settings.go:724
+#: internal/ui/settings.go:727
 msgid "Add Theme…"
 msgstr "添加主题…"
 
-#: internal/ui/settings.go:827
+#: internal/ui/settings.go:831
 msgid "As the bar (%s)"
 msgstr "同栏（%s）"
 
-#: internal/ui/settings.go:844
+#: internal/ui/settings.go:848
 msgid "inua objects"
 msgstr "inua objects"
 
-#: internal/ui/settings.go:845
+#: internal/ui/settings.go:849
 msgid "inua objects soft"
 msgstr "inua objects soft"
 
-#: internal/ui/settings.go:846
+#: internal/ui/settings.go:850
 msgid "inua objects flat"
 msgstr "inua objects flat"
 
-#: internal/ui/settings.go:854
+#: internal/ui/settings.go:858
 msgid "Phosphor"
 msgstr "Phosphor"
 
-#: internal/ui/settings.go:854
-#: internal/ui/settings.go:855
+#: internal/ui/settings.go:858
+#: internal/ui/settings.go:859
 msgid "System theme"
 msgstr "系统主题"
 
-#: internal/ui/settings.go:855
-#: ui/settings.ui:545
+#: internal/ui/settings.go:859
+#: ui/settings.ui:588
 msgid "As the app style"
 msgstr "跟随应用风格"
 
-#: internal/ui/settings.go:948
+#: internal/ui/settings.go:952
 msgid "%s (%s, %s) · %s"
 msgstr "%s(%s,%s)· %s"
 
-#: internal/ui/settings.go:950
+#: internal/ui/settings.go:954
 msgid "%d text"
 msgid_plural "%d texts"
 msgstr[0] "%d 段文字"
 
-#: internal/ui/settings.go:951
+#: internal/ui/settings.go:955
 msgid "%d image"
 msgid_plural "%d images"
 msgstr[0] "%d 张图片"
 
-#: internal/ui/settings.go:952
+#: internal/ui/settings.go:956
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: internal/ui/settings.go:1031
+#: internal/ui/settings.go:1035
 #: internal/ui/settings_apps.go:168
 #: internal/ui/settings_card.go:288
 #: internal/ui/settings_portals.go:177
 msgid "Not saved: %s"
 msgstr "未保存：%s"
 
-#: internal/ui/settings.go:1057
+#: internal/ui/settings.go:1061
 msgid "Choose a wallpaper"
 msgstr "选择壁纸"
 
-#: internal/ui/settings.go:1099
+#: internal/ui/settings.go:1103
 msgid "Off: another notification daemon can show them"
 msgstr "关闭：另一个通知守护进程可以显示它们"
 
-#: internal/ui/settings.go:1101
+#: internal/ui/settings.go:1105
 msgid "Banners, then the notification center (the bell in the bar, or Super+N)"
 msgstr "先显示横幅，再收进通知中心（顶栏铃铛或 Super+N）"
 
-#: internal/ui/settings.go:1103
+#: internal/ui/settings.go:1107
 msgid "Waiting: another notification daemon is running"
 msgstr "等待：另一个通知守护进程正在运行"
 
-#: internal/ui/settings.go:1122
+#: internal/ui/settings.go:1126
 msgid "Nothing pinned"
 msgstr "尚未固定应用"
 
-#: internal/ui/settings.go:1138
+#: internal/ui/settings.go:1142
 msgid "%s (not installed)"
 msgstr "%s(未安装)"
 
-#: internal/ui/settings.go:1151
+#: internal/ui/settings.go:1155
 msgid "Move earlier"
 msgstr "向前移动"
 
-#: internal/ui/settings.go:1152
+#: internal/ui/settings.go:1156
 msgid "Move later"
 msgstr "向后移动"
 
-#: internal/ui/settings.go:1153
+#: internal/ui/settings.go:1157
 msgid "Remove from the dock"
 msgstr "从程序坞移除"
 
@@ -15354,7 +15354,7 @@ msgid "Minimal"
 msgstr "最小"
 
 #: internal/ui/settings_ai.go:100
-#: ui/settings.ui:1764
+#: ui/settings.ui:1807
 msgid "Medium"
 msgstr "中"
 
@@ -15387,7 +15387,7 @@ msgid "Hide token"
 msgstr "隐藏令牌"
 
 #: internal/ui/settings_ai.go:248
-#: ui/settings.ui:2990
+#: ui/settings.ui:3033
 msgid "Create token"
 msgstr "创建令牌"
 
@@ -15830,7 +15830,7 @@ msgid "What the next login runs inua on"
 msgstr ""
 
 #: internal/ui/settings_compositor.go:77
-#: ui/settings.ui:6488
+#: ui/settings.ui:6531
 msgid "Compositor"
 msgstr ""
 
@@ -16087,7 +16087,7 @@ msgid "No displays"
 msgstr "没有显示器"
 
 #: internal/ui/settings_displays.go:212
-#: ui/settings.ui:5689
+#: ui/settings.ui:5732
 msgid "Displays"
 msgstr "显示器"
 
@@ -16133,7 +16133,7 @@ msgid "Where it is (%s, %s)"
 msgstr "当前位置 (%s, %s)"
 
 #: internal/ui/settings_displays.go:323
-#: ui/settings.ui:1656
+#: ui/settings.ui:1699
 msgid "Position"
 msgstr "位置"
 
@@ -16147,8 +16147,8 @@ msgid "Mirror"
 msgstr "镜像"
 
 #: internal/ui/settings_displays.go:347
-#: ui/settings.ui:6087
-#: ui/settings.ui:6354
+#: ui/settings.ui:6130
+#: ui/settings.ui:6397
 msgid "Use hyprland.conf"
 msgstr "使用hyprland.conf"
 
@@ -16222,7 +16222,7 @@ msgid "Added %s."
 msgstr "已添加 %s。"
 
 #: internal/ui/settings_keyring.go:270
-#: ui/settings.ui:4814
+#: ui/settings.ui:4857
 msgid "<span alpha='55%'>[</span>READ<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>读取<span alpha='55%'>]</span>"
 
@@ -16351,7 +16351,7 @@ msgid "The record of reads cannot be read: %s"
 msgstr "无法读取读取记录：%s"
 
 #: internal/ui/settings_keyring.go:424
-#: ui/settings.ui:4453
+#: ui/settings.ui:4496
 msgid "No app has read a secret yet."
 msgstr "还没有应用读取过密钥。"
 
@@ -16784,7 +16784,7 @@ msgid "%s Upgrade with: inua upgrade"
 msgstr "%s 升级方式:inua 升级"
 
 #: internal/ui/updates.go:99
-#: ui/settings.ui:6747
+#: ui/settings.ui:6790
 msgid "Upgrade"
 msgstr "升级"
 
@@ -17603,7 +17603,7 @@ msgid "Network device (TUN)"
 msgstr "网络设备 (TUN)"
 
 #: internal/vmui/window.go:1241
-#: ui/settings.ui:4080
+#: ui/settings.ui:4123
 msgid "Secret Service"
 msgstr "Secret Service"
 
@@ -17680,7 +17680,7 @@ msgid "BSD"
 msgstr "BSD"
 
 #: internal/vmui/window.go:1510
-#: ui/settings.ui:2106
+#: ui/settings.ui:2149
 msgid "Windows"
 msgstr "窗口"
 
@@ -18350,8 +18350,8 @@ msgid "Wi-Fi networks"
 msgstr "Wi-Fi 网络"
 
 #: ui/control.ui:346
-#: ui/settings.ui:5460
-#: ui/settings.ui:5536
+#: ui/settings.ui:5503
+#: ui/settings.ui:5579
 msgid "Bluetooth"
 msgstr "蓝牙"
 
@@ -18372,7 +18372,7 @@ msgid "Display"
 msgstr "显示"
 
 #: ui/control.ui:666
-#: ui/settings.ui:6420
+#: ui/settings.ui:6463
 msgid "Sound"
 msgstr "声音"
 
@@ -19011,7 +19011,7 @@ msgid "The machine shows its desktop at this size."
 msgstr "那台机器以此尺寸显示桌面。"
 
 #: ui/remote.ui:782
-#: ui/settings.ui:1270
+#: ui/settings.ui:1313
 msgid "This monitor's"
 msgstr "该显示器的"
 
@@ -19119,1036 +19119,1044 @@ msgstr "透明度"
 msgid "Corner radius"
 msgstr "圆角半径"
 
-#: ui/settings.ui:429
+#: ui/settings.ui:418
+msgid "Animations"
+msgstr "动画"
+
+#: ui/settings.ui:427
+msgid "Motion in inua and the compositor; off makes changes immediate"
+msgstr "inua 与合成器的动效；关闭后变化立即生效"
+
+#: ui/settings.ui:472
 msgid "<span alpha='55%'>[</span>ICONS<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>图标<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:437
+#: ui/settings.ui:480
 msgid "The shell's own, and those of apps and files"
 msgstr "Shell 自身的，以及应用和文件的"
 
-#: ui/settings.ui:467
+#: ui/settings.ui:510
 msgid "App style"
 msgstr "应用风格"
 
-#: ui/settings.ui:476
+#: ui/settings.ui:519
 msgid "How inua draws apps: its own, and the other apps it draws"
 msgstr "inua 绘制应用的方式：自带的应用和它绘制的其他应用"
 
-#: ui/settings.ui:491
+#: ui/settings.ui:534
 msgid "Every app of the style in use"
 msgstr "当前风格的全部应用"
 
-#: ui/settings.ui:522
+#: ui/settings.ui:565
 msgid "Other apps"
 msgstr "其他应用"
 
-#: ui/settings.ui:531
+#: ui/settings.ui:574
 msgid "Apps that aren't inua's, and files: as the app style, the system's or an installed theme"
 msgstr "非 inua 的应用和文件：跟随应用风格、系统的或已安装的主题"
 
-#: ui/settings.ui:569
+#: ui/settings.ui:612
 msgid "Line icons"
 msgstr "线条图标"
 
-#: ui/settings.ui:578
+#: ui/settings.ui:621
 msgid "The bar, the settings and inua's apps: Phosphor's, the system's, an installed theme or one of yours"
 msgstr "栏、设置和 inua 的应用：Phosphor、系统的、已安装的主题或你自己的"
 
-#: ui/settings.ui:599
+#: ui/settings.ui:642
 msgid "Every icon of the set in use"
 msgstr "当前图标集的全部图标"
 
-#: ui/settings.ui:634
+#: ui/settings.ui:677
 msgid "<span alpha='55%'>[</span>LANGUAGE<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>语言<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:642
+#: ui/settings.ui:685
 msgid "The shell, settings and light apps"
 msgstr "外壳、设置和轻应用"
 
-#: ui/settings.ui:672
+#: ui/settings.ui:715
 msgid "Language"
 msgstr "语言"
 
-#: ui/settings.ui:681
+#: ui/settings.ui:724
 msgid "Programs use it when they start"
 msgstr "程序启动时使用"
 
-#: ui/settings.ui:695
+#: ui/settings.ui:738
 msgid "Same as the system"
 msgstr "与系统相同"
 
-#: ui/settings.ui:722
+#: ui/settings.ui:765
 msgid "Restart the shell to use it now; open apps change when you open them again."
 msgstr "重新启动外壳即可立即使用；已打开的应用在重新打开后切换。"
 
-#: ui/settings.ui:770
+#: ui/settings.ui:813
 msgid "<span alpha='55%'>[</span>PICTURE<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>图片<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:778
+#: ui/settings.ui:821
 msgid "Behind your windows, on every monitor"
 msgstr "在每台显示器的窗口后方"
 
-#: ui/settings.ui:808
+#: ui/settings.ui:851
 msgid "inua draws the wallpaper"
 msgstr ""
 
-#: ui/settings.ui:817
+#: ui/settings.ui:860
 msgid "A new picture each day, drawn for your theme: a sunset, the cosmos, a cat watching the moon …"
 msgstr ""
 
-#: ui/settings.ui:832
+#: ui/settings.ui:875
 msgid "Draw another"
 msgstr ""
 
-#: ui/settings.ui:861
+#: ui/settings.ui:904
 msgid "Image"
 msgstr "图像"
 
-#: ui/settings.ui:872
+#: ui/settings.ui:915
 msgid "none: a fine texture"
 msgstr "无图片：显示细纹理背景"
 
-#: ui/settings.ui:891
+#: ui/settings.ui:934
 msgid "No image"
 msgstr "无图像"
 
-#: ui/settings.ui:917
+#: ui/settings.ui:960
 msgid "Fit"
 msgstr "适应窗口"
 
-#: ui/settings.ui:926
+#: ui/settings.ui:969
 msgid "How the picture fills each monitor"
 msgstr "图片如何填充每个监视器"
 
-#: ui/settings.ui:940
+#: ui/settings.ui:983
 msgid "Cover: fill, cropping"
 msgstr "填满并裁剪"
 
-#: ui/settings.ui:941
+#: ui/settings.ui:984
 msgid "Contain: show it all"
 msgstr "完整显示"
 
-#: ui/settings.ui:942
+#: ui/settings.ui:985
 msgid "Tile: repeat"
 msgstr "平铺：重复"
 
-#: ui/settings.ui:943
+#: ui/settings.ui:986
 msgid "Center: actual size"
 msgstr "居中，原始大小"
 
-#: ui/settings.ui:966
+#: ui/settings.ui:1009
 msgid "Colour"
 msgstr "颜色"
 
-#: ui/settings.ui:979
+#: ui/settings.ui:1022
 msgid "theme"
 msgstr "主题"
 
-#: ui/settings.ui:987
+#: ui/settings.ui:1030
 msgid "#rrggbb, shown around the image. Empty: the theme's ground"
 msgstr "#rrggbb，显示在图像周围。空：主题的地面"
 
-#: ui/settings.ui:1022
+#: ui/settings.ui:1065
 msgid "Bar & Dock"
 msgstr "顶栏与程序坞"
 
-#: ui/settings.ui:1060
+#: ui/settings.ui:1103
 msgid "<span alpha='55%'>[</span>BAR<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>顶栏<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:1068
+#: ui/settings.ui:1111
 msgid "The bar along the top of each monitor"
 msgstr "每个显示器顶部的栏"
 
-#: ui/settings.ui:1098
+#: ui/settings.ui:1141
 msgid "Show the bar"
 msgstr "显示栏"
 
-#: ui/settings.ui:1107
+#: ui/settings.ui:1150
 msgid "Off: Super+Space, Super+A and Super+N still open the launcher, control center and notifications"
 msgstr "关闭：Super+Space、Super+A和Super+N仍然打开启动器、控制中心和通知"
 
-#: ui/settings.ui:1141
+#: ui/settings.ui:1184
 msgid "Bar spacing"
 msgstr "顶栏间距"
 
-#: ui/settings.ui:1150
+#: ui/settings.ui:1193
 msgid "Choose the standard or compact bar layout"
 msgstr "选择标准或紧凑的顶栏布局"
 
-#: ui/settings.ui:1164
+#: ui/settings.ui:1207
 msgid "Default"
 msgstr "默认"
 
-#: ui/settings.ui:1165
+#: ui/settings.ui:1208
 msgid "Compact"
 msgstr "紧凑"
 
-#: ui/settings.ui:1221
+#: ui/settings.ui:1264
 msgid "strftime: %a weekday, %b month, %-d day, %H:%M time"
 msgstr "strftime: %a 工作日、%b 月份、%-d 日期、%H:%M 时间"
 
-#: ui/settings.ui:1256
+#: ui/settings.ui:1299
 msgid "Which workspaces each bar shows"
 msgstr "每个条显示哪些工作区"
 
-#: ui/settings.ui:1271
+#: ui/settings.ui:1314
 msgid "All monitors'"
 msgstr "所有监视器"
 
-#: ui/settings.ui:1298
+#: ui/settings.ui:1341
 msgid "Application in bar"
 msgstr "顶栏中的应用程序"
 
-#: ui/settings.ui:1307
+#: ui/settings.ui:1350
 msgid "Show the current application's icon and label"
 msgstr "显示当前应用程序的图标和名称"
 
-#: ui/settings.ui:1341
+#: ui/settings.ui:1384
 msgid "Application label"
 msgstr "应用程序标签"
 
-#: ui/settings.ui:1350
+#: ui/settings.ui:1393
 msgid "Choose the name shown beside the app icon"
 msgstr "选择显示在应用图标旁的名称"
 
-#: ui/settings.ui:1364
+#: ui/settings.ui:1407
 msgid "Application name"
 msgstr "应用程序名称"
 
-#: ui/settings.ui:1365
+#: ui/settings.ui:1408
 msgid "Window title"
 msgstr "窗口标题"
 
-#: ui/settings.ui:1392
+#: ui/settings.ui:1435
 msgid "Tray icons"
 msgstr "托盘图标"
 
-#: ui/settings.ui:1401
+#: ui/settings.ui:1444
 msgid "Status icons from apps"
 msgstr "来自应用程序的状态图标"
 
-#: ui/settings.ui:1444
+#: ui/settings.ui:1487
 msgid "Search the password store and copy from it, when there is one"
 msgstr "有密码库时，搜索并从中复制"
 
-#: ui/settings.ui:1489
+#: ui/settings.ui:1532
 msgid "<span alpha='55%'>[</span>DOCK<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>程序坞<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:1497
+#: ui/settings.ui:1540
 msgid "Apps along the chosen screen edge on each monitor"
 msgstr "每个显示器上沿所选屏幕边缘的应用程序"
 
-#: ui/settings.ui:1527
+#: ui/settings.ui:1570
 msgid "Show the dock"
 msgstr "显示坞站"
 
-#: ui/settings.ui:1536
+#: ui/settings.ui:1579
 msgid "Pinned apps, then the others with open windows"
 msgstr "固定的应用程序，然后是其他打开的窗口"
 
-#: ui/settings.ui:1570
+#: ui/settings.ui:1613
 msgid "Show during workspace overview"
 msgstr "在工作区总览中显示"
 
-#: ui/settings.ui:1579
+#: ui/settings.ui:1622
 msgid "Keep the dock visible above the overview"
 msgstr "在总览上方保持 Dock 可见"
 
-#: ui/settings.ui:1613
+#: ui/settings.ui:1656
 msgid "Hide automatically"
 msgstr "自动隐藏"
 
-#: ui/settings.ui:1622
+#: ui/settings.ui:1665
 msgid "Comes back when the pointer reaches the dock's screen edge"
 msgstr "当指针到达扩展坞的屏幕边缘时返回"
 
-#: ui/settings.ui:1665
+#: ui/settings.ui:1708
 msgid "Choose a screen edge for the dock"
 msgstr "选择扩展坞的屏幕边缘"
 
-#: ui/settings.ui:1679
+#: ui/settings.ui:1722
 msgid "Bottom"
 msgstr "底部"
 
-#: ui/settings.ui:1680
+#: ui/settings.ui:1723
 msgid "Top"
 msgstr "顶部"
 
-#: ui/settings.ui:1681
+#: ui/settings.ui:1724
 msgid "Left"
 msgstr "左"
 
-#: ui/settings.ui:1682
+#: ui/settings.ui:1725
 msgid "Right"
 msgstr "右"
 
-#: ui/settings.ui:1706
+#: ui/settings.ui:1749
 msgid "Remove screen edge gaps"
 msgstr "去除屏幕边缘间隙"
 
-#: ui/settings.ui:1715
+#: ui/settings.ui:1758
 msgid "Remove the screen-edge margins around the dock and top bar"
 msgstr "移除扩展坞和顶栏周围的屏幕边缘边距"
 
-#: ui/settings.ui:1749
+#: ui/settings.ui:1792
 msgid "Icon size"
 msgstr "图标尺寸"
 
-#: ui/settings.ui:1762
+#: ui/settings.ui:1805
 msgid "Smaller"
 msgstr "较小"
 
-#: ui/settings.ui:1763
+#: ui/settings.ui:1806
 msgid "Small"
 msgstr "小"
 
-#: ui/settings.ui:1765
+#: ui/settings.ui:1808
 msgid "Large"
 msgstr "大号"
 
-#: ui/settings.ui:1792
+#: ui/settings.ui:1835
 msgid "Apps drawer"
 msgstr "应用程序抽屉"
 
-#: ui/settings.ui:1801
+#: ui/settings.ui:1844
 msgid "A button at the end for Clock, Weather, Stocks and Calculator"
 msgstr "末尾的按钮用于时钟、天气、股票和计算器"
 
-#: ui/settings.ui:1846
+#: ui/settings.ui:1889
 msgid "<span alpha='55%'>[</span>PINNED<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>已固定<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:1854
+#: ui/settings.ui:1897
 msgid "Right-click an app on the dock to keep it there"
 msgstr "右键单击扩展坞上的应用程序以将其保留在那里"
 
-#: ui/settings.ui:1903
+#: ui/settings.ui:1946
 msgid "<span alpha='55%'>[</span>CONTROL CENTER<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>控制中心<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:1911
+#: ui/settings.ui:1954
 msgid "Shell commands behind the control center's buttons"
 msgstr "控制中心按钮后面的 Shell 命令"
 
-#: ui/settings.ui:2044
+#: ui/settings.ui:2087
 msgid "<span alpha='55%'>[</span>LAUNCHER<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>启动器<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:2052
+#: ui/settings.ui:2095
 msgid "Super+Space finds apps and open windows"
 msgstr "Super+Space查找应用程序并打开窗口"
 
-#: ui/settings.ui:2082
+#: ui/settings.ui:2125
 msgid "Opens with"
 msgstr "开头为"
 
-#: ui/settings.ui:2091
+#: ui/settings.ui:2134
 msgid "What Super+Space shows"
 msgstr "Super+Space 显示的内容"
 
-#: ui/settings.ui:2139
+#: ui/settings.ui:2182
 msgid "$TERMINAL, then xdg-terminal-exec"
 msgstr "$TERMINAL，然后是 xdg-terminal-exec"
 
-#: ui/settings.ui:2147
+#: ui/settings.ui:2190
 msgid "Runs apps marked Terminal=true"
 msgstr "运行标记为 Terminal=true 的应用程序"
 
-#: ui/settings.ui:2180
+#: ui/settings.ui:2223
 msgid "Default Apps"
 msgstr "默认应用"
 
-#: ui/settings.ui:2218
+#: ui/settings.ui:2261
 msgid "<span alpha='55%'>[</span>DEFAULT APPS<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>默认应用<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:2226
+#: ui/settings.ui:2269
 msgid "What opens links, folders and files"
 msgstr "用什么打开链接、文件夹和文件"
 
-#: ui/settings.ui:2270
+#: ui/settings.ui:2313
 msgid "<span alpha='55%'>[</span>DIALOGS<span alpha='55%'>]</span>"
 msgstr ""
 
-#: ui/settings.ui:2278
+#: ui/settings.ui:2321
 msgid "What apps show when they ask the desktop"
 msgstr ""
 
-#: ui/settings.ui:2359
+#: ui/settings.ui:2402
 msgid "<span alpha='55%'>[</span>ASSISTANT<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>助理<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:2367
+#: ui/settings.ui:2410
 msgid "An agent with inua's tools, run by Mister Morph"
 msgstr "使用 inua 工具的助手，由 Mister Morph 驱动"
 
-#: ui/settings.ui:2406
+#: ui/settings.ui:2449
 msgid "Ask it from the launcher (the last row, or ? first) or open Assistant"
 msgstr "从启动器询问（最后一行，或第一个？）或打开助手"
 
-#: ui/settings.ui:2440
+#: ui/settings.ui:2483
 msgid "Answers with"
 msgstr "回答使用的模型配置"
 
-#: ui/settings.ui:2449
+#: ui/settings.ui:2492
 msgid "The profile asked first; the assistant's window can switch for a conversation"
 msgstr "优先使用的模型配置；可在助手窗口为当前对话切换"
 
-#: ui/settings.ui:2483
+#: ui/settings.ui:2526
 msgid "Quick choices with"
 msgstr "快速选择使用的模型配置"
 
-#: ui/settings.ui:2492
+#: ui/settings.ui:2535
 msgid "The profile that picks from a fixed list, as an AI player in the games does"
 msgstr "从固定列表中做选择的配置，例如游戏中的 AI 玩家"
 
-#: ui/settings.ui:2526
+#: ui/settings.ui:2569
 msgid "Voice input with"
 msgstr "语音输入使用"
 
-#: ui/settings.ui:2568
-#: ui/settings.ui:3152
+#: ui/settings.ui:2611
+#: ui/settings.ui:3195
 msgid "Ask before changes"
 msgstr "变更前询问"
 
-#: ui/settings.ui:2577
+#: ui/settings.ui:2620
 msgid "Wi-Fi, volume, windows, the clipboard …; power, ending processes and closing windows always ask"
 msgstr "Wi-Fi、音量、窗口、剪贴板……；电源、结束进程和关闭窗口总是询问"
 
-#: ui/settings.ui:2611
+#: ui/settings.ui:2654
 msgid "Search the web"
 msgstr "搜索网络"
 
-#: ui/settings.ui:2620
+#: ui/settings.ui:2663
 msgid "Mister Morph's web search and page reading"
 msgstr "使用 Mister Morph 搜索网络和读取网页"
 
-#: ui/settings.ui:2654
+#: ui/settings.ui:2697
 msgid "Read files"
 msgstr "读取文件"
 
-#: ui/settings.ui:2663
+#: ui/settings.ui:2706
 msgid "Any file you can read; asks each time"
 msgstr "您可以读取的任何文件；每次都会询问"
 
-#: ui/settings.ui:2697
+#: ui/settings.ui:2740
 msgid "Run commands"
 msgstr "运行命令"
 
-#: ui/settings.ui:2706
+#: ui/settings.ui:2749
 msgid "A shell, as you; asks each time"
 msgstr "以您的身份执行 shell 命令，每次都会询问"
 
-#: ui/settings.ui:2740
+#: ui/settings.ui:2783
 msgid "As administrator"
 msgstr "以管理员身份"
 
-#: ui/settings.ui:2749
+#: ui/settings.ui:2792
 msgid "A command as root, once you approve it in a dialog that shows it, with your password"
 msgstr "以 root 身份运行命令，前提是你在显示该命令的对话框中输入密码批准"
 
-#: ui/settings.ui:2794
+#: ui/settings.ui:2837
 msgid "<span alpha='55%'>[</span>CONSOLE ENDPOINT<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>控制台端点<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:2802
+#: ui/settings.ui:2845
 msgid "Connect other Consoles to this desktop"
 msgstr "将其他控制台连接到此桌面"
 
-#: ui/settings.ui:2832
-#: ui/settings.ui:2851
+#: ui/settings.ui:2875
+#: ui/settings.ui:2894
 msgid "Serve endpoint"
 msgstr "服务端点"
 
-#: ui/settings.ui:2841
+#: ui/settings.ui:2884
 msgid "Allow Console connections; the assistant keeps running when this is off"
 msgstr "允许控制台连接；关闭时助手会继续运行"
 
-#: ui/settings.ui:2876
+#: ui/settings.ui:2919
 msgid "Listen address"
 msgstr "监听地址"
 
-#: ui/settings.ui:2885
+#: ui/settings.ui:2928
 msgid "Host:port; kept when serving is off"
 msgstr "主机：端口；服务关闭时保留"
 
-#: ui/settings.ui:2896
+#: ui/settings.ui:2939
 msgid "Use host:port, with a port from 1 to 65535. For IPv6, use [address]:port."
 msgstr "使用主机:端口，端口范围为1到65535。对于IPv6，使用[地址]:端口。"
 
-#: ui/settings.ui:2918
+#: ui/settings.ui:2961
 msgid "Endpoint URL"
 msgstr "端点URL"
 
-#: ui/settings.ui:2929
+#: ui/settings.ui:2972
 msgid "Set a listen address first"
 msgstr "先设置监听地址"
 
-#: ui/settings.ui:2938
+#: ui/settings.ui:2981
 msgid "Copy URL"
 msgstr "复制网址"
 
-#: ui/settings.ui:2969
+#: ui/settings.ui:3012
 msgid "Access token"
 msgstr "访问令牌"
 
-#: ui/settings.ui:2981
+#: ui/settings.ui:3024
 msgid "Token hidden"
 msgstr "令牌隐藏"
 
-#: ui/settings.ui:2999
+#: ui/settings.ui:3042
 msgid "Copy token"
 msgstr "复制令牌"
 
-#: ui/settings.ui:3009
+#: ui/settings.ui:3052
 msgid "Kept in the keyring (pass with inua-keyring). Creating or reading it may ask for your passphrase."
 msgstr "保存在密钥环中(与inua-keyring一起传递)。创建或阅读它可能会要求您输入密码。"
 
-#: ui/settings.ui:3046
+#: ui/settings.ui:3089
 msgid "<span alpha='55%'>[</span>MCP<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>MCP<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:3054
+#: ui/settings.ui:3097
 msgid "Let AI agents on this computer use inua's tools"
 msgstr "让这台电脑上的 AI 代理使用 inua 的工具"
 
-#: ui/settings.ui:3084
-#: ui/settings.ui:3103
+#: ui/settings.ui:3127
+#: ui/settings.ui:3146
 msgid "MCP server"
 msgstr "MCP 服务器"
 
-#: ui/settings.ui:3093
+#: ui/settings.ui:3136
 msgid "Agents such as Claude Code or Codex see the windows, open apps, change settings and more, through inua mcp. The assistant uses these tools either way."
 msgstr "Claude Code、Codex 等代理可通过 inua mcp 查看窗口、打开应用、更改设置等。无论开关如何，助手都会使用这些工具。"
 
-#: ui/settings.ui:3128
+#: ui/settings.ui:3171
 msgid "What agents may do"
 msgstr "代理可以做什么"
 
-#: ui/settings.ui:3137
+#: ui/settings.ui:3180
 msgid "Closing windows, ending processes, power, the clipboard and notifications always ask"
 msgstr "关闭窗口、结束进程、电源、剪贴板和通知始终会询问"
 
-#: ui/settings.ui:3151
+#: ui/settings.ui:3194
 msgid "Look only"
 msgstr "只能查看"
 
-#: ui/settings.ui:3153
+#: ui/settings.ui:3196
 msgid "Change without asking"
 msgstr "无需询问即可更改"
 
-#: ui/settings.ui:3176
+#: ui/settings.ui:3219
 msgid "Connect an agent"
 msgstr "连接代理"
 
-#: ui/settings.ui:3206
+#: ui/settings.ui:3249
 msgid "Other agents: a stdio server that runs inua mcp. Each call is recorded; asking happens in inua's dialog."
 msgstr "其他代理：一个运行 inua mcp 的 stdio 服务器。每次调用都会记录；询问在 inua 的对话框中进行。"
 
-#: ui/settings.ui:3243
+#: ui/settings.ui:3286
 msgid "<span alpha='55%'>[</span>PROFILES<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>模型配置<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:3251
+#: ui/settings.ui:3294
 msgid "The models it can use; fallbacks answer when the first fails"
 msgstr "可使用的模型；首选模型失败时尝试备用模型"
 
-#: ui/settings.ui:3281
+#: ui/settings.ui:3324
 msgid "Add Profile"
 msgstr "添加模型配置"
 
-#: ui/settings.ui:3414
+#: ui/settings.ui:3457
 msgid "<span alpha='55%'>[</span>NOTIFICATIONS<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>通知<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:3422
+#: ui/settings.ui:3465
 msgid "Banners, then the notification center"
 msgstr "横幅、接通知中心"
 
-#: ui/settings.ui:3452
+#: ui/settings.ui:3495
 msgid "Show notifications"
 msgstr "显示通知"
 
-#: ui/settings.ui:3494
+#: ui/settings.ui:3537
 msgid "Banner duration"
 msgstr "横幅持续时间"
 
-#: ui/settings.ui:3503
+#: ui/settings.ui:3546
 msgid "How long a banner shows; critical ones stay"
 msgstr "横幅显示多长时间；关键的留下来"
 
-#: ui/settings.ui:3517
+#: ui/settings.ui:3560
 msgid "3 seconds"
 msgstr "3秒"
 
-#: ui/settings.ui:3518
+#: ui/settings.ui:3561
 msgid "5 seconds"
 msgstr "5秒"
 
-#: ui/settings.ui:3519
+#: ui/settings.ui:3562
 msgid "8 seconds"
 msgstr "8秒"
 
-#: ui/settings.ui:3520
+#: ui/settings.ui:3563
 msgid "12 seconds"
 msgstr "12秒"
 
-#: ui/settings.ui:3547
+#: ui/settings.ui:3590
 msgid "Critical during Focus"
 msgstr "专注模式下显示紧急通知"
 
-#: ui/settings.ui:3556
+#: ui/settings.ui:3599
 msgid "Critical notifications still show banners"
 msgstr "重要通知仍然显示横幅"
 
-#: ui/settings.ui:3590
+#: ui/settings.ui:3633
 msgid "Keep a history"
 msgstr "保留历史"
 
-#: ui/settings.ui:3599
+#: ui/settings.ui:3642
 msgid "The last 500 notifications, dismissed ones too, for the assistant, agents and workshop apps allowed to read them. Off clears it."
 msgstr "最近 500 条通知（含已关闭的），供获准读取的助手、代理和工坊应用使用。关闭即清空。"
 
-#: ui/settings.ui:3678
+#: ui/settings.ui:3721
 msgid "<span alpha='55%'>[</span>CLIPBOARD<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>剪贴板<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:3686
+#: ui/settings.ui:3729
 msgid "History, panel appearance and pasting"
 msgstr "历史、面板外观与粘贴"
 
-#: ui/settings.ui:3716
+#: ui/settings.ui:3759
 msgid "Keep a clipboard history"
 msgstr "保留剪贴板历史"
 
-#: ui/settings.ui:3725
+#: ui/settings.ui:3768
 msgid "Text and images you copy, kept on this computer; a password manager's copies are left out"
 msgstr "你复制的文字和图片,只保存在这台电脑上;密码管理器复制的内容不会保存"
 
-#: ui/settings.ui:3755
+#: ui/settings.ui:3798
 msgid "Never record copies from"
 msgstr "从不记录来自以下来源的复制"
 
-#: ui/settings.ui:3765
+#: ui/settings.ui:3808
 msgid "pass, keepassxc, …"
 msgstr "pass, keepassxc, …"
 
-#: ui/settings.ui:3773
+#: ui/settings.ui:3816
 msgid "Programs or window classes, separated by commas. The program that ran wl-copy and the focused window are checked; hover over an entry in the history to see where it came from"
 msgstr "程序或窗口类名，用逗号分隔。会检查运行 wl-copy 的程序和当前聚焦的窗口；将指针悬停在历史条目上可查看其来源"
 
-#: ui/settings.ui:3799
+#: ui/settings.ui:3842
 msgid "Show in top bar"
 msgstr "在顶栏显示"
 
-#: ui/settings.ui:3808
+#: ui/settings.ui:3851
 msgid "A button in the status area opens the clipboard history"
 msgstr "状态区的按钮可打开剪贴板历史"
 
-#: ui/settings.ui:3842
+#: ui/settings.ui:3885
 msgid "Paste on click"
 msgstr "点击即粘贴"
 
-#: ui/settings.ui:3851
+#: ui/settings.ui:3894
 msgid "Clicking an entry pastes it into the window you were in; off only copies it"
 msgstr "点击条目会把它粘贴到你之前所在的窗口;关闭后只复制"
 
-#: ui/settings.ui:3885
+#: ui/settings.ui:3928
 msgid "History limit"
 msgstr "历史条数上限"
 
-#: ui/settings.ui:3894
+#: ui/settings.ui:3937
 msgid "How many entries it keeps; the oldest go first"
 msgstr "保留多少条;最旧的先删除"
 
-#: ui/settings.ui:3928
+#: ui/settings.ui:3971
 msgid "History storage"
 msgstr "历史占用"
 
-#: ui/settings.ui:3937
+#: ui/settings.ui:3980
 msgid "Loading history…"
 msgstr "正在读取历史…"
 
-#: ui/settings.ui:3950
+#: ui/settings.ui:3993
 msgid "Reveal"
 msgstr "显示"
 
-#: ui/settings.ui:3961
+#: ui/settings.ui:4004
 msgid "Clear the history"
 msgstr "清空历史"
 
-#: ui/settings.ui:4042
+#: ui/settings.ui:4085
 msgid "<span alpha='55%'>[</span>KEYRING<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>钥匙环<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:4050
+#: ui/settings.ui:4093
 msgid "Apps' secrets: browsers' keys, Wi-Fi passwords, API keys"
 msgstr "应用的密钥：浏览器密钥、Wi-Fi 密码、API 密钥"
 
-#: ui/settings.ui:4116
+#: ui/settings.ui:4159
 msgid "Unlocked secrets"
 msgstr "已解锁的机密"
 
-#: ui/settings.ui:4162
+#: ui/settings.ui:4205
 msgid "Lock when unused"
 msgstr "闲置时锁定"
 
-#: ui/settings.ui:4171
+#: ui/settings.ui:4214
 msgid "It locks with the screen and before suspend, and after this long without a read"
 msgstr "随屏幕锁定和挂起前锁定，并在这么久没有读取后锁定"
 
-#: ui/settings.ui:4186
+#: ui/settings.ui:4229
 msgid "5 minutes"
 msgstr "5 分钟"
 
-#: ui/settings.ui:4187
+#: ui/settings.ui:4230
 msgid "15 minutes"
 msgstr "15 分钟"
 
-#: ui/settings.ui:4188
+#: ui/settings.ui:4231
 msgid "30 minutes"
 msgstr "30 分钟"
 
-#: ui/settings.ui:4189
+#: ui/settings.ui:4232
 msgid "1 hour"
 msgstr "1 小时"
 
-#: ui/settings.ui:4190
+#: ui/settings.ui:4233
 msgid "4 hours"
 msgstr "4 小时"
 
-#: ui/settings.ui:4217
+#: ui/settings.ui:4260
 msgid "With no one to ask"
 msgstr "无人可询问时"
 
-#: ui/settings.ui:4226
+#: ui/settings.ui:4269
 msgid "A read by an app not trusted with the secret, while the inua shell is not running"
 msgstr "inua shell 未运行时，未获信任的应用对机密的读取"
 
-#: ui/settings.ui:4241
+#: ui/settings.ui:4284
 msgid "Denied"
 msgstr "拒绝"
 
-#: ui/settings.ui:4268
+#: ui/settings.ui:4311
 msgid "Tell when an app reads a secret"
 msgstr "应用读取密钥时通知"
 
-#: ui/settings.ui:4277
+#: ui/settings.ui:4320
 msgid "A notification for each app's first read since inua-keyring started"
 msgstr "inua-keyring 启动后，每个应用首次读取时发出通知"
 
-#: ui/settings.ui:4322
-#: ui/settings.ui:4536
+#: ui/settings.ui:4365
+#: ui/settings.ui:4579
 msgid "<span alpha='55%'>[</span>TRUSTED APPS<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>受信任的应用<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:4330
+#: ui/settings.ui:4373
 msgid "Apps that read a secret without asking; any other app is asked about first"
 msgstr "无需询问即可读取机密的应用；其他应用会先询问"
 
-#: ui/settings.ui:4366
+#: ui/settings.ui:4409
 msgid "Trusted apps"
 msgstr "受信任的应用"
 
-#: ui/settings.ui:4421
+#: ui/settings.ui:4464
 msgid "<span alpha='55%'>[</span>READS<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>读取<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:4429
+#: ui/settings.ui:4472
 msgid "Every secret inua-keyring handed out and passphrase asked for, newest first"
 msgstr "inua-keyring 交出的每个密钥和请求的每个密码短语，最新的在前"
 
-#: ui/settings.ui:4475
+#: ui/settings.ui:4518
 msgid "Refresh"
 msgstr "刷新"
 
-#: ui/settings.ui:4569
+#: ui/settings.ui:4612
 msgid "The list is not trusted"
 msgstr "该列表不受信任"
 
-#: ui/settings.ui:4590
+#: ui/settings.ui:4633
 msgid "Trust this list again"
 msgstr "再次信任此列表"
 
-#: ui/settings.ui:4630
+#: ui/settings.ui:4673
 msgid "<span alpha='55%'>[</span>ALLOWED PATHS<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>允许的路径<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:4657
+#: ui/settings.ui:4700
 msgid "Any program at one of these paths reads every secret without asking, even after it changes: for an app that updates every day. inua-keyring asks you before a path is added."
 msgstr "这些路径下的任何程序都会不经询问读取所有密钥，即使程序更新之后也是如此：适合每天更新的应用。添加路径前，inua-keyring 会先询问你。"
 
-#: ui/settings.ui:4677
+#: ui/settings.ui:4720
 msgid "A path; * within a folder: ~/.local/share/app/versions/*"
 msgstr "路径；* 匹配文件夹内：~/.local/share/app/versions/*"
 
-#: ui/settings.ui:4686
+#: ui/settings.ui:4729
 msgid "Allow path"
 msgstr "允许路径"
 
-#: ui/settings.ui:4731
+#: ui/settings.ui:4774
 msgid "<span alpha='55%'>[</span>APPS<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>应用<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:4746
+#: ui/settings.ui:4789
 msgid "Filter by app, program or secret"
 msgstr "按应用、程序或机密筛选"
 
-#: ui/settings.ui:4858
+#: ui/settings.ui:4901
 msgid "Shortcuts"
 msgstr "快捷键"
 
-#: ui/settings.ui:4888
+#: ui/settings.ui:4931
 msgid "Press the new shortcut. Esc cancels; Backspace turns it off."
 msgstr "按新的快捷方式。 Esc 取消；退格键将其关闭。"
 
-#: ui/settings.ui:4917
-#: ui/settings.ui:6646
+#: ui/settings.ui:4960
+#: ui/settings.ui:6689
 msgid "<span alpha='55%'>[</span>INUA<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>INUA<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:4925
+#: ui/settings.ui:4968
 msgid "The shell's own actions"
 msgstr "shell自身的动作"
 
-#: ui/settings.ui:4974
+#: ui/settings.ui:5017
 msgid "<span alpha='55%'>[</span>SCREENSHOTS<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>屏幕截图<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:4982
+#: ui/settings.ui:5025
 msgid "With grim and slurp"
 msgstr "使用 grim 和 slurp"
 
-#: ui/settings.ui:5031
+#: ui/settings.ui:5074
 msgid "<span alpha='55%'>[</span>CUSTOM<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>自定义<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:5039
+#: ui/settings.ui:5082
 msgid "Your own commands"
 msgstr "你自己的命令"
 
-#: ui/settings.ui:5081
+#: ui/settings.ui:5124
 msgid "Command, e.g. kitty"
 msgstr "命令，例如 kitty"
 
-#: ui/settings.ui:5090
+#: ui/settings.ui:5133
 msgid "Add…"
 msgstr "添加……"
 
-#: ui/settings.ui:5091
+#: ui/settings.ui:5134
 msgid "Add, then press its shortcut"
 msgstr "添加，然后按其快捷键"
 
-#: ui/settings.ui:5126
+#: ui/settings.ui:5169
 msgid "<span alpha='55%'>[</span>HYPRLAND<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>HYPRLAND<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:5134
+#: ui/settings.ui:5177
 msgid "Other shortcuts, from hyprland.conf"
 msgstr "其他快捷方式，来自hyprland.conf"
 
-#: ui/settings.ui:5217
+#: ui/settings.ui:5260
 msgid "<span alpha='55%'>[</span>WI-FI<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>WI-FI<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:5308
+#: ui/settings.ui:5351
 msgid "<span alpha='55%'>[</span>CONNECTED<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>已连接<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:5316
+#: ui/settings.ui:5359
 msgid "The network in use"
 msgstr "正在使用的网络"
 
-#: ui/settings.ui:5360
+#: ui/settings.ui:5403
 msgid "<span alpha='55%'>[</span>KNOWN NETWORKS<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>已知网络<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:5368
+#: ui/settings.ui:5411
 msgid "Saved on this computer; joined again by themselves"
 msgstr "已保存在此电脑上；会自动重新加入"
 
-#: ui/settings.ui:5412
-#: ui/settings.ui:5641
+#: ui/settings.ui:5455
+#: ui/settings.ui:5684
 msgid "<span alpha='55%'>[</span>NEARBY<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>附近<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:5498
+#: ui/settings.ui:5541
 msgid "<span alpha='55%'>[</span>BLUETOOTH<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>蓝牙<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:5589
+#: ui/settings.ui:5632
 msgid "<span alpha='55%'>[</span>MY DEVICES<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>我的设备<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:5597
+#: ui/settings.ui:5640
 msgid "Paired with this computer"
 msgstr "已与这台电脑配对"
 
-#: ui/settings.ui:5738
+#: ui/settings.ui:5781
 msgid "<span alpha='55%'>[</span>LID<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>盖子<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:5746
+#: ui/settings.ui:5789
 msgid "With another display connected"
 msgstr "连接了其他显示器时"
 
-#: ui/settings.ui:5776
+#: ui/settings.ui:5819
 msgid "Closing the lid turns off the built-in display"
 msgstr "合上盖子时关闭内置显示器"
 
-#: ui/settings.ui:5786
+#: ui/settings.ui:5829
 msgid "Its windows move to the other display. Open the lid to use both."
 msgstr "它的窗口会移到另一台显示器。打开盖子即可同时使用两台。"
 
-#: ui/settings.ui:5875
+#: ui/settings.ui:5918
 msgid "<span alpha='55%'>[</span>KEYS<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>键<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:5883
+#: ui/settings.ui:5926
 msgid "Every keyboard"
 msgstr "每个键盘"
 
-#: ui/settings.ui:5913
+#: ui/settings.ui:5956
 msgid "Swap Ctrl and Alt"
 msgstr "交换 Ctrl 和 Alt"
 
-#: ui/settings.ui:5922
+#: ui/settings.ui:5965
 msgid "Alt acts as Ctrl, and Ctrl as Alt"
 msgstr "Alt充当Ctrl，并且Ctrl充当Alt"
 
-#: ui/settings.ui:5937
+#: ui/settings.ui:5980
 msgid "Left side"
 msgstr "左侧"
 
-#: ui/settings.ui:5938
+#: ui/settings.ui:5981
 msgid "Both sides"
 msgstr "左右两侧"
 
-#: ui/settings.ui:5965
-#: ui/settings.ui:5988
+#: ui/settings.ui:6008
+#: ui/settings.ui:6031
 msgid "Caps Lock"
 msgstr "大写锁定"
 
-#: ui/settings.ui:5974
+#: ui/settings.ui:6017
 msgid "What the Caps Lock key does"
 msgstr "大写锁定键的作用"
 
-#: ui/settings.ui:5989
+#: ui/settings.ui:6032
 msgid "Escape"
 msgstr "Esc"
 
-#: ui/settings.ui:5990
+#: ui/settings.ui:6033
 msgid "Ctrl"
 msgstr "Ctrl"
 
-#: ui/settings.ui:6028
-#: ui/settings.ui:6310
+#: ui/settings.ui:6071
+#: ui/settings.ui:6353
 msgid "<span alpha='55%'>[</span>SOURCE<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>来源<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6036
-#: ui/settings.ui:6318
+#: ui/settings.ui:6079
+#: ui/settings.ui:6361
 msgid "inua writes these to Hyprland's inua.conf"
 msgstr "inua 将这些写入 Hyprland 的 inua.conf"
 
-#: ui/settings.ui:6088
+#: ui/settings.ui:6131
 msgid "Stop setting keyboard options in inua"
 msgstr "停止在inua中设置键盘选项"
 
-#: ui/settings.ui:6119
+#: ui/settings.ui:6162
 msgid "Mouse & Touch"
 msgstr "鼠标与触控板"
 
-#: ui/settings.ui:6167
+#: ui/settings.ui:6210
 msgid "<span alpha='55%'>[</span>POINTER<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>指针<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6175
+#: ui/settings.ui:6218
 msgid "Every touchpad"
 msgstr "每个触摸板"
 
-#: ui/settings.ui:6205
+#: ui/settings.ui:6248
 msgid "Pointer speed"
 msgstr "指针速度"
 
-#: ui/settings.ui:6256
+#: ui/settings.ui:6299
 msgid "Acceleration"
 msgstr "加速度"
 
-#: ui/settings.ui:6265
+#: ui/settings.ui:6308
 msgid "Faster swipes move the pointer further"
 msgstr "更快的滑动使指针移动得更远"
 
-#: ui/settings.ui:6355
+#: ui/settings.ui:6398
 msgid "Stop setting the touchpad in inua"
 msgstr "停止在inua中设置触摸板"
 
-#: ui/settings.ui:6454
+#: ui/settings.ui:6497
 msgid "Power"
 msgstr "电源"
 
-#: ui/settings.ui:6522
+#: ui/settings.ui:6565
 msgid "About"
 msgstr "关于"
 
-#: ui/settings.ui:6560
+#: ui/settings.ui:6603
 msgid "<span alpha='55%'>[</span>SYSTEM<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>系统<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6568
+#: ui/settings.ui:6611
 msgid "This computer, as a card to share"
 msgstr "这台电脑，做成可分享的卡片"
 
-#: ui/settings.ui:6580
+#: ui/settings.ui:6623
 msgid "Copy image"
 msgstr "复制图片"
 
-#: ui/settings.ui:6590
+#: ui/settings.ui:6633
 msgid "Copy text"
 msgstr "复制文字"
 
-#: ui/settings.ui:6592
+#: ui/settings.ui:6635
 msgid "As Markdown"
 msgstr "以 Markdown 格式"
 
-#: ui/settings.ui:6603
+#: ui/settings.ui:6646
 msgid "As a PNG image"
 msgstr "保存为 PNG 图片"
 
-#: ui/settings.ui:6654
+#: ui/settings.ui:6697
 msgid "The version, and new releases"
 msgstr "版本及新版本"
 
-#: ui/settings.ui:6684
+#: ui/settings.ui:6727
 msgid "Version"
 msgstr "版本"
 
-#: ui/settings.ui:6720
+#: ui/settings.ui:6763
 msgid "Updates"
 msgstr "更新"
 
-#: ui/settings.ui:6756
+#: ui/settings.ui:6799
 msgid "Check for updates"
 msgstr "检查更新"
 
-#: ui/settings.ui:6782
+#: ui/settings.ui:6825
 msgid "Check every day"
 msgstr "每天检查"
 
-#: ui/settings.ui:6791
+#: ui/settings.ui:6834
 msgid "A notification says when a new release is out, with a button to upgrade"
 msgstr "当新版本发布时会出现通知，并带有升级按钮"
 
-#: ui/settings.ui:6836
+#: ui/settings.ui:6879
 msgid "<span alpha='55%'>[</span>CHANGELOG<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>变更日志<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6844
+#: ui/settings.ui:6887
 msgid "What the latest release changed"
 msgstr "最新版本改变了什么"
 

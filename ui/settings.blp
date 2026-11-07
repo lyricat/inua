@@ -299,6 +299,36 @@ ApplicationWindow settings {
                       };
                     }
                   }
+
+                  Separator {}
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+
+                      Label {
+                        styles ["title"]
+                        label:  _("Animations");
+                        xalign: 0;
+                      }
+                      Label {
+                        styles ["sub"]
+                        label:  _("Motion in inua and the compositor; off makes changes immediate");
+                        xalign: 0;
+                        wrap: true;
+                      }
+                    }
+
+                    Switch animations {
+                      name: "animations";
+                      valign: center;
+                    }
+                  }
                 }
               }
 

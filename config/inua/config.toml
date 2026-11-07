@@ -178,6 +178,10 @@ app_icons = ""
 # it follows the theme.
 icons = "phosphor"
 
+# Motion in inua's surfaces and windows and workspaces moving in the
+# compositor. Off makes changes immediate.
+animations = true
+
 # A small gap between the screen edges and the bar and dock. false puts
 # them flush against the edges.
 edge_gaps = true

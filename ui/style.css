@@ -12,7 +12,7 @@
    inua-bar, inua-control, inua-launcher). */
 
 window.bar, window.control, window.agenda, window.banners, window.osd, window.center, window.dock-window, window.shot-drawer-win, window.drawer-overlay, window.clipboard-panel { background: transparent; }
-window.overview, window.widgets { background: transparent; }
+window.overview, window.widgets, window.focus-ring { background: transparent; }
 /* The launcher's catcher of clicks outside it: a surface wholly clear
    gets no pointer from Hyprland, so it is all but clear. */
 window.launcher-catch { background: rgba(0, 0, 0, 0.004); }
@@ -231,7 +231,6 @@ button.plain.tight, button.image-button.tight { min-width: 20px; min-height: 20p
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 /* The clock is a button that opens the calendar panel, styled with the
    status and bell buttons below. */

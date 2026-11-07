@@ -69,11 +69,7 @@ func (s *shellUI) syncAppMenu(b *bar) {
 	}
 	var want appmenu.Registration
 	if b.connector() == s.snap.FocusedOutput {
-		pid := focusedPID(s.snap)
-		want, _ = s.appmenu.registrar.ForPID(pid)
-		if want == (appmenu.Registration{}) {
-			want, _ = s.appmenu.registrar.Chromium(pid)
-		}
+		want, _ = s.appmenu.registrar.Focused(focusedPID(s.snap))
 	}
 	if b.appMenuReg == want {
 		return
@@ -92,7 +88,6 @@ func (s *shellUI) clearAppMenu(b *bar) {
 		s.closeAppMenu()
 	}
 	b.appMenuReg = appmenu.Registration{}
-
 	b.appMenuTop = nil
 	gtkx.Clear(&b.appMenu)
 	b.appMenu.SetVisible(false)
@@ -246,8 +241,7 @@ func (s *shellUI) showAppMenu(reg appmenu.Registration, id int32, w *gtk.Widget)
 
 // appMenuCurrent is whether reg is still the focused application's menu.
 func (s *shellUI) appMenuCurrent(reg appmenu.Registration) bool {
-	current, ok := s.appmenu.registrar.ForPID(focusedPID(s.snap))
-	return ok && current == reg
+	return s.appmenu.registrar.Current(reg, focusedPID(s.snap))
 }
 
 // appMenuItems turns dbusmenu entries into a menu's lines, as the tray's

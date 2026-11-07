@@ -287,8 +287,15 @@ func (r *Registrar) removeOwner(owner string) {
 // unambiguous. A process may register the same menu endpoint for several
 // windows, but a PID alone cannot choose between different endpoints.
 func (r *Registrar) ForPID(pid int) (Registration, bool) {
+	reg, ok, _ := r.forPID(pid)
+	return reg, ok
+}
+
+// forPID is ForPID, and whether the process registered any window at all,
+// even one whose menu is ambiguous.
+func (r *Registrar) forPID(pid int) (reg Registration, ok, seen bool) {
 	if pid <= 0 {
-		return Registration{}, false
+		return Registration{}, false, false
 	}
 	r.mu.RLock()
 	defer r.mu.RUnlock()
@@ -298,13 +305,13 @@ func (r *Registrar) ForPID(pid int) (Registration, bool) {
 			continue
 		}
 		if found.Service != "" && (found.Service != v.Service || found.Path != v.Path) {
-			return Registration{}, false
+			return Registration{}, false, true
 		}
 		if v.seq > found.seq {
 			found = v
 		}
 	}
-	return found.Registration, found.Service != ""
+	return found.Registration, found.Service != "", found.Service != ""
 }
 
 // Chromium finds the menu a Chromium-family browser publishes on a bus
