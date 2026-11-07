@@ -49,6 +49,7 @@ the view uses the tricky parts of puregotk only through `gtkx`.
 | `internal/desktop` | `.desktop` parsing, Exec expansion, launching | Done, tested |
 | `internal/ipc` | The control socket | Done, tested |
 | `internal/sni` | Tray: StatusNotifierWatcher (when no one else provides it), host, dbusmenu menus | Done, tested (private dbus-daemon) |
+| `internal/appmenu`, `share/inua/menus` | The global menu: the Canonical registrar and its dbusmenu client, Firefox's menu on its own bus name, menus read from the accessibility tree, and the TOML menu packs ([docs/appmenus.md](appmenus.md)) a user or contributor can add without rebuilding | Done, tested |
 | `internal/display` | Whether the built-in display should be off, from the kernel (`/proc/acpi/button/lid`, else logind's `LidClosed`; `/sys/class/drm` connectors), so it answers before Hyprland runs; Hyprland's displays (`j/monitors all`) and the rule for each | Done, tested (a fake `/proc` and `/sys`) |
 | `internal/hyprconf` | Hyprland settings inua manages, written to `hypr/inua.conf` (`hypr/inua.lua` for a Lua config, Hyprland 0.55+): keyboard, touchpad, monitor rules, the built-in display off while the lid is closed with another display connected, and the lid switch bound to `inua config apply`, shortcuts (`unbind` + `bind`, the empty recording submap); actions and their commands; parsing `hyprctl binds` | Done, tested |
 | `internal/lock` | The lock screen's password check through `unix_chkpwd` (no cgo, no PAM headers), and the wait after wrong passwords | Done, tested |

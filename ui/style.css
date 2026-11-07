@@ -12,6 +12,7 @@
    inua-bar, inua-control, inua-launcher). */
 
 window.bar, window.control, window.agenda, window.banners, window.osd, window.center, window.dock-window, window.shot-drawer-win, window.drawer-overlay, window.clipboard-panel { background: transparent; }
+window.bar.transparent-empty.occupied { background: @glass; }
 window.overview, window.widgets, window.focus-ring { background: transparent; }
 /* The launcher's catcher of clicks outside it: a surface wholly clear
    gets no pointer from Hyprland, so it is all but clear. */
@@ -2286,8 +2287,8 @@ button.shot-record:checked { background: alpha(@danger, 0.1); border-color: alph
 .overview-workspace.drop-target { border-color: @accent; background: alpha(@accent, 0.16); }
 .overview-workspace-background { padding: 0; margin: 0; border: 0; border-radius: 0; min-width: 0; min-height: 0; background: @sb; color: @accent; font-size: 18px; }
 .overview-new-badge { padding: 5px 10px; color: @t0; background: alpha(@app, 0.88); border: 1px solid alpha(@t1, 0.32); border-radius: 999px; font-size: 11px; font-weight: 600; }
-.overview-window { padding: 0; margin: 0; min-width: 0; min-height: 0; border: 1px solid alpha(@t1, 0.25); border-radius: 0; background: @surface; }
-.overview-window:hover { border-color: @accent; }
+.overview-window { padding: 0; margin: 0; min-width: 0; min-height: 0; border: none; border-radius: 0; background: transparent; }
+.overview-window:hover { background: alpha(@accent, 0.08); }
 .overview-preview { min-width: 0; min-height: 0; border-radius: 0; }
 .overview-window-meta {
   min-width: 0;
@@ -2381,7 +2382,7 @@ button.shot-record:checked { background: alpha(@danger, 0.1); border-color: alph
 
 .overview-window.dragging { opacity: 0.35; }
 .overview-kill-glyph { font-family: "JetBrainsMono Nerd Font Mono";font-size: 28px; color: @accent; }
-.overview.kill-mode .overview-window:hover { border-color: #e05f65; }
+.overview.kill-mode .overview-window:hover { background: alpha(#e05f65, 0.14); }
 
 /* Assistant (cmd/inua-assistant) */
 .as-head { padding: 12px 12px 12px 20px; border-bottom: 1px solid alpha(@line, 0.55); }

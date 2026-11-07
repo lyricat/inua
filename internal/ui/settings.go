@@ -62,35 +62,35 @@ type settings struct {
 	setThemes map[string]*gtk.IconTheme
 	themeMenu string // the theme of yours a right click opened a menu for
 
-	bgGenerate, title, barMenu, tray, barPass, tpAccel, notifyOn, critFocus gtk.Switch
-	noteHistory, animations                                                 gtk.Switch
-	bgOwn                                                                   gtk.Box // the image's rows, hidden while inua draws
-	bgAnother                                                               gtk.Button
-	barOn, dockOn, dockHide, dockDrawer, dockFlushBar, overviewDock         gtk.Switch
-	overviewHints, overviewLauncher                                         gtk.Switch
-	clipEnable, clipBar, clipPaste                                          gtk.Switch
-	dockSize, dockPosition, barDensity                                      gtk.DropDown
-	dockPinned                                                              gtk.Box
-	bgImage, bgColor, clock, terminal, lock, screenshot                     gtk.Entry
-	clipSensitive                                                           gtk.Entry
-	bgFit, ws, overviewScope, launchMode, swap, caps, icons, appIcons       gtk.DropDown
-	clockLanguage                                                           gtk.DropDown
-	clockLanguageNames                                                      []string
-	banner                                                                  gtk.DropDown
-	titleMode                                                               gtk.DropDown
-	clipLimit                                                               gtk.DropDown
-	clipLimits                                                              []int // clipLimit's choices
-	textScale                                                               gtk.DropDown
-	textScales                                                              []int    // textScale's choices
-	iconSets                                                                []string // icons' choices
-	appIconSets                                                             []string // appIcons' choices
-	appTheme                                                                gtk.DropDown
-	appThemes, appThemeLabels                                               []string // appTheme's choices, "" first
-	tpSpeed, transparency, radius                                           gtk.Scale
-	barIconSize, barIconSpacing                                             gtk.Scale
-	transparencyVal, radiusVal, barIconSizeVal, barIconSpacingVal           gtk.Label
-	clipStats                                                               gtk.Label
-	clipClear, clipReveal                                                   gtk.Button
+	bgGenerate, title, barMenu, barTransparentEmpty, tray, barPass, tpAccel, notifyOn, critFocus gtk.Switch
+	noteHistory, animations                                                                      gtk.Switch
+	bgOwn                                                                                        gtk.Box // the image's rows, hidden while inua draws
+	bgAnother                                                                                    gtk.Button
+	barOn, dockOn, dockHide, dockDrawer, dockFlushBar, overviewDock                              gtk.Switch
+	overviewHints, overviewLauncher                                                              gtk.Switch
+	clipEnable, clipBar, clipPaste                                                               gtk.Switch
+	dockSize, dockPosition, barDensity                                                           gtk.DropDown
+	dockPinned                                                                                   gtk.Box
+	bgImage, bgColor, clock, terminal, lock, screenshot                                          gtk.Entry
+	clipSensitive                                                                                gtk.Entry
+	bgFit, ws, overviewScope, launchMode, swap, caps, icons, appIcons                            gtk.DropDown
+	clockLanguage                                                                                gtk.DropDown
+	clockLanguageNames                                                                           []string
+	banner                                                                                       gtk.DropDown
+	titleMode                                                                                    gtk.DropDown
+	clipLimit                                                                                    gtk.DropDown
+	clipLimits                                                                                   []int // clipLimit's choices
+	textScale                                                                                    gtk.DropDown
+	textScales                                                                                   []int    // textScale's choices
+	iconSets                                                                                     []string // icons' choices
+	appIconSets                                                                                  []string // appIcons' choices
+	appTheme                                                                                     gtk.DropDown
+	appThemes, appThemeLabels                                                                    []string // appTheme's choices, "" first
+	tpSpeed, transparency, radius                                                                gtk.Scale
+	barIconSize, barIconSpacing                                                                  gtk.Scale
+	transparencyVal, radiusVal, barIconSizeVal, barIconSpacingVal                                gtk.Label
+	clipStats                                                                                    gtk.Label
+	clipClear, clipReveal                                                                        gtk.Button
 
 	// Keyboard and touchpad: where the settings come from, and why they
 	// would do nothing.
@@ -169,6 +169,8 @@ func (s *shellUI) bindSettingsHandlers() {
 			c.Bar.Title = on
 		case "bar_menu":
 			c.Bar.Menu = on
+		case "bar_transparent_empty":
+			c.Bar.TransparentEmpty = on
 		case "tray":
 			c.Bar.Tray = on
 		case "bar_pass":
@@ -481,6 +483,8 @@ func (s *shellUI) openSettings() {
 	ui.Get("title", &st.title)
 	ui.Get("tray", &st.tray)
 	ui.Get("bar_menu", &st.barMenu)
+	ui.Get("bar_transparent_empty", &st.barTransparentEmpty)
+	ui.Get("bar_transparent_empty", &st.barTransparentEmpty)
 	ui.Get("bar_pass", &st.barPass)
 	ui.Get("bg_image", &st.bgImage)
 	ui.Get("bg_color", &st.bgColor)
@@ -608,7 +612,7 @@ func (s *shellUI) openSettings() {
 		st.drops[d.GoPointer()] = d
 		gtkx.ConnectNotify(d, "selected", &s.onSettingsDrop)
 	}
-	for _, sw := range []*gtk.Switch{&st.bgGenerate, &st.title, &st.barMenu, &st.tray, &st.barPass, &st.tpAccel, &st.notifyOn, &st.critFocus, &st.noteHistory, &st.animations, &st.barOn, &st.dockOn, &st.dockHide, &st.dockDrawer, &st.dockFlushBar, &st.overviewDock, &st.overviewHints, &st.overviewLauncher, &st.clipEnable, &st.clipBar, &st.clipPaste, &st.displays.lidOff} {
+	for _, sw := range []*gtk.Switch{&st.bgGenerate, &st.title, &st.barMenu, &st.tray, &st.barMenu, &st.barTransparentEmpty, &st.tray, &st.barPass, &st.tpAccel, &st.notifyOn, &st.critFocus, &st.noteHistory, &st.animations, &st.barOn, &st.dockOn, &st.dockHide, &st.dockDrawer, &st.dockFlushBar, &st.overviewDock, &st.overviewHints, &st.overviewLauncher, &st.clipEnable, &st.clipBar, &st.clipPaste, &st.displays.lidOff} {
 		sw.ConnectStateSet(&s.onSettingsSwitch)
 	}
 	for _, b := range []*gtk.Button{&choose, &clearImage, &st.bgAnother, &iconPreview, &stylePreview, &st.kbReset, &st.tpReset, &st.langRestart, &st.clipClear, &st.clipReveal} {
@@ -835,6 +839,8 @@ func (s *shellUI) showSettings() {
 	st.bgAnother.SetVisible(c.Background.Generate)
 	st.title.SetActive(c.Bar.Title)
 	st.barMenu.SetActive(c.Bar.Menu)
+	st.barTransparentEmpty.SetActive(c.Bar.TransparentEmpty)
+	st.barTransparentEmpty.SetActive(c.Bar.TransparentEmpty)
 	st.titleMode.SetSelected(uint32(max(0, slices.Index(barTitleModes, c.Bar.TitleMode))))
 	st.tray.SetActive(c.Bar.Tray)
 	st.barPass.SetActive(c.Bar.Pass)

@@ -74,7 +74,10 @@ type Bar struct {
 	// TitleMode is "app" for the application's name or "window" for its
 	// focused window's title.
 	TitleMode string `toml:"title_mode"`
-	Tray      bool   `toml:"tray"`
+	// TransparentEmpty makes the bar transparent on an empty workspace and
+	// opaque when a window is present.
+	TransparentEmpty bool `toml:"transparent_empty"`
+	Tray             bool `toml:"tray"`
 	// Pass shows a button that searches the password store (the Pass
 	// app's) and copies from it, when there is a store.
 	Pass bool `toml:"pass"`
@@ -928,18 +931,19 @@ func Default() Config {
 		Language: "auto",
 		Session:  Session{Compositor: "hyprland"},
 		Bar: Bar{
-			Enable:        true,
-			Density:       "default",
-			IconSize:      16,
-			IconSpacing:   4,
-			Clock:         "%a %b %-d  %H:%M",
-			ClockLanguage: "auto",
-			Workspaces:    "monitor",
-			Title:         true,
-			Menu:          true,
-			TitleMode:     "app",
-			Tray:          true,
-			Pass:          true,
+			Enable:           true,
+			Density:          "default",
+			IconSize:         16,
+			IconSpacing:      4,
+			Clock:            "%a %b %-d  %H:%M",
+			ClockLanguage:    "auto",
+			Workspaces:       "monitor",
+			Title:            true,
+			Menu:             true,
+			TitleMode:        "app",
+			TransparentEmpty: false,
+			Tray:             true,
+			Pass:             true,
 		},
 		Launcher: Launcher{Mode: "apps", Search: "https://www.google.com/search?q=%s", Quicklinks: slices.Clone(DefaultQuicklinks)},
 		Overview: Overview{MRU: false, PerMonitor: true, ShowDock: true, Hints: true, LauncherWorkspace: true},
