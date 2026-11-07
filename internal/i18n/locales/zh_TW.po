@@ -14614,11 +14614,11 @@ msgstr "為截圖已隱藏。"
 msgid "The passphrases do not match."
 msgstr "密碼短語不符。"
 
-#: internal/ui/bar.go:473
+#: internal/ui/bar.go:475
 msgid "Workspace %s"
 msgstr "工作空間%s"
 
-#: internal/ui/bar.go:486
+#: internal/ui/bar.go:488
 msgid "WORKSPACE"
 msgstr "工作區"
 
