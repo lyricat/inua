@@ -24,7 +24,8 @@ import (
 
 // bar is one bar.ui instance, one per monitor, alive while the monitor is.
 type bar struct {
-	mon           *gdk.Monitor           // our reference, dropped in dropBar
+	mon           *gdk.Monitor // our reference, dropped in dropBar
+	focusRing     *focusRing
 	wallpaper     *gtk.ApplicationWindow // this monitor's background, if inua draws it
 	dock          *dock                  // this monitor's dock, if shown
 	win           gtk.ApplicationWindow
@@ -166,6 +167,7 @@ func (s *shellUI) dropBar(b *bar) {
 	delete(s.bars, b.mon.GoPointer())
 	dropWallpaper(b)
 	dropDock(b)
+	b.dropFocusRing()
 	b.win.Destroy()
 	b.refs.Release()
 	b.mon.Unref()
@@ -451,6 +453,7 @@ func (b *bar) setHypr(s *shellUI, snap compositor.Snapshot) {
 		b.win.AddCssClass("empty")
 	}
 	win, hasWindow := shell.BarWindow(snap, name)
+	b.setFocusRing(s, snap, win, hasWindow)
 	if hasWindow {
 		appName, icon := win.AppID, win.AppID
 		if appName == "" {
