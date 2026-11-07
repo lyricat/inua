@@ -118,6 +118,7 @@ type Ctx struct {
 	cfgMod    time.Time
 	css       *gtk.CssProvider
 	userCSS   *gtk.CssProvider
+	motionCSS *gtk.CssProvider
 	win       *gtk.ApplicationWindow
 	v         View
 	onTick    glib.SourceFunc
@@ -283,10 +284,11 @@ func (c *Ctx) Config() config.Config {
 func (c *Ctx) loadStyle() {
 	cfg := c.Config()
 	if c.css == nil {
-		c.css, c.userCSS = gtk.NewCssProvider(), gtk.NewCssProvider()
+		c.css, c.userCSS, c.motionCSS = gtk.NewCssProvider(), gtk.NewCssProvider(), gtk.NewCssProvider()
 		d := gdk.DisplayGetDefault()
 		gtk.StyleContextAddProviderForDisplay(d, c.css, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		gtk.StyleContextAddProviderForDisplay(d, c.userCSS, uint32(gtk.STYLE_PROVIDER_PRIORITY_USER))
+		gtk.StyleContextAddProviderForDisplay(d, c.motionCSS, uint32(gtk.STYLE_PROVIDER_PRIORITY_USER+1))
 	}
 	theme := cfg.Style.ForApps()
 	if t, ok := c.v.(Themed); ok && t.Theme() != "" {
@@ -294,16 +296,24 @@ func (c *Ctx) loadStyle() {
 	}
 	themeCSS := cfg.ThemeCSS(theme, c.ReadUI)
 	c.Colors = config.ThemeColors(themeCSS)
+	gtk.SettingsGetDefault().SetPropertyGtkEnableAnimations(config.AnimationEnabled(cfg.Style.Animations))
 	css := themeCSS + style.Glass(cfg.Style.Transparency) + style.ScaleText(c.ReadUI("style.css"), cfg.Style.TextScale) + style.Corners(cfg.Style.Radius)
 	if runtime.GOOS == "darwin" {
-		css = style.SystemFonts(css) // a Mac has none of the styles' fonts
+		css = style.SystemFonts(css) // A Mac has none of the styles' fonts.
 	}
 	c.css.LoadFromString(css)
 	uikit.Radius = cfg.Style.Radius // the menus' corners
+	userCSS := ""
 	if p := cfg.CSSPath(); p != "" {
 		if b, err := os.ReadFile(p); err == nil {
-			c.userCSS.LoadFromString(string(b))
+			userCSS = string(b)
 		}
+	}
+	c.userCSS.LoadFromString(userCSS)
+	if config.AnimationEnabled(cfg.Style.Animations) {
+		c.motionCSS.LoadFromString("")
+	} else {
+		c.motionCSS.LoadFromString(`* { transition: none !important; animation: none !important; }`)
 	}
 	if st, err := os.Stat(c.cfgPath); err == nil {
 		c.cfgMod = st.ModTime()
@@ -317,7 +327,7 @@ func (c *Ctx) ReloadStyle() {
 	c.v.ThemeChanged()
 }
 
-// followConfig reloads the style when inua's settings change.
+// followConfig reloads style and icons when settings change.
 func (c *Ctx) followConfig() {
 	st, err := os.Stat(c.cfgPath)
 	if err != nil || st.ModTime().Equal(c.cfgMod) {

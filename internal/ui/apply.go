@@ -31,6 +31,7 @@ type styles struct {
 	wallpaper *gtk.CssProvider // window.wallpaper
 	swatches  *gtk.CssProvider // the settings window's theme swatches
 	settings  *gtk.CssProvider // the settings window in the apps' theme (loadSettingsStyle)
+	motion    *gtk.CssProvider // disables transitions/animations when turned off
 	drawing   string           // the picture inua is drawing, by its key (picturePath)
 	shown     string           // the file of the picture inua drew last shown
 	midnight  *time.Timer      // draws the next day's picture (nextPicture)
@@ -62,6 +63,7 @@ func (s *shellUI) loadStyles() {
 	st.user.LoadFromString(user)
 	s.loadIcons()
 	s.loadSwatchStyle()
+	s.setAnimations(config.AnimationEnabled(s.cfg.Style.Animations))
 }
 
 // loadBase loads the theme and the built-in style, with the surfaces'
@@ -172,12 +174,40 @@ func dropWallpaper(b *bar) {
 	}
 }
 
+// setAnimations turns GTK's motion and the shell's transitions on or off.
+func (s *shellUI) setAnimations(on bool) {
+	display := gdk.DisplayGetDefault()
+	if display == nil {
+		return
+	}
+	gtk.SettingsGetDefault().SetPropertyGtkEnableAnimations(on)
+	st := &s.styles
+	if st.motion == nil {
+		st.motion = gtk.NewCssProvider()
+		gtk.StyleContextAddProviderForDisplay(display, st.motion, uint32(gtk.STYLE_PROVIDER_PRIORITY_USER+1))
+	}
+	if on {
+		st.motion.LoadFromString("")
+		return
+	}
+	st.motion.LoadFromString(`* { transition: none !important; animation: none !important; }`)
+}
+
 // applyConfig switches to new settings while running: styles, wallpaper,
 // bars and the clock follow at once; the launcher and control center read
 // their settings when used.
+
 func (s *shellUI) applyConfig(c config.Config) {
 	old := s.cfg
 	s.cfg = c
+	if config.AnimationEnabled(old.Style.Animations) != config.AnimationEnabled(c.Style.Animations) {
+		s.setAnimations(config.AnimationEnabled(c.Style.Animations))
+		if cf := s.configurer(); cf != nil {
+			s.applyBackendSettings(cf)
+		} else if s.hypr != nil {
+			s.applyHyprland()
+		}
+	}
 	if !old.Assistant.Enable && c.Assistant.Enable {
 		s.startAssistant()
 	}

@@ -20,7 +20,7 @@ func Format(c Config) string {
 		q(c.Control.Lock), q(c.Control.Screenshot),
 		q(c.Screenshot.Folder), c.Screenshot.Copy, q(c.Screenshot.Recordings),
 		c.OSD.Enable, q(c.OSD.Position),
-		q(c.Style.Theme), q(c.Style.AppTheme), q(c.Style.AppStyle), q(c.Style.AppIcons), q(c.Style.Icons), c.Style.EdgeGaps, c.Style.TextScale, c.Style.Transparency, c.Style.Radius, q(c.Style.CSS),
+		q(c.Style.Theme), q(c.Style.AppTheme), q(c.Style.AppStyle), q(c.Style.AppIcons), q(c.Style.Icons), AnimationEnabled(c.Style.Animations), c.Style.EdgeGaps, c.Style.TextScale, c.Style.Transparency, c.Style.Radius, q(c.Style.CSS),
 		c.Background.Enable, q(c.Background.Image), q(c.Background.Fit), q(c.Background.Color),
 		c.Background.Generate,
 		kbOptionsLine(c.Input.KbOptions), touchpadSpeedLine(c.Input.TouchpadSpeed), q(c.Input.TouchpadAccel),
@@ -40,7 +40,6 @@ func Format(c Config) string {
 }
 
 // The optional settings are written commented out while unset, so the file
-// still shows them.
 func kbOptionsLine(o *string) string {
 	if o == nil {
 		return `# kb_options = ""`
@@ -334,6 +333,10 @@ app_icons = %s
 # (icons/phosphor-bold, from inua init, is one). Draw them in one colour:
 # it follows the theme.
 icons = %s
+
+# Motion in inua's surfaces and windows and workspaces moving in the
+# compositor. Off makes changes immediate.
+animations = %t
 
 # A small gap between the screen edges and the bar and dock. false puts
 # them flush against the edges.
