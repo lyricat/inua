@@ -3,7 +3,6 @@ package appmenu
 
 import (
 	"context"
-	"encoding/xml"
 	"fmt"
 	"strings"
 	"sync"
@@ -171,6 +170,10 @@ func (r *Registrar) handle(sig *dbus.Signal) {
 		if a && b && c && next == "" {
 			r.removeOwner(name)
 		}
+		// A published menu came or went: the focused window's may be it.
+		if a && b && c && strings.HasPrefix(name, nativeMenuPrefix) {
+			r.changed()
+		}
 	case layoutUpdated:
 		if len(sig.Body) != 2 {
 			return
@@ -312,53 +315,6 @@ func (r *Registrar) forPID(pid int) (reg Registration, ok, seen bool) {
 		}
 	}
 	return found.Registration, found.Service != "", found.Service != ""
-}
-
-// Chromium finds the menu a Chromium-family browser publishes on a bus
-// name of its own: Chrome on XWayland answers /com/canonical/menu with one
-// child per window, and does not register it with the Canonical registrar
-// when the session's desktop name is not Unity's. The first window's menu
-// is used; a browser with several windows has no per-window identity here.
-func (r *Registrar) Chromium(pid int) (Registration, bool) {
-	if pid <= 0 {
-		return Registration{}, false
-	}
-	ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
-	defer cancel()
-	var names []string
-	if err := r.conn.BusObject().CallWithContext(ctx, busInterface+".ListNames", 0).Store(&names); err != nil {
-		return Registration{}, false
-	}
-	for _, name := range names {
-		if !strings.HasPrefix(name, ":") {
-			continue
-		}
-		var owner uint32
-		call := r.conn.BusObject().CallWithContext(ctx, busInterface+".GetConnectionUnixProcessID", 0, name)
-		if call.Err != nil || call.Store(&owner) != nil || int(owner) != pid {
-			continue
-		}
-		var doc struct {
-			Nodes []struct {
-				Name string `xml:"name,attr"`
-			} `xml:"node"`
-		}
-		call = r.conn.Object(name, "/com/canonical/menu").CallWithContext(ctx, "org.freedesktop.DBus.Introspectable.Introspect", 0)
-		if call.Err != nil {
-			continue
-		}
-		var text string
-		if call.Store(&text) != nil || xml.Unmarshal([]byte(text), &doc) != nil {
-			continue
-		}
-		for _, n := range doc.Nodes {
-			if n.Name == "" {
-				continue
-			}
-			return Registration{PID: uint32(pid), Service: name, Path: dbus.ObjectPath("/com/canonical/menu/" + n.Name)}, true
-		}
-	}
-	return Registration{}, false
 }
 
 // Menu reads the first level of a registration's menu, what a bar shows.

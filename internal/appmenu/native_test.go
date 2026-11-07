@@ -3,6 +3,7 @@ package appmenu
 import (
 	"slices"
 	"testing"
+	"time"
 
 	"github.com/godbus/dbus/v5"
 
@@ -125,4 +126,98 @@ func TestFocusedWithoutBus(t *testing.T) {
 	if r.Current(Registration{}, 1) || r.Current(Registration{}, 0) {
 		t.Fatal("an empty registration is current")
 	}
+}
+
+// serveChromium serves menus as a Chromium-family browser on XWayland does:
+// one under chromiumMenuPath for each window, on a connection of its own,
+// registered with no registrar.
+func (f *fixture) serveChromium(t *testing.T, windows ...string) (*dbus.Conn, []*testMenu) {
+	t.Helper()
+	conn := dbustest.Conn(t, f.addr)
+	var menus []*testMenu
+	for _, w := range windows {
+		menu := newTestMenu()
+		if err := dbusexport.Export(conn, menu, chromiumMenuPath+"/"+dbus.ObjectPath(w), menuInterface); err != nil {
+			t.Fatal(err)
+		}
+		menus = append(menus, menu)
+	}
+	return conn, menus
+}
+
+// A browser's own menu is found and clicked when it serves one window's,
+// and none is when it serves several: the focused window cannot be told
+// apart. A registered menu still comes first.
+func TestFocusedChromiumMenu(t *testing.T) {
+	f := start(t)
+	conn, menus := f.serveChromium(t, "4000001")
+
+	reg, ok := f.focused(t)
+	if !ok || reg.Service != conn.Names()[0] || reg.Path != chromiumMenuPath+"/4000001" || int(reg.PID) != f.pid {
+		t.Fatalf("browser menu not found: registration=%+v ok=%v", reg, ok)
+	}
+	if !f.registrar.Current(reg, f.pid) || f.registrar.Current(reg, f.pid+1) {
+		t.Fatal("the browser menu is current only for its own process")
+	}
+	entries, err := f.registrar.Menu(reg, true)
+	if err != nil || len(entries) != 2 || entries[0].Label != "Open" {
+		t.Fatalf("menu=%+v err=%v", entries, err)
+	}
+	if err := f.registrar.Activate(reg, 1); err != nil {
+		t.Fatal(err)
+	}
+	menus[0].mu.Lock()
+	events := slices.Clone(menus[0].events)
+	menus[0].mu.Unlock()
+	if !slices.Equal(events, []int32{1}) {
+		t.Fatalf("events=%v", events)
+	}
+
+	f.register(t, f.client, 42, f.path)
+	if got, ok := f.focused(t); !ok || got.Path != f.path || f.registrar.Current(reg, f.pid) {
+		t.Fatalf("registered menu must come first: registration=%+v ok=%v", got, ok)
+	}
+	f.unregister(t, f.client, 42)
+
+	// A second window: either one's menu could be the focused window's.
+	if err := dbusexport.Export(conn, newTestMenu(), chromiumMenuPath+"/4000002", menuInterface); err != nil {
+		t.Fatal(err)
+	}
+	if got, ok := f.focused(t); ok || f.registrar.Current(reg, f.pid) {
+		t.Fatalf("two windows' menus must show none: registration=%+v ok=%v", got, ok)
+	}
+	// The browser goes, another comes with one window, then a second
+	// connection of the same process serves another window's menu.
+	conn.Close()
+	next, _ := f.serveChromium(t, "4000003")
+	waitFor(t, func() bool {
+		got, ok := f.focused(t)
+		return ok && got.Service == next.Names()[0] && got.Path == chromiumMenuPath+"/4000003"
+	})
+	f.serveChromium(t, "4000004")
+	if got, ok := f.focused(t); ok {
+		t.Fatalf("menus on two connections must show none: registration=%+v", got)
+	}
+}
+
+// A published menu's name coming or going tells the shell to look again.
+func TestNativeNameTellsOfChange(t *testing.T) {
+	f := start(t)
+	changes := make(chan struct{}, 8)
+	f.registrar.SetOnChange(func() { changes <- struct{}{} })
+	wait := func(what string) {
+		t.Helper()
+		select {
+		case <-changes:
+		case <-time.After(2 * time.Second):
+			t.Fatalf("no change told when the name %s", what)
+		}
+	}
+	name := nativeMenuPrefix + "p1.w1"
+	conn, _ := f.publishNative(t, name)
+	wait("came")
+	if _, err := conn.ReleaseName(name); err != nil {
+		t.Fatal(err)
+	}
+	wait("went")
 }
