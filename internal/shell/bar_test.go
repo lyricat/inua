@@ -58,6 +58,32 @@ func TestBarWorkspaces(t *testing.T) {
 	}
 }
 
+func TestBarWindow(t *testing.T) {
+	snap := twoMonitors()
+	for _, tc := range []struct {
+		connector string
+		wantID    string
+	}{
+		{"eDP-1", "0x1"},
+		{"HDMI-A-1", "0x3"},
+		{"WL-1", "0x1"},
+	} {
+		got, ok := BarWindow(snap, tc.connector)
+		if !ok || got.ID != tc.wantID {
+			t.Errorf("%s: window=%+v, ok=%v; want %q", tc.connector, got, ok, tc.wantID)
+		}
+	}
+	snap.FocusedWindow = "missing"
+	if got, ok := BarWindow(snap, "eDP-1"); !ok || got.ID != "0x1" {
+		t.Errorf("missing focused window: %+v, %v; want the monitor's last window", got, ok)
+	}
+	snap.FocusedWindow = "0x1"
+	snap.Outputs[1].ActiveWorkspace = "missing"
+	if got, ok := BarWindow(snap, "HDMI-A-1"); ok || got.ID != "" {
+		t.Errorf("missing active workspace: %+v, %v", got, ok)
+	}
+}
+
 func TestBarTitle(t *testing.T) {
 	snap := twoMonitors()
 	for _, c := range []struct{ connector, want string }{
@@ -70,8 +96,32 @@ func TestBarTitle(t *testing.T) {
 		}
 	}
 	snap.FocusedWindow = ""
-	if got := BarTitle(snap, "eDP-1"); got != "" {
-		t.Errorf("nothing focused: %q", got)
+	if got := BarTitle(snap, "eDP-1"); got != "shell" {
+		t.Errorf("nothing focused: %q, want the monitor's last window", got)
+	}
+}
+
+// Moving the focus from one monitor to the other leaves each bar on its
+// own monitor's window, even when a snapshot pairs the new focused output
+// with the window focused before.
+func TestBarTitleWhileFocusMoves(t *testing.T) {
+	for _, c := range []struct {
+		name          string
+		focusedOutput string
+		focusedWindow string
+	}{
+		{"focused on eDP-1", "eDP-1", "0x1"},
+		{"moving to HDMI-A-1, active window still eDP-1's", "HDMI-A-1", "0x1"},
+		{"focused on HDMI-A-1", "HDMI-A-1", "0x3"},
+		{"moving back, active window still HDMI-A-1's", "eDP-1", "0x3"},
+	} {
+		snap := twoMonitors()
+		snap.FocusedOutput, snap.FocusedWindow = c.focusedOutput, c.focusedWindow
+		for connector, want := range map[string]string{"eDP-1": "shell", "HDMI-A-1": "docs"} {
+			if got := BarTitle(snap, connector); got != want {
+				t.Errorf("%s: %s = %q, want %q", c.name, connector, got, want)
+			}
+		}
 	}
 }
 

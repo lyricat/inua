@@ -261,6 +261,13 @@ func (s *shellUI) newDock(b *bar) *dock {
 func (s *shellUI) dockApps(entries []*desktop.Entry) {
 	s.dockState.apps = shell.NewAppIndex(entries)
 	s.renderDocks()
+	// The bar resolves the focused window's app name and icon from the
+	// desktop-entry index; a snapshot that arrived before the index
+	// showed the raw app ID. Refresh bars so the label updates once
+	// entries load.
+	for _, b := range s.bars {
+		b.setHypr(s, s.snap)
+	}
 }
 
 func (s *shellUI) renderDocks() {

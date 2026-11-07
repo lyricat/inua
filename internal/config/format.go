@@ -15,7 +15,7 @@ import (
 func Format(c Config) string {
 	return fmt.Sprintf(template,
 		q(c.Language),
-		c.Bar.Enable, q(c.Bar.Density), q(c.Bar.Clock), q(c.Bar.Workspaces), c.Bar.Title, c.Bar.Tray, c.Bar.Pass,
+		c.Bar.Enable, q(c.Bar.Density), q(c.Bar.Clock), q(c.Bar.Workspaces), c.Bar.Title, q(c.Bar.TitleMode), c.Bar.Tray, c.Bar.Pass,
 		q(c.Launcher.Mode), q(c.Launcher.Terminal), q(c.Launcher.Search), quicklinks(c.Launcher.Quicklinks), c.Overview.MRU, c.Overview.PerMonitor, c.Overview.ShowDock,
 		q(c.Control.Lock), q(c.Control.Screenshot),
 		q(c.Screenshot.Folder), c.Screenshot.Copy, q(c.Screenshot.Recordings),
@@ -223,8 +223,12 @@ clock = %s
 # "all": every bar shows every workspace.
 workspaces = %s
 
-# Show the focused window's title.
+# Show the focused application's icon and label.
 title = %t
+
+# The label beside the icon: "app" for the application's name, "window"
+# for the focused window's title.
+title_mode = %s
 
 # Show tray (StatusNotifierItem) icons.
 tray = %t

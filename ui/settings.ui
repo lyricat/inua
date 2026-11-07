@@ -1338,7 +1338,7 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
                                                 <style>
                                                   <class name="title"/>
                                                 </style>
-                                                <property name="label" translatable="yes">Window title</property>
+                                                <property name="label" translatable="yes">Application in bar</property>
                                                 <property name="xalign">0</property>
                                               </object>
                                             </child>
@@ -1347,7 +1347,7 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
                                                 <style>
                                                   <class name="sub"/>
                                                 </style>
-                                                <property name="label" translatable="yes">The focused window's title</property>
+                                                <property name="label" translatable="yes">Show the current application's icon and label</property>
                                                 <property name="xalign">0</property>
                                                 <property name="wrap">true</property>
                                               </object>
@@ -1358,6 +1358,57 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
                                           <object class="GtkSwitch" id="title">
                                             <property name="name">title</property>
                                             <property name="valign">3</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSeparator"></object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkBox">
+                                        <style>
+                                          <class name="row"/>
+                                        </style>
+                                        <property name="spacing">16</property>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="orientation">1</property>
+                                            <property name="hexpand">true</property>
+                                            <property name="valign">3</property>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <style>
+                                                  <class name="title"/>
+                                                </style>
+                                                <property name="label" translatable="yes">Application label</property>
+                                                <property name="xalign">0</property>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <style>
+                                                  <class name="sub"/>
+                                                </style>
+                                                <property name="label" translatable="yes">Choose the name shown beside the app icon</property>
+                                                <property name="xalign">0</property>
+                                                <property name="wrap">true</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkDropDown" id="title_mode">
+                                            <property name="name">title_mode</property>
+                                            <property name="valign">3</property>
+                                            <property name="model">
+                                              <object class="GtkStringList">
+                                                <items>
+                                                  <item translatable="yes">Application name</item>
+                                                  <item translatable="yes">Window title</item>
+                                                </items>
+                                              </object>
+                                            </property>
                                           </object>
                                         </child>
                                       </object>

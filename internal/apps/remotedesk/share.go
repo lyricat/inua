@@ -55,6 +55,14 @@ type Sharing struct {
 	// Instance is the Hyprland running for this user, for a command run
 	// outside the session (over SSH).
 	Instance func() (hypr.Instance, error)
+	// RenderNode is the GPU Sunshine captures and encodes on, by its render
+	// node ("/dev/dri/renderD129"), or "" to let Sunshine pick. Sunshine
+	// allocates the buffers of its Wayland capture on that node: a VM's
+	// emulated screen (virtio-gpu) cannot allocate renderable ones, so every
+	// frame fails there and leaks a descriptor until Sunshine cannot open
+	// anything, and the viewer keeps a black screen. A passed-through GPU
+	// can, and encodes with it (VA-API).
+	RenderNode func() string
 }
 
 // NewSharing is the sharing of the user's session.
@@ -63,8 +71,56 @@ func NewSharing() *Sharing {
 		Dir: filepath.Join(configHome(), "inua", "sharing"), LookPath: exec.LookPath, Run: run, Getenv: os.Getenv,
 		Access: func(p string) error { return unix.Access(p, unix.W_OK) },
 		API:    fmt.Sprintf("https://127.0.0.1:%d", APIPort), Hostname: os.Hostname,
-		Instance: func() (hypr.Instance, error) { return hypr.FindInstance(os.Getenv("XDG_RUNTIME_DIR")) },
+		Instance:   func() (hypr.Instance, error) { return hypr.FindInstance(os.Getenv("XDG_RUNTIME_DIR")) },
+		RenderNode: defaultRenderNode,
 	}
+}
+
+// emulatedDrivers are the GPUs a machine shows to be a screen, not to
+// render with: they have a render node, and cannot allocate the buffers
+// Sunshine's capture asks them for. A virtual machine's screen
+// reaches sysfs as its bus driver: virtio-gpu's render node is under
+// virtio-pci.
+var emulatedDrivers = []string{"virtio-pci", "bochs-drm", "cirrus", "qxl", "vmwgfx", "vkms", "vgem"}
+
+// defaultRenderNode is the first render node that is a real GPU, or "".
+func defaultRenderNode() string { return renderNodeIn("/sys/class/drm") }
+
+// renderNodeIn finds that node among the render nodes in drm, the sysfs
+// class of DRM devices, in name order (renderD128 before renderD129).
+func renderNodeIn(drm string) string {
+	entries, err := os.ReadDir(drm)
+	if err != nil {
+		return ""
+	}
+	var nodes []string
+	for _, e := range entries {
+		if name := e.Name(); strings.HasPrefix(name, "renderD") {
+			nodes = append(nodes, name)
+		}
+	}
+	slices.Sort(nodes)
+	for _, node := range nodes {
+		if !slices.Contains(emulatedDrivers, driverOf(filepath.Join(drm, node))) {
+			return "/dev/dri/" + node
+		}
+	}
+	return ""
+}
+
+// driverOf is the kernel driver behind a DRM node, from its device's
+// uevent ("DRIVER=i915"), or "" when it cannot be read.
+func driverOf(node string) string {
+	data, err := os.ReadFile(filepath.Join(node, "device", "uevent"))
+	if err != nil {
+		return ""
+	}
+	for _, line := range strings.Split(string(data), "\n") {
+		if driver, ok := strings.CutPrefix(line, "DRIVER="); ok {
+			return strings.TrimSpace(driver)
+		}
+	}
+	return ""
 }
 
 func configHome() string {
@@ -167,6 +223,12 @@ func (s *Sharing) prepare(env map[string]string) error {
 		// that a computer without its user never gets.
 		capture = []string{"capture = wlr"}
 	}
+	var adapter []string
+	if s.RenderNode != nil {
+		if node := s.RenderNode(); node != "" {
+			adapter = []string{"adapter_name = " + node}
+		}
+	}
 	conf := strings.Join(slices.Concat([]string{
 		"sunshine_name = " + name,
 		"origin_web_ui_allowed = pc", // the API answers this computer only
@@ -178,7 +240,7 @@ func (s *Sharing) prepare(env map[string]string) error {
 		"log_path = " + s.file("sunshine.log"),
 		"lan_encryption_mode = 0", // the viewer encrypts input, not video, on the local network
 		"wan_encryption_mode = 1",
-	}, capture, []string{""}), "\n")
+	}, capture, adapter, []string{""}), "\n")
 	if err := os.WriteFile(s.file("sunshine.conf"), []byte(conf), 0600); err != nil {
 		return err
 	}

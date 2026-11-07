@@ -105,6 +105,7 @@ func TestBadValuesFallBack(t *testing.T) {
 [bar]
 workspaces = "every"
 clock = "  "
+title_mode = "program"
 colour = "red"
 
 [launcher]
@@ -121,11 +122,11 @@ x = 1
 		t.Fatal(err)
 	}
 	d := Default()
-	if c.Bar.Workspaces != d.Bar.Workspaces || c.Launcher.Mode != d.Launcher.Mode || c.Bar.Clock != d.Bar.Clock || c.Style.Theme != d.Style.Theme {
+	if c.Bar.Workspaces != d.Bar.Workspaces || c.Bar.TitleMode != d.Bar.TitleMode || c.Launcher.Mode != d.Launcher.Mode || c.Bar.Clock != d.Bar.Clock || c.Style.Theme != d.Style.Theme {
 		t.Errorf("not reset: %+v", c)
 	}
 	all := strings.Join(w, "\n")
-	for _, s := range []string{"unknown setting bar.colour", "unknown setting extra", "bar.workspaces", "launcher.mode", "bar.clock", "style.theme"} {
+	for _, s := range []string{"unknown setting bar.colour", "unknown setting extra", "bar.workspaces", "bar.title_mode", "launcher.mode", "bar.clock", "style.theme"} {
 		if !strings.Contains(all, s) {
 			t.Errorf("no warning about %s in:\n%s", s, all)
 		}
@@ -226,6 +227,7 @@ func TestSampleIsFormat(t *testing.T) {
 func TestFormatRoundTrip(t *testing.T) {
 	c := Default()
 	c.Bar.Clock = `%H:%M "now"`
+	c.Bar.TitleMode = "window"
 	c.Bar.Tray = false
 	c.Launcher.Terminal = "foot"
 	c.Control.Lock = `swaylock -c '000000'`

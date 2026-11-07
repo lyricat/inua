@@ -975,12 +975,12 @@ ApplicationWindow settings {
 
                       Label {
                         styles ["title"]
-                        label:  _("Window title");
+                        label:  _("Application in bar");
                         xalign: 0;
                       }
                       Label {
                         styles ["sub"]
-                        label:  _("The focused window's title");
+                        label:  _("Show the current application's icon and label");
                         xalign: 0;
                         wrap: true;
                       }
@@ -989,6 +989,43 @@ ApplicationWindow settings {
                     Switch title {
                       name: "title";
                       valign: center;
+                    }
+                  }
+
+                  Separator {}
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+
+                      Label {
+                        styles ["title"]
+                        label:  _("Application label");
+                        xalign: 0;
+                      }
+                      Label {
+                        styles ["sub"]
+                        label:  _("Choose the name shown beside the app icon");
+                        xalign: 0;
+                        wrap: true;
+                      }
+                    }
+
+                    DropDown title_mode {
+                      name: "title_mode";
+                      valign: center;
+
+                      model: StringList {
+                        strings [
+                          _("Application name"),
+                          _("Window title"),
+                        ]
+                      };
                     }
                   }
 
