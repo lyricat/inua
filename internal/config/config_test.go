@@ -73,6 +73,7 @@ func TestPartialOverride(t *testing.T) {
 clock = "%H:%M:%S"
 workspaces = "all"
 tray = false
+transparent_empty = true
 
 [launcher]
 terminal = "foot --app-id term"
@@ -85,15 +86,15 @@ show_dock = false
 		t.Fatalf("err=%v warnings=%v", err, w)
 	}
 	want := withDir(Default(), filepath.Dir(path))
-	want.Bar.Clock, want.Bar.Workspaces, want.Bar.Tray = "%H:%M:%S", "all", false
+	want.Bar.Clock, want.Bar.Workspaces, want.Bar.Tray, want.Bar.TransparentEmpty = "%H:%M:%S", "all", false, true
 	want.Launcher.Terminal = "foot --app-id term"
 	want.Overview.ShowDock = false
 	if !reflect.DeepEqual(c, want) {
 		t.Errorf("got %+v\nwant %+v", c, want)
 	}
 	saved, warnings, err := Load(write(t, Format(c)))
-	if err != nil || len(warnings) != 0 || saved.Overview.ShowDock {
-		t.Errorf("show_dock did not survive a save: value=%v warnings=%v err=%v", saved.Overview.ShowDock, warnings, err)
+	if err != nil || len(warnings) != 0 || saved.Overview.ShowDock || !saved.Bar.TransparentEmpty {
+		t.Errorf("show_dock or transparent_empty did not survive a save: show_dock=%v transparent_empty=%v warnings=%v err=%v", saved.Overview.ShowDock, saved.Bar.TransparentEmpty, warnings, err)
 	}
 	if got := c.TerminalCommand(); !reflect.DeepEqual(got, []string{"foot", "--app-id", "term"}) {
 		t.Errorf("terminal = %q", got)
