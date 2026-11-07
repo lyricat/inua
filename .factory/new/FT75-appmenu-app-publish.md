@@ -54,3 +54,6 @@ notes:
 Merged origin/master to resolve catalog conflicts, preserving both sides, and pushed merge 5b2048d before review. Reviewed all 28 changed files against origin/master with Codex; no review source edits or commits. The coder could not locate its review-code skill; concrete-example review standards were provided in its task.
 Validation: make generate and make i18n passed during merge preparation. Full make test ran in an isolated throwaway HOME/runtime: 18 Python tests and go vet passed; Go race tests failed only TestNoBareExports. Callback, D-Bus signature and translation probes reproduced the findings. Catalog regeneration matched committed output; diff whitespace and Go formatting checks passed.
 Installs: none. UI was not visually checked or exercised on the live desktop; UI action findings were checked against source and layouts. Item remains in review/ for the owner to decide; add a note and move to new/ for fixes.
+
+## lyric · 2026-11-07 10:11
+Move ft75 back to new
