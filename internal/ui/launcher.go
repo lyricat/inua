@@ -214,6 +214,22 @@ func (s *shellUI) bindLauncherHandlers() {
 	s.onQueryFocus = func(gtk.EventControllerFocus) {
 		s.launcher.hasFocus = true
 	}
+	s.onLauncherRight = func(g gtk.GestureClick, _ int32, _, _ float64) {
+		w := g.GetWidget()
+		if w == nil {
+			return
+		}
+		var i int
+		if _, err := fmt.Sscanf(w.GetName(), "result:%d", &i); err != nil {
+			return
+		}
+		l := &s.launcher
+		if !l.st.Open || i >= len(l.st.Results) {
+			return
+		}
+		l.st.Move(i - l.st.Selected)
+		s.showLauncherActions()
+	}
 }
 
 func (s *shellUI) showLauncher(m shell.Mode) {
@@ -1028,8 +1044,13 @@ func (s *shellUI) markLauncherResult(w *gtk.Widget, i int) {
 	s.launcher.items[i] = *w
 	w.SetName(fmt.Sprintf("result:%d", i))
 	click := gtk.NewGestureClick()
+	click.SetButton(1)
 	click.ConnectReleased(&s.onLauncherPick)
 	w.AddController(&click.EventController)
+	right := gtk.NewGestureClick()
+	right.SetButton(3)
+	right.ConnectPressed(&s.onLauncherRight)
+	w.AddController(&right.EventController)
 }
 
 // setIcon shows an app icon (a theme name or an absolute path) or a window
