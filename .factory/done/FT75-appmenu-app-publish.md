@@ -122,3 +122,8 @@ Codex reviewed all 30 changed files in origin/master...HEAD against the full req
 Validation: make test passed with isolated throwaway HOME/runtime (18 Python tests, go vet, 113 Go packages with race tests). Targeted lifecycle, signal-security and export tests passed. Temporary-copy make i18n matched committed catalogs. Manager verified unchanged head and clean worktree.
 Installs: none. No recovery was required. D-Bus process identity, signal sender and action forwarding boundaries were checked with no additional confirmed security findings. Slow-bus latency and full third-party client compatibility were not tested. UI was not visually checked or exercised on the desktop; page and copy findings were verified against source/layouts.
 Moved review/ → ready/ under the factory no-P0/P1 threshold. Five P2 notes remain for owner consideration; not merged into master.
+
+## factory · 2026-11-07 16:03
+Shipped at the owner's request after verifying the latest reviewed head. Merged into master at df00305b; release v0.1.27 points to 8db50f34. Linked PR #73: closed; later upstream PR changes excluded.
+Validation: make generate and make i18n passed with clean generated output; full make test passed first run with throwaway HOME/runtime and uncached Go tests (18 Python tests, go vet, 113 race-tested Go packages). FT76 catalog conflicts resolved preserving both sides. Existing P2/P3 notes remain unchanged. No installs. UI was not visually checked or exercised on the desktop.
+Moved ready/ → done/.

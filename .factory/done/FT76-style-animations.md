@@ -46,3 +46,8 @@ Merged origin/master into the item branch and resolved translation conflicts, pr
 Codex reviewed origin/master...HEAD against base e97ebcc, all 16 changed files and relevant callers. No P0/P1 findings; pass follows the factory threshold, not an assertion that the P2/P3 notes are fixed.
 Validation: full make test passed on HEAD and base (18 Python tests, go vet, Go race tests: 112 packages passed and 34 without tests). An initial isolated-environment setup failed; corrected setup and complete rerun passed. Generated Blueprint and seven translation files matched. Conflict resolution also ran make generate, make i18n and make test successfully.
 Tests used a throwaway HOME and isolated environment. UI was not visually checked; Broadway tests skipped under the session constraints, and terminal-engine tests were limited by missing libinua-vt.so. No installs. Review made no code changes. Moved review/ -> ready/ for owner inspection; not merged into master.
+
+## factory · 2026-11-07 16:03
+Shipped at the owner's request after verifying the latest reviewed head. Merged into master at 9ba64f4c; release v0.1.27 points to 8db50f34. Linked PR #77: merged automatically by GitHub.
+Validation: make generate and make i18n passed with clean generated output; full make test passed first run with throwaway HOME/runtime and uncached Go tests (18 Python tests, go vet, 113 race-tested Go packages). FT76 catalog conflicts resolved preserving both sides. Existing P2/P3 notes remain unchanged. No installs. UI was not visually checked or exercised on the desktop.
+Moved ready/ → done/.

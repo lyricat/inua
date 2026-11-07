@@ -25,3 +25,8 @@ notes:
 - Codex reviewed origin/master...HEAD; no findings. The only change removes the clock CSS uppercase transform.
 - make test passed: 18 script tests, go vet ./..., and race-enabled tests across 112 packages, with a throwaway HOME.
 - No installs. UI was not checked by eye; actual font and layout rendering remain unverified.
+
+## factory · 2026-11-07 16:03
+Shipped at the owner's request after verifying the latest reviewed head. Merged into master at ffdad8fe; release v0.1.27 points to 8db50f34. Linked PR #79: merged automatically by GitHub.
+Validation: make generate and make i18n passed with clean generated output; full make test passed first run with throwaway HOME/runtime and uncached Go tests (18 Python tests, go vet, 113 race-tested Go packages). FT76 catalog conflicts resolved preserving both sides. Existing P2/P3 notes remain unchanged. No installs. UI was not visually checked or exercised on the desktop.
+Moved ready/ → done/.

@@ -31,3 +31,8 @@ notes:
 - Codex reviewed all 10 changed files in origin/master...HEAD (e97ebcc...a98bc3f); branch merges cleanly. HEAD and tracked files unchanged.
 - Validation: make test exited 0: Python 18/18, go vet passed, Go race tests passed for 112 packages (96 cached), 34 packages without tests. Initial isolation-only device, PID /proc and AppArmor failures were resolved without product changes. Temporary programs reproduced the three data-path defects.
 - Installs: none. UI, input pass-through and three-monitor pixels were not visually checked; author's manual validation remains unverified.
+
+## factory · 2026-11-07 16:03
+Shipped at the owner's request after verifying the latest reviewed head. Merged into master at 5fba4b5d; release v0.1.27 points to 8db50f34. Linked PR #82: merged automatically by GitHub.
+Validation: make generate and make i18n passed with clean generated output; full make test passed first run with throwaway HOME/runtime and uncached Go tests (18 Python tests, go vet, 113 race-tested Go packages). FT76 catalog conflicts resolved preserving both sides. Existing P2/P3 notes remain unchanged. No installs. UI was not visually checked or exercised on the desktop.
+Moved ready/ → done/.
