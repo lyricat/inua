@@ -82,6 +82,9 @@ func (s *shellUI) syncAppMenu(b *bar) {
 		if reg == (appmenu.Registration{}) {
 			reg, _ = s.appmenu.registrar.Firefox(pid)
 		}
+		if reg == (appmenu.Registration{}) {
+			reg, _ = s.appmenu.registrar.Chromium(pid)
+		}
 	}
 	if b.appMenuReg == reg && b.appMenuPID == pid {
 		return
@@ -104,6 +107,7 @@ func (s *shellUI) clearAppMenu(b *bar) {
 	}
 	b.appMenuReg = appmenu.Registration{}
 	b.appMenuPID = 0
+	b.appMenuRetried = false
 	b.appMenuTop = nil
 	b.appMenuEntries = nil
 	gtkx.Clear(&b.appMenu)
