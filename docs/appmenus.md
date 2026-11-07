@@ -63,12 +63,14 @@ application that does not export, a terminal, a game.
 ## Menu packs
 
 One application is one TOML file. The shell reads them from these
-places, and a later place replaces a pack with the same `id`:
+places, and a higher-priority source replaces a pack with the same
+`id`:
 
 1. The packs compiled into the shell, whose source is
    [`share/inua/menus`](../share/inua/menus).
-2. `$XDG_DATA_DIRS/inua/menus` (the default is `/usr/local/share` and
-   then `/usr/share`; a directory earlier in the variable wins).
+2. Each `$XDG_DATA_DIRS` entry's `inua/menus` directory. The default is
+   `/usr/local/share` then `/usr/share`; earlier entries in the variable
+   have higher priority.
 3. `$XDG_DATA_HOME/inua/menus` (`~/.local/share/inua/menus`).
    `make install` copies the shipped packs here.
 4. When the shell is run with `-ui-dir`, `share/inua/menus` next to that
@@ -199,17 +201,105 @@ application.
 
 ### Writing one
 
-Copy Window Class from the generic Edit menu. Put a file in
-`~/.config/inua/menus/some-app.toml` with that id in `match`. List the
-commands you want and the shortcuts the application already has. Focus
-another window and come back. The bar reads the file again.
+This walkthrough creates a private menu for one application. It does not
+require rebuilding or restarting the shell.
+
+1. Open the application and use **Edit → Copy Window Class** in the bar's
+generic menu. This copies the window's application id. If the application
+has no generic menu visible, its class can also be read from the
+compositor's client list.
+2. Create the personal pack directory and a TOML file. Use a stable pack
+`id`; it is the override key and does not have to equal the application
+id. A useful convention is to use the desktop entry id.
+3. Put the copied class in `match`, then define sections and items. Use
+`keys` for shortcuts the application already supports; use `action` for
+shell and window operations.
+4. Save, focus another window, then focus the application again. The bar
+rebuilds its menu when focus changes and rereads changed pack files.
+
+For example, save this as `~/.config/inua/menus/org.wezfurlong.wezterm.toml`
+(replace the value in `match` with the class copied from your window):
+
+```toml
+id = "org.wezfurlong.wezterm"
+match = ["org.wezfurlong.wezterm"]
+include = ["generic"]
+
+[[section]]
+label = "Terminal"
+
+[[section.item]]
+label = "New Tab"
+keys = ["CTRL", "SHIFT", "T"]
+
+[[section.item]]
+label = "Close Window"
+action = "close-window"
+```
+
+The `generic` include contributes File, Edit, View and Help. The Terminal
+section is added after those. To start with only your own sections, remove
+`include`. To nest options, add `[[section.item.item]]` below a submenu
+item. A `separator = true` item needs no label. Each ordinary item must
+specify exactly one of `action`, `keys` or child `item` entries; a
+separator cannot be combined with those. TOML table array nesting matters:
+child items belong immediately under their parent item.
+
+The match fields are alternatives: a pack matches if the case-insensitive
+application id or desktop entry id equals any `match` token, ends with
+any `suffix` token, or contains any `contains` token. Prefer `match` when
+you know the exact id; broad suffix or substring rules can affect several
+applications. If multiple packs match, the last one in the loaded order
+wins. Keep matching rules narrow and avoid accidental overlaps.
+
+To change a shipped pack, put a file with the same `id` in
+`~/.config/inua/menus/`. For example, copying `code.toml` and changing
+`skip_a11y` overrides the shipped VS Code exception. The same directory
+can contain packs for applications that have no shipped pack. Pack files
+are limited to 256 KiB and submenu nesting to eight levels. Unknown
+fields, unknown includes or actions, invalid `when` values, and malformed
+items make that file invalid; it is skipped and the reason appears in the
+shell log. Other valid packs continue to load.
 
 A pack worth shipping goes in `share/inua/menus/` under its `id`, with
-no machine-specific path in it. `go test ./internal/appmenu` parses
-every shipped file and rejects an unknown field, an unknown action, a
-missing `id` or an item that is more than one of an action, a shortcut
-and a submenu. The same checks apply to a file on disk; a bad file is
-skipped rather than stopping the shell.
+no machine-specific paths. The shipped files are embedded in the binary;
+`make install` also copies them to the data directory for development and
+packaging workflows. `go test ./internal/appmenu` parses every shipped
+file and checks the schema.
+
+#### Choosing fallback or replace
+
+Leave `when` out, or set `when = "fallback"`, for a menu that fills the
+gap only when the application has no usable published menu. This is the
+usual choice. Use `when = "replace"` only when the published menu is
+unusable and you deliberately want the pack every time. A pack with no
+sections and no include adds no entries, but its `skip_a11y` and
+`never_press` settings still affect how published menus are handled.
+
+`skip_a11y = true` avoids reading that window's accessibility menu.
+`never_press = true` leaves an accessibility menu visible, but prevents
+its sections from being invoked. These options apply whenever the pack
+matches, whether or not the pack's own menu is selected. The shipped VS
+Code and Firefox packs demonstrate those cases.
+
+#### Reloading and troubleshooting
+
+The shell checks pack files by their size and modification time. After
+editing, change focus away from the target window and back. If the menu
+does not change:
+
+- Check that the filename ends in `.toml` and is directly inside
+  `~/.config/inua/menus/` (subdirectories are not scanned).
+- Confirm `id` is non-empty and at least one match field is present.
+- Check TOML array-of-table placement, especially nested
+  `[[section.item.item]]` entries.
+- Check the shell log for a parse or validation error. One invalid file
+  does not prevent other packs from loading.
+- Confirm the pack matches the copied application class or desktop id;
+  matching is case-insensitive, but whitespace and spelling still matter.
+- If another pack also matches, narrow its rules. Within one directory,
+  `.toml` filenames are applied in alphabetical order, and the later
+  matching pack wins.
 
 ## What this does not do
 
