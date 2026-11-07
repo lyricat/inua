@@ -11,10 +11,12 @@ import (
 
 // From is the settings of c for a backend.
 func From(c config.Config) compositor.Settings {
+	animations := config.AnimationEnabled(c.Style.Animations)
 	s := compositor.Settings{
 		KbOptions:     c.Input.KbOptions,
 		TouchpadSpeed: c.Input.TouchpadSpeed,
 		TouchpadAccel: c.Input.TouchpadAccel,
+		Animations:    &animations,
 	}
 	for _, sc := range c.Shortcuts {
 		// A shortcut with no keys or no command (dictation while it is off)

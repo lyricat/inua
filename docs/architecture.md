@@ -339,7 +339,9 @@ windows to PNG files for checking layouts without a screenshot tool.
   (XKB options, touchpad), `[notifications]`, `[dock]` and `[[shortcuts]]`.
 - `[input]` and `[[shortcuts]]` are Hyprland settings: written to
   `hypr/inua.conf`, which `hyprland.conf` sources last, so they hold without
-  the shell. Hyprland reloads by itself when the file changes.
+  the shell. Hyprland reloads by itself when the file changes; for a Lua
+  config the file is `hypr/inua.lua`, loaded with `require`, which Hyprland
+  watches only once it has loaded it, so writing it always asks for a reload.
 - Styles: `style.css` (relative to the config directory) loads after the
   built-in style at USER priority; overriding a colour with `@define-color`
   changes every built-in rule that uses it.

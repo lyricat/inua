@@ -179,8 +179,10 @@ portal，然后启动可选 `inua-remote --await-session`，最后 exec 合成�
 `hyprconf.Apply` 使用已知设备加 `j/devices` 生成规则；有 client 但请求失败时
 返回错误，不写新文件；没有 client 时可凭已记录设备和合盖信息离线生成。
 内容不变不写；变更原子替换后查询 `misc:disable_autoreload`，只有关闭自动重载
-才显式 `reload`。写成功后的查询／reload 仍可能失败，因此“保存文件”不等于
-“合成器已应用”。`showSourceWarning` 在设置中提示未加载／被后续配置覆盖。
+才显式 `reload`。Lua 配置的 `inua.lua` 是被 `require` 的，Hyprland 只监视
+上次加载读过的文件，所以写 `inua.lua` 后总是显式 `reload`。写成功后的查询／
+reload 仍可能失败，因此“保存文件”不等于“合成器已应用”。`showSourceWarning`
+在设置中提示未加载／被后续配置覆盖。
 
 [hyprconf.go](../internal/hyprconf/hyprconf.go) `ConfigFile`、`RunsLua` 与 UI 的
 `probeLua` 是不同调用路径：不要把它们概括成一个统一版本开关。

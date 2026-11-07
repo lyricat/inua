@@ -295,13 +295,18 @@ func Render(c config.Config, d Devices) string {
 		}
 	}
 	gestures := widgetGestures(c)
-	if !wrote && len(c.Shortcuts) == 0 && !writesDisplays(c, d) && !c.Widgets.Enable {
+	if !wrote && len(c.Shortcuts) == 0 && !writesDisplays(c, d) && !c.Widgets.Enable && (c.Style.Animations == nil || *c.Style.Animations) {
 		b.WriteString("\n# Nothing set in inua; hyprland.conf decides.\n")
 	}
 	renderDisplays(&b, c, d)
 	renderShortcuts(&b, c)
 	if c.Widgets.Enable {
 		b.WriteString(widgetsLayerRule)
+	}
+	if c.Style.Animations != nil && *c.Style.Animations {
+		b.WriteString("\n# Animations follow inua's settings.\nanimations {\n    enabled = true\n}\n")
+	} else if c.Style.Animations != nil {
+		b.WriteString("\n# Animations turned off in inua's settings.\nanimations {\n    enabled = false\n}\n")
 	}
 	if len(gestures) > 0 {
 		b.WriteString("\n# A swipe right goes to the widget page, before the first workspace; left, back.\n")
@@ -442,13 +447,17 @@ func RenderLua(c config.Config, d Devices) string {
 		}
 	}
 	gestures := widgetGestures(c)
-	if !wrote && len(c.Shortcuts) == 0 && !writesDisplays(c, d) && !c.Widgets.Enable {
+	if !wrote && len(c.Shortcuts) == 0 && !writesDisplays(c, d) && !c.Widgets.Enable && (c.Style.Animations == nil || *c.Style.Animations) {
 		b.WriteString("\n-- Nothing set in inua; hyprland.lua decides.\n")
 	}
 	renderDisplaysLua(&b, c, d)
 	renderShortcutsLua(&b, c)
 	if c.Widgets.Enable {
 		b.WriteString(widgetsLayerRuleLua)
+	}
+	if c.Style.Animations != nil {
+		enabled := *c.Style.Animations
+		fmt.Fprintf(&b, "\n-- Animations follow inua's settings.\nhl.config({ animations = { enabled = %t } })\n", enabled)
 	}
 	if len(gestures) > 0 {
 		b.WriteString("\n-- A swipe right goes to the widget page, before the first workspace; left, back.\n")
@@ -535,9 +544,11 @@ func known(file string) []string {
 // comes or goes.
 // Hyprland reloads by itself when a file it sources changes; Apply asks it
 // to only if that is turned off (misc:disable_autoreload), since every
-// reload also redoes monitors. client may be nil (Hyprland not running):
-// the file is still written, and Hyprland reads it when it starts. changed
-// reports whether the file was rewritten.
+// reload also redoes monitors. inua.lua is required, not sourced: Hyprland
+// watches it only once it has been loaded, so a first write of it (or a
+// config that never loaded it) needs an explicit reload. client may be nil
+// (Hyprland not running): the file is still written, and Hyprland reads it
+// when it starts. changed reports whether the file was rewritten.
 func Apply(ctx context.Context, c config.Config, path string, client *hypr.Client) (changed bool, err error) {
 	old, err := os.ReadFile(path)
 	if err != nil && !os.IsNotExist(err) {
@@ -585,8 +596,15 @@ func Apply(ctx context.Context, c config.Config, path string, client *hypr.Clien
 	if client == nil {
 		return true, nil
 	}
-	if auto, err := autoreload(ctx, client); err != nil || auto {
-		return true, err
+	// Hyprland reloads by itself when a config file it loaded changes, but
+	// it only watches files the last load read. inua.lua written for the
+	// first time was never required, so nothing watched it: ask for a
+	// reload. (A require'd inua.lua would be watched and reload twice; a
+	// reload is idempotent, a lost keyboard is not.)
+	if !lua {
+		if auto, err := autoreload(ctx, client); err != nil || auto {
+			return true, err
+		}
 	}
 	reply, err := client.Request(ctx, "reload")
 	if err != nil {
