@@ -1,7 +1,7 @@
 ---
 source: pr #73
 branch: factory/FT75-appmenu-app-publish
-round: 2
+round: 3
 ---
 # feat(appmenu): inua applications publish their menus for the bar
 
@@ -92,3 +92,17 @@ Item stays in review/ for the owner to decide; add a note and move to new/ for f
 
 ## Lyric · 2026-11-07 11:44
 Move ft75 back to new
+
+## factory · plan · 2026-11-07 12:04
+Fix round 3.
+Behaviour: discovery and action validity resolve the focused PID consistently, registrar first and native publisher second. Reject absent, ambiguous or stale menus after focus/registration changes; preserve no-bus and empty cases.
+Scope: latest mandatory P1 native-menu validity fix and focused private-bus regressions. Optional P2 notes and separate source-PR updates remain excluded.
+Decisions: share the resolver; ambiguous registered windows suppress native fallback rather than risk the wrong commands. Preserve conservative native multi-window handling.
+Checking: native lookup/read/activation and validity, focus loss, registrar priority/ambiguity, multiple publishers, release/replacement and no-bus tests; full make test in isolated HOME/runtime; make i18n before the Go commit.
+
+## factory · 2026-11-07 12:04
+Built fix round 3 with Claude Code; pushed 986428f0 on factory/FT75-appmenu-app-publish. Added Registrar.Focused and Current, used consistently by bar discovery and action validity; added private-bus regression coverage.
+Validation: targeted race tests passed. Full make test passed both in the coder run and independent manager verification using throwaway HOME/runtime (Python session tests, go vet, Go race tests). make i18n left catalogs unchanged; no Blueprint changes, so make generate was not needed. Commit history, protected paths and clean worktree checked.
+Installs: none. No recovery was required. UI was not visually checked or exercised in a nested/live session. Native validity now performs the same synchronous D-Bus lookup as discovery, so a slow bus can delay an action; this was not latency-tested.
+The five existing optional P2 notes remain outside this round. No upstream PR commits incorporated; no merge into master.
+Moved new/ → review/ for another review.
