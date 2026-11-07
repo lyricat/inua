@@ -316,8 +316,10 @@ func (r *Registrar) Chromium(pid int) (Registration, bool) {
 	if pid <= 0 {
 		return Registration{}, false
 	}
+	ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
+	defer cancel()
 	var names []string
-	if err := r.conn.BusObject().Call(busInterface+".ListNames", 0).Store(&names); err != nil {
+	if err := r.conn.BusObject().CallWithContext(ctx, busInterface+".ListNames", 0).Store(&names); err != nil {
 		return Registration{}, false
 	}
 	for _, name := range names {
@@ -325,7 +327,7 @@ func (r *Registrar) Chromium(pid int) (Registration, bool) {
 			continue
 		}
 		var owner uint32
-		call := r.conn.BusObject().Call(busInterface+".GetConnectionUnixProcessID", 0, name)
+		call := r.conn.BusObject().CallWithContext(ctx, busInterface+".GetConnectionUnixProcessID", 0, name)
 		if call.Err != nil || call.Store(&owner) != nil || int(owner) != pid {
 			continue
 		}
@@ -334,7 +336,7 @@ func (r *Registrar) Chromium(pid int) (Registration, bool) {
 				Name string `xml:"name,attr"`
 			} `xml:"node"`
 		}
-		call = r.conn.Object(name, "/com/canonical/menu").Call("org.freedesktop.DBus.Introspectable.Introspect", 0)
+		call = r.conn.Object(name, "/com/canonical/menu").CallWithContext(ctx, "org.freedesktop.DBus.Introspectable.Introspect", 0)
 		if call.Err != nil {
 			continue
 		}
