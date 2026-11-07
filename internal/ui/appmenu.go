@@ -172,6 +172,7 @@ func (s *shellUI) bindAppMenuHandlers() {
 		if parent == nil {
 			return
 		}
+		defer parent.Unref()
 		for _, b := range s.bars {
 			// The buttons of a bar's menu are its box's children; another
 			// bar's menu may have a button with the same id.
