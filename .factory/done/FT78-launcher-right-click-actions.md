@@ -53,3 +53,7 @@ notes:
 - Prior full Codex review of 3fdac202 applies with this catalog-only delta; the sole remaining P1 generated-file gate is resolved. Moved review -> ready.
 - Codex validation: full make test passed (18 Python tests, go vet, Go race tests) with isolated HOME and XDG_RUNTIME_DIR mode 0700. Post-commit make generate and make i18n produced no tracked changes; git diff --check passed; worktree clean.
 - Fix pushed to factory/FT78-launcher-right-click-actions, not the upstream author's branch. No installs. Remote CI and live desktop UI not verified. No merge to master or tag.
+
+## factory · 2026-11-07 22:20
+Merged into master at 98ab0d2d; released in v0.1.28 (e9b45a97). PR #80: CLOSED.
+Combined make generate, make i18n, make test and git diff --check passed with isolated HOME/runtime; generated files unchanged. No installs. Existing P2 review notes remain; UI, real Chromium/XWayland and multi-monitor behavior not independently checked.

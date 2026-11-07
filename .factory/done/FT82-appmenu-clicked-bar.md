@@ -25,3 +25,7 @@ notes:
 - Validation: make test passed with throwaway HOME and isolated runtime directory: 18 Python tests, go vet ./..., and Go race tests; 112 packages passed.
 - Non-pinned installs: none. UI not visually checked; the author's two-monitor Kate/terminal check was not independently repeated. Broadway validation covered widget hierarchy and reference lifetime only.
 - Moved to ready under factory policy (no P0/P1); owner should consider the P2 reference leak before shipping. Not merged.
+
+## factory · 2026-11-07 22:20
+Merged into master at e9b45a97; released in v0.1.28 (e9b45a97). PR #84: CLOSED.
+Combined make generate, make i18n, make test and git diff --check passed with isolated HOME/runtime; generated files unchanged. No installs. Existing P2 review notes remain; UI, real Chromium/XWayland and multi-monitor behavior not independently checked.

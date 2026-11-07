@@ -60,3 +60,7 @@ notes:
 - Codex reviewed all four files in origin/master (8db50f3)...HEAD. Merge check clean. Previous blocking guard and synchronous-discovery defects verified fixed: discovery returns asynchronously (~15 microseconds), repeated snapshots do not rescan, stale results are discarded, ambiguity rejected, unresponsive endpoint times out (~2.002 seconds).
 - Final make test passed with isolated HOME/runtime: Python 18 tests, go vet, Go race tests (113 packages passed, 97 cached). Temporary overlay probes reproduced the P2 findings. Initial AppArmor read-only query failure also reproduced on base and resolved by correcting isolation; a probe synchronization error was corrected. No remaining product test failure.
 - HEAD and tracked files unchanged. Installs: none. UI not visually checked; real Chromium/XWayland and browser endpoint lifecycle not integration-tested.
+
+## factory · 2026-11-07 22:20
+Merged into master at 3641264b; released in v0.1.28 (e9b45a97). PR #81: MERGED.
+Combined make generate, make i18n, make test and git diff --check passed with isolated HOME/runtime; generated files unchanged. No installs. Existing P2 review notes remain; UI, real Chromium/XWayland and multi-monitor behavior not independently checked.
