@@ -499,14 +499,14 @@ func (b *bar) setHypr(s *shellUI, snap compositor.Snapshot) {
 // setIconMetrics keeps the right side's icons and the gap between them
 // uniform: the end's boxes and the status button's icons.
 func (b *bar) setIconMetrics(size, gap int) {
-	outer := int32(gap - 2)
-	b.end.SetSpacing(outer)
-	b.tray.SetSpacing(outer)
+	gapPx := int32(gap)
+	b.end.SetSpacing(gapPx)
+	b.tray.SetSpacing(gapPx)
 	if b.statusIcons.GoPointer() != 0 {
-		// An icon button adds 10 px padding and a 1 px border on each
-		// side, so icons in one status button need the same gap to look
-		// like the icons in separate buttons.
-		b.statusIcons.SetSpacing(int32(gap + 20))
+		// The icon buttons keep 4 px padding and a 1 px border on each
+		// side; icons inside one status button need that gap added to
+		// match the icons in buttons of their own.
+		b.statusIcons.SetSpacing(gapPx + 10)
 	}
 	px := int32(size)
 	for _, img := range []*gtk.Image{&b.appIcon, &b.passwordIcon, &b.clipboardIcon, &b.notesIcon, &b.voiceIcon, &b.netIcon, &b.btIcon, &b.volIcon, &b.batIcon} {

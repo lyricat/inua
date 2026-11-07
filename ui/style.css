@@ -303,9 +303,13 @@ button.plain.tight, button.image-button.tight { min-width: 20px; min-height: 20p
 /* The icon buttons among them are as tall as the others and wider, about
    0.618:1: 24px (a 16px icon, 3px padding, 1px border) by 38px. */
 .bar .island button.passwords, .bar .island button.clipboard, .bar .island button.notes, .bar .island button.voice, .bar .island .tray button { padding: 3px 10px; }
-/* The status button carries three icons; the same padding as the other
-   icon buttons keeps the gap at its edges the same as between them. */
-.bar .island button.status { padding-left: 10px; padding-right: 10px; }
+/* The icon buttons sit close: their icons' gap is the setting's, once
+   their own padding and border are accounted for. Text buttons (the clock,
+   the menu) keep their room. */
+.bar .island button.status, .bar .island button.passwords, .bar .island button.clipboard, .bar .island button.notes, .bar .island button.voice, .bar .island .tray button {
+  padding-left: 4px;
+  padding-right: 4px;
+}
 /* The menu's words line up with the application name beside them: no
    vertical margin, which the box would centre around the words instead. */
 .bar .island .app-menu button { margin: 0; }
