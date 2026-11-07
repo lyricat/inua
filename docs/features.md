@@ -19,6 +19,15 @@ keeps a blue outline when focus moves to another display. The active window
 keeps Hyprland's own outline. The app menu
 stays with the window represented by its bar.
 
+The focused application's menu sits in the bar. A menu the application
+publishes (Qt, a GTK 3 application with `appmenu-gtk-module`, Firefox's
+own exporter, an inua application) is shown as it is. Otherwise the menu
+is read from the accessibility tree. When that has nothing usable, the
+bar shows a generic File, Edit, View and Help for the window, or a menu
+pack written for that application. Packs are TOML files, so a menu can
+be added without rebuilding the shell. [Application menus](appmenus.md)
+is the format and where the files go.
+
 ## Engawa
 
 Engawa (縁側, a veranda at the edge of a house) is the widget page, the

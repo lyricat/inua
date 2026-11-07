@@ -114,6 +114,7 @@ install: build
 	# inua-term's engine, when built (make term-engine)
 	if [ -f bin/libinua-vt.so ]; then install -Dm644 -t "$(PREFIX)/lib/inua" bin/libinua-vt.so; fi
 	install -Dm644 -t "$(DATA_HOME)/applications" config/apps/*.desktop
+	install -Dm644 -t "$(DATA_HOME)/inua/menus" share/inua/menus/*.toml
 	install -Dm644 -t "$(DATA_HOME)/icons/hicolor/scalable/apps" config/apps/*.svg
 	install -Dm644 -t "$(DATA_HOME)/icons/hicolor/16x16/apps" config/apps/small/*.svg
 	# inua's icon themes (design/icons), their aliases symlinks: the objects,

@@ -102,10 +102,15 @@ type OpenStep struct {
 
 // Action says how to invoke an entry.
 type Action struct {
-	Kind  string          // ActionA11y or ActionDbusmenu; empty when the entry only groups children
-	Bus   string          // the connection that owns the menu
+	Kind  string          // ActionA11y, ActionDbusmenu, ActionKeys, or a shell action; empty when the entry only groups children
+	Bus   string          // the connection that owns the menu, or the window id for a shell action
 	Path  dbus.ObjectPath // the menu or accessible object
 	Index int32           // an action index (AT-SPI) or an item id (dbusmenu)
+	// Mods and Key are the shortcut ActionKeys sends to the window
+	// ("CTRL SHIFT" and "T"). A single letter is uppercased; a longer
+	// key name is sent as written.
+	Mods string
+	Key  string
 }
 
 const (

@@ -86,7 +86,6 @@ msgstr ""
 #: internal/filesui/renamemany.go:158
 #: ui/gpg.ui:522
 #: ui/gpg.ui:886
-#: ui/pass.ui:440
 msgid "Text"
 msgstr ""
 
@@ -1609,10 +1608,6 @@ msgstr ""
 msgid "Laptop speakers"
 msgstr ""
 
-#: internal/apps/pass/draft.go:152
-msgid "No password could be made: %v"
-msgstr ""
-
 #: internal/apps/pass/entry.go:94
 #: internal/apps/pass/otp.go:38
 msgid "Not an otpauth:// link."
@@ -1875,7 +1870,6 @@ msgstr ""
 #: internal/filesui/remotesetup.go:67
 #: internal/mailui/welcome.go:571
 #: ui/lock.ui:76
-#: ui/pass.ui:507
 #: ui/polkit.ui:691
 msgid "Password"
 msgstr ""
@@ -2052,8 +2046,8 @@ msgstr ""
 #: internal/filesui/window.go:824
 #: internal/gamesui/lobbyhost.go:169
 #: internal/lightui/calculator.go:351
-#: internal/lightui/pass.go:754
-#: internal/lightui/pass.go:779
+#: internal/lightui/pass.go:749
+#: internal/lightui/pass.go:774
 #: internal/mailui/details.go:222
 #: internal/shell/launcher_actions.go:59
 #: internal/term/settings/settings.go:119
@@ -2201,9 +2195,9 @@ msgstr ""
 #: ui/gpg.ui:1355
 #: ui/gpg.ui:1572
 #: ui/gpg.ui:1666
-#: ui/pass.ui:677
-#: ui/pass.ui:813
-#: ui/pass.ui:1044
+#: ui/pass.ui:495
+#: ui/pass.ui:631
+#: ui/pass.ui:862
 #: ui/polkit.ui:742
 #: ui/remote.ui:1044
 #: ui/vm.ui:3268
@@ -2256,7 +2250,7 @@ msgid "What it runs: systemctl suspend"
 msgstr ""
 
 #: internal/connectui/window.go:560
-#: internal/lightui/pass.go:1153
+#: internal/lightui/pass.go:1201
 #: internal/lightui/workshop_manager.go:115
 #: internal/mailui/actions.go:469
 #: internal/mailui/compose.go:474
@@ -2852,7 +2846,7 @@ msgid "Opens video files"
 msgstr ""
 
 #: internal/desktop/defaults.go:48
-#: internal/lightui/pass_otp.go:330
+#: internal/lightui/pass_otp.go:338
 #: internal/ui/settings.go:1135
 msgid "Images"
 msgstr ""
@@ -2894,7 +2888,7 @@ msgid "Size"
 msgstr ""
 
 #: internal/diskui/details.go:49
-#: internal/ui/appmenu.go:368
+#: internal/ui/appmenu.go:418
 #: internal/ui/settings_menu.go:25
 msgid "File"
 msgid_plural "Files"
@@ -3027,7 +3021,7 @@ msgstr ""
 #: internal/lightui/calculator.go:59
 #: internal/lightui/calculator.go:353
 #: internal/lightui/gpg.go:1611
-#: internal/lightui/pass.go:903
+#: internal/lightui/pass.go:951
 #: internal/term/web/strings.go:43
 #: internal/ui/clipboard.go:504
 #: internal/vmui/window.go:1996
@@ -3115,7 +3109,7 @@ msgstr ""
 #: internal/lightui/sysmon.go:969
 #: internal/lightui/tailscale.go:527
 #: internal/lightui/tailscale.go:568
-#: internal/ui/bar.go:478
+#: internal/ui/bar.go:476
 #: internal/ui/settings.go:652
 #: ui/vm.ui:2981
 msgid "System"
@@ -3522,7 +3516,7 @@ msgstr ""
 
 #: internal/filesui/cards.go:497
 #: internal/filesui/picker.go:369
-#: internal/lightui/pass_otp.go:180
+#: internal/lightui/pass_otp.go:188
 msgid "Replace"
 msgstr ""
 
@@ -3553,7 +3547,7 @@ msgstr[1] ""
 #: internal/termui/keys.go:295
 #: internal/termui/sessionmenu.go:113
 #: internal/termui/wsmenu.go:129
-#: internal/ui/appmenu.go:412
+#: internal/ui/appmenu.go:462
 #: internal/ui/settings_bench.go:132
 #: internal/ui/settings_menu.go:26
 #: internal/ui/settings_wifi_details.go:62
@@ -3844,7 +3838,7 @@ msgid "Columns"
 msgstr ""
 
 #: internal/filesui/columns.go:176
-#: internal/lightui/pass.go:965
+#: internal/lightui/pass.go:1013
 msgid "NAME"
 msgstr ""
 
@@ -4068,7 +4062,7 @@ msgid "done"
 msgstr ""
 
 #: internal/filesui/pane.go:1554
-#: internal/lightui/pass.go:1168
+#: internal/lightui/pass.go:1216
 #: internal/lightui/sysmon.go:973
 #: internal/ui/settings_keyring.go:508
 #: internal/ui/shotdrawer.go:327
@@ -8418,7 +8412,7 @@ msgstr ""
 
 #: internal/hyprconf/keys.go:23
 #: internal/shell/dock.go:312
-#: internal/ui/appmenu.go:275
+#: internal/ui/appmenu.go:288
 #: ui/settings.ui:2385
 msgid "Launcher"
 msgstr ""
@@ -8459,7 +8453,7 @@ msgstr ""
 #: internal/term/settings/settings.go:126
 #: internal/term/web/strings.go:96
 #: internal/termui/headmenu.go:110
-#: internal/ui/appmenu.go:274
+#: internal/ui/appmenu.go:287
 #: ui/control.ui:58
 #: ui/settings.ui:30
 msgid "Settings"
@@ -8691,7 +8685,7 @@ msgid "System Monitor"
 msgstr ""
 
 #: internal/lightui/apps.go:24
-#: internal/lightui/pass.go:270
+#: internal/lightui/pass.go:266
 #: internal/lightui/pass_otp.go:113
 #: ui/pass.ui:29
 #: config/apps/io.github.lyricat.Inua.Pass.desktop:3
@@ -8809,7 +8803,7 @@ msgstr ""
 
 #: internal/lightui/clock.go:404
 #: internal/termui/menubar.go:31
-#: internal/ui/appmenu.go:371
+#: internal/ui/appmenu.go:421
 #: ui/pass.ui:252
 msgid "Edit"
 msgstr ""
@@ -9378,34 +9372,34 @@ msgstr ""
 msgid "Playlist"
 msgstr ""
 
-#: internal/lightui/pass.go:353
+#: internal/lightui/pass.go:348
 msgid "A password store: a folder with a .gpg-id"
 msgstr ""
 
-#: internal/lightui/pass.go:361
+#: internal/lightui/pass.go:356
 msgid "%s is not a password store: it has no .gpg-id (pass init makes one)."
 msgstr ""
 
-#: internal/lightui/pass.go:381
+#: internal/lightui/pass.go:376
 msgid "No password store. pass init YOUR-GPG-KEY-ID makes one in ~/.password-store; another folder can be added below."
 msgstr ""
 
-#: internal/lightui/pass.go:408
+#: internal/lightui/pass.go:403
 msgid "The store is empty. + makes an entry."
 msgstr ""
 
-#: internal/lightui/pass.go:411
-#: internal/lightui/pass.go:810
-#: internal/lightui/pass.go:1088
-#: internal/lightui/pass_edit.go:193
+#: internal/lightui/pass.go:406
+#: internal/lightui/pass.go:805
+#: internal/lightui/pass.go:877
+#: internal/lightui/pass.go:1136
 msgid "Choose an entry."
 msgstr ""
 
-#: internal/lightui/pass.go:417
+#: internal/lightui/pass.go:412
 msgid "Top level"
 msgstr ""
 
-#: internal/lightui/pass.go:425
+#: internal/lightui/pass.go:420
 #: internal/ui/settings.go:998
 #: internal/ui/settings.go:1025
 msgid "%d entry"
@@ -9413,175 +9407,171 @@ msgid_plural "%d entries"
 msgstr[0] ""
 msgstr[1] ""
 
-#: internal/lightui/pass.go:430
+#: internal/lightui/pass.go:425
 msgid "Right-click to rename or move"
 msgstr ""
 
-#: internal/lightui/pass.go:493
+#: internal/lightui/pass.go:488
 #: internal/ui/passwords.go:488
 msgid "Nothing matches. Each word is looked for in the whole path."
 msgstr ""
 
-#: internal/lightui/pass.go:495
+#: internal/lightui/pass.go:490
 msgid "And %d more: another word narrows them."
 msgid_plural "And %d more: another word narrows them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: internal/lightui/pass.go:641
+#: internal/lightui/pass.go:636
 msgid "Decrypting %s"
 msgstr ""
 
-#: internal/lightui/pass.go:697
-#: internal/lightui/pass_otp.go:179
+#: internal/lightui/pass.go:692
+#: internal/lightui/pass_otp.go:187
 msgid "Replace the one-time code"
 msgstr ""
 
-#: internal/lightui/pass.go:699
-#: internal/lightui/pass_otp.go:182
+#: internal/lightui/pass.go:694
+#: internal/lightui/pass_otp.go:190
 #: ui/pass.ui:230
-#: ui/pass.ui:852
+#: ui/pass.ui:670
 msgid "Add a one-time code"
 msgstr ""
 
-#: internal/lightui/pass.go:704
+#: internal/lightui/pass.go:699
 #: internal/ui/passwords.go:561
 msgid "USERNAME"
 msgstr ""
 
-#: internal/lightui/pass.go:707
+#: internal/lightui/pass.go:702
 #: internal/ui/passwords.go:564
-#: ui/pass.ui:495
 msgid "PASSWORD"
 msgstr ""
 
-#: internal/lightui/pass.go:712
-#: internal/lightui/pass.go:764
+#: internal/lightui/pass.go:707
+#: internal/lightui/pass.go:759
 #: internal/ui/passwords.go:567
 #: internal/ui/passwords.go:570
-#: ui/pass.ui:984
+#: ui/pass.ui:802
 msgid "ONE-TIME CODE"
 msgstr ""
 
-#: internal/lightui/pass.go:719
+#: internal/lightui/pass.go:714
 #: internal/ui/passwords.go:577
 msgid "NOTES"
 msgstr ""
 
-#: internal/lightui/pass.go:748
-#: internal/lightui/pass_edit.go:351
+#: internal/lightui/pass.go:743
 #: internal/mailui/formatted.go:184
 #: internal/term/desktop/desktop_linux.go:43
 #: internal/ui/passwords.go:644
 #: internal/vmui/window.go:2709
 #: internal/vmui/window.go:2710
-#: ui/pass.ui:520
 msgid "Show"
 msgstr ""
 
-#: internal/lightui/pass.go:750
-#: internal/lightui/pass_edit.go:348
+#: internal/lightui/pass.go:745
 #: internal/ui/notify.go:410
 #: internal/ui/passwords.go:642
 msgid "Hide"
 msgstr ""
 
-#: internal/lightui/pass.go:793
-#: internal/lightui/pass_otp.go:237
+#: internal/lightui/pass.go:788
+#: internal/lightui/pass_otp.go:245
 #: internal/ui/passwords.go:661
 msgid "%d second left"
 msgid_plural "%d seconds left"
 msgstr[0] ""
 msgstr[1] ""
 
-#: internal/lightui/pass.go:885
+#: internal/lightui/pass.go:933
 msgid "Rename or move the category “%s”"
 msgstr ""
 
-#: internal/lightui/pass.go:886
+#: internal/lightui/pass.go:934
 msgid "Its new path. Another name renames it; a path under another category moves it there, with all its entries."
 msgstr ""
 
-#: internal/lightui/pass.go:887
-#: internal/lightui/pass.go:891
+#: internal/lightui/pass.go:935
+#: internal/lightui/pass.go:939
 #: internal/term/web/strings.go:65
 msgid "Move"
 msgstr ""
 
-#: internal/lightui/pass.go:889
+#: internal/lightui/pass.go:937
 msgid "Rename or move “%s”"
 msgstr ""
 
-#: internal/lightui/pass.go:890
+#: internal/lightui/pass.go:938
 msgid "Its new path. The first part is its category: change it to move the entry, the rest to rename it."
 msgstr ""
 
-#: internal/lightui/pass.go:893
+#: internal/lightui/pass.go:941
 #: ui/pass.ui:137
 msgid "New entry"
 msgstr ""
 
-#: internal/lightui/pass.go:894
+#: internal/lightui/pass.go:942
 msgid "Its path: the first part is its category. Its content comes next."
 msgstr ""
 
-#: internal/lightui/pass.go:899
+#: internal/lightui/pass.go:947
 #: internal/termui/guide.go:163
 #: ui/vm.ui:3289
 msgid "Next"
 msgstr ""
 
-#: internal/lightui/pass.go:901
+#: internal/lightui/pass.go:949
 msgid "Delete “%s”?"
 msgstr ""
 
-#: internal/lightui/pass.go:902
+#: internal/lightui/pass.go:950
 msgid "pass removes its file; a git store keeps it in its history."
 msgstr ""
 
-#: internal/lightui/pass.go:938
-#: internal/lightui/pass.go:968
+#: internal/lightui/pass.go:986
+#: internal/lightui/pass.go:1016
 #: internal/mailui/reader.go:549
 #: internal/mailui/reader.go:794
 #: internal/viewerui/app.go:805
 msgid "FILE"
 msgstr ""
 
-#: internal/lightui/pass.go:964
+#: internal/lightui/pass.go:1012
 msgid "CATEGORY"
 msgstr ""
 
-#: internal/lightui/pass.go:978
+#: internal/lightui/pass.go:1026
 msgid "and %d more"
 msgid_plural "and %d more"
 msgstr[0] ""
 msgstr[1] ""
 
-#: internal/lightui/pass.go:1022
+#: internal/lightui/pass.go:1070
 msgid "That is where it is."
 msgstr ""
 
-#: internal/lightui/pass.go:1024
+#: internal/lightui/pass.go:1072
 msgid "A category cannot move into itself."
 msgstr ""
 
-#: internal/lightui/pass.go:1026
+#: internal/lightui/pass.go:1074
 msgid "That path is already in the store."
 msgstr ""
 
-#: internal/lightui/pass.go:1028
+#: internal/lightui/pass.go:1076
 msgid "It is no longer in the store."
 msgstr ""
 
-#: internal/lightui/pass.go:1030
+#: internal/lightui/pass.go:1078
 msgid "Each part of the path needs a name, without a leading dot."
 msgstr ""
 
-#: internal/lightui/pass.go:1137
+#: internal/lightui/pass.go:1185
 msgid "TRUSTED APPS"
 msgstr ""
 
-#: internal/lightui/pass.go:1137
+#: internal/lightui/pass.go:1185
 #: internal/lightui/workshop_manager.go:50
 #: internal/ui/settings_keyring.go:551
 msgid "%d app"
@@ -9589,18 +9579,18 @@ msgid_plural "%d apps"
 msgstr[0] ""
 msgstr[1] ""
 
-#: internal/lightui/pass.go:1139
+#: internal/lightui/pass.go:1187
 msgid "None: an app reading it is asked about first."
 msgstr ""
 
-#: internal/lightui/pass.go:1145
+#: internal/lightui/pass.go:1193
 #: internal/ui/askpass.go:405
 #: internal/ui/settings_keyring.go:624
 msgid "Flatpak: %s"
 msgstr ""
 
-#: internal/lightui/pass.go:1150
-#: internal/lightui/pass.go:1172
+#: internal/lightui/pass.go:1198
+#: internal/lightui/pass.go:1220
 #: internal/ui/settings_keyring.go:469
 #: internal/ui/settings_keyring.go:477
 #: internal/ui/settings_keyring.go:629
@@ -9608,101 +9598,89 @@ msgstr ""
 msgid "%s · %s"
 msgstr ""
 
-#: internal/lightui/pass.go:1157
+#: internal/lightui/pass.go:1205
 #: internal/ui/settings_keyring.go:649
 msgid "Stop trusting it: it is asked about at its next read"
 msgstr ""
 
-#: internal/lightui/pass.go:1162
+#: internal/lightui/pass.go:1210
 msgid "LAST READS"
 msgstr ""
 
-#: internal/lightui/pass.go:1164
+#: internal/lightui/pass.go:1212
 msgid "No app has read it yet."
 msgstr ""
 
-#: internal/lightui/pass.go:1170
+#: internal/lightui/pass.go:1218
 msgid "%s · %d times"
 msgid_plural "%s · %d times"
 msgstr[0] ""
 msgstr[1] ""
 
-#: internal/lightui/pass.go:1182
+#: internal/lightui/pass.go:1230
 #: internal/ui/settings_keyring.go:694
 msgid "trusted"
 msgstr ""
 
-#: internal/lightui/pass.go:1184
+#: internal/lightui/pass.go:1232
 #: internal/ui/settings_keyring.go:696
 msgid "allowed once"
 msgstr ""
 
-#: internal/lightui/pass.go:1186
+#: internal/lightui/pass.go:1234
 #: internal/ui/settings_keyring.go:698
 msgid "allowed, and trusted from now on"
 msgstr ""
 
-#: internal/lightui/pass.go:1188
+#: internal/lightui/pass.go:1236
 #: internal/ui/settings_keyring.go:700
 msgid "denied"
 msgstr ""
 
-#: internal/lightui/pass.go:1190
+#: internal/lightui/pass.go:1238
 #: internal/ui/settings_keyring.go:702
 msgid "allowed: no one to ask"
 msgstr ""
 
-#: internal/lightui/pass.go:1192
+#: internal/lightui/pass.go:1240
 msgid "read"
-msgstr ""
-
-#: internal/lightui/pass_edit.go:311
-msgid "Blank line"
-msgstr ""
-
-#: internal/lightui/pass_edit.go:317
-msgid "Remove the line"
-msgstr ""
-
-#: internal/lightui/pass_edit.go:364
-msgid "Replace the password with a new one"
 msgstr ""
 
 #: internal/lightui/pass_otp.go:100
 msgid "It is not an image this app reads (PNG or JPEG)."
 msgstr ""
 
-#: internal/lightui/pass_otp.go:183
+#: internal/lightui/pass_otp.go:191
 #: internal/lightui/workshop_manager.go:88
 #: internal/ui/widgets.go:945
 #: ui/connect.ui:967
-#: ui/pass.ui:1053
+#: ui/pass.ui:871
 #: ui/remote.ui:1053
 msgid "Add"
 msgstr ""
 
-#: internal/lightui/pass_otp.go:256
+#: internal/lightui/pass_otp.go:264
 msgid "Reading the screen needs grim."
 msgstr ""
 
-#: internal/lightui/pass_otp.go:260
+#: internal/lightui/pass_otp.go:268
 msgid "Selecting an area needs slurp."
 msgstr ""
 
-#: internal/lightui/pass_otp.go:264
+#: internal/lightui/pass_otp.go:272
 msgid "No area was chosen."
 msgstr ""
 
-#: internal/lightui/pass_otp.go:279
-#: internal/lightui/pass_otp.go:316
+#: internal/lightui/pass_otp.go:287
+#: internal/lightui/pass_otp.go:324
 msgid "The screen could not be read."
 msgstr ""
 
-#: internal/lightui/pass_otp.go:328
+#: internal/lightui/pass_otp.go:336
 msgid "An image with a QR code"
 msgstr ""
 
-#: internal/lightui/pass_otp.go:351
+#: internal/lightui/pass_otp.go:359
 msgid "Reading the QR code…"
 msgstr ""
 
@@ -9758,7 +9736,7 @@ msgstr ""
 #: internal/lightui/sysmon.go:55
 #: internal/shell/launcher_actions.go:45
 #: internal/termui/menubar.go:27
-#: internal/ui/dock.go:540
+#: internal/ui/dock.go:533
 #: internal/ui/portal_ask.go:80
 msgid "Quit"
 msgstr ""
@@ -10521,7 +10499,7 @@ msgstr ""
 
 #: internal/lightui/tailscale.go:664
 #: internal/shell/commands.go:31
-#: internal/ui/appmenu.go:284
+#: internal/ui/appmenu.go:297
 msgid "Log Out"
 msgstr ""
 
@@ -10727,7 +10705,7 @@ msgstr ""
 #: internal/ui/settings_ai.go:530
 #: ui/clock.ui:252
 #: ui/connect.ui:421
-#: ui/pass.ui:686
+#: ui/pass.ui:504
 msgid "Save"
 msgstr ""
 
@@ -12813,7 +12791,7 @@ msgid "Desktop"
 msgstr ""
 
 #: internal/shell/commands.go:27
-#: internal/ui/appmenu.go:279
+#: internal/ui/appmenu.go:292
 msgid "Lock Screen"
 msgstr ""
 
@@ -12832,7 +12810,7 @@ msgstr ""
 
 #: internal/shell/commands.go:29
 #: internal/termui/restart.go:44
-#: internal/ui/appmenu.go:292
+#: internal/ui/appmenu.go:305
 #: internal/ui/control.go:541
 #: ui/control.ui:168
 msgid "Restart"
@@ -12847,7 +12825,7 @@ msgid "Press Enter again to restart"
 msgstr ""
 
 #: internal/shell/commands.go:30
-#: internal/ui/appmenu.go:293
+#: internal/ui/appmenu.go:306
 msgid "Shut Down"
 msgstr ""
 
@@ -12985,7 +12963,7 @@ msgid "Start the shell again"
 msgstr ""
 
 #: internal/shell/commands.go:46
-#: internal/ui/appmenu.go:369
+#: internal/ui/appmenu.go:419
 msgid "Close Window"
 msgstr ""
 
@@ -13000,7 +12978,8 @@ msgid "Toggle Fullscreen"
 msgstr ""
 
 #: internal/shell/commands.go:49
-#: internal/ui/appmenu.go:377
+#: internal/ui/appmenu.go:378
+#: internal/ui/appmenu.go:427
 msgid "Center Window"
 msgstr ""
 
@@ -13064,7 +13043,7 @@ msgid "Find apps, windows and answers"
 msgstr ""
 
 #: internal/shell/dock.go:313
-#: internal/ui/appmenu.go:276
+#: internal/ui/appmenu.go:289
 #: internal/ui/screenshot.go:1144
 #: ui/settings.ui:2345
 msgid "Screenshot"
@@ -13173,22 +13152,22 @@ msgid "%s · workspace %s"
 msgstr ""
 
 #: internal/shell/launcher_actions.go:33
-#: internal/ui/dock.go:531
+#: internal/ui/dock.go:524
 msgid "New Window"
 msgstr ""
 
 #: internal/shell/launcher_actions.go:39
-#: internal/ui/dock.go:534
+#: internal/ui/dock.go:527
 msgid "Remove from Dock"
 msgstr ""
 
 #: internal/shell/launcher_actions.go:41
-#: internal/ui/dock.go:536
+#: internal/ui/dock.go:529
 msgid "Keep in Dock"
 msgstr ""
 
 #: internal/shell/launcher_actions.go:47
-#: internal/ui/dock.go:542
+#: internal/ui/dock.go:535
 msgid "Quit (%d windows)"
 msgstr ""
 
@@ -13241,14 +13220,14 @@ msgid "Performance"
 msgstr ""
 
 #: internal/shell/power.go:24
-#: internal/ui/appmenu.go:291
+#: internal/ui/appmenu.go:304
 #: internal/ui/control.go:539
 #: ui/control.ui:120
 msgid "Suspend"
 msgstr ""
 
 #: internal/shell/power.go:26
-#: internal/ui/appmenu.go:287
+#: internal/ui/appmenu.go:300
 #: internal/ui/control.go:540
 #: ui/control.ui:144
 msgid "Hibernate"
@@ -14123,13 +14102,13 @@ msgid "Choose the workspace's folder"
 msgstr ""
 
 #: internal/termui/menubar.go:32
-#: internal/ui/appmenu.go:374
+#: internal/ui/appmenu.go:424
 #: internal/ui/settings_menu.go:28
 msgid "View"
 msgstr ""
 
 #: internal/termui/menubar.go:34
-#: internal/ui/appmenu.go:378
+#: internal/ui/appmenu.go:428
 msgid "Help"
 msgstr ""
 
@@ -14530,37 +14509,39 @@ msgstr ""
 msgid "Snooze"
 msgstr ""
 
-#: internal/ui/appmenu.go:277
+#: internal/ui/appmenu.go:290
 #: ui/bar.ui:238
 msgid "Control Center"
 msgstr ""
 
-#: internal/ui/appmenu.go:370
-msgid "Quit %s"
-msgstr ""
-
-#: internal/ui/appmenu.go:372
-msgid "Copy Window Title"
-msgstr ""
-
-#: internal/ui/appmenu.go:373
-msgid "Copy Window Class"
-msgstr ""
-
-#: internal/ui/appmenu.go:375
+#: internal/ui/appmenu.go:376
+#: internal/ui/appmenu.go:425
 msgid "Fullscreen"
 msgstr ""
 
-#: internal/ui/appmenu.go:376
+#: internal/ui/appmenu.go:377
+#: internal/ui/appmenu.go:426
 msgid "Float"
 msgstr ""
 
-#: internal/ui/appmenu.go:379
-#: internal/ui/appmenu.go:398
+#: internal/ui/appmenu.go:420
+msgid "Quit %s"
+msgstr ""
+
+#: internal/ui/appmenu.go:422
+msgid "Copy Window Title"
+msgstr ""
+
+#: internal/ui/appmenu.go:423
+msgid "Copy Window Class"
+msgstr ""
+
+#: internal/ui/appmenu.go:429
+#: internal/ui/appmenu.go:448
 msgid "About %s"
 msgstr ""
 
-#: internal/ui/appmenu.go:410
+#: internal/ui/appmenu.go:460
 msgid "Process %d"
 msgstr ""
 
@@ -14762,11 +14743,11 @@ msgstr ""
 msgid "The passphrases do not match."
 msgstr ""
 
-#: internal/ui/bar.go:578
+#: internal/ui/bar.go:576
 msgid "Workspace %s"
 msgstr ""
 
-#: internal/ui/bar.go:591
+#: internal/ui/bar.go:589
 msgid "WORKSPACE"
 msgstr ""
 
@@ -14978,7 +14959,7 @@ msgstr ""
 msgid "hyprland.conf sets these again after loading inua.conf, which wins over inua: %s. Move the source line below them."
 msgstr ""
 
-#: internal/ui/launcher.go:562
+#: internal/ui/launcher.go:546
 msgid "inua launcher"
 msgstr ""
 
@@ -18963,80 +18944,51 @@ msgstr ""
 msgid "It could not be decrypted"
 msgstr ""
 
-#: ui/pass.ui:433
-msgid "Rows"
-msgstr ""
-
-#: ui/pass.ui:434
-msgid "A row for each line"
-msgstr ""
-
-#: ui/pass.ui:441
-msgid "The whole entry as text"
-msgstr ""
-
-#: ui/pass.ui:466
-msgid "The first line is the password. The lines after it are kept as written, blank ones too: “key: value” lines are fields, an otpauth:// line a one-time code."
-msgstr ""
-
-#: ui/pass.ui:531
-#: ui/pass.ui:534
-msgid "Generate a password"
-msgstr ""
-
-#: ui/pass.ui:546
-msgid "OTHER LINES"
-msgstr ""
-
-#: ui/pass.ui:574
-msgid "Add a line"
-msgstr ""
-
-#: ui/pass.ui:601
+#: ui/pass.ui:425
 msgid "The first line is the password; lines “key: value” are fields; an otpauth:// line is a one-time code."
 msgstr ""
 
-#: ui/pass.ui:664
+#: ui/pass.ui:482
 msgid "One-time code…"
 msgstr ""
 
-#: ui/pass.ui:780
+#: ui/pass.ui:598
 msgid "category/name"
 msgstr ""
 
-#: ui/pass.ui:862
+#: ui/pass.ui:680
 msgid "Paste the secret the site shows, or its otpauth:// link. Or read its QR code: from the screen, an area of it, or an image."
 msgstr ""
 
-#: ui/pass.ui:872
+#: ui/pass.ui:690
 msgid "JBSW Y3DP EHPK 3PXP, or otpauth://…"
 msgstr ""
 
-#: ui/pass.ui:884
+#: ui/pass.ui:702
 msgid "The Pass windows step aside while the screen is read"
 msgstr ""
 
-#: ui/pass.ui:895
+#: ui/pass.ui:713
 msgid "Scan the screen"
 msgstr ""
 
-#: ui/pass.ui:908
+#: ui/pass.ui:726
 msgid "Drag out the area with the QR code"
 msgstr ""
 
-#: ui/pass.ui:919
+#: ui/pass.ui:737
 msgid "Select an area"
 msgstr ""
 
-#: ui/pass.ui:942
+#: ui/pass.ui:760
 msgid "From an image…"
 msgstr ""
 
-#: ui/pass.ui:957
+#: ui/pass.ui:775
 msgid "Issuer, e.g. GitHub"
 msgstr ""
 
-#: ui/pass.ui:962
+#: ui/pass.ui:780
 msgid "Account, e.g. you@example.org"
 msgstr ""
 

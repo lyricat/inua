@@ -3,9 +3,9 @@ package ui
 import (
 	"context"
 	"log"
+	"path/filepath"
 	"slices"
 	"strconv"
-	"strings"
 	"time"
 
 	"codeberg.org/puregotk/puregotk/v4/gdk"
@@ -28,6 +28,7 @@ import (
 type appMenuState struct {
 	registrar   *appmenu.Registrar
 	a11y        *appmenu.A11y
+	packs       *appmenu.Packs
 	menu        *gtk.Popover // the open one, borrowed from its button
 	menuRequest uint64       // the newest pending submenu read
 }
@@ -40,6 +41,11 @@ type appMenuTop struct {
 }
 
 func (s *shellUI) startAppMenu() {
+	dev := ""
+	if s.opts.UIDir != "" {
+		dev = filepath.Join(filepath.Dir(s.opts.UIDir), "share", "inua", "menus")
+	}
+	s.appmenu.packs = appmenu.NewPacks(dev)
 	conn, err := system.SessionBus()
 	if err != nil {
 		log.Printf("appmenu: %v", err)
@@ -64,48 +70,46 @@ func (s *shellUI) syncAppMenus() {
 }
 
 // syncAppMenu gives a bar the menu of the application its monitor speaks
-// for (shell.BarWindow), and none when that application has no menu. It
-// runs whenever the focus, the monitors or the registrations change; a
-// bar on another monitor keeps its menu while the focus is elsewhere.
+// for (shell.BarWindow). A menu the application published is used, unless
+// a pack replaces it; otherwise the accessibility tree, then a menu pack
+// or the generic window menu. It runs whenever the focus, the monitors,
+// the registrations or the pack files change; a bar on another monitor
+// keeps its menu while the focus is elsewhere.
 func (s *shellUI) syncAppMenu(b *bar) {
 	if s.appmenu.registrar == nil {
 		return
 	}
 	var reg appmenu.Registration
 	pid := 0
+	var pack appmenu.Pack
+	matched := false
 	if w, ok := shell.BarWindow(s.snap, b.connector()); ok {
 		pid = w.PID
-		reg, _ = s.appmenu.registrar.ForPID(pid)
-		if reg == (appmenu.Registration{}) {
-			reg, _ = s.appmenu.registrar.Native(pid)
+		pack, matched = s.menuPack(w)
+		// A pack that replaces the application's menu does not ask it.
+		if !matched || pack.When != appmenu.PackReplace {
+			reg, _ = s.appmenu.registrar.ForPID(pid)
+			if reg == (appmenu.Registration{}) {
+				reg, _ = s.appmenu.registrar.Native(pid)
+			}
+			if reg == (appmenu.Registration{}) {
+				reg, _ = s.appmenu.registrar.Firefox(pid)
+			}
 		}
-		if reg == (appmenu.Registration{}) {
-			reg, _ = s.appmenu.registrar.Firefox(pid)
-		}
-
 	}
-	if b.appMenuReg == reg && b.appMenuPID == pid {
+	gen := s.appmenu.packs.Generation()
+	if b.appMenuReg == reg && b.appMenuPID == pid && b.appMenuGen == gen {
 		return
 	}
 	s.clearAppMenu(b)
-	b.appMenuReg, b.appMenuPID = reg, pid
+	b.appMenuReg, b.appMenuPID, b.appMenuGen = reg, pid, gen
 	switch {
 	case reg != (appmenu.Registration{}):
 		s.loadAppMenu(b, true)
+	case pid > 0 && matched && (pack.When == appmenu.PackReplace || pack.SkipA11y):
+		s.renderAppMenu(b, s.entriesFromPack(pid, pack))
 	case pid > 0:
 		s.loadA11yMenu(b, pid)
-		go func() {
-			reg, ok := s.appmenu.registrar.Chromium(pid)
-			if !ok {
-				return
-			}
-			gtkx.Post(func() {
-				if b.appMenuPID == pid && b.appMenuReg == (appmenu.Registration{}) {
-					b.appMenuReg = reg
-					s.loadAppMenu(b, true)
-				}
-			})
-		}()
 	}
 }
 
@@ -117,7 +121,7 @@ func (s *shellUI) clearAppMenu(b *bar) {
 	}
 	b.appMenuReg = appmenu.Registration{}
 	b.appMenuPID = 0
-	b.appMenuRetried = false
+	b.appMenuGen = 0
 	b.appMenuTop = nil
 	b.appMenuEntries = nil
 	gtkx.Clear(&b.appMenu)
@@ -131,6 +135,12 @@ func (s *shellUI) reloadAppMenu(reg appmenu.Registration, pid int) {
 		if reg != (appmenu.Registration{}) && b.appMenuReg == reg {
 			s.loadAppMenu(b, false)
 		} else if reg == (appmenu.Registration{}) && pid > 0 && b.appMenuPID == pid && b.appMenuReg == (appmenu.Registration{}) {
+			if w, ok := s.appWindowOf(pid); ok {
+				if pack, ok := s.menuPack(w); ok && (pack.When == appmenu.PackReplace || pack.SkipA11y) {
+					s.renderAppMenu(b, s.entriesFromPack(pid, pack))
+					continue
+				}
+			}
 			s.loadA11yMenu(b, pid)
 		}
 	}
@@ -185,6 +195,7 @@ func (s *shellUI) loadA11yMenu(b *bar, pid int) {
 		s.appmenu.a11y = appmenu.NewA11y()
 	}
 	a11y := s.appmenu.a11y
+	gen := b.appMenuGen
 	go func() {
 		var entries []appmenu.Entry
 		var err error
@@ -199,7 +210,7 @@ func (s *shellUI) loadA11yMenu(b *bar, pid int) {
 			time.Sleep(250 * time.Millisecond)
 		}
 		gtkx.Post(func() {
-			if b.appMenuPID != pid || b.appMenuReg != (appmenu.Registration{}) {
+			if b.appMenuPID != pid || b.appMenuReg != (appmenu.Registration{}) || b.appMenuGen != gen {
 				return
 			}
 			if err != nil {
@@ -209,15 +220,15 @@ func (s *shellUI) loadA11yMenu(b *bar, pid int) {
 			// items; pressing a section to make it build them ends Firefox.
 			// It gets the generic menu instead, and its sections are never
 			// pressed.
-			if !appmenu.FillableMenu(entries) || s.appMenuUnreadable(pid) {
-				entries = s.genericAppSections(pid)
-				if len(entries) > 0 && !s.appMenuUnreadable(pid) && !b.appMenuRetried {
+			if !appmenu.FillableMenu(entries) || s.menuSkipsA11y(pid) {
+				entries = s.fallbackEntries(pid)
+				if len(entries) > 0 && !s.menuSkipsA11y(pid) && !b.appMenuRetried {
 					// The tree may still be building: look once more, and
 					// replace the generic menu if the application's shows up.
 					b.appMenuRetried = true
 					time.AfterFunc(1500*time.Millisecond, func() {
 						gtkx.Post(func() {
-							if b.appMenuPID == pid && b.appMenuReg == (appmenu.Registration{}) {
+							if b.appMenuPID == pid && b.appMenuReg == (appmenu.Registration{}) && b.appMenuGen == gen {
 								s.loadA11yMenu(b, pid)
 							}
 						})
@@ -304,39 +315,76 @@ func (s *shellUI) systemMenuItems() []uikit.Item {
 	)
 }
 
-// appMenuUnreadable reports whether pid's menu bar cannot be read: VS Code
-// draws its menu bar itself and exposes only an overflow item on the
-// accessibility bus.
-func (s *shellUI) appMenuUnreadable(pid int) bool {
+// menuPack is the declarative menu for a window, from the packs in
+// docs/appmenus.md.
+func (s *shellUI) menuPack(w compositor.Window) (appmenu.Pack, bool) {
+	if s.appmenu.packs == nil {
+		return appmenu.Pack{}, false
+	}
+	desktop := ""
+	if e := s.dockState.apps.ForClass(w.AppID); e != nil {
+		desktop = e.ID
+	}
+	return s.appmenu.packs.Match(w.AppID, desktop)
+}
+
+// menuSkipsA11y reports whether the window's pack says not to read its
+// accessibility menu.
+func (s *shellUI) menuSkipsA11y(pid int) bool {
 	w, ok := s.appWindowOf(pid)
 	if !ok {
 		return false
 	}
-	id := strings.ToLower(w.AppID)
-	if id == "code" || id == "vscode" {
-		return true
-	}
-	if e := s.dockState.apps.ForClass(w.AppID); e != nil {
-		id = strings.ToLower(e.ID)
-		return id == "code" || strings.HasSuffix(id, ".code")
-	}
-	return false
+	pack, ok := s.menuPack(w)
+	return ok && pack.SkipA11y
 }
 
 // appMenuNeverPress reports whether an entry's accessibility action must
-// never be pressed: pressing a Firefox section ends Firefox.
+// never be pressed. The pack says so; Firefox's sections end the process.
 func (s *shellUI) appMenuNeverPress(pid int) bool {
 	w, ok := s.appWindowOf(pid)
 	if !ok {
 		return false
 	}
-	if strings.Contains(strings.ToLower(w.AppID), "firefox") {
-		return true
+	pack, ok := s.menuPack(w)
+	return ok && pack.NeverPress
+}
+
+// fallbackEntries is the menu used when an application publishes none:
+// its pack, or the generic sections when it has no pack (or the pack
+// only carries flags).
+func (s *shellUI) fallbackEntries(pid int) []appmenu.Entry {
+	if w, ok := s.appWindowOf(pid); ok {
+		if pack, ok := s.menuPack(w); ok {
+			return s.entriesFromPack(pid, pack)
+		}
 	}
-	if e := s.dockState.apps.ForClass(w.AppID); e != nil {
-		return strings.Contains(strings.ToLower(e.ID), "firefox")
+	return s.genericAppSections(pid)
+}
+
+// entriesFromPack builds a pack's menu for the window pid owns.
+func (s *shellUI) entriesFromPack(pid int, pack appmenu.Pack) []appmenu.Entry {
+	w, ok := s.appWindowOf(pid)
+	if !ok {
+		return nil
 	}
-	return false
+	entries := pack.Entries(w.ID, pid, s.genericAppSections(pid), s.windowMenuItems(w, pid))
+	if len(entries) == 0 {
+		return s.genericAppSections(pid)
+	}
+	return entries
+}
+
+// windowMenuItems is the include "window" snippet.
+func (s *shellUI) windowMenuItems(w compositor.Window, pid int) []appmenu.Entry {
+	action := func(label, kind string) appmenu.Entry {
+		return appmenu.Entry{Label: label, Enabled: true, Action: appmenu.Action{Kind: kind, Bus: w.ID, Index: int32(pid)}}
+	}
+	return []appmenu.Entry{
+		action(i18n.T("Fullscreen"), appmenu.ActionFullscreen),
+		action(i18n.T("Float"), appmenu.ActionFloat),
+		action(i18n.T("Center Window"), appmenu.ActionCenter),
+	}
 }
 
 // appWindowOf is the window of process pid the bar names.
@@ -474,14 +522,8 @@ func (s *shellUI) bindAppMenuHandlers() {
 		if err != nil {
 			return
 		}
-		parent := btn.GetParent()
-		if parent == nil {
-			return
-		}
 		for _, b := range s.bars {
-			// The buttons of a bar's menu are its box's children; another
-			// bar's menu may have a button with the same index.
-			if b.appMenu.GoPointer() != parent.GoPointer() || i < 0 || i >= len(b.appMenuEntries) {
+			if i < 0 || i >= len(b.appMenuEntries) {
 				continue
 			}
 			entry := b.appMenuEntries[i]
@@ -543,12 +585,10 @@ func (s *shellUI) showAppMenu(b *bar, i int, w *gtk.Widget) {
 					entries = withDbusmenuActions(entries, reg)
 				}
 			}
-		} else if s.appmenu.a11y != nil {
-			if len(entry.Children) > 0 {
-				entries = entry.Children
-			} else if !s.appMenuNeverPress(pid) {
-				entries, err = s.appmenu.a11y.FillSection(entry)
-			}
+		} else if len(entry.Children) > 0 {
+			entries = entry.Children
+		} else if s.appmenu.a11y != nil && !s.appMenuNeverPress(pid) {
+			entries, err = s.appmenu.a11y.FillSection(entry)
 		}
 		gtkx.Post(func() {
 			defer w.Unref()
@@ -680,6 +720,15 @@ func (s *shellUI) activateEntry(connector string, reg appmenu.Registration, pid 
 					}
 				})
 			}
+		case appmenu.ActionKeys:
+			k, ok := s.comp.(compositor.Keystroker)
+			if !ok || !s.caps.Has(compositor.CapKeystrokes) {
+				log.Printf("appmenu: cannot send %s %s to the window", e.Action.Mods, e.Action.Key)
+				break
+			}
+			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+			err = k.SendKey(ctx, e.Action.Bus, e.Action.Mods, e.Action.Key)
+			cancel()
 		case appmenu.ActionA11y:
 			if s.appmenu.a11y == nil {
 				return

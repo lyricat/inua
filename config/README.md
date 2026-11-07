@@ -312,11 +312,11 @@ On the Bar page, "Show the bar" turns the bar off
 (`bar.enable = false`); Super+Space, Super+A and Super+N still open the
 launcher, control center and notifications.
 
-The bar's application menu uses the focused window's published menu when
-available. Add a per-application TOML pack under
-`~/.config/inua/menus/` when an application has no usable menu; the
-[application menu guide](../docs/appmenus.md) covers the format, matching,
-shortcuts and troubleshooting.
+The bar's application menu is the one the focused window publishes, when
+it publishes one. A window that does not can be given a menu in
+`~/.config/inua/menus/`, one TOML file per application, without
+rebuilding the shell. The format, the shipped files and the actions a
+file can call are in [docs/appmenus.md](../docs/appmenus.md).
 
 ## Notifications
 

@@ -65,6 +65,7 @@ type bar struct {
 
 	appMenuReg     appmenu.Registration // whose menu it shows, if any
 	appMenuPID     int                  // the process whose accessibility menu it shows, if any
+	appMenuGen     uint64               // the menu-pack reading it was drawn from
 	appMenuEntries []appmenu.Entry      // the first level, as last read
 	appMenuRetried bool                 // the accessibility menu was read once more after coming up empty
 	appMenuTop     []appMenuTop         // the buttons, as last drawn
