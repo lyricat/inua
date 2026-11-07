@@ -226,7 +226,16 @@ func (s *shellUI) bindAppMenuHandlers() {
 		if err != nil {
 			return
 		}
+		parent := btn.GetParent()
+		if parent == nil {
+			return
+		}
 		for _, b := range s.bars {
+			// The buttons of a bar's menu are its box's children; another
+			// bar's menu may have a button with the same id.
+			if b.appMenu.GoPointer() != parent.GoPointer() {
+				continue
+			}
 			i := slices.IndexFunc(b.appMenuTop, func(t appMenuTop) bool { return int(t.id) == id })
 			if i < 0 || b.appMenuReg == (appmenu.Registration{}) {
 				continue
