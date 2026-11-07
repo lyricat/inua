@@ -8,6 +8,7 @@ import (
 	"sync"
 
 	"github.com/godbus/dbus/v5"
+	"github.com/lyricat/inua/internal/dbusexport"
 )
 
 const (
@@ -67,10 +68,10 @@ func (s *Server) Publish(nodes []Node) error {
 	add(0, nodes)
 	s.revision++
 	s.mu.Unlock()
-	if err := s.conn.Export(s, Path, Interface); err != nil {
+	if err := dbusexport.Export(s.conn, s, Path, Interface); err != nil {
 		return fmt.Errorf("dbusmenu: export: %w", err)
 	}
-	if err := s.conn.Export(s, Path, "org.freedesktop.DBus.Properties"); err != nil {
+	if err := dbusexport.Export(s.conn, s, Path, "org.freedesktop.DBus.Properties"); err != nil {
 		return fmt.Errorf("dbusmenu: export properties: %w", err)
 	}
 	return nil
@@ -219,8 +220,8 @@ func (s *Server) OwnName(name string) error {
 
 // Close unexports the menu and closes its D-Bus connection.
 func (s *Server) Close(name string) {
-	_ = s.conn.Export(nil, Path, Interface)
-	_ = s.conn.Export(nil, Path, "org.freedesktop.DBus.Properties")
+	_ = dbusexport.Export(s.conn, nil, Path, Interface)
+	_ = dbusexport.Export(s.conn, nil, Path, "org.freedesktop.DBus.Properties")
 	if name != "" {
 		_, _ = s.conn.ReleaseName(name)
 	}
