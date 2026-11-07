@@ -14850,7 +14850,7 @@ msgstr "hyprland.lua は inua.lua を読み込んだ後にこれらを再設定�
 msgid "hyprland.conf sets these again after loading inua.conf, which wins over inua: %s. Move the source line below them."
 msgstr "hyprland.conf は、inua.conf をロードした後にこれらを再度設定します。これは、inua: %s よりも優先されます。ソース行をそれらの下に移動します。"
 
-#: internal/ui/launcher.go:543
+#: internal/ui/launcher.go:559
 msgid "inua launcher"
 msgstr "イヌアランチャー"
 

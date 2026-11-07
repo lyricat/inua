@@ -14931,7 +14931,7 @@ msgstr "hyprland.lua vuelve a definir esto después de cargar inua.lua, y se imp
 msgid "hyprland.conf sets these again after loading inua.conf, which wins over inua: %s. Move the source line below them."
 msgstr "hyprland.conf los establece nuevamente después de cargar inua.conf, que gana a inua: %s. Mueva la línea de origen debajo de ellos."
 
-#: internal/ui/launcher.go:543
+#: internal/ui/launcher.go:559
 msgid "inua launcher"
 msgstr "lanzador inua"
 
