@@ -75,6 +75,17 @@ screen through Hyprland's screencopy. Left to choose, it asks the desktop
 portal, whose picker waits for a click; on a computer nobody is at,
 Sunshine then waits 25 seconds at every start, or for good.
 
+It also sets `adapter_name` to the first real GPU's render node
+(`/dev/dri/renderD129`), when there is one besides an emulated screen.
+Sunshine allocates the buffers of its Wayland capture on that node, and a
+virtual machine's screen cannot allocate renderable ones: on a
+passed-through GPU's computer, a guest whose screen is the virtual machine's
+own (its render node comes from `virtio-pci`) fails to allocate on every
+frame, leaks a descriptor each time, and shows its viewer a black screen
+until Sunshine cannot open anything at all — while the GPU passed through to
+it sits idle, and its VA-API encoders go unused. The H.264 and HEVC
+encoders then come from that GPU too, instead of the CPU's `libx264`.
+
 A device pairs once: its user picks this computer, their screen shows a
 PIN, and the device appears here under *Waiting to pair*, where the PIN is
 typed. Paired devices are listed, each with *Unpair*, which takes effect at

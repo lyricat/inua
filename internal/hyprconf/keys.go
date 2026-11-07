@@ -125,6 +125,11 @@ func dictationKeys(c config.Config) string {
 // Modifier order in key strings ("SUPER+CTRL+ALT+SHIFT+key").
 var modOrder = []string{"SUPER", "CTRL", "ALT", "SHIFT"}
 
+// modifierOnlyKey reports a shortcut with no non-modifier key.
+func modifierOnlyKey(key string) bool {
+	return slices.ContainsFunc(modOrder, func(mod string) bool { return strings.EqualFold(key, mod) })
+}
+
 // Keys builds a key string from modifiers and an XKB key name. A single
 // letter is upper case, as Hyprland configs write them.
 func Keys(super, ctrl, alt, shift bool, key string) string {
@@ -229,7 +234,7 @@ func renderShortcuts(b *strings.Builder, c config.Config) {
 	var unbind []string
 	for _, sc := range c.Shortcuts {
 		for _, k := range append(slices.Clone(sc.Replaces), sc.Keys) {
-			if k != "" && !slices.ContainsFunc(unbind, func(u string) bool { return SameKeys(u, k) }) {
+			if k != "" && !modifierOnlyKey(k) && !slices.ContainsFunc(unbind, func(u string) bool { return SameKeys(u, k) }) {
 				unbind = append(unbind, k)
 			}
 		}
@@ -244,6 +249,16 @@ func renderShortcuts(b *strings.Builder, c config.Config) {
 	for _, sc := range c.Shortcuts {
 		cmd := ShortcutCommand(c, sc)
 		if sc.Keys == "" || cmd == "" {
+			continue
+		}
+		if modifierOnlyKey(sc.Keys) {
+			// Old-style configs use the Super key's release; other bare
+			// modifiers have no meaningful binding.
+			if sc.Action == "overview" && strings.EqualFold(sc.Keys, "SUPER") {
+				for _, key := range []string{"SUPER_L", "SUPER_R"} {
+					fmt.Fprintf(b, "bindr = SUPER, %s, exec, %s\n", key, strings.ReplaceAll(cmd, "#", "##"))
+				}
+			}
 			continue
 		}
 		mods, key := splitKeys(sc.Keys)
@@ -309,7 +324,7 @@ func renderShortcutsLua(b *strings.Builder, c config.Config) {
 	var unbind []string
 	for _, sc := range c.Shortcuts {
 		for _, k := range append(slices.Clone(sc.Replaces), sc.Keys) {
-			if k != "" && !slices.ContainsFunc(unbind, func(u string) bool { return SameKeys(u, k) }) {
+			if k != "" && !modifierOnlyKey(k) && !slices.ContainsFunc(unbind, func(u string) bool { return SameKeys(u, k) }) {
 				unbind = append(unbind, k)
 			}
 		}
@@ -324,7 +339,9 @@ func renderShortcutsLua(b *strings.Builder, c config.Config) {
 	}
 	for _, sc := range c.Shortcuts {
 		cmd := ShortcutCommand(c, sc)
-		if sc.Keys == "" || cmd == "" {
+		// Hyprland's Lua bind takes a key; overview_keys.go handles
+		// standalone Super from the compositor's raw keyboard events.
+		if sc.Keys == "" || cmd == "" || modifierOnlyKey(sc.Keys) {
 			continue
 		}
 		fmt.Fprintf(b, "hl.bind(%s, hl.dsp.exec_cmd(%s), { description = %s })\n",

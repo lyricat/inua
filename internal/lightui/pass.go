@@ -99,7 +99,8 @@ type passApp struct {
 	dlgPath                     gtk.Entry
 	dlgPreview                  gtk.Box
 	dlgOK                       gtk.Button
-	otpDlg                      passOTP // pass_otp.go
+	otpDlg                      passOTP  // pass_otp.go
+	ed                          passEdit // pass_edit.go
 	otpEntry, editOTP           gtk.Button
 
 	onButton       func(gtk.Button)
@@ -147,6 +148,9 @@ func (a *passApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 		ui.Get(id, w)
 	}
 	for id, w := range a.otpWidgets() {
+		ui.Get(id, w)
+	}
+	for id, w := range a.editWidgets() {
 		ui.Get(id, w)
 	}
 	ui.Close()
@@ -270,6 +274,7 @@ func (a *passApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	keys.ConnectKeyPressed(&a.onDlgKey)
 	a.dlg.AddController(&keys.EventController)
 	a.bindOTP(&otpCancel)
+	a.bindEdit()
 	// The rows to come while an entry decrypts: shimmering placeholders.
 	for _, w := range []int{120, 180, 90} {
 		row := gtk.NewBox(gtk.OrientationVerticalValue, 6)
@@ -620,7 +625,7 @@ func (a *passApp) closeEntry() {
 	gtkx.Clear(&a.keyringInfo)
 	a.keyringInfo.SetVisible(false)
 	a.keyringItem, a.trustedHere = "", nil
-	a.editor.GetBuffer().SetText("", 0)
+	a.clearEditor()
 	a.otpEntry.SetSensitive(false) // until it is decrypted
 }
 
@@ -791,7 +796,7 @@ func (a *passApp) tickOTP() {
 // --- buttons ---
 
 func (a *passApp) button(name string) {
-	if a.otpButton(name) {
+	if a.otpButton(name) || a.editButton(name) {
 		return
 	}
 	switch kind, arg, _ := strings.Cut(name, ":"); kind {
@@ -859,59 +864,6 @@ func (a *passApp) button(name string) {
 
 // copySecret copies a value as a secret (gtkx.SecretClip).
 func (a *passApp) copySecret(value string) { a.clip.Copy(value) }
-
-// --- the editor ---
-
-func (a *passApp) openEditor(name, content string) {
-	a.editTitle.SetText(name)
-	a.editor.GetBuffer().SetText(content, -1)
-	a.editError.SetVisible(false)
-	a.detail.SetVisibleChildName("edit")
-	a.editor.GrabFocus()
-}
-
-func (a *passApp) closeEditor() {
-	a.editor.GetBuffer().SetText("", 0)
-	if a.editNew {
-		a.editNew = false
-		a.showEmpty(i18n.T("Choose an entry."))
-		return
-	}
-	a.detail.SetVisibleChildName("entry")
-}
-
-func (a *passApp) saveEditor() {
-	if a.busy {
-		return
-	}
-	buf := a.editor.GetBuffer()
-	var start, end gtk.TextIter
-	buf.GetBounds(&start, &end)
-	content := buf.GetText(&start, &end, true)
-	if !strings.HasSuffix(content, "\n") {
-		content += "\n"
-	}
-	name := a.selected
-	if a.editNew {
-		name = a.newName
-	}
-	a.busy = true
-	s := a.store
-	go func() {
-		err := s.Insert(name, content)
-		gtkx.Post(func() {
-			a.busy = false
-			if err != nil {
-				a.editError.SetText(err.Error())
-				a.editError.SetVisible(true)
-				return
-			}
-			a.editNew = false
-			a.editor.GetBuffer().SetText("", 0)
-			a.reload(name)
-		})
-	}()
-}
 
 // --- the dialog ---
 
