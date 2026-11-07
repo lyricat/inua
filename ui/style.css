@@ -13,6 +13,7 @@
 
 window.bar, window.control, window.agenda, window.banners, window.osd, window.center, window.dock-window, window.shot-drawer-win, window.drawer-overlay, window.clipboard-panel { background: transparent; }
 window.bar.transparent-empty.occupied { background: @glass; }
+window.bar.transparent-empty.empty .island { background: transparent; }
 window.overview, window.widgets, window.focus-ring { background: transparent; }
 /* The launcher's catcher of clicks outside it: a surface wholly clear
    gets no pointer from Hyprland, so it is all but clear. */
