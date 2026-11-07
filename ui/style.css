@@ -2650,6 +2650,16 @@ window.pass .pass-otp {
   letter-spacing: 0.08em;
   color: @t0;
 }
+/* The editor's rows: the password's, then each line after it, in the
+   values' monospace; or the whole text (.pass-editor). */
+window.pass .pass-edit-row { padding-top: 4px; }
+window.pass entry.pass-edit-line {
+  font-family: "Geist Mono", "IBM Plex Mono", monospace;
+  font-size: 13px;
+}
+window.pass .pass-edit-lines-title { margin: 16px 0 8px; }
+window.pass .pass-edit-line-row { margin-bottom: 6px; }
+window.pass .pass-edit-add { margin-top: 4px; }
 window.pass .pass-editor { border: 1px solid @line; border-radius: 2px; }
 window.pass .pass-text, window.pass .pass-text text { background: alpha(@surface, 0.6); color: @t0; font-size: 13px; }
 window.pass .pass-error { color: @danger; }

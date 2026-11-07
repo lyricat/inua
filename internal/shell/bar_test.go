@@ -77,7 +77,7 @@ func TestBarWindow(t *testing.T) {
 	// monitor's visible workspace.
 	snap.FocusedWindow = "missing"
 	if got, ok := BarWindow(snap, "eDP-1"); !ok || got.ID != "0x1" {
-		t.Errorf("missing focused window: %+v, %v", got, ok)
+		t.Errorf("missing focused window: %+v, %v; want the monitor's last window", got, ok)
 	}
 	snap.FocusedWindow = "0x1"
 	snap.Outputs[1].ActiveWorkspace = "missing"
