@@ -82,9 +82,7 @@ func (s *shellUI) syncAppMenu(b *bar) {
 		if reg == (appmenu.Registration{}) {
 			reg, _ = s.appmenu.registrar.Firefox(pid)
 		}
-		if reg == (appmenu.Registration{}) {
-			reg, _ = s.appmenu.registrar.Chromium(pid)
-		}
+
 	}
 	if b.appMenuReg == reg && b.appMenuPID == pid {
 		return
@@ -96,6 +94,18 @@ func (s *shellUI) syncAppMenu(b *bar) {
 		s.loadAppMenu(b, true)
 	case pid > 0:
 		s.loadA11yMenu(b, pid)
+		go func() {
+			reg, ok := s.appmenu.registrar.Chromium(pid)
+			if !ok {
+				return
+			}
+			gtkx.Post(func() {
+				if b.appMenuPID == pid && b.appMenuReg == (appmenu.Registration{}) {
+					b.appMenuReg = reg
+					s.loadAppMenu(b, true)
+				}
+			})
+		}()
 	}
 }
 
