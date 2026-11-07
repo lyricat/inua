@@ -18,6 +18,7 @@ into a small PR after its base lands. Commits are from this fork's `master`.
 | #81 | `pr/chromium-menu` | read Chromium's own dbusmenu over XWayland |
 | #82 | `pr/monitor-focus-outline` | outline each monitor's last focused window |
 | #83 | `pr/super-f-maximize` | Super+F maximizes instead of fullscreen |
+| #84 | `pr/appmenu-button-bar` | open the menu of the bar whose button was clicked |
 
 ## Not split yet
 

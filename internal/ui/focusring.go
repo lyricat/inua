@@ -59,7 +59,7 @@ func newFocusRing(app *gtk.Application, mon *gdk.Monitor) *focusRing {
 				return
 			}
 			var outline gsk.RoundedRect
-			outline.InitFromRect(&r.rect, 6)
+			outline.InitFromRect(&r.rect, 0)
 			colors := [4]gdk.RGBA{r.color, r.color, r.color, r.color}
 			snap.AppendBorder(&outline, [4]float32{2, 2, 2, 2}, colors)
 		},
