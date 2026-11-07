@@ -231,7 +231,6 @@ button.plain.tight, button.image-button.tight { min-width: 20px; min-height: 20p
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 /* The clock is a button that opens the calendar panel, styled with the
    status and bell buttons below. */
