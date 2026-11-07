@@ -31,3 +31,16 @@ notes:
 - Codex reviewed all nine changed files in origin/master...HEAD. Branch merges cleanly with origin/master. No tracked files changed.
 - Validation: make test with throwaway HOME exited 2; Python 18 tests passed, go vet passed, Go race tests passed for 111 packages and failed for one. git diff --check passed.
 - Non-pinned installs: none. UI was not visually or interactively checked; interaction findings were verified through code paths. Author's manual test claims remain unverified.
+
+## factory · review · 2026-11-07 16:12
+head: 3fdac2020bf02efac6c36c4ffcd26a7fa82a9acb
+verdict: fix
+fix:
+- [P1, CI gate] po/inua.pot:14932 and six locale catalogs: latest fix moved the launcher message from line 559 to 561 without regenerating catalogs. Running make i18n in an isolated copy produces differences in all seven files; CI's generated-file check fails. Regenerate and commit catalogs. This is a CI blocker, not a runtime defect.
+notes:
+- Synced the factory branch by fast-forward to upstream PR #80 head 3fdac202; no code edits made in this review.
+- Codex reviewed all nine files in origin/master...HEAD against master 8db50f34652a6422184acf993cf60e15a80a80ab. No merge conflicts.
+- Both prior P2 findings fixed: selection highlight refresh and GetWidget reference release. Prior XDG_RUNTIME_DIR test-gate failure resolved using isolated HOME and runtime directory (mode 700).
+- Full make test passed: 18 Python tests, go vet, 112 Go race-tested packages passed (uncached), 34 packages without tests. hyprconf passed. git diff --check and gofmt checks passed.
+- make i18n succeeded in an isolated copy; comparison against committed catalogs returned 1 with source-line differences 559 -> 561. Worktree remained clean.
+- No installs. UI not visually or interactively tested; focus, event ordering and animations remain unverified at runtime. No merge to master or tag performed.
