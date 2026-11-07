@@ -106,3 +106,19 @@ Validation: targeted race tests passed. Full make test passed both in the coder 
 Installs: none. No recovery was required. UI was not visually checked or exercised in a nested/live session. Native validity now performs the same synchronous D-Bus lookup as discovery, so a slow bus can delay an action; this was not latency-tested.
 The five existing optional P2 notes remain outside this round. No upstream PR commits incorporated; no merge into master.
 Moved new/ → review/ for another review.
+
+
+## factory · review · 2026-11-07 12:22
+head: 986428f0bae51f347e8df40fbc8cf7377e7cf7aa
+verdict: pass
+notes:
+- [P2] internal/appui/menu.go:93: Per-action permanent callbacks exhaust purego slots; reuse a dispatcher and clean up closed-window mappings. Example: releasing each menu/action group still panics at invocation 2001; Files adds 25 per window or chooser.
+- [P2] internal/dbusmenu/dbusmenu.go:116: GetGroupProperties emits aav rather than a(ia{sv}); return structured ID/property rows. Example: private-bus GetGroupProperties([1], []) fails standard property-row decoding.
+- [P2] internal/lightui/tailscale.go:225: This device targets nonexistent this-device; use device. Example: activation from Devices cannot select the device page defined in both layouts.
+- [P2] internal/lightui/calculator.go:219: Copy result copies the focused input; copy the result explicitly. Example: focused input 1+2 with preview 3 copies 1+2 or selected input text.
+- [P2] internal/filesui/menubar.go:89: Menu declarations lack translation extraction markers; use i18n.M and update catalogs. Example: Keyboard Shortcuts and Find a stock remain absent after extraction and fall back to English in Chinese locale.
+
+Codex reviewed all 30 changed files in origin/master...HEAD against the full request and plans. Both historical P1 findings are fixed; no P0/P1 found. No conflict with origin/master, no source edits or commits, and no upstream PR changes incorporated. The coder could not locate its review-code skill; concrete-example standards were provided in its task.
+Validation: make test passed with isolated throwaway HOME/runtime (18 Python tests, go vet, 113 Go packages with race tests). Targeted lifecycle, signal-security and export tests passed. Temporary-copy make i18n matched committed catalogs. Manager verified unchanged head and clean worktree.
+Installs: none. No recovery was required. D-Bus process identity, signal sender and action forwarding boundaries were checked with no additional confirmed security findings. Slow-bus latency and full third-party client compatibility were not tested. UI was not visually checked or exercised on the desktop; page and copy findings were verified against source/layouts.
+Moved review/ → ready/ under the factory no-P0/P1 threshold. Five P2 notes remain for owner consideration; not merged into master.
