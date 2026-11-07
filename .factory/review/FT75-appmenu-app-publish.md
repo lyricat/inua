@@ -71,3 +71,21 @@ Validation: targeted race tests passed; full make test passed in the coder run a
 Installs: none. No recovery was required. UI was not visually checked or exercised on the live desktop.
 Remaining P2 notes: callback-slot exhaustion, GetGroupProperties wire signature, Tailscale page target, Calculator Copy result, and translation extraction. These remain for review/owner consideration; this round fixes only the mandatory P1.
 Moved new/ → review/ for another review; not merged into master.
+
+
+## factory · review · 2026-11-07 10:57
+head: ef73d16e49f9cba31cfefe15c774ebc0ea7dcc71
+verdict: fix
+fix:
+- [P1] internal/ui/appmenu.go:75: Native discovery is not accepted by appMenuCurrent, which still checks only ForPID; use consistent native fallback in discovery and validity checks. Example: a private-bus native publisher is discovered and its File menu read, but appMenuCurrent returns false, so opening and activation return early. The feature's native menus cannot be used.
+notes:
+- [P2] internal/appui/menu.go:93: New per-action callback registrations exhaust permanent purego slots; reuse a dispatcher and remove closed-window mappings. Example: calling appendAction and releasing menus/actions still panics on invocation 2001; Files adds 25 per window or chooser.
+- [P2] internal/dbusmenu/dbusmenu.go:116: GetGroupProperties returns aav instead of a(ia{sv}); return structured ID/property rows. Example: private-bus GetGroupProperties([1], []) fails decoding into standard rows.
+- [P2] internal/lightui/tailscale.go:225: This device targets this-device while the layout names it device; use device. Example: activating it from Devices does not switch to the device page.
+- [P2] internal/lightui/calculator.go:219: Copy result copies the active input; explicitly copy the result. Example: active input 1+2 with preview 3 copies 1+2 or its selected substring.
+- [P2] internal/filesui/menubar.go:89: Mark menu declaration labels with i18n.M and regenerate catalogs. Example: Keyboard Shortcuts and Find a stock are absent from POT and remain English in Chinese locale.
+
+Codex reviewed all 28 changed files in origin/master...HEAD. The previous bare-export P1 is fixed; five P2 notes remain independently verified. No merge conflict with origin/master. Review source files were unchanged and no code commits made.
+Validation: make test passed in an isolated throwaway HOME/runtime after correcting temporary-path, device and AppArmor isolation configuration: 18 Python tests, go vet, and race tests across 113 Go packages passed. Export audit and publication lifecycle tests passed. Private-bus and callback probes confirmed the findings; diff whitespace and Go formatting checks passed.
+Installs: none. UI was not visually checked or exercised on the live desktop. The coder could not locate its review-code skill; concrete-example review standards were supplied in its task. D-Bus boundaries were inspected with no additional confirmed security finding. Source PR #73 has separate upstream changes, which were not incorporated or reviewed here.
+Item stays in review/ for the owner to decide; add a note and move to new/ for fixes. No recovery was needed.
