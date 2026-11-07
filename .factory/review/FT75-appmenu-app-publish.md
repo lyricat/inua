@@ -1,7 +1,7 @@
 ---
 source: pr #73
 branch: factory/FT75-appmenu-app-publish
-round: 1
+round: 2
 ---
 # feat(appmenu): inua applications publish their menus for the bar
 
@@ -57,3 +57,17 @@ Installs: none. UI was not visually checked or exercised on the live desktop; UI
 
 ## lyric · 2026-11-07 10:11
 Move ft75 back to new
+
+## factory · plan · 2026-11-07 10:37
+Fix round 2.
+Behaviour: publish menu and properties with per-connection serialized exports; close removes both through the same helper before releasing the name and closing the connection. Preserve empty-menu publication, replacement and error propagation.
+Scope: the mandatory P1 export fix and lifecycle regression coverage; optional P2 notes remain outside this round.
+Decisions: the owner's return-to-new note adds no scope; follow the latest mandatory fix list, preserving the existing feature and its multi-window limit.
+Checking: private-bus lifecycle tests, TestNoBareExports, targeted race tests, full make test in a throwaway HOME/runtime, and make i18n before the Go commit.
+
+## factory · 2026-11-07 10:37
+Built fix round 2 with Claude Code; pushed ef73d16e on factory/FT75-appmenu-app-publish. Replaced all four bare Conn.Export calls with dbusexport.Export. Added TestPublishAgainAndClose for replacement, empty publication and name release on close.
+Validation: targeted race tests passed; full make test passed in the coder run and independently in manager verification with isolated HOME/runtime (Python session tests, go vet, Go race tests). make i18n left catalogs unchanged; no Blueprint changes, so make generate was not needed. Commit and protected-path checks passed.
+Installs: none. No recovery was required. UI was not visually checked or exercised on the live desktop.
+Remaining P2 notes: callback-slot exhaustion, GetGroupProperties wire signature, Tailscale page target, Calculator Copy result, and translation extraction. These remain for review/owner consideration; this round fixes only the mandatory P1.
+Moved new/ → review/ for another review; not merged into master.
