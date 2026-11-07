@@ -300,6 +300,7 @@ func (a *passApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	a.showStores()
 	a.useStore(pass.Current(a.prefs, a.stores))
 	glib.TimeoutAdd(1000, &a.onTick, 0)
+	menuWindow(c, a.win, []appui.MenuGroup{{Title: "File", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{{Name: "pass-add-entry", Label: "New entry", Activate: func(gio.SimpleAction, uintptr) { a.openForm(formNew, "") }}, {Name: "pass-add-store", Label: "Add store", Activate: func(gio.SimpleAction, uintptr) { a.chooseStore() }}, {Name: "pass-search", Label: "Search", Activate: func(gio.SimpleAction, uintptr) { a.filter.GrabFocus() }}}}}}})
 	return a.win
 }
 

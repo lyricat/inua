@@ -133,7 +133,7 @@ msgid "Black"
 msgstr "黒"
 
 #: internal/apps/calendar/calendar.go:69
-#: internal/lightui/clock.go:219
+#: internal/lightui/clock.go:220
 #: internal/ui/control.go:322
 #: internal/ui/lock.go:248
 #: internal/ui/widgets.go:987
@@ -173,7 +173,7 @@ msgstr "日"
 #: internal/apps/clock/clock.go:69
 #: internal/config/strftime.go:50
 #: internal/i18n/time.go:11
-#: internal/lightui/weather.go:358
+#: internal/lightui/weather.go:360
 #: internal/mailui/window.go:1438
 #: internal/shell/notify.go:28
 #: internal/ui/agenda.go:371
@@ -224,7 +224,7 @@ msgid "Weekends"
 msgstr "週末"
 
 #: internal/apps/clock/clock.go:112
-#: internal/lightui/weather.go:360
+#: internal/lightui/weather.go:362
 #: internal/ui/widgets.go:1047
 #: ui/agenda.ui:80
 #: ui/calendar.ui:39
@@ -374,7 +374,7 @@ msgstr "%s からのファイル"
 #: internal/apps/connect/share.go:129
 #: internal/filesui/cards.go:678
 #: internal/filesui/picker.go:488
-#: internal/filesui/window.go:801
+#: internal/filesui/window.go:808
 #: internal/lightui/workshop_blocks.go:427
 #: internal/lightui/workshop_manager.go:63
 #: internal/mailui/actions.go:533
@@ -1217,7 +1217,7 @@ msgstr "プロジェクトの履歴、ブランチ、stash です。プッシュ
 #: internal/filesui/pane.go:1068
 #: internal/filesui/sidebar.go:50
 #: internal/filesui/tabs.go:97
-#: internal/filesui/window.go:307
+#: internal/filesui/window.go:314
 #: internal/mailui/window.go:779
 msgid "Trash"
 msgstr "ゴミ箱"
@@ -1744,8 +1744,8 @@ msgid "%d mo ago"
 msgstr "%d か月前"
 
 #: internal/apps/tailscale/status.go:187
-#: internal/lightui/gpg.go:384
-#: internal/lightui/gpg.go:655
+#: internal/lightui/gpg.go:385
+#: internal/lightui/gpg.go:656
 msgid "expired %s"
 msgstr "期限切れ %s"
 
@@ -1833,7 +1833,7 @@ msgid "Thunderstorm"
 msgstr "雷雨"
 
 #: internal/apps/weather/weather.go:214
-#: internal/lightui/sysmon.go:1081
+#: internal/lightui/sysmon.go:1083
 #: internal/vmui/window.go:2335
 msgid "Unknown"
 msgstr "不明"
@@ -1961,7 +1961,7 @@ msgid "Could not start the Console endpoint: %s"
 msgstr "コンソールエンドポイントを開始できませんでした: %s"
 
 #: internal/assistantui/assistantui.go:528
-#: internal/lightui/clock.go:497
+#: internal/lightui/clock.go:498
 #: internal/ui/alarms.go:108
 #: ui/disk.ui:179
 #: ui/mail-compose.ui:375
@@ -2047,11 +2047,11 @@ msgstr "許可"
 
 #: internal/assistantui/assistantui.go:793
 #: internal/diskui/details.go:581
-#: internal/filesui/window.go:817
+#: internal/filesui/window.go:824
 #: internal/gamesui/lobbyhost.go:169
-#: internal/lightui/calculator.go:350
-#: internal/lightui/pass.go:753
-#: internal/lightui/pass.go:778
+#: internal/lightui/calculator.go:351
+#: internal/lightui/pass.go:754
+#: internal/lightui/pass.go:779
 #: internal/mailui/details.go:222
 #: internal/shell/launcher_actions.go:59
 #: internal/term/settings/settings.go:119
@@ -2140,7 +2140,7 @@ msgid "The service is starting."
 msgstr "サービスを起動しています。"
 
 #: internal/connectui/window.go:387
-#: internal/lightui/video.go:530
+#: internal/lightui/video.go:531
 #: internal/mailui/settings.go:530
 #: internal/shell/notify.go:44
 #: internal/shell/status.go:103
@@ -2192,7 +2192,7 @@ msgstr "%s がペアリングを求めています。このキーが表示され
 #: internal/filesui/renamemany.go:37
 #: internal/games/fortunenet/texts.go:76
 #: internal/gamesui/fortune_host.go:334
-#: internal/lightui/workshop.go:982
+#: internal/lightui/workshop.go:983
 #: internal/mailui/dialog.go:92
 #: internal/remoteui/window.go:811
 #: internal/term/web/strings.go:29
@@ -2257,8 +2257,8 @@ msgstr "%s に接続を依頼しました。"
 #: internal/filesui/archive.go:76
 #: internal/filesui/remotesetup.go:226
 #: internal/filesui/renamemany.go:168
-#: internal/lightui/sysmon.go:966
-#: internal/lightui/tailscale.go:631
+#: internal/lightui/sysmon.go:968
+#: internal/lightui/tailscale.go:632
 #: internal/ui/settings_ai.go:486
 #: internal/viewerui/app.go:806
 #: ui/connect.ui:291
@@ -2274,7 +2274,7 @@ msgid "What it runs: systemctl suspend"
 msgstr "実行するもの: systemctl suspend"
 
 #: internal/connectui/window.go:560
-#: internal/lightui/pass.go:1152
+#: internal/lightui/pass.go:1153
 #: internal/lightui/workshop_manager.go:115
 #: internal/mailui/actions.go:469
 #: internal/mailui/compose.go:474
@@ -2848,7 +2848,7 @@ msgstr "Super+Return と、ターミナルで動くアプリ"
 #: internal/desktop/defaults.go:41
 #: internal/lightui/apps.go:30
 #: internal/lightui/music.go:293
-#: internal/lightui/music.go:1104
+#: internal/lightui/music.go:1105
 #: config/apps/io.github.lyricat.Inua.Music.desktop:3
 msgid "Music"
 msgstr "ミュージック"
@@ -2860,7 +2860,7 @@ msgstr "音声ファイルを開く"
 #: internal/desktop/defaults.go:45
 #: internal/lightui/apps.go:31
 #: internal/lightui/video.go:257
-#: internal/lightui/video.go:511
+#: internal/lightui/video.go:512
 #: config/apps/io.github.lyricat.Inua.Video.desktop:3
 msgid "Video"
 msgstr "ビデオ"
@@ -3039,9 +3039,9 @@ msgstr "%s を完全に削除しますか?"
 #: internal/diskui/details.go:528
 #: internal/filesui/cards.go:435
 #: internal/lightui/calculator.go:59
-#: internal/lightui/calculator.go:352
-#: internal/lightui/gpg.go:1610
-#: internal/lightui/pass.go:902
+#: internal/lightui/calculator.go:353
+#: internal/lightui/gpg.go:1611
+#: internal/lightui/pass.go:903
 #: internal/term/web/strings.go:43
 #: internal/ui/clipboard.go:504
 #: internal/vmui/window.go:1996
@@ -3078,8 +3078,8 @@ msgstr "%s で実行します。"
 #: internal/diskui/details.go:578
 #: internal/gamesui/checkers.go:738
 #: internal/gamesui/fortune_host.go:293
-#: internal/lightui/gpg.go:923
-#: internal/lightui/tailscale.go:470
+#: internal/lightui/gpg.go:924
+#: internal/lightui/tailscale.go:471
 #: internal/mailui/welcome.go:480
 #: internal/term/web/strings.go:35
 #: internal/ui/askpass.go:571
@@ -3121,14 +3121,14 @@ msgstr "%s が %s を削除しました:%s 空きました。"
 #: internal/filesui/cards.go:682
 #: internal/filesui/sidebar.go:36
 #: internal/filesui/tabs.go:99
-#: internal/filesui/window.go:311
+#: internal/filesui/window.go:318
 msgid "Home"
 msgstr "ホーム"
 
 #: internal/diskui/window.go:329
-#: internal/lightui/sysmon.go:967
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:567
+#: internal/lightui/sysmon.go:969
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:568
 #: internal/ui/settings.go:590
 #: ui/vm.ui:2981
 msgid "System"
@@ -3252,8 +3252,8 @@ msgstr[0] "%s · %d 個のフォルダ · 安全に削除可能 %s"
 #: internal/filesui/app.go:86
 #: internal/filesui/cards.go:689
 #: internal/filesui/remote.go:371
-#: internal/filesui/window.go:108
-#: internal/filesui/window.go:304
+#: internal/filesui/window.go:110
+#: internal/filesui/window.go:311
 #: ui/gpg.ui:548
 #: ui/gpg.ui:913
 #: config/apps/io.github.lyricat.Inua.Files.desktop:3
@@ -3494,8 +3494,8 @@ msgstr "ゴミ箱には移動せず、元に戻せません。"
 
 #: internal/filesui/cards.go:452
 #: internal/filesui/sidebar.go:51
-#: internal/filesui/window.go:774
-#: internal/filesui/window.go:780
+#: internal/filesui/window.go:781
+#: internal/filesui/window.go:787
 #: internal/mailui/actions.go:265
 #: internal/shell/commands.go:32
 #: ui/filespane.ui:288
@@ -3677,8 +3677,8 @@ msgid "Copy the paths (none selected: the folder's)"
 msgstr "パスをコピー（未選択ならフォルダーのパス）"
 
 #: internal/filesui/cards.go:693
-#: internal/filesui/window.go:842
-#: internal/lightui/gpg.go:1618
+#: internal/filesui/window.go:849
+#: internal/lightui/gpg.go:1619
 #: internal/mailui/picker.go:143
 #: internal/ui/settings_custom.go:42
 #: ui/disk.ui:771
@@ -3706,17 +3706,17 @@ msgid "Copy / move to the other pane"
 msgstr "もう一方のペインへコピー / 移動"
 
 #: internal/filesui/cards.go:698
-#: internal/filesui/window.go:803
+#: internal/filesui/window.go:810
 msgid "Open with…"
 msgstr "アプリケーションで開く…"
 
 #: internal/filesui/cards.go:699
-#: internal/filesui/window.go:856
+#: internal/filesui/window.go:863
 msgid "Bookmark"
 msgstr "ブックマーク"
 
 #: internal/filesui/cards.go:700
-#: internal/filesui/window.go:789
+#: internal/filesui/window.go:796
 msgid "Terminal here"
 msgstr "ここで端末を開く"
 
@@ -3736,7 +3736,7 @@ msgid "Next / previous tab"
 msgstr "次 / 前のタブ"
 
 #: internal/filesui/cards.go:705
-#: internal/filesui/window.go:806
+#: internal/filesui/window.go:813
 msgid "Middle click"
 msgstr "中クリック"
 
@@ -3750,7 +3750,7 @@ msgstr "リスト / グリッド / カラム"
 
 #: internal/filesui/cards.go:707
 #: internal/filesui/picker.go:501
-#: internal/filesui/window.go:794
+#: internal/filesui/window.go:801
 msgid "Hidden files"
 msgstr "隠しファイル"
 
@@ -3763,7 +3763,7 @@ msgid "Sidebar"
 msgstr "サイドバー"
 
 #: internal/filesui/cards.go:710
-#: internal/filesui/window.go:848
+#: internal/filesui/window.go:855
 msgid "Details"
 msgstr "詳細"
 
@@ -3777,7 +3777,7 @@ msgstr "新しいウィンドウ、ウィンドウを閉じる"
 
 #: internal/filesui/cards.go:713
 #: internal/filesui/picker.go:502
-#: internal/filesui/window.go:795
+#: internal/filesui/window.go:802
 msgid "Reload"
 msgstr "再読み込み"
 
@@ -3848,7 +3848,7 @@ msgid "Columns"
 msgstr "列"
 
 #: internal/filesui/columns.go:176
-#: internal/lightui/pass.go:964
+#: internal/lightui/pass.go:965
 msgid "NAME"
 msgstr "名前"
 
@@ -3857,7 +3857,7 @@ msgid "FOLDERS"
 msgstr "フォルダー"
 
 #: internal/filesui/details.go:51
-#: internal/lightui/sysmon.go:791
+#: internal/lightui/sysmon.go:793
 #: internal/mailui/window.go:248
 #: internal/term/web/strings.go:52
 msgid "FILES"
@@ -3962,14 +3962,14 @@ msgstr "壊れたリンク"
 #: internal/filesui/remotesetup.go:68
 #: internal/filesui/remotesetup.go:75
 #: internal/filesui/remotesetup.go:83
-#: internal/lightui/sysmon.go:792
+#: internal/lightui/sysmon.go:794
 #: internal/viewerui/app.go:807
 #: ui/vm.ui:322
 msgid "Folder"
 msgstr "フォルダー"
 
 #: internal/filesui/kinds.go:38
-#: internal/lightui/sysmon.go:792
+#: internal/lightui/sysmon.go:794
 #: internal/ui/settings_keyring.go:326
 msgid "Program"
 msgstr "プログラム"
@@ -4063,8 +4063,8 @@ msgid "done"
 msgstr "完了"
 
 #: internal/filesui/pane.go:1554
-#: internal/lightui/pass.go:1167
-#: internal/lightui/sysmon.go:971
+#: internal/lightui/pass.go:1168
+#: internal/lightui/sysmon.go:973
 #: internal/ui/settings_keyring.go:508
 #: internal/ui/shotdrawer.go:327
 msgid "Jan 2 15:04"
@@ -4114,14 +4114,14 @@ msgid "A file of the same name is in this folder; the app will write over it."
 msgstr ""
 
 #: internal/filesui/picker.go:494
-#: internal/filesui/window.go:837
+#: internal/filesui/window.go:844
 #: internal/termui/sessionmenu.go:81
 #: internal/termui/wsmenu.go:69
 msgid "Rename…"
 msgstr "名前を変更…"
 
 #: internal/filesui/picker.go:500
-#: internal/filesui/window.go:785
+#: internal/filesui/window.go:792
 msgid "New folder…"
 msgstr "新規フォルダー…"
 
@@ -4158,7 +4158,7 @@ msgstr "%s にサインイン"
 #: internal/filesui/remotesetup.go:54
 #: internal/filesui/remotesetup.go:60
 #: internal/filesui/remotesetup.go:66
-#: internal/lightui/sysmon.go:784
+#: internal/lightui/sysmon.go:786
 msgid "User"
 msgstr "ユーザー"
 
@@ -4605,12 +4605,12 @@ msgid "Eject"
 msgstr "取り出す"
 
 #: internal/filesui/sidebar.go:143
-#: internal/filesui/window.go:806
+#: internal/filesui/window.go:813
 msgid "Open in a new tab"
 msgstr "新しいタブで開く"
 
 #: internal/filesui/sidebar.go:144
-#: internal/filesui/window.go:807
+#: internal/filesui/window.go:814
 msgid "Open in a new window"
 msgstr "新しいウィンドウで開く"
 
@@ -4638,109 +4638,109 @@ msgstr "アシスタントがフォルダーを整理できるよう、「設定
 msgid "Asked the assistant to tidy %s."
 msgstr "%s の整理をアシスタントに頼みました。"
 
-#: internal/filesui/window.go:777
+#: internal/filesui/window.go:784
 msgid "Restore"
 msgstr "復元"
 
-#: internal/filesui/window.go:778
-#: internal/filesui/window.go:843
+#: internal/filesui/window.go:785
+#: internal/filesui/window.go:850
 msgid "Delete for good…"
 msgstr "完全に削除…"
 
-#: internal/filesui/window.go:786
+#: internal/filesui/window.go:793
 msgid "New file…"
 msgstr "新規ファイル…"
 
-#: internal/filesui/window.go:787
-#: internal/lightui/calculator.go:351
+#: internal/filesui/window.go:794
+#: internal/lightui/calculator.go:352
 #: internal/term/settings/settings.go:120
 #: internal/termui/paste.go:339
 msgid "Paste"
 msgstr "貼り付け"
 
-#: internal/filesui/window.go:790
-#: internal/filesui/window.go:822
+#: internal/filesui/window.go:797
+#: internal/filesui/window.go:829
 msgid "Tidy with AI…"
 msgstr "AI で整理…"
 
-#: internal/filesui/window.go:791
+#: internal/filesui/window.go:798
 msgid "Copy the folder's path"
 msgstr "フォルダーのパスをコピー"
 
-#: internal/filesui/window.go:809
+#: internal/filesui/window.go:816
 msgid "Open in the other pane"
 msgstr "もう一方のペインで開く"
 
-#: internal/filesui/window.go:813
+#: internal/filesui/window.go:820
 msgid "Show in its folder"
 msgstr "フォルダー内で表示"
 
-#: internal/filesui/window.go:816
-#: internal/lightui/calculator.go:349
+#: internal/filesui/window.go:823
+#: internal/lightui/calculator.go:350
 msgid "Cut"
 msgstr "切り取り"
 
-#: internal/filesui/window.go:818
+#: internal/filesui/window.go:825
 msgid "Copy the path"
 msgstr "パスをコピー"
 
-#: internal/filesui/window.go:821
+#: internal/filesui/window.go:828
 msgid "Paste into the folder"
 msgstr "フォルダーに貼り付け"
 
-#: internal/filesui/window.go:826
+#: internal/filesui/window.go:833
 msgid "Extract here"
 msgstr "ここに展開"
 
-#: internal/filesui/window.go:828
+#: internal/filesui/window.go:835
 msgid "Compress…"
 msgstr "圧縮…"
 
-#: internal/filesui/window.go:831
+#: internal/filesui/window.go:838
 msgid "Copy to the other pane"
 msgstr "もう一方のペインへコピー"
 
-#: internal/filesui/window.go:832
+#: internal/filesui/window.go:839
 msgid "Move to the other pane"
 msgstr "もう一方のペインへ移動"
 
-#: internal/filesui/window.go:839
+#: internal/filesui/window.go:846
 msgid "Rename %d item…"
 msgid_plural "Rename %d items…"
 msgstr[0] "%d 項目の名前を変更…"
 
-#: internal/filesui/window.go:854
+#: internal/filesui/window.go:861
 msgid "Remove the bookmark"
 msgstr "ブックマークを削除"
 
-#: internal/filesui/window.go:909
+#: internal/filesui/window.go:916
 msgid "Cut %d item: paste to move it."
 msgid_plural "Cut %d items: paste to move them."
 msgstr[0] "%d 項目を切り取りました。貼り付けると移動します。"
 
-#: internal/filesui/window.go:911
+#: internal/filesui/window.go:918
 msgid "Copied %d item."
 msgid_plural "Copied %d items."
 msgstr[0] "%d 項目をコピーしました。"
 
-#: internal/filesui/window.go:919
+#: internal/filesui/window.go:926
 msgid "Copied %d path."
 msgid_plural "Copied %d paths."
 msgstr[0] "%d 個のパスをコピーしました。"
 
-#: internal/filesui/window.go:1001
+#: internal/filesui/window.go:1008
 msgid "Bookmarked %s."
 msgstr "%s をブックマークしました。"
 
-#: internal/filesui/window.go:1003
+#: internal/filesui/window.go:1010
 msgid "Removed the bookmark of %s."
 msgstr "%s のブックマークを削除しました。"
 
-#: internal/filesui/window.go:1028
+#: internal/filesui/window.go:1035
 msgid "Copied %s."
 msgstr "%s をコピーしました。"
 
-#: internal/filesui/window.go:1057
+#: internal/filesui/window.go:1064
 msgid "No terminal was found: install xdg-terminal-exec or set $TERMINAL."
 msgstr "端末が見つかりません。xdg-terminal-exec をインストールするか $TERMINAL を設定してください。"
 
@@ -4909,7 +4909,7 @@ msgstr "チーム %s"
 
 #: internal/games/checkersnet/texts.go:37
 #: internal/games/fortunenet/texts.go:29
-#: internal/lightui/gpg.go:1254
+#: internal/lightui/gpg.go:1255
 msgid "you"
 msgstr "自分"
 
@@ -5066,7 +5066,7 @@ msgstr "カードショップ"
 
 #: internal/games/fortune.go:65
 #: internal/gamesui/fortune_menu.go:172
-#: internal/lightui/clock.go:492
+#: internal/lightui/clock.go:493
 #: internal/termui/guide.go:161
 #: internal/ui/voice_page.go:186
 #: ui/clock.ui:339
@@ -7298,7 +7298,7 @@ msgstr ""
 
 #: internal/games/lobby/texts.go:12
 #: internal/gamesui/lobbywin.go:236
-#: internal/lightui/sysmon.go:995
+#: internal/lightui/sysmon.go:997
 msgid "Free"
 msgstr "無料"
 
@@ -8250,7 +8250,7 @@ msgid "Hit the three yellow mission targets to light a mission; the hyperspace r
 msgstr "3 つの黄色のミッション ターゲットを攻撃すると、ミッションが点灯します。ハイパースペース ランプは左側にあります。"
 
 #: internal/gamesui/pinball.go:241
-#: internal/lightui/clock.go:583
+#: internal/lightui/clock.go:584
 msgid "PAUSED"
 msgstr "一時停止"
 
@@ -8616,7 +8616,7 @@ msgid "Clock"
 msgstr "時計"
 
 #: internal/lightui/apps.go:17
-#: internal/lightui/weather.go:224
+#: internal/lightui/weather.go:226
 #: internal/ui/agenda.go:334
 #: internal/ui/widgets.go:584
 #: internal/ui/widgets.go:1066
@@ -8671,71 +8671,71 @@ msgstr "GPG"
 msgid "Change sign"
 msgstr "チェンジサイン"
 
-#: internal/lightui/calculator.go:354
+#: internal/lightui/calculator.go:355
 #: internal/term/web/strings.go:94
 msgid "Select all"
 msgstr ""
 
-#: internal/lightui/calculator.go:414
+#: internal/lightui/calculator.go:415
 msgid "Enter a valid expression."
 msgstr ""
 
-#: internal/lightui/calculator.go:444
+#: internal/lightui/calculator.go:445
 msgid "No calculations yet"
 msgstr "まだ計算はされていない"
 
-#: internal/lightui/calculator.go:466
+#: internal/lightui/calculator.go:467
 msgid "Use %s"
 msgstr "%sを使用する"
 
-#: internal/lightui/calendar.go:132
+#: internal/lightui/calendar.go:138
 #: internal/ui/agenda.go:228
 #: internal/ui/widgets.go:1019
 msgid "January 2006"
 msgstr "2006年1月"
 
-#: internal/lightui/calendar.go:134
+#: internal/lightui/calendar.go:140
 #: internal/ui/agenda.go:246
 msgid "WK"
 msgstr "週"
 
-#: internal/lightui/calendar.go:139
+#: internal/lightui/calendar.go:145
 #: internal/lightui/clock.go:149
 #: internal/ui/agenda.go:247
 msgid "Su"
 msgstr "日"
 
-#: internal/lightui/calendar.go:139
+#: internal/lightui/calendar.go:145
 #: internal/lightui/clock.go:149
 #: internal/ui/agenda.go:247
 msgid "Mo"
 msgstr "月"
 
-#: internal/lightui/calendar.go:139
+#: internal/lightui/calendar.go:145
 #: internal/lightui/clock.go:149
 #: internal/ui/agenda.go:247
 msgid "Tu"
 msgstr "火"
 
-#: internal/lightui/calendar.go:139
+#: internal/lightui/calendar.go:145
 #: internal/lightui/clock.go:149
 #: internal/ui/agenda.go:247
 msgid "We"
 msgstr "水"
 
-#: internal/lightui/calendar.go:139
+#: internal/lightui/calendar.go:145
 #: internal/lightui/clock.go:149
 #: internal/ui/agenda.go:247
 msgid "Th"
 msgstr "木"
 
-#: internal/lightui/calendar.go:139
+#: internal/lightui/calendar.go:145
 #: internal/lightui/clock.go:149
 #: internal/ui/agenda.go:247
 msgid "Fr"
 msgstr "金"
 
-#: internal/lightui/calendar.go:139
+#: internal/lightui/calendar.go:145
 #: internal/lightui/clock.go:149
 #: internal/ui/agenda.go:247
 msgid "Sa"
@@ -8753,89 +8753,89 @@ msgstr "分"
 msgid "SEC"
 msgstr "秒"
 
-#: internal/lightui/clock.go:260
+#: internal/lightui/clock.go:261
 msgid "Day"
 msgstr "日"
 
-#: internal/lightui/clock.go:263
+#: internal/lightui/clock.go:264
 msgid "Night"
 msgstr "夜"
 
-#: internal/lightui/clock.go:338
+#: internal/lightui/clock.go:339
 msgid "No city by that name"
 msgstr "そんな名前の都市はない"
 
-#: internal/lightui/clock.go:370
-#: internal/lightui/weather.go:247
+#: internal/lightui/clock.go:371
+#: internal/lightui/weather.go:249
 msgid "Remove %s"
 msgstr "%sを削除します"
 
-#: internal/lightui/clock.go:403
+#: internal/lightui/clock.go:404
 #: internal/termui/menubar.go:42
 #: ui/pass.ui:252
 msgid "Edit"
 msgstr "編集"
 
-#: internal/lightui/clock.go:493
+#: internal/lightui/clock.go:494
 #: ui/music.ui:332
 msgid "Reset"
 msgstr "リセット"
 
-#: internal/lightui/clock.go:498
-#: internal/lightui/clock.go:507
+#: internal/lightui/clock.go:499
+#: internal/lightui/clock.go:508
 #: ui/clock.ui:329
 msgid "Lap"
 msgstr "ラップ"
 
-#: internal/lightui/clock.go:546
+#: internal/lightui/clock.go:547
 msgid "LAP %d"
 msgstr "ラップ %d"
 
-#: internal/lightui/clock.go:566
-#: internal/lightui/clock.go:576
-#: internal/lightui/sysmon.go:57
-#: internal/lightui/sysmon.go:57
+#: internal/lightui/clock.go:567
+#: internal/lightui/clock.go:577
+#: internal/lightui/sysmon.go:58
+#: internal/lightui/sysmon.go:58
 #: ui/clock.ui:463
 msgid "Pause"
 msgstr "一時停止"
 
-#: internal/lightui/clock.go:569
-#: internal/lightui/clock.go:577
+#: internal/lightui/clock.go:570
+#: internal/lightui/clock.go:578
 msgid "ENDS AT %s"
 msgstr "は %s で終了します"
 
-#: internal/lightui/clock.go:582
-#: internal/lightui/sysmon.go:869
-#: internal/lightui/sysmon.go:869
+#: internal/lightui/clock.go:583
+#: internal/lightui/sysmon.go:871
+#: internal/lightui/sysmon.go:871
 #: internal/vmui/window.go:2465
 msgid "Resume"
 msgstr "再開"
 
-#: internal/lightui/clock.go:594
+#: internal/lightui/clock.go:595
 msgid "Timer done"
 msgstr "タイマーが完了しました"
 
-#: internal/lightui/clock.go:595
+#: internal/lightui/clock.go:596
 msgid "Your timer has ended."
 msgstr "タイマーが終了しました。"
 
-#: internal/lightui/colorpicker.go:121
+#: internal/lightui/colorpicker.go:123
 msgid "HEX"
 msgstr "HEX"
 
-#: internal/lightui/colorpicker.go:121
+#: internal/lightui/colorpicker.go:123
 msgid "RGB"
 msgstr "RGB"
 
-#: internal/lightui/colorpicker.go:121
+#: internal/lightui/colorpicker.go:123
 msgid "HSL"
 msgstr "HSL"
 
-#: internal/lightui/colorpicker.go:135
+#: internal/lightui/colorpicker.go:137
 msgid "Copy %s"
 msgstr "コピー %s"
 
-#: internal/lightui/colorpicker.go:140
+#: internal/lightui/colorpicker.go:142
 msgid "No colour yet. Pick one from anywhere on the screen."
 msgstr "まだ色はありません。画面上の任意の場所から 1 つ選択します。"
 
@@ -8858,19 +8858,19 @@ msgstr "5年"
 msgid "Never"
 msgstr "なし"
 
-#: internal/lightui/gpg.go:339
+#: internal/lightui/gpg.go:340
 msgid "The keyring cannot be read: %s"
 msgstr "キーリングを読めません：%s"
 
-#: internal/lightui/gpg.go:381
+#: internal/lightui/gpg.go:382
 msgid "created %s"
 msgstr "%s 作成"
 
-#: internal/lightui/gpg.go:381
-#: internal/lightui/gpg.go:384
-#: internal/lightui/gpg.go:386
-#: internal/lightui/gpg.go:655
-#: internal/lightui/gpg.go:677
+#: internal/lightui/gpg.go:382
+#: internal/lightui/gpg.go:385
+#: internal/lightui/gpg.go:387
+#: internal/lightui/gpg.go:656
+#: internal/lightui/gpg.go:678
 #: internal/shell/notify.go:32
 #: internal/ui/askpass.go:414
 #: internal/ui/askpass.go:482
@@ -8882,156 +8882,156 @@ msgstr "%s 作成"
 msgid "Jan 2, 2006"
 msgstr "2006年1月2日"
 
-#: internal/lightui/gpg.go:386
+#: internal/lightui/gpg.go:387
 msgid "expires %s"
 msgstr "%s に期限切れ"
 
-#: internal/lightui/gpg.go:400
-#: internal/lightui/gpg.go:814
+#: internal/lightui/gpg.go:401
+#: internal/lightui/gpg.go:815
 msgid "signs only"
 msgstr "署名専用"
 
-#: internal/lightui/gpg.go:410
+#: internal/lightui/gpg.go:411
 msgid "revoked"
 msgstr "失効"
 
-#: internal/lightui/gpg.go:412
+#: internal/lightui/gpg.go:413
 msgid "expired"
 msgstr "期限切れ"
 
-#: internal/lightui/gpg.go:414
+#: internal/lightui/gpg.go:415
 msgid "disabled"
 msgstr "無効"
 
-#: internal/lightui/gpg.go:416
-#: internal/lightui/gpg.go:661
-#: internal/lightui/gpg.go:787
+#: internal/lightui/gpg.go:417
+#: internal/lightui/gpg.go:662
+#: internal/lightui/gpg.go:788
 msgid "yours"
 msgstr "あなたの鍵"
 
-#: internal/lightui/gpg.go:418
+#: internal/lightui/gpg.go:419
 msgid "verified"
 msgstr "検証済み"
 
-#: internal/lightui/gpg.go:420
+#: internal/lightui/gpg.go:421
 msgid "partly verified"
 msgstr "一部検証済み"
 
-#: internal/lightui/gpg.go:422
+#: internal/lightui/gpg.go:423
 msgid "not verified"
 msgstr "未検証"
 
-#: internal/lightui/gpg.go:485
+#: internal/lightui/gpg.go:486
 #: ui/gpg.ui:408
 msgid "Encrypt to your key as well, so you can open it later"
 msgstr "自分の鍵にも暗号化して、あとで開けるようにします"
 
-#: internal/lightui/gpg.go:487
+#: internal/lightui/gpg.go:488
 msgid "This key only signs; it cannot be encrypted to"
 msgstr "この鍵は署名専用で、宛先にはできません"
 
-#: internal/lightui/gpg.go:538
+#: internal/lightui/gpg.go:539
 msgid "Take off"
 msgstr "外す"
 
-#: internal/lightui/gpg.go:549
+#: internal/lightui/gpg.go:550
 #: ui/gpg.ui:140
 msgid "Name, address or key ID"
 msgstr "名前、アドレス、鍵 ID"
 
-#: internal/lightui/gpg.go:551
+#: internal/lightui/gpg.go:552
 msgid "Add another"
 msgstr "さらに追加"
 
-#: internal/lightui/gpg.go:562
+#: internal/lightui/gpg.go:563
 msgid "Anyone who has the passphrase"
 msgstr "パスフレーズを知っている人なら誰でも"
 
-#: internal/lightui/gpg.go:566
+#: internal/lightui/gpg.go:567
 msgid "%d recipient"
 msgid_plural "%d recipients"
 msgstr[0] "宛先 %d 人"
 
-#: internal/lightui/gpg.go:633
+#: internal/lightui/gpg.go:634
 msgid "%d more: type to narrow them down"
 msgid_plural "%d more: type to narrow them down"
 msgstr[0] "ほか %d 件：入力して絞り込めます"
 
-#: internal/lightui/gpg.go:676
+#: internal/lightui/gpg.go:677
 msgid "This key expired on %s, so gpg cannot encrypt to it. Ask %s for an updated key, then import it."
 msgstr "この鍵は %s に期限切れになったため、gpg は暗号化できません。%s に更新した鍵をもらい、取り込んでください。"
 
-#: internal/lightui/gpg.go:679
-#: internal/lightui/gpg.go:830
+#: internal/lightui/gpg.go:680
+#: internal/lightui/gpg.go:831
 msgid "%s revoked this key; ask for their new one."
 msgstr "%s はこの鍵を失効させました。新しい鍵をもらってください。"
 
-#: internal/lightui/gpg.go:681
+#: internal/lightui/gpg.go:682
 msgid "This key cannot encrypt."
 msgstr "この鍵では暗号化できません。"
 
-#: internal/lightui/gpg.go:691
+#: internal/lightui/gpg.go:692
 msgid "No key matches. Import theirs on the Keys tab."
 msgstr "一致する鍵がありません。鍵タブで相手の鍵を取り込んでください。"
 
-#: internal/lightui/gpg.go:693
+#: internal/lightui/gpg.go:694
 msgid "Already added."
 msgstr "追加済みです。"
 
-#: internal/lightui/gpg.go:696
+#: internal/lightui/gpg.go:697
 msgid "Your keyring is empty. Import their key on the Keys tab."
 msgstr "キーリングは空です。鍵タブで相手の鍵を取り込んでください。"
 
-#: internal/lightui/gpg.go:698
+#: internal/lightui/gpg.go:699
 msgid "Every key is chosen."
 msgstr "すべての鍵を選びました。"
 
-#: internal/lightui/gpg.go:753
+#: internal/lightui/gpg.go:754
 msgid "MY KEYS"
 msgstr "自分の鍵"
 
-#: internal/lightui/gpg.go:753
+#: internal/lightui/gpg.go:754
 msgid "OTHERS"
 msgstr "ほかの人"
 
-#: internal/lightui/gpg.go:753
+#: internal/lightui/gpg.go:754
 msgid "INVALID KEYS"
 msgstr "無効な鍵"
 
-#: internal/lightui/gpg.go:760
+#: internal/lightui/gpg.go:761
 msgid "%d key"
 msgid_plural "%d keys"
 msgstr[0] "鍵 %d 個"
 
-#: internal/lightui/gpg.go:824
+#: internal/lightui/gpg.go:825
 msgid "Extend it to use it again. Keep it either way: it opens what was encrypted to it."
 msgstr "延長すればまた使えます。いずれにせよ残してください。この鍵宛てに暗号化されたものを開けます。"
 
-#: internal/lightui/gpg.go:826
+#: internal/lightui/gpg.go:827
 msgid "Keep it: it opens what was encrypted to it."
 msgstr "残してください。この鍵宛てに暗号化されたものを開けます。"
 
-#: internal/lightui/gpg.go:828
+#: internal/lightui/gpg.go:829
 msgid "gpg cannot encrypt to it. Ask %s for an updated key, then import it."
 msgstr "gpg はこの鍵で暗号化できません。%s に更新した鍵をもらい、取り込んでください。"
 
-#: internal/lightui/gpg.go:851
+#: internal/lightui/gpg.go:852
 msgid "Copy fingerprint"
 msgstr "フィンガープリントをコピー"
 
-#: internal/lightui/gpg.go:852
+#: internal/lightui/gpg.go:853
 msgid "Copy public key"
 msgstr "公開鍵をコピー"
 
-#: internal/lightui/gpg.go:854
+#: internal/lightui/gpg.go:855
 msgid "Encrypt to…"
 msgstr "この鍵へ暗号化…"
 
-#: internal/lightui/gpg.go:857
+#: internal/lightui/gpg.go:858
 msgid "Extend 2 years"
 msgstr "2年延長"
 
-#: internal/lightui/gpg.go:862
+#: internal/lightui/gpg.go:863
 #: ui/disk.ui:781
 #: ui/vm.ui:391
 #: ui/vm.ui:1540
@@ -9042,215 +9042,215 @@ msgstr "2年延長"
 msgid "Delete…"
 msgstr "削除…"
 
-#: internal/lightui/gpg.go:926
+#: internal/lightui/gpg.go:927
 msgid "Copied; taken off the clipboard in 45 seconds"
 msgstr "コピーしました。45秒後にクリップボードから消えます"
 
-#: internal/lightui/gpg.go:980
+#: internal/lightui/gpg.go:981
 msgid "Fingerprint copied"
 msgstr "フィンガープリントをコピーしました"
 
-#: internal/lightui/gpg.go:992
+#: internal/lightui/gpg.go:993
 msgid "Public key copied"
 msgstr "公開鍵をコピーしました"
 
-#: internal/lightui/gpg.go:1060
+#: internal/lightui/gpg.go:1061
 msgid "Files to encrypt"
 msgstr "暗号化するファイル"
 
-#: internal/lightui/gpg.go:1060
+#: internal/lightui/gpg.go:1061
 msgid "Files to decrypt"
 msgstr "復号するファイル"
 
-#: internal/lightui/gpg.go:1060
+#: internal/lightui/gpg.go:1061
 msgid "Key file to import"
 msgstr "取り込む鍵ファイル"
 
-#: internal/lightui/gpg.go:1126
+#: internal/lightui/gpg.go:1127
 msgid "Leave it out"
 msgstr "外す"
 
-#: internal/lightui/gpg.go:1161
+#: internal/lightui/gpg.go:1162
 msgid "Saved to %s"
 msgstr "%s に保存しました"
 
-#: internal/lightui/gpg.go:1174
+#: internal/lightui/gpg.go:1175
 msgid "Type a passphrase first."
 msgstr "先にパスフレーズを入力してください。"
 
-#: internal/lightui/gpg.go:1177
+#: internal/lightui/gpg.go:1178
 msgid "The two passphrases differ."
 msgstr "2 つのパスフレーズが一致しません。"
 
-#: internal/lightui/gpg.go:1191
+#: internal/lightui/gpg.go:1192
 msgid "Add someone to encrypt to."
 msgstr "暗号化する宛先を追加してください。"
 
-#: internal/lightui/gpg.go:1205
-#: internal/lightui/gpg.go:1336
+#: internal/lightui/gpg.go:1206
+#: internal/lightui/gpg.go:1337
 msgid "Choose or drop files first."
 msgstr "先にファイルを選ぶかドロップしてください。"
 
-#: internal/lightui/gpg.go:1216
+#: internal/lightui/gpg.go:1217
 msgid "Type a message first."
 msgstr "先にメッセージを入力してください。"
 
-#: internal/lightui/gpg.go:1221
+#: internal/lightui/gpg.go:1222
 msgid "Encrypting…"
 msgstr "暗号化しています…"
 
-#: internal/lightui/gpg.go:1259
+#: internal/lightui/gpg.go:1260
 msgid "For %s"
 msgstr "宛先：%s"
 
-#: internal/lightui/gpg.go:1261
+#: internal/lightui/gpg.go:1262
 msgid "signed"
 msgstr "署名あり"
 
-#: internal/lightui/gpg.go:1264
+#: internal/lightui/gpg.go:1265
 msgid "For anyone who has the passphrase"
 msgstr "宛先：パスフレーズを知っている人"
 
-#: internal/lightui/gpg.go:1282
+#: internal/lightui/gpg.go:1283
 msgid "written in %s"
 msgstr "%s に書き出しました"
 
-#: internal/lightui/gpg.go:1286
+#: internal/lightui/gpg.go:1287
 msgid "Move to Trash…"
 msgstr "ゴミ箱に移動…"
 
-#: internal/lightui/gpg.go:1310
+#: internal/lightui/gpg.go:1311
 msgid "%s moved to the trash"
 msgstr "%s をゴミ箱に移動しました"
 
-#: internal/lightui/gpg.go:1345
+#: internal/lightui/gpg.go:1346
 msgid "Paste a message first."
 msgstr "先にメッセージを貼り付けてください。"
 
-#: internal/lightui/gpg.go:1352
+#: internal/lightui/gpg.go:1353
 msgid "Decrypting… gpg may ask for your passphrase."
 msgstr "復号しています… gpg がパスフレーズを尋ねることがあります。"
 
-#: internal/lightui/gpg.go:1402
+#: internal/lightui/gpg.go:1403
 msgid "That passphrase does not open it. Decrypt asks again."
 msgstr "そのパスフレーズでは開けません。「復号」でもう一度尋ねます。"
 
-#: internal/lightui/gpg.go:1404
+#: internal/lightui/gpg.go:1405
 msgid "Cancelled. Decrypt asks again."
 msgstr "キャンセルしました。「復号」でもう一度尋ねます。"
 
-#: internal/lightui/gpg.go:1416
+#: internal/lightui/gpg.go:1417
 msgid "Not signed: who sent it is not known"
 msgstr "署名なし：送り主はわかりません"
 
-#: internal/lightui/gpg.go:1424
+#: internal/lightui/gpg.go:1425
 msgid "Signed by %s"
 msgstr "%s が署名"
 
-#: internal/lightui/gpg.go:1427
+#: internal/lightui/gpg.go:1428
 msgid "Jan 2, 2006 15:04"
 msgstr "2006年1月2日 15:04"
 
-#: internal/lightui/gpg.go:1431
+#: internal/lightui/gpg.go:1432
 msgid "The signature by %s does not match: it was changed after signing"
 msgstr "%s の署名が一致しません：署名後に変更されています"
 
-#: internal/lightui/gpg.go:1435
+#: internal/lightui/gpg.go:1436
 msgid "Signed by a key not in your keyring, so it cannot be checked"
 msgstr "キーリングにない鍵で署名されているため、確かめられません"
 
-#: internal/lightui/gpg.go:1439
+#: internal/lightui/gpg.go:1440
 msgid "Signed by %s, with a key that is no longer valid"
 msgstr "%s が、もう有効でない鍵で署名"
 
-#: internal/lightui/gpg.go:1458
+#: internal/lightui/gpg.go:1459
 msgid "Encrypted to %s, and with a passphrase"
 msgstr "%s 宛てに、またパスフレーズでも暗号化"
 
-#: internal/lightui/gpg.go:1460
+#: internal/lightui/gpg.go:1461
 msgid "Encrypted to %s"
 msgstr "%s 宛てに暗号化"
 
-#: internal/lightui/gpg.go:1462
+#: internal/lightui/gpg.go:1463
 msgid "Encrypted with a passphrase"
 msgstr "パスフレーズで暗号化"
 
-#: internal/lightui/gpg.go:1479
+#: internal/lightui/gpg.go:1480
 #: ui/gpg.ui:1383
 msgid "Import"
 msgstr "取り込む"
 
-#: internal/lightui/gpg.go:1489
+#: internal/lightui/gpg.go:1490
 msgid "No key found in it."
 msgstr "鍵が見つかりません。"
 
-#: internal/lightui/gpg.go:1494
+#: internal/lightui/gpg.go:1495
 msgid "Import %d key"
 msgid_plural "Import %d keys"
 msgstr[0] "鍵 %d 個を取り込む"
 
-#: internal/lightui/gpg.go:1506
+#: internal/lightui/gpg.go:1507
 msgid "new"
 msgstr "新規"
 
-#: internal/lightui/gpg.go:1509
+#: internal/lightui/gpg.go:1510
 msgid "holds a secret key"
 msgstr "秘密鍵を含む"
 
-#: internal/lightui/gpg.go:1511
+#: internal/lightui/gpg.go:1512
 msgid "updates one you have"
 msgstr "手持ちの鍵を更新"
 
-#: internal/lightui/gpg.go:1536
+#: internal/lightui/gpg.go:1537
 msgid "Importing…"
 msgstr "取り込んでいます…"
 
-#: internal/lightui/gpg.go:1547
+#: internal/lightui/gpg.go:1548
 msgid "%d key imported"
 msgid_plural "%d keys imported"
 msgstr[0] "鍵 %d 個を取り込みました"
 
-#: internal/lightui/gpg.go:1560
+#: internal/lightui/gpg.go:1561
 msgid "Give a name and an address."
 msgstr "名前とアドレスを入力してください。"
 
-#: internal/lightui/gpg.go:1564
+#: internal/lightui/gpg.go:1565
 msgid "That address has no @."
 msgstr "アドレスに @ がありません。"
 
-#: internal/lightui/gpg.go:1570
+#: internal/lightui/gpg.go:1571
 msgid "Creating… gpg asks for a passphrase for the new key."
 msgstr "作成しています… gpg が新しい鍵のパスフレーズを尋ねます。"
 
-#: internal/lightui/gpg.go:1584
+#: internal/lightui/gpg.go:1585
 msgid "Your key is created"
 msgstr "鍵を作成しました"
 
-#: internal/lightui/gpg.go:1607
+#: internal/lightui/gpg.go:1608
 msgid "Delete the key of %s?"
 msgstr "%s の鍵を削除しますか？"
 
-#: internal/lightui/gpg.go:1609
+#: internal/lightui/gpg.go:1610
 msgid "It goes from your keyring. Messages it signed then show as signed by a key not in your keyring; importing it again brings that back."
 msgstr "キーリングから外れます。この鍵で署名されたメッセージは、キーリングにない鍵の署名として表示されます。取り込み直せば元に戻ります。"
 
-#: internal/lightui/gpg.go:1616
+#: internal/lightui/gpg.go:1617
 msgid "Move %s to the trash?"
 msgstr "%s をゴミ箱に移動しますか？"
 
-#: internal/lightui/gpg.go:1617
+#: internal/lightui/gpg.go:1618
 msgid "The decrypted copy goes to the trash, where it can be restored from; the encrypted file stays."
 msgstr "復号したコピーはゴミ箱に移り、そこから戻せます。暗号化されたファイルは残ります。"
 
-#: internal/lightui/gpg.go:1634
+#: internal/lightui/gpg.go:1635
 msgid "Key deleted"
 msgstr "鍵を削除しました"
 
-#: internal/lightui/gpg.go:1644
+#: internal/lightui/gpg.go:1645
 msgid "Extending… gpg asks for your passphrase."
 msgstr "延長しています… gpg がパスフレーズを尋ねます。"
 
-#: internal/lightui/gpg.go:1653
+#: internal/lightui/gpg.go:1654
 msgid "Extended by 2 years"
 msgstr "2年延長しました"
 
@@ -9263,166 +9263,166 @@ msgstr "GStreamer がインストールされていません。プラグイン�
 msgid "Presets"
 msgstr "プリセット"
 
-#: internal/lightui/music.go:486
+#: internal/lightui/music.go:487
 msgid "Cannot play %s: %s"
 msgstr "%s を再生できません: %s"
 
-#: internal/lightui/music.go:560
+#: internal/lightui/music.go:561
 #: internal/ui/widgets.go:1097
 #: ui/music.ui:86
 msgid "Nothing playing"
 msgstr "再生していません"
 
-#: internal/lightui/music.go:610
+#: internal/lightui/music.go:611
 msgid "MONO"
 msgstr "モノラル"
 
-#: internal/lightui/music.go:612
+#: internal/lightui/music.go:613
 msgid "STEREO"
 msgstr "ステレオ"
 
-#: internal/lightui/music.go:679
+#: internal/lightui/music.go:680
 msgid "PRE"
 msgstr "PRE"
 
-#: internal/lightui/music.go:788
+#: internal/lightui/music.go:789
 #: ui/music.ui:270
 msgid "Repeat: off (R)"
 msgstr "リピート：オフ (R)"
 
-#: internal/lightui/music.go:791
+#: internal/lightui/music.go:792
 msgid "Repeat: the playlist (R)"
 msgstr "リピート：プレイリスト (R)"
 
-#: internal/lightui/music.go:793
+#: internal/lightui/music.go:794
 msgid "Repeat: this track (R)"
 msgstr "リピート：この曲 (R)"
 
-#: internal/lightui/music.go:1016
+#: internal/lightui/music.go:1017
 msgid "%d track"
 msgid_plural "%d tracks"
 msgstr[0] "%d 曲"
 
-#: internal/lightui/music.go:1103
-#: internal/lightui/sysmon.go:792
+#: internal/lightui/music.go:1104
+#: internal/lightui/sysmon.go:794
 msgid "Open files"
 msgstr "ファイルを開く"
 
-#: internal/lightui/music.go:1103
+#: internal/lightui/music.go:1104
 #: ui/music.ui:424
 msgid "Add files"
 msgstr "ファイルを追加"
 
-#: internal/lightui/music.go:1107
+#: internal/lightui/music.go:1108
 #: ui/music.ui:434
 msgid "Add a folder"
 msgstr "フォルダーを追加"
 
-#: internal/lightui/music.go:1110
+#: internal/lightui/music.go:1111
 msgid "Load a playlist"
 msgstr "プレイリストを読み込む"
 
-#: internal/lightui/music.go:1111
+#: internal/lightui/music.go:1112
 msgid "Playlists"
 msgstr "プレイリスト"
 
-#: internal/lightui/music.go:1114
+#: internal/lightui/music.go:1115
 msgid "Save the playlist"
 msgstr "プレイリストを保存"
 
-#: internal/lightui/music.go:1115
+#: internal/lightui/music.go:1116
 msgid "Playlist"
 msgstr "プレイリスト"
 
-#: internal/lightui/pass.go:352
+#: internal/lightui/pass.go:353
 msgid "A password store: a folder with a .gpg-id"
 msgstr "パスワードストア：.gpg-id のあるフォルダー"
 
-#: internal/lightui/pass.go:360
+#: internal/lightui/pass.go:361
 msgid "%s is not a password store: it has no .gpg-id (pass init makes one)."
 msgstr "%s はパスワードストアではありません：.gpg-id がありません（pass init で作れます）。"
 
-#: internal/lightui/pass.go:380
+#: internal/lightui/pass.go:381
 msgid "No password store. pass init YOUR-GPG-KEY-ID makes one in ~/.password-store; another folder can be added below."
 msgstr "パスワードストアがありません。pass init GPG鍵ID で ~/.password-store に作れます。下から別のフォルダーも追加できます。"
 
-#: internal/lightui/pass.go:407
+#: internal/lightui/pass.go:408
 msgid "The store is empty. + makes an entry."
 msgstr "ストアは空です。+ でエントリーを作れます。"
 
-#: internal/lightui/pass.go:410
-#: internal/lightui/pass.go:809
-#: internal/lightui/pass.go:1087
+#: internal/lightui/pass.go:411
+#: internal/lightui/pass.go:810
+#: internal/lightui/pass.go:1088
 #: internal/lightui/pass_edit.go:193
 msgid "Choose an entry."
 msgstr "エントリーを選んでください。"
 
-#: internal/lightui/pass.go:416
+#: internal/lightui/pass.go:417
 msgid "Top level"
 msgstr "最上位"
 
-#: internal/lightui/pass.go:424
+#: internal/lightui/pass.go:425
 #: internal/ui/settings.go:922
 #: internal/ui/settings.go:949
 msgid "%d entry"
 msgid_plural "%d entries"
 msgstr[0] "%d 件"
 
-#: internal/lightui/pass.go:429
+#: internal/lightui/pass.go:430
 msgid "Right-click to rename or move"
 msgstr "右クリックで名前の変更または移動"
 
-#: internal/lightui/pass.go:492
+#: internal/lightui/pass.go:493
 #: internal/ui/passwords.go:488
 msgid "Nothing matches. Each word is looked for in the whole path."
 msgstr "一致するものはありません。各語はパス全体から探します。"
 
-#: internal/lightui/pass.go:494
+#: internal/lightui/pass.go:495
 msgid "And %d more: another word narrows them."
 msgid_plural "And %d more: another word narrows them."
 msgstr[0] "ほかに %d 件。語を足すと絞り込めます。"
 
-#: internal/lightui/pass.go:640
+#: internal/lightui/pass.go:641
 msgid "Decrypting %s"
 msgstr "%s を復号しています"
 
-#: internal/lightui/pass.go:696
+#: internal/lightui/pass.go:697
 #: internal/lightui/pass_otp.go:179
 msgid "Replace the one-time code"
 msgstr "ワンタイムコードを置き換える"
 
-#: internal/lightui/pass.go:698
+#: internal/lightui/pass.go:699
 #: internal/lightui/pass_otp.go:182
 #: ui/pass.ui:230
 #: ui/pass.ui:852
 msgid "Add a one-time code"
 msgstr "ワンタイムコードを追加"
 
-#: internal/lightui/pass.go:703
+#: internal/lightui/pass.go:704
 #: internal/ui/passwords.go:561
 msgid "USERNAME"
 msgstr "ユーザー名"
 
-#: internal/lightui/pass.go:706
+#: internal/lightui/pass.go:707
 #: internal/ui/passwords.go:564
 #: ui/pass.ui:495
 msgid "PASSWORD"
 msgstr "パスワード"
 
-#: internal/lightui/pass.go:711
-#: internal/lightui/pass.go:763
+#: internal/lightui/pass.go:712
+#: internal/lightui/pass.go:764
 #: internal/ui/passwords.go:567
 #: internal/ui/passwords.go:570
 #: ui/pass.ui:984
 msgid "ONE-TIME CODE"
 msgstr "ワンタイムコード"
 
-#: internal/lightui/pass.go:718
+#: internal/lightui/pass.go:719
 #: internal/ui/passwords.go:577
 msgid "NOTES"
 msgstr "メモ"
 
-#: internal/lightui/pass.go:747
+#: internal/lightui/pass.go:748
 #: internal/lightui/pass_edit.go:351
 #: internal/mailui/formatted.go:184
 #: internal/term/desktop/desktop_linux.go:43
@@ -9433,125 +9433,125 @@ msgstr "メモ"
 msgid "Show"
 msgstr "表示"
 
-#: internal/lightui/pass.go:749
+#: internal/lightui/pass.go:750
 #: internal/lightui/pass_edit.go:348
 #: internal/ui/notify.go:410
 #: internal/ui/passwords.go:642
 msgid "Hide"
 msgstr "ヒデ"
 
-#: internal/lightui/pass.go:792
+#: internal/lightui/pass.go:793
 #: internal/lightui/pass_otp.go:237
 #: internal/ui/passwords.go:661
 msgid "%d second left"
 msgid_plural "%d seconds left"
 msgstr[0] "残り %d 秒"
 
-#: internal/lightui/pass.go:884
+#: internal/lightui/pass.go:885
 msgid "Rename or move the category “%s”"
 msgstr "カテゴリー「%s」の名前を変更または移動"
 
-#: internal/lightui/pass.go:885
+#: internal/lightui/pass.go:886
 msgid "Its new path. Another name renames it; a path under another category moves it there, with all its entries."
 msgstr "新しいパス。別の名前なら名前の変更、別のカテゴリーの下のパスなら、すべてのエントリーごとそこへ移動します。"
 
-#: internal/lightui/pass.go:886
-#: internal/lightui/pass.go:890
+#: internal/lightui/pass.go:887
+#: internal/lightui/pass.go:891
 #: internal/term/web/strings.go:65
 msgid "Move"
 msgstr "移動"
 
-#: internal/lightui/pass.go:888
+#: internal/lightui/pass.go:889
 msgid "Rename or move “%s”"
 msgstr "「%s」の名前を変更または移動"
 
-#: internal/lightui/pass.go:889
+#: internal/lightui/pass.go:890
 msgid "Its new path. The first part is its category: change it to move the entry, the rest to rename it."
 msgstr "新しいパス。最初の部分がカテゴリーです。そこを変えれば移動、残りを変えれば名前の変更です。"
 
-#: internal/lightui/pass.go:892
+#: internal/lightui/pass.go:893
 #: ui/pass.ui:137
 msgid "New entry"
 msgstr "新しいエントリー"
 
-#: internal/lightui/pass.go:893
+#: internal/lightui/pass.go:894
 msgid "Its path: the first part is its category. Its content comes next."
 msgstr "パス：最初の部分がカテゴリーです。内容はその次に。"
 
-#: internal/lightui/pass.go:898
+#: internal/lightui/pass.go:899
 #: internal/termui/guide.go:163
 #: ui/vm.ui:3289
 msgid "Next"
 msgstr "次へ"
 
-#: internal/lightui/pass.go:900
+#: internal/lightui/pass.go:901
 msgid "Delete “%s”?"
 msgstr "「%s」を削除しますか？"
 
-#: internal/lightui/pass.go:901
+#: internal/lightui/pass.go:902
 msgid "pass removes its file; a git store keeps it in its history."
 msgstr "pass がファイルを削除します。git のストアでは履歴に残ります。"
 
-#: internal/lightui/pass.go:937
-#: internal/lightui/pass.go:967
+#: internal/lightui/pass.go:938
+#: internal/lightui/pass.go:968
 #: internal/mailui/reader.go:549
 #: internal/mailui/reader.go:794
 #: internal/viewerui/app.go:805
 msgid "FILE"
 msgstr "ファイル"
 
-#: internal/lightui/pass.go:963
+#: internal/lightui/pass.go:964
 msgid "CATEGORY"
 msgstr "カテゴリー"
 
-#: internal/lightui/pass.go:977
+#: internal/lightui/pass.go:978
 msgid "and %d more"
 msgid_plural "and %d more"
 msgstr[0] "ほか %d 件"
 
-#: internal/lightui/pass.go:1021
+#: internal/lightui/pass.go:1022
 msgid "That is where it is."
 msgstr "すでにそこにあります。"
 
-#: internal/lightui/pass.go:1023
+#: internal/lightui/pass.go:1024
 msgid "A category cannot move into itself."
 msgstr "カテゴリーを自分の中へは移動できません。"
 
-#: internal/lightui/pass.go:1025
+#: internal/lightui/pass.go:1026
 msgid "That path is already in the store."
 msgstr "そのパスはすでにストアにあります。"
 
-#: internal/lightui/pass.go:1027
+#: internal/lightui/pass.go:1028
 msgid "It is no longer in the store."
 msgstr "もうストアにありません。"
 
-#: internal/lightui/pass.go:1029
+#: internal/lightui/pass.go:1030
 msgid "Each part of the path needs a name, without a leading dot."
 msgstr "パスの各部分には、先頭がドットでない名前が必要です。"
 
-#: internal/lightui/pass.go:1136
+#: internal/lightui/pass.go:1137
 msgid "TRUSTED APPS"
 msgstr "信頼するアプリ"
 
-#: internal/lightui/pass.go:1136
+#: internal/lightui/pass.go:1137
 #: internal/lightui/workshop_manager.go:50
 #: internal/ui/settings_keyring.go:551
 msgid "%d app"
 msgid_plural "%d apps"
 msgstr[0] "%d 個のアプリ"
 
-#: internal/lightui/pass.go:1138
+#: internal/lightui/pass.go:1139
 msgid "None: an app reading it is asked about first."
 msgstr "なし。読もうとするアプリは先に確認します。"
 
-#: internal/lightui/pass.go:1144
+#: internal/lightui/pass.go:1145
 #: internal/ui/askpass.go:405
 #: internal/ui/settings_keyring.go:624
 msgid "Flatpak: %s"
 msgstr "Flatpak: %s"
 
-#: internal/lightui/pass.go:1149
-#: internal/lightui/pass.go:1171
+#: internal/lightui/pass.go:1150
+#: internal/lightui/pass.go:1172
 #: internal/ui/settings_keyring.go:469
 #: internal/ui/settings_keyring.go:477
 #: internal/ui/settings_keyring.go:629
@@ -9559,50 +9559,50 @@ msgstr "Flatpak: %s"
 msgid "%s · %s"
 msgstr "%s · %s"
 
-#: internal/lightui/pass.go:1156
+#: internal/lightui/pass.go:1157
 #: internal/ui/settings_keyring.go:649
 msgid "Stop trusting it: it is asked about at its next read"
 msgstr "信頼をやめます。次の読み取りで確認します"
 
-#: internal/lightui/pass.go:1161
+#: internal/lightui/pass.go:1162
 msgid "LAST READS"
 msgstr "最近の読み取り"
 
-#: internal/lightui/pass.go:1163
+#: internal/lightui/pass.go:1164
 msgid "No app has read it yet."
 msgstr "まだどのアプリも読んでいません。"
 
-#: internal/lightui/pass.go:1169
+#: internal/lightui/pass.go:1170
 msgid "%s · %d times"
 msgid_plural "%s · %d times"
 msgstr[0] "%s · %d 回"
 
-#: internal/lightui/pass.go:1181
+#: internal/lightui/pass.go:1182
 #: internal/ui/settings_keyring.go:694
 msgid "trusted"
 msgstr "信頼済み"
 
-#: internal/lightui/pass.go:1183
+#: internal/lightui/pass.go:1184
 #: internal/ui/settings_keyring.go:696
 msgid "allowed once"
 msgstr "今回だけ許可"
 
-#: internal/lightui/pass.go:1185
+#: internal/lightui/pass.go:1186
 #: internal/ui/settings_keyring.go:698
 msgid "allowed, and trusted from now on"
 msgstr "許可し、今後は信頼"
 
-#: internal/lightui/pass.go:1187
+#: internal/lightui/pass.go:1188
 #: internal/ui/settings_keyring.go:700
 msgid "denied"
 msgstr "拒否"
 
-#: internal/lightui/pass.go:1189
+#: internal/lightui/pass.go:1190
 #: internal/ui/settings_keyring.go:702
 msgid "allowed: no one to ask"
 msgstr "許可: 確認できる相手なし"
 
-#: internal/lightui/pass.go:1191
+#: internal/lightui/pass.go:1192
 msgid "read"
 msgstr "読み取り"
 
@@ -9656,56 +9656,56 @@ msgstr "QR コードの入った画像"
 msgid "Reading the QR code…"
 msgstr "QR コードを読み取り中…"
 
-#: internal/lightui/stocks.go:275
+#: internal/lightui/stocks.go:277
 msgid "Search for a symbol to add it."
 msgstr "シンボルを検索して追加する。"
 
-#: internal/lightui/stocks.go:282
+#: internal/lightui/stocks.go:284
 #: internal/mailui/window.go:994
 msgid "Loading %s…"
 msgstr "%sをロード中..."
 
-#: internal/lightui/stocks.go:295
+#: internal/lightui/stocks.go:297
 msgid "%s could not be read.\n%s"
 msgstr "%[1]sを読み取ることができなかった。\n%[2]s"
 
-#: internal/lightui/stocks.go:318
+#: internal/lightui/stocks.go:320
 msgid "Previous close"
 msgstr "前回の取引終了"
 
-#: internal/lightui/stocks.go:320
+#: internal/lightui/stocks.go:322
 msgid "Range start"
 msgstr "レンジスタート"
 
-#: internal/lightui/stocks.go:323
+#: internal/lightui/stocks.go:325
 #: internal/ui/settings_ai.go:100
 msgid "High"
 msgstr "高"
 
-#: internal/lightui/stocks.go:323
+#: internal/lightui/stocks.go:325
 #: internal/ui/settings_ai.go:100
 msgid "Low"
 msgstr "低"
 
-#: internal/lightui/stocks.go:329
+#: internal/lightui/stocks.go:331
 msgid "As of %s"
 msgstr "%s 更新"
 
-#: internal/lightui/stocks.go:329
+#: internal/lightui/stocks.go:331
 msgid "Jan 2, 15:04"
 msgstr "1月2日 15:04"
 
-#: internal/lightui/stocks.go:405
+#: internal/lightui/stocks.go:407
 msgid "Nothing by that name"
 msgstr "そのような名前のものは何もありません"
 
-#: internal/lightui/stocks.go:407
-#: internal/lightui/weather.go:473
+#: internal/lightui/stocks.go:409
+#: internal/lightui/weather.go:475
 msgid "Could not search: %s"
 msgstr "検索できませんでした: %s"
 
-#: internal/lightui/sysmon.go:54
-#: internal/lightui/sysmon.go:54
+#: internal/lightui/sysmon.go:55
+#: internal/lightui/sysmon.go:55
 #: internal/shell/launcher_actions.go:45
 #: internal/termui/menubar.go:34
 #: internal/ui/dock.go:540
@@ -9713,470 +9713,470 @@ msgstr "検索できませんでした: %s"
 msgid "Quit"
 msgstr "やめる"
 
-#: internal/lightui/sysmon.go:54
+#: internal/lightui/sysmon.go:55
 msgid "Asks it to quit. It can save its work first."
 msgstr "終了するよう要求する。最初に作業内容を保存できます。"
 
-#: internal/lightui/sysmon.go:55
-#: internal/lightui/sysmon.go:55
+#: internal/lightui/sysmon.go:56
+#: internal/lightui/sysmon.go:56
 msgid "Interrupt"
 msgstr "割り込み"
 
-#: internal/lightui/sysmon.go:55
+#: internal/lightui/sysmon.go:56
 msgid "As Ctrl+C in a terminal."
 msgstr "端末におけるCtrl+Cとして。"
 
-#: internal/lightui/sysmon.go:56
-#: internal/lightui/sysmon.go:56
+#: internal/lightui/sysmon.go:57
+#: internal/lightui/sysmon.go:57
 msgid "Hang Up"
 msgstr "電話を切る"
 
-#: internal/lightui/sysmon.go:56
+#: internal/lightui/sysmon.go:57
 msgid "As closing its terminal. Many services reload instead."
 msgstr "端末を閉じるとき。多くのサービスは代わりにリロードされます。"
 
-#: internal/lightui/sysmon.go:57
+#: internal/lightui/sysmon.go:58
 msgid "Stops it running until it is resumed."
 msgstr "再開されるまで実行を停止します。"
 
-#: internal/lightui/sysmon.go:58
-#: internal/lightui/sysmon.go:58
+#: internal/lightui/sysmon.go:59
+#: internal/lightui/sysmon.go:59
 msgid "Force Quit"
 msgstr "強制終了"
 
-#: internal/lightui/sysmon.go:58
+#: internal/lightui/sysmon.go:59
 msgid "Ends it at once. Work it has not saved is lost."
 msgstr "すぐに終了する。保存していない作業内容は失われます。"
 
-#: internal/lightui/sysmon.go:59
+#: internal/lightui/sysmon.go:60
 msgid "Quit with Children"
 msgstr "子供と一緒にやめる"
 
-#: internal/lightui/sysmon.go:59
 #: internal/lightui/sysmon.go:60
+#: internal/lightui/sysmon.go:61
 msgid "Quit All"
 msgstr "すべてをやめてください"
 
-#: internal/lightui/sysmon.go:60
+#: internal/lightui/sysmon.go:61
 msgid "Quit All by Name"
 msgstr "名前で全員を辞める"
 
-#: internal/lightui/sysmon.go:144
-#: internal/lightui/sysmon.go:726
+#: internal/lightui/sysmon.go:145
+#: internal/lightui/sysmon.go:728
 #: ui/sysmon.ui:84
 msgid "CPU"
 msgstr "CPU"
 
-#: internal/lightui/sysmon.go:146
-#: internal/lightui/sysmon.go:726
-#: internal/lightui/sysmon.go:787
-#: internal/lightui/sysmon.go:991
+#: internal/lightui/sysmon.go:147
+#: internal/lightui/sysmon.go:728
+#: internal/lightui/sysmon.go:789
+#: internal/lightui/sysmon.go:993
 msgid "MEMORY"
 msgstr "記憶"
 
-#: internal/lightui/sysmon.go:148
+#: internal/lightui/sysmon.go:149
 msgid "GPU"
 msgstr "GPU"
 
-#: internal/lightui/sysmon.go:150
-#: internal/lightui/sysmon.go:1037
+#: internal/lightui/sysmon.go:151
+#: internal/lightui/sysmon.go:1039
 #: internal/shell/dock.go:286
 #: internal/shell/dock.go:329
 msgid "NETWORK"
 msgstr "ネットワーク"
 
-#: internal/lightui/sysmon.go:151
+#: internal/lightui/sysmon.go:152
 #: internal/ui/settings_card.go:526
 msgid "DISK"
 msgstr "ディスク"
 
-#: internal/lightui/sysmon.go:153
+#: internal/lightui/sysmon.go:154
 msgid "BATTERY"
 msgstr "バッテリー"
 
-#: internal/lightui/sysmon.go:393
+#: internal/lightui/sysmon.go:395
 msgid "%d threads"
 msgstr "%d スレッド"
 
-#: internal/lightui/sysmon.go:398
+#: internal/lightui/sysmon.go:400
 msgid "load %.2f %.2f %.2f"
 msgstr "ロード %.2[1]f %.2[2]f %.2[3]f"
 
-#: internal/lightui/sysmon.go:408
+#: internal/lightui/sysmon.go:410
 msgid "CPU %d: %.0f%%"
 msgstr "CPU %d：%.0f%%"
 
-#: internal/lightui/sysmon.go:417
+#: internal/lightui/sysmon.go:419
 msgid "of %s · cache %s"
 msgstr "/%[1]s · キャッシュ %[2]s"
 
-#: internal/lightui/sysmon.go:419
+#: internal/lightui/sysmon.go:421
 msgid " · swap %s of %s"
 msgstr "· %[2]s の %[1]s を交換する"
 
-#: internal/lightui/sysmon.go:434
+#: internal/lightui/sysmon.go:436
 msgid " · video memory %s of %s"
 msgstr "・ビデオメモリ %[1]s の %[2]s"
 
-#: internal/lightui/sysmon.go:446
+#: internal/lightui/sysmon.go:448
 msgid "↑ %s · received %s, sent %s"
 msgstr "↑ %[1]s · 受信 %[2]s、送信 %[3]s"
 
-#: internal/lightui/sysmon.go:453
+#: internal/lightui/sysmon.go:455
 msgid "of %s on / · %s free"
 msgstr "%[1]sの/・%[2]s無料"
 
-#: internal/lightui/sysmon.go:455
+#: internal/lightui/sysmon.go:457
 msgid " · read %s · write %s"
 msgstr "・%[1]sを読み取る・%[2]sを書き込む"
 
-#: internal/lightui/sysmon.go:471
+#: internal/lightui/sysmon.go:473
 msgid "health %.0f%%"
 msgstr "正常度 %.0f%%"
 
-#: internal/lightui/sysmon.go:476
+#: internal/lightui/sysmon.go:478
 msgid "UP %s"
 msgstr "上 %s"
 
-#: internal/lightui/sysmon.go:538
+#: internal/lightui/sysmon.go:540
 msgid "%d PROCESSES"
 msgstr "%d プロセス"
 
-#: internal/lightui/sysmon.go:540
+#: internal/lightui/sysmon.go:542
 msgid "%d OF %d PROCESSES"
 msgstr "%[2]d プロセスの %[1]d"
 
-#: internal/lightui/sysmon.go:544
+#: internal/lightui/sysmon.go:546
 msgid "No process matches."
 msgstr "一致するプロセスがない。"
 
-#: internal/lightui/sysmon.go:580
+#: internal/lightui/sysmon.go:582
 msgid "Details and the ways to end %s"
 msgstr "%sの詳細と終了方法"
 
-#: internal/lightui/sysmon.go:608
+#: internal/lightui/sysmon.go:610
 msgid "Not sent: an administrator's password is needed."
 msgstr "送信されない:管理者のパスワードが必要です。"
 
-#: internal/lightui/sysmon.go:652
+#: internal/lightui/sysmon.go:654
 msgid "Process %d has ended."
 msgstr "プロセス%dが終了した。"
 
-#: internal/lightui/sysmon.go:726
+#: internal/lightui/sysmon.go:728
 msgid "THREADS"
 msgstr "スレッド"
 
-#: internal/lightui/sysmon.go:742
+#: internal/lightui/sysmon.go:744
 msgid "END OR PAUSE"
 msgstr "終了または一時停止"
 
-#: internal/lightui/sysmon.go:783
+#: internal/lightui/sysmon.go:785
 msgid "PROCESS"
 msgstr "プロセス"
 
-#: internal/lightui/sysmon.go:784
+#: internal/lightui/sysmon.go:786
 msgid "Parent"
 msgstr "親"
 
-#: internal/lightui/sysmon.go:784
+#: internal/lightui/sysmon.go:786
 msgid "State"
 msgstr "状態"
 
-#: internal/lightui/sysmon.go:784
+#: internal/lightui/sysmon.go:786
 msgid "Started"
 msgstr "開始"
 
-#: internal/lightui/sysmon.go:784
+#: internal/lightui/sysmon.go:786
 msgid "CPU time"
 msgstr "CPU時間"
 
-#: internal/lightui/sysmon.go:784
+#: internal/lightui/sysmon.go:786
 msgid "Priority"
 msgstr "優先順位"
 
-#: internal/lightui/sysmon.go:784
+#: internal/lightui/sysmon.go:786
 msgid "Unit"
 msgstr "ユニット"
 
-#: internal/lightui/sysmon.go:788
+#: internal/lightui/sysmon.go:790
 msgid "Resident"
 msgstr "居住者"
 
-#: internal/lightui/sysmon.go:788
+#: internal/lightui/sysmon.go:790
 msgid "Private"
 msgstr "プライベート"
 
-#: internal/lightui/sysmon.go:788
+#: internal/lightui/sysmon.go:790
 msgid "Shared"
 msgstr "共有"
 
-#: internal/lightui/sysmon.go:788
+#: internal/lightui/sysmon.go:790
 msgid "Swapped out"
 msgstr "スワップアウトされました"
 
-#: internal/lightui/sysmon.go:788
+#: internal/lightui/sysmon.go:790
 msgid "Peak"
 msgstr "ピーク"
 
-#: internal/lightui/sysmon.go:792
+#: internal/lightui/sysmon.go:794
 msgid "Command"
 msgstr "コマンド"
 
-#: internal/lightui/sysmon.go:792
+#: internal/lightui/sysmon.go:794
 msgid "Disk read"
 msgstr "ディスク読み取り"
 
-#: internal/lightui/sysmon.go:792
+#: internal/lightui/sysmon.go:794
 msgid "Disk written"
 msgstr "ディスクに書き込まれた"
 
-#: internal/lightui/sysmon.go:806
+#: internal/lightui/sysmon.go:808
 msgid "PID %d · %s"
 msgstr "PID %[1]d・%[2]s"
 
-#: internal/lightui/sysmon.go:808
+#: internal/lightui/sysmon.go:810
 msgid "PID %d · ENDED"
 msgstr "PID %d · 終了"
 
-#: internal/lightui/sysmon.go:819
-#: internal/lightui/sysmon.go:1102
-#: internal/lightui/sysmon.go:1109
+#: internal/lightui/sysmon.go:821
+#: internal/lightui/sysmon.go:1104
+#: internal/lightui/sysmon.go:1111
 msgid "Not readable: not your process"
 msgstr "読めません: あなたのプロセスではありません"
 
-#: internal/lightui/sysmon.go:842
+#: internal/lightui/sysmon.go:844
 msgid "%s · %s ago"
 msgstr "%[1]s · %[2]s 前"
 
-#: internal/lightui/sysmon.go:842
+#: internal/lightui/sysmon.go:844
 #: internal/ui/settings_keyring.go:298
 msgid "Jan 2 15:04:05"
 msgstr "1月2日 15:04:05"
 
-#: internal/lightui/sysmon.go:845
+#: internal/lightui/sysmon.go:847
 msgid "nice %d"
 msgstr "素敵な%d"
 
-#: internal/lightui/sysmon.go:869
+#: internal/lightui/sysmon.go:871
 msgid "It is paused. Lets it go on."
 msgstr "一時停止中です。続けましょう。"
 
-#: internal/lightui/sysmon.go:873
+#: internal/lightui/sysmon.go:875
 msgid "Also its %d child process, the youngest first."
 msgid_plural "Also its %d child processes, the youngest first."
 msgstr[0] "また、その %d 子プロセスも、最も若いものが最初になります。"
 
-#: internal/lightui/sysmon.go:876
+#: internal/lightui/sysmon.go:878
 msgid "All %d processes named %s."
 msgstr "すべての%[1]dプロセスは、%[2]sと名付けられる。"
 
-#: internal/lightui/sysmon.go:898
+#: internal/lightui/sysmon.go:900
 msgid "This process has ended."
 msgstr "このプロセスは終了した。"
 
-#: internal/lightui/sysmon.go:929
+#: internal/lightui/sysmon.go:931
 msgid "Asked %s to quit."
 msgstr "%sに辞めるよう依頼した。"
 
-#: internal/lightui/sysmon.go:931
+#: internal/lightui/sysmon.go:933
 msgid "Interrupted %s."
 msgstr "%sが中断されました。"
 
-#: internal/lightui/sysmon.go:933
+#: internal/lightui/sysmon.go:935
 msgid "Hung up on %s."
 msgstr "%sで電話を切りました。"
 
-#: internal/lightui/sysmon.go:935
+#: internal/lightui/sysmon.go:937
 msgid "Ended %s."
 msgstr "%s を終了しました。"
 
-#: internal/lightui/sysmon.go:937
+#: internal/lightui/sysmon.go:939
 msgid "Paused %s."
 msgstr "%s を一時停止しました。"
 
-#: internal/lightui/sysmon.go:939
+#: internal/lightui/sysmon.go:941
 msgid "Resumed %s."
 msgstr "%sを再開しました。"
 
-#: internal/lightui/sysmon.go:943
+#: internal/lightui/sysmon.go:945
 msgid "Asked %s and its %d child to quit."
 msgid_plural "Asked %s and its %d children to quit."
 msgstr[0] "%[1]sとその子%[2]dに辞めるよう依頼した。"
 
-#: internal/lightui/sysmon.go:946
+#: internal/lightui/sysmon.go:948
 msgid "Asked %d processes named %s to quit."
 msgstr "%[2]sという名前の%[1]dプロセスに終了を依頼した。"
 
-#: internal/lightui/sysmon.go:964
+#: internal/lightui/sysmon.go:966
 msgid "COMPUTER"
 msgstr "コンピュータ"
 
-#: internal/lightui/sysmon.go:965
-#: internal/lightui/sysmon.go:977
+#: internal/lightui/sysmon.go:967
+#: internal/lightui/sysmon.go:979
 #: internal/shell/cardterm.go:113
 #: internal/ui/settings_ai.go:497
 msgid "Model"
 msgstr "モデル"
 
-#: internal/lightui/sysmon.go:968
+#: internal/lightui/sysmon.go:970
 #: internal/shell/cardterm.go:136
 msgid "Kernel"
 msgstr "カーネル"
 
-#: internal/lightui/sysmon.go:971
+#: internal/lightui/sysmon.go:973
 msgid "%s · since %s"
 msgstr "%[1]s · %[2]s以降"
 
-#: internal/lightui/sysmon.go:973
+#: internal/lightui/sysmon.go:975
 msgid "Up"
 msgstr "上へ"
 
-#: internal/lightui/sysmon.go:976
+#: internal/lightui/sysmon.go:978
 msgid "PROCESSOR"
 msgstr "プロセッサ"
 
-#: internal/lightui/sysmon.go:978
+#: internal/lightui/sysmon.go:980
 msgid "Cores"
 msgstr "コア"
 
-#: internal/lightui/sysmon.go:978
+#: internal/lightui/sysmon.go:980
 msgid "%s, %s"
 msgstr "%[1]s、%[2]s"
 
-#: internal/lightui/sysmon.go:978
+#: internal/lightui/sysmon.go:980
 msgid "%d core"
 msgid_plural "%d cores"
 msgstr[0] "%dコア"
 
-#: internal/lightui/sysmon.go:978
+#: internal/lightui/sysmon.go:980
 msgid "%d thread"
 msgid_plural "%d threads"
 msgstr[0] "%dスレッド"
 
-#: internal/lightui/sysmon.go:981
+#: internal/lightui/sysmon.go:983
 msgid "up to %s"
 msgstr "%sまで"
 
-#: internal/lightui/sysmon.go:984
+#: internal/lightui/sysmon.go:986
 msgid "now %s"
 msgstr "現在 %s"
 
-#: internal/lightui/sysmon.go:987
+#: internal/lightui/sysmon.go:989
 msgid "Speed"
 msgstr "速度"
 
-#: internal/lightui/sysmon.go:992
+#: internal/lightui/sysmon.go:994
 #: internal/lightui/workshop_manager.go:50
 msgid "Installed"
 msgstr "インストールされました"
 
-#: internal/lightui/sysmon.go:993
+#: internal/lightui/sysmon.go:995
 #: internal/ui/voice_models.go:152
 msgid "In use"
 msgstr "使用中"
 
-#: internal/lightui/sysmon.go:994
+#: internal/lightui/sysmon.go:996
 msgid "Cache"
 msgstr "キャッシュ"
 
-#: internal/lightui/sysmon.go:994
+#: internal/lightui/sysmon.go:996
 msgid "%s · given back when needed"
 msgstr "%s · 必要なときに返される"
 
-#: internal/lightui/sysmon.go:997
+#: internal/lightui/sysmon.go:999
 msgid "Swap"
 msgstr "スワップ"
 
-#: internal/lightui/sysmon.go:997
-#: internal/lightui/sysmon.go:1009
-#: internal/lightui/sysmon.go:1023
+#: internal/lightui/sysmon.go:999
+#: internal/lightui/sysmon.go:1011
+#: internal/lightui/sysmon.go:1025
 msgid "%s of %s"
 msgstr "%[1]s/%[2]s"
 
-#: internal/lightui/sysmon.go:1001
+#: internal/lightui/sysmon.go:1003
 msgid "GRAPHICS"
 msgstr "グラフィックス"
 
-#: internal/lightui/sysmon.go:1003
+#: internal/lightui/sysmon.go:1005
 #: internal/ui/voice_page.go:200
 msgid "Card"
 msgstr "カード"
 
-#: internal/lightui/sysmon.go:1004
+#: internal/lightui/sysmon.go:1006
 msgid "Driver"
 msgstr "ドライバー"
 
-#: internal/lightui/sysmon.go:1006
+#: internal/lightui/sysmon.go:1008
 msgid "Busy"
 msgstr "忙しい"
 
-#: internal/lightui/sysmon.go:1009
+#: internal/lightui/sysmon.go:1011
 msgid "Video memory"
 msgstr "ビデオメモリ"
 
-#: internal/lightui/sysmon.go:1015
+#: internal/lightui/sysmon.go:1017
 msgid "STORAGE"
 msgstr "ストレージ"
 
-#: internal/lightui/sysmon.go:1039
+#: internal/lightui/sysmon.go:1041
 msgid "wired"
 msgstr "有線"
 
-#: internal/lightui/sysmon.go:1041
+#: internal/lightui/sysmon.go:1043
 #: ui/control.ui:273
 #: ui/settings.ui:5179
 #: ui/settings.ui:5255
 msgid "Wi-Fi"
 msgstr "Wi-Fi"
 
-#: internal/lightui/sysmon.go:1043
+#: internal/lightui/sysmon.go:1045
 msgid "down"
 msgstr "ダウン"
 
-#: internal/lightui/sysmon.go:1045
+#: internal/lightui/sysmon.go:1047
 msgid "up"
 msgstr "アップ"
 
-#: internal/lightui/sysmon.go:1049
-#: internal/lightui/tailscale.go:633
+#: internal/lightui/sysmon.go:1051
+#: internal/lightui/tailscale.go:634
 msgid "Addresses"
 msgstr "アドレス"
 
-#: internal/lightui/sysmon.go:1052
+#: internal/lightui/sysmon.go:1054
 msgid "Hardware"
 msgstr "ハードウェア"
 
-#: internal/lightui/sysmon.go:1055
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:570
+#: internal/lightui/sysmon.go:1057
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:571
 msgid "Traffic"
 msgstr "交通"
 
-#: internal/lightui/sysmon.go:1055
+#: internal/lightui/sysmon.go:1057
 msgid "received %s · sent %s"
 msgstr "%[1]sを受信しました・%[2]sを送信しました"
 
-#: internal/lightui/sysmon.go:1061
+#: internal/lightui/sysmon.go:1063
 msgid "SENSORS"
 msgstr "センサー"
 
-#: internal/lightui/sysmon.go:1080
+#: internal/lightui/sysmon.go:1082
 msgid "Charging"
 msgstr "充電中"
 
-#: internal/lightui/sysmon.go:1080
+#: internal/lightui/sysmon.go:1082
 msgid "Discharging"
 msgstr "放電"
 
-#: internal/lightui/sysmon.go:1080
+#: internal/lightui/sysmon.go:1082
 msgid "Full"
 msgstr "フル"
 
-#: internal/lightui/sysmon.go:1081
+#: internal/lightui/sysmon.go:1083
 msgid "Not charging"
 msgstr "充電しない"
 
-#: internal/lightui/sysmon.go:1088
+#: internal/lightui/sysmon.go:1090
 msgid "%.1f s"
 msgstr "%.1f"
 
@@ -10240,174 +10240,174 @@ msgstr "%sオン。"
 msgid "%s off."
 msgstr "%s オフ。"
 
-#: internal/lightui/tailscale.go:304
+#: internal/lightui/tailscale.go:305
 msgid "Not changed: allow this app to manage Tailscale first."
 msgstr "変更なし: このアプリが最初に Tailscale を管理できるようにします。"
 
-#: internal/lightui/tailscale.go:306
+#: internal/lightui/tailscale.go:307
 msgid "Tailscale is not running."
 msgstr "テールスケールは実行されていない。"
 
-#: internal/lightui/tailscale.go:348
+#: internal/lightui/tailscale.go:349
 #: internal/shell/status.go:99
 #: internal/shell/status.go:116
 #: internal/shell/status.go:131
 msgid "Unavailable"
 msgstr "利用不可"
 
-#: internal/lightui/tailscale.go:359
+#: internal/lightui/tailscale.go:360
 msgid "%d of %d devices online"
 msgstr "オンラインの %[2]d デバイスの %[1]d"
 
-#: internal/lightui/tailscale.go:372
+#: internal/lightui/tailscale.go:373
 msgid "Tailscale's service is not running."
 msgstr "Tailscaleのサービスは実行されていない。"
 
-#: internal/lightui/tailscale.go:372
+#: internal/lightui/tailscale.go:373
 msgid "Start…"
 msgstr "スタート…"
 
-#: internal/lightui/tailscale.go:373
+#: internal/lightui/tailscale.go:374
 msgid "Started Tailscale."
 msgstr "テイルスケール社を設立。"
 
-#: internal/lightui/tailscale.go:377
+#: internal/lightui/tailscale.go:378
 msgid "This device is logged out of its tailnet."
 msgstr "このデバイスはテールネットからログアウトされています。"
 
-#: internal/lightui/tailscale.go:377
+#: internal/lightui/tailscale.go:378
 msgid "Log In"
 msgstr "ログイン"
 
-#: internal/lightui/tailscale.go:380
+#: internal/lightui/tailscale.go:381
 msgid "An admin of the tailnet has to approve this device."
 msgstr "テールネットの管理者は、このデバイスを承認する必要がある。"
 
-#: internal/lightui/tailscale.go:380
-#: internal/lightui/tailscale.go:667
+#: internal/lightui/tailscale.go:381
+#: internal/lightui/tailscale.go:668
 msgid "Admin Console"
 msgstr "管理コンソール"
 
-#: internal/lightui/tailscale.go:383
+#: internal/lightui/tailscale.go:384
 msgid "To change Tailscale from here, allow it once; it asks for an administrator's password."
 msgstr "ここから Tailscale を変更するには、一度許可します。管理者のパスワードを要求されます。"
 
-#: internal/lightui/tailscale.go:383
+#: internal/lightui/tailscale.go:384
 msgid "Allow…"
 msgstr "許可してください…"
 
-#: internal/lightui/tailscale.go:385
+#: internal/lightui/tailscale.go:386
 msgid "This app may now manage Tailscale."
 msgstr "このアプリは Tailscale を管理できるようになりました。"
 
-#: internal/lightui/tailscale.go:417
+#: internal/lightui/tailscale.go:418
 msgid "No device matches."
 msgstr "0001 一致するデバイスがありません。"
 
-#: internal/lightui/tailscale.go:419
+#: internal/lightui/tailscale.go:420
 msgid "No other devices in the tailnet yet."
 msgstr "テールネットにはまだ他のデバイスが存在しない。"
 
-#: internal/lightui/tailscale.go:436
+#: internal/lightui/tailscale.go:437
 msgid "exit node in use"
 msgstr "出口ノードが使用中です"
 
-#: internal/lightui/tailscale.go:438
+#: internal/lightui/tailscale.go:439
 msgid "exit node"
 msgstr "出口ノード"
 
-#: internal/lightui/tailscale.go:448
+#: internal/lightui/tailscale.go:449
 msgid "Details, ping, exit node and sending files"
 msgstr "詳細、ping、出口ノード、およびファイルの送信"
 
-#: internal/lightui/tailscale.go:508
+#: internal/lightui/tailscale.go:509
 msgid "Copy IP"
 msgstr "IPのコピー"
 
-#: internal/lightui/tailscale.go:508
+#: internal/lightui/tailscale.go:509
 msgid "Copy Name"
 msgstr "名前のコピー"
 
-#: internal/lightui/tailscale.go:508
+#: internal/lightui/tailscale.go:509
 #: ui/connect.ui:622
 msgid "Ping"
 msgstr "Ping"
 
-#: internal/lightui/tailscale.go:516
-#: internal/lightui/tailscale.go:578
+#: internal/lightui/tailscale.go:517
+#: internal/lightui/tailscale.go:579
 msgid "Use as Exit Node"
 msgstr "出口ノードとして使用する"
 
-#: internal/lightui/tailscale.go:525
+#: internal/lightui/tailscale.go:526
 msgid "DEVICE"
 msgstr "デバイス"
 
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:564
-#: internal/lightui/tailscale.go:632
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:565
+#: internal/lightui/tailscale.go:633
 msgid "MagicDNS"
 msgstr "MagicDNS"
 
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:565
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:566
 msgid "IPv4"
 msgstr "IPv4"
 
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:566
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:567
 msgid "IPv6"
 msgstr "IPv6"
 
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:568
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:569
 msgid "Status"
 msgstr "ステータス"
 
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:569
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:570
 #: internal/term/web/strings.go:32
 msgid "Connection"
 msgstr "接続"
 
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:571
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:572
 msgid "Key expires"
 msgstr "キーの有効期限が切れる"
 
-#: internal/lightui/tailscale.go:526
-#: internal/lightui/tailscale.go:572
+#: internal/lightui/tailscale.go:527
+#: internal/lightui/tailscale.go:573
 msgid "Tags"
 msgstr "タグ"
 
-#: internal/lightui/tailscale.go:529
+#: internal/lightui/tailscale.go:530
 msgid "SEND FILES"
 msgstr "ファイルの送信"
 
-#: internal/lightui/tailscale.go:545
+#: internal/lightui/tailscale.go:546
 msgid "NO LONGER IN THE TAILNET"
 msgstr "もはやテールネットには存在しない"
 
-#: internal/lightui/tailscale.go:567
+#: internal/lightui/tailscale.go:568
 msgid "%s · host name %s"
 msgstr "%[1]s · ホスト名 %[2]s"
 
-#: internal/lightui/tailscale.go:573
+#: internal/lightui/tailscale.go:574
 msgid "Drop files on this panel to send them to %s with Taildrop. They wait on it until saved."
 msgstr "このパネルにファイルをドロップして、Taildrop で %s に送信します。保存されるまで待機します。"
 
-#: internal/lightui/tailscale.go:576
+#: internal/lightui/tailscale.go:577
 msgid "Stop Using as Exit Node"
 msgstr "出口ノードとしての使用を停止する"
 
-#: internal/lightui/tailscale.go:585
+#: internal/lightui/tailscale.go:586
 msgid "SEND THIS DEVICE'S TRAFFIC THROUGH"
 msgstr "このデバイスのトラフィックを送信します"
 
-#: internal/lightui/tailscale.go:595
+#: internal/lightui/tailscale.go:596
 msgid "IN USE"
 msgstr "使用中"
 
-#: internal/lightui/tailscale.go:602
+#: internal/lightui/tailscale.go:603
 #: internal/termui/prefs.go:347
 #: internal/ui/settings_ai.go:272
 #: internal/ui/settings_keyring.go:572
@@ -10416,168 +10416,168 @@ msgstr "使用中"
 msgid "None"
 msgstr "なし"
 
-#: internal/lightui/tailscale.go:602
+#: internal/lightui/tailscale.go:603
 msgid "Traffic goes out from this device as usual."
 msgstr "トラフィックは通常通りこの装置から発信される。"
 
-#: internal/lightui/tailscale.go:610
+#: internal/lightui/tailscale.go:611
 msgid "No device in the tailnet offers to be an exit node. Turn on Offer as Exit Node on one, then approve it in the admin console."
 msgstr "テールネット内のデバイスは、出口ノードになることを申し出ない。 1 つで「終了ノードとしてオファー」をオンにし、管理コンソールで承認します。"
 
-#: internal/lightui/tailscale.go:617
+#: internal/lightui/tailscale.go:618
 msgid "Allow local network access"
 msgstr "ローカルネットワークアクセスを許可する"
 
-#: internal/lightui/tailscale.go:618
+#: internal/lightui/tailscale.go:619
 msgid "Reach printers and other devices on this network while the exit node carries the rest."
 msgstr "出口ノードが残りを運ぶ間に、このネットワーク上のプリンタおよび他のデバイスに到達する。"
 
-#: internal/lightui/tailscale.go:629
+#: internal/lightui/tailscale.go:630
 #: ui/tailscale.ui:170
 msgid "THIS DEVICE"
 msgstr "この装置"
 
-#: internal/lightui/tailscale.go:636
+#: internal/lightui/tailscale.go:637
 msgid "Tailnet"
 msgstr "Tailscale ネットワーク"
 
-#: internal/lightui/tailscale.go:638
+#: internal/lightui/tailscale.go:639
 msgid "SETTINGS"
 msgstr "設定"
 
-#: internal/lightui/tailscale.go:647
+#: internal/lightui/tailscale.go:648
 msgid "RECEIVED FILES"
 msgstr "個のファイルを受信しました"
 
-#: internal/lightui/tailscale.go:650
+#: internal/lightui/tailscale.go:651
 msgid "Files sent to this device show here once this app may manage Tailscale."
 msgstr "このアプリが Tailscale を管理できるようになるまで、このデバイスに送信されたファイルがここに表示されます。"
 
-#: internal/lightui/tailscale.go:654
+#: internal/lightui/tailscale.go:655
 msgid "None waiting. Files other devices send with Taildrop show here."
 msgstr "待っている人はいない。他のデバイスが Taildrop で送信したファイルがここに表示されます。"
 
-#: internal/lightui/tailscale.go:659
+#: internal/lightui/tailscale.go:660
 msgid "Save to Downloads"
 msgstr "ダウンロードに保存"
 
-#: internal/lightui/tailscale.go:662
+#: internal/lightui/tailscale.go:663
 msgid "ACCOUNT"
 msgstr "アカウント"
 
-#: internal/lightui/tailscale.go:663
+#: internal/lightui/tailscale.go:664
 #: internal/shell/commands.go:31
 msgid "Log Out"
 msgstr "ログアウト"
 
-#: internal/lightui/tailscale.go:665
+#: internal/lightui/tailscale.go:666
 msgid "Sure?"
 msgstr "よろしいですか？"
 
-#: internal/lightui/tailscale.go:750
+#: internal/lightui/tailscale.go:751
 msgid "No exit node: traffic goes out from this device."
 msgstr "出口ノードなし:トラフィックはこのデバイスから出ます。"
 
-#: internal/lightui/tailscale.go:752
-#: internal/lightui/tailscale.go:763
+#: internal/lightui/tailscale.go:753
+#: internal/lightui/tailscale.go:764
 msgid "Traffic now goes through %s."
 msgstr "トラフィックは %s を通過します。"
 
-#: internal/lightui/tailscale.go:761
+#: internal/lightui/tailscale.go:762
 msgid "Stopped using %s as exit node."
 msgstr "%s を出口ノードとして使用するのを停止しました。"
 
-#: internal/lightui/tailscale.go:783
+#: internal/lightui/tailscale.go:784
 msgid "Logged out."
 msgstr "ログアウトした。"
 
-#: internal/lightui/tailscale.go:806
+#: internal/lightui/tailscale.go:807
 msgid "Pinging %s…"
 msgstr "%s を鳴らしています…"
 
-#: internal/lightui/tailscale.go:820
+#: internal/lightui/tailscale.go:821
 msgid "%s did not answer"
 msgstr "%s は応答しませんでした"
 
-#: internal/lightui/tailscale.go:823
+#: internal/lightui/tailscale.go:824
 msgid "%s answered in %.0f ms"
 msgstr "%[1]s は %.0[2]f ミリ秒で応答しました"
 
-#: internal/lightui/tailscale.go:824
+#: internal/lightui/tailscale.go:825
 msgid "Direct, %s"
 msgstr "直接、%s"
 
-#: internal/lightui/tailscale.go:826
+#: internal/lightui/tailscale.go:827
 msgid "Relayed through %s"
 msgstr "%s 経由で中継"
 
-#: internal/lightui/tailscale.go:842
+#: internal/lightui/tailscale.go:843
 msgid "Sending %s to %s…"
 msgstr "%[1]s を %[2]s に送信中..."
 
-#: internal/lightui/tailscale.go:867
+#: internal/lightui/tailscale.go:868
 msgid "Sent %s to %s."
 msgstr "%[1]s を %[2]s に送信しました。"
 
-#: internal/lightui/tailscale.go:904
+#: internal/lightui/tailscale.go:905
 msgid "Saved %s to %s."
 msgstr "%[1]s を %[2]s に保存しました。"
 
-#: internal/lightui/tailscale.go:915
+#: internal/lightui/tailscale.go:916
 msgid "Opening the login page…"
 msgstr "ログインページを開くと…"
 
-#: internal/lightui/tailscale.go:942
+#: internal/lightui/tailscale.go:943
 msgid "No password prompt is running in this session (a polkit agent); run in a terminal: sudo %s"
 msgstr "このセッション (polkit エージェント) ではパスワード プロンプトが実行されていません。ターミナルで実行: sudo %s"
 
-#: internal/lightui/tailscale.go:944
+#: internal/lightui/tailscale.go:945
 msgid "not done: no administrator's password was given"
 msgstr "未完了: 管理者のパスワードが指定されていませんでした"
 
-#: internal/lightui/video.go:306
+#: internal/lightui/video.go:307
 msgid "Resumed at %s"
 msgstr "%s から再開しました"
 
-#: internal/lightui/video.go:395
+#: internal/lightui/video.go:396
 msgid "Playing a video"
 msgstr "ビデオを再生中"
 
-#: internal/lightui/video.go:418
+#: internal/lightui/video.go:419
 msgid "Cannot play it: %s"
 msgstr "再生できません: %s"
 
-#: internal/lightui/video.go:576
+#: internal/lightui/video.go:577
 msgid "Speed %s×"
 msgstr "速度 %s×"
 
-#: internal/lightui/video.go:685
+#: internal/lightui/video.go:686
 msgid "Open a video"
 msgstr "ビデオを開く"
 
-#: internal/lightui/video.go:693
+#: internal/lightui/video.go:694
 msgid "Videos"
 msgstr "ビデオ"
 
-#: internal/lightui/weather.go:256
+#: internal/lightui/weather.go:258
 msgid "Add a city to see its weather."
 msgstr "都市を追加してその天気を確認する。"
 
-#: internal/lightui/weather.go:256
+#: internal/lightui/weather.go:258
 #: ui/clock.ui:122
 #: ui/weather.ui:95
 msgid "Add a city"
 msgstr "都市を追加する"
 
-#: internal/lightui/weather.go:262
+#: internal/lightui/weather.go:264
 msgid "Reading the weather…"
 msgstr "天気を読む…"
 
-#: internal/lightui/weather.go:274
+#: internal/lightui/weather.go:276
 msgid "The weather could not be read.\n%s"
 msgstr "天気が読めませんでした。\n%s"
 
-#: internal/lightui/weather.go:274
+#: internal/lightui/weather.go:276
 #: internal/mailui/panel.go:307
 #: internal/ui/passwords.go:534
 #: ui/mail-compose.ui:456
@@ -10585,43 +10585,43 @@ msgstr "天気が読めませんでした。\n%s"
 msgid "Try again"
 msgstr "もう一度試してください"
 
-#: internal/lightui/weather.go:323
+#: internal/lightui/weather.go:325
 msgid "H %s   L %s"
 msgstr "H %[1]s L %[2]s"
 
-#: internal/lightui/weather.go:332
+#: internal/lightui/weather.go:334
 msgid "NOW"
 msgstr "今"
 
-#: internal/lightui/weather.go:395
+#: internal/lightui/weather.go:397
 msgid "FEELS LIKE"
 msgstr "体感温度"
 
-#: internal/lightui/weather.go:396
+#: internal/lightui/weather.go:398
 msgid "HUMIDITY"
 msgstr "湿度"
 
-#: internal/lightui/weather.go:397
+#: internal/lightui/weather.go:399
 msgid "WIND"
 msgstr "風"
 
-#: internal/lightui/weather.go:398
+#: internal/lightui/weather.go:400
 msgid "RAIN"
 msgstr "雨"
 
-#: internal/lightui/weather.go:403
+#: internal/lightui/weather.go:405
 msgid "SUNRISE"
 msgstr "日の出"
 
-#: internal/lightui/weather.go:404
+#: internal/lightui/weather.go:406
 msgid "SUNSET"
 msgstr "夕焼け"
 
-#: internal/lightui/weather.go:426
+#: internal/lightui/weather.go:428
 msgid "UPDATED %s · OPEN-METEO"
 msgstr "更新済み %s · OPEN-METEO"
 
-#: internal/lightui/weather.go:471
+#: internal/lightui/weather.go:473
 msgid "No place by that name"
 msgstr "そんな名前の場所はない"
 
@@ -10630,35 +10630,35 @@ msgstr "そんな名前の場所はない"
 msgid "Workshop"
 msgstr "ワークショップ"
 
-#: internal/lightui/workshop.go:209
+#: internal/lightui/workshop.go:210
 msgid "Starting %s…"
 msgstr "%s を起動中…"
 
-#: internal/lightui/workshop.go:222
+#: internal/lightui/workshop.go:223
 msgid "%s could not start"
 msgstr "%s を起動できませんでした"
 
-#: internal/lightui/workshop.go:233
+#: internal/lightui/workshop.go:234
 msgid "It ended without an error."
 msgstr "エラーなしで終了しました。"
 
-#: internal/lightui/workshop.go:237
+#: internal/lightui/workshop.go:238
 msgid "%s stopped"
 msgstr "%s が停止しました"
 
-#: internal/lightui/workshop.go:288
+#: internal/lightui/workshop.go:289
 msgid "Start again"
 msgstr "もう一度起動"
 
-#: internal/lightui/workshop.go:294
+#: internal/lightui/workshop.go:295
 msgid "It starts again by itself when a file of it changes."
 msgstr "ファイルが変わると自動で起動し直します。"
 
-#: internal/lightui/workshop.go:689
+#: internal/lightui/workshop.go:690
 msgid "Unknown building block %q"
 msgstr "不明な部品 %q"
 
-#: internal/lightui/workshop.go:987
+#: internal/lightui/workshop.go:988
 #: internal/term/web/strings.go:81
 #: internal/ui/askpass.go:300
 #: internal/ui/settings_card.go:624
