@@ -50,3 +50,6 @@ notes:
 Codex reviewed all 24 changed files in origin/master...HEAD (base e9b45a9), including the security review reference. No P0/P1 findings: moved to ready/ under the factory review threshold; the four P2 defects above remain for owner consideration before shipping.
 Validation: make test passed (exit 0): Python 18/18, go vet, race tests across 114 packages; 34 packages had no tests. Eight existing securitykey tests passed with no skips; four isolated overlay probes confirmed the findings. git diff --check passed; review made no source changes or commits. Installs: none.
 Not checked: UI not visually inspected; real security-key PIN/touch flow not tested. Fake tools and libfido2 source inspection do not establish real-hardware compatibility. No linked GitHub issue or PR in the item.
+
+## factory · 2026-11-08 14:13
+Moved from ready/ back to review/ at the owner's request in chat: "move it to review". No code changes; head d36cfec97a58c5b98a170ccde02ca21e577b51ba as reviewed above.
