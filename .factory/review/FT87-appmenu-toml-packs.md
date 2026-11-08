@@ -44,3 +44,17 @@ Claude Code completed fix round 2 in 26a88e9a, b4452c6f and 07e98b83; pushed hea
 Validation: Claude Code ran make test and make i18n; manager independently reran make test with throwaway HOME/XDG directories successfully (18 Python session tests, go vet and full Go race tests). No protected paths changed; clean worktree. No tools/dependencies installed. No layout files changed.
 Not checked: visual UI behavior, real application key delivery, GTK discovery-completion rerender. Accessibility flags remain intentionally inert and documented as such. Generic menus now appear for any focused window lacking a published menu/usable pack; registration timing requires live verification.
 Remains in review/ for review of the new head; not approved or merged into master.
+
+
+## factory · review · 2026-11-09 06:10
+head: 07e98b83c60fad6d7f0e5972a7f28ae8acd51568
+verdict: fix
+fix:
+- [P1] internal/ui/appmenu_packs.go:118: Each About window allocates a permanent native callback; repeated opening eventually crashes the shell with purego callback exhaustion. Isolated Broadway reproduction failed after 2000 open/destroy cycles. Reuse a long-lived shared click handler and release window/child references correctly.
+notes:
+- [P2] internal/appmenu/packs.go:354: The 256 KiB limit is checked only after reading the entire file, and non-regular files are accepted. A 16 MiB TOML allocated about 16.8 MB before rejection; a TOML FIFO blocked waiting for a writer on a UI-thread-reachable path. Accept only regular files, limit reads before allocation, and keep configuration I/O off the GTK thread.
+- [P2] internal/ui/appmenu.go:95: Rediscovery of the same window retains searched=true, allowing fallback pack actions while a newly registered published menu is pending. A private D-Bus reproduction registered /menu after confirmed absence and observed pack selection/action authorization during rediscovery. Clear confirmed-absence state on every search and withdraw fallback while pending.
+
+Validation: Codex reviewed all 23 changed files in origin/master...HEAD, including round 2. Base tip: 0de61d7987d0241cd69becf00060301a5a86da60; merge base: 655b7e896e604c6c579b098289cef80d8fa6acfb. Branch merges cleanly. Initial isolated make test failed at an AppArmor read-only probe; a rerun with only the temporary sandbox AppArmor view adjusted passed (exit 0): 18 Python tests, go vet, full Go race tests. Additional About regression probe failed with `purego: the maximum number of callbacks has been reached`. No tracked source edits, commits, or installs by reviewer.
+Residual risks: No visual inspection, real-application key delivery, or version-specific shortcut verification. Security-sensitive config/parser/action/IPC/concurrency/FFI paths were traced; the resumed coder could not locate the full review-code reference locally, so exhaustive security-checklist coverage is not claimed. The first coder invocation timed out; its isolated test artifacts were retained and reused by the resumed Codex review. No live user apps/settings were changed.
+Decision: stays in review/ for owner direction; not approved or merged. Add an owner note and move to new/ to request fixes.
