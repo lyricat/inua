@@ -73,9 +73,10 @@ type acct struct {
 
 // window is Mail's window.
 type window struct {
-	c   *appui.Ctx
-	h   *hub
-	win *gtk.ApplicationWindow
+	c    *appui.Ctx
+	h    *hub
+	win  *gtk.ApplicationWindow
+	menu *appui.MenuBar
 
 	top                                     gtk.Stack
 	side, filters, reader, welcomeBox       gtk.Box
@@ -241,6 +242,8 @@ func openWindow(c *appui.Ctx) *window {
 	w.h.key(&w.win.Widget, false, w.key)
 	w.h.close(&w.win.Window, func() bool { w.quit(); return false })
 	w.brandStyle()
+
+	w.menu = w.menuBar()
 
 	for _, f := range []struct {
 		f    filter
@@ -533,6 +536,9 @@ func (w *window) quit() {
 	w.closed = true
 	w.cancel()
 	w.ai.close()
+	if w.menu != nil {
+		w.menu.Close()
+	}
 	// The connections are logged out, but the window does not wait for a
 	// sync under way (a first one can take a minute): a second at most,
 	// then the process ends and they close with it.

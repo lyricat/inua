@@ -38,6 +38,8 @@ const kindMax = 200
 type window struct {
 	c   *appui.Ctx
 	win *gtk.ApplicationWindow
+	// menu is published for the bar while this window has the focus.
+	menu *appui.MenuBar
 
 	sidePlaces, sideKinds                gtk.Box
 	sideChoose                           gtk.Button
@@ -208,9 +210,13 @@ func openWindow(c *appui.Ctx) *window {
 			}
 		}
 		w.ai.close()
+		if w.menu != nil {
+			w.menu.Close()
+		}
 		return false
 	}
 	w.win.ConnectCloseRequest(&w.onClose)
+	w.menu = w.menuBar()
 
 	w.places = disk.Places(w.home)
 	w.fillLegend()
