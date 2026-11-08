@@ -1888,7 +1888,7 @@ msgstr "このコマンドを管理者として実行するには、パスワー
 
 #: internal/asker/asker.go:212
 #: internal/assistantui/assistantui.go:734
-#: internal/ui/askpass.go:441
+#: internal/ui/askpass.go:445
 #: internal/ui/portal_ask.go:60
 #: internal/ui/portal_ask.go:80
 #: internal/ui/settings_bluetooth.go:407
@@ -2050,8 +2050,8 @@ msgstr "許可"
 #: internal/filesui/window.go:824
 #: internal/gamesui/lobbyhost.go:169
 #: internal/lightui/calculator.go:351
-#: internal/lightui/pass.go:754
-#: internal/lightui/pass.go:779
+#: internal/lightui/pass.go:761
+#: internal/lightui/pass.go:786
 #: internal/mailui/details.go:222
 #: internal/shell/launcher_actions.go:59
 #: internal/term/settings/settings.go:119
@@ -2202,9 +2202,9 @@ msgstr "%s がペアリングを求めています。このキーが表示され
 #: internal/termui/restart.go:42
 #: internal/termui/sessionmenu.go:111
 #: internal/termui/wsmenu.go:127
-#: internal/ui/askpass.go:301
-#: internal/ui/askpass.go:446
+#: internal/ui/askpass.go:304
 #: internal/ui/askpass.go:450
+#: internal/ui/askpass.go:454
 #: internal/ui/portal_ask.go:168
 #: internal/ui/settings_bluetooth.go:402
 #: internal/ui/settings_bluetooth.go:405
@@ -2274,7 +2274,8 @@ msgid "What it runs: systemctl suspend"
 msgstr "実行するもの: systemctl suspend"
 
 #: internal/connectui/window.go:560
-#: internal/lightui/pass.go:1153
+#: internal/lightui/pass.go:1160
+#: internal/lightui/pass_seckey.go:224
 #: internal/lightui/workshop_manager.go:115
 #: internal/mailui/actions.go:469
 #: internal/mailui/compose.go:474
@@ -3041,7 +3042,7 @@ msgstr "%s を完全に削除しますか?"
 #: internal/lightui/calculator.go:59
 #: internal/lightui/calculator.go:353
 #: internal/lightui/gpg.go:1611
-#: internal/lightui/pass.go:903
+#: internal/lightui/pass.go:910
 #: internal/term/web/strings.go:43
 #: internal/ui/clipboard.go:504
 #: internal/vmui/window.go:1996
@@ -3082,7 +3083,7 @@ msgstr "%s で実行します。"
 #: internal/lightui/tailscale.go:471
 #: internal/mailui/welcome.go:480
 #: internal/term/web/strings.go:35
-#: internal/ui/askpass.go:571
+#: internal/ui/askpass.go:575
 #: internal/viewerui/app.go:561
 #: internal/viewerui/edit.go:292
 #: internal/vmui/window.go:893
@@ -3563,6 +3564,7 @@ msgstr[0] "…ほか %d 件"
 #: internal/ui/settings_wifi_details.go:62
 #: ui/mail-compose.ui:292
 #: ui/mail.ui:395
+#: ui/pass.ui:1163
 #: ui/settings.ui:3388
 #: ui/settings.ui:4869
 #: ui/vm.ui:3503
@@ -3582,6 +3584,7 @@ msgid "Mounting %s…"
 msgstr "%s をマウントしています…"
 
 #: internal/filesui/cards.go:589
+#: internal/securitykey/unlock.go:57
 msgid "Unlock"
 msgstr "ロック解除"
 
@@ -3848,7 +3851,7 @@ msgid "Columns"
 msgstr "列"
 
 #: internal/filesui/columns.go:176
-#: internal/lightui/pass.go:965
+#: internal/lightui/pass.go:972
 msgid "NAME"
 msgstr "名前"
 
@@ -4063,7 +4066,7 @@ msgid "done"
 msgstr "完了"
 
 #: internal/filesui/pane.go:1554
-#: internal/lightui/pass.go:1168
+#: internal/lightui/pass.go:1175
 #: internal/lightui/sysmon.go:973
 #: internal/ui/settings_keyring.go:508
 #: internal/ui/shotdrawer.go:327
@@ -8654,8 +8657,9 @@ msgid "System Monitor"
 msgstr "システムモニター"
 
 #: internal/lightui/apps.go:24
-#: internal/lightui/pass.go:270
+#: internal/lightui/pass.go:276
 #: internal/lightui/pass_otp.go:113
+#: internal/lightui/pass_seckey.go:87
 #: ui/pass.ui:29
 #: config/apps/io.github.lyricat.Inua.Pass.desktop:3
 msgid "Pass"
@@ -8871,11 +8875,12 @@ msgstr "%s 作成"
 #: internal/lightui/gpg.go:387
 #: internal/lightui/gpg.go:656
 #: internal/lightui/gpg.go:678
+#: internal/lightui/pass_seckey.go:223
 #: internal/shell/notify.go:32
-#: internal/ui/askpass.go:414
-#: internal/ui/askpass.go:482
+#: internal/ui/askpass.go:418
 #: internal/ui/askpass.go:486
-#: internal/ui/askpass.go:488
+#: internal/ui/askpass.go:490
+#: internal/ui/askpass.go:492
 #: internal/ui/settings_about.go:234
 #: internal/ui/settings_keyring.go:640
 #: internal/ui/settings_keyring.go:674
@@ -9334,95 +9339,95 @@ msgstr "プレイリストを保存"
 msgid "Playlist"
 msgstr "プレイリスト"
 
-#: internal/lightui/pass.go:353
+#: internal/lightui/pass.go:360
 msgid "A password store: a folder with a .gpg-id"
 msgstr "パスワードストア：.gpg-id のあるフォルダー"
 
-#: internal/lightui/pass.go:361
+#: internal/lightui/pass.go:368
 msgid "%s is not a password store: it has no .gpg-id (pass init makes one)."
 msgstr "%s はパスワードストアではありません：.gpg-id がありません（pass init で作れます）。"
 
-#: internal/lightui/pass.go:381
+#: internal/lightui/pass.go:388
 msgid "No password store. pass init YOUR-GPG-KEY-ID makes one in ~/.password-store; another folder can be added below."
 msgstr "パスワードストアがありません。pass init GPG鍵ID で ~/.password-store に作れます。下から別のフォルダーも追加できます。"
 
-#: internal/lightui/pass.go:408
+#: internal/lightui/pass.go:415
 msgid "The store is empty. + makes an entry."
 msgstr "ストアは空です。+ でエントリーを作れます。"
 
-#: internal/lightui/pass.go:411
-#: internal/lightui/pass.go:810
-#: internal/lightui/pass.go:1088
+#: internal/lightui/pass.go:418
+#: internal/lightui/pass.go:817
+#: internal/lightui/pass.go:1095
 #: internal/lightui/pass_edit.go:193
 msgid "Choose an entry."
 msgstr "エントリーを選んでください。"
 
-#: internal/lightui/pass.go:417
+#: internal/lightui/pass.go:424
 msgid "Top level"
 msgstr "最上位"
 
-#: internal/lightui/pass.go:425
+#: internal/lightui/pass.go:432
 #: internal/ui/settings.go:926
 #: internal/ui/settings.go:953
 msgid "%d entry"
 msgid_plural "%d entries"
 msgstr[0] "%d 件"
 
-#: internal/lightui/pass.go:430
+#: internal/lightui/pass.go:437
 msgid "Right-click to rename or move"
 msgstr "右クリックで名前の変更または移動"
 
-#: internal/lightui/pass.go:493
+#: internal/lightui/pass.go:500
 #: internal/ui/passwords.go:488
 msgid "Nothing matches. Each word is looked for in the whole path."
 msgstr "一致するものはありません。各語はパス全体から探します。"
 
-#: internal/lightui/pass.go:495
+#: internal/lightui/pass.go:502
 msgid "And %d more: another word narrows them."
 msgid_plural "And %d more: another word narrows them."
 msgstr[0] "ほかに %d 件。語を足すと絞り込めます。"
 
-#: internal/lightui/pass.go:641
+#: internal/lightui/pass.go:648
 msgid "Decrypting %s"
 msgstr "%s を復号しています"
 
-#: internal/lightui/pass.go:697
+#: internal/lightui/pass.go:704
 #: internal/lightui/pass_otp.go:179
 msgid "Replace the one-time code"
 msgstr "ワンタイムコードを置き換える"
 
-#: internal/lightui/pass.go:699
+#: internal/lightui/pass.go:706
 #: internal/lightui/pass_otp.go:182
 #: ui/pass.ui:230
 #: ui/pass.ui:852
 msgid "Add a one-time code"
 msgstr "ワンタイムコードを追加"
 
-#: internal/lightui/pass.go:704
+#: internal/lightui/pass.go:711
 #: internal/ui/passwords.go:561
 msgid "USERNAME"
 msgstr "ユーザー名"
 
-#: internal/lightui/pass.go:707
+#: internal/lightui/pass.go:714
 #: internal/ui/passwords.go:564
 #: ui/pass.ui:495
 msgid "PASSWORD"
 msgstr "パスワード"
 
-#: internal/lightui/pass.go:712
-#: internal/lightui/pass.go:764
+#: internal/lightui/pass.go:719
+#: internal/lightui/pass.go:771
 #: internal/ui/passwords.go:567
 #: internal/ui/passwords.go:570
 #: ui/pass.ui:984
 msgid "ONE-TIME CODE"
 msgstr "ワンタイムコード"
 
-#: internal/lightui/pass.go:719
+#: internal/lightui/pass.go:726
 #: internal/ui/passwords.go:577
 msgid "NOTES"
 msgstr "メモ"
 
-#: internal/lightui/pass.go:748
+#: internal/lightui/pass.go:755
 #: internal/lightui/pass_edit.go:351
 #: internal/mailui/formatted.go:184
 #: internal/term/desktop/desktop_linux.go:43
@@ -9433,125 +9438,125 @@ msgstr "メモ"
 msgid "Show"
 msgstr "表示"
 
-#: internal/lightui/pass.go:750
+#: internal/lightui/pass.go:757
 #: internal/lightui/pass_edit.go:348
 #: internal/ui/notify.go:410
 #: internal/ui/passwords.go:642
 msgid "Hide"
 msgstr "ヒデ"
 
-#: internal/lightui/pass.go:793
+#: internal/lightui/pass.go:800
 #: internal/lightui/pass_otp.go:237
 #: internal/ui/passwords.go:661
 msgid "%d second left"
 msgid_plural "%d seconds left"
 msgstr[0] "残り %d 秒"
 
-#: internal/lightui/pass.go:885
+#: internal/lightui/pass.go:892
 msgid "Rename or move the category “%s”"
 msgstr "カテゴリー「%s」の名前を変更または移動"
 
-#: internal/lightui/pass.go:886
+#: internal/lightui/pass.go:893
 msgid "Its new path. Another name renames it; a path under another category moves it there, with all its entries."
 msgstr "新しいパス。別の名前なら名前の変更、別のカテゴリーの下のパスなら、すべてのエントリーごとそこへ移動します。"
 
-#: internal/lightui/pass.go:887
-#: internal/lightui/pass.go:891
+#: internal/lightui/pass.go:894
+#: internal/lightui/pass.go:898
 #: internal/term/web/strings.go:65
 msgid "Move"
 msgstr "移動"
 
-#: internal/lightui/pass.go:889
+#: internal/lightui/pass.go:896
 msgid "Rename or move “%s”"
 msgstr "「%s」の名前を変更または移動"
 
-#: internal/lightui/pass.go:890
+#: internal/lightui/pass.go:897
 msgid "Its new path. The first part is its category: change it to move the entry, the rest to rename it."
 msgstr "新しいパス。最初の部分がカテゴリーです。そこを変えれば移動、残りを変えれば名前の変更です。"
 
-#: internal/lightui/pass.go:893
+#: internal/lightui/pass.go:900
 #: ui/pass.ui:137
 msgid "New entry"
 msgstr "新しいエントリー"
 
-#: internal/lightui/pass.go:894
+#: internal/lightui/pass.go:901
 msgid "Its path: the first part is its category. Its content comes next."
 msgstr "パス：最初の部分がカテゴリーです。内容はその次に。"
 
-#: internal/lightui/pass.go:899
+#: internal/lightui/pass.go:906
 #: internal/termui/guide.go:163
 #: ui/vm.ui:3289
 msgid "Next"
 msgstr "次へ"
 
-#: internal/lightui/pass.go:901
+#: internal/lightui/pass.go:908
 msgid "Delete “%s”?"
 msgstr "「%s」を削除しますか？"
 
-#: internal/lightui/pass.go:902
+#: internal/lightui/pass.go:909
 msgid "pass removes its file; a git store keeps it in its history."
 msgstr "pass がファイルを削除します。git のストアでは履歴に残ります。"
 
-#: internal/lightui/pass.go:938
-#: internal/lightui/pass.go:968
+#: internal/lightui/pass.go:945
+#: internal/lightui/pass.go:975
 #: internal/mailui/reader.go:549
 #: internal/mailui/reader.go:794
 #: internal/viewerui/app.go:805
 msgid "FILE"
 msgstr "ファイル"
 
-#: internal/lightui/pass.go:964
+#: internal/lightui/pass.go:971
 msgid "CATEGORY"
 msgstr "カテゴリー"
 
-#: internal/lightui/pass.go:978
+#: internal/lightui/pass.go:985
 msgid "and %d more"
 msgid_plural "and %d more"
 msgstr[0] "ほか %d 件"
 
-#: internal/lightui/pass.go:1022
+#: internal/lightui/pass.go:1029
 msgid "That is where it is."
 msgstr "すでにそこにあります。"
 
-#: internal/lightui/pass.go:1024
+#: internal/lightui/pass.go:1031
 msgid "A category cannot move into itself."
 msgstr "カテゴリーを自分の中へは移動できません。"
 
-#: internal/lightui/pass.go:1026
+#: internal/lightui/pass.go:1033
 msgid "That path is already in the store."
 msgstr "そのパスはすでにストアにあります。"
 
-#: internal/lightui/pass.go:1028
+#: internal/lightui/pass.go:1035
 msgid "It is no longer in the store."
 msgstr "もうストアにありません。"
 
-#: internal/lightui/pass.go:1030
+#: internal/lightui/pass.go:1037
 msgid "Each part of the path needs a name, without a leading dot."
 msgstr "パスの各部分には、先頭がドットでない名前が必要です。"
 
-#: internal/lightui/pass.go:1137
+#: internal/lightui/pass.go:1144
 msgid "TRUSTED APPS"
 msgstr "信頼するアプリ"
 
-#: internal/lightui/pass.go:1137
+#: internal/lightui/pass.go:1144
 #: internal/lightui/workshop_manager.go:50
 #: internal/ui/settings_keyring.go:551
 msgid "%d app"
 msgid_plural "%d apps"
 msgstr[0] "%d 個のアプリ"
 
-#: internal/lightui/pass.go:1139
+#: internal/lightui/pass.go:1146
 msgid "None: an app reading it is asked about first."
 msgstr "なし。読もうとするアプリは先に確認します。"
 
-#: internal/lightui/pass.go:1145
-#: internal/ui/askpass.go:405
+#: internal/lightui/pass.go:1152
+#: internal/ui/askpass.go:409
 #: internal/ui/settings_keyring.go:624
 msgid "Flatpak: %s"
 msgstr "Flatpak: %s"
 
-#: internal/lightui/pass.go:1150
-#: internal/lightui/pass.go:1172
+#: internal/lightui/pass.go:1157
+#: internal/lightui/pass.go:1179
 #: internal/ui/settings_keyring.go:469
 #: internal/ui/settings_keyring.go:477
 #: internal/ui/settings_keyring.go:629
@@ -9559,50 +9564,50 @@ msgstr "Flatpak: %s"
 msgid "%s · %s"
 msgstr "%s · %s"
 
-#: internal/lightui/pass.go:1157
+#: internal/lightui/pass.go:1164
 #: internal/ui/settings_keyring.go:649
 msgid "Stop trusting it: it is asked about at its next read"
 msgstr "信頼をやめます。次の読み取りで確認します"
 
-#: internal/lightui/pass.go:1162
+#: internal/lightui/pass.go:1169
 msgid "LAST READS"
 msgstr "最近の読み取り"
 
-#: internal/lightui/pass.go:1164
+#: internal/lightui/pass.go:1171
 msgid "No app has read it yet."
 msgstr "まだどのアプリも読んでいません。"
 
-#: internal/lightui/pass.go:1170
+#: internal/lightui/pass.go:1177
 msgid "%s · %d times"
 msgid_plural "%s · %d times"
 msgstr[0] "%s · %d 回"
 
-#: internal/lightui/pass.go:1182
+#: internal/lightui/pass.go:1189
 #: internal/ui/settings_keyring.go:694
 msgid "trusted"
 msgstr "信頼済み"
 
-#: internal/lightui/pass.go:1184
+#: internal/lightui/pass.go:1191
 #: internal/ui/settings_keyring.go:696
 msgid "allowed once"
 msgstr "今回だけ許可"
 
-#: internal/lightui/pass.go:1186
+#: internal/lightui/pass.go:1193
 #: internal/ui/settings_keyring.go:698
 msgid "allowed, and trusted from now on"
 msgstr "許可し、今後は信頼"
 
-#: internal/lightui/pass.go:1188
+#: internal/lightui/pass.go:1195
 #: internal/ui/settings_keyring.go:700
 msgid "denied"
 msgstr "拒否"
 
-#: internal/lightui/pass.go:1190
+#: internal/lightui/pass.go:1197
 #: internal/ui/settings_keyring.go:702
 msgid "allowed: no one to ask"
 msgstr "許可: 確認できる相手なし"
 
-#: internal/lightui/pass.go:1192
+#: internal/lightui/pass.go:1199
 msgid "read"
 msgstr "読み取り"
 
@@ -9627,6 +9632,7 @@ msgstr "このアプリが読める画像（PNG または JPEG）ではありま
 #: internal/ui/widgets.go:945
 #: ui/connect.ui:967
 #: ui/pass.ui:1053
+#: ui/pass.ui:1172
 #: ui/remote.ui:1053
 msgid "Add"
 msgstr "追加"
@@ -9655,6 +9661,101 @@ msgstr "QR コードの入った画像"
 #: internal/lightui/pass_otp.go:351
 msgid "Reading the QR code…"
 msgstr "QR コードを読み取り中…"
+
+#: internal/lightui/pass_seckey.go:201
+msgid "Install libfido2's tools (fido2-tools) to use a security key."
+msgstr ""
+
+#: internal/lightui/pass_seckey.go:204
+msgid "The keys could not be read: %v"
+msgstr ""
+
+#: internal/lightui/pass_seckey.go:207
+msgid "None of the keys this store encrypts to has its secret part on this computer."
+msgstr ""
+
+#: internal/lightui/pass_seckey.go:212
+msgid "SECURITY KEYS"
+msgstr ""
+
+#: internal/lightui/pass_seckey.go:216
+msgid "None: the passphrase is typed."
+msgstr ""
+
+#: internal/lightui/pass_seckey.go:222
+#: internal/securitykey/unlock.go:50
+msgid "Security key"
+msgstr ""
+
+#: internal/lightui/pass_seckey.go:223
+msgid "Added %s"
+msgstr ""
+
+#: internal/lightui/pass_seckey.go:228
+msgid "It no longer unlocks the key; the passphrase is typed again"
+msgstr ""
+
+#: internal/lightui/pass_seckey.go:233
+msgid "Add a security key"
+msgstr ""
+
+#: internal/lightui/pass_seckey.go:251
+msgid "Add a security key to %s. Type the key's passphrase, which is kept sealed under the security key, and the security key's PIN; then touch the security key twice when it blinks."
+msgstr ""
+
+#: internal/lightui/pass_seckey.go:288
+msgid "Looking for the security key…"
+msgstr ""
+
+#: internal/lightui/pass_seckey.go:332
+msgid "Checking the passphrase…"
+msgstr ""
+
+#: internal/lightui/pass_seckey.go:334
+msgid "Touch %s when it blinks."
+msgstr ""
+
+#: internal/lightui/pass_seckey.go:334
+msgid "the security key"
+msgstr ""
+
+#: internal/lightui/pass_seckey.go:336
+msgid "Touch it once more."
+msgstr ""
+
+#: internal/lightui/pass_seckey.go:345
+msgid "No security key is plugged in. Plug one in, then try again."
+msgstr ""
+
+#: internal/lightui/pass_seckey.go:347
+msgid "The passphrase does not open the key."
+msgstr ""
+
+#: internal/lightui/pass_seckey.go:349
+msgid "The key has no passphrase, so there is nothing for a security key to unlock."
+msgstr ""
+
+#: internal/lightui/pass_seckey.go:351
+#: internal/securitykey/unlock.go:127
+msgid "Wrong PIN."
+msgstr ""
+
+#: internal/lightui/pass_seckey.go:353
+msgid "The security key's PIN is blocked."
+msgstr ""
+
+#: internal/lightui/pass_seckey.go:355
+msgid "The security key has no PIN. Set one first, e.g. with fido2-token -S."
+msgstr ""
+
+#: internal/lightui/pass_seckey.go:357
+#: internal/securitykey/unlock.go:78
+msgid "The security key was not touched in time."
+msgstr ""
+
+#: internal/lightui/pass_seckey.go:359
+msgid "This security key cannot keep a secret (it has no hmac-secret)."
+msgstr ""
 
 #: internal/lightui/stocks.go:277
 msgid "Search for a symbol to add it."
@@ -10660,7 +10761,7 @@ msgstr "不明な部品 %q"
 
 #: internal/lightui/workshop.go:988
 #: internal/term/web/strings.go:81
-#: internal/ui/askpass.go:300
+#: internal/ui/askpass.go:303
 #: internal/ui/settings_card.go:624
 msgid "OK"
 msgstr "わかりました"
@@ -12599,6 +12700,35 @@ msgstr "ここではグラフィックカードでデコードします。同じ
 msgid "The connection ended: %v"
 msgstr "接続が終了しました：%v"
 
+#: internal/securitykey/unlock.go:36
+msgid "The passphrase kept with the security key no longer opens this key. Type it, then add the security key again in Pass."
+msgstr ""
+
+#: internal/securitykey/unlock.go:56
+msgid "PIN"
+msgstr ""
+
+#: internal/securitykey/unlock.go:58
+msgid "Type Passphrase"
+msgstr ""
+
+#: internal/securitykey/unlock.go:81
+msgid "The security key's PIN is blocked. Type the passphrase."
+msgstr ""
+
+#: internal/securitykey/unlock.go:84
+msgid "The security key could not unlock the key: %v"
+msgstr ""
+
+#: internal/securitykey/unlock.go:89
+msgid "The security key could not open the passphrase kept with it. Type the passphrase."
+msgstr ""
+
+#: internal/securitykey/unlock.go:125
+msgid "Wrong PIN. %d try left before the security key locks."
+msgid_plural "Wrong PIN. %d tries left before the security key locks."
+msgstr[0] ""
+
 #: internal/shell/bluetooth.go:40
 #: internal/shell/wifi.go:40
 msgid "Disconnecting…"
@@ -13291,15 +13421,15 @@ msgstr "%s が応答を待っています"
 msgid "%s is done"
 msgstr "%s が完了しました"
 
-#: internal/term/host/secrets.go:38
+#: internal/term/host/secrets.go:40
 msgid "%s asks for your passphrase"
 msgstr ""
 
-#: internal/term/host/secrets.go:40
+#: internal/term/host/secrets.go:42
 msgid "%s asks"
 msgstr ""
 
-#: internal/term/host/secrets.go:43
+#: internal/term/host/secrets.go:45
 msgid "inua-keyring asks for your passphrase, for %s"
 msgstr ""
 
@@ -14443,10 +14573,6 @@ msgstr "スヌーズ"
 msgid "password: want one JSON request"
 msgstr "パスワード: 1 つの JSON リクエストが必要です"
 
-#: internal/ui/askpass.go:142
-msgid "not ok"
-msgstr "ダメだ"
-
 #: internal/ui/askpass.go:258
 msgid "Passphrase Required"
 msgstr "パスフレーズが必要です"
@@ -14463,176 +14589,184 @@ msgstr "メッセージ"
 msgid "Unlock OpenPGP Key"
 msgstr "OpenPGP 鍵のロック解除"
 
-#: internal/ui/askpass.go:276
+#: internal/ui/askpass.go:264
+msgid "Unlock with Security Key"
+msgstr ""
+
+#: internal/ui/askpass.go:279
 #: ui/gpg.ui:174
 #: ui/gpg.ui:190
 msgid "Passphrase"
 msgstr "パスフレーズ"
 
-#: internal/ui/askpass.go:364
-#: internal/ui/askpass.go:367
+#: internal/ui/askpass.go:368
+#: internal/ui/askpass.go:371
 #: internal/workshop/session.go:406
 msgid "Let %s do this?"
 msgstr "%s にこれを許可しますか？"
 
-#: internal/ui/askpass.go:365
+#: internal/ui/askpass.go:369
 msgid "The assistant needs this to answer you. Deny, and it will say it could not."
 msgstr "アシスタントが回答するのに必要です。拒否すると、できなかったと伝えます。"
 
-#: internal/ui/askpass.go:368
+#: internal/ui/askpass.go:372
 msgid "An AI agent asks to use inua's tools on your desktop. Allow it once, or for the rest of its session."
 msgstr "AI エージェントが、デスクトップで inua のツールを使おうとしています。今回だけか、このセッションのあいだ許可できます。"
 
-#: internal/ui/askpass.go:370
+#: internal/ui/askpass.go:374
 msgid "Let programs at this path read every secret?"
 msgstr "このパスのプログラムにすべてのシークレットの読み取りを許可しますか？"
 
-#: internal/ui/askpass.go:371
+#: internal/ui/askpass.go:375
 msgid "Any program at this path will read every secret without asking, even after it changes. Allow only if you just added it in Settings or with inua keyring allow, and only for a place you trust."
 msgstr "このパスのプログラムは、更新された後も含め、確認なしですべてのシークレットを読み取ります。「設定」または inua keyring allow で今追加したばかりで、信頼できる場所の場合のみ許可してください。"
 
-#: internal/ui/askpass.go:373
+#: internal/ui/askpass.go:377
 msgid "Trust the list of apps again?"
 msgstr "アプリの一覧をもう一度信頼しますか？"
 
-#: internal/ui/askpass.go:374
+#: internal/ui/askpass.go:378
 msgid "The list of apps trusted with your secrets was changed outside inua-keyring. Trust it again only if you just asked for it in Settings: it lets %d app read secrets without asking."
 msgid_plural "The list of apps trusted with your secrets was changed outside inua-keyring. Trust it again only if you just asked for it in Settings: it lets %d apps read secrets without asking."
 msgstr[0] "秘密を信頼するアプリの一覧が inua-keyring の外で変更されました。設定でいま頼んだ場合だけ、もう一度信頼してください。%d 個のアプリが確認なしで秘密を読めるようになります。"
 
-#: internal/ui/askpass.go:377
+#: internal/ui/askpass.go:381
 msgid "%s has changed since you allowed it"
 msgstr "%s は許可した時から変わっています"
 
-#: internal/ui/askpass.go:378
+#: internal/ui/askpass.go:382
 msgid "Its program is not the one you allowed. If you did not update it, deny."
 msgstr "プログラムが許可したものと違います。更新していないなら拒否してください。"
 
-#: internal/ui/askpass.go:380
+#: internal/ui/askpass.go:384
 msgid "Allow %s to read a secret?"
 msgstr "%s に秘密の読み取りを許可しますか？"
 
-#: internal/ui/askpass.go:381
+#: internal/ui/askpass.go:385
 msgid "It is not trusted with this secret yet. Always allow lets it read the secret from now on without asking."
 msgstr "この秘密についてはまだ信頼されていません。「常に許可」にすると、今後は確認なしで読めます。"
 
-#: internal/ui/askpass.go:384
+#: internal/ui/askpass.go:388
 msgid "It can only be allowed once: %s."
 msgstr "一度だけ許可できます: %s。"
 
-#: internal/ui/askpass.go:394
+#: internal/ui/askpass.go:398
 msgid "<span alpha='55%'>[</span>PATH<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>パス<span alpha='55%'>]</span>"
 
-#: internal/ui/askpass.go:395
+#: internal/ui/askpass.go:399
 msgid "PATH"
 msgstr "パス"
 
-#: internal/ui/askpass.go:413
+#: internal/ui/askpass.go:417
 msgid "Changed since you allowed it"
 msgstr "許可した時から変わっています"
 
-#: internal/ui/askpass.go:416
+#: internal/ui/askpass.go:420
 msgid "%s · as %s"
 msgstr "%s · %s として"
 
-#: internal/ui/askpass.go:435
+#: internal/ui/askpass.go:439
 #: internal/ui/portal_ask.go:60
 #: internal/ui/settings_bluetooth.go:408
 msgid "Deny"
 msgstr "拒否"
 
-#: internal/ui/askpass.go:436
-#: internal/ui/askpass.go:454
+#: internal/ui/askpass.go:440
+#: internal/ui/askpass.go:458
 msgid "Allow once"
 msgstr "今回だけ許可"
 
-#: internal/ui/askpass.go:437
+#: internal/ui/askpass.go:441
 msgid "Always allow"
 msgstr "常に許可"
 
-#: internal/ui/askpass.go:444
+#: internal/ui/askpass.go:448
 msgid "Allow for this session"
 msgstr "このセッション中は許可"
 
-#: internal/ui/askpass.go:447
+#: internal/ui/askpass.go:451
 msgid "Trust"
 msgstr "信頼する"
 
-#: internal/ui/askpass.go:451
+#: internal/ui/askpass.go:455
 msgid "Allow every secret"
 msgstr "すべてを許可"
 
-#: internal/ui/askpass.go:470
+#: internal/ui/askpass.go:474
 msgid "Enter the passphrase so inua-keyring can give %s its secret."
 msgstr "inua-keyring が %s にシークレットを渡せるよう、パスフレーズを入力してください。"
 
-#: internal/ui/askpass.go:472
+#: internal/ui/askpass.go:476
 msgid "Enter the passphrase so %s can use this key."
 msgstr "%s がこの鍵を使えるよう、パスフレーズを入力してください。"
 
-#: internal/ui/askpass.go:474
+#: internal/ui/askpass.go:478
 msgid "Enter the passphrase to use this key."
 msgstr "この鍵を使うには、パスフレーズを入力してください。"
 
-#: internal/ui/askpass.go:486
+#: internal/ui/askpass.go:490
 msgid "%s · expired %s"
 msgstr "%s · %s に期限切れ"
 
-#: internal/ui/askpass.go:488
+#: internal/ui/askpass.go:492
 msgid "%s · expires %s"
 msgstr "%s · %s に期限切れ予定"
 
-#: internal/ui/askpass.go:503
+#: internal/ui/askpass.go:507
 #: ui/polkit.ui:567
 msgid "FOR"
 msgstr "対象"
 
-#: internal/ui/askpass.go:505
+#: internal/ui/askpass.go:509
 msgid "SECRET"
 msgstr "シークレット"
 
-#: internal/ui/askpass.go:508
+#: internal/ui/askpass.go:512
 msgid "ACTION"
 msgstr "操作"
 
-#: internal/ui/askpass.go:590
+#: internal/ui/askpass.go:594
 msgid "Encryption subkey"
 msgstr "暗号化用サブ鍵"
 
-#: internal/ui/askpass.go:592
+#: internal/ui/askpass.go:596
 msgid "Signing subkey"
 msgstr "署名用サブ鍵"
 
-#: internal/ui/askpass.go:594
+#: internal/ui/askpass.go:598
 msgid "Authentication subkey"
 msgstr "認証用サブ鍵"
 
-#: internal/ui/askpass.go:596
+#: internal/ui/askpass.go:600
 msgid "Subkey"
 msgstr "サブ鍵"
 
-#: internal/ui/askpass.go:598
+#: internal/ui/askpass.go:602
 msgid "Primary key"
 msgstr "主鍵"
 
-#: internal/ui/askpass.go:645
+#: internal/ui/askpass.go:649
 msgid "Show the private details (Ctrl+H)"
 msgstr "個人情報を表示 (Ctrl+H)"
 
-#: internal/ui/askpass.go:648
+#: internal/ui/askpass.go:652
 msgid "Hide the private details: the key's owner, its fingerprint and the pass entry (Ctrl+H)"
 msgstr "個人情報を隠す: 鍵の所有者、フィンガープリント、pass のエントリ (Ctrl+H)"
 
-#: internal/ui/askpass.go:707
+#: internal/ui/askpass.go:702
+msgid "Type the PIN of %s, then touch it when it blinks."
+msgstr ""
+
+#: internal/ui/askpass.go:714
 msgid "Hidden while the screen is being recorded or shared."
 msgstr "画面の録画中または共有中は隠しています。"
 
-#: internal/ui/askpass.go:710
+#: internal/ui/askpass.go:717
 msgid "Hidden for the screenshot."
 msgstr "スクリーンショットのため隠しています。"
 
-#: internal/ui/askpass.go:761
+#: internal/ui/askpass.go:768
 msgid "The passphrases do not match."
 msgstr "パスフレーズが一致しません。"
 
@@ -18888,6 +19022,22 @@ msgstr "発行元（例：GitHub）"
 #: ui/pass.ui:962
 msgid "Account, e.g. you@example.org"
 msgstr "アカウント（例：you@example.org）"
+
+#: ui/pass.ui:1085
+msgid "Security keys"
+msgstr ""
+
+#: ui/pass.ui:1095
+msgid "Unlock the store's key with a FIDO2 security key, such as a YubiKey: its PIN and a touch in place of the passphrase. The passphrase keeps working."
+msgstr ""
+
+#: ui/pass.ui:1121
+msgid "The key's passphrase"
+msgstr ""
+
+#: ui/pass.ui:1127
+msgid "The security key's PIN"
+msgstr ""
 
 #: ui/polkit.ui:157
 msgid "<span alpha='55%'>[</span>KEY<span alpha='55%'>]</span>"
