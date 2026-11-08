@@ -37,3 +37,16 @@ Tests: `make test` passed with a throwaway HOME (Python tests, go vet, Go race t
 Hardware: on the owner's YubiKey 5 (fw 5.8), without PIN or touch only: `fido2-token -L`/`-I` parse (PIN set, hmac-secret, 8 retries) and the silent probe through fd 3 and setsid answered NO_CREDENTIALS in 0.1 s. Making a credential and reading the hmac-secret with the PIN on stdin were not run on hardware (they need the PIN and a touch).
 
 Not checked: the UI was not looked at (Pass dialog, shell PIN dialog). Installs: none; libfido2's tools are an optional runtime dependency, already present here.
+
+## factory · review · 2026-11-08 14:06
+head: d36cfec97a58c5b98a170ccde02ca21e577b51ba
+verdict: pass
+notes:
+- [P2] internal/securitykey/gpg.go:68: GnuPG field 15 contains the card serial directly, not a `>` prefix; exclude card-backed secret keys using the field semantics. Example: primary `#` and subkey serial `D2760001240100000006000012340000` still include `GRIP-CARD` as enrollable local key material.
+- [P2] internal/securitykey/store.go:167: Validate nonce length before AEAD.Open so corrupt enrollment data returns an error instead of crashing pinentry. Example: `"nonce":null` followed by a successful fake-token assertion panics with `crypto/cipher: incorrect nonce length given to GCM` instead of falling back to the passphrase.
+- [P2] internal/term/host/secrets.go:34: Disabling the web PIN prompt must also disable its waiting channel or honor cancellation. Example: a security-key request with a missing desktop socket and a 30 ms context remains blocked after 200 ms; the ordinary passphrase request immediately returns `failed`.
+- [P2] internal/ui/askpass.go:308: Return the fixed protocol value for Type Passphrase, not a translated label. Example: Chinese returns `不行` instead of `not ok`, producing Result=failed and NotOK=false and leaving the full Ask call blocked past cancellation.
+
+Codex reviewed all 24 changed files in origin/master...HEAD (base e9b45a9), including the security review reference. No P0/P1 findings: moved to ready/ under the factory review threshold; the four P2 defects above remain for owner consideration before shipping.
+Validation: make test passed (exit 0): Python 18/18, go vet, race tests across 114 packages; 34 packages had no tests. Eight existing securitykey tests passed with no skips; four isolated overlay probes confirmed the findings. git diff --check passed; review made no source changes or commits. Installs: none.
+Not checked: UI not visually inspected; real security-key PIN/touch flow not tested. Fake tools and libfido2 source inspection do not establish real-hardware compatibility. No linked GitHub issue or PR in the item.
