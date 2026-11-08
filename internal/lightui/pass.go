@@ -99,8 +99,9 @@ type passApp struct {
 	dlgPath                     gtk.Entry
 	dlgPreview                  gtk.Box
 	dlgOK                       gtk.Button
-	otpDlg                      passOTP  // pass_otp.go
-	ed                          passEdit // pass_edit.go
+	otpDlg                      passOTP    // pass_otp.go
+	ed                          passEdit   // pass_edit.go
+	seckey                      passSecKey // pass_seckey.go
 	otpEntry, editOTP           gtk.Button
 
 	onButton       func(gtk.Button)
@@ -125,7 +126,7 @@ func (a *passApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	a.win = &gtk.ApplicationWindow{}
 	a.reveal, a.values = map[string]bool{}, map[string]string{}
 	a.keyring = c.Config().Keyring.Folder
-	var addStore, editCancel, editSave, retry, dlgCancel, otpCancel gtk.Button
+	var addStore, editCancel, editSave, retry, dlgCancel, otpCancel, seckeyClose gtk.Button
 	ui := c.Load("pass.ui")
 	ui.Get("pass", a.win)
 	for id, w := range map[string]gobject.Ptr{
@@ -144,6 +145,7 @@ func (a *passApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 		"dialog_error": &a.dlgError, "dialog_path": &a.dlgPath, "dialog_preview": &a.dlgPreview,
 		"dialog_ok": &a.dlgOK, "dialog_cancel": &dlgCancel,
 		"otp_entry": &a.otpEntry, "edit_otp": &a.editOTP, "otp_cancel": &otpCancel,
+		"seckey_close": &seckeyClose,
 	} {
 		ui.Get(id, w)
 	}
@@ -151,6 +153,9 @@ func (a *passApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 		ui.Get(id, w)
 	}
 	for id, w := range a.editWidgets() {
+		ui.Get(id, w)
+	}
+	for id, w := range a.seckeyWidgets() {
 		ui.Get(id, w)
 	}
 	ui.Close()
@@ -264,6 +269,7 @@ func (a *passApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	a.onWinClose = func(gtk.Window) bool {
 		a.dlg.Destroy()
 		a.otpDlg.win.Destroy()
+		a.seckey.win.Destroy()
 		return false
 	}
 	a.win.ConnectCloseRequest(&a.onWinClose)
@@ -274,6 +280,7 @@ func (a *passApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	keys.ConnectKeyPressed(&a.onDlgKey)
 	a.dlg.AddController(&keys.EventController)
 	a.bindOTP(&otpCancel)
+	a.bindSecKey(&seckeyClose)
 	a.bindEdit()
 	// The rows to come while an entry decrypts: shimmering placeholders.
 	for _, w := range []int{120, 180, 90} {
@@ -300,7 +307,7 @@ func (a *passApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	a.showStores()
 	a.useStore(pass.Current(a.prefs, a.stores))
 	glib.TimeoutAdd(1000, &a.onTick, 0)
-	menuWindow(c, a.win, []appui.MenuGroup{{Title: "File", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{{Name: "pass-add-entry", Label: "New entry", Activate: func(gio.SimpleAction, uintptr) { a.openForm(formNew, "") }}, {Name: "pass-add-store", Label: "Add store", Activate: func(gio.SimpleAction, uintptr) { a.chooseStore() }}, {Name: "pass-search", Label: "Search", Activate: func(gio.SimpleAction, uintptr) { a.filter.GrabFocus() }}}}}}})
+	menuWindow(c, a.win, []appui.MenuGroup{{Title: "File", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{{Name: "pass-add-entry", Label: "New entry", Activate: func(gio.SimpleAction, uintptr) { a.openForm(formNew, "") }}, {Name: "pass-add-store", Label: "Add store", Activate: func(gio.SimpleAction, uintptr) { a.chooseStore() }}, {Name: "pass-search", Label: "Search", Activate: func(gio.SimpleAction, uintptr) { a.filter.GrabFocus() }}}}, {Actions: []appui.MenuAction{{Name: "pass-security-keys", Label: "Security keys", Activate: func(gio.SimpleAction, uintptr) { a.openSecKey() }}}}}}})
 	return a.win
 }
 
@@ -796,7 +803,7 @@ func (a *passApp) tickOTP() {
 // --- buttons ---
 
 func (a *passApp) button(name string) {
-	if a.otpButton(name) || a.editButton(name) {
+	if a.otpButton(name) || a.editButton(name) || a.seckeyButton(name) {
 		return
 	}
 	switch kind, arg, _ := strings.Cut(name, ":"); kind {

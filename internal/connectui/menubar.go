@@ -23,12 +23,12 @@ func (w *window) menuBar() *appui.MenuBar {
 		return appui.MenuAction{Name: name, Label: label, Activate: activate}
 	}
 	groups := []appui.MenuGroup{
-		{Title: i18n.T("File"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
-			action("close-window", i18n.T("Close Window")),
+		{Title: i18n.M("File"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
+			action("close-window", i18n.M("Close Window")),
 		}}}},
-		{Title: i18n.T("View"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
-			action("refresh", i18n.T("Refresh")),
-			action("add-device", i18n.T("Add Device by Address…")),
+		{Title: i18n.M("View"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
+			action("refresh", i18n.M("Refresh")),
+			action("add-device", i18n.M("Add Device by Address…")),
 		}}}},
 	}
 	return appui.NewMenuBar(w.c, groups)

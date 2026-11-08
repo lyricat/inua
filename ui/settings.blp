@@ -392,7 +392,6 @@ ApplicationWindow settings {
                       orientation: vertical;
                       hexpand: true;
                       valign: center;
-
                       Label {
                         styles ["title"]
                         label:  _("Animations");
@@ -1155,12 +1154,12 @@ ApplicationWindow settings {
 
                       Label {
                         styles ["title"]
-                        label:  _("Transparent when empty");
+                        label:  _("Transparent on empty workspaces");
                         xalign: 0;
                       }
                       Label {
                         styles ["sub"]
-                        label:  _("The bar is transparent on an empty workspace and opaque when a window is present");
+                        label:  _("The bar panel is transparent when the current workspace has no windows");
                         xalign: 0;
                         wrap: true;
                       }
@@ -4895,6 +4894,33 @@ ApplicationWindow settings {
           }
         };
       }
+      StackPage {
+        name: "securitykeys";
+        title:  _("Security Keys");
+
+        child: Overlay {
+          child: ScrolledWindow scroll_securitykeys {
+            hscrollbar-policy: never;
+
+            // Each FIDO2 security key plugged in: its PIN, and the gpg
+            // keys it unlocks: laid out by settings_securitykeys.go.
+            Box securitykeys_page {
+              styles ["page"]
+              orientation: vertical;
+            }
+          };
+
+          // The head of the section scrolled under the top edge.
+          [overlay]
+          Box sticky_securitykeys {
+            styles ["section-head", "sticky"]
+            spacing: 10;
+            valign: start;
+            visible: false;
+          }
+        };
+      }
+
       StackPage {
         name: "sound";
         title:  _("Sound");

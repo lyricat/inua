@@ -32,6 +32,10 @@ pack written for that application. Packs are TOML files, so a menu can
 be added without rebuilding the shell. [Application menus](appmenus.md)
 is the format and where the files go.
 
+The Bar settings can make the panel transparent when the bar's current
+workspace has no windows. The panel becomes opaque again when a window
+appears. The controls keep their own look.
+
 ## Engawa
 
 Engawa (縁側, a veranda at the edge of a house) is the widget page, the
@@ -277,7 +281,7 @@ its window to the current workspace.
 
 A two-column settings window for everything, its index grouped by what is
 most often looked for: Connections (Wi-Fi, Bluetooth), Devices (displays,
-keyboard, mouse and touchpad, sound, dictation), Desktop (appearance and wallpaper, the bar
+keyboard, mouse and touchpad, sound, dictation, security keys), Desktop (appearance and wallpaper, the bar
 and dock, the launcher, notifications, shortcuts), Apps (default apps, AI
 for the assistant's models, clipboard, keyring) and System (power, About).
 Changes apply as you make them.
@@ -667,6 +671,18 @@ the input records a few seconds and draws how loud it hears you. The
 page follows PipeWire as it changes: a headset plugged in, the volume
 keys, another app choosing the default. The microphone is the same one
 Settings → Dictation shows.
+
+## Security keys
+
+Each FIDO2 security key plugged in (a YubiKey, say), read through
+libfido2's tools: whether its PIN is set and how many tries are left, its
+firmware, and which gpg keys it unlocks (those Pass enrolled it for; see
+[security-key.md](security-key.md)), with Open Pass to add or remove one.
+Set PIN or Change PIN opens the fields under the PIN's row; changing the
+PIN keeps the gpg keys unlocking. The page looks again every few seconds
+while it is shown, for a key plugged in or out. Listing a key's other
+credentials (passkeys) and resetting it are left to the key's own tools:
+the one needs the PIN, the other erases every credential on it.
 
 ## Keyboard and touchpad
 

@@ -483,7 +483,9 @@ func (a *App) action(name string) {
 	case "copy":
 		a.copy(path)
 	case "wallpaper":
-		a.setWallpaper(path)
+		if a.kind == viewer.Image {
+			a.setWallpaper(path)
+		}
 	case "folder":
 		go showInFolder(path)
 	case "trash":

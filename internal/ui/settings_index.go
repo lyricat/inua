@@ -30,6 +30,7 @@ var settingsIcons = map[string]string{
 	"about":         "help-about-symbolic",
 	"sound":         "audio-volume-high-symbolic",
 	"voice":         "audio-input-microphone-symbolic",
+	"securitykeys":  "security-key-symbolic",
 }
 
 // buildSettingsIndex lists the pages beside them, each its icon and

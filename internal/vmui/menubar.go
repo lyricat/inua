@@ -33,20 +33,20 @@ func (v *vmWindow) menuBar() *appui.MenuBar {
 		return appui.MenuAction{Name: name, Label: label, Activate: activate}
 	}
 	groups := []appui.MenuGroup{
-		{Title: i18n.T("File"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
-			action("new-machine", i18n.T("New Machine…")),
+		{Title: i18n.M("File"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
+			action("new-machine", i18n.M("New Machine…")),
 		}}, {Actions: []appui.MenuAction{
-			action("close-window", i18n.T("Close Window")),
+			action("close-window", i18n.M("Close Window")),
 		}}}},
-		{Title: i18n.T("Machine"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
-			action("start", i18n.T("Start")),
-			action("stop", i18n.T("Stop")),
+		{Title: i18n.M("Machine"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
+			action("start", i18n.M("Start")),
+			action("stop", i18n.M("Stop")),
 		}}, {Actions: []appui.MenuAction{
-			action("install", i18n.T("Install")),
-			action("remove", i18n.T("Remove…")),
+			action("install", i18n.M("Install")),
+			action("remove", i18n.M("Remove…")),
 		}}}},
-		{Title: i18n.T("View"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
-			action("refresh", i18n.T("Refresh")),
+		{Title: i18n.M("View"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
+			action("refresh", i18n.M("Refresh")),
 		}}}},
 	}
 	return appui.NewMenuBar(v.c, groups)

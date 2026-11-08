@@ -107,3 +107,42 @@ func TestPublishMenuRoundTrip(t *testing.T) {
 		t.Fatal("click not delivered")
 	}
 }
+
+// Publishing again replaces the tree, an empty menu stays published, and
+// Close withdraws the menu and its name.
+func TestPublishAgainAndClose(t *testing.T) {
+	addr := dbustest.Start(t)
+	serverConn := dbustest.Conn(t, addr)
+	readerConn := dbustest.Conn(t, addr)
+	name := "io.github.lyricat.Inua.Menu.p2.w1"
+	s := dbusmenu.New(serverConn, func(string) {})
+	if err := s.OwnName(name); err != nil {
+		t.Fatal(err)
+	}
+	reg := appmenu.Registration{PID: 2, Service: name, Path: dbusmenu.Path}
+	r := appmenu.New(readerConn)
+	if err := s.Publish([]dbusmenu.Node{{Label: "File", Enabled: true}}); err != nil {
+		t.Fatal(err)
+	}
+	if err := s.Publish([]dbusmenu.Node{{Label: "Edit", Enabled: true}, {Label: "View", Enabled: true}}); err != nil {
+		t.Fatal(err)
+	}
+	entries, err := r.Menu(reg, true)
+	if err != nil || len(entries) != 2 || entries[0].Label != "Edit" || entries[1].Label != "View" {
+		t.Fatalf("menu=%+v err=%v", entries, err)
+	}
+	if err := s.Publish(nil); err != nil {
+		t.Fatal(err)
+	}
+	if entries, err := r.Menu(reg, true); err != nil || len(entries) != 0 {
+		t.Fatalf("empty menu=%+v err=%v", entries, err)
+	}
+	s.Close(name)
+	var owned bool
+	if err := readerConn.BusObject().Call("org.freedesktop.DBus.NameHasOwner", 0, name).Store(&owned); err != nil {
+		t.Fatal(err)
+	}
+	if owned {
+		t.Fatalf("%s still owned after Close", name)
+	}
+}

@@ -909,15 +909,15 @@ func (v *view) menuBar(win *gtk.ApplicationWindow) *appui.MenuBar {
 		return appui.MenuAction{Name: name, Label: label, Activate: activate}
 	}
 	groups := []appui.MenuGroup{
-		{Title: i18n.T("File"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
-			action("new-conversation", i18n.T("New conversation")),
-			action("close-window", i18n.T("Close Window")),
+		{Title: i18n.M("File"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
+			action("new-conversation", i18n.M("New conversation")),
+			action("close-window", i18n.M("Close Window")),
 		}}}},
-		{Title: i18n.T("Edit"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
-			action("clear-conversation", i18n.T("Clear conversation")),
+		{Title: i18n.M("Edit"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
+			action("clear-conversation", i18n.M("Clear conversation")),
 		}}}},
-		{Title: i18n.T("View"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
-			action("settings", i18n.T("AI settings")),
+		{Title: i18n.M("View"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
+			action("settings", i18n.M("AI settings")),
 		}}}},
 	}
 	return appui.NewMenuBar(v.c, groups)
