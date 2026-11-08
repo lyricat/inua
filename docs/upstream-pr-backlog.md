@@ -19,6 +19,7 @@ into a small PR after its base lands. Commits are from this fork's `master`.
 | #82 | `pr/monitor-focus-outline` | outline each monitor's last focused window |
 | #83 | `pr/super-f-maximize` | Super+F maximizes instead of fullscreen |
 | #84 | `pr/appmenu-button-bar` | open the menu of the bar whose button was clicked |
+| #85 | `pr/bar-transparent-empty` | make the bar panel transparent on empty workspaces |
 
 ## Not split yet
 
@@ -83,6 +84,19 @@ bar's icon size/spacing. The three `fix` commits belong with the metrics PR.
 
 The threshold and the narrow rules are one change; the Overview scope change
 in the same commit is not part of it.
+
+### 7. Per-application menu packs, including Zed (#74 and #75 base)
+
+- `1c0f32ab` feat(appmenu): read per-application menus from TOML packs
+- `d503e7df` docs(appmenu): add a hands-on guide to menu packs
+- `6921a06e` feat(appmenu): ship kitty and alacritty menu packs
+- `f9a59db8` merge menu packs, catalogs, docs and local changes
+
+The Zed pack belongs here: Zed draws its menu itself but exports neither an
+AT-SPI menu nor a D-Bus menu. The pack mirrors its Linux menu entries that
+have usable shortcut bindings. Sequence support covers user-defined chords,
+such as Zed's Vim bindings. Submit after the appmenu and bar-menu bases land;
+a PR from `master` now would duplicate those base changes.
 
 ## Housekeeping before submitting a stack
 
