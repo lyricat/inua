@@ -7,7 +7,7 @@ msgstr ""
 
 #: cmd/inua-assistant/answer.go:36
 #: cmd/inua-assistant/transcribe.go:40
-#: internal/assistantui/assistantui.go:366
+#: internal/assistantui/assistantui.go:361
 #: internal/diskui/details.go:332
 #: internal/mailui/assist.go:43
 msgid "The assistant is turned off. Turn it on in Settings → AI."
@@ -174,7 +174,7 @@ msgstr "週日"
 #: internal/config/strftime.go:50
 #: internal/i18n/time.go:11
 #: internal/lightui/weather.go:360
-#: internal/mailui/window.go:1438
+#: internal/mailui/window.go:1444
 #: internal/shell/notify.go:28
 #: internal/ui/agenda.go:371
 #: internal/ui/widgets.go:1045
@@ -298,10 +298,10 @@ msgid "Pair only if %s shows the key %s."
 msgstr "僅在 %s 顯示金鑰 %s 時才配對。"
 
 #: internal/apps/connect/service.go:251
-#: internal/connectui/window.go:425
-#: internal/connectui/window.go:434
-#: internal/remoteui/window.go:618
-#: internal/remoteui/window.go:813
+#: internal/connectui/window.go:429
+#: internal/connectui/window.go:438
+#: internal/remoteui/window.go:624
+#: internal/remoteui/window.go:819
 #: internal/ui/settings_bluetooth.go:336
 #: internal/ui/settings_bluetooth.go:404
 #: internal/ui/settings_bluetooth.go:410
@@ -310,7 +310,7 @@ msgid "Pair"
 msgstr "配對"
 
 #: internal/apps/connect/service.go:251
-#: internal/connectui/window.go:426
+#: internal/connectui/window.go:430
 msgid "Refuse"
 msgstr "拒絕"
 
@@ -329,7 +329,7 @@ msgstr "正在配對……"
 
 #: internal/apps/connect/service.go:510
 #: internal/apps/tailscale/status.go:265
-#: internal/remoteui/window.go:331
+#: internal/remoteui/window.go:337
 #: internal/shell/bluetooth.go:52
 msgid "Connected"
 msgstr "已連接"
@@ -339,7 +339,7 @@ msgid "Away"
 msgstr "不在線"
 
 #: internal/apps/connect/service.go:514
-#: internal/remoteui/window.go:326
+#: internal/remoteui/window.go:332
 msgid "Not paired"
 msgstr "未配對"
 
@@ -385,9 +385,9 @@ msgstr "來自 %s 的檔案"
 #: internal/term/web/web.go:141
 #: internal/ui/record.go:157
 #: internal/ui/system_ipc.go:241
-#: internal/vmui/window.go:2705
-#: internal/vmui/window.go:2706
-#: internal/vmui/window.go:2717
+#: internal/vmui/window.go:2710
+#: internal/vmui/window.go:2711
+#: internal/vmui/window.go:2722
 #: ui/vm.ui:1738
 #: ui/vm.ui:2115
 #: ui/vm.ui:2846
@@ -1218,7 +1218,7 @@ msgstr "專案的歷史、分支和 stash；未推送的內容只存在於這裡
 #: internal/filesui/sidebar.go:50
 #: internal/filesui/tabs.go:97
 #: internal/filesui/window.go:314
-#: internal/mailui/window.go:779
+#: internal/mailui/window.go:785
 msgid "Trash"
 msgstr "垃圾箱"
 
@@ -1455,7 +1455,7 @@ msgid "Mon Jan 2, 2006, 15:04:05 -0700"
 msgstr ""
 
 #: internal/apps/mail/details.go:49
-#: internal/viewerui/app.go:820
+#: internal/viewerui/app.go:822
 #: ui/mail-compose.ui:161
 msgid "Subject"
 msgstr "主旨"
@@ -1514,7 +1514,7 @@ msgid "Not signed in"
 msgstr "未登入"
 
 #: internal/apps/mail/sort.go:32
-#: internal/mailui/window.go:248
+#: internal/mailui/window.go:251
 msgid "REPLY"
 msgstr "待回覆"
 
@@ -1723,7 +1723,7 @@ msgid "online"
 msgstr "在線"
 
 #: internal/apps/tailscale/status.go:168
-#: internal/mailui/window.go:1797
+#: internal/mailui/window.go:1803
 msgid "just now"
 msgstr "剛才"
 
@@ -1774,12 +1774,12 @@ msgstr "等待批准"
 #: internal/filesui/remote.go:170
 #: internal/filesui/remotesetup.go:418
 #: internal/lightui/tailscale.go:153
-#: internal/mailui/window.go:656
+#: internal/mailui/window.go:662
 #: internal/shell/bluetooth.go:38
 #: internal/shell/status.go:158
 #: internal/shell/wifi.go:38
 #: internal/shell/wifi.go:49
-#: internal/vmui/window.go:2761
+#: internal/vmui/window.go:2766
 msgid "Connecting…"
 msgstr "正在連線…"
 
@@ -1834,7 +1834,7 @@ msgstr "雷暴"
 
 #: internal/apps/weather/weather.go:214
 #: internal/lightui/sysmon.go:1083
-#: internal/vmui/window.go:2335
+#: internal/vmui/window.go:2340
 msgid "Unknown"
 msgstr "未知"
 
@@ -1887,7 +1887,7 @@ msgid "Enter your password to run this command as administrator:\n\n%s"
 msgstr "輸入你的密碼，以系統管理員身分執行這條指令：\n\n%s"
 
 #: internal/asker/asker.go:212
-#: internal/assistantui/assistantui.go:734
+#: internal/assistantui/assistantui.go:729
 #: internal/ui/askpass.go:441
 #: internal/ui/portal_ask.go:60
 #: internal/ui/portal_ask.go:80
@@ -1926,6 +1926,7 @@ msgid "Running a script with the tools"
 msgstr "正在用這些工具執行指令碼"
 
 #: internal/assistantui/assistantui.go:38
+#: internal/mailui/menubar.go:49
 #: ui/assistant.ui:35
 #: ui/settings.ui:2440
 #: config/apps/io.github.lyricat.Inua.Assistant.desktop:3
@@ -1952,17 +1953,18 @@ msgstr "我的尾網上有哪些設備在線上？"
 msgid "What is the weather this afternoon in Kyoto?"
 msgstr "京都今天下午的天氣怎麼樣？"
 
-#: internal/assistantui/assistantui.go:170
+#: internal/assistantui/assistantui.go:171
 msgid "%s answers from here"
 msgstr "%s 從這裡回答"
 
-#: internal/assistantui/assistantui.go:427
+#: internal/assistantui/assistantui.go:422
 msgid "Could not start the Console endpoint: %s"
 msgstr "無法啟動控制台端點：%s"
 
-#: internal/assistantui/assistantui.go:528
+#: internal/assistantui/assistantui.go:523
 #: internal/lightui/clock.go:498
 #: internal/ui/alarms.go:108
+#: internal/vmui/menubar.go:43
 #: ui/disk.ui:179
 #: ui/mail-compose.ui:375
 #: ui/vm.ui:697
@@ -1975,77 +1977,77 @@ msgstr "無法啟動控制台端點：%s"
 msgid "Stop"
 msgstr "停止"
 
-#: internal/assistantui/assistantui.go:535
+#: internal/assistantui/assistantui.go:530
 msgid "✕ Not done: %s"
 msgstr "✕ 未完成:%s"
 
-#: internal/assistantui/assistantui.go:546
+#: internal/assistantui/assistantui.go:541
 #: internal/mailui/settings.go:497
 #: ui/assistant.ui:202
 msgid "Ask"
 msgstr "詢問"
 
-#: internal/assistantui/assistantui.go:551
+#: internal/assistantui/assistantui.go:546
 msgid "Stopped."
 msgstr "停止。"
 
-#: internal/assistantui/assistantui.go:554
+#: internal/assistantui/assistantui.go:549
 msgid "Something went wrong: %s"
 msgstr "出了點問題:%s"
 
-#: internal/assistantui/assistantui.go:557
+#: internal/assistantui/assistantui.go:552
 msgid "(no answer)"
 msgstr "(無人回應)"
 
-#: internal/assistantui/assistantui.go:568
+#: internal/assistantui/assistantui.go:563
 msgid "Voice input records with pw-cat, from PipeWire (pipewire-bin on Debian and Ubuntu, pipewire on Arch, pipewire-utils on Fedora)"
 msgstr "語音輸入用 PipeWire 的 pw-cat 錄音（Debian 和 Ubuntu 上是 pipewire-bin，Arch 上是 pipewire，Fedora 上是 pipewire-utils）"
 
-#: internal/assistantui/assistantui.go:570
+#: internal/assistantui/assistantui.go:565
 #: internal/ui/settings_ai.go:730
 #: ui/assistant.ui:193
 msgid "Voice input"
 msgstr "語音輸入"
 
-#: internal/assistantui/assistantui.go:578
-#: internal/assistantui/assistantui.go:642
+#: internal/assistantui/assistantui.go:573
+#: internal/assistantui/assistantui.go:637
 msgid "Cannot record: %s"
 msgstr "無法錄音：%s"
 
-#: internal/assistantui/assistantui.go:592
+#: internal/assistantui/assistantui.go:587
 msgid "Stop and transcribe"
 msgstr "停止並轉為文字"
 
-#: internal/assistantui/assistantui.go:644
+#: internal/assistantui/assistantui.go:639
 msgid "The assistant is not set up."
 msgstr "助理尚未設定。"
 
-#: internal/assistantui/assistantui.go:648
+#: internal/assistantui/assistantui.go:643
 msgid "Cannot transcribe: %s"
 msgstr "無法轉為文字：%s"
 
-#: internal/assistantui/assistantui.go:660
+#: internal/assistantui/assistantui.go:655
 msgid "No speech was heard."
 msgstr "沒有聽到說話。"
 
-#: internal/assistantui/assistantui.go:734
+#: internal/assistantui/assistantui.go:729
 msgid "Don't"
 msgstr "拒絕"
 
-#: internal/assistantui/assistantui.go:755
+#: internal/assistantui/assistantui.go:750
 msgid "Not allowed"
 msgstr "不允許"
 
-#: internal/assistantui/assistantui.go:757
+#: internal/assistantui/assistantui.go:752
 msgid "Canceled"
 msgstr "已取消"
 
-#: internal/assistantui/assistantui.go:759
+#: internal/assistantui/assistantui.go:754
 #: ui/settings.ui:4283
 msgid "Allowed"
 msgstr "允許"
 
-#: internal/assistantui/assistantui.go:793
+#: internal/assistantui/assistantui.go:788
 #: internal/diskui/details.go:581
 #: internal/filesui/window.go:824
 #: internal/gamesui/lobbyhost.go:169
@@ -2059,7 +2061,7 @@ msgstr "允許"
 #: internal/termui/prefsweb.go:92
 #: internal/ui/askpass.go:232
 #: internal/ui/passwords.go:647
-#: internal/vmui/window.go:896
+#: internal/vmui/window.go:901
 #: ui/disk.ui:697
 #: ui/gpg.ui:764
 #: ui/gpg.ui:1010
@@ -2068,13 +2070,65 @@ msgstr "允許"
 msgid "Copy"
 msgstr "複製"
 
-#: internal/assistantui/assistantui.go:801
+#: internal/assistantui/assistantui.go:796
 msgid "Clipboard is unavailable."
 msgstr "剪貼簿無法使用。"
 
-#: internal/assistantui/assistantui.go:872
+#: internal/assistantui/assistantui.go:867
 msgid "TRY"
 msgstr "嘗試"
+
+#: internal/assistantui/assistantui.go:912
+#: internal/connectui/menubar.go:26
+#: internal/diskui/details.go:49
+#: internal/gamesui/menubar.go:36
+#: internal/mailui/menubar.go:39
+#: internal/remoteui/menubar.go:37
+#: internal/vmui/menubar.go:36
+msgid "File"
+msgid_plural "Files"
+msgstr[0] "檔案"
+
+#: internal/assistantui/assistantui.go:913
+#: ui/assistant.ui:73
+msgid "New conversation"
+msgstr "新對話"
+
+#: internal/assistantui/assistantui.go:914
+#: internal/connectui/menubar.go:27
+#: internal/gamesui/menubar.go:37
+#: internal/mailui/menubar.go:42
+#: internal/remoteui/menubar.go:38
+#: internal/shell/commands.go:46
+#: internal/vmui/menubar.go:39
+msgid "Close Window"
+msgstr "關閉窗口"
+
+#: internal/assistantui/assistantui.go:916
+#: internal/lightui/clock.go:404
+#: internal/termui/menubar.go:42
+#: ui/pass.ui:252
+msgid "Edit"
+msgstr "編輯"
+
+#: internal/assistantui/assistantui.go:917
+msgid "Clear conversation"
+msgstr ""
+
+#: internal/assistantui/assistantui.go:919
+#: internal/connectui/menubar.go:29
+#: internal/gamesui/menubar.go:33
+#: internal/mailui/menubar.go:44
+#: internal/remoteui/menubar.go:46
+#: internal/termui/menubar.go:43
+#: internal/vmui/menubar.go:48
+msgid "View"
+msgstr ""
+
+#: internal/assistantui/assistantui.go:920
+#: ui/assistant.ui:63
+msgid "AI settings"
+msgstr "AI設置"
 
 #: internal/config/strftime.go:52
 #: internal/i18n/time.go:10
@@ -2096,6 +2150,18 @@ msgstr "一月"
 msgid "PM"
 msgstr "下午"
 
+#: internal/connectui/menubar.go:30
+#: internal/mailui/menubar.go:45
+#: internal/remoteui/menubar.go:47
+#: internal/vmui/menubar.go:49
+#: ui/settings.ui:4518
+msgid "Refresh"
+msgstr "重新整理"
+
+#: internal/connectui/menubar.go:31
+msgid "Add Device by Address…"
+msgstr ""
+
 #: internal/connectui/reply.go:39
 msgid "Answer %s"
 msgstr "回覆 %s"
@@ -2106,40 +2172,42 @@ msgstr "回覆 %s"
 msgid "Not sent: %v"
 msgstr "未傳送：%v"
 
-#: internal/connectui/window.go:235
+#: internal/connectui/window.go:239
 msgid "None found yet: open KDE Connect on your phone."
 msgstr "尚未找到：請在手機上開啟 KDE Connect。"
 
-#: internal/connectui/window.go:355
+#: internal/connectui/window.go:359
 msgid "Mobile Link did not start: %v"
 msgstr "行動連結未能啟動：%v"
 
-#: internal/connectui/window.go:381
+#: internal/connectui/window.go:385
 msgid "Visible to your devices"
 msgstr "你的裝置可見"
 
-#: internal/connectui/window.go:382
+#: internal/connectui/window.go:386
 msgid "Devices running KDE Connect, GSConnect or Valent find this computer on this network and the tailnet, and pair with it."
 msgstr "執行 KDE Connect、GSConnect 或 Valent 的裝置可在此網路和 tailnet 上找到這台電腦並與之配對。"
 
-#: internal/connectui/window.go:384
-#: internal/remoteui/window.go:269
+#: internal/connectui/window.go:388
+#: internal/remoteui/window.go:275
 #: internal/termui/headmenu.go:156
 #: internal/termui/prefsweb.go:166
 #: internal/ui/voice_models.go:232
-#: internal/vmui/window.go:1822
-#: internal/vmui/window.go:1927
-#: internal/vmui/window.go:1946
-#: internal/vmui/window.go:1948
-#: internal/vmui/window.go:1964
+#: internal/vmui/menubar.go:72
+#: internal/vmui/menubar.go:101
+#: internal/vmui/window.go:1827
+#: internal/vmui/window.go:1932
+#: internal/vmui/window.go:1951
+#: internal/vmui/window.go:1953
+#: internal/vmui/window.go:1969
 msgid "Starting…"
 msgstr "正在啟動……"
 
-#: internal/connectui/window.go:385
+#: internal/connectui/window.go:389
 msgid "The service is starting."
 msgstr "服務正在啟動。"
 
-#: internal/connectui/window.go:387
+#: internal/connectui/window.go:391
 #: internal/lightui/video.go:531
 #: internal/mailui/settings.go:530
 #: internal/shell/notify.go:44
@@ -2158,23 +2226,23 @@ msgstr "服務正在啟動。"
 msgid "Off"
 msgstr "關閉"
 
-#: internal/connectui/window.go:388
+#: internal/connectui/window.go:392
 msgid "Share the clipboard and files with your phone, see its notifications and battery here, and use it as a touchpad or a remote."
 msgstr "與手機分享剪貼簿和檔案，在這裡查看它的通知和電量，並把它當作觸控板或遙控器使用。"
 
-#: internal/connectui/window.go:395
+#: internal/connectui/window.go:399
 msgid "A device lists them and runs one with a tap, here, as you."
 msgstr "裝置會列出它們，輕點即可在這裡以你的身分執行。"
 
-#: internal/connectui/window.go:403
+#: internal/connectui/window.go:407
 msgid "The device is gone."
 msgstr "裝置已不在。"
 
-#: internal/connectui/window.go:427
+#: internal/connectui/window.go:431
 msgid "%s asks to pair. Pair only if it shows this key:"
 msgstr "%s 請求配對。僅在它顯示此金鑰時才配對："
 
-#: internal/connectui/window.go:429
+#: internal/connectui/window.go:433
 #: internal/diskui/dialog.go:92
 #: internal/filesui/appchooser.go:107
 #: internal/filesui/archive.go:49
@@ -2194,7 +2262,7 @@ msgstr "%s 請求配對。僅在它顯示此金鑰時才配對："
 #: internal/gamesui/fortune_host.go:334
 #: internal/lightui/workshop.go:983
 #: internal/mailui/dialog.go:92
-#: internal/remoteui/window.go:811
+#: internal/remoteui/window.go:817
 #: internal/term/web/strings.go:29
 #: internal/termui/keys.go:293
 #: internal/termui/keys.go:421
@@ -2228,39 +2296,39 @@ msgstr "%s 請求配對。僅在它顯示此金鑰時才配對："
 msgid "Cancel"
 msgstr "取消"
 
-#: internal/connectui/window.go:430
+#: internal/connectui/window.go:434
 msgid "Accept on %s if it shows this key:"
 msgstr "如果 %s 顯示此金鑰，請在其上接受："
 
-#: internal/connectui/window.go:432
-#: internal/remoteui/window.go:661
+#: internal/connectui/window.go:436
+#: internal/remoteui/window.go:667
 msgid "Unpair"
 msgstr "取消配對"
 
-#: internal/connectui/window.go:435
+#: internal/connectui/window.go:439
 msgid "Not paired: pair to share with it."
 msgstr "未配對：配對後即可與它分享。"
 
-#: internal/connectui/window.go:439
+#: internal/connectui/window.go:443
 msgid "it connects again when it is on this network or the tailnet"
 msgstr "它回到此網路或 tailnet 時會重新連接"
 
-#: internal/connectui/window.go:475
+#: internal/connectui/window.go:479
 msgid "Send files"
 msgstr "傳送檔案"
 
-#: internal/connectui/window.go:517
+#: internal/connectui/window.go:521
 msgid "Asked %s to connect."
 msgstr "已請求 %s 連接。"
 
-#: internal/connectui/window.go:547
+#: internal/connectui/window.go:551
 #: internal/filesui/archive.go:76
 #: internal/filesui/remotesetup.go:226
 #: internal/filesui/renamemany.go:168
 #: internal/lightui/sysmon.go:968
 #: internal/lightui/tailscale.go:632
 #: internal/ui/settings_ai.go:486
-#: internal/viewerui/app.go:806
+#: internal/viewerui/app.go:808
 #: ui/connect.ui:291
 #: ui/files.ui:233
 #: ui/gpg.ui:1445
@@ -2269,11 +2337,11 @@ msgstr "已請求 %s 連接。"
 msgid "Name"
 msgstr "名稱"
 
-#: internal/connectui/window.go:552
+#: internal/connectui/window.go:556
 msgid "What it runs: systemctl suspend"
 msgstr "執行的內容：systemctl suspend"
 
-#: internal/connectui/window.go:560
+#: internal/connectui/window.go:564
 #: internal/lightui/pass.go:1153
 #: internal/lightui/workshop_manager.go:115
 #: internal/mailui/actions.go:469
@@ -2281,7 +2349,8 @@ msgstr "執行的內容：systemctl suspend"
 #: internal/ui/settings_ai.go:583
 #: internal/ui/settings_keyring.go:645
 #: internal/ui/settings_keyring.go:679
-#: internal/vmui/window.go:1976
+#: internal/vmui/menubar.go:136
+#: internal/vmui/window.go:1981
 #: ui/stocks.ui:292
 msgid "Remove"
 msgstr "移除"
@@ -2905,23 +2974,18 @@ msgstr "磁碟用量"
 #: internal/diskui/details.go:47
 #: internal/term/web/strings.go:98
 #: internal/termui/prefs.go:146
-#: internal/viewerui/app.go:810
-#: internal/viewerui/app.go:828
-#: internal/viewerui/app.go:843
+#: internal/viewerui/app.go:812
+#: internal/viewerui/app.go:830
+#: internal/viewerui/app.go:845
 msgid "Size"
 msgstr "尺寸"
-
-#: internal/diskui/details.go:49
-msgid "File"
-msgid_plural "Files"
-msgstr[0] "檔案"
 
 #: internal/diskui/details.go:53
 msgid "2006-01-02"
 msgstr "2006年1月2日"
 
 #: internal/diskui/details.go:53
-#: internal/viewerui/app.go:824
+#: internal/viewerui/app.go:826
 msgid "Changed"
 msgstr "變更時間"
 
@@ -2933,7 +2997,7 @@ msgstr "有一部分無法讀取。"
 #: internal/ui/lock.go:279
 #: internal/ui/polkit.go:294
 #: internal/ui/settings_about.go:191
-#: internal/vmui/window.go:2071
+#: internal/vmui/window.go:2076
 msgid "Checking…"
 msgstr "正在檢查中…"
 
@@ -2966,8 +3030,8 @@ msgid "What it is"
 msgstr "這是什麼"
 
 #: internal/diskui/details.go:246
-#: internal/remoteui/window.go:786
-#: internal/vmui/window.go:2093
+#: internal/remoteui/window.go:792
+#: internal/vmui/window.go:2098
 msgid "Asking…"
 msgstr "正在詢問……"
 
@@ -2999,11 +3063,13 @@ msgid "Cannot open it in Files: %v"
 msgstr "無法在「檔案」中開啟：%v"
 
 #: internal/diskui/details.go:458
-#: internal/vmui/window.go:1991
-#: internal/vmui/window.go:1997
-#: internal/vmui/window.go:2003
-#: internal/vmui/window.go:2016
-#: internal/vmui/window.go:2028
+#: internal/vmui/menubar.go:116
+#: internal/vmui/menubar.go:131
+#: internal/vmui/window.go:1996
+#: internal/vmui/window.go:2002
+#: internal/vmui/window.go:2008
+#: internal/vmui/window.go:2021
+#: internal/vmui/window.go:2033
 msgid "Deleting…"
 msgstr "正在刪除…"
 
@@ -3044,10 +3110,11 @@ msgstr "永久刪除 %s？"
 #: internal/lightui/pass.go:903
 #: internal/term/web/strings.go:43
 #: internal/ui/clipboard.go:504
-#: internal/vmui/window.go:1996
-#: internal/vmui/window.go:2002
-#: internal/vmui/window.go:2015
-#: internal/vmui/window.go:2027
+#: internal/vmui/menubar.go:115
+#: internal/vmui/window.go:2001
+#: internal/vmui/window.go:2007
+#: internal/vmui/window.go:2020
+#: internal/vmui/window.go:2032
 #: ui/clock.ui:231
 #: ui/gpg.ui:1675
 #: ui/pass.ui:263
@@ -3083,9 +3150,9 @@ msgstr "在 %s 中執行。"
 #: internal/mailui/welcome.go:480
 #: internal/term/web/strings.go:35
 #: internal/ui/askpass.go:571
-#: internal/viewerui/app.go:561
+#: internal/viewerui/app.go:563
 #: internal/viewerui/edit.go:292
-#: internal/vmui/window.go:893
+#: internal/vmui/window.go:898
 msgid "Copied"
 msgstr "已複製"
 
@@ -3117,7 +3184,7 @@ msgstr "完成：這裡沒有釋放空間。"
 msgid "%s removed %s: %s freed."
 msgstr "%s 移除了 %s：釋放了 %s。"
 
-#: internal/diskui/window.go:327
+#: internal/diskui/window.go:333
 #: internal/filesui/cards.go:682
 #: internal/filesui/sidebar.go:36
 #: internal/filesui/tabs.go:99
@@ -3125,7 +3192,7 @@ msgstr "%s 移除了 %s：釋放了 %s。"
 msgid "Home"
 msgstr "家目錄"
 
-#: internal/diskui/window.go:329
+#: internal/diskui/window.go:335
 #: internal/lightui/sysmon.go:969
 #: internal/lightui/tailscale.go:527
 #: internal/lightui/tailscale.go:568
@@ -3134,117 +3201,117 @@ msgstr "家目錄"
 msgid "System"
 msgstr "系統"
 
-#: internal/diskui/window.go:357
-#: internal/diskui/window.go:553
+#: internal/diskui/window.go:363
+#: internal/diskui/window.go:559
 msgid "Scanning…"
 msgstr "正在掃描…"
 
-#: internal/diskui/window.go:361
+#: internal/diskui/window.go:367
 #: internal/filesui/remote.go:266
 #: internal/filesui/sidebar.go:65
 msgid "%s free of %s"
 msgstr "%s 可用，共 %s"
 
-#: internal/diskui/window.go:375
+#: internal/diskui/window.go:381
 msgid "%s · %s safe"
 msgstr "%s · 可安全刪除 %s"
 
-#: internal/diskui/window.go:445
+#: internal/diskui/window.go:451
 msgid "Choose a folder to scan"
 msgstr "選擇要掃描的資料夾"
 
-#: internal/diskui/window.go:518
+#: internal/diskui/window.go:524
 msgid "Scan again"
 msgstr "重新掃描"
 
-#: internal/diskui/window.go:522
+#: internal/diskui/window.go:528
 #: ui/disk.ui:190
 msgid "Scan"
 msgstr "掃描"
 
-#: internal/diskui/window.go:529
+#: internal/diskui/window.go:535
 msgid "your home"
 msgstr "你的家目錄"
 
-#: internal/diskui/window.go:531
+#: internal/diskui/window.go:537
 msgid "Scan to see what fills %s."
 msgstr "掃描以查看是什麼佔滿了%s。"
 
-#: internal/diskui/window.go:548
+#: internal/diskui/window.go:554
 msgid "%s used of %s"
 msgstr "已用 %s，共 %s"
 
-#: internal/diskui/window.go:557
+#: internal/diskui/window.go:563
 msgid "%s in %s files · %s"
 msgstr "%s，%s 個檔案 · %s"
 
-#: internal/diskui/window.go:557
+#: internal/diskui/window.go:563
 #: internal/filesui/pane.go:1552
 #: internal/ui/widgets.go:1049
 msgid "15:04"
 msgstr "15:04"
 
-#: internal/diskui/window.go:575
+#: internal/diskui/window.go:581
 msgid "%s files · %s · %.0f s"
 msgstr "%s 個檔案 · %s · %.0f 秒"
 
-#: internal/diskui/window.go:609
+#: internal/diskui/window.go:615
 msgid "Cannot scan %s: %v"
 msgstr "無法掃描 %s：%v"
 
-#: internal/diskui/window.go:724
+#: internal/diskui/window.go:730
 msgid "%d smaller file"
 msgid_plural "%d smaller files"
 msgstr[0] "%d 個小檔案"
 
-#: internal/diskui/window.go:757
+#: internal/diskui/window.go:763
 msgid "counted"
 msgstr "已統計"
 
-#: internal/diskui/window.go:782
+#: internal/diskui/window.go:788
 msgid "free"
 msgstr "可用"
 
-#: internal/diskui/window.go:784
+#: internal/diskui/window.go:790
 msgid "Not scanned"
 msgstr "未掃描"
 
-#: internal/diskui/window.go:797
-#: internal/vmui/window.go:1512
+#: internal/diskui/window.go:803
+#: internal/vmui/window.go:1517
 msgid "Other"
 msgstr "其他"
 
-#: internal/diskui/window.go:860
+#: internal/diskui/window.go:866
 msgid "%d more item"
 msgid_plural "%d more items"
 msgstr[0] "另有 %d 項"
 
-#: internal/diskui/window.go:871
+#: internal/diskui/window.go:877
 #: internal/filesui/pane.go:818
 msgid "This folder is empty."
 msgstr "此資料夾是空的。"
 
-#: internal/diskui/window.go:927
+#: internal/diskui/window.go:933
 msgid "Dependencies, builds and toolchains."
 msgstr "相依套件、建置產物和工具鏈。"
 
-#: internal/diskui/window.go:928
+#: internal/diskui/window.go:934
 msgid "Agents' sessions, worktrees and AI models."
 msgstr "代理的工作階段、工作樹和 AI 模型。"
 
-#: internal/diskui/window.go:929
+#: internal/diskui/window.go:935
 msgid "Caches, downloaded packages and the trash."
 msgstr "快取、下載的套件和垃圾桶。"
 
-#: internal/diskui/window.go:953
+#: internal/diskui/window.go:959
 msgid "Scan a place first."
 msgstr "請先掃描一個位置。"
 
-#: internal/diskui/window.go:955
+#: internal/diskui/window.go:961
 msgid "Nothing found."
 msgstr "找不到。"
 
-#: internal/diskui/window.go:957
+#: internal/diskui/window.go:963
 msgid "%s in %d folder · %s safe to delete"
 msgid_plural "%s in %d folders · %s safe to delete"
 msgstr[0] "%s，%d 個資料夾 · %s 可安全刪除"
@@ -3313,7 +3380,7 @@ msgstr "壓縮檔將建立在「%s」中。"
 
 #: internal/filesui/archive.go:79
 #: internal/mailui/picker.go:142
-#: internal/mailui/window.go:775
+#: internal/mailui/window.go:781
 msgid "Archive"
 msgstr "壓縮檔"
 
@@ -3759,6 +3826,7 @@ msgid "Two panes, the other pane"
 msgstr "雙窗格，切換窗格"
 
 #: internal/filesui/cards.go:709
+#: internal/mailui/menubar.go:48
 msgid "Sidebar"
 msgstr "側邊欄"
 
@@ -3858,7 +3926,7 @@ msgstr "資料夾"
 
 #: internal/filesui/details.go:51
 #: internal/lightui/sysmon.go:793
-#: internal/mailui/window.go:248
+#: internal/mailui/window.go:251
 #: internal/term/web/strings.go:52
 msgid "FILES"
 msgstr "FILES"
@@ -3868,8 +3936,9 @@ msgid "SIZE OF THE FILES"
 msgstr "檔案大小"
 
 #: internal/filesui/details.go:55
+#: internal/mailui/menubar.go:46
 #: internal/mailui/picker.go:137
-#: internal/mailui/window.go:1766
+#: internal/mailui/window.go:1772
 msgid "Search"
 msgstr "搜尋"
 
@@ -3963,7 +4032,7 @@ msgstr "損壞的連結"
 #: internal/filesui/remotesetup.go:75
 #: internal/filesui/remotesetup.go:83
 #: internal/lightui/sysmon.go:794
-#: internal/viewerui/app.go:807
+#: internal/viewerui/app.go:809
 #: ui/vm.ui:322
 msgid "Folder"
 msgstr "Folder"
@@ -4133,11 +4202,12 @@ msgstr "正在連線 %s……"
 #: internal/filesui/remote.go:160
 #: internal/filesui/remotesetup.go:132
 #: internal/gamesui/lobbywin.go:58
+#: internal/remoteui/menubar.go:41
 #: internal/ui/settings_bluetooth.go:340
 #: internal/ui/settings_wifi.go:414
 #: internal/ui/settings_wifi.go:439
-#: internal/vmui/window.go:2707
-#: internal/vmui/window.go:2707
+#: internal/vmui/window.go:2712
+#: internal/vmui/window.go:2712
 #: ui/remote.ui:645
 #: ui/vm.ui:2801
 msgid "Connect"
@@ -4946,6 +5016,7 @@ msgstr "開始遊戲"
 #: internal/gamesui/checkers.go:230
 #: internal/gamesui/fortune.go:333
 #: internal/gamesui/fortune.go:1180
+#: internal/gamesui/menubar.go:31
 #: ui/game.ui:76
 msgid "New game"
 msgstr "新遊戲"
@@ -5069,6 +5140,7 @@ msgstr "卡牌商店"
 #: internal/lightui/clock.go:493
 #: internal/termui/guide.go:161
 #: internal/ui/voice_page.go:186
+#: internal/vmui/menubar.go:42
 #: ui/clock.ui:339
 #: ui/clock.ui:406
 #: ui/vm.ui:686
@@ -7963,6 +8035,7 @@ msgid "Others join from a browser"
 msgstr "其他人用瀏覽器加入"
 
 #: internal/gamesui/fortune_menu.go:25
+#: internal/gamesui/menubar.go:30
 msgid "Game"
 msgstr "遊戲"
 
@@ -8158,6 +8231,10 @@ msgstr ""
 
 #: internal/gamesui/lobbywin.go:330
 msgid "The browser could not be opened: %v"
+msgstr ""
+
+#: internal/gamesui/menubar.go:34
+msgid "Fullscreen"
 msgstr ""
 
 #: internal/gamesui/mines.go:37
@@ -8433,6 +8510,7 @@ msgid "Focus on or off"
 msgstr "聚焦或關閉"
 
 #: internal/hyprconf/keys.go:31
+#: internal/mailui/menubar.go:55
 #: internal/mailui/picker.go:155
 #: internal/shell/commands.go:33
 #: internal/shell/dock.go:311
@@ -8770,12 +8848,6 @@ msgstr "沒有同名的城市"
 msgid "Remove %s"
 msgstr "刪除 %s"
 
-#: internal/lightui/clock.go:404
-#: internal/termui/menubar.go:42
-#: ui/pass.ui:252
-msgid "Edit"
-msgstr "編輯"
-
 #: internal/lightui/clock.go:494
 #: ui/music.ui:332
 msgid "Reset"
@@ -8807,7 +8879,7 @@ msgstr "結束於 %s"
 #: internal/lightui/clock.go:583
 #: internal/lightui/sysmon.go:871
 #: internal/lightui/sysmon.go:871
-#: internal/vmui/window.go:2465
+#: internal/vmui/window.go:2470
 msgid "Resume"
 msgstr "繼續"
 
@@ -9427,8 +9499,8 @@ msgstr "備註"
 #: internal/mailui/formatted.go:184
 #: internal/term/desktop/desktop_linux.go:43
 #: internal/ui/passwords.go:644
-#: internal/vmui/window.go:2709
-#: internal/vmui/window.go:2710
+#: internal/vmui/window.go:2714
+#: internal/vmui/window.go:2715
 #: ui/pass.ui:520
 msgid "Show"
 msgstr "顯示"
@@ -9496,7 +9568,7 @@ msgstr "pass 會刪除它的檔案；git 管理的密碼庫會在歷史中保留
 #: internal/lightui/pass.go:968
 #: internal/mailui/reader.go:549
 #: internal/mailui/reader.go:794
-#: internal/viewerui/app.go:805
+#: internal/viewerui/app.go:807
 msgid "FILE"
 msgstr "文件"
 
@@ -9555,7 +9627,7 @@ msgstr "Flatpak：%s"
 #: internal/ui/settings_keyring.go:469
 #: internal/ui/settings_keyring.go:477
 #: internal/ui/settings_keyring.go:629
-#: internal/vmui/window.go:1591
+#: internal/vmui/window.go:1596
 msgid "%s · %s"
 msgstr "%s · %s"
 
@@ -9661,7 +9733,7 @@ msgid "Search for a symbol to add it."
 msgstr "搜尋符號來加入它。"
 
 #: internal/lightui/stocks.go:284
-#: internal/mailui/window.go:994
+#: internal/mailui/window.go:1000
 msgid "Loading %s…"
 msgstr "正在載入%s…"
 
@@ -10682,6 +10754,7 @@ msgstr "使用：%s"
 
 #: internal/lightui/workshop_manager.go:64
 #: internal/mailui/settings.go:435
+#: internal/vmui/menubar.go:46
 #: ui/vm.ui:2583
 msgid "Remove…"
 msgstr "移除…"
@@ -10765,6 +10838,7 @@ msgstr "取代已安裝的 %s？"
 
 #: internal/lightui/workshop_manager.go:154
 #: internal/ui/voice_page.go:185
+#: internal/vmui/menubar.go:45
 #: ui/vm.ui:1283
 msgid "Install"
 msgstr "安裝"
@@ -10794,7 +10868,7 @@ msgid "Moved to Spam"
 msgstr "已移到垃圾郵件"
 
 #: internal/mailui/actions.go:216
-#: internal/viewerui/app.go:505
+#: internal/viewerui/app.go:507
 msgid "Moved to Trash"
 msgstr "已移至垃圾箱"
 
@@ -10854,7 +10928,7 @@ msgid "Mail forgets it on this computer: its sign-in and the mail it kept. The m
 msgstr "郵件會在這台電腦上忘掉它：登入資訊和已保存的郵件。伺服器上的郵件仍會保留。"
 
 #: internal/mailui/actions.go:518
-#: internal/mailui/window.go:592
+#: internal/mailui/window.go:598
 msgid "Unsent"
 msgstr "未寄出"
 
@@ -10862,7 +10936,7 @@ msgstr "未寄出"
 #: internal/mailui/details.go:190
 #: internal/mailui/people.go:301
 #: internal/mailui/reader.go:232
-#: internal/mailui/window.go:1337
+#: internal/mailui/window.go:1343
 msgid "(no subject)"
 msgstr "（無主旨）"
 
@@ -10894,7 +10968,7 @@ msgid_plural "%s and %d more messages"
 msgstr[0] "%s 及另外 %d 封"
 
 #: internal/mailui/app.go:23
-#: internal/mailui/window.go:1727
+#: internal/mailui/window.go:1733
 #: ui/mail.ui:14
 #: config/apps/io.github.lyricat.Inua.Mail.desktop:3
 msgid "Mail"
@@ -10934,7 +11008,7 @@ msgid "The assistant gave no search."
 msgstr "助理沒有給出搜尋。"
 
 #: internal/mailui/assist.go:262
-#: internal/mailui/window.go:1564
+#: internal/mailui/window.go:1570
 msgid "Searched for %s"
 msgstr "已搜尋 %s"
 
@@ -11027,7 +11101,7 @@ msgstr "翻譯成%s"
 #: internal/mailui/details.go:98
 #: internal/mailui/formatted.go:192
 #: internal/mailui/settings.go:382
-#: internal/mailui/window.go:1756
+#: internal/mailui/window.go:1762
 msgid "Not saved: %v"
 msgstr "未儲存：%v"
 
@@ -11169,6 +11243,23 @@ msgstr "看起來可疑的郵件不會自動載入網路圖片。"
 #: internal/mailui/formatted.go:186
 msgid "Always from this sender"
 msgstr "一律載入此寄件者的"
+
+#: internal/mailui/menubar.go:40
+msgid "New Message"
+msgstr ""
+
+#: internal/mailui/menubar.go:51
+msgid "Mark All Read"
+msgstr ""
+
+#: internal/mailui/menubar.go:53
+#: internal/termui/menubar.go:45
+msgid "Help"
+msgstr ""
+
+#: internal/mailui/menubar.go:54
+msgid "Keyboard Shortcuts"
+msgstr ""
 
 #: internal/mailui/panel.go:75
 msgid "Open a conversation: AI sums it up, suggests replies and writes them, and judges a message that looks suspicious."
@@ -11382,7 +11473,7 @@ msgid "Forward (F)"
 msgstr "轉寄 (F)"
 
 #: internal/mailui/reader.go:320
-#: internal/mailui/window.go:1253
+#: internal/mailui/window.go:1259
 msgid "Archive (E)"
 msgstr "封存 (E)"
 
@@ -11399,17 +11490,17 @@ msgid "Move to a folder (V)"
 msgstr "移到資料夾 (V)"
 
 #: internal/mailui/reader.go:327
-#: internal/mailui/window.go:1382
+#: internal/mailui/window.go:1388
 msgid "Star (S)"
 msgstr "加星號 (S)"
 
 #: internal/mailui/reader.go:330
-#: internal/mailui/window.go:1379
+#: internal/mailui/window.go:1385
 msgid "Unstar (S)"
 msgstr "取消星號 (S)"
 
 #: internal/mailui/reader.go:332
-#: internal/mailui/window.go:1389
+#: internal/mailui/window.go:1395
 msgid "Mark as unread (U)"
 msgstr "標為未讀 (U)"
 
@@ -11468,7 +11559,7 @@ msgid "Fold"
 msgstr ""
 
 #: internal/mailui/reader.go:670
-#: internal/mailui/window.go:1331
+#: internal/mailui/window.go:1337
 msgid "me"
 msgstr "我"
 
@@ -11738,7 +11829,7 @@ msgstr "列表中的每個對話"
 #: internal/mailui/settings.go:486
 #: internal/mailui/settings.go:486
 #: internal/mailui/settings.go:486
-#: internal/viewerui/app.go:745
+#: internal/viewerui/app.go:747
 msgid "%d line"
 msgid_plural "%d lines"
 msgstr[0] "%d 行"
@@ -12056,7 +12147,7 @@ msgid "Enter signs in · Esc goes back"
 msgstr "Enter 登入 · Esc 返回"
 
 #: internal/mailui/welcome.go:600
-#: internal/mailui/window.go:648
+#: internal/mailui/window.go:654
 msgid "Sign in"
 msgstr "登入"
 
@@ -12136,251 +12227,251 @@ msgstr "你自己的 OAuth 用戶端…"
 msgid "Hide your own OAuth client"
 msgstr "隱藏你自己的 OAuth 用戶端"
 
-#: internal/mailui/window.go:248
+#: internal/mailui/window.go:251
 msgid "ALL"
 msgstr "全部"
 
-#: internal/mailui/window.go:248
+#: internal/mailui/window.go:251
 msgid "UNREAD"
 msgstr "未讀"
 
-#: internal/mailui/window.go:252
+#: internal/mailui/window.go:255
 msgid "Every conversation"
 msgstr "所有對話"
 
-#: internal/mailui/window.go:252
+#: internal/mailui/window.go:255
 msgid "With messages not read"
 msgstr "有未讀郵件"
 
-#: internal/mailui/window.go:253
-#: internal/mailui/window.go:1374
+#: internal/mailui/window.go:256
+#: internal/mailui/window.go:1380
 msgid "With files attached"
 msgstr "帶有附件"
 
-#: internal/mailui/window.go:253
+#: internal/mailui/window.go:256
 msgid "Waiting for your reply"
 msgstr "等待你的回覆"
 
-#: internal/mailui/window.go:263
+#: internal/mailui/window.go:266
 msgid "MARK READ"
 msgstr "全部已讀"
 
-#: internal/mailui/window.go:266
+#: internal/mailui/window.go:269
 msgid "Mark every conversation here as read"
 msgstr "將這裡的所有對話標為已讀"
 
-#: internal/mailui/window.go:270
+#: internal/mailui/window.go:273
 msgid "EMPTY"
 msgstr ""
 
-#: internal/mailui/window.go:273
+#: internal/mailui/window.go:276
 msgid "Permanently delete every message here"
 msgstr ""
 
-#: internal/mailui/window.go:481
+#: internal/mailui/window.go:484
 msgid "Signed out"
 msgstr "已登出"
 
-#: internal/mailui/window.go:483
+#: internal/mailui/window.go:486
 msgid "No client ID"
 msgstr ""
 
-#: internal/mailui/window.go:500
+#: internal/mailui/window.go:503
 msgid "Offline: server not found"
 msgstr "{'es': 'Sin conexión: no se encuentra el servidor', 'fr': 'Hors ligne : serveur introuvable', 'ja': 'オフライン：サーバーが見つかりません', 'ko': '오프라인: 서버를 찾을 수 없음', 'zh_CN': '离线：找不到服务器', 'zh_TW': '離線：找不到伺服器'}"
 
-#: internal/mailui/window.go:502
+#: internal/mailui/window.go:505
 msgid "Offline: connection refused"
 msgstr "{'es': 'Sin conexión: conexión rechazada', 'fr': 'Hors ligne : connexion refusée', 'ja': 'オフライン：接続が拒否されました', 'ko': '오프라인: 연결이 거부됨', 'zh_CN': '离线：连接被拒绝', 'zh_TW': '離線：連線被拒絕'}"
 
-#: internal/mailui/window.go:504
+#: internal/mailui/window.go:507
 msgid "Offline: no network"
 msgstr "{'es': 'Sin conexión: no hay red', 'fr': 'Hors ligne : pas de réseau', 'ja': 'オフライン：ネットワークがありません', 'ko': '오프라인: 네트워크 없음', 'zh_CN': '离线：没有网络', 'zh_TW': '離線：沒有網路'}"
 
-#: internal/mailui/window.go:506
+#: internal/mailui/window.go:509
 msgid "Offline: certificate not trusted"
 msgstr "{'es': 'Sin conexión: certificado no fiable', 'fr': 'Hors ligne : certificat non reconnu', 'ja': 'オフライン：証明書を信頼できません', 'ko': '오프라인: 신뢰할 수 없는 인증서', 'zh_CN': '离线：证书不受信任', 'zh_TW': '離線：憑證不受信任'}"
 
-#: internal/mailui/window.go:508
+#: internal/mailui/window.go:511
 msgid "Offline: no answer from the server"
 msgstr "{'es': 'Sin conexión: el servidor no responde', 'fr': 'Hors ligne : le serveur ne répond pas', 'ja': 'オフライン：サーバーが応答しません', 'ko': '오프라인: 서버가 응답하지 않음', 'zh_CN': '离线：服务器无响应', 'zh_TW': '離線：伺服器無回應'}"
 
-#: internal/mailui/window.go:510
+#: internal/mailui/window.go:513
 msgid "Offline: connection dropped"
 msgstr "{'es': 'Sin conexión: se cortó la conexión', 'fr': 'Hors ligne : connexion interrompue', 'ja': 'オフライン：接続が切れました', 'ko': '오프라인: 연결이 끊김', 'zh_CN': '离线：连接已断开', 'zh_TW': '離線：連線已中斷'}"
 
-#: internal/mailui/window.go:512
+#: internal/mailui/window.go:515
 #: internal/shell/status.go:77
 msgid "Offline"
 msgstr "離線"
 
-#: internal/mailui/window.go:571
-#: internal/mailui/window.go:1702
+#: internal/mailui/window.go:577
+#: internal/mailui/window.go:1708
 msgid "No account yet"
 msgstr "還沒有帳戶"
 
-#: internal/mailui/window.go:586
+#: internal/mailui/window.go:592
 msgid "All inboxes"
 msgstr "所有收件匣"
 
-#: internal/mailui/window.go:587
+#: internal/mailui/window.go:593
 msgid "Needs reply"
 msgstr "需要回覆"
 
-#: internal/mailui/window.go:588
+#: internal/mailui/window.go:594
 msgid "Starred"
 msgstr "已加星號"
 
-#: internal/mailui/window.go:590
+#: internal/mailui/window.go:596
 msgid "Newsletters"
 msgstr ""
 
-#: internal/mailui/window.go:596
+#: internal/mailui/window.go:602
 msgid "Contacts"
 msgstr ""
 
-#: internal/mailui/window.go:605
+#: internal/mailui/window.go:611
 msgid "This account's settings"
 msgstr "此帳號的設定"
 
-#: internal/mailui/window.go:683
+#: internal/mailui/window.go:689
 msgid "%d more folder"
 msgid_plural "%d more folders"
 msgstr[0] "另外 %d 個資料夾"
 
-#: internal/mailui/window.go:685
+#: internal/mailui/window.go:691
 msgid "Fewer folders"
 msgstr "收合資料夾"
 
-#: internal/mailui/window.go:769
+#: internal/mailui/window.go:775
 msgid "Inbox"
 msgstr "收件匣"
 
-#: internal/mailui/window.go:771
+#: internal/mailui/window.go:777
 msgid "Drafts"
 msgstr "草稿"
 
-#: internal/mailui/window.go:773
+#: internal/mailui/window.go:779
 msgid "Sent"
 msgstr "寄件備份"
 
-#: internal/mailui/window.go:777
+#: internal/mailui/window.go:783
 msgid "Spam"
 msgstr "垃圾郵件"
 
-#: internal/mailui/window.go:816
+#: internal/mailui/window.go:822
 msgid "Search contacts"
 msgstr ""
 
-#: internal/mailui/window.go:818
-#: internal/mailui/window.go:1764
+#: internal/mailui/window.go:824
+#: internal/mailui/window.go:1770
 #: ui/mail.ui:148
 msgid "Search, or ask in a sentence"
 msgstr "搜尋，或用一句話提問"
 
-#: internal/mailui/window.go:1036
+#: internal/mailui/window.go:1042
 msgid "your mail"
 msgstr "你的郵件"
 
-#: internal/mailui/window.go:1049
+#: internal/mailui/window.go:1055
 msgid "Nothing found"
 msgstr "找不到"
 
-#: internal/mailui/window.go:1051
+#: internal/mailui/window.go:1057
 msgid "Fetching your mail…"
 msgstr "正在取得郵件…"
 
-#: internal/mailui/window.go:1053
+#: internal/mailui/window.go:1059
 msgid "Nothing waits for your reply"
 msgstr "沒有等你回覆的郵件"
 
-#: internal/mailui/window.go:1055
+#: internal/mailui/window.go:1061
 msgid "No starred conversation"
 msgstr "沒有加星號的對話"
 
-#: internal/mailui/window.go:1057
+#: internal/mailui/window.go:1063
 msgid "No newsletter"
 msgstr ""
 
-#: internal/mailui/window.go:1059
+#: internal/mailui/window.go:1065
 msgid "All read"
 msgstr "全部已讀"
 
-#: internal/mailui/window.go:1061
+#: internal/mailui/window.go:1067
 msgid "Inbox empty. Nothing waits for you."
 msgstr "收件匣空了，沒有等你處理的郵件。"
 
-#: internal/mailui/window.go:1063
+#: internal/mailui/window.go:1069
 msgid "No mail here"
 msgstr "這裡沒有郵件"
 
-#: internal/mailui/window.go:1128
+#: internal/mailui/window.go:1134
 msgid "Could not load older mail: %v"
 msgstr "無法載入更早的郵件：%v"
 
-#: internal/mailui/window.go:1254
+#: internal/mailui/window.go:1260
 msgid "Delete (D)"
 msgstr "刪除 (D)"
 
-#: internal/mailui/window.go:1278
+#: internal/mailui/window.go:1284
 msgid "SUSPICIOUS"
 msgstr "可疑"
 
-#: internal/mailui/window.go:1346
+#: internal/mailui/window.go:1352
 msgid "EMPTY PREVIEW"
 msgstr ""
 
-#: internal/mailui/window.go:1386
+#: internal/mailui/window.go:1392
 msgid "Mark as read"
 msgstr "標為已讀"
 
-#: internal/mailui/window.go:1440
+#: internal/mailui/window.go:1446
 #: internal/shell/notify.go:30
 msgid "Jan 2"
 msgstr "1月2日"
 
-#: internal/mailui/window.go:1498
+#: internal/mailui/window.go:1504
 msgid "Press Enter to ask the assistant to search for this."
 msgstr "按 Enter 讓助理搜尋這句話。"
 
-#: internal/mailui/window.go:1543
+#: internal/mailui/window.go:1549
 msgid "Searching the server…"
 msgstr "正在搜尋伺服器…"
 
-#: internal/mailui/window.go:1567
+#: internal/mailui/window.go:1573
 msgid "The server's search failed: %s"
 msgstr "伺服器搜尋失敗：%s"
 
-#: internal/mailui/window.go:1699
+#: internal/mailui/window.go:1705
 msgid "Up to date"
 msgstr "已是最新"
 
-#: internal/mailui/window.go:1704
+#: internal/mailui/window.go:1710
 msgid "Checking for mail…"
 msgstr "正在檢查郵件…"
 
-#: internal/mailui/window.go:1708
+#: internal/mailui/window.go:1714
 msgid "Offline: trying again soon"
 msgstr "離線：稍後重試"
 
-#: internal/mailui/window.go:1710
+#: internal/mailui/window.go:1716
 msgid "%d account cannot connect"
 msgid_plural "%d accounts cannot connect"
 msgstr[0] "%d 個帳號無法連線"
 
-#: internal/mailui/window.go:1712
+#: internal/mailui/window.go:1718
 msgid "Checked %s"
 msgstr "%s檢查過"
 
-#: internal/mailui/window.go:1717
+#: internal/mailui/window.go:1723
 msgid "Last checked at %s"
 msgstr "上次檢查於 %s"
 
-#: internal/mailui/window.go:1725
+#: internal/mailui/window.go:1731
 msgid "Mail · %d unread"
 msgstr "郵件 · %d 未讀"
 
-#: internal/mailui/window.go:1800
+#: internal/mailui/window.go:1806
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d 分鐘前"
@@ -12391,6 +12482,22 @@ msgstr[0] "%d 分鐘前"
 #: config/apps/io.github.lyricat.Inua.Remote.desktop:3
 msgid "Remote Desktop"
 msgstr "遠端桌面"
+
+#: internal/remoteui/menubar.go:40
+msgid "Session"
+msgstr ""
+
+#: internal/remoteui/menubar.go:42
+msgid "End Remote Session"
+msgstr ""
+
+#: internal/remoteui/menubar.go:44
+msgid "This Computer"
+msgstr ""
+
+#: internal/remoteui/menubar.go:48
+msgid "Find Machines"
+msgstr ""
 
 #: internal/remoteui/stream.go:126
 msgid "%s — Remote Desktop"
@@ -12408,194 +12515,194 @@ msgstr "%s 結束了工作階段。"
 msgid "%s cannot show its screen: no monitor is connected, or its desktop session is not running. A computer without a monitor can share a virtual screen (Remote Desktop, Sharing)."
 msgstr "%s 無法顯示其螢幕：沒有連接顯示器，或其桌面工作階段未在執行。沒有顯示器的電腦可以分享虛擬螢幕（遠端桌面，分享）。"
 
-#: internal/remoteui/window.go:134
+#: internal/remoteui/window.go:135
 msgid "This computer has no identity to pair with: %v"
 msgstr "這台電腦沒有用於配對的身分：%v"
 
-#: internal/remoteui/window.go:173
+#: internal/remoteui/window.go:174
 #: internal/shell/card.go:80
 #: ui/settings.ui:5268
 #: ui/settings.ui:5549
 msgid "This computer"
 msgstr "這台電腦"
 
-#: internal/remoteui/window.go:264
+#: internal/remoteui/window.go:270
 msgid "Not sharing"
 msgstr ""
 
-#: internal/remoteui/window.go:267
+#: internal/remoteui/window.go:273
 msgid "Sharing its desktop"
 msgstr ""
 
-#: internal/remoteui/window.go:328
+#: internal/remoteui/window.go:334
 msgid "Paired"
 msgstr "已配對"
 
-#: internal/remoteui/window.go:340
+#: internal/remoteui/window.go:346
 msgid "Found on this network"
 msgstr "在此網路上找到"
 
-#: internal/remoteui/window.go:342
+#: internal/remoteui/window.go:348
 msgid "Found on the tailnet"
 msgstr "在 tailnet 上找到"
 
-#: internal/remoteui/window.go:474
+#: internal/remoteui/window.go:480
 msgid "Sharing did not start: %v"
 msgstr "分享沒有啟動：%v"
 
-#: internal/remoteui/window.go:510
+#: internal/remoteui/window.go:516
 msgid "The virtual screen did not change: %v"
 msgstr "虛擬螢幕未變更：%v"
 
-#: internal/remoteui/window.go:519
+#: internal/remoteui/window.go:525
 msgid "The settings were not saved: %v"
 msgstr "設定未儲存：%v"
 
-#: internal/remoteui/window.go:556
+#: internal/remoteui/window.go:562
 msgid "Other devices see this computer as %s, on this network and the tailnet. A device pairs once, with a PIN typed here."
 msgstr "其他裝置在此網路和 tailnet 上會看到這台電腦名為 %s。裝置只需配對一次，在這裡輸入 PIN。"
 
-#: internal/remoteui/window.go:558
+#: internal/remoteui/window.go:564
 msgid "Sunshine is starting."
 msgstr "Sunshine 正在啟動。"
 
-#: internal/remoteui/window.go:560
+#: internal/remoteui/window.go:566
 msgid "Lets your other devices see and control this desktop, with Moonlight or Remote Desktop."
 msgstr "讓你的其他裝置用 Moonlight 或遠端桌面檢視並控制此桌面。"
 
-#: internal/remoteui/window.go:571
+#: internal/remoteui/window.go:577
 msgid "Sharing needs Sunshine, which is not installed."
 msgstr "分享需要 Sunshine，但它沒有安裝。"
 
-#: internal/remoteui/window.go:572
+#: internal/remoteui/window.go:578
 msgid "Install the package for your system from github.com/LizardByte/Sunshine/releases (Ubuntu: sudo apt install ./sunshine_…_amd64.deb)."
 msgstr "從 github.com/LizardByte/Sunshine/releases 安裝適合你系統的套件（Ubuntu：sudo apt install ./sunshine_…_amd64.deb）。"
 
-#: internal/remoteui/window.go:574
+#: internal/remoteui/window.go:580
 msgid "The other device's keyboard and mouse cannot reach this desktop: /dev/uinput is not yours."
 msgstr "另一台裝置的鍵盤和滑鼠無法操作此桌面：你沒有 /dev/uinput 的權限。"
 
-#: internal/remoteui/window.go:577
+#: internal/remoteui/window.go:583
 msgid "Sharing needs a graphical session to show."
 msgstr "分享需要一個圖形工作階段。"
 
-#: internal/remoteui/window.go:602
+#: internal/remoteui/window.go:608
 msgid "A device"
 msgstr "一台裝置"
 
-#: internal/remoteui/window.go:606
+#: internal/remoteui/window.go:612
 msgid "at %s: type the PIN it shows"
 msgstr "來自 %s：輸入它顯示的 PIN"
 
-#: internal/remoteui/window.go:633
+#: internal/remoteui/window.go:639
 msgid "No device is paired yet."
 msgstr "還沒有已配對的裝置。"
 
-#: internal/remoteui/window.go:638
+#: internal/remoteui/window.go:644
 msgid "The paired devices show while sharing is on."
 msgstr "分享開啟時會顯示已配對的裝置。"
 
-#: internal/remoteui/window.go:653
+#: internal/remoteui/window.go:659
 msgid "Paired twice, so it cannot connect: unpair each, then pair it again."
 msgstr "重複配對，因此無法連線：請逐一取消配對，再重新配對。"
 
-#: internal/remoteui/window.go:683
+#: internal/remoteui/window.go:689
 msgid "A PIN is four digits."
 msgstr "PIN 是四位數字。"
 
-#: internal/remoteui/window.go:695
+#: internal/remoteui/window.go:701
 msgid "That is not the PIN %s shows."
 msgstr "這不是 %s 顯示的 PIN。"
 
-#: internal/remoteui/window.go:697
+#: internal/remoteui/window.go:703
 msgid "%s was paired here before, as %s, and a device paired twice is refused. Its old pairing is removed: pair again from %s."
 msgstr "%s 之前已在此配對，名稱為 %s，而重複配對的裝置會被拒絕。舊的配對已移除：請從 %s 重新配對。"
 
-#: internal/remoteui/window.go:700
+#: internal/remoteui/window.go:706
 msgid "%s was not paired: %v"
 msgstr "%s 未能配對：%v"
 
-#: internal/remoteui/window.go:721
+#: internal/remoteui/window.go:727
 msgid "%s was not unpaired: %v"
 msgstr "%s 未能取消配對：%v"
 
-#: internal/remoteui/window.go:789
+#: internal/remoteui/window.go:795
 msgid "Connected: its desktop is in a window of its own."
 msgstr "已連線：它的桌面在獨立的視窗中。"
 
-#: internal/remoteui/window.go:792
+#: internal/remoteui/window.go:798
 msgid "It does not answer: it is off, or not sharing its desktop."
 msgstr "沒有回應：它已關機，或沒有分享桌面。"
 
-#: internal/remoteui/window.go:794
+#: internal/remoteui/window.go:800
 msgid "It shares with Nvidia's GameStream, which Remote Desktop does not speak."
 msgstr "它透過 Nvidia 的 GameStream 分享，遠端桌面不支援。"
 
-#: internal/remoteui/window.go:796
+#: internal/remoteui/window.go:802
 msgid "It has forgotten this computer: pair again."
 msgstr "它已忘記這台電腦：請重新配對。"
 
-#: internal/remoteui/window.go:798
+#: internal/remoteui/window.go:804
 msgid "Not paired: pair once, with a PIN typed on it."
 msgstr "未配對：在它上面輸入 PIN，配對一次即可。"
 
-#: internal/remoteui/window.go:800
+#: internal/remoteui/window.go:806
 msgid "Paired. Its desktop is being streamed; connecting joins in."
 msgstr "已配對。它的桌面正在串流，連線即可加入。"
 
-#: internal/remoteui/window.go:802
+#: internal/remoteui/window.go:808
 msgid "Paired, and ready."
 msgstr "已配對，可以連線。"
 
-#: internal/remoteui/window.go:840
+#: internal/remoteui/window.go:846
 msgid "On %s, open Remote Desktop → Sharing (or Sunshine's PIN page) and type:"
 msgstr "在 %s 上開啟遠端桌面 → 分享（或 Sunshine 的 PIN 頁面），然後輸入："
 
-#: internal/remoteui/window.go:863
+#: internal/remoteui/window.go:869
 msgid "Paired, but not saved, so not kept after this window: %v"
 msgstr "已配對，但未儲存，關閉此視窗後不會保留：%v"
 
-#: internal/remoteui/window.go:867
+#: internal/remoteui/window.go:873
 msgid "The PIN typed there was not this one. Pair again."
 msgstr "那邊輸入的 PIN 不是這個。請重新配對。"
 
-#: internal/remoteui/window.go:869
+#: internal/remoteui/window.go:875
 msgid "%s took the PIN, then refused this computer: it had this computer paired already, perhaps under another name, and refuses a computer paired twice. If it shares with inua, it has removed the old pairing: pair again. Otherwise unpair this computer there first."
 msgstr "%s 接受了 PIN，隨後拒絕了這台電腦：它已配對過這台電腦（可能用的是別的名稱），並會拒絕重複配對的電腦。如果對方以 inua 分享，它已移除舊的配對：請重新配對。否則請先在對方那邊取消這台電腦的配對。"
 
-#: internal/remoteui/window.go:872
+#: internal/remoteui/window.go:878
 msgid "Pairing failed: %v"
 msgstr "配對失敗：%v"
 
-#: internal/remoteui/window.go:887
+#: internal/remoteui/window.go:893
 msgid "Its session did not end: %v"
 msgstr "它的工作階段未能結束：%v"
 
-#: internal/remoteui/window.go:900
+#: internal/remoteui/window.go:906
 msgid "Not forgotten: the list of machines was not saved: %v"
 msgstr "未移除：機器清單未能儲存：%v"
 
-#: internal/remoteui/window.go:936
+#: internal/remoteui/window.go:942
 msgid "Nothing shares a desktop at %s: %v"
 msgstr "%s 上沒有分享的桌面：%v"
 
-#: internal/remoteui/window.go:941
+#: internal/remoteui/window.go:947
 msgid "Added, but not saved, so not kept after this window: %v"
 msgstr "已新增，但未儲存，關閉此視窗後不會保留：%v"
 
-#: internal/remoteui/window.go:1007
+#: internal/remoteui/window.go:1013
 msgid "This computer cannot decode it: choose another."
 msgstr "這台電腦無法解碼：請選擇其他的。"
 
-#: internal/remoteui/window.go:1009
+#: internal/remoteui/window.go:1015
 msgid "Decoded by the processor here: slower than the graphics card."
 msgstr "這裡由處理器解碼：比顯示卡慢。"
 
-#: internal/remoteui/window.go:1011
+#: internal/remoteui/window.go:1017
 msgid "Decoded by the graphics card here. HEVC and AV1 look better than H.264 at the same bitrate."
 msgstr "這裡由顯示卡解碼。相同位元率下，HEVC 和 AV1 比 H.264 更清晰。"
 
-#: internal/remoteui/window.go:1038
+#: internal/remoteui/window.go:1044
 msgid "The connection ended: %v"
 msgstr "連線已結束：%v"
 
@@ -12708,8 +12815,8 @@ msgstr "磁碟"
 
 #: internal/shell/card.go:193
 #: internal/shell/cardterm.go:140
-#: internal/vmui/window.go:2710
-#: internal/vmui/window.go:2714
+#: internal/vmui/window.go:2715
+#: internal/vmui/window.go:2719
 #: ui/screenshot.ui:205
 #: ui/shotdrawer.ui:146
 msgid "Screen"
@@ -12909,10 +13016,6 @@ msgstr "重啟inua"
 #: internal/shell/commands.go:45
 msgid "Start the shell again"
 msgstr "再次啟動shell"
-
-#: internal/shell/commands.go:46
-msgid "Close Window"
-msgstr "關閉窗口"
 
 #: internal/shell/commands.go:47
 #: internal/shell/launcher_actions.go:54
@@ -13558,7 +13661,7 @@ msgid "Could not upload %s"
 msgstr ""
 
 #: internal/term/web/strings.go:39
-#: internal/vmui/window.go:1108
+#: internal/vmui/window.go:1113
 #: ui/gpg.ui:1591
 #: ui/vm.ui:3299
 msgid "Create"
@@ -13574,7 +13677,7 @@ msgid "DONE"
 msgstr "已完成"
 
 #: internal/term/web/strings.go:44
-#: internal/vmui/window.go:2467
+#: internal/vmui/window.go:2472
 msgid "Download"
 msgstr "下載"
 
@@ -13996,12 +14099,13 @@ msgid "this computer only"
 msgstr "僅限這台電腦"
 
 #: internal/termui/headmenu.go:158
-#: internal/vmui/window.go:1820
-#: internal/vmui/window.go:1885
-#: internal/vmui/window.go:1966
-#: internal/vmui/window.go:1968
-#: internal/vmui/window.go:1970
-#: internal/vmui/window.go:1972
+#: internal/vmui/menubar.go:88
+#: internal/vmui/window.go:1825
+#: internal/vmui/window.go:1890
+#: internal/vmui/window.go:1971
+#: internal/vmui/window.go:1973
+#: internal/vmui/window.go:1975
+#: internal/vmui/window.go:1977
 msgid "Stopping…"
 msgstr "正在停止…"
 
@@ -14038,14 +14142,6 @@ msgstr "它在等你：%s。關閉窗格會結束它。"
 #: internal/termui/keys.go:326
 msgid "Choose the workspace's folder"
 msgstr "選擇工作區的資料夾"
-
-#: internal/termui/menubar.go:43
-msgid "View"
-msgstr ""
-
-#: internal/termui/menubar.go:45
-msgid "Help"
-msgstr ""
 
 #: internal/termui/palette.go:20
 msgid "Focus the pane in that direction"
@@ -14142,7 +14238,7 @@ msgid "The colours programs draw with: the window theme's, or a scheme"
 msgstr "程式繪製時使用的顏色：視窗主題的，或一套配色"
 
 #: internal/termui/prefs.go:132
-#: internal/viewerui/app.go:832
+#: internal/viewerui/app.go:834
 msgid "TEXT"
 msgstr "文字"
 
@@ -17157,178 +17253,178 @@ msgid "No app by that name"
 msgstr "沒有這個名稱的應用程式"
 
 #: internal/viewerui/app.go:36
-#: internal/viewerui/app.go:715
-#: internal/viewerui/app.go:716
+#: internal/viewerui/app.go:717
+#: internal/viewerui/app.go:718
 #: config/apps/io.github.lyricat.Inua.Viewer.desktop:3
 msgid "Viewer"
 msgstr "檢視器"
 
-#: internal/viewerui/app.go:498
+#: internal/viewerui/app.go:500
 msgid "Could not move to Trash"
 msgstr "無法移至垃圾箱"
 
-#: internal/viewerui/app.go:508
+#: internal/viewerui/app.go:510
 msgid "Nothing left here."
 msgstr "這裡什麼都沒有了。"
 
-#: internal/viewerui/app.go:559
+#: internal/viewerui/app.go:561
 #: internal/viewerui/edit.go:268
 #: internal/viewerui/edit.go:274
 #: internal/viewerui/edit.go:289
 msgid "Could not copy"
 msgstr "無法複製"
 
-#: internal/viewerui/app.go:592
+#: internal/viewerui/app.go:594
 msgid "Open a File"
 msgstr "開啟檔案"
 
-#: internal/viewerui/app.go:594
+#: internal/viewerui/app.go:596
 msgid "Images, PDFs, Markdown and text"
 msgstr "圖片、PDF、Markdown 和文字"
 
-#: internal/viewerui/app.go:617
+#: internal/viewerui/app.go:619
 msgid "Open an image or a document to view it."
 msgstr "開啟圖片或文件來檢視。"
 
-#: internal/viewerui/app.go:683
+#: internal/viewerui/app.go:685
 msgid "Copy the page's text (Ctrl+C)"
 msgstr "複製本頁文字 (Ctrl+C)"
 
-#: internal/viewerui/app.go:684
+#: internal/viewerui/app.go:686
 msgid "Previous file (Ctrl+Page Up)"
 msgstr "上一個檔案 (Ctrl+Page Up)"
 
-#: internal/viewerui/app.go:685
+#: internal/viewerui/app.go:687
 msgid "Next file (Ctrl+Page Down)"
 msgstr "下一個檔案 (Ctrl+Page Down)"
 
-#: internal/viewerui/app.go:687
+#: internal/viewerui/app.go:689
 msgid "Copy the text (Ctrl+C)"
 msgstr "複製文字 (Ctrl+C)"
 
-#: internal/viewerui/app.go:688
-#: internal/viewerui/app.go:692
+#: internal/viewerui/app.go:690
+#: internal/viewerui/app.go:694
 #: ui/viewer.ui:322
 msgid "Previous (←)"
 msgstr "上一篇 (←)"
 
-#: internal/viewerui/app.go:689
-#: internal/viewerui/app.go:693
+#: internal/viewerui/app.go:691
+#: internal/viewerui/app.go:695
 #: ui/viewer.ui:334
 msgid "Next (→)"
 msgstr "下一個 (→)"
 
-#: internal/viewerui/app.go:691
+#: internal/viewerui/app.go:693
 #: ui/viewer.ui:139
 msgid "Copy the image (Ctrl+C)"
 msgstr "複製影像(Ctrl+C)"
 
-#: internal/viewerui/app.go:701
+#: internal/viewerui/app.go:703
 msgid "%s is locked with a password."
 msgstr "%s 已用密碼保護。"
 
-#: internal/viewerui/app.go:703
+#: internal/viewerui/app.go:705
 msgid "%s is not UTF-8 text."
 msgstr "%s 不是 UTF-8 文字。"
 
-#: internal/viewerui/app.go:705
+#: internal/viewerui/app.go:707
 msgid "Install libpoppler-glib8t64 to view PDFs."
 msgstr "安裝 libpoppler-glib8t64 即可檢視 PDF。"
 
-#: internal/viewerui/app.go:707
+#: internal/viewerui/app.go:709
 #: internal/viewerui/image.go:80
 msgid "Could not open %s.\n%v"
 msgstr "無法開啟 %[1]s。\n%[2]v"
 
-#: internal/viewerui/app.go:741
+#: internal/viewerui/app.go:743
 msgid "Page %d of %d"
 msgstr "第 %d 頁，共 %d 頁"
 
-#: internal/viewerui/app.go:803
+#: internal/viewerui/app.go:805
 msgid "Jan 2, 2006  15:04"
 msgstr "2006年1月2日  15:04"
 
-#: internal/viewerui/app.go:811
-#: internal/viewerui/app.go:829
-#: internal/viewerui/app.go:853
+#: internal/viewerui/app.go:813
+#: internal/viewerui/app.go:831
+#: internal/viewerui/app.go:855
 msgid "Type"
 msgstr "類型"
 
-#: internal/viewerui/app.go:812
-#: internal/viewerui/app.go:830
-#: internal/viewerui/app.go:854
+#: internal/viewerui/app.go:814
+#: internal/viewerui/app.go:832
+#: internal/viewerui/app.go:856
 msgid "Modified"
 msgstr "修改"
 
-#: internal/viewerui/app.go:817
+#: internal/viewerui/app.go:819
 msgid "DOCUMENT"
 msgstr "文件"
 
-#: internal/viewerui/app.go:818
+#: internal/viewerui/app.go:820
 msgid "Title"
 msgstr "標題"
 
-#: internal/viewerui/app.go:819
+#: internal/viewerui/app.go:821
 msgid "Author"
 msgstr "作者"
 
-#: internal/viewerui/app.go:821
+#: internal/viewerui/app.go:823
 msgid "Pages"
 msgstr "頁數"
 
-#: internal/viewerui/app.go:822
+#: internal/viewerui/app.go:824
 msgid "Page size"
 msgstr "頁面尺寸"
 
-#: internal/viewerui/app.go:823
+#: internal/viewerui/app.go:825
 msgid "Created"
 msgstr "建立時間"
 
-#: internal/viewerui/app.go:825
+#: internal/viewerui/app.go:827
 msgid "Made with"
 msgstr "製作工具"
 
-#: internal/viewerui/app.go:833
+#: internal/viewerui/app.go:835
 msgid "Lines"
 msgstr "行數"
 
-#: internal/viewerui/app.go:834
+#: internal/viewerui/app.go:836
 msgid "Words"
 msgstr "字詞數"
 
-#: internal/viewerui/app.go:835
+#: internal/viewerui/app.go:837
 msgid "Characters"
 msgstr "字元數"
 
-#: internal/viewerui/app.go:852
+#: internal/viewerui/app.go:854
 msgid "Dimensions"
 msgstr "尺寸"
 
-#: internal/viewerui/app.go:856
+#: internal/viewerui/app.go:858
 msgid "CAMERA"
 msgstr "相機"
 
-#: internal/viewerui/app.go:857
+#: internal/viewerui/app.go:859
 msgid "Camera"
 msgstr "相機"
 
-#: internal/viewerui/app.go:858
+#: internal/viewerui/app.go:860
 msgid "Lens"
 msgstr "鏡頭"
 
-#: internal/viewerui/app.go:859
+#: internal/viewerui/app.go:861
 msgid "Exposure"
 msgstr "曝光"
 
-#: internal/viewerui/app.go:860
+#: internal/viewerui/app.go:862
 msgid "Taken"
 msgstr "拍攝時間"
 
-#: internal/viewerui/app.go:876
+#: internal/viewerui/app.go:878
 msgid "Could not set the wallpaper"
 msgstr "無法設定壁紙"
 
-#: internal/viewerui/app.go:880
+#: internal/viewerui/app.go:882
 #: ui/viewer.ui:148
 msgid "Set as wallpaper"
 msgstr "設定為壁紙"
@@ -17405,7 +17501,7 @@ msgid "Could not open the link"
 msgstr "無法開啟連結"
 
 #: internal/vmui/app.go:22
-#: internal/vmui/window.go:2298
+#: internal/vmui/window.go:2303
 #: ui/vm.ui:14
 #: ui/vm.ui:43
 #: config/apps/io.github.lyricat.Inua.VM.desktop:3
@@ -17476,607 +17572,627 @@ msgstr "尚未選擇"
 msgid "The assistant could not be started: %v"
 msgstr "無法啟動助手：%v"
 
-#: internal/vmui/window.go:637
-msgid "Does not load"
-msgstr "無法載入"
-
-#: internal/vmui/window.go:765
-msgid "Does not load as a machine"
-msgstr "無法作為機器載入"
-
-#: internal/vmui/window.go:775
-#: ui/vm.ui:445
-msgid "No backend for this machine"
-msgstr "此虛擬機沒有可用後端"
-
-#: internal/vmui/window.go:776
-msgid "This machine needs the %s backend, which this build does not have."
-msgstr "此虛擬機需要 %s 後端，而此版本沒有。"
-
-#: internal/vmui/window.go:824
-msgid "Turn the debugger on to hold the guest for gdb."
-msgstr "打開除錯器即可把客體停住，接上 gdb。"
-
-#: internal/vmui/window.go:918
-msgid "Accelerated"
-msgstr "已加速"
-
-#: internal/vmui/window.go:922
-msgid "Emulated (slow): this machine asks for emulation"
-msgstr "模擬（較慢）：此虛擬機要求模擬"
-
-#: internal/vmui/window.go:924
-msgid "Emulated (slow): the guest is built for another architecture"
-msgstr "模擬（較慢）：客體是為另一種架構建置的"
-
-#: internal/vmui/window.go:926
-msgid "Emulated (slow): this host has no /dev/kvm"
-msgstr "模擬（較慢）：此主機沒有 /dev/kvm"
-
-#: internal/vmui/window.go:928
-msgid "Emulated (slow): your user may not open /dev/kvm"
-msgstr "模擬（較慢）：你的使用者不能開啟 /dev/kvm"
-
-#: internal/vmui/window.go:930
-msgid "Emulated (slow)"
-msgstr "模擬（較慢）"
-
-#: internal/vmui/window.go:941
-msgid "2D: Windows has no accelerated driver here"
-msgstr "2D：Windows 在此沒有加速驅動"
-
-#: internal/vmui/window.go:945
-msgid "3D (OpenGL, through the host's GPU)"
-msgstr "3D（OpenGL，經主機的 GPU）"
-
-#: internal/vmui/window.go:947
-msgid "3D (Vulkan, through the host's GPU)"
-msgstr "3D（Vulkan，經主機的 GPU）"
-
-#: internal/vmui/window.go:949
-msgid "2D"
-msgstr "2D"
-
-#: internal/vmui/window.go:1032
-#: internal/vmui/window.go:1034
-#: internal/vmui/window.go:2849
-#: internal/vmui/window.go:2851
-msgid "Recommended: %d GiB."
-msgstr "建議：%d GiB。"
-
-#: internal/vmui/window.go:1033
-#: internal/vmui/window.go:2850
-msgid "Recommended: %d."
-msgstr "建議：%d。"
-
-#: internal/vmui/window.go:1101
-msgid "Creating…"
-msgstr "正在建立…"
-
-#: internal/vmui/window.go:1111
-msgid "That name cannot be used: %v"
-msgstr "無法使用該名稱：%v"
-
-#: internal/vmui/window.go:1137
-msgid "%d thing to fix"
-msgid_plural "%d things to fix"
-msgstr[0] "%d 項待解決"
-
-#: internal/vmui/window.go:1192
-msgid "Fix"
-msgstr "修復"
-
-#: internal/vmui/window.go:1194
-msgid "Add me to %s"
-msgstr "將我加入 %s 群組"
-
-#: internal/vmui/window.go:1225
-msgid "Operating system"
-msgstr "作業系統"
-
-#: internal/vmui/window.go:1227
-msgid "Hardware virtualization (KVM)"
-msgstr "硬體虛擬化 (KVM)"
-
-#: internal/vmui/window.go:1229
-msgid "Docker"
-msgstr "Docker"
-
-#: internal/vmui/window.go:1231
-msgid "Docker Compose v2"
-msgstr "Docker Compose v2"
-
-#: internal/vmui/window.go:1233
-msgid "FreeRDP"
-msgstr "FreeRDP"
-
-#: internal/vmui/window.go:1235
-msgid "Browser opener"
-msgstr "瀏覽器開啟程式"
-
-#: internal/vmui/window.go:1237
-msgid "Disk space"
-msgstr "磁碟空間"
-
-#: internal/vmui/window.go:1239
-msgid "Network device (TUN)"
-msgstr "網路裝置 (TUN)"
-
-#: internal/vmui/window.go:1241
-#: ui/settings.ui:4123
-msgid "Secret Service"
-msgstr "Secret Service"
-
-#: internal/vmui/window.go:1245
-msgid "UEFI firmware"
-msgstr "UEFI 韌體"
-
-#: internal/vmui/window.go:1249
-msgid "Binder (the kernel's Android support)"
-msgstr "Binder（核心的 Android 支援）"
-
-#: internal/vmui/window.go:1263
-msgid "Your user may not use Docker's socket. Joining the docker group would let anything running as you control this machine as root, so Inua will not do it for you: run the command below yourself if you accept that, or use rootless Docker or Podman instead."
-msgstr "你的使用者無法使用 Docker 的通訊端。加入 docker 群組會讓以你身分執行的任何程式以 root 身分控制這台電腦，因此 Inua 不會替你這麼做：若你接受這一點，請自行執行下方的指令，或改用無 root 的 Docker 或 Podman。"
-
-#: internal/vmui/window.go:1267
-msgid "Not installed on this system."
-msgstr "此系統上未安裝。"
-
-#: internal/vmui/window.go:1269
-msgid "Installed, but your user may not use it."
-msgstr "已安裝，但你的使用者無權使用。"
-
-#: internal/vmui/window.go:1271
-msgid "Installed, but not running."
-msgstr "已安裝，但未執行。"
-
-#: internal/vmui/window.go:1273
-msgid "This Linux distribution is not supported."
-msgstr "不支援此 Linux 發行版。"
-
-#: internal/vmui/window.go:1275
-msgid "Could not be checked."
-msgstr "無法檢查。"
-
-#: internal/vmui/window.go:1306
-msgid "Choose an install image first."
+#: internal/vmui/menubar.go:37
+msgid "New Machine…"
 msgstr ""
 
-#: internal/vmui/window.go:1308
-msgid "Installs from the files the earlier attempt left."
-msgstr "用上次嘗試留下的檔案安裝。"
-
-#: internal/vmui/window.go:1351
-msgid "%s of %s downloaded"
-msgstr "已下載 %s / %s"
-
-#: internal/vmui/window.go:1355
-msgid "%s downloaded"
-msgstr "已下載 %s"
-
-#: internal/vmui/window.go:1400
-msgid "Choose an install image"
+#: internal/vmui/menubar.go:41
+msgid "Machine"
 msgstr ""
 
-#: internal/vmui/window.go:1402
-msgid "Disc images"
-msgstr ""
+#: internal/vmui/menubar.go:113
+#: internal/vmui/window.go:2005
+msgid "Delete the files from the earlier attempt?"
+msgstr "刪除上次嘗試留下的檔案？"
 
-#: internal/vmui/window.go:1455
-msgid "Every architecture"
-msgstr "所有架構"
+#: internal/vmui/menubar.go:114
+#: internal/vmui/window.go:2006
+msgid "The downloaded files and the unfinished disk are deleted for good."
+msgstr "已下載的檔案與未完成的磁碟將被永久刪除。"
 
-#: internal/vmui/window.go:1504
-msgid "Every platform"
-msgstr "所有平台"
+#: internal/vmui/menubar.go:121
+#: internal/vmui/window.go:1986
+msgid "Abandon the installation?"
+msgstr "放棄安裝？"
 
-#: internal/vmui/window.go:1506
-msgid "Linux"
-msgstr "Linux"
+#: internal/vmui/menubar.go:122
+#: internal/vmui/window.go:1987
+msgid "The container is removed. Downloaded files stay, so a new installation does not fetch them again."
+msgstr "將移除容器。已下載的檔案會保留，再次安裝時無須重新下載。"
 
-#: internal/vmui/window.go:1508
-msgid "BSD"
-msgstr "BSD"
+#: internal/vmui/menubar.go:123
+#: internal/vmui/window.go:1988
+msgid "Abandon"
+msgstr "放棄"
 
-#: internal/vmui/window.go:1510
-#: ui/settings.ui:2149
-msgid "Windows"
-msgstr "視窗"
+#: internal/vmui/menubar.go:124
+#: internal/vmui/menubar.go:137
+#: internal/vmui/window.go:1982
+#: internal/vmui/window.go:1989
+msgid "Removing…"
+msgstr "正在移除…"
 
-#: internal/vmui/window.go:1563
-#: internal/vmui/window.go:2433
-msgid "Live image"
-msgstr "Live 映像"
+#: internal/vmui/menubar.go:128
+#: internal/vmui/window.go:1993
+msgid "Start the installation over?"
+msgstr "重新開始安裝？"
 
-#: internal/vmui/window.go:1565
-#: internal/vmui/window.go:2435
-msgid "Installer"
-msgstr "安裝來源"
+#: internal/vmui/menubar.go:129
+#: internal/vmui/window.go:1994
+msgid "The unfinished disk is deleted for good; the machine stays, to install again."
+msgstr "未完成的磁碟將被永久刪除；機器會保留，可以重新安裝。"
 
-#: internal/vmui/window.go:1574
-msgid "%d installer"
-msgid_plural "%d installers"
-msgstr[0] "%d 個安裝程式"
+#: internal/vmui/menubar.go:130
+#: internal/vmui/window.go:1995
+#: internal/vmui/window.go:2748
+msgid "Start over"
+msgstr "重新開始"
 
-#: internal/vmui/window.go:1577
-msgid "%d live image"
-msgid_plural "%d live images"
-msgstr[0] "%d 個 Live 映像"
-
-#: internal/vmui/window.go:1580
-msgid "newest %s"
-msgstr "最新 %s"
-
-#: internal/vmui/window.go:1583
-#: internal/vmui/window.go:1592
-msgid "%d install image"
-msgid_plural "%d install images"
-msgstr[0] "%d 個安裝映像"
-
-#: internal/vmui/window.go:1591
-msgid "%d system"
-msgid_plural "%d systems"
-msgstr[0] "%d 個系統"
-
-#: internal/vmui/window.go:1818
-msgid "The system is installing; this takes a while."
-msgstr "正在安裝系統，需要一些時間。"
-
-#: internal/vmui/window.go:1824
-msgid "The installation is paused. Continue to resume."
-msgstr "安裝已暫停。繼續即可恢復。"
-
-#: internal/vmui/window.go:1887
-msgid "The system is starting; ready in a minute or two."
-msgstr "系統正在啟動，一兩分鐘後可用。"
-
-#: internal/vmui/window.go:1924
-msgid "Applying…"
-msgstr "正在套用…"
-
-#: internal/vmui/window.go:1940
-msgid "Finishing…"
-msgstr ""
-
-#: internal/vmui/window.go:1974
+#: internal/vmui/menubar.go:134
+#: internal/vmui/window.go:1979
 msgid "Remove the container?"
 msgstr "移除容器？"
 
-#: internal/vmui/window.go:1975
+#: internal/vmui/menubar.go:135
+#: internal/vmui/window.go:1980
 #: ui/vm.ui:2570
 msgid "Its container and settings go. The disk and its password stay, so installing again starts from them."
 msgstr "它的容器與設定會被刪除。磁碟及其密碼會保留，再次安裝時從它們開始。"
 
-#: internal/vmui/window.go:1977
-#: internal/vmui/window.go:1984
-msgid "Removing…"
-msgstr "正在移除…"
+#: internal/vmui/window.go:642
+msgid "Does not load"
+msgstr "無法載入"
 
-#: internal/vmui/window.go:1981
-msgid "Abandon the installation?"
-msgstr "放棄安裝？"
+#: internal/vmui/window.go:770
+msgid "Does not load as a machine"
+msgstr "無法作為機器載入"
 
-#: internal/vmui/window.go:1982
-msgid "The container is removed. Downloaded files stay, so a new installation does not fetch them again."
-msgstr "將移除容器。已下載的檔案會保留，再次安裝時無須重新下載。"
+#: internal/vmui/window.go:780
+#: ui/vm.ui:445
+msgid "No backend for this machine"
+msgstr "此虛擬機沒有可用後端"
 
-#: internal/vmui/window.go:1983
-msgid "Abandon"
-msgstr "放棄"
+#: internal/vmui/window.go:781
+msgid "This machine needs the %s backend, which this build does not have."
+msgstr "此虛擬機需要 %s 後端，而此版本沒有。"
 
-#: internal/vmui/window.go:1988
-msgid "Start the installation over?"
-msgstr "重新開始安裝？"
+#: internal/vmui/window.go:829
+msgid "Turn the debugger on to hold the guest for gdb."
+msgstr "打開除錯器即可把客體停住，接上 gdb。"
 
-#: internal/vmui/window.go:1989
-msgid "The unfinished disk is deleted for good; the machine stays, to install again."
-msgstr "未完成的磁碟將被永久刪除；機器會保留，可以重新安裝。"
+#: internal/vmui/window.go:923
+msgid "Accelerated"
+msgstr "已加速"
 
-#: internal/vmui/window.go:1990
-#: internal/vmui/window.go:2743
-msgid "Start over"
-msgstr "重新開始"
+#: internal/vmui/window.go:927
+msgid "Emulated (slow): this machine asks for emulation"
+msgstr "模擬（較慢）：此虛擬機要求模擬"
 
-#: internal/vmui/window.go:1994
+#: internal/vmui/window.go:929
+msgid "Emulated (slow): the guest is built for another architecture"
+msgstr "模擬（較慢）：客體是為另一種架構建置的"
+
+#: internal/vmui/window.go:931
+msgid "Emulated (slow): this host has no /dev/kvm"
+msgstr "模擬（較慢）：此主機沒有 /dev/kvm"
+
+#: internal/vmui/window.go:933
+msgid "Emulated (slow): your user may not open /dev/kvm"
+msgstr "模擬（較慢）：你的使用者不能開啟 /dev/kvm"
+
+#: internal/vmui/window.go:935
+msgid "Emulated (slow)"
+msgstr "模擬（較慢）"
+
+#: internal/vmui/window.go:946
+msgid "2D: Windows has no accelerated driver here"
+msgstr "2D：Windows 在此沒有加速驅動"
+
+#: internal/vmui/window.go:950
+msgid "3D (OpenGL, through the host's GPU)"
+msgstr "3D（OpenGL，經主機的 GPU）"
+
+#: internal/vmui/window.go:952
+msgid "3D (Vulkan, through the host's GPU)"
+msgstr "3D（Vulkan，經主機的 GPU）"
+
+#: internal/vmui/window.go:954
+msgid "2D"
+msgstr "2D"
+
+#: internal/vmui/window.go:1037
+#: internal/vmui/window.go:1039
+#: internal/vmui/window.go:2854
+#: internal/vmui/window.go:2856
+msgid "Recommended: %d GiB."
+msgstr "建議：%d GiB。"
+
+#: internal/vmui/window.go:1038
+#: internal/vmui/window.go:2855
+msgid "Recommended: %d."
+msgstr "建議：%d。"
+
+#: internal/vmui/window.go:1106
+msgid "Creating…"
+msgstr "正在建立…"
+
+#: internal/vmui/window.go:1116
+msgid "That name cannot be used: %v"
+msgstr "無法使用該名稱：%v"
+
+#: internal/vmui/window.go:1142
+msgid "%d thing to fix"
+msgid_plural "%d things to fix"
+msgstr[0] "%d 項待解決"
+
+#: internal/vmui/window.go:1197
+msgid "Fix"
+msgstr "修復"
+
+#: internal/vmui/window.go:1199
+msgid "Add me to %s"
+msgstr "將我加入 %s 群組"
+
+#: internal/vmui/window.go:1230
+msgid "Operating system"
+msgstr "作業系統"
+
+#: internal/vmui/window.go:1232
+msgid "Hardware virtualization (KVM)"
+msgstr "硬體虛擬化 (KVM)"
+
+#: internal/vmui/window.go:1234
+msgid "Docker"
+msgstr "Docker"
+
+#: internal/vmui/window.go:1236
+msgid "Docker Compose v2"
+msgstr "Docker Compose v2"
+
+#: internal/vmui/window.go:1238
+msgid "FreeRDP"
+msgstr "FreeRDP"
+
+#: internal/vmui/window.go:1240
+msgid "Browser opener"
+msgstr "瀏覽器開啟程式"
+
+#: internal/vmui/window.go:1242
+msgid "Disk space"
+msgstr "磁碟空間"
+
+#: internal/vmui/window.go:1244
+msgid "Network device (TUN)"
+msgstr "網路裝置 (TUN)"
+
+#: internal/vmui/window.go:1246
+#: ui/settings.ui:4123
+msgid "Secret Service"
+msgstr "Secret Service"
+
+#: internal/vmui/window.go:1250
+msgid "UEFI firmware"
+msgstr "UEFI 韌體"
+
+#: internal/vmui/window.go:1254
+msgid "Binder (the kernel's Android support)"
+msgstr "Binder（核心的 Android 支援）"
+
+#: internal/vmui/window.go:1268
+msgid "Your user may not use Docker's socket. Joining the docker group would let anything running as you control this machine as root, so Inua will not do it for you: run the command below yourself if you accept that, or use rootless Docker or Podman instead."
+msgstr "你的使用者無法使用 Docker 的通訊端。加入 docker 群組會讓以你身分執行的任何程式以 root 身分控制這台電腦，因此 Inua 不會替你這麼做：若你接受這一點，請自行執行下方的指令，或改用無 root 的 Docker 或 Podman。"
+
+#: internal/vmui/window.go:1272
+msgid "Not installed on this system."
+msgstr "此系統上未安裝。"
+
+#: internal/vmui/window.go:1274
+msgid "Installed, but your user may not use it."
+msgstr "已安裝，但你的使用者無權使用。"
+
+#: internal/vmui/window.go:1276
+msgid "Installed, but not running."
+msgstr "已安裝，但未執行。"
+
+#: internal/vmui/window.go:1278
+msgid "This Linux distribution is not supported."
+msgstr "不支援此 Linux 發行版。"
+
+#: internal/vmui/window.go:1280
+msgid "Could not be checked."
+msgstr "無法檢查。"
+
+#: internal/vmui/window.go:1311
+msgid "Choose an install image first."
+msgstr ""
+
+#: internal/vmui/window.go:1313
+msgid "Installs from the files the earlier attempt left."
+msgstr "用上次嘗試留下的檔案安裝。"
+
+#: internal/vmui/window.go:1356
+msgid "%s of %s downloaded"
+msgstr "已下載 %s / %s"
+
+#: internal/vmui/window.go:1360
+msgid "%s downloaded"
+msgstr "已下載 %s"
+
+#: internal/vmui/window.go:1405
+msgid "Choose an install image"
+msgstr ""
+
+#: internal/vmui/window.go:1407
+msgid "Disc images"
+msgstr ""
+
+#: internal/vmui/window.go:1460
+msgid "Every architecture"
+msgstr "所有架構"
+
+#: internal/vmui/window.go:1509
+msgid "Every platform"
+msgstr "所有平台"
+
+#: internal/vmui/window.go:1511
+msgid "Linux"
+msgstr "Linux"
+
+#: internal/vmui/window.go:1513
+msgid "BSD"
+msgstr "BSD"
+
+#: internal/vmui/window.go:1515
+#: ui/settings.ui:2149
+msgid "Windows"
+msgstr "視窗"
+
+#: internal/vmui/window.go:1568
+#: internal/vmui/window.go:2438
+msgid "Live image"
+msgstr "Live 映像"
+
+#: internal/vmui/window.go:1570
+#: internal/vmui/window.go:2440
+msgid "Installer"
+msgstr "安裝來源"
+
+#: internal/vmui/window.go:1579
+msgid "%d installer"
+msgid_plural "%d installers"
+msgstr[0] "%d 個安裝程式"
+
+#: internal/vmui/window.go:1582
+msgid "%d live image"
+msgid_plural "%d live images"
+msgstr[0] "%d 個 Live 映像"
+
+#: internal/vmui/window.go:1585
+msgid "newest %s"
+msgstr "最新 %s"
+
+#: internal/vmui/window.go:1588
+#: internal/vmui/window.go:1597
+msgid "%d install image"
+msgid_plural "%d install images"
+msgstr[0] "%d 個安裝映像"
+
+#: internal/vmui/window.go:1596
+msgid "%d system"
+msgid_plural "%d systems"
+msgstr[0] "%d 個系統"
+
+#: internal/vmui/window.go:1823
+msgid "The system is installing; this takes a while."
+msgstr "正在安裝系統，需要一些時間。"
+
+#: internal/vmui/window.go:1829
+msgid "The installation is paused. Continue to resume."
+msgstr "安裝已暫停。繼續即可恢復。"
+
+#: internal/vmui/window.go:1892
+msgid "The system is starting; ready in a minute or two."
+msgstr "系統正在啟動，一兩分鐘後可用。"
+
+#: internal/vmui/window.go:1929
+msgid "Applying…"
+msgstr "正在套用…"
+
+#: internal/vmui/window.go:1945
+msgid "Finishing…"
+msgstr ""
+
+#: internal/vmui/window.go:1999
 msgid "Delete this machine's disk?"
 msgstr "刪除這台機器的磁碟？"
 
-#: internal/vmui/window.go:1995
+#: internal/vmui/window.go:2000
 msgid "The installed system and its files are deleted for good. The machine stays, to install again."
 msgstr "已安裝的系統及其檔案將被永久刪除。機器會保留，可以重新安裝。"
 
-#: internal/vmui/window.go:2000
-msgid "Delete the files from the earlier attempt?"
-msgstr "刪除上次嘗試留下的檔案？"
-
-#: internal/vmui/window.go:2001
-msgid "The downloaded files and the unfinished disk are deleted for good."
-msgstr "已下載的檔案與未完成的磁碟將被永久刪除。"
-
-#: internal/vmui/window.go:2013
+#: internal/vmui/window.go:2018
 msgid "Delete this machine?"
 msgstr "刪除這台機器？"
 
-#: internal/vmui/window.go:2014
+#: internal/vmui/window.go:2019
 msgid "The machine, its disk and all its files are deleted for good. This cannot be undone."
 msgstr "這台機器、它的磁碟及所有檔案將被永久刪除。此動作無法復原。"
 
-#: internal/vmui/window.go:2025
+#: internal/vmui/window.go:2030
 msgid "Delete this folder?"
 msgstr "刪除這個資料夾？"
 
-#: internal/vmui/window.go:2026
+#: internal/vmui/window.go:2031
 msgid "It does not load as a machine. Everything inside it is deleted for good."
 msgstr "它無法作為機器載入。其中的所有內容將被永久刪除。"
 
-#: internal/vmui/window.go:2059
+#: internal/vmui/window.go:2064
 msgid "Request sent to the assistant window."
 msgstr "已將要求傳送至助理視窗。"
 
-#: internal/vmui/window.go:2077
+#: internal/vmui/window.go:2082
 #: ui/vm.ui:938
 #: ui/vm.ui:960
 msgid "Check again"
 msgstr "重新檢查"
 
-#: internal/vmui/window.go:2105
+#: internal/vmui/window.go:2110
 msgid "The fix did not work: %v"
 msgstr "修復失敗：%v"
 
-#: internal/vmui/window.go:2110
+#: internal/vmui/window.go:2115
 msgid "Done. Log out and back in for it to take effect."
 msgstr "完成。請登出並重新登入以使變更生效。"
 
-#: internal/vmui/window.go:2113
+#: internal/vmui/window.go:2118
 msgid "Done."
 msgstr "完成。"
 
-#: internal/vmui/window.go:2231
+#: internal/vmui/window.go:2236
 msgid "Log out to finish"
 msgstr "登出以完成"
 
-#: internal/vmui/window.go:2232
+#: internal/vmui/window.go:2237
 msgid "The change takes effect the next time you log in."
 msgstr "此變更將在你下次登入時生效。"
 
-#: internal/vmui/window.go:2274
+#: internal/vmui/window.go:2279
 msgid "This system is missing something the guest needs"
 msgstr "此系統缺少客體需要的東西"
 
-#: internal/vmui/window.go:2277
+#: internal/vmui/window.go:2282
 msgid "Files from a previous attempt are still here"
 msgstr "上次安裝留下的檔案還在"
 
-#: internal/vmui/window.go:2279
+#: internal/vmui/window.go:2284
 msgid "Not installed yet"
 msgstr "尚未安裝"
 
-#: internal/vmui/window.go:2282
-#: internal/vmui/window.go:2290
-#: internal/vmui/window.go:2323
+#: internal/vmui/window.go:2287
+#: internal/vmui/window.go:2295
+#: internal/vmui/window.go:2328
 msgid "Stopping"
 msgstr "正在停止"
 
-#: internal/vmui/window.go:2285
-#: internal/vmui/window.go:2325
+#: internal/vmui/window.go:2290
+#: internal/vmui/window.go:2330
 msgid "Installing"
 msgstr "正在安裝"
 
-#: internal/vmui/window.go:2287
-#: internal/vmui/window.go:2327
+#: internal/vmui/window.go:2292
+#: internal/vmui/window.go:2332
 msgid "Installation paused"
 msgstr "安裝已暫停"
 
-#: internal/vmui/window.go:2292
-#: internal/vmui/window.go:2329
+#: internal/vmui/window.go:2297
+#: internal/vmui/window.go:2334
 msgid "Starting"
 msgstr "正在啟動"
 
-#: internal/vmui/window.go:2294
-#: internal/vmui/window.go:2331
+#: internal/vmui/window.go:2299
+#: internal/vmui/window.go:2336
 msgid "Running"
 msgstr "執行中"
 
-#: internal/vmui/window.go:2296
-#: internal/vmui/window.go:2333
+#: internal/vmui/window.go:2301
+#: internal/vmui/window.go:2338
 msgid "Stopped"
 msgstr "已停止"
 
-#: internal/vmui/window.go:2304
+#: internal/vmui/window.go:2309
 msgid "%s · no backend in this build"
 msgstr "%s · 此版本沒有後端"
 
-#: internal/vmui/window.go:2313
+#: internal/vmui/window.go:2318
 msgid "Working"
 msgstr "處理中"
 
-#: internal/vmui/window.go:2317
+#: internal/vmui/window.go:2322
 msgid "Needs the host"
 msgstr "需要主機支援"
 
-#: internal/vmui/window.go:2319
+#: internal/vmui/window.go:2324
 msgid "Not installed"
 msgstr "未安裝"
 
-#: internal/vmui/window.go:2352
+#: internal/vmui/window.go:2357
 msgid "Custom"
 msgstr ""
 
-#: internal/vmui/window.go:2381
+#: internal/vmui/window.go:2386
 msgid "Downloads about 8 GB and installs Windows; takes 30+ minutes. Windows needs a licence."
 msgstr "下載約 8 GB 並安裝 Windows，需要 30 分鐘以上。Windows 需要授權。"
 
-#: internal/vmui/window.go:2383
+#: internal/vmui/window.go:2388
 msgid "The guest installs from its own media, as it would on a real machine."
 msgstr "客體像在真機上一樣，從自己的安裝媒體安裝。"
 
-#: internal/vmui/window.go:2392
+#: internal/vmui/window.go:2397
 msgid "inua's own list"
 msgstr "inua 自帶的清單"
 
-#: internal/vmui/window.go:2404
+#: internal/vmui/window.go:2409
 msgid "Installs from %s."
 msgstr "從 %s 安裝。"
 
-#: internal/vmui/window.go:2406
+#: internal/vmui/window.go:2411
 msgid "A file of your own, or one to download; the machine boots it as a disc."
 msgstr ""
 
-#: internal/vmui/window.go:2412
+#: internal/vmui/window.go:2417
 msgid "osinfo-db is not installed, so this is inua's short built-in list."
 msgstr "未安裝 osinfo-db，因此這是 inua 的簡短內建清單。"
 
-#: internal/vmui/window.go:2414
+#: internal/vmui/window.go:2419
 msgid "Pick a system, then one of its images. It is downloaded once and becomes this machine's install image."
 msgstr ""
 
-#: internal/vmui/window.go:2447
-#: internal/vmui/window.go:2481
+#: internal/vmui/window.go:2452
+#: internal/vmui/window.go:2486
 msgid "Already in the cache"
 msgstr "已在快取中"
 
-#: internal/vmui/window.go:2451
+#: internal/vmui/window.go:2456
 msgid "Unfinished download"
 msgstr "未完成的下載"
 
-#: internal/vmui/window.go:2461
+#: internal/vmui/window.go:2466
 msgid "Retry"
 msgstr "重試"
 
-#: internal/vmui/window.go:2463
+#: internal/vmui/window.go:2468
 msgid "Use this image"
 msgstr "使用此映像"
 
-#: internal/vmui/window.go:2477
+#: internal/vmui/window.go:2482
 msgid "Checksum verified"
 msgstr "總和檢查碼已驗證"
 
-#: internal/vmui/window.go:2479
+#: internal/vmui/window.go:2484
 msgid "No published checksum"
 msgstr "沒有已發佈的總和檢查碼"
 
-#: internal/vmui/window.go:2502
-#: internal/vmui/window.go:2504
+#: internal/vmui/window.go:2507
+#: internal/vmui/window.go:2509
 msgid "In a container, with %s"
 msgstr ""
 
-#: internal/vmui/window.go:2506
+#: internal/vmui/window.go:2511
 msgid "In a virtual machine, with %s"
 msgstr ""
 
-#: internal/vmui/window.go:2515
+#: internal/vmui/window.go:2520
 msgid "Downloads and installs Windows 11 for you; you reach it over Remote Desktop."
 msgstr ""
 
-#: internal/vmui/window.go:2517
+#: internal/vmui/window.go:2522
 msgid "Boots your own Windows 11 ISO, with the virtio drivers."
 msgstr ""
 
-#: internal/vmui/window.go:2519
+#: internal/vmui/window.go:2524
 msgid "Boots the install image you pick next, with 3D where the guest has a driver."
 msgstr ""
 
-#: internal/vmui/window.go:2521
+#: internal/vmui/window.go:2526
 msgid "Android beside your apps, with the host's display and GPU."
 msgstr ""
 
-#: internal/vmui/window.go:2523
+#: internal/vmui/window.go:2528
 msgid "Your own system: an ISO, a disk or a kernel, on any architecture."
 msgstr "你自己的系統：ISO、磁碟或核心，可用任意架構。"
 
-#: internal/vmui/window.go:2628
+#: internal/vmui/window.go:2633
 msgid "It did not work: %s"
 msgstr "未成功：%s"
 
-#: internal/vmui/window.go:2705
-#: internal/vmui/window.go:2709
-#: internal/vmui/window.go:2713
+#: internal/vmui/window.go:2710
+#: internal/vmui/window.go:2714
+#: internal/vmui/window.go:2718
 #: ui/vm.ui:1716
 #: ui/vm.ui:2093
 msgid "Watch the installation"
 msgstr "查看安裝過程"
 
-#: internal/vmui/window.go:2705
+#: internal/vmui/window.go:2710
 msgid "The installer's screen, in your browser."
 msgstr "在瀏覽器中查看安裝程式的畫面。"
 
-#: internal/vmui/window.go:2706
+#: internal/vmui/window.go:2711
 #: ui/vm.ui:2824
 msgid "Web console"
 msgstr "網頁主控台"
 
-#: internal/vmui/window.go:2706
+#: internal/vmui/window.go:2711
 msgid "The guest's screen, in your browser, until Remote Desktop is ready."
 msgstr "在遠端桌面就緒之前，在瀏覽器中查看客體機的畫面。"
 
-#: internal/vmui/window.go:2707
+#: internal/vmui/window.go:2712
 msgid "Windows' desktop in a window of its own, on this screen."
 msgstr "在本螢幕上以獨立視窗顯示 Windows 桌面。"
 
-#: internal/vmui/window.go:2709
+#: internal/vmui/window.go:2714
 msgid "The installer's screen, in a window of its own."
 msgstr "在獨立視窗中查看安裝程式的畫面。"
 
-#: internal/vmui/window.go:2710
+#: internal/vmui/window.go:2715
 msgid "The guest's screen, in a window of its own."
 msgstr "在獨立視窗中查看客體機的畫面。"
 
-#: internal/vmui/window.go:2713
+#: internal/vmui/window.go:2718
 msgid "QEMU shows the installer in a window of its own."
 msgstr "QEMU 會在獨立視窗中顯示安裝程式。"
 
-#: internal/vmui/window.go:2714
+#: internal/vmui/window.go:2719
 msgid "QEMU shows the guest in a window of its own."
 msgstr "QEMU 會在獨立視窗中顯示客體機。"
 
-#: internal/vmui/window.go:2717
+#: internal/vmui/window.go:2722
 msgid "Serial console"
 msgstr "序列埠主控台"
 
-#: internal/vmui/window.go:2717
+#: internal/vmui/window.go:2722
 msgid "What the system prints, on its own serial console."
 msgstr "系統在自己的序列主控台上輸出的內容。"
 
-#: internal/vmui/window.go:2737
+#: internal/vmui/window.go:2742
 msgid "Abandon the installation"
 msgstr "放棄安裝"
 
-#: internal/vmui/window.go:2738
+#: internal/vmui/window.go:2743
 msgid "Removes the container so you can start over. Downloaded files stay."
 msgstr "移除容器，以便從頭開始。已下載的檔案會保留。"
 
-#: internal/vmui/window.go:2740
+#: internal/vmui/window.go:2745
 msgid "Abandon…"
 msgstr "放棄…"
 
-#: internal/vmui/window.go:2744
+#: internal/vmui/window.go:2749
 msgid "Deletes the unfinished disk; the machine stays, to install again."
 msgstr "刪除未完成的磁碟；機器會保留，可以重新安裝。"
 
-#: internal/vmui/window.go:2746
+#: internal/vmui/window.go:2751
 #: ui/vm.ui:1918
 msgid "Start over…"
 msgstr "重新開始…"
 
-#: internal/vmui/window.go:2758
-#: internal/vmui/window.go:2764
+#: internal/vmui/window.go:2763
+#: internal/vmui/window.go:2769
 msgid "Opening…"
 msgstr "正在開啟…"
 
-#: internal/vmui/window.go:2785
+#: internal/vmui/window.go:2790
 msgid "Start inua-keyring, or install a Secret Service."
 msgstr "啟動 inua-keyring，或安裝一個 Secret Service。"
 
-#: internal/vmui/window.go:2787
+#: internal/vmui/window.go:2792
 msgid "This manager needs NixOS, Ubuntu or Debian."
 msgstr "此管理器需要 NixOS、Ubuntu 或 Debian。"
 
-#: internal/vmui/window.go:2832
+#: internal/vmui/window.go:2837
 msgid "Turn on virtualization (Intel VT-x or AMD-V) in the firmware settings."
 msgstr "請在韌體設定中開啟虛擬化（Intel VT-x 或 AMD-V）。"
 
-#: internal/vmui/window.go:2838
+#: internal/vmui/window.go:2843
 msgid "Add %s to your NixOS configuration."
 msgstr "把 %s 加入你的 NixOS 設定。"
 
@@ -18105,14 +18221,6 @@ msgstr "下個月"
 #: ui/assistant.ui:54
 msgid "Who answers"
 msgstr "誰回答"
-
-#: ui/assistant.ui:63
-msgid "AI settings"
-msgstr "AI設置"
-
-#: ui/assistant.ui:73
-msgid "New conversation"
-msgstr "新對話"
 
 #: ui/assistant.ui:98
 msgid "Open AI Settings"
@@ -19870,10 +19978,6 @@ msgstr "<span alpha='55%'>[</span>讀取<span alpha='55%'>]</span>"
 #: ui/settings.ui:4472
 msgid "Every secret inua-keyring handed out and passphrase asked for, newest first"
 msgstr "inua-keyring 交出的每個密鑰和要求的每個密碼短語，最新的在前"
-
-#: ui/settings.ui:4518
-msgid "Refresh"
-msgstr "重新整理"
 
 #: ui/settings.ui:4612
 msgid "The list is not trusted"
