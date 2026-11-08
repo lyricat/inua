@@ -1,38 +1,36 @@
 package ui
 
 import (
+	"math"
 	"testing"
 
 	"github.com/lyricat/inua/internal/compositor"
 )
 
-func TestOverviewContentBounds(t *testing.T) {
-	windows := []compositor.Window{
-		{Geometry: &compositor.Rect{X: 10, Y: 40, W: 300, H: 200}},
-		{Geometry: &compositor.Rect{X: 400, Y: 100, W: 500, H: 300}},
-	}
-	x, y, w, h := overviewContentBounds(windows, 0, 0, 1920, 1080)
-	if x != 10 || y != 40 || w != 890 || h != 360 {
-		t.Errorf("bounds = %v,%v %vx%v, want 10,40 890x360", x, y, w, h)
-	}
-	if x, y, w, h := overviewContentBounds(nil, 0, 0, 1920, 1080); x != 0 || y != 0 || w != 1920 || h != 1080 {
-		t.Errorf("empty bounds = %v,%v %vx%v, want the monitor", x, y, w, h)
-	}
-}
-
-func TestOverviewWindowLayoutFillsCard(t *testing.T) {
-	for _, tc := range []struct {
-		name                   string
-		w                      compositor.Window
-		boxX, boxY, boxW, boxH float64
-	}{
-		{"one window", compositor.Window{Geometry: &compositor.Rect{X: 100, Y: 100, W: 900, H: 700}}, 100, 100, 900, 700},
-		{"tall window", compositor.Window{Geometry: &compositor.Rect{X: 100, Y: 100, W: 400, H: 900}}, 100, 100, 400, 900},
-		{"no geometry", compositor.Window{}, 0, 0, 1920, 1080},
+// A card is the monitor, so every window inside it maps with one scale and
+// nothing leaves the card. Cropping to the windows' union cut edge windows.
+func TestOverviewWindowLayoutKeepsWindowsInsideTheCard(t *testing.T) {
+	const thumbW, thumbH = 320.0, 180.0
+	// Two windows tiled side by side on a 1920x1080 monitor, below a 32px bar.
+	for i, geom := range []compositor.Rect{
+		{X: 0, Y: 32, W: 960, H: 1048},
+		{X: 960, Y: 32, W: 960, H: 1048},
 	} {
-		x, y, pw, ph := overviewWindowLayout(tc.w, tc.boxX, tc.boxY, tc.boxW, tc.boxH, 320, 180)
-		if x > 0 || y > 0 || x+pw < 320 || y+ph < 180 {
-			t.Errorf("%s: rect %v,%v %vx%v does not cover the 320x180 card", tc.name, x, y, pw, ph)
+		w := compositor.Window{Geometry: &geom}
+		x, y, pw, ph := overviewWindowLayout(w, 0, 0, 1920, 1080, thumbW, thumbH)
+		if x < 0 || y < 0 || x+pw > thumbW || y+ph > thumbH {
+			t.Errorf("window %d at %+v: rect %v,%v %vx%v leaves the %vx%v card", i, geom, x, y, pw, ph, thumbW, thumbH)
 		}
+		wantX := float64(i) * 160
+		if math.Abs(x-wantX) > 0.01 || math.Abs(pw-160) > 0.01 {
+			t.Errorf("window %d: x=%v width=%v, want x=%v width=160", i, x, pw, wantX)
+		}
+	}
+
+	// A maximized window keeps the bar's band above it visible, uncut.
+	geom := compositor.Rect{X: 0, Y: 32, W: 1920, H: 1048}
+	x, y, pw, ph := overviewWindowLayout(compositor.Window{Geometry: &geom}, 0, 0, 1920, 1080, thumbW, thumbH)
+	if x != 0 || math.Abs(y-32.0/6) > 0.01 || pw != thumbW || math.Abs(ph-1048.0/6) > 0.01 {
+		t.Errorf("maximized window: rect %v,%v %vx%v, want 0,5.33 320x174.67", x, y, pw, ph)
 	}
 }

@@ -623,12 +623,13 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 			canvas.AddOverlay(&badge.Widget)
 			badge.Unref()
 		}
-		contentX, contentY, contentW, contentH := overviewContentBounds(card.Windows, monX, monY, monW, monH)
-		o.cardWidgets[i] = &overviewCardWidgets{canvas: canvas, board: board, order: overviewWindowOrder(card.Windows), monX: monX, monY: monY, monW: monW, monH: monH, thumbW: thumbW, thumbH: thumbH, contentX: contentX, contentY: contentY, contentW: contentW, contentH: contentH}
+		// The card is the monitor itself, so a window at any edge stays whole.
+		// Cropping to the windows' bounds cut the preview when they tiled flat.
+		o.cardWidgets[i] = &overviewCardWidgets{canvas: canvas, board: board, order: overviewWindowOrder(card.Windows), monX: monX, monY: monY, monW: monW, monH: monH, thumbW: thumbW, thumbH: thumbH}
 		// Paint the focused window last, as the topmost window.
 		for wi := len(card.Windows) - 1; wi >= 0; wi-- {
 			w := card.Windows[wi]
-			x, y, pw, ph := overviewWindowLayout(w, contentX, contentY, contentW, contentH, thumbW, thumbH)
+			x, y, pw, ph := overviewWindowLayout(w, monX, monY, monW, monH, thumbW, thumbH)
 			s.noteOverviewPreviewSize(w.ID, pw, ph, int(o.root.GetScaleFactor()))
 			b := gtk.NewButton()
 			b.SetName("window:" + w.ID)
@@ -1076,34 +1077,8 @@ func (s *shellUI) buildOverview(o *workspaceOverview) {
 	o.win.AddController(&right.EventController)
 }
 
-// overviewContentBounds is the part of a monitor a card's windows cover.
-// Mapping that box onto the whole card removes the empty bands a monitor's
-// full frame would leave around a single window.
-func overviewContentBounds(windows []compositor.Window, monX, monY, monW, monH float64) (x, y, w, h float64) {
-	first := true
-	for _, win := range windows {
-		if win.Geometry == nil {
-			continue
-		}
-		ax, ay := float64(win.Geometry.X), float64(win.Geometry.Y)
-		aw, ah := float64(win.Geometry.W), float64(win.Geometry.H)
-		if first {
-			x, y, w, h = ax, ay, aw, ah
-			first = false
-			continue
-		}
-		x, y = min(x, ax), min(y, ay)
-		w, h = max(w, ax+aw-x), max(h, ay+ah-y)
-	}
-	if first || w <= 0 || h <= 0 {
-		return monX, monY, monW, monH
-	}
-	return x, y, w, h
-}
-
 // overviewWindowLayout maps compositor geometry onto a workspace card. The
-// card's content box is scaled uniformly until it covers the card, then
-// centred, so the preview fills it edge to edge without letterboxing.
+// card is the monitor, so the scale is uniform and the whole workspace shows.
 func overviewWindowLayout(w compositor.Window, boxX, boxY, boxW, boxH, thumbW, thumbH float64) (x, y, pw, ph float64) {
 	if w.Geometry == nil {
 		return 0, 0, thumbW, thumbH
@@ -1115,8 +1090,8 @@ func overviewWindowLayout(w compositor.Window, boxX, boxY, boxW, boxH, thumbW, t
 	offsetY := (thumbH - boxH*scale) / 2
 	x, y = (ax-boxX)*scale+offsetX, (ay-boxY)*scale+offsetY
 	pw, ph = max(24, ww*scale), max(24, wh*scale)
-	// Keep windows that are partly outside the captured content box visible:
-	// otherwise tiled windows at the monitor edge disappear from the preview.
+	// A window dragged mostly off the monitor still shows a sliver, so it can
+	// be found and dragged back from the overview.
 	x = max(-pw+24, min(x, thumbW-24))
 	y = max(-ph+24, min(y, thumbH-24))
 	return x, y, pw, ph

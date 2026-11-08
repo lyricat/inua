@@ -18,7 +18,6 @@ type overviewCardWidgets struct {
 	board                                  *gtk.Fixed
 	order                                  string
 	monX, monY, monW, monH, thumbW, thumbH float64
-	contentX, contentY, contentW, contentH float64
 }
 
 type overviewWindowWidgets struct {
@@ -96,7 +95,7 @@ func (s *shellUI) updateOverviewWidgets(o *workspaceOverview) {
 			if window == nil {
 				continue
 			}
-			x, y, pw, ph := overviewWindowLayout(w, view.contentX, view.contentY, view.contentW, view.contentH, view.thumbW, view.thumbH)
+			x, y, pw, ph := overviewWindowLayout(w, view.monX, view.monY, view.monW, view.monH, view.thumbW, view.thumbH)
 			s.noteOverviewPreviewSize(w.ID, pw, ph, int(o.root.GetScaleFactor()))
 			rect := [4]float64{x, y, pw, ph}
 			if window.rect != rect {
