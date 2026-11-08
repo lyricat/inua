@@ -38,8 +38,9 @@ func SecretKeys(ctx context.Context, ids []string) ([]Key, error) {
 }
 
 // parseSecretKeys reads gpg's --with-colons listing of secret keys (with
-// --with-keygrip and --fixed-list-mode). A part whose secret is a stub
-// ("#") or on a card (">") has no passphrase here.
+// --with-keygrip and --fixed-list-mode). Field 15 says where a part's
+// secret is: empty or "+" here, "#" a stub, else the serial number of the
+// card it is on; only one here has a passphrase.
 func parseSecretKeys(listing []byte) []Key {
 	var (
 		keys    []Key
@@ -65,8 +66,7 @@ func parseSecretKeys(listing []byte) []Key {
 			fallthrough
 		case "ssb":
 			token := field(14)
-			secret = cur != nil && !strings.HasPrefix(token, "#") && !strings.HasPrefix(token, ">") &&
-				field(1) != "r" && field(1) != "e"
+			secret = cur != nil && (token == "" || token == "+") && field(1) != "r" && field(1) != "e"
 		case "fpr":
 			if wantFpr && cur != nil {
 				cur.Fingerprint = field(9)

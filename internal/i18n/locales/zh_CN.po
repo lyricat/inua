@@ -14573,10 +14573,6 @@ msgstr "稍后提醒"
 msgid "password: want one JSON request"
 msgstr "密码：想要一个JSON请求"
 
-#: internal/ui/askpass.go:142
-msgid "not ok"
-msgstr "不行"
-
 #: internal/ui/askpass.go:258
 msgid "Passphrase Required"
 msgstr "需要密码"

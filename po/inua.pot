@@ -14650,10 +14650,6 @@ msgstr ""
 msgid "password: want one JSON request"
 msgstr ""
 
-#: internal/ui/askpass.go:142
-msgid "not ok"
-msgstr ""
-
 #: internal/ui/askpass.go:258
 msgid "Passphrase Required"
 msgstr ""

@@ -139,7 +139,7 @@ func (s *shellUI) bindPassHandlers() {
 	}
 	s.onPassNotOK = func(gtk.Button) {
 		if d := s.pass.cur; d != nil {
-			r := ipc.Response{Error: i18n.T("not ok")}
+			r := ipc.Response{Error: "not ok"} // the protocol's word, not shown
 			if d.q.Mode == pinentry.Approve {
 				r = ipc.Response{OK: true, Result: "once"}
 			}

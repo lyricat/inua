@@ -14573,10 +14573,6 @@ msgstr "다시 알림"
 msgid "password: want one JSON request"
 msgstr "비밀번호: 하나의 JSON 요청을 원합니다."
 
-#: internal/ui/askpass.go:142
-msgid "not ok"
-msgstr "안 괜찮아"
-
 #: internal/ui/askpass.go:258
 msgid "Passphrase Required"
 msgstr "암호가 필요함"

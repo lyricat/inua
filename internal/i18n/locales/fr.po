@@ -14652,10 +14652,6 @@ msgstr "Répéter"
 msgid "password: want one JSON request"
 msgstr "mot de passe : je veux une requête JSON"
 
-#: internal/ui/askpass.go:142
-msgid "not ok"
-msgstr "pas bien"
-
 #: internal/ui/askpass.go:258
 msgid "Passphrase Required"
 msgstr "Phrase secrète requise"

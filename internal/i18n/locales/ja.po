@@ -14573,10 +14573,6 @@ msgstr "スヌーズ"
 msgid "password: want one JSON request"
 msgstr "パスワード: 1 つの JSON リクエストが必要です"
 
-#: internal/ui/askpass.go:142
-msgid "not ok"
-msgstr "ダメだ"
-
 #: internal/ui/askpass.go:258
 msgid "Passphrase Required"
 msgstr "パスフレーズが必要です"

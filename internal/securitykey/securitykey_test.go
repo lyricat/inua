@@ -53,7 +53,7 @@ sec:u:255:22:DDDD:1700000000:::u:::scESC:::#:::ed25519:::0:
 fpr:::::::::FPR2:
 grp:::::::::GRIP4:
 uid:u::::1700000000::H::Card User::::::::::0:
-ssb:u:255:18:EEEE:1700000000::::::e:::>D2760001240100000006:::cv25519::
+ssb:u:255:18:EEEE:1700000000::::::e:::D2760001240100000006000012340000:::cv25519::
 fpr:::::::::FPR2SUB:
 grp:::::::::GRIP5:
 `)
@@ -78,6 +78,11 @@ func TestSealOpen(t *testing.T) {
 	}
 	if _, err := e.open(bytes.Repeat([]byte{8}, 32)); !errors.Is(err, ErrSealed) {
 		t.Fatalf("another secret opened it: %v", err)
+	}
+	damaged := e
+	damaged.Nonce = nil
+	if _, err := damaged.open(secret); !errors.Is(err, ErrSealed) {
+		t.Fatalf("a missing nonce: %v", err)
 	}
 	moved := e
 	moved.Fingerprint = "OTHER"

@@ -164,6 +164,9 @@ func (e Enrolment) open(secret []byte) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	if len(e.Nonce) != a.NonceSize() { // a damaged file
+		return "", ErrSealed
+	}
 	plain, err := a.Open(nil, e.Nonce, e.Sealed, e.additional())
 	if err != nil {
 		return "", ErrSealed
