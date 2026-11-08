@@ -41,3 +41,15 @@ Not checked: the UI was not looked at. Set/Change PIN was not run on hardware: i
 
 ## factory · 2026-11-08 14:57
 Merged into master at the owner's request in chat ("merge to master, commit"), from review/ directly: merge commit cca5859c. FT83 went first, as FT84 is built on it. After the merge: make generate and make i18n changed nothing; make test passed. No linked issues or PRs to close.
+
+
+## factory · review · 2026-11-08 14:59
+head: 38d6d9aa6c22c270ead2728305ce1dc685518be9
+verdict: fix
+fix:
+- [P1] internal/ui/settings_securitykeys.go:451: A pending ChangePIN callback survives closing and reopening Settings on another page. Initialization clears the PIN widgets without advancing gen; the callback guard accepts the stale operation and ErrPIN reaches the nil current widget (lines 471–472), crashing the shell. Invalidate operations on close/rebuild and verify the operation and form before touching widgets. An isolated callback probe reproduced the panic.
+notes:
+- [P2] internal/securitykey/unlock.go:110: Re-enrolling the same device after changing the GPG passphrase appends a new record, but find selects the first recognized old credential and returns the old passphrase. Prefer the latest valid enrollment or replace the superseded one. A fake-device probe reproduced old rather than new passphrase selection. Inherited from FT83.
+- The item was concurrently shipped and moved to done/ while review ran; left in done/ as required. This review records the reviewed branch head, not a new review of the shipped master.
+- Validation: make test passed with throwaway HOME (18 Python tests, go vet, Go race tests). make generate and make i18n in an isolated copy matched committed outputs. A later /proc-short-path confinement experiment failed identically on HEAD and base (53 failures); no branch-only failure. Initial tests used temporary /tmp paths through sockdir fallback, subsequently cleaned by tests.
+- Reviewed all 35 changed files in origin/master...HEAD as fetched at review start, including FT83. No installs; no code edits or commits. UI not visually checked; real keys, hardware and PINs not accessed. Independent security-review reference was unavailable to the coder.
