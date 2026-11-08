@@ -1,6 +1,6 @@
 ---
 branch: factory/FT83-pass-fido2-security-key
-round: 1
+round: 2
 ---
 # Pass: unlock the gpg key with a FIDO2 security key
 
@@ -53,3 +53,15 @@ Not checked: UI not visually inspected; real security-key PIN/touch flow not tes
 
 ## factory · 2026-11-08 14:13
 Moved from ready/ back to review/ at the owner's request in chat: "move it to review". No code changes; head d36cfec97a58c5b98a170ccde02ca21e577b51ba as reviewed above.
+
+## factory · 2026-11-08 14:16
+Fix round 2 at the owner's request in chat ("build it"), for the four P2 notes of the 14:06 review. One commit, 1b293194; head 1b293194d316d783c47bd4dff1520fb80dd3986d.
+
+Fixed:
+- [P2] gpg.go:68: field 15 counts as a local secret only when empty or "+"; a stub ("#") or a card serial (no ">" prefix) is excluded. The test listing now uses a real card serial.
+- [P2] store.go:167: `open` returns ErrSealed for a nonce of the wrong length before AEAD.Open; the pinentry falls back to the passphrase. Test: a nil nonce.
+- [P2] secrets.go:34: fixed at the waiting side, `passask.Ask`: the pages channel exists only when the pages are asked, so a question they do not show returns as soon as the dialog fails. New `TestAskNotForPagesFailsWithTheDialog` (missing socket, returns Failed at once).
+- [P2] askpass.go:308: the third button answers with the literal protocol value "not ok" (it was `i18n.T("not ok")`), so Type Passphrase works in translations. This also fixes the same path for Confirm's third button, which was affected before FT83.
+
+Tests: `make generate` no change; `make i18n` updated the catalogs (one msgid gone). `make test` passed with a throwaway HOME.
+Not checked: the UI was not looked at; the real PIN-and-touch flow was not run. Installs: none.
