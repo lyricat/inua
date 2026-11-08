@@ -39,6 +39,9 @@ title = true
 # for the focused window's title.
 title_mode = "app"
 
+# Draw the bar panel transparently when its workspace has no windows.
+transparent_empty = false
+
 # Show tray (StatusNotifierItem) icons.
 tray = true
 

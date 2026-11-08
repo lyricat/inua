@@ -410,6 +410,11 @@ func (b *bar) setHypr(s *shellUI, snap compositor.Snapshot) {
 		b.win.RemoveCssClass("occupied")
 		b.win.AddCssClass("empty")
 	}
+	if s.cfg.Bar.TransparentEmpty {
+		b.win.AddCssClass("transparent-empty")
+	} else {
+		b.win.RemoveCssClass("transparent-empty")
+	}
 	win, hasWindow := shell.BarWindow(snap, name)
 	b.setFocusRing(s, snap, win, hasWindow)
 	if hasWindow {

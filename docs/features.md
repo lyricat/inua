@@ -15,6 +15,10 @@ reach as well, adjusts the volume 5% a notch; on the workspaces, it goes
 to the next workspace the bar shows (down) or the previous one (up), a
 notch a step, stopping at the ends. One per monitor.
 
+The Bar settings can make the panel transparent when the bar's current
+workspace has no windows. The panel becomes opaque again when a window
+appears. The controls keep their own look.
+
 ## Engawa
 
 Engawa (縁側, a veranda at the edge of a house) is the widget page, the
