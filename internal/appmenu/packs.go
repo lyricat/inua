@@ -58,9 +58,13 @@ type PackSection struct {
 type PackItem struct {
 	Label     string
 	Separator bool
-	Action    string
-	Keys      []string
-	Items     []PackItem
+	// Disabled shows the line greyed out: the application's menu has it,
+	// but the pack has no key to invoke it with.
+	Disabled bool
+	Action   string
+	Keys     []string
+	Sequence []KeyStroke
+	Items    []PackItem
 }
 
 // Entries builds the menu the bar shows for this pack. generic is the
@@ -91,6 +95,9 @@ func (it PackItem) entry(windowID string, pid int) Entry {
 	if it.Separator {
 		return Entry{Separator: true}
 	}
+	if it.Disabled {
+		return Entry{Label: it.Label}
+	}
 	e := Entry{Label: it.Label, Enabled: true}
 	if len(it.Items) > 0 {
 		e.Submenu = true
@@ -103,6 +110,9 @@ func (it PackItem) entry(windowID string, pid int) Entry {
 	if len(it.Keys) > 0 {
 		mods, key := splitKeys(it.Keys)
 		e.Action = Action{Kind: ActionKeys, Bus: windowID, Mods: mods, Key: key, Index: int32(pid)}
+	}
+	if len(it.Sequence) > 0 {
+		e.Action = Action{Kind: ActionKeySequence, Bus: windowID, Sequence: slices.Clone(it.Sequence), Index: int32(pid)}
 	}
 	return e
 }
@@ -125,6 +135,30 @@ func splitKeys(keys []string) (mods, key string) {
 		mods = strings.Join(norm[:len(norm)-1], " ")
 	}
 	return mods, key
+}
+
+func parseSequenceStroke(raw string) (KeyStroke, error) {
+	parts := strings.Split(strings.TrimSpace(raw), "+")
+	if len(parts) == 0 {
+		return KeyStroke{}, fmt.Errorf("empty stroke")
+	}
+	for i, part := range parts {
+		parts[i] = strings.TrimSpace(part)
+		if parts[i] == "" || strings.ContainsAny(parts[i], " \t") {
+			return KeyStroke{}, fmt.Errorf("invalid stroke")
+		}
+	}
+	key := parts[len(parts)-1]
+	var mods []string
+	for _, mod := range parts[:len(parts)-1] {
+		switch strings.ToUpper(mod) {
+		case "CTRL", "ALT", "SHIFT", "SUPER":
+			mods = append(mods, strings.ToUpper(mod))
+		default:
+			return KeyStroke{}, fmt.Errorf("unknown modifier %q", mod)
+		}
+	}
+	return KeyStroke{Mods: strings.Join(mods, " "), Key: key}, nil
 }
 
 // Packs is the menu packs from the binary and the directories, re-read
@@ -375,6 +409,8 @@ type itemFile struct {
 	Separator bool       `toml:"separator"`
 	Action    string     `toml:"action"`
 	Keys      []string   `toml:"keys"`
+	Sequence  []string   `toml:"sequence"`
+	Disabled  bool       `toml:"disabled"`
 	Items     []itemFile `toml:"item"`
 }
 
@@ -418,7 +454,11 @@ func parsePack(name string, data []byte) (Pack, error) {
 }
 
 func convertItem(it itemFile) PackItem {
-	out := PackItem{Label: it.Label, Separator: it.Separator, Action: it.Action, Keys: it.Keys}
+	out := PackItem{Label: it.Label, Separator: it.Separator, Disabled: it.Disabled, Action: it.Action, Keys: it.Keys}
+	for _, raw := range it.Sequence {
+		step, _ := parseSequenceStroke(raw) // validatePack has already checked it
+		out.Sequence = append(out.Sequence, step)
+	}
 	for _, child := range it.Items {
 		out.Items = append(out.Items, convertItem(child))
 	}
@@ -492,7 +532,7 @@ func validateItem(name, section string, it itemFile, depth int) error {
 		return fail("menu is nested more than %d deep", maxPackDepth)
 	}
 	if it.Separator {
-		if it.Label != "" || it.Action != "" || len(it.Keys) > 0 || len(it.Items) > 0 {
+		if it.Label != "" || it.Disabled || it.Action != "" || len(it.Keys) > 0 || len(it.Sequence) > 0 || len(it.Items) > 0 {
 			return fail("a separator has other fields")
 		}
 		return nil
@@ -500,11 +540,20 @@ func validateItem(name, section string, it itemFile, depth int) error {
 	if strings.TrimSpace(it.Label) == "" {
 		return fail("an item has no label")
 	}
+	if it.Disabled {
+		if it.Action != "" || len(it.Keys) > 0 || len(it.Sequence) > 0 || len(it.Items) > 0 {
+			return fail("%q is disabled and also has an action", it.Label)
+		}
+		return nil
+	}
 	n := 0
 	if it.Action != "" {
 		n++
 	}
 	if len(it.Keys) > 0 {
+		n++
+	}
+	if len(it.Sequence) > 0 {
 		n++
 	}
 	if len(it.Items) > 0 {
@@ -520,6 +569,14 @@ func validateItem(name, section string, it itemFile, depth int) error {
 		if strings.TrimSpace(key) == "" || strings.ContainsAny(key, " \t") {
 			return fail("%q has an empty key", it.Label)
 		}
+	}
+	for _, step := range it.Sequence {
+		if _, err := parseSequenceStroke(step); err != nil {
+			return fail("%q sequence stroke %q: %v", it.Label, step, err)
+		}
+	}
+	if len(it.Sequence) == 1 {
+		return fail("%q sequence needs at least two strokes", it.Label)
 	}
 	for _, child := range it.Items {
 		if err := validateItem(name, section, child, depth+1); err != nil {

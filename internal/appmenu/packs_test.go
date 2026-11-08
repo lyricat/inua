@@ -39,6 +39,26 @@ func TestShippedPacks(t *testing.T) {
 	if _, ok := packs.Match("org.mozilla.firefox", ""); !ok {
 		t.Fatal("firefox contains did not match the desktop id")
 	}
+	zed, ok := packs.Match("dev.zed.Zed", "")
+	if !ok || !zed.SkipA11y {
+		t.Fatalf("zed pack = %+v, ok %v", zed, ok)
+	}
+	if len(zed.Sections) != 9 {
+		t.Fatalf("zed sections = %+v, want Zed/File/Edit/Selection/View/Go/Run/Window/Help", zed.Sections)
+	}
+	for i, label := range []string{"Zed", "File", "Edit", "Selection", "View", "Go", "Run", "Window", "Help"} {
+		if zed.Sections[i].Label != label {
+			t.Errorf("zed section %d = %q, want %q", i, zed.Sections[i].Label, label)
+		}
+	}
+	for _, item := range zed.Sections[0].Items {
+		if item.Label == "About Zed" && (!item.Disabled || item.Action != "") {
+			t.Fatal("Zed's About command must be shown disabled, not run inua's About")
+		}
+	}
+	if _, ok := packs.Match("zeditor", ""); !ok {
+		t.Fatal("zeditor did not match the zed pack")
+	}
 	if _, ok := packs.Match("org.wezfurlong.wezterm", "wezterm"); ok {
 		t.Fatal("an unmatched application got a pack")
 	}
@@ -110,6 +130,80 @@ keys = ["CTRL", "plus"]
 	}
 	if entries[1].Children[1].Action.Key != "plus" {
 		t.Fatalf("plus key = %q", entries[1].Children[1].Action.Key)
+	}
+}
+
+func TestPackKeySequence(t *testing.T) {
+	body := `
+id = "zed"
+match = ["zed"]
+[[section]]
+label = "Go"
+[[section.item]]
+label = "Definition"
+sequence = ["g", "d"]
+[[section.item]]
+label = "Declaration"
+sequence = ["g", "shift+d"]
+`
+	pack, err := parsePack("zed.toml", []byte(body))
+	if err != nil {
+		t.Fatal(err)
+	}
+	entries := pack.Entries("window-1", 7, nil, nil)
+	if len(entries) != 1 || len(entries[0].Children) != 2 {
+		t.Fatalf("entries = %+v", entries)
+	}
+	definition := entries[0].Children[0].Action
+	if definition.Kind != ActionKeySequence || definition.Bus != "window-1" || len(definition.Sequence) != 2 || definition.Sequence[0] != (KeyStroke{Key: "g"}) || definition.Sequence[1] != (KeyStroke{Key: "d"}) {
+		t.Errorf("definition action = %+v", definition)
+	}
+	declaration := entries[0].Children[1].Action
+	if declaration.Sequence[1] != (KeyStroke{Mods: "SHIFT", Key: "d"}) {
+		t.Errorf("declaration sequence = %+v", declaration.Sequence)
+	}
+}
+
+func TestPackDisabledItem(t *testing.T) {
+	body := `
+id = "zed"
+match = ["zed"]
+[[section]]
+label = "Help"
+[[section.item]]
+label = "Documentation"
+disabled = true
+[[section.item]]
+label = "Quit"
+action = "quit-app"
+`
+	pack, err := parsePack("zed.toml", []byte(body))
+	if err != nil {
+		t.Fatal(err)
+	}
+	entries := pack.Entries("w", 1, nil, nil)
+	help := entries[0].Children
+	if len(help) != 2 {
+		t.Fatalf("entries = %+v", help)
+	}
+	if help[0].Label != "Documentation" || help[0].Enabled || help[0].Action.Kind != "" || len(help[0].Children) != 0 {
+		t.Errorf("disabled item = %+v", help[0])
+	}
+	if !help[1].Enabled || help[1].Action.Kind != ActionQuitApp {
+		t.Errorf("enabled item = %+v", help[1])
+	}
+	bad := `
+id = "zed"
+match = ["zed"]
+[[section]]
+label = "Help"
+[[section.item]]
+label = "Documentation"
+disabled = true
+keys = ["CTRL", "H"]
+`
+	if _, err := parsePack("bad.toml", []byte(bad)); err == nil {
+		t.Fatal("accepted a disabled item with keys")
 	}
 }
 

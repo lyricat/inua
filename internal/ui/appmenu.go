@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"slices"
 	"strconv"
+	"strings"
 	"time"
 
 	"codeberg.org/puregotk/puregotk/v4/gdk"
@@ -522,8 +523,14 @@ func (s *shellUI) bindAppMenuHandlers() {
 		if err != nil {
 			return
 		}
+		parent := btn.GetParent()
+		if parent == nil {
+			return
+		}
 		for _, b := range s.bars {
-			if i < 0 || i >= len(b.appMenuEntries) {
+			// A button belongs to its bar's menu box. Another bar may have
+			// the same menu index, but it must never receive this click.
+			if b.appMenu.GoPointer() != parent.GoPointer() || i < 0 || i >= len(b.appMenuEntries) {
 				continue
 			}
 			entry := b.appMenuEntries[i]
@@ -647,7 +654,7 @@ func (s *shellUI) appMenuItems(connector string, reg appmenu.Registration, pid i
 			}
 			continue
 		}
-		it := uikit.Item{Label: e.Label}
+		it := uikit.Item{Label: e.Label, Keys: appMenuKeyLabel(e.Action)}
 		switch {
 		case e.Toggle == "checkmark" && e.Checked:
 			it.Mark = "check"
@@ -671,6 +678,63 @@ func (s *shellUI) appMenuItems(connector string, reg appmenu.Registration, pid i
 		out = out[:len(out)-1]
 	}
 	return out
+}
+
+// appMenuKeyLabel formats a pack shortcut the same way uikit shows other
+// keycaps. It is display-only; activation still sends the original key names.
+func appMenuKeyLabel(action appmenu.Action) string {
+	if action.Kind == appmenu.ActionKeySequence {
+		steps := make([]string, 0, len(action.Sequence))
+		for _, step := range action.Sequence {
+			key := strings.ToLower(step.Key)
+			if step.Mods != "" {
+				mods := strings.ToLower(strings.ReplaceAll(step.Mods, " ", "-"))
+				key = mods + "-" + key
+			}
+			steps = append(steps, key)
+		}
+		return strings.Join(steps, " ")
+	}
+	if action.Kind != appmenu.ActionKeys || action.Key == "" {
+		return ""
+	}
+	mods := strings.Fields(action.Mods)
+	for i, mod := range mods {
+		switch strings.ToUpper(mod) {
+		case "CTRL":
+			mods[i] = "Ctrl"
+		case "ALT":
+			mods[i] = "Alt"
+		case "SHIFT":
+			mods[i] = "Shift"
+		case "SUPER":
+			mods[i] = "Super"
+		}
+	}
+	key := action.Key
+	switch strings.ToLower(key) {
+	case "comma":
+		key = ","
+	case "equal":
+		key = "="
+	case "minus":
+		key = "-"
+	case "underscore":
+		key = "_"
+	case "slash":
+		key = "/"
+	case "grave":
+		key = "`"
+	case "space":
+		key = "Space"
+	default:
+		if len(key) == 1 {
+			key = strings.ToUpper(key)
+		} else {
+			key = strings.ToUpper(key[:1]) + key[1:]
+		}
+	}
+	return strings.Join(append(mods, key), " ")
 }
 
 // activateEntry invokes an entry, if the application it belongs to is
@@ -728,6 +792,22 @@ func (s *shellUI) activateEntry(connector string, reg appmenu.Registration, pid 
 			}
 			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 			err = k.SendKey(ctx, e.Action.Bus, e.Action.Mods, e.Action.Key)
+			cancel()
+		case appmenu.ActionKeySequence:
+			k, ok := s.comp.(compositor.Keystroker)
+			if !ok || !s.caps.Has(compositor.CapKeystrokes) {
+				log.Printf("appmenu: cannot send key sequence to the window")
+				break
+			}
+			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+			for i, step := range e.Action.Sequence {
+				if i > 0 {
+					time.Sleep(60 * time.Millisecond)
+				}
+				if err = k.SendKey(ctx, e.Action.Bus, step.Mods, step.Key); err != nil {
+					break
+				}
+			}
 			cancel()
 		case appmenu.ActionA11y:
 			if s.appmenu.a11y == nil {

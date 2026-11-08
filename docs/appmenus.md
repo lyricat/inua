@@ -134,10 +134,15 @@ when a real menu is also present. `skip_a11y` does not ask the
 accessibility bus. `never_press` still shows a menu that was read, and
 refuses to invoke a section of it. The shipped `code` pack sets
 `skip_a11y`: VS Code draws its menu itself and the accessibility bus
-only has an overflow item. The shipped `firefox` pack sets
-`never_press`: pressing a section of Firefox's accessibility menu ends
-Firefox. A pack with no sections and no `include` adds no items; the
-generic menu is shown, and the flags still apply.
+only has an overflow item. The shipped `zed` pack also sets `skip_a11y`:
+Zed draws its menu itself and exposes neither an accessible menu nor a
+D-Bus menu. Its pack mirrors Zed's Linux menus in full; commands that
+have a default shortcut or a key sequence are sent, and the rest are
+shown disabled. A custom keymap or Vim mode can change which keys those
+commands need. The shipped `firefox`
+pack sets `never_press`: pressing a section of Firefox's accessibility
+menu ends Firefox. A pack with no sections and no `include` adds no
+items; the generic menu is shown, and the flags still apply.
 
 Within one directory, files are applied in name order and the last pack
 that matches a window wins. Two packs should not match the same window
@@ -145,8 +150,10 @@ on purpose. Replacing a shipped pack is done with the same `id`.
 
 ### What an item can do
 
-An item is a separator, a submenu, a shell action, or a shortcut. It has
-exactly one of those.
+An item is a separator, a submenu, a shell action, a shortcut, or a
+disabled line. It has exactly one of those. `disabled = true` shows the
+line greyed out, for a command the application has but the pack cannot
+invoke without a keybinding.
 
 | `action` | What it does |
 | --- | --- |
@@ -174,6 +181,23 @@ capability does not send the shortcut; the item is still shown, and the
 failure is logged. The shortcut is sent whether or not the application's
 own menu item would be enabled, and it goes stale when the application
 changes its bindings.
+
+`sequence` sends a series of key strokes for a chord such as `g` then
+`d`. Each element is one key, optionally preceded by `CTRL+`, `SHIFT+`,
+`ALT+` or `SUPER+`; key strokes are sent 60 ms apart. This is useful for
+Vim-style keymaps, which have bindings that cannot be read from the
+application's menu. For example:
+
+```toml
+[[section.item]]
+label = "Go to Definition"
+sequence = ["g", "d"]
+```
+
+A Zed pack follows the Linux default keymap. To match a custom keymap or
+Vim mode, override `zed.toml` in `$XDG_CONFIG_HOME/inua/menus` and use
+`sequence` for its chords; menu packs cannot discover another application's
+user keymap.
 
 A submenu is an item with items of its own:
 
@@ -241,9 +265,10 @@ The `generic` include contributes File, Edit, View and Help. The Terminal
 section is added after those. To start with only your own sections, remove
 `include`. To nest options, add `[[section.item.item]]` below a submenu
 item. A `separator = true` item needs no label. Each ordinary item must
-specify exactly one of `action`, `keys` or child `item` entries; a
-separator cannot be combined with those. TOML table array nesting matters:
-child items belong immediately under their parent item.
+specify exactly one of `action`, `keys`, `sequence`, child `item` entries
+or `disabled = true`; a separator cannot be combined with those. TOML
+table array nesting matters: child items belong immediately under their
+parent item.
 
 The match fields are alternatives: a pack matches if the case-insensitive
 application id or desktop entry id equals any `match` token, ends with

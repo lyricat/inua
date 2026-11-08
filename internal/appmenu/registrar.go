@@ -111,11 +111,20 @@ type Action struct {
 	// key name is sent as written.
 	Mods string
 	Key  string
+	// Sequence sends several key strokes in order (for Vim-style chords).
+	Sequence []KeyStroke
+}
+
+// KeyStroke is one press in a sequence action.
+type KeyStroke struct {
+	Mods string
+	Key  string
 }
 
 const (
-	ActionA11y     = "atspi"
-	ActionDbusmenu = "dbusmenu"
+	ActionA11y        = "atspi"
+	ActionDbusmenu    = "dbusmenu"
+	ActionKeySequence = "key-sequence"
 	// Actions the shell itself runs for the menu every window has.
 	ActionAbout       = "about"
 	ActionCloseWindow = "close-window"
