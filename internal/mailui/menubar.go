@@ -36,23 +36,23 @@ func (w *window) menuBar() *appui.MenuBar {
 		return appui.MenuAction{Name: name, Label: label, Activate: activate}
 	}
 	groups := []appui.MenuGroup{
-		{Title: i18n.T("File"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
-			action("new-message", i18n.T("New Message")),
+		{Title: i18n.M("File"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
+			action("new-message", i18n.M("New Message")),
 		}}, {Actions: []appui.MenuAction{
-			action("close-window", i18n.T("Close Window")),
+			action("close-window", i18n.M("Close Window")),
 		}}}},
-		{Title: i18n.T("View"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
-			action("refresh", i18n.T("Refresh")),
-			action("search", i18n.T("Search")),
+		{Title: i18n.M("View"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
+			action("refresh", i18n.M("Refresh")),
+			action("search", i18n.M("Search")),
 		}}, {Actions: []appui.MenuAction{
-			action("toggle-sidebar", i18n.T("Sidebar")),
-			action("toggle-assistant", i18n.T("Assistant")),
+			action("toggle-sidebar", i18n.M("Sidebar")),
+			action("toggle-assistant", i18n.M("Assistant")),
 		}}, {Actions: []appui.MenuAction{
-			action("mark-read", i18n.T("Mark All Read")),
+			action("mark-read", i18n.M("Mark All Read")),
 		}}}},
-		{Title: i18n.T("Help"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
-			action("keys", i18n.T("Keyboard Shortcuts")),
-			action("settings", i18n.T("Settings")),
+		{Title: i18n.M("Help"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
+			action("keys", i18n.M("Keyboard Shortcuts")),
+			action("settings", i18n.M("Settings")),
 		}}}},
 	}
 	return appui.NewMenuBar(w.c, groups)

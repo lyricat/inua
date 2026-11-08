@@ -398,6 +398,7 @@ msgstr "열기"
 #: internal/ui/record.go:157
 #: internal/ui/screenshot.go:1150
 #: internal/ui/settings_custom.go:41
+#: internal/viewerui/menubar.go:44
 msgid "Show in Folder"
 msgstr "폴더에 표시"
 
@@ -2081,9 +2082,11 @@ msgstr "시도하다"
 #: internal/assistantui/assistantui.go:912
 #: internal/connectui/menubar.go:26
 #: internal/diskui/details.go:49
+#: internal/diskui/menubar.go:33
 #: internal/gamesui/menubar.go:36
 #: internal/mailui/menubar.go:39
 #: internal/remoteui/menubar.go:47
+#: internal/viewerui/menubar.go:36
 #: internal/vmui/menubar.go:36
 msgid "File"
 msgid_plural "Files"
@@ -2096,17 +2099,21 @@ msgstr "새로운 대화"
 
 #: internal/assistantui/assistantui.go:914
 #: internal/connectui/menubar.go:27
+#: internal/diskui/menubar.go:36
 #: internal/gamesui/menubar.go:37
 #: internal/mailui/menubar.go:42
 #: internal/remoteui/menubar.go:48
 #: internal/shell/commands.go:46
+#: internal/viewerui/menubar.go:39
 #: internal/vmui/menubar.go:39
 msgid "Close Window"
 msgstr "창 닫기"
 
 #: internal/assistantui/assistantui.go:916
+#: internal/diskui/menubar.go:38
 #: internal/lightui/clock.go:404
 #: internal/termui/menubar.go:42
+#: internal/viewerui/menubar.go:41
 #: ui/pass.ui:252
 msgid "Edit"
 msgstr "편집하다"
@@ -2117,10 +2124,12 @@ msgstr ""
 
 #: internal/assistantui/assistantui.go:919
 #: internal/connectui/menubar.go:29
+#: internal/diskui/menubar.go:41
 #: internal/gamesui/menubar.go:33
 #: internal/mailui/menubar.go:44
 #: internal/remoteui/menubar.go:56
 #: internal/termui/menubar.go:43
+#: internal/viewerui/menubar.go:46
 #: internal/vmui/menubar.go:48
 msgid "View"
 msgstr ""
@@ -3186,6 +3195,24 @@ msgstr "완료: 여기서는 공간이 늘지 않았습니다."
 msgid "%s removed %s: %s freed."
 msgstr "%s이(가) %s을(를) 지웠습니다: %s 확보."
 
+#: internal/diskui/menubar.go:34
+msgid "Choose Folder…"
+msgstr ""
+
+#: internal/diskui/menubar.go:39
+msgid "Copy Cleanup Command"
+msgstr ""
+
+#: internal/diskui/menubar.go:42
+#: internal/diskui/window.go:528
+#: ui/disk.ui:190
+msgid "Scan"
+msgstr "스캔"
+
+#: internal/diskui/menubar.go:43
+msgid "Stop Scanning"
+msgstr ""
+
 #: internal/diskui/window.go:333
 #: internal/filesui/cards.go:682
 #: internal/filesui/sidebar.go:36
@@ -3225,11 +3252,6 @@ msgstr "스캔할 폴더 선택"
 #: internal/diskui/window.go:524
 msgid "Scan again"
 msgstr "다시 스캔"
-
-#: internal/diskui/window.go:528
-#: ui/disk.ui:190
-msgid "Scan"
-msgstr "스캔"
 
 #: internal/diskui/window.go:535
 msgid "your home"
@@ -3836,6 +3858,7 @@ msgstr "사이드바"
 
 #: internal/filesui/cards.go:710
 #: internal/filesui/window.go:855
+#: internal/viewerui/menubar.go:55
 msgid "Details"
 msgstr "세부 정보"
 
@@ -8238,6 +8261,7 @@ msgid "The browser could not be opened: %v"
 msgstr ""
 
 #: internal/gamesui/menubar.go:34
+#: internal/viewerui/menubar.go:57
 msgid "Fullscreen"
 msgstr ""
 
@@ -11304,6 +11328,7 @@ msgid "Ask before loading pictures"
 msgstr ""
 
 #: internal/mailui/details.go:157
+#: internal/viewerui/menubar.go:56
 msgid "Source"
 msgstr ""
 
@@ -17755,6 +17780,42 @@ msgstr "실제 크기(1)"
 #: internal/viewerui/image.go:224
 msgid "Fit the window (0)"
 msgstr "창에 맞추기 (0)"
+
+#: internal/viewerui/menubar.go:37
+msgid "Open…"
+msgstr ""
+
+#: internal/viewerui/menubar.go:42
+msgid "Copy Image"
+msgstr ""
+
+#: internal/viewerui/menubar.go:43
+msgid "Set as Wallpaper"
+msgstr ""
+
+#: internal/viewerui/menubar.go:47
+msgid "Zoom In"
+msgstr ""
+
+#: internal/viewerui/menubar.go:48
+msgid "Zoom Out"
+msgstr ""
+
+#: internal/viewerui/menubar.go:49
+msgid "Reset Zoom"
+msgstr ""
+
+#: internal/viewerui/menubar.go:51
+msgid "Previous File"
+msgstr ""
+
+#: internal/viewerui/menubar.go:52
+msgid "Next File"
+msgstr ""
+
+#: internal/viewerui/menubar.go:53
+msgid "Rotate"
+msgstr ""
 
 #: internal/viewerui/pdf.go:188
 msgid "%s has no pages."

@@ -4,6 +4,7 @@ import (
 	"codeberg.org/puregotk/puregotk/v4/gio"
 
 	"github.com/lyricat/inua/internal/appui"
+	"github.com/lyricat/inua/internal/i18n"
 )
 
 // menuBar gives Disk Usage's commands, also on its buttons and keys, a place
@@ -29,17 +30,17 @@ func (w *window) menuBar() *appui.MenuBar {
 		return appui.MenuAction{Name: name, Label: label, Activate: activate}
 	}
 	groups := []appui.MenuGroup{
-		{Title: "File", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
-			action("choose-folder", "Choose Folder…"),
+		{Title: i18n.M("File"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
+			action("choose-folder", i18n.M("Choose Folder…")),
 		}}, {Actions: []appui.MenuAction{
-			action("close-window", "Close Window"),
+			action("close-window", i18n.M("Close Window")),
 		}}}},
-		{Title: "Edit", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
-			action("copy-command", "Copy Cleanup Command"),
+		{Title: i18n.M("Edit"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
+			action("copy-command", i18n.M("Copy Cleanup Command")),
 		}}}},
-		{Title: "View", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
-			action("scan", "Scan"),
-			action("stop", "Stop Scanning"),
+		{Title: i18n.M("View"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
+			action("scan", i18n.M("Scan")),
+			action("stop", i18n.M("Stop Scanning")),
 		}}}},
 	}
 	return appui.NewMenuBar(w.c, groups)

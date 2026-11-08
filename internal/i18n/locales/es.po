@@ -398,6 +398,7 @@ msgstr "Abrir"
 #: internal/ui/record.go:157
 #: internal/ui/screenshot.go:1150
 #: internal/ui/settings_custom.go:41
+#: internal/viewerui/menubar.go:44
 msgid "Show in Folder"
 msgstr "Mostrar en carpeta"
 
@@ -2086,9 +2087,11 @@ msgstr "INTENTAR"
 #: internal/assistantui/assistantui.go:912
 #: internal/connectui/menubar.go:26
 #: internal/diskui/details.go:49
+#: internal/diskui/menubar.go:33
 #: internal/gamesui/menubar.go:36
 #: internal/mailui/menubar.go:39
 #: internal/remoteui/menubar.go:47
+#: internal/viewerui/menubar.go:36
 #: internal/vmui/menubar.go:36
 msgid "File"
 msgid_plural "Files"
@@ -2102,17 +2105,21 @@ msgstr "Nueva conversación"
 
 #: internal/assistantui/assistantui.go:914
 #: internal/connectui/menubar.go:27
+#: internal/diskui/menubar.go:36
 #: internal/gamesui/menubar.go:37
 #: internal/mailui/menubar.go:42
 #: internal/remoteui/menubar.go:48
 #: internal/shell/commands.go:46
+#: internal/viewerui/menubar.go:39
 #: internal/vmui/menubar.go:39
 msgid "Close Window"
 msgstr "Cerrar ventana"
 
 #: internal/assistantui/assistantui.go:916
+#: internal/diskui/menubar.go:38
 #: internal/lightui/clock.go:404
 #: internal/termui/menubar.go:42
+#: internal/viewerui/menubar.go:41
 #: ui/pass.ui:252
 msgid "Edit"
 msgstr "Editar"
@@ -2123,10 +2130,12 @@ msgstr ""
 
 #: internal/assistantui/assistantui.go:919
 #: internal/connectui/menubar.go:29
+#: internal/diskui/menubar.go:41
 #: internal/gamesui/menubar.go:33
 #: internal/mailui/menubar.go:44
 #: internal/remoteui/menubar.go:56
 #: internal/termui/menubar.go:43
+#: internal/viewerui/menubar.go:46
 #: internal/vmui/menubar.go:48
 msgid "View"
 msgstr ""
@@ -3193,6 +3202,24 @@ msgstr "Hecho: no liberó espacio aquí."
 msgid "%s removed %s: %s freed."
 msgstr "%s quitó %s: %s liberados."
 
+#: internal/diskui/menubar.go:34
+msgid "Choose Folder…"
+msgstr ""
+
+#: internal/diskui/menubar.go:39
+msgid "Copy Cleanup Command"
+msgstr ""
+
+#: internal/diskui/menubar.go:42
+#: internal/diskui/window.go:528
+#: ui/disk.ui:190
+msgid "Scan"
+msgstr "Escanear"
+
+#: internal/diskui/menubar.go:43
+msgid "Stop Scanning"
+msgstr ""
+
 #: internal/diskui/window.go:333
 #: internal/filesui/cards.go:682
 #: internal/filesui/sidebar.go:36
@@ -3232,11 +3259,6 @@ msgstr "Elige una carpeta para escanear"
 #: internal/diskui/window.go:524
 msgid "Scan again"
 msgstr "Escanear de nuevo"
-
-#: internal/diskui/window.go:528
-#: ui/disk.ui:190
-msgid "Scan"
-msgstr "Escanear"
 
 #: internal/diskui/window.go:535
 msgid "your home"
@@ -3850,6 +3872,7 @@ msgstr "Barra lateral"
 
 #: internal/filesui/cards.go:710
 #: internal/filesui/window.go:855
+#: internal/viewerui/menubar.go:55
 msgid "Details"
 msgstr "Detalles"
 
@@ -8274,6 +8297,7 @@ msgid "The browser could not be opened: %v"
 msgstr ""
 
 #: internal/gamesui/menubar.go:34
+#: internal/viewerui/menubar.go:57
 msgid "Fullscreen"
 msgstr ""
 
@@ -11360,6 +11384,7 @@ msgid "Ask before loading pictures"
 msgstr ""
 
 #: internal/mailui/details.go:157
+#: internal/viewerui/menubar.go:56
 msgid "Source"
 msgstr ""
 
@@ -17853,6 +17878,42 @@ msgstr "Tamaño real (1)"
 #: internal/viewerui/image.go:224
 msgid "Fit the window (0)"
 msgstr "Ajustar a la ventana (0)"
+
+#: internal/viewerui/menubar.go:37
+msgid "Open…"
+msgstr ""
+
+#: internal/viewerui/menubar.go:42
+msgid "Copy Image"
+msgstr ""
+
+#: internal/viewerui/menubar.go:43
+msgid "Set as Wallpaper"
+msgstr ""
+
+#: internal/viewerui/menubar.go:47
+msgid "Zoom In"
+msgstr ""
+
+#: internal/viewerui/menubar.go:48
+msgid "Zoom Out"
+msgstr ""
+
+#: internal/viewerui/menubar.go:49
+msgid "Reset Zoom"
+msgstr ""
+
+#: internal/viewerui/menubar.go:51
+msgid "Previous File"
+msgstr ""
+
+#: internal/viewerui/menubar.go:52
+msgid "Next File"
+msgstr ""
+
+#: internal/viewerui/menubar.go:53
+msgid "Rotate"
+msgstr ""
 
 #: internal/viewerui/pdf.go:188
 msgid "%s has no pages."
