@@ -2091,7 +2091,7 @@ msgstr "INTENTAR"
 #: internal/gamesui/menubar.go:36
 #: internal/mailui/menubar.go:39
 #: internal/remoteui/menubar.go:47
-#: internal/ui/appmenu_packs.go:88
+#: internal/ui/appmenu_packs.go:109
 #: internal/viewerui/menubar.go:36
 #: internal/vmui/menubar.go:36
 msgid "File"
@@ -2111,7 +2111,7 @@ msgstr "Nueva conversación"
 #: internal/mailui/menubar.go:42
 #: internal/remoteui/menubar.go:48
 #: internal/shell/commands.go:46
-#: internal/ui/appmenu_packs.go:89
+#: internal/ui/appmenu_packs.go:110
 #: internal/viewerui/menubar.go:39
 #: internal/vmui/menubar.go:39
 msgid "Close Window"
@@ -2121,7 +2121,7 @@ msgstr "Cerrar ventana"
 #: internal/diskui/menubar.go:38
 #: internal/lightui/clock.go:404
 #: internal/termui/menubar.go:42
-#: internal/ui/appmenu_packs.go:91
+#: internal/ui/appmenu_packs.go:112
 #: internal/viewerui/menubar.go:41
 #: ui/pass.ui:252
 msgid "Edit"
@@ -2138,7 +2138,7 @@ msgstr ""
 #: internal/mailui/menubar.go:44
 #: internal/remoteui/menubar.go:56
 #: internal/termui/menubar.go:43
-#: internal/ui/appmenu_packs.go:94
+#: internal/ui/appmenu_packs.go:115
 #: internal/viewerui/menubar.go:46
 #: internal/vmui/menubar.go:48
 msgid "View"
@@ -3668,7 +3668,7 @@ msgstr[1] "… y %d más"
 #: internal/termui/keys.go:295
 #: internal/termui/sessionmenu.go:113
 #: internal/termui/wsmenu.go:129
-#: internal/ui/appmenu_packs.go:132
+#: internal/ui/appmenu_packs.go:153
 #: internal/ui/settings_bench.go:132
 #: internal/ui/settings_wifi_details.go:62
 #: ui/mail-compose.ui:292
@@ -8302,8 +8302,8 @@ msgid "The browser could not be opened: %v"
 msgstr ""
 
 #: internal/gamesui/menubar.go:34
-#: internal/ui/appmenu_packs.go:47
-#: internal/ui/appmenu_packs.go:95
+#: internal/ui/appmenu_packs.go:56
+#: internal/ui/appmenu_packs.go:116
 #: internal/viewerui/menubar.go:57
 msgid "Fullscreen"
 msgstr ""
@@ -11447,7 +11447,7 @@ msgstr ""
 
 #: internal/mailui/menubar.go:53
 #: internal/termui/menubar.go:45
-#: internal/ui/appmenu_packs.go:98
+#: internal/ui/appmenu_packs.go:119
 msgid "Help"
 msgstr ""
 
@@ -13265,8 +13265,8 @@ msgid "Toggle Fullscreen"
 msgstr "Alternar pantalla completa"
 
 #: internal/shell/commands.go:49
-#: internal/ui/appmenu_packs.go:49
-#: internal/ui/appmenu_packs.go:97
+#: internal/ui/appmenu_packs.go:58
+#: internal/ui/appmenu_packs.go:118
 msgid "Center Window"
 msgstr "Centrar ventana"
 
@@ -14783,29 +14783,29 @@ msgstr "Alarma · %02d:%02d"
 msgid "Snooze"
 msgstr "Posponer"
 
-#: internal/ui/appmenu_packs.go:48
-#: internal/ui/appmenu_packs.go:96
+#: internal/ui/appmenu_packs.go:57
+#: internal/ui/appmenu_packs.go:117
 msgid "Float"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:90
+#: internal/ui/appmenu_packs.go:111
 msgid "Quit %s"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:92
+#: internal/ui/appmenu_packs.go:113
 msgid "Copy Window Title"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:93
+#: internal/ui/appmenu_packs.go:114
 msgid "Copy Window Class"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:99
-#: internal/ui/appmenu_packs.go:118
+#: internal/ui/appmenu_packs.go:120
+#: internal/ui/appmenu_packs.go:139
 msgid "About %s"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:130
+#: internal/ui/appmenu_packs.go:151
 msgid "Process %d"
 msgstr ""
 
