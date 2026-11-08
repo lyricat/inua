@@ -1,0 +1,7 @@
+# Firefox can publish a real menu on its own bus name. When it does not,
+# its accessibility menu is a row of sections whose actions end the
+# process, so those sections are never pressed. A fillable menu from
+# accessibility is still shown; this file does not replace a real one.
+id = "firefox"
+contains = ["firefox"]
+never_press = true
