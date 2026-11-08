@@ -266,3 +266,16 @@ func TestPackReloadsWhenTheFileChanges(t *testing.T) {
 		t.Fatalf("flag-only pack produced %+v", entries)
 	}
 }
+
+func TestPackFlagOnlyEntriesEmpty(t *testing.T) {
+	isolatePackEnv(t)
+	body := "id = \"x\"\nmatch = [\"x\"]\nskip_a11y = true\n"
+	pack, err := parsePack("x.toml", []byte(body))
+	if err != nil {
+		t.Fatal(err)
+	}
+	generic := []Entry{{Label: "File", Enabled: true}}
+	if got := pack.Entries("w", 1, generic, nil); len(got) != 0 {
+		t.Fatalf("flag-only pack entries = %+v, want empty (caller applies generic fallback)", got)
+	}
+}

@@ -29,13 +29,22 @@ func (s *shellUI) menuPack(w compositor.Window) (appmenu.Pack, bool) {
 	return s.appmenu.packs.Match(w.AppID, desktop)
 }
 
-// entriesFromPack builds a pack's menu for the window pid owns.
+// entriesFromPack builds a pack's menu for the focused window of pid.
+// It captures all data from the current snapshot on the UI thread.
 func (s *shellUI) entriesFromPack(pid int, pack appmenu.Pack) []appmenu.Entry {
-	w, ok := s.appWindowOf(pid)
+	w, ok := s.focusedWindowOf(pid)
+	if !ok {
+		w, ok = s.appWindowOf(pid)
+	}
 	if !ok {
 		return nil
 	}
-	return pack.Entries(w.ID, pid, s.genericAppSections(pid), s.windowMenuItems(w, pid))
+	generic := s.genericAppSectionsFor(w, pid)
+	entries := pack.Entries(w.ID, pid, generic, s.windowMenuItems(w, pid))
+	if len(entries) == 0 {
+		return generic
+	}
+	return entries
 }
 
 // windowMenuItems is the include "window" snippet.
@@ -60,6 +69,14 @@ func (s *shellUI) appWindowOf(pid int) (compositor.Window, bool) {
 	return compositor.Window{}, false
 }
 
+// focusedWindowOf prefers the focused window when multiple windows share pid.
+func (s *shellUI) focusedWindowOf(pid int) (compositor.Window, bool) {
+	if w, ok := s.snap.Window(s.snap.FocusedWindow); ok && w.PID == pid {
+		return w, true
+	}
+	return s.appWindowOf(pid)
+}
+
 // appNameOf is what the bar calls an application: its desktop entry's
 // name, else its class.
 func (s *shellUI) appNameOf(w compositor.Window) string {
@@ -73,10 +90,14 @@ func (s *shellUI) appNameOf(w compositor.Window) string {
 // given: the commands that work for every window. Packs use it through
 // `include = ["generic"]`.
 func (s *shellUI) genericAppSections(pid int) []appmenu.Entry {
-	w, ok := s.appWindowOf(pid)
+	w, ok := s.focusedWindowOf(pid)
 	if !ok {
 		return nil
 	}
+	return s.genericAppSectionsFor(w, pid)
+}
+
+func (s *shellUI) genericAppSectionsFor(w compositor.Window, pid int) []appmenu.Entry {
 	name := s.appNameOf(w)
 	action := func(label, kind, window string) appmenu.Entry {
 		return appmenu.Entry{Label: label, Enabled: true, Action: appmenu.Action{Kind: kind, Bus: window, Index: int32(pid)}}
@@ -175,6 +196,8 @@ func appMenuKeyLabel(action appmenu.Action) string {
 	switch strings.ToLower(key) {
 	case "comma":
 		key = ","
+	case "period":
+		key = "."
 	case "equal":
 		key = "="
 	case "minus":
@@ -185,6 +208,10 @@ func appMenuKeyLabel(action appmenu.Action) string {
 		key = "/"
 	case "grave":
 		key = "`"
+	case "bracketleft":
+		key = "["
+	case "bracketright":
+		key = "]"
 	case "space":
 		key = "Space"
 	default:
@@ -245,51 +272,61 @@ func (s *shellUI) showPackedMenu(b *bar, i int, w *gtk.Widget) {
 }
 
 // activatePackedEntry runs a pack item while its process still has the focus.
+// Snapshot data is captured on the UI thread to avoid racing with compositor updates.
 func (s *shellUI) activatePackedEntry(pid int, e appmenu.Entry) {
 	if pid <= 0 || focusedPID(s.snap) != pid {
 		return
 	}
+	target, ok := s.focusedWindowOf(pid)
+	if !ok {
+		return
+	}
+	// Copy window IDs for quit-app on the UI thread.
+	var quitIDs []string
+	if e.Action.Kind == appmenu.ActionQuitApp {
+		for _, w := range s.snap.Windows {
+			if w.PID == pid {
+				quitIDs = append(quitIDs, w.ID)
+			}
+		}
+	}
+	title, appID := target.Title, target.AppID
+	windowID := target.ID
 	go func() {
 		var err error
 		switch e.Action.Kind {
 		case appmenu.ActionAbout:
 			gtkx.Post(func() { s.showAppAbout(pid) })
 		case appmenu.ActionCloseWindow:
-			s.closeWindow(e.Action.Bus)
+			s.closeWindow(windowID)
 		case appmenu.ActionQuitApp:
-			for _, w := range s.snap.Windows {
-				if w.PID == pid {
-					s.closeWindow(w.ID)
-				}
+			for _, id := range quitIDs {
+				s.closeWindow(id)
 			}
 		case appmenu.ActionFullscreen:
 			if a, ok := s.comp.(compositor.Arranger); ok {
-				s.compositorDo("fullscreen window", func(ctx context.Context) error { return a.ToggleFullscreen(ctx, e.Action.Bus) })
+				s.compositorDo("fullscreen window", func(ctx context.Context) error { return a.ToggleFullscreen(ctx, windowID) })
 			}
 		case appmenu.ActionFloat:
 			if f, ok := s.comp.(compositor.Floater); ok {
-				s.compositorDo("toggle floating", func(ctx context.Context) error { return f.ToggleFloating(ctx, e.Action.Bus) })
+				s.compositorDo("toggle floating", func(ctx context.Context) error { return f.ToggleFloating(ctx, windowID) })
 			}
 		case appmenu.ActionCenter:
 			if a, ok := s.comp.(compositor.Arranger); ok {
-				s.compositorDo("center window", func(ctx context.Context) error { return a.CenterWindow(ctx, e.Action.Bus) })
+				s.compositorDo("center window", func(ctx context.Context) error { return a.CenterWindow(ctx, windowID) })
 			}
 		case appmenu.ActionCopyTitle:
-			if w, ok := s.appWindowOf(pid); ok {
-				gtkx.Post(func() {
-					if c := gdk.DisplayGetDefault().GetClipboard(); c != nil {
-						c.SetText(w.Title)
-					}
-				})
-			}
+			gtkx.Post(func() {
+				if c := gdk.DisplayGetDefault().GetClipboard(); c != nil {
+					c.SetText(title)
+				}
+			})
 		case appmenu.ActionCopyClass:
-			if w, ok := s.appWindowOf(pid); ok {
-				gtkx.Post(func() {
-					if c := gdk.DisplayGetDefault().GetClipboard(); c != nil {
-						c.SetText(w.AppID)
-					}
-				})
-			}
+			gtkx.Post(func() {
+				if c := gdk.DisplayGetDefault().GetClipboard(); c != nil {
+					c.SetText(appID)
+				}
+			})
 		case appmenu.ActionKeys:
 			k, ok := s.comp.(compositor.Keystroker)
 			if !ok || !s.caps.Has(compositor.CapKeystrokes) {
@@ -297,7 +334,7 @@ func (s *shellUI) activatePackedEntry(pid int, e appmenu.Entry) {
 				break
 			}
 			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-			err = k.SendKey(ctx, e.Action.Bus, e.Action.Mods, e.Action.Key)
+			err = k.SendKey(ctx, windowID, e.Action.Mods, e.Action.Key)
 			cancel()
 		case appmenu.ActionKeySequence:
 			k, ok := s.comp.(compositor.Keystroker)
@@ -310,7 +347,7 @@ func (s *shellUI) activatePackedEntry(pid int, e appmenu.Entry) {
 				if i > 0 {
 					time.Sleep(60 * time.Millisecond)
 				}
-				if err = k.SendKey(ctx, e.Action.Bus, step.Mods, step.Key); err != nil {
+				if err = k.SendKey(ctx, windowID, step.Mods, step.Key); err != nil {
 					break
 				}
 			}

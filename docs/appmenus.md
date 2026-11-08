@@ -72,7 +72,7 @@ places, and a higher-priority source replaces a pack with the same
    `/usr/local/share` then `/usr/share`; earlier entries in the variable
    have higher priority.
 3. `$XDG_DATA_HOME/inua/menus` (`~/.local/share/inua/menus`).
-   `make install` copies the shipped packs here.
+   The shipped packs are embedded in the shell binary; `make install` does not copy pack TOML files here, but a user or package can place `.toml` files in this directory.
 4. When the shell is run with `-ui-dir`, `share/inua/menus` next to that
    directory's parent, so a checkout is used as it is on disk.
 5. `$XDG_CONFIG_HOME/inua/menus` (`~/.config/inua/menus`). This is where
@@ -129,10 +129,7 @@ required. `when` is `fallback` or `replace`; omitted, it is `fallback`.
 own. `replace` is shown even when it has one, which is for a published
 menu that cannot be used.
 
-`skip_a11y` and `never_press` apply whenever the pack matches, including
-when a real menu is also present. `skip_a11y` does not ask the
-accessibility bus. `never_press` still shows a menu that was read, and
-refuses to invoke a section of it. The shipped `code` pack sets
+`skip_a11y` and `never_press` are parsed and preserved on packs. Runtime handling may be limited depending on the menu source and branch integration; the shipped code/firefox/chromium packs carry these flags for their intended behavior, and unsupported combinations should be treated as unverified rather than guaranteed. The shipped `code` pack sets
 `skip_a11y`: VS Code draws its menu itself and the accessibility bus
 only has an overflow item. The shipped `zed` pack also sets `skip_a11y`:
 Zed draws its menu itself and exposes neither an accessible menu nor a
@@ -290,7 +287,7 @@ shell log. Other valid packs continue to load.
 
 A pack worth shipping goes in `share/inua/menus/` under its `id`, with
 no machine-specific paths. The shipped files are embedded in the binary;
-`make install` also copies them to the data directory for development and
+The shipped files are embedded in the shell binary. A package or local development setup can also install them under a data directory for
 packaging workflows. `go test ./internal/appmenu` parses every shipped
 file and checks the schema.
 

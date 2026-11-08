@@ -30,6 +30,7 @@ type appMenuState struct {
 	// window and again when the registrar or a published menu changes.
 	window  string               // the focused window it was found for
 	found   appmenu.Registration // its menu, if any
+	known   bool                 // found is a completed result for window (absent or present)
 	finding uint64               // the newest search
 	stale   bool                 // search again for the same window
 }
@@ -94,6 +95,7 @@ func (s *shellUI) findAppMenu() {
 	}
 	if window != s.appmenu.window {
 		s.appmenu.found = appmenu.Registration{}
+		s.appmenu.known = false
 	}
 	s.appmenu.window = window
 	s.appmenu.stale = false
@@ -102,15 +104,20 @@ func (s *shellUI) findAppMenu() {
 	pid := focusedPID(s.snap)
 	if pid <= 0 {
 		s.appmenu.found = appmenu.Registration{}
+		s.appmenu.known = true
 		return
 	}
 	go func() {
 		reg, _ := s.appmenu.registrar.Focused(pid)
 		gtkx.Post(func() {
-			if s.appmenu.finding != request || s.appmenu.found == reg {
+			if s.appmenu.finding != request {
+				return
+			}
+			if s.appmenu.known && s.appmenu.found == reg {
 				return
 			}
 			s.appmenu.found = reg
+			s.appmenu.known = true
 			s.syncAppMenus()
 		})
 	}()
@@ -148,6 +155,12 @@ func (s *shellUI) syncAppMenu(b *bar) {
 		}
 	}
 	gen := s.appmenu.packs.Generation()
+	packPending := pid > 0 && matched && pack.When != appmenu.PackReplace && (!s.appmenu.known || s.appmenu.window != s.snap.FocusedWindow)
+	if packPending {
+		// Discovery is still running for this window; keep the current bar state
+		// instead of flashing a fallback pack that may be replaced.
+		return
+	}
 	if b.appMenuReg == want && b.appMenuPID == pid && b.appMenuGen == gen {
 		return
 	}
