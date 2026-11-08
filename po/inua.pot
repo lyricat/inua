@@ -14973,11 +14973,11 @@ msgstr ""
 msgid "The passphrases do not match."
 msgstr ""
 
-#: internal/ui/bar.go:499
+#: internal/ui/bar.go:501
 msgid "Workspace %s"
 msgstr ""
 
-#: internal/ui/bar.go:512
+#: internal/ui/bar.go:514
 msgid "WORKSPACE"
 msgstr ""
 

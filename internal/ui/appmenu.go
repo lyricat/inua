@@ -19,6 +19,7 @@ import (
 // first level as buttons, what each opens as a menu read when it opens.
 type appMenuState struct {
 	registrar   *appmenu.Registrar
+	a11y        *appmenu.A11y
 	menu        *gtk.Popover // the open one, borrowed from its button
 	menuRequest uint64       // the newest pending submenu read
 
@@ -126,16 +127,21 @@ func (s *shellUI) syncAppMenu(b *bar) {
 		return
 	}
 	var want appmenu.Registration
+	pid := 0
 	if b.connector() == s.snap.FocusedOutput {
+		pid = focusedPID(s.snap)
 		want = s.focusedAppMenu()
 	}
-	if b.appMenuReg == want {
+	if b.appMenuReg == want && b.appMenuPID == pid {
 		return
 	}
 	s.clearAppMenu(b)
-	b.appMenuReg = want
-	if want != (appmenu.Registration{}) {
+	b.appMenuReg, b.appMenuPID = want, pid
+	switch {
+	case want != (appmenu.Registration{}):
 		s.loadAppMenu(b, true)
+	case pid > 0:
+		s.loadA11yMenu(b, pid)
 	}
 }
 
@@ -146,6 +152,8 @@ func (s *shellUI) clearAppMenu(b *bar) {
 		s.closeAppMenu()
 	}
 	b.appMenuReg = appmenu.Registration{}
+	b.appMenuPID = 0
+	b.appMenuEntries = nil
 	b.appMenuTop = nil
 	gtkx.Clear(&b.appMenu)
 	b.appMenu.SetVisible(false)
@@ -196,17 +204,19 @@ func (s *shellUI) loadAppMenu(b *bar, about bool) {
 // that reads as before is left alone, with the menu open under it.
 func (s *shellUI) renderAppMenu(b *bar, entries []appmenu.Entry) {
 	var top []appMenuTop
-	for _, e := range entries {
+	for i, e := range entries {
 		if e.Separator || e.Label == "" {
 			continue
 		}
-		top = append(top, appMenuTop{id: e.ID, label: e.Label, enabled: e.Enabled, submenu: e.Submenu})
+		top = append(top, appMenuTop{id: int32(i), label: e.Label, enabled: e.Enabled, submenu: e.Submenu || len(e.Children) > 0})
 	}
 	if slices.Equal(top, b.appMenuTop) {
+		b.appMenuEntries = entries
 		return
 	}
 	s.closeAppMenu()
 	b.appMenuTop = top
+	b.appMenuEntries = entries
 	gtkx.Clear(&b.appMenu)
 	for _, t := range top {
 		btn := gtk.NewButton()
@@ -222,7 +232,7 @@ func (s *shellUI) renderAppMenu(b *bar, entries []appmenu.Entry) {
 
 func (s *shellUI) bindAppMenuHandlers() {
 	s.onAppMenuClicked = func(btn gtk.Button) {
-		id, err := strconv.Atoi(btn.GetName())
+		i, err := strconv.Atoi(btn.GetName())
 		if err != nil {
 			return
 		}
@@ -232,18 +242,24 @@ func (s *shellUI) bindAppMenuHandlers() {
 		}
 		for _, b := range s.bars {
 			// The buttons of a bar's menu are its box's children; another
-			// bar's menu may have a button with the same id.
-			if b.appMenu.GoPointer() != parent.GoPointer() {
+			// bar's menu may have a button with the same index.
+			if b.appMenu.GoPointer() != parent.GoPointer() || i < 0 || i >= len(b.appMenuEntries) {
 				continue
 			}
-			i := slices.IndexFunc(b.appMenuTop, func(t appMenuTop) bool { return int(t.id) == id })
-			if i < 0 || b.appMenuReg == (appmenu.Registration{}) {
-				continue
+			entry := b.appMenuEntries[i]
+			submenu := entry.Submenu || len(entry.Children) > 0
+			if b.appMenuReg == (appmenu.Registration{}) {
+				if submenu || appmenu.Fillable(entry) {
+					s.showA11yMenu(b, i, &btn.Widget)
+				} else {
+					s.activateA11yEntry(b.appMenuPID, entry)
+				}
+				return
 			}
-			if b.appMenuTop[i].submenu {
-				s.showAppMenu(b.appMenuReg, int32(id), &btn.Widget)
+			if submenu {
+				s.showAppMenu(b.appMenuReg, entry.ID, &btn.Widget)
 			} else {
-				s.activateAppMenu(b.appMenuReg, int32(id))
+				s.activateAppMenu(b.appMenuReg, entry.ID)
 			}
 			return
 		}
