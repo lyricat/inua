@@ -1,7 +1,7 @@
 ---
 source: pr #88
 branch: factory/FT87-appmenu-toml-packs
-round: 1
+round: 2
 ---
 # feat(appmenu): per-application menus from TOML packs
 
@@ -35,3 +35,12 @@ notes:
 Validation: Codex reviewed all 22 changed files in origin/master...HEAD. make test passed with isolated HOME: 18 Python tests, go vet, and full Go race tests. Additional temporary overlay reproductions confirmed wrong-window routing, empty fallback and the snapshot race. Branch merges cleanly with origin/master (0de61d7987d0241cd69becf00060301a5a86da60). No tracked files changed, commits made, tools installed or dependencies changed by the reviewer.
 Residual risks: No visual UI inspection or real-application key-delivery end-to-end checks. Zed upstream bindings for the documented version could not be verified. The coder could not locate the review-code skill/security reference; complete security checklist coverage of TOML parsing, compositor IPC and action execution is therefore not claimed.
 Decision: stays in review/ pending owner direction; not approved for merge. To request fixes, add an owner note and move to new/.
+
+## factory · plan · 2026-11-09 05:55
+Owner requested: “Can you fix FT87? By using Claude code”. Fix round on the existing branch, addressing all seven review findings. Bind actions to the focused window, capture snapshot data before background work, distinguish pending discovery from absent menus, restore generic fallback, correct kitty keysyms and clarify unsupported flags/install behavior. Add regression tests; no accessibility discovery implementation or unrelated features.
+
+## factory · 2026-11-09 05:55
+Claude Code completed fix round 2 in 26a88e9a, b4452c6f and 07e98b83; pushed head 07e98b83 on factory/FT87-appmenu-toml-packs. All seven prior review findings addressed by implementation or documentation corrections. Added focused-window/stale-action, quit capture, fallback/discovery selection and punctuation regression tests. Pack validation additionally rejects single-character punctuation keys.
+Validation: Claude Code ran make test and make i18n; manager independently reran make test with throwaway HOME/XDG directories successfully (18 Python session tests, go vet and full Go race tests). No protected paths changed; clean worktree. No tools/dependencies installed. No layout files changed.
+Not checked: visual UI behavior, real application key delivery, GTK discovery-completion rerender. Accessibility flags remain intentionally inert and documented as such. Generic menus now appear for any focused window lacking a published menu/usable pack; registration timing requires live verification.
+Remains in review/ for review of the new head; not approved or merged into master.
