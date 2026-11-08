@@ -107,10 +107,30 @@ func (s *shellUI) syncAppMenu(b *bar) {
 	switch {
 	case reg != (appmenu.Registration{}):
 		s.loadAppMenu(b, true)
-	case pid > 0 && matched && (pack.When == appmenu.PackReplace || pack.SkipA11y):
-		s.renderAppMenu(b, s.entriesFromPack(pid, pack))
 	case pid > 0:
-		s.loadA11yMenu(b, pid)
+		if matched && (pack.When == appmenu.PackReplace || pack.SkipA11y) {
+			s.renderAppMenu(b, s.entriesFromPack(pid, pack))
+		} else {
+			s.loadA11yMenu(b, pid)
+		}
+		if matched && pack.ID != "chromium" {
+			break
+		}
+		// Chrome and Chromium publish their menu on a bus name of their own,
+		// and only after the window is up: look off the main thread, so a bar
+		// showing the shortcut pack takes their real menu once it is there.
+		go func() {
+			reg, ok := s.appmenu.registrar.Chromium(pid)
+			if !ok {
+				return
+			}
+			gtkx.Post(func() {
+				if b.appMenuPID == pid && b.appMenuReg == (appmenu.Registration{}) {
+					b.appMenuReg = reg
+					s.loadAppMenu(b, true)
+				}
+			})
+		}()
 	}
 }
 

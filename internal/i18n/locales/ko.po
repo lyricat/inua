@@ -2891,7 +2891,7 @@ msgid "Size"
 msgstr "크기"
 
 #: internal/diskui/details.go:49
-#: internal/ui/appmenu.go:427
+#: internal/ui/appmenu.go:447
 #: internal/ui/settings_menu.go:25
 msgid "File"
 msgid_plural "Files"
@@ -3541,7 +3541,7 @@ msgstr[0] "… 그 외 %d개"
 #: internal/termui/keys.go:295
 #: internal/termui/sessionmenu.go:113
 #: internal/termui/wsmenu.go:129
-#: internal/ui/appmenu.go:471
+#: internal/ui/appmenu.go:491
 #: internal/ui/settings_bench.go:132
 #: internal/ui/settings_menu.go:26
 #: internal/ui/settings_wifi_details.go:62
@@ -8383,7 +8383,7 @@ msgstr "우주 핀볼"
 
 #: internal/hyprconf/keys.go:23
 #: internal/shell/dock.go:312
-#: internal/ui/appmenu.go:297
+#: internal/ui/appmenu.go:317
 #: ui/settings.ui:2428
 msgid "Launcher"
 msgstr "실행기"
@@ -8424,7 +8424,7 @@ msgstr "포커스 온 또는 오프"
 #: internal/term/settings/settings.go:126
 #: internal/term/web/strings.go:96
 #: internal/termui/headmenu.go:110
-#: internal/ui/appmenu.go:296
+#: internal/ui/appmenu.go:316
 #: ui/control.ui:58
 #: ui/settings.ui:30
 msgid "Settings"
@@ -8774,7 +8774,7 @@ msgstr "%s 제거"
 
 #: internal/lightui/clock.go:404
 #: internal/termui/menubar.go:31
-#: internal/ui/appmenu.go:430
+#: internal/ui/appmenu.go:450
 #: ui/pass.ui:252
 msgid "Edit"
 msgstr "편집하다"
@@ -10470,7 +10470,7 @@ msgstr "계정"
 
 #: internal/lightui/tailscale.go:664
 #: internal/shell/commands.go:31
-#: internal/ui/appmenu.go:306
+#: internal/ui/appmenu.go:326
 msgid "Log Out"
 msgstr "로그아웃"
 
@@ -12746,7 +12746,7 @@ msgid "Desktop"
 msgstr "데스크톱"
 
 #: internal/shell/commands.go:27
-#: internal/ui/appmenu.go:301
+#: internal/ui/appmenu.go:321
 msgid "Lock Screen"
 msgstr "화면 잠금"
 
@@ -12765,7 +12765,7 @@ msgstr "일시 중지, 먼저 잠금"
 
 #: internal/shell/commands.go:29
 #: internal/termui/restart.go:44
-#: internal/ui/appmenu.go:314
+#: internal/ui/appmenu.go:334
 #: internal/ui/control.go:541
 #: ui/control.ui:168
 msgid "Restart"
@@ -12780,7 +12780,7 @@ msgid "Press Enter again to restart"
 msgstr "Enter를 다시 누르면 다시 시작합니다"
 
 #: internal/shell/commands.go:30
-#: internal/ui/appmenu.go:315
+#: internal/ui/appmenu.go:335
 msgid "Shut Down"
 msgstr "종료"
 
@@ -12918,7 +12918,7 @@ msgid "Start the shell again"
 msgstr "셸을 다시 시작합니다."
 
 #: internal/shell/commands.go:46
-#: internal/ui/appmenu.go:428
+#: internal/ui/appmenu.go:448
 msgid "Close Window"
 msgstr "창 닫기"
 
@@ -12933,8 +12933,8 @@ msgid "Toggle Fullscreen"
 msgstr "전체 화면 전환"
 
 #: internal/shell/commands.go:49
-#: internal/ui/appmenu.go:387
-#: internal/ui/appmenu.go:436
+#: internal/ui/appmenu.go:407
+#: internal/ui/appmenu.go:456
 msgid "Center Window"
 msgstr "창 가운데로 이동"
 
@@ -12998,7 +12998,7 @@ msgid "Find apps, windows and answers"
 msgstr "앱, 창 및 답변 찾기"
 
 #: internal/shell/dock.go:313
-#: internal/ui/appmenu.go:298
+#: internal/ui/appmenu.go:318
 #: internal/ui/screenshot.go:1144
 #: ui/settings.ui:2388
 msgid "Screenshot"
@@ -13173,14 +13173,14 @@ msgid "Performance"
 msgstr "성능"
 
 #: internal/shell/power.go:24
-#: internal/ui/appmenu.go:313
+#: internal/ui/appmenu.go:333
 #: internal/ui/control.go:539
 #: ui/control.ui:120
 msgid "Suspend"
 msgstr "절전"
 
 #: internal/shell/power.go:26
-#: internal/ui/appmenu.go:309
+#: internal/ui/appmenu.go:329
 #: internal/ui/control.go:540
 #: ui/control.ui:144
 msgid "Hibernate"
@@ -14053,13 +14053,13 @@ msgid "Choose the workspace's folder"
 msgstr "작업 공간의 폴더 선택"
 
 #: internal/termui/menubar.go:32
-#: internal/ui/appmenu.go:433
+#: internal/ui/appmenu.go:453
 #: internal/ui/settings_menu.go:28
 msgid "View"
 msgstr "보기"
 
 #: internal/termui/menubar.go:34
-#: internal/ui/appmenu.go:437
+#: internal/ui/appmenu.go:457
 msgid "Help"
 msgstr "도움말"
 
@@ -14455,39 +14455,39 @@ msgstr "알람 · %02d:%02d"
 msgid "Snooze"
 msgstr "다시 알림"
 
-#: internal/ui/appmenu.go:299
+#: internal/ui/appmenu.go:319
 #: ui/bar.ui:238
 msgid "Control Center"
 msgstr "제어 센터"
 
-#: internal/ui/appmenu.go:385
-#: internal/ui/appmenu.go:434
+#: internal/ui/appmenu.go:405
+#: internal/ui/appmenu.go:454
 msgid "Fullscreen"
 msgstr "전체 화면"
 
-#: internal/ui/appmenu.go:386
-#: internal/ui/appmenu.go:435
+#: internal/ui/appmenu.go:406
+#: internal/ui/appmenu.go:455
 msgid "Float"
 msgstr "떠 있는 창"
 
-#: internal/ui/appmenu.go:429
+#: internal/ui/appmenu.go:449
 msgid "Quit %s"
 msgstr ""
 
-#: internal/ui/appmenu.go:431
+#: internal/ui/appmenu.go:451
 msgid "Copy Window Title"
 msgstr "창 제목 복사"
 
-#: internal/ui/appmenu.go:432
+#: internal/ui/appmenu.go:452
 msgid "Copy Window Class"
 msgstr "창 클래스 복사"
 
-#: internal/ui/appmenu.go:438
-#: internal/ui/appmenu.go:457
+#: internal/ui/appmenu.go:458
+#: internal/ui/appmenu.go:477
 msgid "About %s"
 msgstr ""
 
-#: internal/ui/appmenu.go:469
+#: internal/ui/appmenu.go:489
 msgid "Process %d"
 msgstr ""
 

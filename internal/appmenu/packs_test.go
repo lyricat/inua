@@ -59,6 +59,21 @@ func TestShippedPacks(t *testing.T) {
 	if _, ok := packs.Match("zeditor", ""); !ok {
 		t.Fatal("zeditor did not match the zed pack")
 	}
+	chrome, ok := packs.Match("chromium-browser", "")
+	if !ok || !chrome.SkipA11y {
+		t.Fatalf("chromium pack = %+v, ok %v", chrome, ok)
+	}
+	for i, label := range []string{"File", "Edit", "View", "History", "Bookmarks", "Profiles", "Tab", "Window", "Help"} {
+		if i >= len(chrome.Sections) || chrome.Sections[i].Label != label {
+			t.Fatalf("chromium section %d = %+v, want %q", i, chrome.Sections, label)
+		}
+	}
+	if _, ok := packs.Match("google-chrome", ""); !ok {
+		t.Fatal("google-chrome did not match the chromium pack")
+	}
+	if _, ok := packs.Match("org.chromium.Chromium", ""); !ok {
+		t.Fatal("org.chromium.Chromium did not match the chromium pack")
+	}
 	if _, ok := packs.Match("org.wezfurlong.wezterm", "wezterm"); ok {
 		t.Fatal("an unmatched application got a pack")
 	}

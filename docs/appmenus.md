@@ -139,7 +139,9 @@ Zed draws its menu itself and exposes neither an accessible menu nor a
 D-Bus menu. Its pack mirrors Zed's Linux menus in full; commands that
 have a default shortcut or a key sequence are sent, and the rest are
 shown disabled. A custom keymap or Vim mode can change which keys those
-commands need. The shipped `firefox`
+commands need. Chromium and Chrome are read from the menu they publish on
+XWayland; running natively on Wayland they publish none, so the shipped
+`chromium` pack sends their keyboard shortcuts. The shipped `firefox`
 pack sets `never_press`: pressing a section of Firefox's accessibility
 menu ends Firefox. A pack with no sections and no `include` adds no
 items; the generic menu is shown, and the flags still apply.
