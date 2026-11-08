@@ -68,8 +68,10 @@ func (s *shellUI) syncAppMenu(b *bar) {
 		return
 	}
 	var want appmenu.Registration
+	pid := 0
 	if b.connector() == s.snap.FocusedOutput {
-		want, _ = s.appmenu.registrar.Focused(focusedPID(s.snap))
+		pid = focusedPID(s.snap)
+		want, _ = s.appmenu.registrar.Focused(pid)
 	}
 	if b.appMenuReg == want {
 		return
@@ -78,7 +80,27 @@ func (s *shellUI) syncAppMenu(b *bar) {
 	b.appMenuReg = want
 	if want != (appmenu.Registration{}) {
 		s.loadAppMenu(b, true)
+		return
 	}
+	if pid <= 0 {
+		return
+	}
+	// Chrome and Chromium publish their menu on a bus name of their own,
+	// and only after the window is up: look off the main thread, so a bar
+	// that has nothing yet gets their menu once it is there.
+	go func() {
+		reg, ok := s.appmenu.registrar.Chromium(pid)
+		if !ok {
+			return
+		}
+		gtkx.Post(func() {
+			if b.appMenuReg != (appmenu.Registration{}) || b.connector() != s.snap.FocusedOutput || focusedPID(s.snap) != pid {
+				return
+			}
+			b.appMenuReg = reg
+			s.loadAppMenu(b, true)
+		})
+	}()
 }
 
 // clearAppMenu takes a bar's menu away, with the open menu if it is this
