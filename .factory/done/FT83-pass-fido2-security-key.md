@@ -75,3 +75,6 @@ notes:
 Codex reviewed all 26 changed files in origin/master...HEAD (base e9b45a9), including the security review reference. The previous four P2 findings were verified fixed. No P0/P1 findings: moved to ready/ under the factory threshold; the new P2 above remains for owner consideration before shipping.
 Validation: make test ultimately passed (exit 0): Python 18/18, go vet, 115 Go packages passed. First attempt failed because test isolation restricted an AppArmor query; after correcting the isolation mount, the test passed. Tests used a throwaway HOME. Regression probes covered five malformed nonce lengths and seven translated protocol values; GTK handler verification was static. git diff --check passed; no source changes or commits. No installs reported.
 Not checked: UI not visually inspected; real hardware PIN/touch flow not tested. No linked GitHub issue or PR in the item.
+
+## factory · 2026-11-08 14:58
+Merged into master at the owner's request in chat ("merge to master, commit"): merge commit 798b5d83, before FT84 (cca5859c), which is built on it. After the merge: make generate and make i18n changed nothing; make test passed. No linked issues or PRs to close. The 14:24 review's P2 (re-enrolling the same security key picks the oldest enrolment) is not fixed in this merge.
