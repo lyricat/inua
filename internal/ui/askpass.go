@@ -260,6 +260,9 @@ func (s *shellUI) openPass(d *passDialog) {
 			title = i18n.T("Unlock OpenPGP Key")
 		}
 	}
+	if q.Mode == pinentry.GetPin && q.SecurityKey != "" {
+		title = i18n.T("Unlock with Security Key")
+	}
 	d.title.SetText(title)
 	s.fillPassDetails(d)
 	d.mask.ConnectClicked(&s.onPassMask)
@@ -301,7 +304,8 @@ func (s *shellUI) openPass(d *passDialog) {
 	cancel.SetLabel(labelOr(q.Cancel, i18n.T("Cancel")))
 	cancel.SetVisible(q.Mode != pinentry.Message)
 	notok.SetLabel(q.NotOK)
-	notok.SetVisible(q.Mode == pinentry.Confirm && q.NotOK != "")
+	// A security key's PIN can give way to the passphrase.
+	notok.SetVisible(q.NotOK != "" && (q.Mode == pinentry.Confirm || q.Mode == pinentry.GetPin && q.SecurityKey != ""))
 	if q.Mode == pinentry.Approve {
 		s.approveButtons(d, &ok, &cancel, &notok)
 	}
@@ -693,6 +697,9 @@ func (s *shellUI) showPassDetails(d *passDialog, m shell.PassMask, hide bool) {
 		if q.Repeat != "" { // a new passphrase: what to do
 			desc, _, _ = strings.Cut(q.Desc, "\n")
 		}
+	}
+	if q.Mode == pinentry.GetPin && q.SecurityKey != "" {
+		desc = i18n.Tf("Type the PIN of %s, then touch it when it blinks.", q.SecurityKey)
 	}
 	if hide {
 		desc = pinentry.MaskPrivate(desc, masked)

@@ -1059,4 +1059,124 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
       </object>
     </child>
   </object>
+  <object class="GtkWindow" id="seckey_dialog">
+    <style>
+      <class name="app"/>
+      <class name="settings"/>
+      <class name="pass"/>
+      <class name="pass-dialog"/>
+    </style>
+    <property name="modal">true</property>
+    <property name="resizable">false</property>
+    <property name="default-width">520</property>
+    <property name="hide-on-close">true</property>
+    <child>
+      <object class="GtkBox">
+        <style>
+          <class name="page"/>
+        </style>
+        <property name="orientation">1</property>
+        <property name="spacing">12</property>
+        <child>
+          <object class="GtkLabel">
+            <style>
+              <class name="pass-title"/>
+            </style>
+            <property name="label" translatable="yes">Security keys</property>
+            <property name="xalign">0</property>
+            <property name="wrap">true</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <style>
+              <class name="sub"/>
+            </style>
+            <property name="label" translatable="yes">Unlock the store's key with a FIDO2 security key, such as a YubiKey: its PIN and a touch in place of the passphrase. The passphrase keeps working.</property>
+            <property name="xalign">0</property>
+            <property name="wrap">true</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="seckey_keys">
+            <property name="orientation">1</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="seckey_form">
+            <property name="orientation">1</property>
+            <property name="spacing">8</property>
+            <property name="visible">false</property>
+            <child>
+              <object class="GtkLabel" id="seckey_form_title">
+                <style>
+                  <class name="sub"/>
+                </style>
+                <property name="xalign">0</property>
+                <property name="wrap">true</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkPasswordEntry" id="seckey_passphrase">
+                <property name="placeholder-text" translatable="yes">The key's passphrase</property>
+                <property name="show-peek-icon">true</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkPasswordEntry" id="seckey_pin">
+                <property name="placeholder-text" translatable="yes">The security key's PIN</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="seckey_status">
+            <style>
+              <class name="sub"/>
+            </style>
+            <property name="xalign">0</property>
+            <property name="wrap">true</property>
+            <property name="visible">false</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="seckey_error">
+            <style>
+              <class name="pass-error"/>
+            </style>
+            <property name="xalign">0</property>
+            <property name="wrap">true</property>
+            <property name="visible">false</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="spacing">8</property>
+            <property name="halign">2</property>
+            <property name="margin-top">4</property>
+            <child>
+              <object class="GtkButton" id="seckey_close">
+                <style>
+                  <class name="outlined"/>
+                </style>
+                <property name="name">seckey-close</property>
+                <property name="label" translatable="yes">Close</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="seckey_add">
+                <style>
+                  <class name="suggested-action"/>
+                </style>
+                <property name="name">seckey-add</property>
+                <property name="label" translatable="yes">Add</property>
+                <property name="visible">false</property>
+                <property name="sensitive">false</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
 </interface>
