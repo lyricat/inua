@@ -7,7 +7,7 @@ msgstr ""
 
 #: cmd/inua-assistant/answer.go:36
 #: cmd/inua-assistant/transcribe.go:40
-#: internal/assistantui/assistantui.go:366
+#: internal/assistantui/assistantui.go:361
 #: internal/diskui/details.go:332
 #: internal/mailui/assist.go:43
 msgid "The assistant is turned off. Turn it on in Settings → AI."
@@ -173,7 +173,7 @@ msgstr "日"
 #: internal/apps/clock/clock.go:69
 #: internal/i18n/time.go:12
 #: internal/lightui/weather.go:360
-#: internal/mailui/window.go:1438
+#: internal/mailui/window.go:1444
 #: internal/shell/notify.go:28
 #: internal/ui/agenda.go:371
 #: internal/ui/widgets.go:1045
@@ -297,10 +297,10 @@ msgid "Pair only if %s shows the key %s."
 msgstr "%s にキー %s が表示されている場合のみペアリングしてください。"
 
 #: internal/apps/connect/service.go:251
-#: internal/connectui/window.go:425
-#: internal/connectui/window.go:434
-#: internal/remoteui/window.go:618
-#: internal/remoteui/window.go:813
+#: internal/connectui/window.go:429
+#: internal/connectui/window.go:438
+#: internal/remoteui/window.go:624
+#: internal/remoteui/window.go:819
 #: internal/ui/settings_bluetooth.go:336
 #: internal/ui/settings_bluetooth.go:404
 #: internal/ui/settings_bluetooth.go:410
@@ -309,7 +309,7 @@ msgid "Pair"
 msgstr "ペアリング"
 
 #: internal/apps/connect/service.go:251
-#: internal/connectui/window.go:426
+#: internal/connectui/window.go:430
 msgid "Refuse"
 msgstr "拒否"
 
@@ -328,7 +328,7 @@ msgstr "ペアリング中…"
 
 #: internal/apps/connect/service.go:510
 #: internal/apps/tailscale/status.go:265
-#: internal/remoteui/window.go:331
+#: internal/remoteui/window.go:337
 #: internal/shell/bluetooth.go:52
 msgid "Connected"
 msgstr "接続された"
@@ -338,7 +338,7 @@ msgid "Away"
 msgstr "接続されていません"
 
 #: internal/apps/connect/service.go:514
-#: internal/remoteui/window.go:326
+#: internal/remoteui/window.go:332
 msgid "Not paired"
 msgstr "未ペアリング"
 
@@ -384,9 +384,9 @@ msgstr "%s からのファイル"
 #: internal/term/web/web.go:141
 #: internal/ui/record.go:157
 #: internal/ui/system_ipc.go:241
-#: internal/vmui/window.go:2705
-#: internal/vmui/window.go:2706
-#: internal/vmui/window.go:2717
+#: internal/vmui/window.go:2710
+#: internal/vmui/window.go:2711
+#: internal/vmui/window.go:2722
 #: ui/vm.ui:1738
 #: ui/vm.ui:2115
 #: ui/vm.ui:2846
@@ -1217,7 +1217,7 @@ msgstr "プロジェクトの履歴、ブランチ、stash です。プッシュ
 #: internal/filesui/sidebar.go:50
 #: internal/filesui/tabs.go:97
 #: internal/filesui/window.go:314
-#: internal/mailui/window.go:779
+#: internal/mailui/window.go:785
 msgid "Trash"
 msgstr "ゴミ箱"
 
@@ -1454,7 +1454,7 @@ msgid "Mon Jan 2, 2006, 15:04:05 -0700"
 msgstr ""
 
 #: internal/apps/mail/details.go:49
-#: internal/viewerui/app.go:820
+#: internal/viewerui/app.go:822
 #: ui/mail-compose.ui:161
 msgid "Subject"
 msgstr "件名"
@@ -1513,7 +1513,7 @@ msgid "Not signed in"
 msgstr "サインインしていません"
 
 #: internal/apps/mail/sort.go:32
-#: internal/mailui/window.go:248
+#: internal/mailui/window.go:251
 msgid "REPLY"
 msgstr "要返信"
 
@@ -1722,7 +1722,7 @@ msgid "online"
 msgstr "オンライン"
 
 #: internal/apps/tailscale/status.go:168
-#: internal/mailui/window.go:1797
+#: internal/mailui/window.go:1803
 msgid "just now"
 msgstr "たった今"
 
@@ -1773,12 +1773,12 @@ msgstr "承認待ち"
 #: internal/filesui/remote.go:170
 #: internal/filesui/remotesetup.go:418
 #: internal/lightui/tailscale.go:153
-#: internal/mailui/window.go:656
+#: internal/mailui/window.go:662
 #: internal/shell/bluetooth.go:38
 #: internal/shell/status.go:158
 #: internal/shell/wifi.go:38
 #: internal/shell/wifi.go:49
-#: internal/vmui/window.go:2761
+#: internal/vmui/window.go:2766
 msgid "Connecting…"
 msgstr "接続中…"
 
@@ -1833,7 +1833,7 @@ msgstr "雷雨"
 
 #: internal/apps/weather/weather.go:214
 #: internal/lightui/sysmon.go:1083
-#: internal/vmui/window.go:2335
+#: internal/vmui/window.go:2340
 msgid "Unknown"
 msgstr "不明"
 
@@ -1886,7 +1886,7 @@ msgid "Enter your password to run this command as administrator:\n\n%s"
 msgstr "このコマンドを管理者として実行するには、パスワードを入力してください:\n\n%s"
 
 #: internal/asker/asker.go:212
-#: internal/assistantui/assistantui.go:734
+#: internal/assistantui/assistantui.go:729
 #: internal/ui/askpass.go:441
 #: internal/ui/portal_ask.go:60
 #: internal/ui/portal_ask.go:80
@@ -1925,6 +1925,7 @@ msgid "Running a script with the tools"
 msgstr "ツールを使うスクリプトを実行中"
 
 #: internal/assistantui/assistantui.go:38
+#: internal/mailui/menubar.go:49
 #: ui/assistant.ui:35
 #: ui/settings.ui:2819
 #: config/apps/io.github.lyricat.Inua.Assistant.desktop:3
@@ -1951,17 +1952,18 @@ msgstr "私のテールネット上のどのデバイスがオンラインです
 msgid "What is the weather this afternoon in Kyoto?"
 msgstr "今日の京都の午後の天気はどうですか?"
 
-#: internal/assistantui/assistantui.go:170
+#: internal/assistantui/assistantui.go:171
 msgid "%s answers from here"
 msgstr "%s の回答はこちらから"
 
-#: internal/assistantui/assistantui.go:427
+#: internal/assistantui/assistantui.go:422
 msgid "Could not start the Console endpoint: %s"
 msgstr "コンソールエンドポイントを開始できませんでした: %s"
 
-#: internal/assistantui/assistantui.go:528
+#: internal/assistantui/assistantui.go:523
 #: internal/lightui/clock.go:498
 #: internal/ui/alarms.go:108
+#: internal/vmui/menubar.go:43
 #: ui/disk.ui:179
 #: ui/mail-compose.ui:375
 #: ui/vm.ui:697
@@ -1974,77 +1976,77 @@ msgstr "コンソールエンドポイントを開始できませんでした: %
 msgid "Stop"
 msgstr "停止"
 
-#: internal/assistantui/assistantui.go:535
+#: internal/assistantui/assistantui.go:530
 msgid "✕ Not done: %s"
 msgstr "✕ 未完了: %s"
 
-#: internal/assistantui/assistantui.go:546
+#: internal/assistantui/assistantui.go:541
 #: internal/mailui/settings.go:497
 #: ui/assistant.ui:202
 msgid "Ask"
 msgstr "尋ねる"
 
-#: internal/assistantui/assistantui.go:551
+#: internal/assistantui/assistantui.go:546
 msgid "Stopped."
 msgstr "停止した。"
 
-#: internal/assistantui/assistantui.go:554
+#: internal/assistantui/assistantui.go:549
 msgid "Something went wrong: %s"
 msgstr "問題が発生しました: %s"
 
-#: internal/assistantui/assistantui.go:557
+#: internal/assistantui/assistantui.go:552
 msgid "(no answer)"
 msgstr "（答えなし）"
 
-#: internal/assistantui/assistantui.go:568
+#: internal/assistantui/assistantui.go:563
 msgid "Voice input records with pw-cat, from PipeWire (pipewire-bin on Debian and Ubuntu, pipewire on Arch, pipewire-utils on Fedora)"
 msgstr "音声入力は PipeWire の pw-cat で録音します（Debian と Ubuntu では pipewire-bin、Arch では pipewire、Fedora では pipewire-utils）"
 
-#: internal/assistantui/assistantui.go:570
+#: internal/assistantui/assistantui.go:565
 #: internal/ui/settings_ai.go:730
 #: ui/assistant.ui:193
 msgid "Voice input"
 msgstr "音声入力"
 
-#: internal/assistantui/assistantui.go:578
-#: internal/assistantui/assistantui.go:642
+#: internal/assistantui/assistantui.go:573
+#: internal/assistantui/assistantui.go:637
 msgid "Cannot record: %s"
 msgstr "録音できません: %s"
 
-#: internal/assistantui/assistantui.go:592
+#: internal/assistantui/assistantui.go:587
 msgid "Stop and transcribe"
 msgstr "停止して文字にする"
 
-#: internal/assistantui/assistantui.go:644
+#: internal/assistantui/assistantui.go:639
 msgid "The assistant is not set up."
 msgstr "アシスタントが設定されていません。"
 
-#: internal/assistantui/assistantui.go:648
+#: internal/assistantui/assistantui.go:643
 msgid "Cannot transcribe: %s"
 msgstr "文字にできません: %s"
 
-#: internal/assistantui/assistantui.go:660
+#: internal/assistantui/assistantui.go:655
 msgid "No speech was heard."
 msgstr "声が聞こえませんでした。"
 
-#: internal/assistantui/assistantui.go:734
+#: internal/assistantui/assistantui.go:729
 msgid "Don't"
 msgstr "許可しない"
 
-#: internal/assistantui/assistantui.go:755
+#: internal/assistantui/assistantui.go:750
 msgid "Not allowed"
 msgstr "許可されません"
 
-#: internal/assistantui/assistantui.go:757
+#: internal/assistantui/assistantui.go:752
 msgid "Canceled"
 msgstr "キャンセルされました"
 
-#: internal/assistantui/assistantui.go:759
+#: internal/assistantui/assistantui.go:754
 #: ui/settings.ui:4662
 msgid "Allowed"
 msgstr "許可"
 
-#: internal/assistantui/assistantui.go:793
+#: internal/assistantui/assistantui.go:788
 #: internal/diskui/details.go:581
 #: internal/filesui/window.go:824
 #: internal/gamesui/lobbyhost.go:169
@@ -2058,7 +2060,7 @@ msgstr "許可"
 #: internal/termui/prefsweb.go:92
 #: internal/ui/askpass.go:232
 #: internal/ui/passwords.go:647
-#: internal/vmui/window.go:896
+#: internal/vmui/window.go:901
 #: ui/disk.ui:697
 #: ui/gpg.ui:764
 #: ui/gpg.ui:1010
@@ -2067,13 +2069,83 @@ msgstr "許可"
 msgid "Copy"
 msgstr "コピー"
 
-#: internal/assistantui/assistantui.go:801
+#: internal/assistantui/assistantui.go:796
 msgid "Clipboard is unavailable."
 msgstr "クリップボードを利用できません。"
 
-#: internal/assistantui/assistantui.go:872
+#: internal/assistantui/assistantui.go:867
 msgid "TRY"
 msgstr "トライ"
+
+#: internal/assistantui/assistantui.go:912
+#: internal/connectui/menubar.go:26
+#: internal/diskui/details.go:49
+#: internal/gamesui/menubar.go:36
+#: internal/mailui/menubar.go:39
+#: internal/remoteui/menubar.go:37
+#: internal/ui/appmenu.go:447
+#: internal/ui/settings_menu.go:25
+#: internal/vmui/menubar.go:36
+msgid "File"
+msgid_plural "Files"
+msgstr[0] "ファイル"
+
+#: internal/assistantui/assistantui.go:913
+#: ui/assistant.ui:73
+msgid "New conversation"
+msgstr "新しい会話"
+
+#: internal/assistantui/assistantui.go:914
+#: internal/connectui/menubar.go:27
+#: internal/gamesui/menubar.go:37
+#: internal/mailui/menubar.go:42
+#: internal/remoteui/menubar.go:38
+#: internal/shell/commands.go:46
+#: internal/ui/appmenu.go:448
+#: internal/vmui/menubar.go:39
+msgid "Close Window"
+msgstr "ウィンドウを閉じる"
+
+#: internal/assistantui/assistantui.go:916
+#: internal/lightui/clock.go:404
+#: internal/termui/menubar.go:31
+#: internal/ui/appmenu.go:450
+#: ui/pass.ui:252
+msgid "Edit"
+msgstr "編集"
+
+#: internal/assistantui/assistantui.go:917
+msgid "Clear conversation"
+msgstr ""
+
+#: internal/assistantui/assistantui.go:919
+#: internal/connectui/menubar.go:29
+#: internal/gamesui/menubar.go:33
+#: internal/mailui/menubar.go:44
+#: internal/remoteui/menubar.go:46
+#: internal/termui/menubar.go:32
+#: internal/ui/appmenu.go:453
+#: internal/ui/settings_menu.go:28
+#: internal/vmui/menubar.go:48
+msgid "View"
+msgstr "表示"
+
+#: internal/assistantui/assistantui.go:920
+#: ui/assistant.ui:63
+msgid "AI settings"
+msgstr "AI設定"
+
+#: internal/connectui/menubar.go:30
+#: internal/mailui/menubar.go:45
+#: internal/remoteui/menubar.go:47
+#: internal/vmui/menubar.go:49
+#: ui/settings.ui:4897
+msgid "Refresh"
+msgstr "更新"
+
+#: internal/connectui/menubar.go:31
+msgid "Add Device by Address…"
+msgstr ""
 
 #: internal/connectui/reply.go:39
 msgid "Answer %s"
@@ -2085,40 +2157,42 @@ msgstr "%s に返信"
 msgid "Not sent: %v"
 msgstr "送信されませんでした: %v"
 
-#: internal/connectui/window.go:235
+#: internal/connectui/window.go:239
 msgid "None found yet: open KDE Connect on your phone."
 msgstr "まだ見つかりません。スマートフォンで KDE Connect を開いてください。"
 
-#: internal/connectui/window.go:355
+#: internal/connectui/window.go:359
 msgid "Mobile Link did not start: %v"
 msgstr "モバイルリンクを起動できませんでした: %v"
 
-#: internal/connectui/window.go:381
+#: internal/connectui/window.go:385
 msgid "Visible to your devices"
 msgstr "デバイスから見えます"
 
-#: internal/connectui/window.go:382
+#: internal/connectui/window.go:386
 msgid "Devices running KDE Connect, GSConnect or Valent find this computer on this network and the tailnet, and pair with it."
 msgstr "KDE Connect、GSConnect、Valent を使うデバイスは、このネットワークと tailnet でこのコンピューターを見つけてペアリングできます。"
 
-#: internal/connectui/window.go:384
-#: internal/remoteui/window.go:269
+#: internal/connectui/window.go:388
+#: internal/remoteui/window.go:275
 #: internal/termui/headmenu.go:156
 #: internal/termui/prefsweb.go:166
 #: internal/ui/voice_models.go:232
-#: internal/vmui/window.go:1822
-#: internal/vmui/window.go:1927
-#: internal/vmui/window.go:1946
-#: internal/vmui/window.go:1948
-#: internal/vmui/window.go:1964
+#: internal/vmui/menubar.go:72
+#: internal/vmui/menubar.go:101
+#: internal/vmui/window.go:1827
+#: internal/vmui/window.go:1932
+#: internal/vmui/window.go:1951
+#: internal/vmui/window.go:1953
+#: internal/vmui/window.go:1969
 msgid "Starting…"
 msgstr "起動中…"
 
-#: internal/connectui/window.go:385
+#: internal/connectui/window.go:389
 msgid "The service is starting."
 msgstr "サービスを起動しています。"
 
-#: internal/connectui/window.go:387
+#: internal/connectui/window.go:391
 #: internal/lightui/video.go:531
 #: internal/mailui/settings.go:530
 #: internal/shell/notify.go:44
@@ -2137,23 +2211,23 @@ msgstr "サービスを起動しています。"
 msgid "Off"
 msgstr "オフ"
 
-#: internal/connectui/window.go:388
+#: internal/connectui/window.go:392
 msgid "Share the clipboard and files with your phone, see its notifications and battery here, and use it as a touchpad or a remote."
 msgstr "スマートフォンとクリップボードやファイルを共有し、通知やバッテリーをここで確認し、タッチパッドやリモコンとして使えます。"
 
-#: internal/connectui/window.go:395
+#: internal/connectui/window.go:399
 msgid "A device lists them and runs one with a tap, here, as you."
 msgstr "デバイスに一覧が表示され、タップするとこのコンピューターであなたとして実行されます。"
 
-#: internal/connectui/window.go:403
+#: internal/connectui/window.go:407
 msgid "The device is gone."
 msgstr "デバイスが見つからなくなりました。"
 
-#: internal/connectui/window.go:427
+#: internal/connectui/window.go:431
 msgid "%s asks to pair. Pair only if it shows this key:"
 msgstr "%s がペアリングを求めています。このキーが表示されている場合のみペアリングしてください:"
 
-#: internal/connectui/window.go:429
+#: internal/connectui/window.go:433
 #: internal/diskui/dialog.go:92
 #: internal/filesui/appchooser.go:107
 #: internal/filesui/archive.go:49
@@ -2173,7 +2247,7 @@ msgstr "%s がペアリングを求めています。このキーが表示され
 #: internal/gamesui/fortune_host.go:334
 #: internal/lightui/workshop.go:983
 #: internal/mailui/dialog.go:92
-#: internal/remoteui/window.go:811
+#: internal/remoteui/window.go:817
 #: internal/term/web/strings.go:29
 #: internal/termui/keys.go:293
 #: internal/termui/keys.go:421
@@ -2207,39 +2281,39 @@ msgstr "%s がペアリングを求めています。このキーが表示され
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: internal/connectui/window.go:430
+#: internal/connectui/window.go:434
 msgid "Accept on %s if it shows this key:"
 msgstr "%s にこのキーが表示されていれば、そちらで承認してください:"
 
-#: internal/connectui/window.go:432
-#: internal/remoteui/window.go:661
+#: internal/connectui/window.go:436
+#: internal/remoteui/window.go:667
 msgid "Unpair"
 msgstr "ペアリング解除"
 
-#: internal/connectui/window.go:435
+#: internal/connectui/window.go:439
 msgid "Not paired: pair to share with it."
 msgstr "未ペアリング: 共有するにはペアリングしてください。"
 
-#: internal/connectui/window.go:439
+#: internal/connectui/window.go:443
 msgid "it connects again when it is on this network or the tailnet"
 msgstr "このネットワークか tailnet に入ると再接続します"
 
-#: internal/connectui/window.go:475
+#: internal/connectui/window.go:479
 msgid "Send files"
 msgstr "ファイルを送信"
 
-#: internal/connectui/window.go:517
+#: internal/connectui/window.go:521
 msgid "Asked %s to connect."
 msgstr "%s に接続を依頼しました。"
 
-#: internal/connectui/window.go:547
+#: internal/connectui/window.go:551
 #: internal/filesui/archive.go:76
 #: internal/filesui/remotesetup.go:226
 #: internal/filesui/renamemany.go:168
 #: internal/lightui/sysmon.go:968
 #: internal/lightui/tailscale.go:632
 #: internal/ui/settings_ai.go:486
-#: internal/viewerui/app.go:806
+#: internal/viewerui/app.go:808
 #: ui/connect.ui:291
 #: ui/files.ui:233
 #: ui/gpg.ui:1445
@@ -2248,11 +2322,11 @@ msgstr "%s に接続を依頼しました。"
 msgid "Name"
 msgstr "名前"
 
-#: internal/connectui/window.go:552
+#: internal/connectui/window.go:556
 msgid "What it runs: systemctl suspend"
 msgstr "実行するもの: systemctl suspend"
 
-#: internal/connectui/window.go:560
+#: internal/connectui/window.go:564
 #: internal/lightui/pass.go:1153
 #: internal/lightui/workshop_manager.go:115
 #: internal/mailui/actions.go:469
@@ -2260,7 +2334,8 @@ msgstr "実行するもの: systemctl suspend"
 #: internal/ui/settings_ai.go:583
 #: internal/ui/settings_keyring.go:645
 #: internal/ui/settings_keyring.go:679
-#: internal/vmui/window.go:1976
+#: internal/vmui/menubar.go:136
+#: internal/vmui/window.go:1981
 #: ui/stocks.ui:292
 msgid "Remove"
 msgstr "削除"
@@ -2884,25 +2959,18 @@ msgstr "ディスク使用量"
 #: internal/diskui/details.go:47
 #: internal/term/web/strings.go:98
 #: internal/termui/prefs.go:146
-#: internal/viewerui/app.go:810
-#: internal/viewerui/app.go:828
-#: internal/viewerui/app.go:843
+#: internal/viewerui/app.go:812
+#: internal/viewerui/app.go:830
+#: internal/viewerui/app.go:845
 msgid "Size"
 msgstr "サイズ"
-
-#: internal/diskui/details.go:49
-#: internal/ui/appmenu.go:447
-#: internal/ui/settings_menu.go:25
-msgid "File"
-msgid_plural "Files"
-msgstr[0] "ファイル"
 
 #: internal/diskui/details.go:53
 msgid "2006-01-02"
 msgstr "2006年1月2日"
 
 #: internal/diskui/details.go:53
-#: internal/viewerui/app.go:824
+#: internal/viewerui/app.go:826
 msgid "Changed"
 msgstr "変更"
 
@@ -2914,7 +2982,7 @@ msgstr "一部を読めませんでした。"
 #: internal/ui/lock.go:279
 #: internal/ui/polkit.go:294
 #: internal/ui/settings_about.go:191
-#: internal/vmui/window.go:2071
+#: internal/vmui/window.go:2076
 msgid "Checking…"
 msgstr "チェック中…"
 
@@ -2947,8 +3015,8 @@ msgid "What it is"
 msgstr "これは何か"
 
 #: internal/diskui/details.go:246
-#: internal/remoteui/window.go:786
-#: internal/vmui/window.go:2093
+#: internal/remoteui/window.go:792
+#: internal/vmui/window.go:2098
 msgid "Asking…"
 msgstr "問い合わせ中…"
 
@@ -2980,11 +3048,13 @@ msgid "Cannot open it in Files: %v"
 msgstr "ファイルで開けません:%v"
 
 #: internal/diskui/details.go:458
-#: internal/vmui/window.go:1991
-#: internal/vmui/window.go:1997
-#: internal/vmui/window.go:2003
-#: internal/vmui/window.go:2016
-#: internal/vmui/window.go:2028
+#: internal/vmui/menubar.go:116
+#: internal/vmui/menubar.go:131
+#: internal/vmui/window.go:1996
+#: internal/vmui/window.go:2002
+#: internal/vmui/window.go:2008
+#: internal/vmui/window.go:2021
+#: internal/vmui/window.go:2033
 msgid "Deleting…"
 msgstr "削除中…"
 
@@ -3025,10 +3095,11 @@ msgstr "%s を完全に削除しますか?"
 #: internal/lightui/pass.go:903
 #: internal/term/web/strings.go:43
 #: internal/ui/clipboard.go:504
-#: internal/vmui/window.go:1996
-#: internal/vmui/window.go:2002
-#: internal/vmui/window.go:2015
-#: internal/vmui/window.go:2027
+#: internal/vmui/menubar.go:115
+#: internal/vmui/window.go:2001
+#: internal/vmui/window.go:2007
+#: internal/vmui/window.go:2020
+#: internal/vmui/window.go:2032
 #: ui/clock.ui:231
 #: ui/gpg.ui:1675
 #: ui/pass.ui:263
@@ -3064,9 +3135,9 @@ msgstr "%s で実行します。"
 #: internal/mailui/welcome.go:480
 #: internal/term/web/strings.go:35
 #: internal/ui/askpass.go:571
-#: internal/viewerui/app.go:561
+#: internal/viewerui/app.go:563
 #: internal/viewerui/edit.go:292
-#: internal/vmui/window.go:893
+#: internal/vmui/window.go:898
 msgid "Copied"
 msgstr "コピーしました"
 
@@ -3098,7 +3169,7 @@ msgstr "完了:ここでは空きは増えませんでした。"
 msgid "%s removed %s: %s freed."
 msgstr "%s が %s を削除しました:%s 空きました。"
 
-#: internal/diskui/window.go:327
+#: internal/diskui/window.go:333
 #: internal/filesui/cards.go:682
 #: internal/filesui/sidebar.go:36
 #: internal/filesui/tabs.go:99
@@ -3106,7 +3177,7 @@ msgstr "%s が %s を削除しました:%s 空きました。"
 msgid "Home"
 msgstr "ホーム"
 
-#: internal/diskui/window.go:329
+#: internal/diskui/window.go:335
 #: internal/lightui/sysmon.go:969
 #: internal/lightui/tailscale.go:527
 #: internal/lightui/tailscale.go:568
@@ -3116,117 +3187,117 @@ msgstr "ホーム"
 msgid "System"
 msgstr "システム"
 
-#: internal/diskui/window.go:357
-#: internal/diskui/window.go:553
+#: internal/diskui/window.go:363
+#: internal/diskui/window.go:559
 msgid "Scanning…"
 msgstr "スキャン中…"
 
-#: internal/diskui/window.go:361
+#: internal/diskui/window.go:367
 #: internal/filesui/remote.go:266
 #: internal/filesui/sidebar.go:65
 msgid "%s free of %s"
 msgstr "%s 空き（全 %s）"
 
-#: internal/diskui/window.go:375
+#: internal/diskui/window.go:381
 msgid "%s · %s safe"
 msgstr "%s · 安全 %s"
 
-#: internal/diskui/window.go:445
+#: internal/diskui/window.go:451
 msgid "Choose a folder to scan"
 msgstr "スキャンするフォルダを選択"
 
-#: internal/diskui/window.go:518
+#: internal/diskui/window.go:524
 msgid "Scan again"
 msgstr "再スキャン"
 
-#: internal/diskui/window.go:522
+#: internal/diskui/window.go:528
 #: ui/disk.ui:190
 msgid "Scan"
 msgstr "スキャン"
 
-#: internal/diskui/window.go:529
+#: internal/diskui/window.go:535
 msgid "your home"
 msgstr "ホーム"
 
-#: internal/diskui/window.go:531
+#: internal/diskui/window.go:537
 msgid "Scan to see what fills %s."
 msgstr "スキャンして、%s を何が占めているか見る。"
 
-#: internal/diskui/window.go:548
+#: internal/diskui/window.go:554
 msgid "%s used of %s"
 msgstr "%[2]s 中 %[1]s 使用"
 
-#: internal/diskui/window.go:557
+#: internal/diskui/window.go:563
 msgid "%s in %s files · %s"
 msgstr "%s · %s 個のファイル · %s"
 
-#: internal/diskui/window.go:557
+#: internal/diskui/window.go:563
 #: internal/filesui/pane.go:1552
 #: internal/ui/widgets.go:1049
 msgid "15:04"
 msgstr "15:04"
 
-#: internal/diskui/window.go:575
+#: internal/diskui/window.go:581
 msgid "%s files · %s · %.0f s"
 msgstr "%s 個のファイル · %s · %.0f 秒"
 
-#: internal/diskui/window.go:609
+#: internal/diskui/window.go:615
 msgid "Cannot scan %s: %v"
 msgstr "%s をスキャンできません:%v"
 
-#: internal/diskui/window.go:724
+#: internal/diskui/window.go:730
 msgid "%d smaller file"
 msgid_plural "%d smaller files"
 msgstr[0] "小さなファイル %d 個"
 
-#: internal/diskui/window.go:757
+#: internal/diskui/window.go:763
 msgid "counted"
 msgstr "集計済み"
 
-#: internal/diskui/window.go:782
+#: internal/diskui/window.go:788
 msgid "free"
 msgstr "空き"
 
-#: internal/diskui/window.go:784
+#: internal/diskui/window.go:790
 msgid "Not scanned"
 msgstr "未スキャン"
 
-#: internal/diskui/window.go:797
-#: internal/vmui/window.go:1512
+#: internal/diskui/window.go:803
+#: internal/vmui/window.go:1517
 msgid "Other"
 msgstr "その他"
 
-#: internal/diskui/window.go:860
+#: internal/diskui/window.go:866
 msgid "%d more item"
 msgid_plural "%d more items"
 msgstr[0] "ほか %d 項目"
 
-#: internal/diskui/window.go:871
+#: internal/diskui/window.go:877
 #: internal/filesui/pane.go:818
 msgid "This folder is empty."
 msgstr "このフォルダーは空です。"
 
-#: internal/diskui/window.go:927
+#: internal/diskui/window.go:933
 msgid "Dependencies, builds and toolchains."
 msgstr "依存関係、ビルド、ツールチェーン。"
 
-#: internal/diskui/window.go:928
+#: internal/diskui/window.go:934
 msgid "Agents' sessions, worktrees and AI models."
 msgstr "エージェントのセッション、ワークツリー、AI モデル。"
 
-#: internal/diskui/window.go:929
+#: internal/diskui/window.go:935
 msgid "Caches, downloaded packages and the trash."
 msgstr "キャッシュ、ダウンロードしたパッケージ、ゴミ箱。"
 
-#: internal/diskui/window.go:953
+#: internal/diskui/window.go:959
 msgid "Scan a place first."
 msgstr "まず場所をスキャンしてください。"
 
-#: internal/diskui/window.go:955
+#: internal/diskui/window.go:961
 msgid "Nothing found."
 msgstr "見つかりませんでした。"
 
-#: internal/diskui/window.go:957
+#: internal/diskui/window.go:963
 msgid "%s in %d folder · %s safe to delete"
 msgid_plural "%s in %d folders · %s safe to delete"
 msgstr[0] "%s · %d 個のフォルダ · 安全に削除可能 %s"
@@ -3295,7 +3366,7 @@ msgstr "アーカイブは「%s」に作られます。"
 
 #: internal/filesui/archive.go:79
 #: internal/mailui/picker.go:142
-#: internal/mailui/window.go:775
+#: internal/mailui/window.go:781
 msgid "Archive"
 msgstr "アーカイブ"
 
@@ -3743,6 +3814,7 @@ msgid "Two panes, the other pane"
 msgstr "2 ペイン、もう一方のペイン"
 
 #: internal/filesui/cards.go:709
+#: internal/mailui/menubar.go:48
 msgid "Sidebar"
 msgstr "サイドバー"
 
@@ -3842,7 +3914,7 @@ msgstr "フォルダー"
 
 #: internal/filesui/details.go:51
 #: internal/lightui/sysmon.go:793
-#: internal/mailui/window.go:248
+#: internal/mailui/window.go:251
 #: internal/term/web/strings.go:52
 msgid "FILES"
 msgstr "ファイル"
@@ -3852,8 +3924,9 @@ msgid "SIZE OF THE FILES"
 msgstr "ファイルのサイズ"
 
 #: internal/filesui/details.go:55
+#: internal/mailui/menubar.go:46
 #: internal/mailui/picker.go:137
-#: internal/mailui/window.go:1766
+#: internal/mailui/window.go:1772
 msgid "Search"
 msgstr "検索"
 
@@ -3947,7 +4020,7 @@ msgstr "壊れたリンク"
 #: internal/filesui/remotesetup.go:75
 #: internal/filesui/remotesetup.go:83
 #: internal/lightui/sysmon.go:794
-#: internal/viewerui/app.go:807
+#: internal/viewerui/app.go:809
 #: ui/vm.ui:322
 msgid "Folder"
 msgstr "フォルダー"
@@ -4117,11 +4190,12 @@ msgstr "%s に接続しています…"
 #: internal/filesui/remote.go:160
 #: internal/filesui/remotesetup.go:132
 #: internal/gamesui/lobbywin.go:58
+#: internal/remoteui/menubar.go:41
 #: internal/ui/settings_bluetooth.go:340
 #: internal/ui/settings_wifi.go:414
 #: internal/ui/settings_wifi.go:439
-#: internal/vmui/window.go:2707
-#: internal/vmui/window.go:2707
+#: internal/vmui/window.go:2712
+#: internal/vmui/window.go:2712
 #: ui/remote.ui:645
 #: ui/vm.ui:2801
 msgid "Connect"
@@ -4930,6 +5004,7 @@ msgstr "ゲームを始める"
 #: internal/gamesui/checkers.go:230
 #: internal/gamesui/fortune.go:333
 #: internal/gamesui/fortune.go:1180
+#: internal/gamesui/menubar.go:31
 #: ui/game.ui:76
 msgid "New game"
 msgstr "新しいゲーム"
@@ -5053,6 +5128,7 @@ msgstr "カードショップ"
 #: internal/lightui/clock.go:493
 #: internal/termui/guide.go:161
 #: internal/ui/voice_page.go:186
+#: internal/vmui/menubar.go:42
 #: ui/clock.ui:339
 #: ui/clock.ui:406
 #: ui/vm.ui:686
@@ -7947,6 +8023,7 @@ msgid "Others join from a browser"
 msgstr "ブラウザーから参加"
 
 #: internal/gamesui/fortune_menu.go:25
+#: internal/gamesui/menubar.go:30
 msgid "Game"
 msgstr "ゲーム"
 
@@ -8143,6 +8220,12 @@ msgstr ""
 #: internal/gamesui/lobbywin.go:330
 msgid "The browser could not be opened: %v"
 msgstr ""
+
+#: internal/gamesui/menubar.go:34
+#: internal/ui/appmenu.go:405
+#: internal/ui/appmenu.go:454
+msgid "Fullscreen"
+msgstr "全画面"
 
 #: internal/gamesui/mines.go:37
 msgid "Small · 9 × 9"
@@ -8418,6 +8501,7 @@ msgid "Focus on or off"
 msgstr "フォーカスのオンまたはオフ"
 
 #: internal/hyprconf/keys.go:31
+#: internal/mailui/menubar.go:55
 #: internal/mailui/picker.go:155
 #: internal/shell/commands.go:33
 #: internal/shell/dock.go:311
@@ -8772,13 +8856,6 @@ msgstr "そんな名前の都市はない"
 msgid "Remove %s"
 msgstr "%sを削除します"
 
-#: internal/lightui/clock.go:404
-#: internal/termui/menubar.go:31
-#: internal/ui/appmenu.go:450
-#: ui/pass.ui:252
-msgid "Edit"
-msgstr "編集"
-
 #: internal/lightui/clock.go:494
 #: ui/music.ui:332
 msgid "Reset"
@@ -8810,7 +8887,7 @@ msgstr "は %s で終了します"
 #: internal/lightui/clock.go:583
 #: internal/lightui/sysmon.go:871
 #: internal/lightui/sysmon.go:871
-#: internal/vmui/window.go:2465
+#: internal/vmui/window.go:2470
 msgid "Resume"
 msgstr "再開"
 
@@ -9430,8 +9507,8 @@ msgstr "メモ"
 #: internal/mailui/formatted.go:184
 #: internal/term/desktop/desktop_linux.go:43
 #: internal/ui/passwords.go:644
-#: internal/vmui/window.go:2709
-#: internal/vmui/window.go:2710
+#: internal/vmui/window.go:2714
+#: internal/vmui/window.go:2715
 #: ui/pass.ui:520
 msgid "Show"
 msgstr "表示"
@@ -9499,7 +9576,7 @@ msgstr "pass がファイルを削除します。git のストアでは履歴に
 #: internal/lightui/pass.go:968
 #: internal/mailui/reader.go:549
 #: internal/mailui/reader.go:794
-#: internal/viewerui/app.go:805
+#: internal/viewerui/app.go:807
 msgid "FILE"
 msgstr "ファイル"
 
@@ -9558,7 +9635,7 @@ msgstr "Flatpak: %s"
 #: internal/ui/settings_keyring.go:469
 #: internal/ui/settings_keyring.go:477
 #: internal/ui/settings_keyring.go:629
-#: internal/vmui/window.go:1591
+#: internal/vmui/window.go:1596
 msgid "%s · %s"
 msgstr "%s · %s"
 
@@ -9664,7 +9741,7 @@ msgid "Search for a symbol to add it."
 msgstr "シンボルを検索して追加する。"
 
 #: internal/lightui/stocks.go:284
-#: internal/mailui/window.go:994
+#: internal/mailui/window.go:1000
 msgid "Loading %s…"
 msgstr "%sをロード中..."
 
@@ -10686,6 +10763,7 @@ msgstr "使うもの: %s"
 
 #: internal/lightui/workshop_manager.go:64
 #: internal/mailui/settings.go:435
+#: internal/vmui/menubar.go:46
 #: ui/vm.ui:2583
 msgid "Remove…"
 msgstr "削除…"
@@ -10769,6 +10847,7 @@ msgstr "インストール済みの %s を置き換えますか？"
 
 #: internal/lightui/workshop_manager.go:154
 #: internal/ui/voice_page.go:185
+#: internal/vmui/menubar.go:45
 #: ui/vm.ui:1283
 msgid "Install"
 msgstr "インストール"
@@ -10798,7 +10877,7 @@ msgid "Moved to Spam"
 msgstr "迷惑メールへ移動しました"
 
 #: internal/mailui/actions.go:216
-#: internal/viewerui/app.go:505
+#: internal/viewerui/app.go:507
 msgid "Moved to Trash"
 msgstr "ゴミ箱に移動しました"
 
@@ -10858,7 +10937,7 @@ msgid "Mail forgets it on this computer: its sign-in and the mail it kept. The m
 msgstr "このコンピューター上のサインイン情報と保存したメールを消します。サーバー上のメールは残ります。"
 
 #: internal/mailui/actions.go:518
-#: internal/mailui/window.go:592
+#: internal/mailui/window.go:598
 msgid "Unsent"
 msgstr "未送信"
 
@@ -10866,7 +10945,7 @@ msgstr "未送信"
 #: internal/mailui/details.go:190
 #: internal/mailui/people.go:301
 #: internal/mailui/reader.go:232
-#: internal/mailui/window.go:1337
+#: internal/mailui/window.go:1343
 msgid "(no subject)"
 msgstr "（件名なし）"
 
@@ -10898,7 +10977,7 @@ msgid_plural "%s and %d more messages"
 msgstr[0] "%s ほか %d 件"
 
 #: internal/mailui/app.go:23
-#: internal/mailui/window.go:1727
+#: internal/mailui/window.go:1733
 #: ui/mail.ui:14
 #: config/apps/io.github.lyricat.Inua.Mail.desktop:3
 msgid "Mail"
@@ -10938,7 +11017,7 @@ msgid "The assistant gave no search."
 msgstr "アシスタントから検索がありませんでした。"
 
 #: internal/mailui/assist.go:262
-#: internal/mailui/window.go:1564
+#: internal/mailui/window.go:1570
 msgid "Searched for %s"
 msgstr "%s を検索しました"
 
@@ -11031,7 +11110,7 @@ msgstr "%s に翻訳"
 #: internal/mailui/details.go:98
 #: internal/mailui/formatted.go:192
 #: internal/mailui/settings.go:382
-#: internal/mailui/window.go:1756
+#: internal/mailui/window.go:1762
 msgid "Not saved: %v"
 msgstr "保存されていません：%v"
 
@@ -11173,6 +11252,24 @@ msgstr "疑わしく見えるメッセージでは、ウェブ上の画像を自
 #: internal/mailui/formatted.go:186
 msgid "Always from this sender"
 msgstr "この送信者からは常に"
+
+#: internal/mailui/menubar.go:40
+msgid "New Message"
+msgstr ""
+
+#: internal/mailui/menubar.go:51
+msgid "Mark All Read"
+msgstr ""
+
+#: internal/mailui/menubar.go:53
+#: internal/termui/menubar.go:34
+#: internal/ui/appmenu.go:457
+msgid "Help"
+msgstr "ヘルプ"
+
+#: internal/mailui/menubar.go:54
+msgid "Keyboard Shortcuts"
+msgstr ""
 
 #: internal/mailui/panel.go:75
 msgid "Open a conversation: AI sums it up, suggests replies and writes them, and judges a message that looks suspicious."
@@ -11386,7 +11483,7 @@ msgid "Forward (F)"
 msgstr "転送 (F)"
 
 #: internal/mailui/reader.go:320
-#: internal/mailui/window.go:1253
+#: internal/mailui/window.go:1259
 msgid "Archive (E)"
 msgstr "アーカイブ (E)"
 
@@ -11403,17 +11500,17 @@ msgid "Move to a folder (V)"
 msgstr "フォルダへ移動 (V)"
 
 #: internal/mailui/reader.go:327
-#: internal/mailui/window.go:1382
+#: internal/mailui/window.go:1388
 msgid "Star (S)"
 msgstr "スターを付ける (S)"
 
 #: internal/mailui/reader.go:330
-#: internal/mailui/window.go:1379
+#: internal/mailui/window.go:1385
 msgid "Unstar (S)"
 msgstr "スターを外す (S)"
 
 #: internal/mailui/reader.go:332
-#: internal/mailui/window.go:1389
+#: internal/mailui/window.go:1395
 msgid "Mark as unread (U)"
 msgstr "未読にする (U)"
 
@@ -11472,7 +11569,7 @@ msgid "Fold"
 msgstr ""
 
 #: internal/mailui/reader.go:670
-#: internal/mailui/window.go:1331
+#: internal/mailui/window.go:1337
 msgid "me"
 msgstr "自分"
 
@@ -11742,7 +11839,7 @@ msgstr "一覧の各会話"
 #: internal/mailui/settings.go:486
 #: internal/mailui/settings.go:486
 #: internal/mailui/settings.go:486
-#: internal/viewerui/app.go:745
+#: internal/viewerui/app.go:747
 msgid "%d line"
 msgid_plural "%d lines"
 msgstr[0] "%d 行"
@@ -12060,7 +12157,7 @@ msgid "Enter signs in · Esc goes back"
 msgstr "Enter でサインイン · Esc で戻る"
 
 #: internal/mailui/welcome.go:600
-#: internal/mailui/window.go:648
+#: internal/mailui/window.go:654
 msgid "Sign in"
 msgstr "サインイン"
 
@@ -12140,251 +12237,251 @@ msgstr "独自の OAuth クライアント…"
 msgid "Hide your own OAuth client"
 msgstr "独自の OAuth クライアントを隠す"
 
-#: internal/mailui/window.go:248
+#: internal/mailui/window.go:251
 msgid "ALL"
 msgstr "すべて"
 
-#: internal/mailui/window.go:248
+#: internal/mailui/window.go:251
 msgid "UNREAD"
 msgstr "未読"
 
-#: internal/mailui/window.go:252
+#: internal/mailui/window.go:255
 msgid "Every conversation"
 msgstr "すべての会話"
 
-#: internal/mailui/window.go:252
+#: internal/mailui/window.go:255
 msgid "With messages not read"
 msgstr "未読のメッセージがある"
 
-#: internal/mailui/window.go:253
-#: internal/mailui/window.go:1374
+#: internal/mailui/window.go:256
+#: internal/mailui/window.go:1380
 msgid "With files attached"
 msgstr "ファイルが添付されている"
 
-#: internal/mailui/window.go:253
+#: internal/mailui/window.go:256
 msgid "Waiting for your reply"
 msgstr "あなたの返信待ち"
 
-#: internal/mailui/window.go:263
+#: internal/mailui/window.go:266
 msgid "MARK READ"
 msgstr "すべて既読"
 
-#: internal/mailui/window.go:266
+#: internal/mailui/window.go:269
 msgid "Mark every conversation here as read"
 msgstr "ここの会話をすべて既読にする"
 
-#: internal/mailui/window.go:270
+#: internal/mailui/window.go:273
 msgid "EMPTY"
 msgstr ""
 
-#: internal/mailui/window.go:273
+#: internal/mailui/window.go:276
 msgid "Permanently delete every message here"
 msgstr ""
 
-#: internal/mailui/window.go:481
+#: internal/mailui/window.go:484
 msgid "Signed out"
 msgstr "サインアウト済み"
 
-#: internal/mailui/window.go:483
+#: internal/mailui/window.go:486
 msgid "No client ID"
 msgstr ""
 
-#: internal/mailui/window.go:500
+#: internal/mailui/window.go:503
 msgid "Offline: server not found"
 msgstr "{'es': 'Sin conexión: no se encuentra el servidor', 'fr': 'Hors ligne : serveur introuvable', 'ja': 'オフライン：サーバーが見つかりません', 'ko': '오프라인: 서버를 찾을 수 없음', 'zh_CN': '离线：找不到服务器', 'zh_TW': '離線：找不到伺服器'}"
 
-#: internal/mailui/window.go:502
+#: internal/mailui/window.go:505
 msgid "Offline: connection refused"
 msgstr "{'es': 'Sin conexión: conexión rechazada', 'fr': 'Hors ligne : connexion refusée', 'ja': 'オフライン：接続が拒否されました', 'ko': '오프라인: 연결이 거부됨', 'zh_CN': '离线：连接被拒绝', 'zh_TW': '離線：連線被拒絕'}"
 
-#: internal/mailui/window.go:504
+#: internal/mailui/window.go:507
 msgid "Offline: no network"
 msgstr "{'es': 'Sin conexión: no hay red', 'fr': 'Hors ligne : pas de réseau', 'ja': 'オフライン：ネットワークがありません', 'ko': '오프라인: 네트워크 없음', 'zh_CN': '离线：没有网络', 'zh_TW': '離線：沒有網路'}"
 
-#: internal/mailui/window.go:506
+#: internal/mailui/window.go:509
 msgid "Offline: certificate not trusted"
 msgstr "{'es': 'Sin conexión: certificado no fiable', 'fr': 'Hors ligne : certificat non reconnu', 'ja': 'オフライン：証明書を信頼できません', 'ko': '오프라인: 신뢰할 수 없는 인증서', 'zh_CN': '离线：证书不受信任', 'zh_TW': '離線：憑證不受信任'}"
 
-#: internal/mailui/window.go:508
+#: internal/mailui/window.go:511
 msgid "Offline: no answer from the server"
 msgstr "{'es': 'Sin conexión: el servidor no responde', 'fr': 'Hors ligne : le serveur ne répond pas', 'ja': 'オフライン：サーバーが応答しません', 'ko': '오프라인: 서버가 응답하지 않음', 'zh_CN': '离线：服务器无响应', 'zh_TW': '離線：伺服器無回應'}"
 
-#: internal/mailui/window.go:510
+#: internal/mailui/window.go:513
 msgid "Offline: connection dropped"
 msgstr "{'es': 'Sin conexión: se cortó la conexión', 'fr': 'Hors ligne : connexion interrompue', 'ja': 'オフライン：接続が切れました', 'ko': '오프라인: 연결이 끊김', 'zh_CN': '离线：连接已断开', 'zh_TW': '離線：連線已中斷'}"
 
-#: internal/mailui/window.go:512
+#: internal/mailui/window.go:515
 #: internal/shell/status.go:77
 msgid "Offline"
 msgstr "オフライン"
 
-#: internal/mailui/window.go:571
-#: internal/mailui/window.go:1702
+#: internal/mailui/window.go:577
+#: internal/mailui/window.go:1708
 msgid "No account yet"
 msgstr "アカウントはまだありません"
 
-#: internal/mailui/window.go:586
+#: internal/mailui/window.go:592
 msgid "All inboxes"
 msgstr "すべての受信トレイ"
 
-#: internal/mailui/window.go:587
+#: internal/mailui/window.go:593
 msgid "Needs reply"
 msgstr "返信が必要"
 
-#: internal/mailui/window.go:588
+#: internal/mailui/window.go:594
 msgid "Starred"
 msgstr "スター付き"
 
-#: internal/mailui/window.go:590
+#: internal/mailui/window.go:596
 msgid "Newsletters"
 msgstr ""
 
-#: internal/mailui/window.go:596
+#: internal/mailui/window.go:602
 msgid "Contacts"
 msgstr ""
 
-#: internal/mailui/window.go:605
+#: internal/mailui/window.go:611
 msgid "This account's settings"
 msgstr "このアカウントの設定"
 
-#: internal/mailui/window.go:683
+#: internal/mailui/window.go:689
 msgid "%d more folder"
 msgid_plural "%d more folders"
 msgstr[0] "ほかに %d フォルダー"
 
-#: internal/mailui/window.go:685
+#: internal/mailui/window.go:691
 msgid "Fewer folders"
 msgstr "フォルダを減らす"
 
-#: internal/mailui/window.go:769
+#: internal/mailui/window.go:775
 msgid "Inbox"
 msgstr "受信トレイ"
 
-#: internal/mailui/window.go:771
+#: internal/mailui/window.go:777
 msgid "Drafts"
 msgstr "下書き"
 
-#: internal/mailui/window.go:773
+#: internal/mailui/window.go:779
 msgid "Sent"
 msgstr "送信済み"
 
-#: internal/mailui/window.go:777
+#: internal/mailui/window.go:783
 msgid "Spam"
 msgstr "迷惑メール"
 
-#: internal/mailui/window.go:816
+#: internal/mailui/window.go:822
 msgid "Search contacts"
 msgstr ""
 
-#: internal/mailui/window.go:818
-#: internal/mailui/window.go:1764
+#: internal/mailui/window.go:824
+#: internal/mailui/window.go:1770
 #: ui/mail.ui:148
 msgid "Search, or ask in a sentence"
 msgstr "検索、または文章で尋ねる"
 
-#: internal/mailui/window.go:1036
+#: internal/mailui/window.go:1042
 msgid "your mail"
 msgstr "メール"
 
-#: internal/mailui/window.go:1049
+#: internal/mailui/window.go:1055
 msgid "Nothing found"
 msgstr "見つかりません"
 
-#: internal/mailui/window.go:1051
+#: internal/mailui/window.go:1057
 msgid "Fetching your mail…"
 msgstr "メールを取得しています…"
 
-#: internal/mailui/window.go:1053
+#: internal/mailui/window.go:1059
 msgid "Nothing waits for your reply"
 msgstr "返信待ちのものはありません"
 
-#: internal/mailui/window.go:1055
+#: internal/mailui/window.go:1061
 msgid "No starred conversation"
 msgstr "スター付きの会話はありません"
 
-#: internal/mailui/window.go:1057
+#: internal/mailui/window.go:1063
 msgid "No newsletter"
 msgstr ""
 
-#: internal/mailui/window.go:1059
+#: internal/mailui/window.go:1065
 msgid "All read"
 msgstr "すべて既読"
 
-#: internal/mailui/window.go:1061
+#: internal/mailui/window.go:1067
 msgid "Inbox empty. Nothing waits for you."
 msgstr "受信トレイは空です。待っているものはありません。"
 
-#: internal/mailui/window.go:1063
+#: internal/mailui/window.go:1069
 msgid "No mail here"
 msgstr "メールはありません"
 
-#: internal/mailui/window.go:1128
+#: internal/mailui/window.go:1134
 msgid "Could not load older mail: %v"
 msgstr "古いメールを読み込めません：%v"
 
-#: internal/mailui/window.go:1254
+#: internal/mailui/window.go:1260
 msgid "Delete (D)"
 msgstr "削除 (D)"
 
-#: internal/mailui/window.go:1278
+#: internal/mailui/window.go:1284
 msgid "SUSPICIOUS"
 msgstr "疑わしい"
 
-#: internal/mailui/window.go:1346
+#: internal/mailui/window.go:1352
 msgid "EMPTY PREVIEW"
 msgstr ""
 
-#: internal/mailui/window.go:1386
+#: internal/mailui/window.go:1392
 msgid "Mark as read"
 msgstr "既読にする"
 
-#: internal/mailui/window.go:1440
+#: internal/mailui/window.go:1446
 #: internal/shell/notify.go:30
 msgid "Jan 2"
 msgstr "1月2日"
 
-#: internal/mailui/window.go:1498
+#: internal/mailui/window.go:1504
 msgid "Press Enter to ask the assistant to search for this."
 msgstr "Enter でアシスタントにこの内容の検索を頼みます。"
 
-#: internal/mailui/window.go:1543
+#: internal/mailui/window.go:1549
 msgid "Searching the server…"
 msgstr "サーバーを検索しています…"
 
-#: internal/mailui/window.go:1567
+#: internal/mailui/window.go:1573
 msgid "The server's search failed: %s"
 msgstr "サーバーの検索に失敗しました：%s"
 
-#: internal/mailui/window.go:1699
+#: internal/mailui/window.go:1705
 msgid "Up to date"
 msgstr "最新です"
 
-#: internal/mailui/window.go:1704
+#: internal/mailui/window.go:1710
 msgid "Checking for mail…"
 msgstr "メールを確認しています…"
 
-#: internal/mailui/window.go:1708
+#: internal/mailui/window.go:1714
 msgid "Offline: trying again soon"
 msgstr "オフライン：まもなく再試行します"
 
-#: internal/mailui/window.go:1710
+#: internal/mailui/window.go:1716
 msgid "%d account cannot connect"
 msgid_plural "%d accounts cannot connect"
 msgstr[0] "%d 件のアカウントに接続できません"
 
-#: internal/mailui/window.go:1712
+#: internal/mailui/window.go:1718
 msgid "Checked %s"
 msgstr "%sに確認"
 
-#: internal/mailui/window.go:1717
+#: internal/mailui/window.go:1723
 msgid "Last checked at %s"
 msgstr "最終確認 %s"
 
-#: internal/mailui/window.go:1725
+#: internal/mailui/window.go:1731
 msgid "Mail · %d unread"
 msgstr "メール · 未読 %d"
 
-#: internal/mailui/window.go:1800
+#: internal/mailui/window.go:1806
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d 分前"
@@ -12395,6 +12492,22 @@ msgstr[0] "%d 分前"
 #: config/apps/io.github.lyricat.Inua.Remote.desktop:3
 msgid "Remote Desktop"
 msgstr "リモートデスクトップ"
+
+#: internal/remoteui/menubar.go:40
+msgid "Session"
+msgstr ""
+
+#: internal/remoteui/menubar.go:42
+msgid "End Remote Session"
+msgstr ""
+
+#: internal/remoteui/menubar.go:44
+msgid "This Computer"
+msgstr ""
+
+#: internal/remoteui/menubar.go:48
+msgid "Find Machines"
+msgstr ""
 
 #: internal/remoteui/stream.go:126
 msgid "%s — Remote Desktop"
@@ -12412,194 +12525,194 @@ msgstr "%s がセッションを終了しました。"
 msgid "%s cannot show its screen: no monitor is connected, or its desktop session is not running. A computer without a monitor can share a virtual screen (Remote Desktop, Sharing)."
 msgstr "%s は画面を表示できません: モニターが接続されていないか、デスクトップセッションが動いていません。モニターのないコンピューターは仮想画面を共有できます（リモートデスクトップ、共有）。"
 
-#: internal/remoteui/window.go:134
+#: internal/remoteui/window.go:135
 msgid "This computer has no identity to pair with: %v"
 msgstr "このコンピューターにはペアリング用の ID がありません：%v"
 
-#: internal/remoteui/window.go:173
+#: internal/remoteui/window.go:174
 #: internal/shell/card.go:80
 #: ui/settings.ui:5647
 #: ui/settings.ui:5928
 msgid "This computer"
 msgstr "このコンピュータ"
 
-#: internal/remoteui/window.go:264
+#: internal/remoteui/window.go:270
 msgid "Not sharing"
 msgstr ""
 
-#: internal/remoteui/window.go:267
+#: internal/remoteui/window.go:273
 msgid "Sharing its desktop"
 msgstr ""
 
-#: internal/remoteui/window.go:328
+#: internal/remoteui/window.go:334
 msgid "Paired"
 msgstr "ペアリング済み"
 
-#: internal/remoteui/window.go:340
+#: internal/remoteui/window.go:346
 msgid "Found on this network"
 msgstr "このネットワークで見つかりました"
 
-#: internal/remoteui/window.go:342
+#: internal/remoteui/window.go:348
 msgid "Found on the tailnet"
 msgstr "tailnet で見つかりました"
 
-#: internal/remoteui/window.go:474
+#: internal/remoteui/window.go:480
 msgid "Sharing did not start: %v"
 msgstr "共有を開始できませんでした：%v"
 
-#: internal/remoteui/window.go:510
+#: internal/remoteui/window.go:516
 msgid "The virtual screen did not change: %v"
 msgstr "仮想画面を変更できませんでした: %v"
 
-#: internal/remoteui/window.go:519
+#: internal/remoteui/window.go:525
 msgid "The settings were not saved: %v"
 msgstr "設定を保存できませんでした：%v"
 
-#: internal/remoteui/window.go:556
+#: internal/remoteui/window.go:562
 msgid "Other devices see this computer as %s, on this network and the tailnet. A device pairs once, with a PIN typed here."
 msgstr "ほかのデバイスからは、このネットワークと tailnet でこのコンピューターが %s として見えます。デバイスは一度だけ、ここで PIN を入力してペアリングします。"
 
-#: internal/remoteui/window.go:558
+#: internal/remoteui/window.go:564
 msgid "Sunshine is starting."
 msgstr "Sunshine を起動しています。"
 
-#: internal/remoteui/window.go:560
+#: internal/remoteui/window.go:566
 msgid "Lets your other devices see and control this desktop, with Moonlight or Remote Desktop."
 msgstr "ほかのデバイスから、Moonlight やリモートデスクトップでこのデスクトップを表示・操作できます。"
 
-#: internal/remoteui/window.go:571
+#: internal/remoteui/window.go:577
 msgid "Sharing needs Sunshine, which is not installed."
 msgstr "共有には Sunshine が必要ですが、インストールされていません。"
 
-#: internal/remoteui/window.go:572
+#: internal/remoteui/window.go:578
 msgid "Install the package for your system from github.com/LizardByte/Sunshine/releases (Ubuntu: sudo apt install ./sunshine_…_amd64.deb)."
 msgstr "github.com/LizardByte/Sunshine/releases からお使いのシステム向けのパッケージをインストールしてください（Ubuntu：sudo apt install ./sunshine_…_amd64.deb）。"
 
-#: internal/remoteui/window.go:574
+#: internal/remoteui/window.go:580
 msgid "The other device's keyboard and mouse cannot reach this desktop: /dev/uinput is not yours."
 msgstr "相手のデバイスのキーボードとマウスがこのデスクトップに届きません：/dev/uinput にアクセスできません。"
 
-#: internal/remoteui/window.go:577
+#: internal/remoteui/window.go:583
 msgid "Sharing needs a graphical session to show."
 msgstr "共有するにはグラフィカルセッションが必要です。"
 
-#: internal/remoteui/window.go:602
+#: internal/remoteui/window.go:608
 msgid "A device"
 msgstr "デバイス"
 
-#: internal/remoteui/window.go:606
+#: internal/remoteui/window.go:612
 msgid "at %s: type the PIN it shows"
 msgstr "%s から：表示されている PIN を入力"
 
-#: internal/remoteui/window.go:633
+#: internal/remoteui/window.go:639
 msgid "No device is paired yet."
 msgstr "ペアリング済みのデバイスはまだありません。"
 
-#: internal/remoteui/window.go:638
+#: internal/remoteui/window.go:644
 msgid "The paired devices show while sharing is on."
 msgstr "ペアリング済みのデバイスは共有中に表示されます。"
 
-#: internal/remoteui/window.go:653
+#: internal/remoteui/window.go:659
 msgid "Paired twice, so it cannot connect: unpair each, then pair it again."
 msgstr "二重にペアリングされているため接続できません。それぞれペアリングを解除してから、もう一度ペアリングしてください。"
 
-#: internal/remoteui/window.go:683
+#: internal/remoteui/window.go:689
 msgid "A PIN is four digits."
 msgstr "PIN は4桁の数字です。"
 
-#: internal/remoteui/window.go:695
+#: internal/remoteui/window.go:701
 msgid "That is not the PIN %s shows."
 msgstr "それは %s に表示されている PIN ではありません。"
 
-#: internal/remoteui/window.go:697
+#: internal/remoteui/window.go:703
 msgid "%s was paired here before, as %s, and a device paired twice is refused. Its old pairing is removed: pair again from %s."
 msgstr "%s は %s としてすでにペアリングされていました。二重にペアリングされたデバイスは拒否されます。以前のペアリングを解除したので、%s からもう一度ペアリングしてください。"
 
-#: internal/remoteui/window.go:700
+#: internal/remoteui/window.go:706
 msgid "%s was not paired: %v"
 msgstr "%s をペアリングできませんでした：%v"
 
-#: internal/remoteui/window.go:721
+#: internal/remoteui/window.go:727
 msgid "%s was not unpaired: %v"
 msgstr "%s のペアリングを解除できませんでした：%v"
 
-#: internal/remoteui/window.go:789
+#: internal/remoteui/window.go:795
 msgid "Connected: its desktop is in a window of its own."
 msgstr "接続中：デスクトップは別のウィンドウにあります。"
 
-#: internal/remoteui/window.go:792
+#: internal/remoteui/window.go:798
 msgid "It does not answer: it is off, or not sharing its desktop."
 msgstr "応答がありません：電源が切れているか、デスクトップを共有していません。"
 
-#: internal/remoteui/window.go:794
+#: internal/remoteui/window.go:800
 msgid "It shares with Nvidia's GameStream, which Remote Desktop does not speak."
 msgstr "Nvidia の GameStream で共有しています。リモートデスクトップは対応していません。"
 
-#: internal/remoteui/window.go:796
+#: internal/remoteui/window.go:802
 msgid "It has forgotten this computer: pair again."
 msgstr "このコンピューターを忘れています：もう一度ペアリングしてください。"
 
-#: internal/remoteui/window.go:798
+#: internal/remoteui/window.go:804
 msgid "Not paired: pair once, with a PIN typed on it."
 msgstr "未ペアリング：一度、相手側で PIN を入力してペアリングします。"
 
-#: internal/remoteui/window.go:800
+#: internal/remoteui/window.go:806
 msgid "Paired. Its desktop is being streamed; connecting joins in."
 msgstr "ペアリング済み。デスクトップは配信中で、接続すると参加します。"
 
-#: internal/remoteui/window.go:802
+#: internal/remoteui/window.go:808
 msgid "Paired, and ready."
 msgstr "ペアリング済みで、準備完了です。"
 
-#: internal/remoteui/window.go:840
+#: internal/remoteui/window.go:846
 msgid "On %s, open Remote Desktop → Sharing (or Sunshine's PIN page) and type:"
 msgstr "%s でリモートデスクトップ → 共有（または Sunshine の PIN ページ）を開き、次を入力してください："
 
-#: internal/remoteui/window.go:863
+#: internal/remoteui/window.go:869
 msgid "Paired, but not saved, so not kept after this window: %v"
 msgstr "ペアリングしましたが保存できませんでした。このウィンドウを閉じると失われます：%v"
 
-#: internal/remoteui/window.go:867
+#: internal/remoteui/window.go:873
 msgid "The PIN typed there was not this one. Pair again."
 msgstr "相手側で入力された PIN はこれではありませんでした。もう一度ペアリングしてください。"
 
-#: internal/remoteui/window.go:869
+#: internal/remoteui/window.go:875
 msgid "%s took the PIN, then refused this computer: it had this computer paired already, perhaps under another name, and refuses a computer paired twice. If it shares with inua, it has removed the old pairing: pair again. Otherwise unpair this computer there first."
 msgstr "%s は PIN を受け付けた後、このコンピューターを拒否しました。別の名前などですでにペアリングされており、二重にペアリングされたコンピューターは拒否されます。相手が inua で共有している場合は以前のペアリングが解除済みなので、もう一度ペアリングしてください。そうでない場合は、先に相手側でこのコンピューターのペアリングを解除してください。"
 
-#: internal/remoteui/window.go:872
+#: internal/remoteui/window.go:878
 msgid "Pairing failed: %v"
 msgstr "ペアリングに失敗しました：%v"
 
-#: internal/remoteui/window.go:887
+#: internal/remoteui/window.go:893
 msgid "Its session did not end: %v"
 msgstr "セッションを終了できませんでした：%v"
 
-#: internal/remoteui/window.go:900
+#: internal/remoteui/window.go:906
 msgid "Not forgotten: the list of machines was not saved: %v"
 msgstr "削除されていません。マシンの一覧を保存できませんでした：%v"
 
-#: internal/remoteui/window.go:936
+#: internal/remoteui/window.go:942
 msgid "Nothing shares a desktop at %s: %v"
 msgstr "%s でデスクトップを共有しているものはありません：%v"
 
-#: internal/remoteui/window.go:941
+#: internal/remoteui/window.go:947
 msgid "Added, but not saved, so not kept after this window: %v"
 msgstr "追加しましたが保存できませんでした。このウィンドウを閉じると失われます：%v"
 
-#: internal/remoteui/window.go:1007
+#: internal/remoteui/window.go:1013
 msgid "This computer cannot decode it: choose another."
 msgstr "このコンピューターではデコードできません：別のものを選んでください。"
 
-#: internal/remoteui/window.go:1009
+#: internal/remoteui/window.go:1015
 msgid "Decoded by the processor here: slower than the graphics card."
 msgstr "ここでは CPU でデコードします：グラフィックカードより遅くなります。"
 
-#: internal/remoteui/window.go:1011
+#: internal/remoteui/window.go:1017
 msgid "Decoded by the graphics card here. HEVC and AV1 look better than H.264 at the same bitrate."
 msgstr "ここではグラフィックカードでデコードします。同じビットレートなら HEVC と AV1 は H.264 よりきれいです。"
 
-#: internal/remoteui/window.go:1038
+#: internal/remoteui/window.go:1044
 msgid "The connection ended: %v"
 msgstr "接続が終了しました：%v"
 
@@ -12712,8 +12825,8 @@ msgstr "ディスク"
 
 #: internal/shell/card.go:193
 #: internal/shell/cardterm.go:140
-#: internal/vmui/window.go:2710
-#: internal/vmui/window.go:2714
+#: internal/vmui/window.go:2715
+#: internal/vmui/window.go:2719
 #: ui/screenshot.ui:205
 #: ui/shotdrawer.ui:146
 msgid "Screen"
@@ -12916,11 +13029,6 @@ msgstr "inuaを再起動します"
 #: internal/shell/commands.go:45
 msgid "Start the shell again"
 msgstr "シェルを再度開始する"
-
-#: internal/shell/commands.go:46
-#: internal/ui/appmenu.go:448
-msgid "Close Window"
-msgstr "ウィンドウを閉じる"
 
 #: internal/shell/commands.go:47
 #: internal/shell/launcher_actions.go:54
@@ -13571,7 +13679,7 @@ msgid "Could not upload %s"
 msgstr ""
 
 #: internal/term/web/strings.go:39
-#: internal/vmui/window.go:1108
+#: internal/vmui/window.go:1113
 #: ui/gpg.ui:1591
 #: ui/vm.ui:3299
 msgid "Create"
@@ -13587,7 +13695,7 @@ msgid "DONE"
 msgstr "完了"
 
 #: internal/term/web/strings.go:44
-#: internal/vmui/window.go:2467
+#: internal/vmui/window.go:2472
 msgid "Download"
 msgstr "ダウンロード"
 
@@ -14009,12 +14117,13 @@ msgid "this computer only"
 msgstr "このコンピューターのみ"
 
 #: internal/termui/headmenu.go:158
-#: internal/vmui/window.go:1820
-#: internal/vmui/window.go:1885
-#: internal/vmui/window.go:1966
-#: internal/vmui/window.go:1968
-#: internal/vmui/window.go:1970
-#: internal/vmui/window.go:1972
+#: internal/vmui/menubar.go:88
+#: internal/vmui/window.go:1825
+#: internal/vmui/window.go:1890
+#: internal/vmui/window.go:1971
+#: internal/vmui/window.go:1973
+#: internal/vmui/window.go:1975
+#: internal/vmui/window.go:1977
 msgid "Stopping…"
 msgstr "停止中…"
 
@@ -14051,17 +14160,6 @@ msgstr "応答を待っています: %s。ペインを閉じると終了しま�
 #: internal/termui/keys.go:326
 msgid "Choose the workspace's folder"
 msgstr "ワークスペースのフォルダを選ぶ"
-
-#: internal/termui/menubar.go:32
-#: internal/ui/appmenu.go:453
-#: internal/ui/settings_menu.go:28
-msgid "View"
-msgstr "表示"
-
-#: internal/termui/menubar.go:34
-#: internal/ui/appmenu.go:457
-msgid "Help"
-msgstr "ヘルプ"
 
 #: internal/termui/palette.go:20
 msgid "Focus the pane in that direction"
@@ -14158,7 +14256,7 @@ msgid "The colours programs draw with: the window theme's, or a scheme"
 msgstr "プログラムが描く色：ウィンドウのテーマの色、または配色"
 
 #: internal/termui/prefs.go:132
-#: internal/viewerui/app.go:832
+#: internal/viewerui/app.go:834
 msgid "TEXT"
 msgstr "テキスト"
 
@@ -14459,11 +14557,6 @@ msgstr "スヌーズ"
 #: ui/bar.ui:238
 msgid "Control Center"
 msgstr "コントロールセンター"
-
-#: internal/ui/appmenu.go:405
-#: internal/ui/appmenu.go:454
-msgid "Fullscreen"
-msgstr "全画面"
 
 #: internal/ui/appmenu.go:406
 #: internal/ui/appmenu.go:455
@@ -17217,178 +17310,178 @@ msgid "No app by that name"
 msgstr "その名前のアプリはありません"
 
 #: internal/viewerui/app.go:36
-#: internal/viewerui/app.go:715
-#: internal/viewerui/app.go:716
+#: internal/viewerui/app.go:717
+#: internal/viewerui/app.go:718
 #: config/apps/io.github.lyricat.Inua.Viewer.desktop:3
 msgid "Viewer"
 msgstr "ビューアー"
 
-#: internal/viewerui/app.go:498
+#: internal/viewerui/app.go:500
 msgid "Could not move to Trash"
 msgstr "ゴミ箱に移動できませんでした"
 
-#: internal/viewerui/app.go:508
+#: internal/viewerui/app.go:510
 msgid "Nothing left here."
 msgstr "ここにはもう何もありません。"
 
-#: internal/viewerui/app.go:559
+#: internal/viewerui/app.go:561
 #: internal/viewerui/edit.go:268
 #: internal/viewerui/edit.go:274
 #: internal/viewerui/edit.go:289
 msgid "Could not copy"
 msgstr "コピーできませんでした"
 
-#: internal/viewerui/app.go:592
+#: internal/viewerui/app.go:594
 msgid "Open a File"
 msgstr "ファイルを開く"
 
-#: internal/viewerui/app.go:594
+#: internal/viewerui/app.go:596
 msgid "Images, PDFs, Markdown and text"
 msgstr "画像、PDF、Markdown、テキスト"
 
-#: internal/viewerui/app.go:617
+#: internal/viewerui/app.go:619
 msgid "Open an image or a document to view it."
 msgstr "画像か文書を開くと表示します。"
 
-#: internal/viewerui/app.go:683
+#: internal/viewerui/app.go:685
 msgid "Copy the page's text (Ctrl+C)"
 msgstr "ページのテキストをコピー (Ctrl+C)"
 
-#: internal/viewerui/app.go:684
+#: internal/viewerui/app.go:686
 msgid "Previous file (Ctrl+Page Up)"
 msgstr "前のファイル (Ctrl+Page Up)"
 
-#: internal/viewerui/app.go:685
+#: internal/viewerui/app.go:687
 msgid "Next file (Ctrl+Page Down)"
 msgstr "次のファイル (Ctrl+Page Down)"
 
-#: internal/viewerui/app.go:687
+#: internal/viewerui/app.go:689
 msgid "Copy the text (Ctrl+C)"
 msgstr "テキストをコピー (Ctrl+C)"
 
-#: internal/viewerui/app.go:688
-#: internal/viewerui/app.go:692
+#: internal/viewerui/app.go:690
+#: internal/viewerui/app.go:694
 #: ui/viewer.ui:322
 msgid "Previous (←)"
 msgstr "前へ (←)"
 
-#: internal/viewerui/app.go:689
-#: internal/viewerui/app.go:693
+#: internal/viewerui/app.go:691
+#: internal/viewerui/app.go:695
 #: ui/viewer.ui:334
 msgid "Next (→)"
 msgstr "次へ（→）"
 
-#: internal/viewerui/app.go:691
+#: internal/viewerui/app.go:693
 #: ui/viewer.ui:139
 msgid "Copy the image (Ctrl+C)"
 msgstr "画像をコピー（Ctrl+C）"
 
-#: internal/viewerui/app.go:701
+#: internal/viewerui/app.go:703
 msgid "%s is locked with a password."
 msgstr "%s はパスワードで保護されています。"
 
-#: internal/viewerui/app.go:703
+#: internal/viewerui/app.go:705
 msgid "%s is not UTF-8 text."
 msgstr "%s は UTF-8 のテキストではありません。"
 
-#: internal/viewerui/app.go:705
+#: internal/viewerui/app.go:707
 msgid "Install libpoppler-glib8t64 to view PDFs."
 msgstr "PDF を表示するには libpoppler-glib8t64 をインストールしてください。"
 
-#: internal/viewerui/app.go:707
+#: internal/viewerui/app.go:709
 #: internal/viewerui/image.go:80
 msgid "Could not open %s.\n%v"
 msgstr "%[1]sを開けませんでした。\n%[2]v"
 
-#: internal/viewerui/app.go:741
+#: internal/viewerui/app.go:743
 msgid "Page %d of %d"
 msgstr "%[2]d ページ中 %[1]d"
 
-#: internal/viewerui/app.go:803
+#: internal/viewerui/app.go:805
 msgid "Jan 2, 2006  15:04"
 msgstr "2006年1月2日  15:04"
 
-#: internal/viewerui/app.go:811
-#: internal/viewerui/app.go:829
-#: internal/viewerui/app.go:853
+#: internal/viewerui/app.go:813
+#: internal/viewerui/app.go:831
+#: internal/viewerui/app.go:855
 msgid "Type"
 msgstr "タイプ"
 
-#: internal/viewerui/app.go:812
-#: internal/viewerui/app.go:830
-#: internal/viewerui/app.go:854
+#: internal/viewerui/app.go:814
+#: internal/viewerui/app.go:832
+#: internal/viewerui/app.go:856
 msgid "Modified"
 msgstr "修正"
 
-#: internal/viewerui/app.go:817
+#: internal/viewerui/app.go:819
 msgid "DOCUMENT"
 msgstr "文書"
 
-#: internal/viewerui/app.go:818
+#: internal/viewerui/app.go:820
 msgid "Title"
 msgstr "タイトル"
 
-#: internal/viewerui/app.go:819
+#: internal/viewerui/app.go:821
 msgid "Author"
 msgstr "作成者"
 
-#: internal/viewerui/app.go:821
+#: internal/viewerui/app.go:823
 msgid "Pages"
 msgstr "ページ数"
 
-#: internal/viewerui/app.go:822
+#: internal/viewerui/app.go:824
 msgid "Page size"
 msgstr "ページサイズ"
 
-#: internal/viewerui/app.go:823
+#: internal/viewerui/app.go:825
 msgid "Created"
 msgstr "作成"
 
-#: internal/viewerui/app.go:825
+#: internal/viewerui/app.go:827
 msgid "Made with"
 msgstr "作成ソフト"
 
-#: internal/viewerui/app.go:833
+#: internal/viewerui/app.go:835
 msgid "Lines"
 msgstr "行数"
 
-#: internal/viewerui/app.go:834
+#: internal/viewerui/app.go:836
 msgid "Words"
 msgstr "単語数"
 
-#: internal/viewerui/app.go:835
+#: internal/viewerui/app.go:837
 msgid "Characters"
 msgstr "文字数"
 
-#: internal/viewerui/app.go:852
+#: internal/viewerui/app.go:854
 msgid "Dimensions"
 msgstr "寸法"
 
-#: internal/viewerui/app.go:856
+#: internal/viewerui/app.go:858
 msgid "CAMERA"
 msgstr "カメラ"
 
-#: internal/viewerui/app.go:857
+#: internal/viewerui/app.go:859
 msgid "Camera"
 msgstr "カメラ"
 
-#: internal/viewerui/app.go:858
+#: internal/viewerui/app.go:860
 msgid "Lens"
 msgstr "レンズ"
 
-#: internal/viewerui/app.go:859
+#: internal/viewerui/app.go:861
 msgid "Exposure"
 msgstr "露出"
 
-#: internal/viewerui/app.go:860
+#: internal/viewerui/app.go:862
 msgid "Taken"
 msgstr "撮影日時"
 
-#: internal/viewerui/app.go:876
+#: internal/viewerui/app.go:878
 msgid "Could not set the wallpaper"
 msgstr "壁紙を設定できませんでした"
 
-#: internal/viewerui/app.go:880
+#: internal/viewerui/app.go:882
 #: ui/viewer.ui:148
 msgid "Set as wallpaper"
 msgstr "壁紙として設定する"
@@ -17465,7 +17558,7 @@ msgid "Could not open the link"
 msgstr "リンクを開けませんでした"
 
 #: internal/vmui/app.go:22
-#: internal/vmui/window.go:2298
+#: internal/vmui/window.go:2303
 #: ui/vm.ui:14
 #: ui/vm.ui:43
 #: config/apps/io.github.lyricat.Inua.VM.desktop:3
@@ -17536,607 +17629,627 @@ msgstr "未選択"
 msgid "The assistant could not be started: %v"
 msgstr "アシスタントを起動できませんでした: %v"
 
-#: internal/vmui/window.go:637
-msgid "Does not load"
-msgstr "読み込めません"
-
-#: internal/vmui/window.go:765
-msgid "Does not load as a machine"
-msgstr "マシンとして読み込めません"
-
-#: internal/vmui/window.go:775
-#: ui/vm.ui:445
-msgid "No backend for this machine"
-msgstr "このマシンにはバックエンドがありません"
-
-#: internal/vmui/window.go:776
-msgid "This machine needs the %s backend, which this build does not have."
-msgstr "このマシンには %s バックエンドが必要ですが、このビルドにはありません。"
-
-#: internal/vmui/window.go:824
-msgid "Turn the debugger on to hold the guest for gdb."
-msgstr "デバッガーを入れると、ゲストを止めて gdb を接続できます。"
-
-#: internal/vmui/window.go:918
-msgid "Accelerated"
-msgstr "高速化"
-
-#: internal/vmui/window.go:922
-msgid "Emulated (slow): this machine asks for emulation"
-msgstr "エミュレーション（低速）: このマシンはエミュレーションを指定しています"
-
-#: internal/vmui/window.go:924
-msgid "Emulated (slow): the guest is built for another architecture"
-msgstr "エミュレーション（低速）: ゲストは別のアーキテクチャー向けです"
-
-#: internal/vmui/window.go:926
-msgid "Emulated (slow): this host has no /dev/kvm"
-msgstr "エミュレーション（低速）: このホストには /dev/kvm がありません"
-
-#: internal/vmui/window.go:928
-msgid "Emulated (slow): your user may not open /dev/kvm"
-msgstr "エミュレーション（低速）: あなたのユーザーは /dev/kvm を開けません"
-
-#: internal/vmui/window.go:930
-msgid "Emulated (slow)"
-msgstr "エミュレーション（低速）"
-
-#: internal/vmui/window.go:941
-msgid "2D: Windows has no accelerated driver here"
-msgstr "2D: ここでは Windows に高速化ドライバーがありません"
-
-#: internal/vmui/window.go:945
-msgid "3D (OpenGL, through the host's GPU)"
-msgstr "3D（OpenGL、ホストの GPU 経由）"
-
-#: internal/vmui/window.go:947
-msgid "3D (Vulkan, through the host's GPU)"
-msgstr "3D（Vulkan、ホストの GPU 経由）"
-
-#: internal/vmui/window.go:949
-msgid "2D"
-msgstr "2D"
-
-#: internal/vmui/window.go:1032
-#: internal/vmui/window.go:1034
-#: internal/vmui/window.go:2849
-#: internal/vmui/window.go:2851
-msgid "Recommended: %d GiB."
-msgstr "推奨: %d GiB。"
-
-#: internal/vmui/window.go:1033
-#: internal/vmui/window.go:2850
-msgid "Recommended: %d."
-msgstr "推奨: %d。"
-
-#: internal/vmui/window.go:1101
-msgid "Creating…"
-msgstr "作成中…"
-
-#: internal/vmui/window.go:1111
-msgid "That name cannot be used: %v"
-msgstr "その名前は使えません: %v"
-
-#: internal/vmui/window.go:1137
-msgid "%d thing to fix"
-msgid_plural "%d things to fix"
-msgstr[0] "要対応 %d 件"
-
-#: internal/vmui/window.go:1192
-msgid "Fix"
-msgstr "修正"
-
-#: internal/vmui/window.go:1194
-msgid "Add me to %s"
-msgstr "%s グループに追加"
-
-#: internal/vmui/window.go:1225
-msgid "Operating system"
-msgstr "オペレーティングシステム"
-
-#: internal/vmui/window.go:1227
-msgid "Hardware virtualization (KVM)"
-msgstr "ハードウェア仮想化 (KVM)"
-
-#: internal/vmui/window.go:1229
-msgid "Docker"
-msgstr "Docker"
-
-#: internal/vmui/window.go:1231
-msgid "Docker Compose v2"
-msgstr "Docker Compose v2"
-
-#: internal/vmui/window.go:1233
-msgid "FreeRDP"
-msgstr "FreeRDP"
-
-#: internal/vmui/window.go:1235
-msgid "Browser opener"
-msgstr "ブラウザー起動コマンド"
-
-#: internal/vmui/window.go:1237
-msgid "Disk space"
-msgstr "ディスク容量"
-
-#: internal/vmui/window.go:1239
-msgid "Network device (TUN)"
-msgstr "ネットワークデバイス (TUN)"
-
-#: internal/vmui/window.go:1241
-#: ui/settings.ui:4502
-msgid "Secret Service"
-msgstr "Secret Service"
-
-#: internal/vmui/window.go:1245
-msgid "UEFI firmware"
-msgstr "UEFI ファームウェア"
-
-#: internal/vmui/window.go:1249
-msgid "Binder (the kernel's Android support)"
-msgstr "Binder（カーネルの Android 対応）"
-
-#: internal/vmui/window.go:1263
-msgid "Your user may not use Docker's socket. Joining the docker group would let anything running as you control this machine as root, so Inua will not do it for you: run the command below yourself if you accept that, or use rootless Docker or Podman instead."
-msgstr "このユーザーは Docker のソケットを使えません。docker グループに加わると、あなたとして動くあらゆるものがこのマシンを root として操作できるようになるため、Inua は代わりに行いません。それを受け入れるなら下のコマンドを自分で実行するか、rootless Docker か Podman を使ってください。"
-
-#: internal/vmui/window.go:1267
-msgid "Not installed on this system."
-msgstr "このシステムにはインストールされていません。"
-
-#: internal/vmui/window.go:1269
-msgid "Installed, but your user may not use it."
-msgstr "インストール済みですが、あなたのユーザーでは使えません。"
-
-#: internal/vmui/window.go:1271
-msgid "Installed, but not running."
-msgstr "インストール済みですが、実行されていません。"
-
-#: internal/vmui/window.go:1273
-msgid "This Linux distribution is not supported."
-msgstr "この Linux ディストリビューションには対応していません。"
-
-#: internal/vmui/window.go:1275
-msgid "Could not be checked."
-msgstr "確認できませんでした。"
-
-#: internal/vmui/window.go:1306
-msgid "Choose an install image first."
+#: internal/vmui/menubar.go:37
+msgid "New Machine…"
 msgstr ""
 
-#: internal/vmui/window.go:1308
-msgid "Installs from the files the earlier attempt left."
-msgstr "前回の試行で残ったファイルからインストールします。"
-
-#: internal/vmui/window.go:1351
-msgid "%s of %s downloaded"
-msgstr "%s / %s をダウンロード済み"
-
-#: internal/vmui/window.go:1355
-msgid "%s downloaded"
-msgstr "%s ダウンロード済み"
-
-#: internal/vmui/window.go:1400
-msgid "Choose an install image"
+#: internal/vmui/menubar.go:41
+msgid "Machine"
 msgstr ""
 
-#: internal/vmui/window.go:1402
-msgid "Disc images"
-msgstr ""
+#: internal/vmui/menubar.go:113
+#: internal/vmui/window.go:2005
+msgid "Delete the files from the earlier attempt?"
+msgstr "前回の試行のファイルを削除しますか？"
 
-#: internal/vmui/window.go:1455
-msgid "Every architecture"
-msgstr "すべてのアーキテクチャ"
+#: internal/vmui/menubar.go:114
+#: internal/vmui/window.go:2006
+msgid "The downloaded files and the unfinished disk are deleted for good."
+msgstr "ダウンロード済みのファイルと途中までのディスクは完全に削除されます。"
 
-#: internal/vmui/window.go:1504
-msgid "Every platform"
-msgstr "すべてのプラットフォーム"
+#: internal/vmui/menubar.go:121
+#: internal/vmui/window.go:1986
+msgid "Abandon the installation?"
+msgstr "インストールを中止しますか？"
 
-#: internal/vmui/window.go:1506
-msgid "Linux"
-msgstr "Linux"
+#: internal/vmui/menubar.go:122
+#: internal/vmui/window.go:1987
+msgid "The container is removed. Downloaded files stay, so a new installation does not fetch them again."
+msgstr "コンテナを削除します。ダウンロード済みのファイルは残るので、次のインストールで再びダウンロードすることはありません。"
 
-#: internal/vmui/window.go:1508
-msgid "BSD"
-msgstr "BSD"
+#: internal/vmui/menubar.go:123
+#: internal/vmui/window.go:1988
+msgid "Abandon"
+msgstr "中止"
 
-#: internal/vmui/window.go:1510
-#: ui/settings.ui:2528
-msgid "Windows"
-msgstr "ウィンドウ"
+#: internal/vmui/menubar.go:124
+#: internal/vmui/menubar.go:137
+#: internal/vmui/window.go:1982
+#: internal/vmui/window.go:1989
+msgid "Removing…"
+msgstr "削除中…"
 
-#: internal/vmui/window.go:1563
-#: internal/vmui/window.go:2433
-msgid "Live image"
-msgstr "ライブイメージ"
+#: internal/vmui/menubar.go:128
+#: internal/vmui/window.go:1993
+msgid "Start the installation over?"
+msgstr "インストールをやり直しますか？"
 
-#: internal/vmui/window.go:1565
-#: internal/vmui/window.go:2435
-msgid "Installer"
-msgstr "インストール元"
+#: internal/vmui/menubar.go:129
+#: internal/vmui/window.go:1994
+msgid "The unfinished disk is deleted for good; the machine stays, to install again."
+msgstr "途中までのディスクは完全に削除されます。マシンは残り、もう一度インストールできます。"
 
-#: internal/vmui/window.go:1574
-msgid "%d installer"
-msgid_plural "%d installers"
-msgstr[0] "インストーラー %d 件"
+#: internal/vmui/menubar.go:130
+#: internal/vmui/window.go:1995
+#: internal/vmui/window.go:2748
+msgid "Start over"
+msgstr "やり直す"
 
-#: internal/vmui/window.go:1577
-msgid "%d live image"
-msgid_plural "%d live images"
-msgstr[0] "ライブイメージ %d 件"
-
-#: internal/vmui/window.go:1580
-msgid "newest %s"
-msgstr "最新 %s"
-
-#: internal/vmui/window.go:1583
-#: internal/vmui/window.go:1592
-msgid "%d install image"
-msgid_plural "%d install images"
-msgstr[0] "インストールイメージ %d 件"
-
-#: internal/vmui/window.go:1591
-msgid "%d system"
-msgid_plural "%d systems"
-msgstr[0] "%d システム"
-
-#: internal/vmui/window.go:1818
-msgid "The system is installing; this takes a while."
-msgstr "システムをインストールしています。しばらくかかります。"
-
-#: internal/vmui/window.go:1824
-msgid "The installation is paused. Continue to resume."
-msgstr "インストールは一時停止しています。続けると再開します。"
-
-#: internal/vmui/window.go:1887
-msgid "The system is starting; ready in a minute or two."
-msgstr "システムを起動しています。1〜2 分で使えるようになります。"
-
-#: internal/vmui/window.go:1924
-msgid "Applying…"
-msgstr "適用中…"
-
-#: internal/vmui/window.go:1940
-msgid "Finishing…"
-msgstr ""
-
-#: internal/vmui/window.go:1974
+#: internal/vmui/menubar.go:134
+#: internal/vmui/window.go:1979
 msgid "Remove the container?"
 msgstr "コンテナを削除しますか？"
 
-#: internal/vmui/window.go:1975
+#: internal/vmui/menubar.go:135
+#: internal/vmui/window.go:1980
 #: ui/vm.ui:2570
 msgid "Its container and settings go. The disk and its password stay, so installing again starts from them."
 msgstr "コンテナと設定は削除されます。ディスクとそのパスワードは残るので、再インストールはそこから始まります。"
 
-#: internal/vmui/window.go:1977
-#: internal/vmui/window.go:1984
-msgid "Removing…"
-msgstr "削除中…"
+#: internal/vmui/window.go:642
+msgid "Does not load"
+msgstr "読み込めません"
 
-#: internal/vmui/window.go:1981
-msgid "Abandon the installation?"
-msgstr "インストールを中止しますか？"
+#: internal/vmui/window.go:770
+msgid "Does not load as a machine"
+msgstr "マシンとして読み込めません"
 
-#: internal/vmui/window.go:1982
-msgid "The container is removed. Downloaded files stay, so a new installation does not fetch them again."
-msgstr "コンテナを削除します。ダウンロード済みのファイルは残るので、次のインストールで再びダウンロードすることはありません。"
+#: internal/vmui/window.go:780
+#: ui/vm.ui:445
+msgid "No backend for this machine"
+msgstr "このマシンにはバックエンドがありません"
 
-#: internal/vmui/window.go:1983
-msgid "Abandon"
-msgstr "中止"
+#: internal/vmui/window.go:781
+msgid "This machine needs the %s backend, which this build does not have."
+msgstr "このマシンには %s バックエンドが必要ですが、このビルドにはありません。"
 
-#: internal/vmui/window.go:1988
-msgid "Start the installation over?"
-msgstr "インストールをやり直しますか？"
+#: internal/vmui/window.go:829
+msgid "Turn the debugger on to hold the guest for gdb."
+msgstr "デバッガーを入れると、ゲストを止めて gdb を接続できます。"
 
-#: internal/vmui/window.go:1989
-msgid "The unfinished disk is deleted for good; the machine stays, to install again."
-msgstr "途中までのディスクは完全に削除されます。マシンは残り、もう一度インストールできます。"
+#: internal/vmui/window.go:923
+msgid "Accelerated"
+msgstr "高速化"
 
-#: internal/vmui/window.go:1990
-#: internal/vmui/window.go:2743
-msgid "Start over"
-msgstr "やり直す"
+#: internal/vmui/window.go:927
+msgid "Emulated (slow): this machine asks for emulation"
+msgstr "エミュレーション（低速）: このマシンはエミュレーションを指定しています"
 
-#: internal/vmui/window.go:1994
+#: internal/vmui/window.go:929
+msgid "Emulated (slow): the guest is built for another architecture"
+msgstr "エミュレーション（低速）: ゲストは別のアーキテクチャー向けです"
+
+#: internal/vmui/window.go:931
+msgid "Emulated (slow): this host has no /dev/kvm"
+msgstr "エミュレーション（低速）: このホストには /dev/kvm がありません"
+
+#: internal/vmui/window.go:933
+msgid "Emulated (slow): your user may not open /dev/kvm"
+msgstr "エミュレーション（低速）: あなたのユーザーは /dev/kvm を開けません"
+
+#: internal/vmui/window.go:935
+msgid "Emulated (slow)"
+msgstr "エミュレーション（低速）"
+
+#: internal/vmui/window.go:946
+msgid "2D: Windows has no accelerated driver here"
+msgstr "2D: ここでは Windows に高速化ドライバーがありません"
+
+#: internal/vmui/window.go:950
+msgid "3D (OpenGL, through the host's GPU)"
+msgstr "3D（OpenGL、ホストの GPU 経由）"
+
+#: internal/vmui/window.go:952
+msgid "3D (Vulkan, through the host's GPU)"
+msgstr "3D（Vulkan、ホストの GPU 経由）"
+
+#: internal/vmui/window.go:954
+msgid "2D"
+msgstr "2D"
+
+#: internal/vmui/window.go:1037
+#: internal/vmui/window.go:1039
+#: internal/vmui/window.go:2854
+#: internal/vmui/window.go:2856
+msgid "Recommended: %d GiB."
+msgstr "推奨: %d GiB。"
+
+#: internal/vmui/window.go:1038
+#: internal/vmui/window.go:2855
+msgid "Recommended: %d."
+msgstr "推奨: %d。"
+
+#: internal/vmui/window.go:1106
+msgid "Creating…"
+msgstr "作成中…"
+
+#: internal/vmui/window.go:1116
+msgid "That name cannot be used: %v"
+msgstr "その名前は使えません: %v"
+
+#: internal/vmui/window.go:1142
+msgid "%d thing to fix"
+msgid_plural "%d things to fix"
+msgstr[0] "要対応 %d 件"
+
+#: internal/vmui/window.go:1197
+msgid "Fix"
+msgstr "修正"
+
+#: internal/vmui/window.go:1199
+msgid "Add me to %s"
+msgstr "%s グループに追加"
+
+#: internal/vmui/window.go:1230
+msgid "Operating system"
+msgstr "オペレーティングシステム"
+
+#: internal/vmui/window.go:1232
+msgid "Hardware virtualization (KVM)"
+msgstr "ハードウェア仮想化 (KVM)"
+
+#: internal/vmui/window.go:1234
+msgid "Docker"
+msgstr "Docker"
+
+#: internal/vmui/window.go:1236
+msgid "Docker Compose v2"
+msgstr "Docker Compose v2"
+
+#: internal/vmui/window.go:1238
+msgid "FreeRDP"
+msgstr "FreeRDP"
+
+#: internal/vmui/window.go:1240
+msgid "Browser opener"
+msgstr "ブラウザー起動コマンド"
+
+#: internal/vmui/window.go:1242
+msgid "Disk space"
+msgstr "ディスク容量"
+
+#: internal/vmui/window.go:1244
+msgid "Network device (TUN)"
+msgstr "ネットワークデバイス (TUN)"
+
+#: internal/vmui/window.go:1246
+#: ui/settings.ui:4502
+msgid "Secret Service"
+msgstr "Secret Service"
+
+#: internal/vmui/window.go:1250
+msgid "UEFI firmware"
+msgstr "UEFI ファームウェア"
+
+#: internal/vmui/window.go:1254
+msgid "Binder (the kernel's Android support)"
+msgstr "Binder（カーネルの Android 対応）"
+
+#: internal/vmui/window.go:1268
+msgid "Your user may not use Docker's socket. Joining the docker group would let anything running as you control this machine as root, so Inua will not do it for you: run the command below yourself if you accept that, or use rootless Docker or Podman instead."
+msgstr "このユーザーは Docker のソケットを使えません。docker グループに加わると、あなたとして動くあらゆるものがこのマシンを root として操作できるようになるため、Inua は代わりに行いません。それを受け入れるなら下のコマンドを自分で実行するか、rootless Docker か Podman を使ってください。"
+
+#: internal/vmui/window.go:1272
+msgid "Not installed on this system."
+msgstr "このシステムにはインストールされていません。"
+
+#: internal/vmui/window.go:1274
+msgid "Installed, but your user may not use it."
+msgstr "インストール済みですが、あなたのユーザーでは使えません。"
+
+#: internal/vmui/window.go:1276
+msgid "Installed, but not running."
+msgstr "インストール済みですが、実行されていません。"
+
+#: internal/vmui/window.go:1278
+msgid "This Linux distribution is not supported."
+msgstr "この Linux ディストリビューションには対応していません。"
+
+#: internal/vmui/window.go:1280
+msgid "Could not be checked."
+msgstr "確認できませんでした。"
+
+#: internal/vmui/window.go:1311
+msgid "Choose an install image first."
+msgstr ""
+
+#: internal/vmui/window.go:1313
+msgid "Installs from the files the earlier attempt left."
+msgstr "前回の試行で残ったファイルからインストールします。"
+
+#: internal/vmui/window.go:1356
+msgid "%s of %s downloaded"
+msgstr "%s / %s をダウンロード済み"
+
+#: internal/vmui/window.go:1360
+msgid "%s downloaded"
+msgstr "%s ダウンロード済み"
+
+#: internal/vmui/window.go:1405
+msgid "Choose an install image"
+msgstr ""
+
+#: internal/vmui/window.go:1407
+msgid "Disc images"
+msgstr ""
+
+#: internal/vmui/window.go:1460
+msgid "Every architecture"
+msgstr "すべてのアーキテクチャ"
+
+#: internal/vmui/window.go:1509
+msgid "Every platform"
+msgstr "すべてのプラットフォーム"
+
+#: internal/vmui/window.go:1511
+msgid "Linux"
+msgstr "Linux"
+
+#: internal/vmui/window.go:1513
+msgid "BSD"
+msgstr "BSD"
+
+#: internal/vmui/window.go:1515
+#: ui/settings.ui:2528
+msgid "Windows"
+msgstr "ウィンドウ"
+
+#: internal/vmui/window.go:1568
+#: internal/vmui/window.go:2438
+msgid "Live image"
+msgstr "ライブイメージ"
+
+#: internal/vmui/window.go:1570
+#: internal/vmui/window.go:2440
+msgid "Installer"
+msgstr "インストール元"
+
+#: internal/vmui/window.go:1579
+msgid "%d installer"
+msgid_plural "%d installers"
+msgstr[0] "インストーラー %d 件"
+
+#: internal/vmui/window.go:1582
+msgid "%d live image"
+msgid_plural "%d live images"
+msgstr[0] "ライブイメージ %d 件"
+
+#: internal/vmui/window.go:1585
+msgid "newest %s"
+msgstr "最新 %s"
+
+#: internal/vmui/window.go:1588
+#: internal/vmui/window.go:1597
+msgid "%d install image"
+msgid_plural "%d install images"
+msgstr[0] "インストールイメージ %d 件"
+
+#: internal/vmui/window.go:1596
+msgid "%d system"
+msgid_plural "%d systems"
+msgstr[0] "%d システム"
+
+#: internal/vmui/window.go:1823
+msgid "The system is installing; this takes a while."
+msgstr "システムをインストールしています。しばらくかかります。"
+
+#: internal/vmui/window.go:1829
+msgid "The installation is paused. Continue to resume."
+msgstr "インストールは一時停止しています。続けると再開します。"
+
+#: internal/vmui/window.go:1892
+msgid "The system is starting; ready in a minute or two."
+msgstr "システムを起動しています。1〜2 分で使えるようになります。"
+
+#: internal/vmui/window.go:1929
+msgid "Applying…"
+msgstr "適用中…"
+
+#: internal/vmui/window.go:1945
+msgid "Finishing…"
+msgstr ""
+
+#: internal/vmui/window.go:1999
 msgid "Delete this machine's disk?"
 msgstr "このマシンのディスクを削除しますか？"
 
-#: internal/vmui/window.go:1995
+#: internal/vmui/window.go:2000
 msgid "The installed system and its files are deleted for good. The machine stays, to install again."
 msgstr "インストールされたシステムとそのファイルは完全に削除されます。マシンは残り、もう一度インストールできます。"
 
-#: internal/vmui/window.go:2000
-msgid "Delete the files from the earlier attempt?"
-msgstr "前回の試行のファイルを削除しますか？"
-
-#: internal/vmui/window.go:2001
-msgid "The downloaded files and the unfinished disk are deleted for good."
-msgstr "ダウンロード済みのファイルと途中までのディスクは完全に削除されます。"
-
-#: internal/vmui/window.go:2013
+#: internal/vmui/window.go:2018
 msgid "Delete this machine?"
 msgstr "このマシンを削除しますか？"
 
-#: internal/vmui/window.go:2014
+#: internal/vmui/window.go:2019
 msgid "The machine, its disk and all its files are deleted for good. This cannot be undone."
 msgstr "マシンとそのディスク、すべてのファイルは完全に削除されます。元に戻せません。"
 
-#: internal/vmui/window.go:2025
+#: internal/vmui/window.go:2030
 msgid "Delete this folder?"
 msgstr "このフォルダを削除しますか？"
 
-#: internal/vmui/window.go:2026
+#: internal/vmui/window.go:2031
 msgid "It does not load as a machine. Everything inside it is deleted for good."
 msgstr "マシンとして読み込めません。中身はすべて完全に削除されます。"
 
-#: internal/vmui/window.go:2059
+#: internal/vmui/window.go:2064
 msgid "Request sent to the assistant window."
 msgstr "アシスタントのウィンドウにリクエストを送信しました。"
 
-#: internal/vmui/window.go:2077
+#: internal/vmui/window.go:2082
 #: ui/vm.ui:938
 #: ui/vm.ui:960
 msgid "Check again"
 msgstr "再チェック"
 
-#: internal/vmui/window.go:2105
+#: internal/vmui/window.go:2110
 msgid "The fix did not work: %v"
 msgstr "修正できませんでした: %v"
 
-#: internal/vmui/window.go:2110
+#: internal/vmui/window.go:2115
 msgid "Done. Log out and back in for it to take effect."
 msgstr "完了。変更を有効にするには、一度ログアウトしてから再度ログインしてください。"
 
-#: internal/vmui/window.go:2113
+#: internal/vmui/window.go:2118
 msgid "Done."
 msgstr "完了。"
 
-#: internal/vmui/window.go:2231
+#: internal/vmui/window.go:2236
 msgid "Log out to finish"
 msgstr "完了にはログアウトが必要です"
 
-#: internal/vmui/window.go:2232
+#: internal/vmui/window.go:2237
 msgid "The change takes effect the next time you log in."
 msgstr "変更は次回ログイン時に有効になります。"
 
-#: internal/vmui/window.go:2274
+#: internal/vmui/window.go:2279
 msgid "This system is missing something the guest needs"
 msgstr "このシステムにはゲストに必要なものが足りません"
 
-#: internal/vmui/window.go:2277
+#: internal/vmui/window.go:2282
 msgid "Files from a previous attempt are still here"
 msgstr "前回のインストールで残ったファイルがあります"
 
-#: internal/vmui/window.go:2279
+#: internal/vmui/window.go:2284
 msgid "Not installed yet"
 msgstr "未インストール"
 
-#: internal/vmui/window.go:2282
-#: internal/vmui/window.go:2290
-#: internal/vmui/window.go:2323
+#: internal/vmui/window.go:2287
+#: internal/vmui/window.go:2295
+#: internal/vmui/window.go:2328
 msgid "Stopping"
 msgstr "停止中"
 
-#: internal/vmui/window.go:2285
-#: internal/vmui/window.go:2325
+#: internal/vmui/window.go:2290
+#: internal/vmui/window.go:2330
 msgid "Installing"
 msgstr "インストール中"
 
-#: internal/vmui/window.go:2287
-#: internal/vmui/window.go:2327
+#: internal/vmui/window.go:2292
+#: internal/vmui/window.go:2332
 msgid "Installation paused"
 msgstr "インストールは一時停止中"
 
-#: internal/vmui/window.go:2292
-#: internal/vmui/window.go:2329
+#: internal/vmui/window.go:2297
+#: internal/vmui/window.go:2334
 msgid "Starting"
 msgstr "起動中"
 
-#: internal/vmui/window.go:2294
-#: internal/vmui/window.go:2331
+#: internal/vmui/window.go:2299
+#: internal/vmui/window.go:2336
 msgid "Running"
 msgstr "実行中"
 
-#: internal/vmui/window.go:2296
-#: internal/vmui/window.go:2333
+#: internal/vmui/window.go:2301
+#: internal/vmui/window.go:2338
 msgid "Stopped"
 msgstr "停止"
 
-#: internal/vmui/window.go:2304
+#: internal/vmui/window.go:2309
 msgid "%s · no backend in this build"
 msgstr "%s · このビルドにバックエンドがありません"
 
-#: internal/vmui/window.go:2313
+#: internal/vmui/window.go:2318
 msgid "Working"
 msgstr "処理中"
 
-#: internal/vmui/window.go:2317
+#: internal/vmui/window.go:2322
 msgid "Needs the host"
 msgstr "ホスト側の準備が必要"
 
-#: internal/vmui/window.go:2319
+#: internal/vmui/window.go:2324
 msgid "Not installed"
 msgstr "未インストール"
 
-#: internal/vmui/window.go:2352
+#: internal/vmui/window.go:2357
 msgid "Custom"
 msgstr ""
 
-#: internal/vmui/window.go:2381
+#: internal/vmui/window.go:2386
 msgid "Downloads about 8 GB and installs Windows; takes 30+ minutes. Windows needs a licence."
 msgstr "約 8 GB をダウンロードして Windows をインストールします。30 分以上かかります。Windows にはライセンスが必要です。"
 
-#: internal/vmui/window.go:2383
+#: internal/vmui/window.go:2388
 msgid "The guest installs from its own media, as it would on a real machine."
 msgstr "ゲストは実機と同じように、自前のメディアからインストールします。"
 
-#: internal/vmui/window.go:2392
+#: internal/vmui/window.go:2397
 msgid "inua's own list"
 msgstr "inua 独自のリスト"
 
-#: internal/vmui/window.go:2404
+#: internal/vmui/window.go:2409
 msgid "Installs from %s."
 msgstr "%s からインストールします。"
 
-#: internal/vmui/window.go:2406
+#: internal/vmui/window.go:2411
 msgid "A file of your own, or one to download; the machine boots it as a disc."
 msgstr ""
 
-#: internal/vmui/window.go:2412
+#: internal/vmui/window.go:2417
 msgid "osinfo-db is not installed, so this is inua's short built-in list."
 msgstr "osinfo-db がインストールされていないため、inua の短い組み込みリストを表示しています。"
 
-#: internal/vmui/window.go:2414
+#: internal/vmui/window.go:2419
 msgid "Pick a system, then one of its images. It is downloaded once and becomes this machine's install image."
 msgstr ""
 
-#: internal/vmui/window.go:2447
-#: internal/vmui/window.go:2481
+#: internal/vmui/window.go:2452
+#: internal/vmui/window.go:2486
 msgid "Already in the cache"
 msgstr "キャッシュにあります"
 
-#: internal/vmui/window.go:2451
+#: internal/vmui/window.go:2456
 msgid "Unfinished download"
 msgstr "ダウンロードが未完了"
 
-#: internal/vmui/window.go:2461
+#: internal/vmui/window.go:2466
 msgid "Retry"
 msgstr "再試行"
 
-#: internal/vmui/window.go:2463
+#: internal/vmui/window.go:2468
 msgid "Use this image"
 msgstr "このイメージを使う"
 
-#: internal/vmui/window.go:2477
+#: internal/vmui/window.go:2482
 msgid "Checksum verified"
 msgstr "チェックサム検証済み"
 
-#: internal/vmui/window.go:2479
+#: internal/vmui/window.go:2484
 msgid "No published checksum"
 msgstr "公開されたチェックサムなし"
 
-#: internal/vmui/window.go:2502
-#: internal/vmui/window.go:2504
+#: internal/vmui/window.go:2507
+#: internal/vmui/window.go:2509
 msgid "In a container, with %s"
 msgstr ""
 
-#: internal/vmui/window.go:2506
+#: internal/vmui/window.go:2511
 msgid "In a virtual machine, with %s"
 msgstr ""
 
-#: internal/vmui/window.go:2515
+#: internal/vmui/window.go:2520
 msgid "Downloads and installs Windows 11 for you; you reach it over Remote Desktop."
 msgstr ""
 
-#: internal/vmui/window.go:2517
+#: internal/vmui/window.go:2522
 msgid "Boots your own Windows 11 ISO, with the virtio drivers."
 msgstr ""
 
-#: internal/vmui/window.go:2519
+#: internal/vmui/window.go:2524
 msgid "Boots the install image you pick next, with 3D where the guest has a driver."
 msgstr ""
 
-#: internal/vmui/window.go:2521
+#: internal/vmui/window.go:2526
 msgid "Android beside your apps, with the host's display and GPU."
 msgstr ""
 
-#: internal/vmui/window.go:2523
+#: internal/vmui/window.go:2528
 msgid "Your own system: an ISO, a disk or a kernel, on any architecture."
 msgstr "独自のシステム: ISO、ディスク、またはカーネルを、任意のアーキテクチャーで。"
 
-#: internal/vmui/window.go:2628
+#: internal/vmui/window.go:2633
 msgid "It did not work: %s"
 msgstr "うまくいきませんでした: %s"
 
-#: internal/vmui/window.go:2705
-#: internal/vmui/window.go:2709
-#: internal/vmui/window.go:2713
+#: internal/vmui/window.go:2710
+#: internal/vmui/window.go:2714
+#: internal/vmui/window.go:2718
 #: ui/vm.ui:1716
 #: ui/vm.ui:2093
 msgid "Watch the installation"
 msgstr "インストールの様子を見る"
 
-#: internal/vmui/window.go:2705
+#: internal/vmui/window.go:2710
 msgid "The installer's screen, in your browser."
 msgstr "インストーラの画面をブラウザで表示します。"
 
-#: internal/vmui/window.go:2706
+#: internal/vmui/window.go:2711
 #: ui/vm.ui:2824
 msgid "Web console"
 msgstr "Web コンソール"
 
-#: internal/vmui/window.go:2706
+#: internal/vmui/window.go:2711
 msgid "The guest's screen, in your browser, until Remote Desktop is ready."
 msgstr "リモートデスクトップの準備ができるまで、ゲストの画面をブラウザで表示します。"
 
-#: internal/vmui/window.go:2707
+#: internal/vmui/window.go:2712
 msgid "Windows' desktop in a window of its own, on this screen."
 msgstr "Windows のデスクトップを、この画面の専用ウィンドウで表示します。"
 
-#: internal/vmui/window.go:2709
+#: internal/vmui/window.go:2714
 msgid "The installer's screen, in a window of its own."
 msgstr "インストーラの画面を専用のウィンドウで表示します。"
 
-#: internal/vmui/window.go:2710
+#: internal/vmui/window.go:2715
 msgid "The guest's screen, in a window of its own."
 msgstr "ゲストの画面を専用のウィンドウで表示します。"
 
-#: internal/vmui/window.go:2713
+#: internal/vmui/window.go:2718
 msgid "QEMU shows the installer in a window of its own."
 msgstr "QEMU がインストーラを専用のウィンドウに表示します。"
 
-#: internal/vmui/window.go:2714
+#: internal/vmui/window.go:2719
 msgid "QEMU shows the guest in a window of its own."
 msgstr "QEMU がゲストを専用のウィンドウに表示します。"
 
-#: internal/vmui/window.go:2717
+#: internal/vmui/window.go:2722
 msgid "Serial console"
 msgstr "シリアルコンソール"
 
-#: internal/vmui/window.go:2717
+#: internal/vmui/window.go:2722
 msgid "What the system prints, on its own serial console."
 msgstr "システムが自身のシリアルコンソールに出力する内容です。"
 
-#: internal/vmui/window.go:2737
+#: internal/vmui/window.go:2742
 msgid "Abandon the installation"
 msgstr "インストールを中止"
 
-#: internal/vmui/window.go:2738
+#: internal/vmui/window.go:2743
 msgid "Removes the container so you can start over. Downloaded files stay."
 msgstr "コンテナを削除して最初からやり直せるようにします。ダウンロード済みのファイルは残ります。"
 
-#: internal/vmui/window.go:2740
+#: internal/vmui/window.go:2745
 msgid "Abandon…"
 msgstr "中止…"
 
-#: internal/vmui/window.go:2744
+#: internal/vmui/window.go:2749
 msgid "Deletes the unfinished disk; the machine stays, to install again."
 msgstr "途中までのディスクを削除します。マシンは残り、もう一度インストールできます。"
 
-#: internal/vmui/window.go:2746
+#: internal/vmui/window.go:2751
 #: ui/vm.ui:1918
 msgid "Start over…"
 msgstr "やり直す…"
 
-#: internal/vmui/window.go:2758
-#: internal/vmui/window.go:2764
+#: internal/vmui/window.go:2763
+#: internal/vmui/window.go:2769
 msgid "Opening…"
 msgstr "開いています…"
 
-#: internal/vmui/window.go:2785
+#: internal/vmui/window.go:2790
 msgid "Start inua-keyring, or install a Secret Service."
 msgstr "inua-keyring を起動するか、Secret Service をインストールしてください。"
 
-#: internal/vmui/window.go:2787
+#: internal/vmui/window.go:2792
 msgid "This manager needs NixOS, Ubuntu or Debian."
 msgstr "このマネージャーは NixOS、Ubuntu、Debian のいずれかが必要です。"
 
-#: internal/vmui/window.go:2832
+#: internal/vmui/window.go:2837
 msgid "Turn on virtualization (Intel VT-x or AMD-V) in the firmware settings."
 msgstr "ファームウェア設定で仮想化（Intel VT-x または AMD-V）を有効にしてください。"
 
-#: internal/vmui/window.go:2838
+#: internal/vmui/window.go:2843
 msgid "Add %s to your NixOS configuration."
 msgstr "%s を NixOS の設定に追加します。"
 
@@ -18165,14 +18278,6 @@ msgstr "来月"
 #: ui/assistant.ui:54
 msgid "Who answers"
 msgstr "誰が答えるのか"
-
-#: ui/assistant.ui:63
-msgid "AI settings"
-msgstr "AI設定"
-
-#: ui/assistant.ui:73
-msgid "New conversation"
-msgstr "新しい会話"
 
 #: ui/assistant.ui:98
 msgid "Open AI Settings"
@@ -19991,10 +20096,6 @@ msgstr "<span alpha='55%'>[</span>読み取り<span alpha='55%'>]</span>"
 #: ui/settings.ui:4851
 msgid "Every secret inua-keyring handed out and passphrase asked for, newest first"
 msgstr "inua-keyring が渡したすべてのシークレットと要求されたパスフレーズ（新しい順）"
-
-#: ui/settings.ui:4897
-msgid "Refresh"
-msgstr "更新"
 
 #: ui/settings.ui:4991
 msgid "The list is not trusted"
