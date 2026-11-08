@@ -26,12 +26,13 @@ func TestParseDevices(t *testing.T) {
 
 func TestParseInfo(t *testing.T) {
 	out := []byte("proto: 0x02\nextension strings: credProtect, hmac-secret, largeBlobKey\n" +
-		"options: rk, up, noplat, noalwaysUv, credMgmt, clientPin, largeBlobs\npin retries: 8\n")
-	if got := parseInfo(out); !got.PIN || !got.HMACSecret || got.Retries != 8 {
+		"options: rk, up, noplat, noalwaysUv, credMgmt, clientPin, largeBlobs\nfwversion: 0x50800\n" +
+		"minpinlen: 6\npin retries: 8\n")
+	if got := parseInfo(out); !got.PIN || !got.HMACSecret || got.Retries != 8 || got.MinPIN != 6 || got.Firmware != "5.8.0" {
 		t.Fatalf("got %+v", got)
 	}
 	out = []byte("extension strings: credProtect\noptions: rk, up, noclientPin\n")
-	if got := parseInfo(out); got.PIN || got.HMACSecret || got.Retries != -1 {
+	if got := parseInfo(out); got.PIN || got.HMACSecret || got.Retries != -1 || got.MinPIN != 4 || got.Firmware != "" {
 		t.Fatalf("got %+v", got)
 	}
 }
@@ -129,6 +130,10 @@ func fakeTools(t *testing.T) string {
 case "$1" in
 -L) echo "/dev/hidraw9: vendor=0x1050, product=0x0407 (Test Key)";;
 -I) printf 'extension strings: hmac-secret\noptions: rk, up, clientPin\npin retries: 5\n';;
+-S) read -r a; read -r b; echo "set $a $b $2" > "$(dirname "$0")/pin";;
+-C) read -r old; read -r a; read -r b
+    [ "$old" = 1234 ] || { echo "fido2-token: fido_dev_set_pin: FIDO_ERR_PIN_INVALID" >&2; exit 1; }
+    echo "change $old $a $b $2" > "$(dirname "$0")/pin";;
 esac`,
 		"fido2-cred": `
 read -r pin
@@ -304,5 +309,50 @@ func TestEnrolAndUnlock(t *testing.T) {
 	q = pinentry.Request{Mode: pinentry.GetPin, KeyGrip: key.Grips[0]}
 	if _, handled, _ := u.Answer(&q, ask); handled {
 		t.Fatal("handled without the tools")
+	}
+}
+
+// Setting and changing a PIN give the tool its PINs on stdin, in the
+// order it asks; a wrong current PIN or a PIN the key cannot take fail.
+func TestSetChangePIN(t *testing.T) {
+	tools := fakeTools(t)
+	dev := Device{Path: "/dev/hidraw9"}
+	got := func() string {
+		t.Helper()
+		data, _ := os.ReadFile(filepath.Join(tools, "pin"))
+		os.Remove(filepath.Join(tools, "pin"))
+		return strings.TrimSpace(string(data))
+	}
+	if err := SetPIN(t.Context(), dev, "246810"); err != nil || got() != "set 246810 246810 /dev/hidraw9" {
+		t.Fatalf("set: %v", err)
+	}
+	if err := ChangePIN(t.Context(), dev, "1234", "135790"); err != nil || got() != "change 1234 135790 135790 /dev/hidraw9" {
+		t.Fatalf("change: %v", err)
+	}
+	if err := ChangePIN(t.Context(), dev, "0000", "135790"); !errors.Is(err, ErrPIN) || got() != "" {
+		t.Fatalf("wrong current PIN: %v", err)
+	}
+	for _, pin := range []string{"123", strings.Repeat("9", 64), "1234\n5678"} {
+		if err := SetPIN(t.Context(), dev, pin); !errors.Is(err, ErrPINPolicy) || got() != "" {
+			t.Fatalf("set %q: %v", pin, err)
+		}
+	}
+	if err := CheckPIN("12345", 6); !errors.Is(err, ErrPINPolicy) {
+		t.Fatalf("shorter than the key takes: %v", err)
+	}
+	if err := CheckPIN("密码密码", 4); err != nil {
+		t.Fatalf("four characters, more bytes: %v", err)
+	}
+}
+
+// Holds finds the enrolments a key knows the credential of.
+func TestHolds(t *testing.T) {
+	fakeTools(t)
+	dev := Device{Path: "/dev/hidraw9"}
+	mine := Enrolment{Fingerprint: "F1", Credential: []byte("credential-1")}
+	other := Enrolment{Fingerprint: "F2", Credential: []byte("credential-2")}
+	got := Holds(t.Context(), dev, []Enrolment{other, mine})
+	if len(got) != 1 || got[0].Fingerprint != "F1" {
+		t.Fatalf("got %+v", got)
 	}
 }

@@ -348,9 +348,9 @@ msgid "%d%%, charging"
 msgstr "%d%%, 충전 중"
 
 #: internal/apps/connect/service.go:520
-#: internal/ui/settings.go:348
-#: internal/ui/settings.go:794
-#: internal/ui/settings.go:901
+#: internal/ui/settings.go:349
+#: internal/ui/settings.go:797
+#: internal/ui/settings.go:904
 #: internal/ui/settings_displays.go:460
 msgid "%d%%"
 msgstr "%d%%"
@@ -2209,6 +2209,7 @@ msgstr "%s에서 페어링을 요청합니다. 이 키가 표시될 때만 페�
 #: internal/ui/settings_bluetooth.go:402
 #: internal/ui/settings_bluetooth.go:405
 #: internal/ui/settings_bluetooth.go:411
+#: internal/ui/settings_securitykeys.go:317
 #: internal/ui/settings_wifi.go:440
 #: internal/vmui/dialog.go:91
 #: ui/clock.ui:244
@@ -2872,7 +2873,7 @@ msgstr "동영상 파일 열기"
 
 #: internal/desktop/defaults.go:48
 #: internal/lightui/pass_otp.go:330
-#: internal/ui/settings.go:1063
+#: internal/ui/settings.go:1066
 msgid "Images"
 msgstr "이미지"
 
@@ -2933,7 +2934,7 @@ msgstr "일부를 읽을 수 없었습니다."
 #: internal/diskui/details.go:76
 #: internal/ui/lock.go:279
 #: internal/ui/polkit.go:294
-#: internal/ui/settings_about.go:191
+#: internal/ui/settings_about.go:194
 #: internal/vmui/window.go:2071
 msgid "Checking…"
 msgstr "확인 중..."
@@ -3130,7 +3131,7 @@ msgstr "홈"
 #: internal/lightui/sysmon.go:969
 #: internal/lightui/tailscale.go:527
 #: internal/lightui/tailscale.go:568
-#: internal/ui/settings.go:593
+#: internal/ui/settings.go:595
 #: ui/vm.ui:2981
 msgid "System"
 msgstr "시스템"
@@ -8881,9 +8882,10 @@ msgstr "%s 생성"
 #: internal/ui/askpass.go:486
 #: internal/ui/askpass.go:490
 #: internal/ui/askpass.go:492
-#: internal/ui/settings_about.go:234
+#: internal/ui/settings_about.go:237
 #: internal/ui/settings_keyring.go:640
 #: internal/ui/settings_keyring.go:674
+#: internal/ui/settings_securitykeys.go:341
 msgid "Jan 2, 2006"
 msgstr "2006년 1월 2일"
 
@@ -9367,8 +9369,8 @@ msgid "Top level"
 msgstr "최상위"
 
 #: internal/lightui/pass.go:432
-#: internal/ui/settings.go:926
-#: internal/ui/settings.go:953
+#: internal/ui/settings.go:929
+#: internal/ui/settings.go:956
 msgid "%d entry"
 msgid_plural "%d entries"
 msgstr[0] "%d개"
@@ -10771,6 +10773,7 @@ msgstr "OK"
 #: internal/mailui/welcome.go:823
 #: internal/term/web/strings.go:93
 #: internal/ui/settings_ai.go:530
+#: internal/ui/settings_securitykeys.go:318
 #: ui/clock.ui:252
 #: ui/connect.ui:421
 #: ui/pass.ui:686
@@ -11242,7 +11245,7 @@ msgstr ""
 #: internal/mailui/reader.go:826
 #: ui/gpg.ui:755
 #: ui/gpg.ui:999
-#: ui/settings.ui:6644
+#: ui/settings.ui:6678
 msgid "Save…"
 msgstr "저장…"
 
@@ -12705,6 +12708,7 @@ msgid "The passphrase kept with the security key no longer opens this key. Type 
 msgstr ""
 
 #: internal/securitykey/unlock.go:56
+#: internal/ui/settings_securitykeys.go:279
 msgid "PIN"
 msgstr ""
 
@@ -12867,7 +12871,7 @@ msgid "%d thr"
 msgstr "%d 스레드"
 
 #: internal/shell/cardterm.go:136
-#: internal/ui/settings.go:591
+#: internal/ui/settings.go:593
 msgid "Desktop"
 msgstr "데스크톱"
 
@@ -14910,7 +14914,7 @@ msgid "Searching…"
 msgstr "검색 중…"
 
 #: internal/ui/control_detail.go:214
-#: internal/ui/settings.go:590
+#: internal/ui/settings.go:592
 msgid "Devices"
 msgstr "기기"
 
@@ -14929,7 +14933,7 @@ msgid "No devices paired yet"
 msgstr "아직 페어링된 기기가 없습니다"
 
 #: internal/ui/drawer.go:217
-#: internal/ui/settings.go:592
+#: internal/ui/settings.go:594
 #: internal/ui/widgets.go:586
 #: ui/settings.ui:181
 #: ui/settings.ui:2148
@@ -15306,176 +15310,176 @@ msgstr "스크린샷이 복사되었습니다."
 msgid "Screenshot taken"
 msgstr "촬영된 스크린샷"
 
-#: internal/ui/settings.go:330
+#: internal/ui/settings.go:331
 msgid "Not restarted: %s"
 msgstr "다시 시작하지 못함: %s"
 
-#: internal/ui/settings.go:355
-#: internal/ui/settings.go:796
+#: internal/ui/settings.go:356
+#: internal/ui/settings.go:799
 msgid "%d px"
 msgstr "%d px"
 
-#: internal/ui/settings.go:589
+#: internal/ui/settings.go:591
 msgid "Connections"
 msgstr "연결"
 
-#: internal/ui/settings.go:701
+#: internal/ui/settings.go:704
 msgid "%s · yours: right-click for more"
 msgstr "%s · 내 테마: 오른쪽 클릭으로 더 보기"
 
-#: internal/ui/settings.go:718
+#: internal/ui/settings.go:721
 msgid "A CSS file of @define-color lines, kept in themes beside config.toml"
 msgstr "@define-color 줄로 된 CSS 파일, config.toml 옆의 themes에 보관됩니다"
 
-#: internal/ui/settings.go:727
+#: internal/ui/settings.go:730
 msgid "Add Theme…"
 msgstr "테마 추가…"
 
-#: internal/ui/settings.go:831
+#: internal/ui/settings.go:834
 msgid "As the bar (%s)"
 msgstr "바와 같게 (%s)"
 
-#: internal/ui/settings.go:848
+#: internal/ui/settings.go:851
 msgid "inua objects"
 msgstr "inua objects"
 
-#: internal/ui/settings.go:849
+#: internal/ui/settings.go:852
 msgid "inua objects soft"
 msgstr "inua objects soft"
 
-#: internal/ui/settings.go:850
+#: internal/ui/settings.go:853
 msgid "inua objects flat"
 msgstr "inua objects flat"
 
-#: internal/ui/settings.go:858
+#: internal/ui/settings.go:861
 msgid "Phosphor"
 msgstr "Phosphor"
 
-#: internal/ui/settings.go:858
-#: internal/ui/settings.go:859
+#: internal/ui/settings.go:861
+#: internal/ui/settings.go:862
 msgid "System theme"
 msgstr "시스템 테마"
 
-#: internal/ui/settings.go:859
+#: internal/ui/settings.go:862
 #: ui/settings.ui:588
 msgid "As the app style"
 msgstr "앱 스타일대로"
 
-#: internal/ui/settings.go:952
+#: internal/ui/settings.go:955
 msgid "%s (%s, %s) · %s"
 msgstr "%s (%s, %s) · %s"
 
-#: internal/ui/settings.go:954
+#: internal/ui/settings.go:957
 msgid "%d text"
 msgid_plural "%d texts"
 msgstr[0] "텍스트 %d개"
 
-#: internal/ui/settings.go:955
+#: internal/ui/settings.go:958
 msgid "%d image"
 msgid_plural "%d images"
 msgstr[0] "이미지 %d개"
 
-#: internal/ui/settings.go:956
+#: internal/ui/settings.go:959
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: internal/ui/settings.go:1035
+#: internal/ui/settings.go:1038
 #: internal/ui/settings_apps.go:168
 #: internal/ui/settings_card.go:288
 #: internal/ui/settings_portals.go:177
 msgid "Not saved: %s"
 msgstr "저장되지 않음: %s"
 
-#: internal/ui/settings.go:1061
+#: internal/ui/settings.go:1064
 msgid "Choose a wallpaper"
 msgstr "배경화면을 선택하세요"
 
-#: internal/ui/settings.go:1103
+#: internal/ui/settings.go:1106
 msgid "Off: another notification daemon can show them"
 msgstr "꺼짐: 다른 알림 데몬이 이를 표시할 수 있습니다."
 
-#: internal/ui/settings.go:1105
+#: internal/ui/settings.go:1108
 msgid "Banners, then the notification center (the bell in the bar, or Super+N)"
 msgstr "배너를 표시한 후 알림 센터에 보관(표시줄의 종 또는 Super+N)"
 
-#: internal/ui/settings.go:1107
+#: internal/ui/settings.go:1110
 msgid "Waiting: another notification daemon is running"
 msgstr "대기 중: 다른 알림 데몬이 실행 중입니다."
 
-#: internal/ui/settings.go:1126
+#: internal/ui/settings.go:1129
 msgid "Nothing pinned"
 msgstr "고정된 앱 없음"
 
-#: internal/ui/settings.go:1142
+#: internal/ui/settings.go:1145
 msgid "%s (not installed)"
 msgstr "%s(설치되지 않음)"
 
-#: internal/ui/settings.go:1155
+#: internal/ui/settings.go:1158
 msgid "Move earlier"
 msgstr "앞으로 이동"
 
-#: internal/ui/settings.go:1156
+#: internal/ui/settings.go:1159
 msgid "Move later"
 msgstr "뒤로 이동"
 
-#: internal/ui/settings.go:1157
+#: internal/ui/settings.go:1160
 msgid "Remove from the dock"
 msgstr "독에서 제거"
 
-#: internal/ui/settings_about.go:179
+#: internal/ui/settings_about.go:182
 msgid "inua %s, built from source"
 msgstr "소스에서 빌드된 inua %s"
 
-#: internal/ui/settings_about.go:186
+#: internal/ui/settings_about.go:189
 msgid "Upgrade to %s"
 msgstr "%s로 업그레이드"
 
-#: internal/ui/settings_about.go:189
+#: internal/ui/settings_about.go:192
 msgid "Upgrading… the shell restarts on the new version"
 msgstr "업그레이드 중... 새 버전에서 쉘이 다시 시작됩니다."
 
-#: internal/ui/settings_about.go:195
+#: internal/ui/settings_about.go:198
 msgid "Could not reach GitHub: %s"
 msgstr "GitHub에 연결할 수 없습니다: %s"
 
-#: internal/ui/settings_about.go:197
+#: internal/ui/settings_about.go:200
 msgid "Not checked yet"
 msgstr "아직 확인되지 않음"
 
-#: internal/ui/settings_about.go:199
+#: internal/ui/settings_about.go:202
 msgid "The latest release is %s; this version cannot be compared with it"
 msgstr "최신 릴리스는 %s입니다. 이 버전은 그것과 비교할 수 없습니다"
 
-#: internal/ui/settings_about.go:201
+#: internal/ui/settings_about.go:204
 msgid "inua %s is out; upgrading replaces this build from source"
 msgstr "inua %s이(가) 출시되었습니다. 업데이트하면 현재 소스 빌드를 대체합니다"
 
-#: internal/ui/settings_about.go:203
+#: internal/ui/settings_about.go:206
 #: internal/ui/updates.go:90
 msgid "inua %s is out"
 msgstr "inua %s이(가) 출시되었습니다"
 
-#: internal/ui/settings_about.go:205
+#: internal/ui/settings_about.go:208
 msgid "Up to date: %s is the latest release (checked %s)"
 msgstr "최신: %[1]s가 최신 릴리스입니다(%[2]s 확인)."
 
-#: internal/ui/settings_about.go:207
+#: internal/ui/settings_about.go:210
 msgid "Newer than the latest release, %s"
 msgstr "최신 릴리스인 %s보다 최신 버전입니다."
 
-#: internal/ui/settings_about.go:217
+#: internal/ui/settings_about.go:220
 msgid "Shown once the releases are read"
 msgstr "릴리스가 읽혀지면 표시됩니다."
 
-#: internal/ui/settings_about.go:219
+#: internal/ui/settings_about.go:222
 msgid "Reading the releases…"
 msgstr "릴리스 정보 읽는 중…"
 
-#: internal/ui/settings_about.go:240
+#: internal/ui/settings_about.go:243
 msgid "installed"
 msgstr "설치됨"
 
-#: internal/ui/settings_about.go:244
+#: internal/ui/settings_about.go:247
 msgid "On GitHub"
 msgstr "GitHub에서"
 
@@ -15964,7 +15968,7 @@ msgid "What the next login runs inua on"
 msgstr ""
 
 #: internal/ui/settings_compositor.go:77
-#: ui/settings.ui:6531
+#: ui/settings.ui:6565
 msgid "Compositor"
 msgstr ""
 
@@ -16681,6 +16685,136 @@ msgstr "바뀌지 않았습니다: 관리자 암호를 입력하지 않았습니
 msgid "Page"
 msgstr "페이지"
 
+#: internal/ui/settings_securitykeys.go:219
+#: internal/ui/settings_securitykeys.go:224
+#: internal/ui/settings_securitykeys.go:229
+#: internal/ui/settings_securitykeys.go:242
+msgid "SECURITY KEY"
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:220
+msgid "Install libfido2's tools (fido2-tools) to manage a security key here."
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:225
+msgid "The security keys could not be listed: %v"
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:229
+msgid "FIDO2, such as a YubiKey"
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:230
+msgid "Plug in a security key."
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:262
+msgid "It could not be read"
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:269
+msgid "Not set: unlocking a gpg key with it needs one"
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:271
+msgid "Set"
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:273
+msgid "Set · %d try left before it locks"
+msgid_plural "Set · %d tries left before it locks"
+msgstr[0] ""
+
+#: internal/ui/settings_securitykeys.go:276
+msgid "Blocked: too many wrong tries. Only a reset of the key unlocks it, which erases its credentials."
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:281
+msgid "Set PIN"
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:283
+msgid "Change PIN"
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:289
+msgid "The PIN was changed. The gpg keys it unlocks still open with it."
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:310
+msgid "Current PIN"
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:312
+msgid "New PIN"
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:313
+msgid "New PIN again"
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:315
+msgid "From %d to 63 characters"
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:333
+msgid "Unlocks no gpg key"
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:333
+msgid "Add it to a password store's key in Pass: File → Security keys"
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:334
+#: internal/ui/settings_securitykeys.go:343
+msgid "Open Pass"
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:341
+msgid "Unlocks %s"
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:341
+msgid "Added in Pass on %s"
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:349
+msgid "Firmware"
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:411
+msgid "Type the current PIN."
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:419
+msgid "A PIN has %d to 63 characters, and is on one line."
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:423
+msgid "The new PINs do not match."
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:466
+msgid "The current PIN is wrong."
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:468
+msgid "The current PIN is wrong. %d try left before the key locks."
+msgid_plural "The current PIN is wrong. %d tries left before the key locks."
+msgstr[0] ""
+
+#: internal/ui/settings_securitykeys.go:474
+msgid "The key does not take this PIN: it is too short, too long, or too simple."
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:477
+msgid "The PIN is blocked: too many wrong tries. Unplug the key and plug it in again; after that, only a reset unlocks it."
+msgstr ""
+
+#: internal/ui/settings_securitykeys.go:479
+msgid "The PIN was not changed: %v"
+msgstr ""
+
 #: internal/ui/settings_sound.go:85
 msgid "OUTPUT"
 msgstr "출력"
@@ -16918,7 +17052,7 @@ msgid "%s Upgrade with: inua upgrade"
 msgstr "%s 업그레이드: inua 업그레이드"
 
 #: internal/ui/updates.go:99
-#: ui/settings.ui:6790
+#: ui/settings.ui:6824
 msgid "Upgrade"
 msgstr "업그레이드"
 
@@ -18506,7 +18640,7 @@ msgid "Display"
 msgstr "디스플레이"
 
 #: ui/control.ui:666
-#: ui/settings.ui:6463
+#: ui/settings.ui:6497
 msgid "Sound"
 msgstr "소리"
 
@@ -20066,7 +20200,7 @@ msgid "Press the new shortcut. Esc cancels; Backspace turns it off."
 msgstr "새로운 단축키를 누른다. Esc는 취소합니다. 백스페이스는 이 기능을 끕니다."
 
 #: ui/settings.ui:4960
-#: ui/settings.ui:6689
+#: ui/settings.ui:6723
 msgid "<span alpha='55%'>[</span>INUA<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>INUA<span alpha='55%'>]</span>"
 
@@ -20246,67 +20380,71 @@ msgstr "더 빠르게 스와이프하면 포인터가 더 멀리 이동합니다
 msgid "Stop setting the touchpad in inua"
 msgstr "inua에서 터치패드 설정을 중지합니다."
 
-#: ui/settings.ui:6497
+#: ui/settings.ui:6463
+msgid "Security Keys"
+msgstr ""
+
+#: ui/settings.ui:6531
 msgid "Power"
 msgstr "전원"
 
-#: ui/settings.ui:6565
+#: ui/settings.ui:6599
 msgid "About"
 msgstr "소개"
 
-#: ui/settings.ui:6603
+#: ui/settings.ui:6637
 msgid "<span alpha='55%'>[</span>SYSTEM<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>시스템<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6611
+#: ui/settings.ui:6645
 msgid "This computer, as a card to share"
 msgstr "이 컴퓨터를 공유용 카드로"
 
-#: ui/settings.ui:6623
+#: ui/settings.ui:6657
 msgid "Copy image"
 msgstr "이미지 복사"
 
-#: ui/settings.ui:6633
+#: ui/settings.ui:6667
 msgid "Copy text"
 msgstr "텍스트 복사"
 
-#: ui/settings.ui:6635
+#: ui/settings.ui:6669
 msgid "As Markdown"
 msgstr "Markdown으로"
 
-#: ui/settings.ui:6646
+#: ui/settings.ui:6680
 msgid "As a PNG image"
 msgstr "PNG 이미지로"
 
-#: ui/settings.ui:6697
+#: ui/settings.ui:6731
 msgid "The version, and new releases"
 msgstr "버전 및 새 릴리스"
 
-#: ui/settings.ui:6727
+#: ui/settings.ui:6761
 msgid "Version"
 msgstr "버전"
 
-#: ui/settings.ui:6763
+#: ui/settings.ui:6797
 msgid "Updates"
 msgstr "업데이트"
 
-#: ui/settings.ui:6799
+#: ui/settings.ui:6833
 msgid "Check for updates"
 msgstr "업데이트 확인"
 
-#: ui/settings.ui:6825
+#: ui/settings.ui:6859
 msgid "Check every day"
 msgstr "매일 확인"
 
-#: ui/settings.ui:6834
+#: ui/settings.ui:6868
 msgid "A notification says when a new release is out, with a button to upgrade"
 msgstr "새 릴리스가 출시되면 업그레이드 버튼과 함께 알림이 표시됩니다."
 
-#: ui/settings.ui:6879
+#: ui/settings.ui:6913
 msgid "<span alpha='55%'>[</span>CHANGELOG<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>CHANGELOG<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6887
+#: ui/settings.ui:6921
 msgid "What the latest release changed"
 msgstr "최신 릴리스에서 변경된 사항"
 
