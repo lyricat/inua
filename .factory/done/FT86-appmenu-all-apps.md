@@ -41,3 +41,6 @@ Tests: make test passed (throwaway HOME, isolated runtime dir, no session bus). 
 
 ## factory · 2026-11-08 21:23
 Moved review → ready at the owner's word in chat: “move to ready”. Head c1dee5c5 (fix round 2) has no factory review; make test passed at the fix round, and the menus were not checked by eye.
+
+## factory · 2026-11-08 21:34
+Merged into master at 655b7e89, at the owner's word: “if all items in ready is fine, merge them to master”. Catalog conflicts with FT85 resolved by regenerating with make i18n; no translation lost. make test passed on the merged master. PR #87: already closed (GitHub marked it merged when master took its head).

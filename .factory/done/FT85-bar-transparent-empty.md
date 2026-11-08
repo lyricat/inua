@@ -27,3 +27,6 @@ notes:
 - make generate and make i18n passed during conflict resolution; reviewer confirmed generated UI and catalog references.
 - Installs: none. UI was not visually checked; real multi-monitor rendering and compositor effects remain unverified.
 - Moved review/ → ready/; awaiting owner approval, not merged into master.
+
+## factory · 2026-11-08 21:34
+Merged into master at 3121e872, at the owner's word: “if all items in ready is fine, merge them to master”. make test passed on the merged master (655b7e89, with FT86). PR #85: already closed (GitHub marked it merged when master took its head). The P3 note on the calendar outline is not fixed.
