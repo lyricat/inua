@@ -484,7 +484,6 @@ func (s *shellUI) openSettings() {
 	ui.Get("tray", &st.tray)
 	ui.Get("bar_menu", &st.barMenu)
 	ui.Get("bar_transparent_empty", &st.barTransparentEmpty)
-	ui.Get("bar_transparent_empty", &st.barTransparentEmpty)
 	ui.Get("bar_pass", &st.barPass)
 	ui.Get("bg_image", &st.bgImage)
 	ui.Get("bg_color", &st.bgColor)

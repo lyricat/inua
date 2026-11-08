@@ -50,6 +50,10 @@ menu = true
 # for the focused window's title.
 title_mode = "app"
 
+# Draw a bar without its panel while the workspace it shows has no window,
+# and opaque once one is there. The buttons keep their own look.
+transparent_empty = false
+
 # Show tray (StatusNotifierItem) icons.
 tray = true
 

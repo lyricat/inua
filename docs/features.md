@@ -19,6 +19,10 @@ keeps a blue outline when focus moves to another display. The active window
 keeps Hyprland's own outline. The app menu
 stays with the window represented by its bar.
 
+With the bar's transparency setting on, a bar whose workspace holds no
+window is drawn without its panel, and it turns opaque as soon as a window
+is there. The buttons keep their own look; only the panel behind them goes.
+
 The focused application's menu sits in the bar. A menu the application
 publishes (Qt, a GTK 3 application with `appmenu-gtk-module`, Firefox's
 own exporter, an inua application) is shown as it is. Otherwise the menu
