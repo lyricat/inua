@@ -797,3 +797,94 @@ Window otp_dialog {
     }
   }
 }
+
+// Security keys (docs/security-key.md): the store's keys, the
+// security keys that unlock each, and adding one.
+Window seckey_dialog {
+  styles ["app", "settings", "pass", "pass-dialog"]
+  modal: true;
+  resizable: false;
+  default-width: 520;
+  hide-on-close: true;
+
+  Box {
+    styles ["page"]
+    orientation: vertical;
+    spacing: 12;
+
+    Label {
+      styles ["pass-title"]
+      label:  _("Security keys");
+      xalign: 0;
+      wrap: true;
+    }
+
+    Label {
+      styles ["sub"]
+      label:  _("Unlock the store's key with a FIDO2 security key, such as a YubiKey: its PIN and a touch in place of the passphrase. The passphrase keeps working.");
+      xalign: 0;
+      wrap: true;
+    }
+
+    // A section for each of the store's keys, filled in when it opens.
+    Box seckey_keys {
+      orientation: vertical;
+    }
+
+    // Adding a security key to the key chosen.
+    Box seckey_form {
+      orientation: vertical;
+      spacing: 8;
+      visible: false;
+
+      Label seckey_form_title {
+        styles ["sub"]
+        xalign: 0;
+        wrap: true;
+      }
+
+      PasswordEntry seckey_passphrase {
+        placeholder-text:  _("The key's passphrase");
+        show-peek-icon: true;
+      }
+
+      PasswordEntry seckey_pin {
+        placeholder-text:  _("The security key's PIN");
+      }
+    }
+
+    Label seckey_status {
+      styles ["sub"]
+      xalign: 0;
+      wrap: true;
+      visible: false;
+    }
+
+    Label seckey_error {
+      styles ["pass-error"]
+      xalign: 0;
+      wrap: true;
+      visible: false;
+    }
+
+    Box {
+      spacing: 8;
+      halign: end;
+      margin-top: 4;
+
+      Button seckey_close {
+        styles ["outlined"]
+        name: "seckey-close";
+        label:  _("Close");
+      }
+
+      Button seckey_add {
+        styles ["suggested-action"]
+        name: "seckey-add";
+        label:  _("Add");
+        visible: false;
+        sensitive: false;
+      }
+    }
+  }
+}

@@ -21,6 +21,14 @@ type appMenuState struct {
 	registrar   *appmenu.Registrar
 	menu        *gtk.Popover // the open one, borrowed from its button
 	menuRequest uint64       // the newest pending submenu read
+
+	// The menu found for the focused window: looking for one asks the bus,
+	// so it runs off the main thread, once when the focus moves to another
+	// window and again when the registrar or a published menu changes.
+	window  string               // the focused window it was found for
+	found   appmenu.Registration // its menu, if any
+	finding uint64               // the newest search
+	stale   bool                 // search again for the same window
 }
 
 // appMenuTop is a button of the bar's menu.
@@ -38,7 +46,12 @@ func (s *shellUI) startAppMenu() {
 		return
 	}
 	s.appmenu.registrar = appmenu.New(conn)
-	s.appmenu.registrar.SetOnChange(func() { gtkx.Post(s.syncAppMenus) })
+	s.appmenu.registrar.SetOnChange(func() {
+		gtkx.Post(func() {
+			s.appmenu.stale = true
+			s.syncAppMenus()
+		})
+	})
 	s.appmenu.registrar.SetOnUpdate(func(reg appmenu.Registration) {
 		gtkx.Post(func() { s.reloadAppMenu(reg) })
 	})
@@ -60,6 +73,51 @@ func (s *shellUI) syncAppMenus() {
 	}
 }
 
+// findAppMenu looks for the focused window's menu when the focus moved to
+// another window since the last search, or the menus changed. The search
+// asks the bus, and an application that does not answer holds it for
+// seconds, so it runs on a goroutine and its result comes back through
+// gtkx.Post, dropped when another search started meanwhile. A window that
+// is no longer the one searched for has no menu until its own is found.
+func (s *shellUI) findAppMenu() {
+	window := s.snap.FocusedWindow
+	if window == s.appmenu.window && !s.appmenu.stale {
+		return
+	}
+	if window != s.appmenu.window {
+		s.appmenu.found = appmenu.Registration{}
+	}
+	s.appmenu.window = window
+	s.appmenu.stale = false
+	s.appmenu.finding++
+	request := s.appmenu.finding
+	pid := focusedPID(s.snap)
+	if pid <= 0 {
+		s.appmenu.found = appmenu.Registration{}
+		return
+	}
+	go func() {
+		reg, _ := s.appmenu.registrar.Focused(pid)
+		gtkx.Post(func() {
+			if s.appmenu.finding != request || s.appmenu.found == reg {
+				return
+			}
+			s.appmenu.found = reg
+			s.syncAppMenus()
+		})
+	}()
+}
+
+// focusedAppMenu is the menu found for the focused window, if the search
+// for it has ended.
+func (s *shellUI) focusedAppMenu() appmenu.Registration {
+	s.findAppMenu()
+	if s.appmenu.window != s.snap.FocusedWindow {
+		return appmenu.Registration{}
+	}
+	return s.appmenu.found
+}
+
 // syncAppMenu gives a bar the menu of the focused application when the bar
 // is the focused monitor's, and none otherwise. It runs whenever the focus,
 // the monitors or the registrations change.
@@ -69,7 +127,7 @@ func (s *shellUI) syncAppMenu(b *bar) {
 	}
 	var want appmenu.Registration
 	if b.connector() == s.snap.FocusedOutput {
-		want, _ = s.appmenu.registrar.Focused(focusedPID(s.snap))
+		want = s.focusedAppMenu()
 	}
 	if b.appMenuReg == want {
 		return
@@ -168,7 +226,16 @@ func (s *shellUI) bindAppMenuHandlers() {
 		if err != nil {
 			return
 		}
+		parent := btn.GetParent()
+		if parent == nil {
+			return
+		}
 		for _, b := range s.bars {
+			// The buttons of a bar's menu are its box's children; another
+			// bar's menu may have a button with the same id.
+			if b.appMenu.GoPointer() != parent.GoPointer() {
+				continue
+			}
 			i := slices.IndexFunc(b.appMenuTop, func(t appMenuTop) bool { return int(t.id) == id })
 			if i < 0 || b.appMenuReg == (appmenu.Registration{}) {
 				continue
@@ -213,9 +280,11 @@ func (s *shellUI) closeAppMenu() {
 func (s *shellUI) showAppMenu(reg appmenu.Registration, id int32, w *gtk.Widget) {
 	s.appmenu.menuRequest++
 	request := s.appmenu.menuRequest
+	pid := focusedPID(s.snap)
 	w.Ref() // kept until the menu is built
 	go func() {
 		entries, err := s.appmenu.registrar.Submenu(reg, id)
+		live := err == nil && s.appmenu.registrar.Current(reg, pid)
 		gtkx.Post(func() {
 			defer w.Unref()
 			if err != nil {
@@ -225,7 +294,7 @@ func (s *shellUI) showAppMenu(reg appmenu.Registration, id int32, w *gtk.Widget)
 			items := s.appMenuItems(reg, entries)
 			// The bar's menu was redrawn or went to another application
 			// meanwhile.
-			if s.appmenu.menuRequest != request || len(items) == 0 || !w.GetMapped() || !s.appMenuCurrent(reg) {
+			if s.appmenu.menuRequest != request || len(items) == 0 || !w.GetMapped() || !live || !s.appMenuCurrent(reg) {
 				return
 			}
 			s.closeAppMenu()
@@ -239,9 +308,12 @@ func (s *shellUI) showAppMenu(reg appmenu.Registration, id int32, w *gtk.Widget)
 	}()
 }
 
-// appMenuCurrent is whether reg is still the focused application's menu.
+// appMenuCurrent is whether reg is still the menu found for the focused
+// window. It asks nothing of the bus: what reads or clicks a menu checks off
+// the main thread, with the registrar's Current, that the application still
+// has it.
 func (s *shellUI) appMenuCurrent(reg appmenu.Registration) bool {
-	return s.appmenu.registrar.Current(reg, focusedPID(s.snap))
+	return reg != (appmenu.Registration{}) && s.focusedAppMenu() == reg
 }
 
 // appMenuItems turns dbusmenu entries into a menu's lines, as the tray's
@@ -289,7 +361,11 @@ func (s *shellUI) activateAppMenu(reg appmenu.Registration, id int32) {
 	if !s.appMenuCurrent(reg) {
 		return
 	}
+	pid := focusedPID(s.snap)
 	go func() {
+		if !s.appmenu.registrar.Current(reg, pid) {
+			return
+		}
 		if err := s.appmenu.registrar.Activate(reg, id); err != nil {
 			log.Printf("appmenu activate: %v", err)
 		}
