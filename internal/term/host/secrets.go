@@ -31,6 +31,8 @@ func SecretFor(q pinentry.Request) (Secret, bool) {
 	switch {
 	case q.Repeat != "" || q.Visible:
 		return Secret{}, false
+	case q.SecurityKey != "": // the key is touched at the computer
+		return Secret{}, false
 	case q.Mode != pinentry.GetPin && q.Mode != pinentry.Confirm && q.Mode != pinentry.Message:
 		return Secret{}, false
 	}

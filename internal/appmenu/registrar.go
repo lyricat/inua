@@ -4,6 +4,7 @@ package appmenu
 import (
 	"context"
 	"fmt"
+	"strings"
 	"sync"
 	"time"
 
@@ -168,6 +169,10 @@ func (r *Registrar) handle(sig *dbus.Signal) {
 		next, c := sig.Body[2].(string)
 		if a && b && c && next == "" {
 			r.removeOwner(name)
+		}
+		// A published menu came or went: the focused window's may be it.
+		if a && b && c && strings.HasPrefix(name, nativeMenuPrefix) {
+			r.changed()
 		}
 	case layoutUpdated:
 		if len(sig.Body) != 2 {

@@ -50,8 +50,11 @@ func Ask(ctx context.Context, sock string, q pinentry.Request) Reply {
 	defer cancel()
 	desk := make(chan Reply, 1)
 	go func() { desk <- askShell(ctx, sock, q) }()
-	pages := make(chan Reply, 1)
+	// A question the pages do not show (a security key's PIN, a new
+	// passphrase) waits for the dialog alone.
+	var pages chan Reply
 	if _, ok := host.SecretFor(q); ok {
+		pages = make(chan Reply, 1)
 		go func() { pages <- askPages(ctx, q) }()
 	}
 	var failed Reply

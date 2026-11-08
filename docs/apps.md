@@ -313,6 +313,10 @@ entry. Search looks through every category.
 - A one-time code comes from a pasted secret or `otpauth://` link, or a
   QR code read from the screen, an area of it, or an image.
 - With more than one store, a menu at the foot of the categories switches.
+- **File → Security keys** adds a FIDO2 security key (a YubiKey, say) to
+  the store's key: then gpg's passphrase is asked as the security key's
+  PIN and a touch, and the passphrase still opens it
+  ([security-key.md](security-key.md)). It needs libfido2's tools.
 
 Every change goes through `pass`, so git and `.gpg-id` work as on the
 command line.
