@@ -3,7 +3,7 @@ drawings/apps_extra.py, about half the detail, no text."""
 
 import math
 
-from lib import soft, soft_shadow, tile, two
+from lib import brand_strokes, soft, soft_shadow, tile, two
 
 
 def _gem(ic, cx, cy, r, light, dark):
@@ -51,19 +51,12 @@ def magpie(ic):
 
 @soft("com.mistermorph")
 def mistermorph(ic):
-    tile(ic, "#3E5577", "#18253D")
-    soft_shadow(ic, 128, 214, 78, 10)
-    cx, cy, r = 128, 108, 80
-    ic.path("M76 206C76 194 92 190 100 186H156C164 190 180 194 180 206Z", fill=two(ic, "#B07444", "#7A4A22"))
-    ic.rect(92, 174, 72, 16, rx=6, fill=two(ic, "#C48A55", "#8A5A30"))
-    ic.circle(cx, cy, r, fill=two(ic, "#FFFFFF", "#DCE3EC"))
-    ball = ic.clip(f'<circle cx="{cx}" cy="{cy}" r="{r}"/>')
-    with ic.g(clip_path=ball):
-        n = 5
-        for i in range(-n, n + 1):
-            t = 0.83 * i / n
-            ye = cy + r * t
-            half = r * math.sqrt(0.87 ** 2 - t * t)
-            ym = cy + r * t * (abs(t) / 0.83) ** 0.9
-            ic.path(f"M{cx - half:.1f} {ye:.1f}Q{cx} {2 * ym - ye:.1f} {cx + half:.1f} {ye:.1f}", fill="none",
-                    stroke="#2463AE", stroke_width=5.5, stroke_linecap="round")
+    tile(ic, "#3E4270", "#14162C")
+    cx, cy, r = 128, 120, 98
+    soft_shadow(ic, cx, 224, 86, 10)
+    ic.circle(cx, cy, r, fill=two(ic, "#1A1D2E", "#07080F"))
+    k = r / 49
+    with ic.g(transform=f"translate({cx - 50 * k:.3f} {cy - 50 * k:.3f}) scale({k:.5f})"):
+        for d, colour, w in brand_strokes("mistermorph", every=3):
+            white = colour.upper() == "#F2F7FF"
+            ic.path(d, fill="none", stroke=colour, stroke_width=w * (1.8 if white else 1.0), stroke_linecap="round")
