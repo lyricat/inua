@@ -94,19 +94,20 @@ type settings struct {
 	// controls start from what is in effect.
 	hyprKb string
 
-	sc       shortcutState     // the Shortcuts page
-	ai       aiSettings        // the AI page
-	about    aboutSettings     // the About page
-	keyring  keyringSettings   // the Keyring page
-	apps     appsSettings      // the Default Apps page
-	portals  portalsSettings   // its [DIALOGS]
-	displays displaysSettings  // the Displays page
-	bt       bluetoothSettings // the Bluetooth page
-	wifi     wifiSettings      // the Wi-Fi page
-	voice    voiceSettings     // the Voice page
-	sound    soundSettings     // the Sound page
-	power    powerSettings     // the Power page
-	search   settingsSearch    // the search over the index
+	sc           shortcutState       // the Shortcuts page
+	ai           aiSettings          // the AI page
+	about        aboutSettings       // the About page
+	keyring      keyringSettings     // the Keyring page
+	apps         appsSettings        // the Default Apps page
+	portals      portalsSettings     // its [DIALOGS]
+	displays     displaysSettings    // the Displays page
+	bt           bluetoothSettings   // the Bluetooth page
+	wifi         wifiSettings        // the Wi-Fi page
+	voice        voiceSettings       // the Voice page
+	sound        soundSettings       // the Sound page
+	power        powerSettings       // the Power page
+	securityKeys securityKeySettings // the Security Keys page
+	search       settingsSearch      // the search over the index
 
 	sticky map[uintptr]*stickyHead // by the pages' vertical adjustments
 
@@ -538,6 +539,7 @@ func (s *shellUI) openSettings() {
 	s.getWifiSettings(ui)
 	s.getBluetoothSettings(ui)
 	s.getPowerSettings(ui)
+	s.getSecurityKeySettings(ui)
 	s.getCompositorSettings(ui)
 	s.getVoiceSettings(ui)
 	s.getSoundSettings(ui)
@@ -587,7 +589,7 @@ var settingsGroups = []struct {
 	pages []string
 }{
 	{i18n.M("Connections"), []string{"wifi", "bluetooth"}},
-	{i18n.M("Devices"), []string{"displays", "keyboard", "mouse", "sound", "voice"}},
+	{i18n.M("Devices"), []string{"displays", "keyboard", "mouse", "sound", "voice", "securitykeys"}},
 	{i18n.M("Desktop"), []string{"appearance", "bar", "launcher", "notifications", "shortcuts"}},
 	{i18n.M("Apps"), []string{"apps", "ai", "clipboard", "keyring"}},
 	{i18n.M("System"), []string{"compositor", "power", "about"}},
@@ -607,6 +609,7 @@ var settingsPages = func() []string {
 var settingsPageAliases = map[string]string{
 	"wallpaper": "appearance", "dock": "bar", "control": "bar", "touchpad": "mouse",
 	"network": "wifi", "wi-fi": "wifi",
+	"security-keys": "securitykeys", "securitykey": "securitykeys", "yubikey": "securitykeys", "fido2": "securitykeys",
 	"audio": "sound", "volume": "sound", "microphone": "sound",
 	"battery": "power", "lid": "power", "idle": "power", "sleep": "power", "suspend": "power",
 }

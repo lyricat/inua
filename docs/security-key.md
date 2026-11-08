@@ -7,7 +7,8 @@ gets the passphrase. The passphrase keeps working; this adds a way in, it
 takes none away.
 
 Code: `internal/securitykey` (no GTK), the Pass app's dialog in
-`internal/lightui/pass_seckey.go`, and `cmd/inua-pinentry`.
+`internal/lightui/pass_seckey.go`, the Settings page in
+`internal/ui/settings_securitykeys.go`, and `cmd/inua-pinentry`.
 
 ## How
 
@@ -39,6 +40,12 @@ give the same 32 bytes, from that key alone, after its PIN and a touch.
   back to typing it, saying why.
 - Several security keys can be enrolled for one gpg key, a spare among
   them. **Remove** forgets an enrolment.
+- **Settings → Security Keys** shows each key plugged in: its PIN and
+  the tries left, its firmware, and the gpg keys it unlocks (the
+  enrolments whose credential it knows, asked without a PIN or a touch).
+  It sets the PIN (`fido2-token -S`) or changes it (`-C`); the
+  hmac-secret does not depend on the PIN, so a changed PIN unlocks as
+  before.
 
 The PIN is always asked (user verification): a security key alone does
 not unlock, as anyone could pick it up. Enrolling one without a PIN set is

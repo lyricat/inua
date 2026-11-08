@@ -105,6 +105,8 @@ hourglass                             hourglass
 system-lock-screen                    lock
 dialog-password                       key
 security-high                         shield-check
+# Settings → Security Keys: a FIDO2 key, which is mostly a USB stick
+security-key                          usb
 action-unavailable                    prohibit
 edit-paste                            clipboard-text
 applets-screenshooter                 camera

@@ -38,6 +38,7 @@ const (
 // What the security key answered, as the tools report it.
 var (
 	ErrPIN          = errors.New("wrong PIN")
+	ErrPINPolicy    = errors.New("PIN too short or too long")
 	ErrPINBlocked   = errors.New("PIN blocked")
 	ErrNoPIN        = errors.New("no PIN set")
 	ErrTouch        = errors.New("not touched in time")
@@ -49,7 +50,7 @@ var (
 // stderr, to the errors above.
 var fidoErrors = map[string]error{
 	"FIDO_ERR_PIN_INVALID":           ErrPIN,
-	"FIDO_ERR_PIN_POLICY_VIOLATION":  ErrPIN,
+	"FIDO_ERR_PIN_POLICY_VIOLATION":  ErrPINPolicy,
 	"FIDO_ERR_PIN_BLOCKED":           ErrPINBlocked,
 	"FIDO_ERR_PIN_AUTH_BLOCKED":      ErrPINBlocked,
 	"FIDO_ERR_PIN_NOT_SET":           ErrNoPIN,
@@ -110,10 +111,15 @@ func parseDevices(out []byte) []Device {
 
 // Info is what a security key can do.
 type Info struct {
-	PIN        bool // a PIN is set
-	HMACSecret bool // it has the hmac-secret extension
-	Retries    int  // PIN tries left; -1 when it does not say
+	PIN        bool   // a PIN is set
+	HMACSecret bool   // it has the hmac-secret extension
+	Retries    int    // PIN tries left; -1 when it does not say
+	MinPIN     int    // the shortest PIN it takes, in characters
+	Firmware   string // "5.8.0"; "" when it does not say
 }
+
+// maxPIN is the longest PIN in bytes (CTAP2).
+const maxPIN = 63
 
 // DeviceInfo asks dev what it can do.
 func DeviceInfo(ctx context.Context, dev Device) (Info, error) {
@@ -126,7 +132,7 @@ func DeviceInfo(ctx context.Context, dev Device) (Info, error) {
 
 // parseInfo reads fido2-token -I.
 func parseInfo(out []byte) Info {
-	info := Info{Retries: -1}
+	info := Info{Retries: -1, MinPIN: 4}
 	sc := bufio.NewScanner(bytes.NewReader(out))
 	for sc.Scan() {
 		key, value, ok := strings.Cut(sc.Text(), ": ")
@@ -150,6 +156,15 @@ func parseInfo(out []byte) Info {
 		case "pin retries":
 			if n, err := strconv.Atoi(strings.TrimSpace(value)); err == nil {
 				info.Retries = n
+			}
+		case "minpinlen":
+			if n, err := strconv.Atoi(strings.TrimSpace(value)); err == nil && n > 0 {
+				info.MinPIN = n
+			}
+		case "fwversion":
+			// 0xMMmmpp, as Yubico and others number it.
+			if n, err := strconv.ParseUint(strings.TrimPrefix(strings.TrimSpace(value), "0x"), 16, 32); err == nil && n > 0 {
+				info.Firmware = fmt.Sprintf("%d.%d.%d", n>>16, n>>8&0xff, n&0xff)
 			}
 		}
 	}
@@ -267,4 +282,48 @@ func random(n int) []byte {
 	b := make([]byte, n)
 	rand.Read(b)
 	return b
+}
+
+// CheckPIN says why pin cannot be a new PIN for a key that takes no
+// shorter than min characters; nil when it can.
+func CheckPIN(pin string, min int) error {
+	if len([]rune(pin)) < min || len(pin) > maxPIN || strings.ContainsAny(pin, "\n\r") {
+		return ErrPINPolicy
+	}
+	return nil
+}
+
+// SetPIN sets the PIN of dev, which has none.
+func SetPIN(ctx context.Context, dev Device, pin string) error {
+	if err := CheckPIN(pin, 4); err != nil {
+		return err
+	}
+	// The tool asks for the new PIN, then again.
+	_, err := run(ctx, nil, pin+"\n"+pin, toolToken, "-S", dev.Path)
+	return err
+}
+
+// ChangePIN changes the PIN of dev from old to pin.
+func ChangePIN(ctx context.Context, dev Device, old, pin string) error {
+	if err := CheckPIN(pin, 4); err != nil {
+		return err
+	}
+	if strings.ContainsAny(old, "\n\r") {
+		return ErrPIN
+	}
+	// The tool asks for the current PIN, the new one, then it again.
+	_, err := run(ctx, nil, old+"\n"+pin+"\n"+pin, toolToken, "-C", dev.Path)
+	return err
+}
+
+// Holds is the enrolments whose credential dev knows, asked without a
+// PIN or a touch.
+func Holds(ctx context.Context, dev Device, enrolled []Enrolment) []Enrolment {
+	var out []Enrolment
+	for _, e := range enrolled {
+		if hasCredential(ctx, dev, e.Credential) {
+			out = append(out, e)
+		}
+	}
+	return out
 }

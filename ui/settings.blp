@@ -4626,6 +4626,33 @@ ApplicationWindow settings {
         };
       }
       StackPage {
+        name: "securitykeys";
+        title:  _("Security Keys");
+
+        child: Overlay {
+          child: ScrolledWindow scroll_securitykeys {
+            hscrollbar-policy: never;
+
+            // Each FIDO2 security key plugged in: its PIN, and the gpg
+            // keys it unlocks: laid out by settings_securitykeys.go.
+            Box securitykeys_page {
+              styles ["page"]
+              orientation: vertical;
+            }
+          };
+
+          // The head of the section scrolled under the top edge.
+          [overlay]
+          Box sticky_securitykeys {
+            styles ["section-head", "sticky"]
+            spacing: 10;
+            valign: start;
+            visible: false;
+          }
+        };
+      }
+
+      StackPage {
         name: "sound";
         title:  _("Sound");
 
