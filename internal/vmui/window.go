@@ -275,6 +275,7 @@ type vmWindow struct {
 	waitLabel    string
 	question     *dialog
 	watchCancel  context.CancelFunc
+	menu         *appui.MenuBar
 	lastPage     string
 	lastChecks   []vm.DoctorItem
 	onClose      func(gtk.Window) bool
@@ -481,12 +482,16 @@ func openWindow(c *appui.Ctx, manager VMManager) *vmWindow {
 		v.closed = true
 		v.stopSerial()
 		v.watchCancel()
+		if v.menu != nil {
+			v.menu.Close()
+		}
 		return false
 	}
 	v.win.ConnectCloseRequest(&v.onClose)
 
 	v.assistantHint = v.assistantNote.GetText()
 	v.fillTemplates()
+	v.installMenuBar()
 	v.paintAll(manager.Machines())
 	v.startWatch()
 	v.win.Present()
