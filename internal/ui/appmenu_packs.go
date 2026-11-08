@@ -160,6 +160,12 @@ func appMenuKeyLabel(action appmenu.Action) string {
 	switch strings.ToLower(key) {
 	case "comma":
 		key = ","
+	case "period":
+		key = "."
+	case "bracketleft":
+		key = "["
+	case "bracketright":
+		key = "]"
 	case "equal":
 		key = "="
 	case "minus":

@@ -231,6 +231,10 @@ func TestPackRejects(t *testing.T) {
 		"id = \"x\"\nmatch = [\"a\"]\nnope = true\n",
 		"id = \"x\"\nmatch = [\"a\"]\n[[section]]\nlabel = \"File\"\n[[section.item]]\nlabel = \"Go\"\naction = \"explode\"\n",
 		"id = \"x\"\nmatch = [\"a\"]\n[[section]]\nlabel = \"File\"\n[[section.item]]\nlabel = \"Go\"\naction = \"close-window\"\nkeys = [\"T\"]\n",
+		// Punctuation is not an XKB keysym name: the key would never arrive.
+		"id = \"x\"\nmatch = [\"a\"]\n[[section]]\nlabel = \"Tabs\"\n[[section.item]]\nlabel = \"Next\"\nkeys = [\"CTRL\", \"SHIFT\", \".\"]\n",
+		"id = \"x\"\nmatch = [\"a\"]\n[[section]]\nlabel = \"Tabs\"\n[[section.item]]\nlabel = \"Next\"\nkeys = [\"CTRL\", \"]\"]\n",
+		"id = \"x\"\nmatch = [\"a\"]\n[[section]]\nlabel = \"Go\"\n[[section.item]]\nlabel = \"Mark\"\nsequence = [\"g\", \"[\"]\n",
 	}
 	for _, body := range cases {
 		if _, err := parsePack("bad.toml", []byte(body)); err == nil {

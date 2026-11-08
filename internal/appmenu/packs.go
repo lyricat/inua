@@ -9,6 +9,7 @@ import (
 	"slices"
 	"strings"
 	"sync"
+	"unicode"
 
 	"github.com/BurntSushi/toml"
 
@@ -570,8 +571,17 @@ func validateItem(name, section string, it itemFile, depth int) error {
 			return fail("%q has an empty key", it.Label)
 		}
 	}
+	if len(it.Keys) > 0 {
+		if err := checkKeyName(it.Keys[len(it.Keys)-1]); err != nil {
+			return fail("%q: %v", it.Label, err)
+		}
+	}
 	for _, step := range it.Sequence {
-		if _, err := parseSequenceStroke(step); err != nil {
+		stroke, err := parseSequenceStroke(step)
+		if err == nil {
+			err = checkKeyName(stroke.Key)
+		}
+		if err != nil {
 			return fail("%q sequence stroke %q: %v", it.Label, step, err)
 		}
 	}
@@ -582,6 +592,17 @@ func validateItem(name, section string, it itemFile, depth int) error {
 		if err := validateItem(name, section, child, depth+1); err != nil {
 			return err
 		}
+	}
+	return nil
+}
+
+// checkKeyName refuses a key written as a punctuation character: the
+// compositor looks a key up by its XKB keysym name, and "." names nothing
+// there (it is "period"), so the shortcut would never arrive.
+func checkKeyName(key string) error {
+	r := []rune(strings.TrimSpace(key))
+	if len(r) == 1 && !unicode.IsLetter(r[0]) && !unicode.IsDigit(r[0]) {
+		return fmt.Errorf("key %q is not a keysym name; write it as XKB names it (period, comma, bracketleft, ...)", key)
 	}
 	return nil
 }

@@ -75,22 +75,22 @@ separator = true
 
 [[section.item]]
 label = "Move Tab Forward"
-keys = ["CTRL", "SHIFT", "."]
+keys = ["CTRL", "SHIFT", "period"]
 
 [[section.item]]
 label = "Move Tab Backward"
-keys = ["CTRL", "SHIFT", ","]
+keys = ["CTRL", "SHIFT", "comma"]
 
 [[section.item]]
 separator = true
 
 [[section.item]]
 label = "Next Window"
-keys = ["CTRL", "SHIFT", "]"]
+keys = ["CTRL", "SHIFT", "bracketright"]
 
 [[section.item]]
 label = "Previous Window"
-keys = ["CTRL", "SHIFT", "["]
+keys = ["CTRL", "SHIFT", "bracketleft"]
 
 [[section]]
 label = "View"
