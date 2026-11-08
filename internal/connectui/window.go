@@ -22,8 +22,9 @@ import (
 // window is Mobile Link's window: the index of This computer and the
 // devices, and the chosen one's page.
 type window struct {
-	c   *appui.Ctx
-	win *gtk.ApplicationWindow
+	c    *appui.Ctx
+	win  *gtk.ApplicationWindow
+	menu *appui.MenuBar
 
 	sideThis, sideFind, sideAdd                         gtk.Button
 	sideThisTitle, sideThisSub, status                  gtk.Label
@@ -114,10 +115,12 @@ func openWindow(c *appui.Ctx) *window {
 	w.onClose = func(gtk.Window) bool {
 		w.closed = true
 		w.cancel()
+		if w.menu != nil {
+			w.menu.Close()
+		}
 		return false
 	}
 	w.win.ConnectCloseRequest(&w.onClose)
-
 	name, _ := os.Hostname()
 	w.sideThisTitle.SetText(name)
 	w.thisName.SetText(name)
@@ -126,6 +129,7 @@ func openWindow(c *appui.Ctx) *window {
 	ctx, w.cancel = context.WithCancel(context.Background())
 	go w.watch(ctx)
 	w.loadCommands()
+	w.menu = w.menuBar()
 	return w
 }
 

@@ -35,10 +35,12 @@ type palette struct {
 type frame struct {
 	c                            *appui.Ctx
 	win                          *gtk.ApplicationWindow
+	menu                         *appui.MenuBar
 	heading, status, rules, hint gtk.Label
 	stats, body                  gtk.Box
 	restart                      gtk.Button
 	col                          palette
+	focus                        int
 
 	// keyDown and keyUp get the game's keys, letters in lower case.
 	keyDown func(key uint32) bool
@@ -47,6 +49,7 @@ type frame struct {
 	onRestart func(gtk.Button)
 	onKey     func(gtk.EventControllerKey, uint32, uint32, gdk.ModifierType) bool
 	onKeyUp   func(gtk.EventControllerKey, uint32, uint32, gdk.ModifierType)
+	onClose   func(gtk.Window) bool
 }
 
 // Keys, as GDK names them.
@@ -95,6 +98,14 @@ func (v *view) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	f.loadColors()
 	f.onRestart = func(gtk.Button) { v.g.reset() }
 	f.restart.ConnectClicked(&f.onRestart)
+	f.menu = v.menuBar()
+	f.onClose = func(gtk.Window) bool {
+		if f.menu != nil {
+			f.menu.Close()
+		}
+		return false
+	}
+	f.win.ConnectCloseRequest(&f.onClose)
 	f.onKey = func(_ gtk.EventControllerKey, key, _ uint32, mod gdk.ModifierType) bool {
 		if mod&(gdk.ControlMaskValue|gdk.AltMaskValue) != 0 {
 			return false

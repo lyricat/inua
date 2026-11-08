@@ -101,6 +101,7 @@ type App struct {
 	onDouble                  func(gtk.GestureClick, int32, float64, float64)
 	onViewChanged             func(gtk.Adjustment)
 	onFullscreened            func(uintptr, uintptr, uintptr)
+	menu                      *appui.MenuBar
 	onFrame, onDisarm, onCalm glib.SourceFunc
 	onRefit                   glib.SourceFunc
 	refitting                 bool
@@ -178,6 +179,7 @@ func (a *App) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	a.hadj.ConnectChanged(&a.onViewChanged)
 	a.vadj.ConnectChanged(&a.onViewChanged)
 	a.bindInput()
+	a.menu = a.menuBar()
 	// Full screen, however it came: the file alone.
 	a.onFullscreened = func(uintptr, uintptr, uintptr) {
 		full := a.win.IsFullscreen()
@@ -481,7 +483,9 @@ func (a *App) action(name string) {
 	case "copy":
 		a.copy(path)
 	case "wallpaper":
-		a.setWallpaper(path)
+		if a.kind == viewer.Image {
+			a.setWallpaper(path)
+		}
 	case "folder":
 		go showInFolder(path)
 	case "trash":
