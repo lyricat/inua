@@ -38,3 +38,6 @@ Fix round 2, at the owner's request in chat: “fix FT86?”. Head c1dee5c5.
 - [P2] Menu labels: c1dee5c5. All labels in the new menus are i18n.M keys (Viewer and Disk Usage had plain strings; the others used i18n.T, translated twice by NewMenuBar). make i18n run; the catalogs now hold the twelve missing labels. Their translations are empty, like many menu labels already on master (View, Help, Fullscreen…).
 
 Tests: make test passed (throwaway HOME, isolated runtime dir, no session bus). go vet clean, gofmt clean. No new automated tests: the changes are GTK menu handlers in packages without UI tests. Not checked by eye: no menu was opened in a nested session. No installs.
+
+## factory · 2026-11-08 21:23
+Moved review → ready at the owner's word in chat: “move to ready”. Head c1dee5c5 (fix round 2) has no factory review; make test passed at the fix round, and the menus were not checked by eye.
