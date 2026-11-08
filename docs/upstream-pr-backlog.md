@@ -20,6 +20,8 @@ into a small PR after its base lands. Commits are from this fork's `master`.
 | #83 | `pr/super-f-maximize` | Super+F maximizes instead of fullscreen |
 | #84 | `pr/appmenu-button-bar` | open the menu of the bar whose button was clicked |
 | #85 | `pr/bar-transparent-empty` | make the bar panel transparent on empty workspaces |
+| #86 | `pr/chromium-xwayland-menu` | read Chromium's own menu on XWayland |
+| #87 | `pr/inua-app-menus` | every inua app publishes a menu for the bar |
 
 ## Not split yet
 
