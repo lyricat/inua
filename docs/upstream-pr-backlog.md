@@ -22,6 +22,7 @@ into a small PR after its base lands. Commits are from this fork's `master`.
 | #85 | `pr/bar-transparent-empty` | make the bar panel transparent on empty workspaces |
 | #86 | `pr/chromium-xwayland-menu` | read Chromium's own menu on XWayland |
 | #87 | `pr/inua-app-menus` | every inua app publishes a menu for the bar |
+| #88 | `pr/appmenu-packs-rebased` | per-application menus from TOML packs |
 
 ## Not split yet
 
@@ -87,7 +88,7 @@ bar's icon size/spacing. The three `fix` commits belong with the metrics PR.
 The threshold and the narrow rules are one change; the Overview scope change
 in the same commit is not part of it.
 
-### 7. Per-application menu packs, including Zed (#74 and #75 base)
+### 7. Per-application menu packs, including Zed
 
 - `1c0f32ab` feat(appmenu): read per-application menus from TOML packs
 - `d503e7df` docs(appmenu): add a hands-on guide to menu packs
