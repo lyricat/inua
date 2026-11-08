@@ -14,22 +14,28 @@ For the focused window, in this order:
    applications do this themselves. A GTK 3 application does it when
    `appmenu-gtk-module` is loaded. Electron and Chromium do it when
    `libdbusmenu` is installed and `UBUNTU_MENUPROXY=1`.
-2. A menu an inua application published on the same registrar.
-3. Firefox's menu. On Wayland, Firefox does not register; it leaves the
-   menu on its own bus name (`org.mozilla.firefox.*`, under
-   `/com/canonical/menu`). The shell reads that. Firefox only exports it
-   when `widget.gtk.global-menu.enabled` is true.
-4. The application's accessibility tree (AT-SPI), for a GTK, Qt or
-   Electron window that published nothing above. The bar reads the menu
-   bar and, for a section the application fills in when it opens, asks
-   again at the moment it is opened.
-5. A [menu pack](#menu-packs) whose `when` is `replace` is used instead
+2. A menu an inua application published on its own bus name
+   (`io.github.lyricat.Inua.Menu.*`).
+3. A menu a Chromium-family browser serves on its own connection under
+   `/com/canonical/menu` without registering it, as it does through
+   XWayland on a desktop that is not Unity. A browser serving menus for
+   more than one window gets none, since the shell cannot tell which is
+   the focused one.
+4. A [menu pack](#menu-packs) whose `when` is `replace` is used instead
    of all of the above. A pack whose `when` is `fallback` (the default)
-   is used when none of the above produced a usable menu. With no pack,
-   the bar shows the generic menu: File (Close Window, Quit), Edit (Copy
-   Window Title, Copy Window Class), View (Fullscreen, Float, Center
-   Window) and Help (About). Those actions are the shell's and the
-   compositor's. They do not depend on the application having a menu.
+   is used once the search for the above has ended without a menu. While
+   that search runs, which asks the session bus and can take a moment,
+   the bar shows no menu, so a pack's commands never stand in for a
+   published menu that is about to be found. With no pack, or a pack that
+   adds no entries of its own, the bar shows the generic menu: File
+   (Close Window, Quit), Edit (Copy Window Title, Copy Window Class),
+   View (Fullscreen, Float, Center Window) and Help (About). Those
+   actions are the shell's and the compositor's. They do not depend on
+   the application having a menu.
+
+The shell does not read a menu from the accessibility tree (AT-SPI) or
+from a bus name Firefox exports on its own; an application that offers
+its menu only there gets its pack or the generic menu.
 
 GTK 4 has no module that exports a menu bar, and the Wayland protocols
 KDE and GTK use to point at a menu (`org_kde_kwin_appmenu`, `gtk-shell`)
@@ -71,8 +77,10 @@ places, and a higher-priority source replaces a pack with the same
 2. Each `$XDG_DATA_DIRS` entry's `inua/menus` directory. The default is
    `/usr/local/share` then `/usr/share`; earlier entries in the variable
    have higher priority.
-3. `$XDG_DATA_HOME/inua/menus` (`~/.local/share/inua/menus`).
-   `make install` copies the shipped packs here.
+3. `$XDG_DATA_HOME/inua/menus` (`~/.local/share/inua/menus`). Nothing
+   installs packs here or in the directories above; they are for packs a
+   package or a user adds. `make install` does not copy the shipped
+   packs anywhere, as they are already in the binary.
 4. When the shell is run with `-ui-dir`, `share/inua/menus` next to that
    directory's parent, so a checkout is used as it is on disk.
 5. `$XDG_CONFIG_HOME/inua/menus` (`~/.config/inua/menus`). This is where
@@ -95,8 +103,8 @@ match = ["org.wezfurlong.wezterm", "wezterm"]
 suffix = [".wezterm"]      # the id ends with this
 contains = ["wezterm"]     # the id contains this; prefer match
 when = "fallback"          # or "replace"
-skip_a11y = false          # do not read the accessibility menu
-never_press = false        # do not activate an accessibility section
+skip_a11y = false          # accepted, no effect yet (see below)
+never_press = false        # accepted, no effect yet (see below)
 
 include = ["generic"]      # start from the generic File, Edit, View, Help
 
@@ -129,22 +137,29 @@ required. `when` is `fallback` or `replace`; omitted, it is `fallback`.
 own. `replace` is shown even when it has one, which is for a published
 menu that cannot be used.
 
-`skip_a11y` and `never_press` apply whenever the pack matches, including
-when a real menu is also present. `skip_a11y` does not ask the
-accessibility bus. `never_press` still shows a menu that was read, and
-refuses to invoke a section of it. The shipped `code` pack sets
-`skip_a11y`: VS Code draws its menu itself and the accessibility bus
-only has an overflow item. The shipped `zed` pack also sets `skip_a11y`:
-Zed draws its menu itself and exposes neither an accessible menu nor a
-D-Bus menu. Its pack mirrors Zed's Linux menus in full; commands that
-have a default shortcut or a key sequence are sent, and the rest are
-shown disabled. A custom keymap or Vim mode can change which keys those
-commands need. Chromium and Chrome are read from the menu they publish on
-XWayland; running natively on Wayland they publish none, so the shipped
-`chromium` pack sends their keyboard shortcuts. The shipped `firefox`
-pack sets `never_press`: pressing a section of Firefox's accessibility
-menu ends Firefox. A pack with no sections and no `include` adds no
-items; the generic menu is shown, and the flags still apply.
+`skip_a11y` and `never_press` are read and checked, but nothing acts on
+them yet: the shell does not read menus from the accessibility bus (see
+[Where a menu comes from](#where-a-menu-comes-from)), so there is no
+accessibility menu for them to skip or guard. They are kept so a pack can
+record what is known about an application's accessibility menu for when
+that reading exists. `skip_a11y` is meant to keep the shell off an
+application's accessibility menu; `never_press` to show such a menu but
+never invoke one of its sections. The shipped `code` pack sets
+`skip_a11y` because VS Code draws its menu itself and its accessibility
+tree has only an overflow item. The shipped `firefox` pack sets
+`never_press` because pressing a section of Firefox's accessibility menu
+ends Firefox. Changing either flag today changes nothing in the bar.
+
+The shipped `zed` pack sets `skip_a11y` too: Zed draws its menu itself
+and exposes neither an accessible menu nor a D-Bus menu. Its pack
+mirrors Zed's Linux menus in full; commands that have a default shortcut
+or a key sequence are sent, and the rest are shown disabled. A custom
+keymap or Vim mode can change which keys those commands need. Chromium
+and Chrome are read from the menu they serve through XWayland; running
+natively on Wayland they serve none, so the shipped `chromium` pack sends
+their keyboard shortcuts. A pack with no sections and no `include`, such
+as the shipped `code` and `firefox` packs, adds no items, and the generic
+menu is shown.
 
 Within one directory, files are applied in name order and the last pack
 that matches a window wins. Two packs should not match the same window
@@ -159,8 +174,8 @@ invoke without a keybinding.
 
 | `action` | What it does |
 | --- | --- |
-| `close-window` | Closes the window the bar is showing. |
-| `quit-app` | Closes every window of that process. |
+| `close-window` | Closes the focused window, the one the menu was built for. |
+| `quit-app` | Closes every window of that window's process. |
 | `fullscreen` | Fullscreen, where the compositor can. |
 | `float` | Floats or tiles the window. |
 | `center` | Centres the window. |
@@ -172,11 +187,19 @@ invoke without a keybinding.
 translated. `include = "window"` on a section inserts Fullscreen, Float
 and Center Window, then the section's own items.
 
+An item acts on the focused window the menu was built for, even when its
+process has other windows. If another window has the focus by the time
+the item is chosen, it does nothing.
+
 `keys` is sent to that window. The last element is the key and the ones
 before it are the modifiers, written as Hyprland names them: `CTRL`,
 `SHIFT`, `ALT`, `SUPER`. A single letter is uppercased (`t` is sent as
 `T`). A longer name is sent as written (`Return`, `plus`, `Print`), so
-the spelling has to be the one the compositor uses. On Hyprland the
+the spelling has to be the one the compositor uses, which is the XKB
+keysym name. Punctuation is written by its name, not its character:
+`period`, `comma`, `bracketleft`, `bracketright`, `slash`, `minus`,
+`equal`. A pack that writes a key as a single punctuation character (`.`)
+is refused, since the compositor would find no such key. On Hyprland the
 shell focuses the window without moving the pointer and dispatches
 `sendshortcut` to its address. A compositor without the keystroke
 capability does not send the shortcut; the item is still shown, and the
@@ -232,8 +255,9 @@ require rebuilding or restarting the shell.
 
 1. Open the application and use **Edit → Copy Window Class** in the bar's
 generic menu. This copies the window's application id. If the application
-has no generic menu visible, its class can also be read from the
-compositor's client list.
+publishes a menu or already has a pack, the generic menu is not shown;
+read its class from the compositor's client list instead
+(`hyprctl clients` on Hyprland).
 2. Create the personal pack directory and a TOML file. Use a stable pack
 `id`; it is the override key and does not have to equal the application
 id. A useful convention is to use the desktop entry id.
@@ -280,19 +304,22 @@ applications. If multiple packs match, the last one in the loaded order
 wins. Keep matching rules narrow and avoid accidental overlaps.
 
 To change a shipped pack, put a file with the same `id` in
-`~/.config/inua/menus/`. For example, copying `code.toml` and changing
-`skip_a11y` overrides the shipped VS Code exception. The same directory
-can contain packs for applications that have no shipped pack. Pack files
-are limited to 256 KiB and submenu nesting to eight levels. Unknown
-fields, unknown includes or actions, invalid `when` values, and malformed
-items make that file invalid; it is skipped and the reason appears in the
-shell log. Other valid packs continue to load.
+`~/.config/inua/menus/`. For example, a copy of `kitty.toml` with the
+shortcuts of your own `kitty.conf` replaces the shipped kitty menu. The
+same directory can contain packs for applications that have no shipped
+pack. Pack files are limited to 256 KiB and submenu nesting to eight
+levels. Unknown fields, unknown includes or actions, invalid `when`
+values, punctuation written as a character in `keys` or `sequence`, and
+malformed items make that file invalid; it is skipped and the reason
+appears in the shell log. Other valid packs continue to load.
 
 A pack worth shipping goes in `share/inua/menus/` under its `id`, with
-no machine-specific paths. The shipped files are embedded in the binary;
-`make install` also copies them to the data directory for development and
-packaging workflows. `go test ./internal/appmenu` parses every shipped
-file and checks the schema.
+no machine-specific paths. The shipped files are embedded in the binary
+and are not installed as files; to change one, copy it from
+`share/inua/menus/` in the source into `~/.config/inua/menus/`. A shell
+run with `-ui-dir` from a checkout reads that checkout's
+`share/inua/menus` as well. `go test ./internal/appmenu` parses every
+shipped file and checks the schema.
 
 #### Choosing fallback or replace
 
@@ -300,14 +327,9 @@ Leave `when` out, or set `when = "fallback"`, for a menu that fills the
 gap only when the application has no usable published menu. This is the
 usual choice. Use `when = "replace"` only when the published menu is
 unusable and you deliberately want the pack every time. A pack with no
-sections and no include adds no entries, but its `skip_a11y` and
-`never_press` settings still affect how published menus are handled.
-
-`skip_a11y = true` avoids reading that window's accessibility menu.
-`never_press = true` leaves an accessibility menu visible, but prevents
-its sections from being invoked. These options apply whenever the pack
-matches, whether or not the pack's own menu is selected. The shipped VS
-Code and Firefox packs demonstrate those cases.
+sections and no include adds no entries, and the generic menu is shown
+in its place. `skip_a11y` and `never_press` have no effect yet (see
+above).
 
 #### Reloading and troubleshooting
 
