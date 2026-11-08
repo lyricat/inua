@@ -11,19 +11,21 @@ import (
 // process has one window, so the menu goes away with it.
 func (a *App) menuBar() *appui.MenuBar {
 	activate := func(action gio.SimpleAction, _ uintptr) {
-		switch action.GetName() {
-		case "details":
+		switch name := action.GetName(); {
+		case a.edit.on && name != "details" && name != "fullscreen" && name != "folder" && name != "close-window":
+			a.editMenu(name)
+		case name == "details":
 			on := !a.detailsReveal.GetRevealChild()
 			a.detailsReveal.SetRevealChild(on)
 			a.detailsToggle.SetActive(on)
-		case "source":
+		case name == "source":
 			on := !a.sourceToggle.GetActive()
 			a.sourceToggle.SetActive(on)
 			a.text.showSource(on)
-		case "close-window":
+		case name == "close-window":
 			a.win.Close()
 		default:
-			a.action(action.GetName())
+			a.action(name)
 		}
 	}
 	action := func(name, label string) appui.MenuAction {

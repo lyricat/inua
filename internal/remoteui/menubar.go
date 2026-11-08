@@ -15,9 +15,19 @@ func (w *window) menuBar() *appui.MenuBar {
 		case "close-window":
 			w.win.Close()
 		case "connect":
-			w.connect()
+			// As the page's buttons allow: a machine selected, paired and
+			// reachable, or one already streaming, which comes forward.
+			if w.selected == "sharing" {
+				return
+			}
+			m, _ := w.machine()
+			if _, ok := w.streams[m.Addr]; ok || w.machineConnect.GetVisible() && w.machineConnect.GetSensitive() {
+				w.connect()
+			}
 		case "disconnect":
-			w.quit()
+			if w.selected != "sharing" && w.machineQuit.GetVisible() {
+				w.quit()
+			}
 		case "show-sharing":
 			w.choose("sharing")
 		case "find":
