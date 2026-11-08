@@ -65,3 +65,13 @@ Fixed:
 
 Tests: `make generate` no change; `make i18n` updated the catalogs (one msgid gone). `make test` passed with a throwaway HOME.
 Not checked: the UI was not looked at; the real PIN-and-touch flow was not run. Installs: none.
+
+## factory · review · 2026-11-08 14:24
+head: 1b293194d316d783c47bd4dff1520fb80dd3986d
+verdict: pass
+notes:
+- [P2] internal/securitykey/unlock.go:110: Re-enrolling the same security key after changing the GPG passphrase still selects its oldest enrollment. Enrol appends, while find returns the first matching credential. Example: one device knows credential-1 and credential-2 sealing old and new passphrases; an isolated overlay probe returned "old passphrase" instead of "new passphrase". Prefer the newest matching enrollment or replace the obsolete enrollment while preserving spare keys.
+
+Codex reviewed all 26 changed files in origin/master...HEAD (base e9b45a9), including the security review reference. The previous four P2 findings were verified fixed. No P0/P1 findings: moved to ready/ under the factory threshold; the new P2 above remains for owner consideration before shipping.
+Validation: make test ultimately passed (exit 0): Python 18/18, go vet, 115 Go packages passed. First attempt failed because test isolation restricted an AppArmor query; after correcting the isolation mount, the test passed. Tests used a throwaway HOME. Regression probes covered five malformed nonce lengths and seven translated protocol values; GTK handler verification was static. git diff --check passed; no source changes or commits. No installs reported.
+Not checked: UI not visually inspected; real hardware PIN/touch flow not tested. No linked GitHub issue or PR in the item.
