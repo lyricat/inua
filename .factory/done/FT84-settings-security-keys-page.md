@@ -38,3 +38,6 @@ Built (38d6d9aa, on top of FT83's 1b293194): as the plan above.
 Tests: `make generate`, `make i18n` (catalogs updated), `make test` passed with a throwaway HOME; the new securitykey tests ran.
 
 Not checked: the UI was not looked at. Set/Change PIN was not run on hardware: it would change the owner's PIN. The order of PINs on stdin follows libfido2's tools (`-S`: new, again; `-C`: current, new, again), checked only against the fake tool. Installs: none.
+
+## factory · 2026-11-08 14:57
+Merged into master at the owner's request in chat ("merge to master, commit"), from review/ directly: merge commit cca5859c. FT83 went first, as FT84 is built on it. After the merge: make generate and make i18n changed nothing; make test passed. No linked issues or PRs to close.
