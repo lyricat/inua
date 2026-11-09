@@ -10681,7 +10681,7 @@ msgstr "帳戶"
 
 #: internal/lightui/tailscale.go:664
 #: internal/shell/commands.go:31
-#: internal/ui/systemmenu.go:74
+#: internal/ui/systemmenu.go:72
 msgid "Log Out"
 msgstr "登出"
 
@@ -11400,10 +11400,12 @@ msgstr ""
 #: internal/mailui/menubar.go:53
 #: internal/termui/menubar.go:34
 #: internal/ui/appmenu_packs.go:99
+#: internal/ui/systemmenu.go:76
 msgid "Help"
-msgstr ""
+msgstr "說明"
 
 #: internal/mailui/menubar.go:54
+#: internal/ui/systemmenu.go:78
 msgid "Keyboard Shortcuts"
 msgstr ""
 
@@ -12630,7 +12632,7 @@ msgid "Remote Desktop"
 msgstr "遠端桌面"
 
 #: internal/remoteui/menubar.go:50
-#: internal/ui/systemmenu.go:72
+#: internal/ui/systemmenu.go:70
 msgid "Session"
 msgstr "會話"
 
@@ -13026,7 +13028,7 @@ msgid "Desktop"
 msgstr "桌面"
 
 #: internal/shell/commands.go:27
-#: internal/ui/systemmenu.go:73
+#: internal/ui/systemmenu.go:71
 msgid "Lock Screen"
 msgstr "鎖定螢幕"
 
@@ -17273,7 +17275,7 @@ msgid "Shortcuts"
 msgstr "快捷鍵"
 
 #: internal/ui/systemmenu.go:34
-#: internal/ui/systemmenu.go:76
+#: internal/ui/systemmenu.go:74
 #: ui/settings.ui:6960
 msgid "Power"
 msgstr "電源"
@@ -17283,7 +17285,7 @@ msgstr "電源"
 msgid "Control Center"
 msgstr "控制中心"
 
-#: internal/ui/systemmenu.go:70
+#: internal/ui/systemmenu.go:77
 msgid "About inua"
 msgstr "關於 inua"
 

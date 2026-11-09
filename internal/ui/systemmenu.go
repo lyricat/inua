@@ -66,14 +66,17 @@ func (s *shellUI) systemMenuEntries() []appmenu.Entry {
 			item(i18n.T("Launcher"), "launcher"),
 			item(i18n.T("Screenshot"), "screenshot"),
 			item(i18n.T("Control Center"), "control"),
-			appmenu.Entry{Separator: true},
-			item(i18n.T("About inua"), "settings:about"),
 		),
 		section(i18n.T("Session"),
 			item(i18n.T("Lock Screen"), "lock"),
 			item(i18n.T("Log Out"), "logout"),
 		),
 		section(i18n.T("Power"), power...),
+		// After the power actions, as a desktop puts Help last.
+		section(i18n.T("Help"),
+			item(i18n.T("About inua"), "settings:about"),
+			item(i18n.T("Keyboard Shortcuts"), "settings:shortcuts"),
+		),
 	}
 }
 

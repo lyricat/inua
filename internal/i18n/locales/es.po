@@ -10734,7 +10734,7 @@ msgstr "CUENTA"
 
 #: internal/lightui/tailscale.go:664
 #: internal/shell/commands.go:31
-#: internal/ui/systemmenu.go:74
+#: internal/ui/systemmenu.go:72
 msgid "Log Out"
 msgstr "Cerrar sesión"
 
@@ -11457,10 +11457,12 @@ msgstr ""
 #: internal/mailui/menubar.go:53
 #: internal/termui/menubar.go:34
 #: internal/ui/appmenu_packs.go:99
+#: internal/ui/systemmenu.go:76
 msgid "Help"
-msgstr ""
+msgstr "Ayuda"
 
 #: internal/mailui/menubar.go:54
+#: internal/ui/systemmenu.go:78
 msgid "Keyboard Shortcuts"
 msgstr ""
 
@@ -12698,7 +12700,7 @@ msgid "Remote Desktop"
 msgstr "Escritorio remoto"
 
 #: internal/remoteui/menubar.go:50
-#: internal/ui/systemmenu.go:72
+#: internal/ui/systemmenu.go:70
 msgid "Session"
 msgstr "Sesión"
 
@@ -13096,7 +13098,7 @@ msgid "Desktop"
 msgstr "Escritorio"
 
 #: internal/shell/commands.go:27
-#: internal/ui/systemmenu.go:73
+#: internal/ui/systemmenu.go:71
 msgid "Lock Screen"
 msgstr "Bloquear pantalla"
 
@@ -17370,7 +17372,7 @@ msgid "Shortcuts"
 msgstr "Atajos de teclado"
 
 #: internal/ui/systemmenu.go:34
-#: internal/ui/systemmenu.go:76
+#: internal/ui/systemmenu.go:74
 #: ui/settings.ui:6960
 msgid "Power"
 msgstr "Energía"
@@ -17380,7 +17382,7 @@ msgstr "Energía"
 msgid "Control Center"
 msgstr "Centro de control"
 
-#: internal/ui/systemmenu.go:70
+#: internal/ui/systemmenu.go:77
 msgid "About inua"
 msgstr "Acerca de inua"
 
