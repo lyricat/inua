@@ -173,7 +173,15 @@ func (s *shellUI) loadAppMenu(b *bar, about bool) {
 	b.appMenuLoading = true
 	reg := b.appMenuReg
 	go func() {
-		entries, err := s.appmenu.registrar.Menu(reg, about)
+		var entries []appmenu.Entry
+		var err error
+		if appmenu.IsFirefoxService(reg) {
+			// Firefox's item ids change with every layout read, so read the
+			// whole tree once and keep its children for opening.
+			entries, err = s.appmenu.registrar.MenuFull(reg, about)
+		} else {
+			entries, err = s.appmenu.registrar.Menu(reg, about)
+		}
 		gtkx.Post(func() {
 			b.appMenuLoading = false
 			if b.appMenuStale || b.appMenuReg != reg {
@@ -196,17 +204,19 @@ func (s *shellUI) loadAppMenu(b *bar, about bool) {
 // that reads as before is left alone, with the menu open under it.
 func (s *shellUI) renderAppMenu(b *bar, entries []appmenu.Entry) {
 	var top []appMenuTop
-	for _, e := range entries {
+	for i, e := range entries {
 		if e.Separator || e.Label == "" {
 			continue
 		}
-		top = append(top, appMenuTop{id: e.ID, label: e.Label, enabled: e.Enabled, submenu: e.Submenu})
+		top = append(top, appMenuTop{id: int32(i), label: e.Label, enabled: e.Enabled, submenu: e.Submenu || len(e.Children) > 0})
 	}
 	if slices.Equal(top, b.appMenuTop) {
+		b.appMenuEntries = entries
 		return
 	}
 	s.closeAppMenu()
 	b.appMenuTop = top
+	b.appMenuEntries = entries
 	gtkx.Clear(&b.appMenu)
 	for _, t := range top {
 		btn := gtk.NewButton()
@@ -222,7 +232,7 @@ func (s *shellUI) renderAppMenu(b *bar, entries []appmenu.Entry) {
 
 func (s *shellUI) bindAppMenuHandlers() {
 	s.onAppMenuClicked = func(btn gtk.Button) {
-		id, err := strconv.Atoi(btn.GetName())
+		i, err := strconv.Atoi(btn.GetName())
 		if err != nil {
 			return
 		}
@@ -232,18 +242,15 @@ func (s *shellUI) bindAppMenuHandlers() {
 		}
 		for _, b := range s.bars {
 			// The buttons of a bar's menu are its box's children; another
-			// bar's menu may have a button with the same id.
-			if b.appMenu.GoPointer() != parent.GoPointer() {
+			// bar's menu may have a button with the same index.
+			if b.appMenu.GoPointer() != parent.GoPointer() || i < 0 || i >= len(b.appMenuEntries) {
 				continue
 			}
-			i := slices.IndexFunc(b.appMenuTop, func(t appMenuTop) bool { return int(t.id) == id })
-			if i < 0 || b.appMenuReg == (appmenu.Registration{}) {
-				continue
-			}
-			if b.appMenuTop[i].submenu {
-				s.showAppMenu(b.appMenuReg, int32(id), &btn.Widget)
+			entry := b.appMenuEntries[i]
+			if entry.Submenu || len(entry.Children) > 0 {
+				s.showAppMenu(b.appMenuReg, entry, &btn.Widget)
 			} else {
-				s.activateAppMenu(b.appMenuReg, int32(id))
+				s.activateAppMenu(b.appMenuReg, entry.ID)
 			}
 			return
 		}
@@ -277,13 +284,19 @@ func (s *shellUI) closeAppMenu() {
 // showAppMenu reads what a button of the bar's menu opens and pops it up
 // under the button w. It is read each time, so it is the menu as the
 // application has it now, filled in if it is one built when asked for.
-func (s *shellUI) showAppMenu(reg appmenu.Registration, id int32, w *gtk.Widget) {
+func (s *shellUI) showAppMenu(reg appmenu.Registration, entry appmenu.Entry, w *gtk.Widget) {
 	s.appmenu.menuRequest++
 	request := s.appmenu.menuRequest
 	pid := focusedPID(s.snap)
 	w.Ref() // kept until the menu is built
 	go func() {
-		entries, err := s.appmenu.registrar.Submenu(reg, id)
+		var entries []appmenu.Entry
+		var err error
+		if len(entry.Children) > 0 {
+			entries = entry.Children
+		} else {
+			entries, err = s.appmenu.registrar.Submenu(reg, entry.ID)
+		}
 		live := err == nil && s.appmenu.registrar.Current(reg, pid)
 		gtkx.Post(func() {
 			defer w.Unref()

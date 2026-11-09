@@ -348,6 +348,27 @@ func (r *Registrar) Menu(reg Registration, about bool) ([]Entry, error) {
 	return node.Children, nil
 }
 
+// MenuFull reads a menu's whole tree in one GetLayout: what Firefox's GTK
+// bridge needs, as its item ids change when the layout is read again.
+func (r *Registrar) MenuFull(reg Registration, about bool) ([]Entry, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
+	defer cancel()
+	if about {
+		r.conn.Object(reg.Service, reg.Path).CallWithContext(ctx, menuInterface+".AboutToShow", 0, int32(0))
+	}
+	count := 0
+	node, err := r.layout(ctx, reg, 0, -1, 0, &count, nil)
+	if err != nil {
+		return nil, err
+	}
+	return node.Children, nil
+}
+
+// IsFirefoxService reports whether reg is Firefox's own GTK menu bridge.
+func IsFirefoxService(reg Registration) bool {
+	return strings.HasPrefix(reg.Service, "org.mozilla.firefox.")
+}
+
 // Submenu reads what item id opens, as it is now: the application and each
 // nested submenu are told that they are about to show before their contents
 // are read. One that stays empty, or that no longer fits the bounds, is left
