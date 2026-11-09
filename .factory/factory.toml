@@ -21,6 +21,11 @@ read = ["AGENTS.md", "docs/architecture.md", "design/ui.md"]
 
 never = [".github/workflows/", ".factory/factory.toml"]
 
+
+# A review with P0 or P1 findings sends the item back to new/ for another
+# build while its round is below this; at the limit it waits for you.
+max_rounds = 3
+
 rules = [
   "Run make i18n before every commit that touches a .go or .blp file, and commit po/inua.pot and the catalogs with it.",
   "After changing a .blp layout, run make generate and commit the .ui file with it.",
