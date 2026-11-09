@@ -129,19 +129,17 @@ required. `when` is `fallback` or `replace`; omitted, it is `fallback`.
 own. `replace` is shown even when it has one, which is for a published
 menu that cannot be used.
 
-`skip_a11y` and `never_press` are parsed and preserved on packs. Runtime handling may be limited depending on the menu source and branch integration; the shipped code/firefox/chromium packs carry these flags for their intended behavior, and unsupported combinations should be treated as unverified rather than guaranteed. The shipped `code` pack sets
-`skip_a11y`: VS Code draws its menu itself and the accessibility bus
-only has an overflow item. The shipped `zed` pack also sets `skip_a11y`:
-Zed draws its menu itself and exposes neither an accessible menu nor a
-D-Bus menu. Its pack mirrors Zed's Linux menus in full; commands that
-have a default shortcut or a key sequence are sent, and the rest are
-shown disabled. A custom keymap or Vim mode can change which keys those
-commands need. Chromium and Chrome are read from the menu they publish on
-XWayland; running natively on Wayland they publish none, so the shipped
-`chromium` pack sends their keyboard shortcuts. The shipped `firefox`
-pack sets `never_press`: pressing a section of Firefox's accessibility
-menu ends Firefox. A pack with no sections and no `include` adds no
-items; the generic menu is shown, and the flags still apply.
+The shipped `code` pack describes VS Code's own menu shortcuts; `zed`
+mirrors Zed's Linux menus, with commands lacking known shortcuts shown
+disabled. Chromium and Chrome use their published XWayland menus when
+available, while the shipped `chromium` pack supplies keyboard shortcuts
+for native Wayland sessions. Firefox's pack describes its menu shortcuts.
+A custom keymap or Vim mode may change which shortcuts an application uses.
+
+`skip_a11y` and `never_press` are accepted by the parser but are not
+consumed by the current runtime, so they have no effect. The shipped packs
+may still contain them as declarations of intended behavior; do not rely on
+them to change accessibility discovery or actions.
 
 Within one directory, files are applied in name order and the last pack
 that matches a window wins. Two packs should not match the same window
@@ -286,10 +284,10 @@ items make that file invalid; it is skipped and the reason appears in the
 shell log. Other valid packs continue to load.
 
 A pack worth shipping goes in `share/inua/menus/` under its `id`, with
-no machine-specific paths. The shipped files are embedded in the binary;
-The shipped files are embedded in the shell binary. A package or local development setup can also install them under a data directory for
-packaging workflows. `go test ./internal/appmenu` parses every shipped
-file and checks the schema.
+no machine-specific paths. The shipped files are embedded in the shell
+binary; packages may also install TOML files under an `inua/menus`
+subdirectory of an XDG data directory. `go test ./internal/appmenu` parses
+every shipped file and checks the schema.
 
 #### Choosing fallback or replace
 
@@ -297,14 +295,10 @@ Leave `when` out, or set `when = "fallback"`, for a menu that fills the
 gap only when the application has no usable published menu. This is the
 usual choice. Use `when = "replace"` only when the published menu is
 unusable and you deliberately want the pack every time. A pack with no
-sections and no include adds no entries, but its `skip_a11y` and
-`never_press` settings still affect how published menus are handled.
-
-`skip_a11y = true` avoids reading that window's accessibility menu.
-`never_press = true` leaves an accessibility menu visible, but prevents
-its sections from being invoked. These options apply whenever the pack
-matches, whether or not the pack's own menu is selected. The shipped VS
-Code and Firefox packs demonstrate those cases.
+`skip_a11y` and `never_press` are accepted and preserved when packs are
+parsed, but the current runtime does not consume either flag. They do not
+change accessibility discovery or action behavior; a pack cannot currently
+use them to suppress a published menu or disable its actions.
 
 #### Reloading and troubleshooting
 

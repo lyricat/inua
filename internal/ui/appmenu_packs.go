@@ -16,6 +16,12 @@ import (
 	"github.com/lyricat/inua/internal/uikit"
 )
 
+var onAppAboutClose = func(button gtk.Button) {
+	if root := button.GetRoot(); root != nil {
+		gtk.WindowNewFromInternalPtr(root.GoPointer()).Destroy()
+	}
+}
+
 // menuPack is the declarative menu for a window, from the packs in
 // docs/appmenus.md.
 func (s *shellUI) menuPack(w compositor.Window) (appmenu.Pack, bool) {
@@ -151,8 +157,7 @@ func (s *shellUI) showAppAbout(pid int) {
 	process := gtk.NewLabel(i18n.Tf("Process %d", pid))
 	process.AddCssClass("about-process")
 	okButton := gtk.NewButtonWithLabel(i18n.T("Close"))
-	onClose := func(gtk.Button) { win.Destroy() }
-	okButton.ConnectClicked(&onClose)
+	okButton.ConnectClicked(&onAppAboutClose)
 	for _, child := range []*gtk.Widget{&mark.Widget, &title.Widget, &window.Widget, &process.Widget, &okButton.Widget} {
 		body.Append(child)
 	}

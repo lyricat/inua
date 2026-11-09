@@ -3,6 +3,7 @@ package appmenu
 import (
 	"os"
 	"path/filepath"
+	"syscall"
 	"testing"
 )
 
@@ -264,6 +265,25 @@ func TestPackReloadsWhenTheFileChanges(t *testing.T) {
 	entries := got.Entries("1", 1, []Entry{{Label: "File"}}, nil)
 	if len(entries) != 0 {
 		t.Fatalf("flag-only pack produced %+v", entries)
+	}
+}
+
+func TestReadPackDataBoundsAndRejectsFIFO(t *testing.T) {
+	dir := t.TempDir()
+	oversized := filepath.Join(dir, "oversized.toml")
+	if err := os.WriteFile(oversized, make([]byte, maxPackBytes+1), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := readPackData(oversized); err == nil {
+		t.Fatal("accepted an oversized pack")
+	}
+
+	fifo := filepath.Join(dir, "menu.toml")
+	if err := syscall.Mkfifo(fifo, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := readPackData(fifo); err == nil {
+		t.Fatal("accepted a FIFO as a pack")
 	}
 }
 

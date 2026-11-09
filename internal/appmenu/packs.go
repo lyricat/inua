@@ -2,6 +2,7 @@ package appmenu
 
 import (
 	"fmt"
+	"io"
 	"io/fs"
 	"log"
 	"os"
@@ -9,6 +10,7 @@ import (
 	"slices"
 	"strings"
 	"sync"
+	"syscall"
 
 	"github.com/BurntSushi/toml"
 
@@ -350,7 +352,7 @@ func readDir(dir string) ([]Pack, []string) {
 	var problems []string
 	for _, name := range names {
 		path := filepath.Join(dir, name)
-		data, err := os.ReadFile(path)
+		data, err := readPackData(path)
 		if err != nil {
 			problems = append(problems, fmt.Sprintf("%s: %v", path, err))
 			continue
@@ -363,6 +365,30 @@ func readDir(dir string) ([]Pack, []string) {
 		packs = append(packs, pack)
 	}
 	return packs, problems
+}
+
+func readPackData(path string) ([]byte, error) {
+	fd, err := syscall.Open(path, syscall.O_RDONLY|syscall.O_NONBLOCK, 0)
+	if err != nil {
+		return nil, err
+	}
+	file := os.NewFile(uintptr(fd), path)
+	defer file.Close()
+	info, err := file.Stat()
+	if err != nil {
+		return nil, err
+	}
+	if !info.Mode().IsRegular() {
+		return nil, fmt.Errorf("menu pack is not a regular file")
+	}
+	data, err := io.ReadAll(io.LimitReader(file, maxPackBytes+1))
+	if err != nil {
+		return nil, err
+	}
+	if len(data) > maxPackBytes {
+		return nil, fmt.Errorf("menu pack is larger than %d bytes", maxPackBytes)
+	}
+	return data, nil
 }
 
 func readFS(fsys fs.FS, origin string) ([]Pack, error) {

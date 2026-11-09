@@ -2086,7 +2086,7 @@ msgstr "トライ"
 #: internal/gamesui/menubar.go:36
 #: internal/mailui/menubar.go:39
 #: internal/remoteui/menubar.go:47
-#: internal/ui/appmenu_packs.go:109
+#: internal/ui/appmenu_packs.go:115
 #: internal/viewerui/menubar.go:36
 #: internal/vmui/menubar.go:36
 msgid "File"
@@ -2105,7 +2105,7 @@ msgstr "新しい会話"
 #: internal/mailui/menubar.go:42
 #: internal/remoteui/menubar.go:48
 #: internal/shell/commands.go:46
-#: internal/ui/appmenu_packs.go:110
+#: internal/ui/appmenu_packs.go:116
 #: internal/viewerui/menubar.go:39
 #: internal/vmui/menubar.go:39
 msgid "Close Window"
@@ -2115,7 +2115,7 @@ msgstr "ウィンドウを閉じる"
 #: internal/diskui/menubar.go:38
 #: internal/lightui/clock.go:404
 #: internal/termui/menubar.go:42
-#: internal/ui/appmenu_packs.go:112
+#: internal/ui/appmenu_packs.go:118
 #: internal/viewerui/menubar.go:41
 #: ui/pass.ui:252
 msgid "Edit"
@@ -2132,7 +2132,7 @@ msgstr ""
 #: internal/mailui/menubar.go:44
 #: internal/remoteui/menubar.go:56
 #: internal/termui/menubar.go:43
-#: internal/ui/appmenu_packs.go:115
+#: internal/ui/appmenu_packs.go:121
 #: internal/viewerui/menubar.go:46
 #: internal/vmui/menubar.go:48
 msgid "View"
@@ -3654,7 +3654,7 @@ msgstr[0] "…ほか %d 件"
 #: internal/termui/keys.go:295
 #: internal/termui/sessionmenu.go:113
 #: internal/termui/wsmenu.go:129
-#: internal/ui/appmenu_packs.go:153
+#: internal/ui/appmenu_packs.go:159
 #: internal/ui/settings_bench.go:132
 #: internal/ui/settings_wifi_details.go:62
 #: ui/mail-compose.ui:292
@@ -8266,8 +8266,8 @@ msgid "The browser could not be opened: %v"
 msgstr ""
 
 #: internal/gamesui/menubar.go:34
-#: internal/ui/appmenu_packs.go:56
-#: internal/ui/appmenu_packs.go:116
+#: internal/ui/appmenu_packs.go:62
+#: internal/ui/appmenu_packs.go:122
 #: internal/viewerui/menubar.go:57
 msgid "Fullscreen"
 msgstr ""
@@ -11390,7 +11390,7 @@ msgstr ""
 
 #: internal/mailui/menubar.go:53
 #: internal/termui/menubar.go:45
-#: internal/ui/appmenu_packs.go:119
+#: internal/ui/appmenu_packs.go:125
 msgid "Help"
 msgstr ""
 
@@ -13195,8 +13195,8 @@ msgid "Toggle Fullscreen"
 msgstr "フルスクリーンの切り替え"
 
 #: internal/shell/commands.go:49
-#: internal/ui/appmenu_packs.go:58
-#: internal/ui/appmenu_packs.go:118
+#: internal/ui/appmenu_packs.go:64
+#: internal/ui/appmenu_packs.go:124
 msgid "Center Window"
 msgstr "ウィンドウを中央に配置"
 
@@ -14704,29 +14704,29 @@ msgstr "アラーム · %02d:%02d"
 msgid "Snooze"
 msgstr "スヌーズ"
 
-#: internal/ui/appmenu_packs.go:57
-#: internal/ui/appmenu_packs.go:117
+#: internal/ui/appmenu_packs.go:63
+#: internal/ui/appmenu_packs.go:123
 msgid "Float"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:111
+#: internal/ui/appmenu_packs.go:117
 msgid "Quit %s"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:113
+#: internal/ui/appmenu_packs.go:119
 msgid "Copy Window Title"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:114
+#: internal/ui/appmenu_packs.go:120
 msgid "Copy Window Class"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:120
-#: internal/ui/appmenu_packs.go:139
+#: internal/ui/appmenu_packs.go:126
+#: internal/ui/appmenu_packs.go:145
 msgid "About %s"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:151
+#: internal/ui/appmenu_packs.go:157
 msgid "Process %d"
 msgstr ""
 

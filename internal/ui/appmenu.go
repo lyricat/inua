@@ -93,7 +93,7 @@ func (s *shellUI) findAppMenu() {
 	if window == s.appmenu.window && !s.appmenu.stale {
 		return
 	}
-	if window != s.appmenu.window {
+	if window != s.appmenu.window || s.appmenu.stale {
 		s.appmenu.found = appmenu.Registration{}
 		s.appmenu.known = false
 	}
