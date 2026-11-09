@@ -61,3 +61,9 @@ Codex reviewed all 32 changed files in origin/master...HEAD; no P0/P1 findings. 
 UI was not checked by eye. Actual drag/drop, multi-monitor behavior, restart persistence and relocated popover placement still need manual checking. No code fixes made. No linked GitHub issue or PR to comment on.
 
 Moved review/ → ready/ under the no-P0/P1 review rule; P2 remains for owner attention.
+
+
+## factory · 2026-11-09 22:09
+Shipped at owner request after Claude Code fixes. Merge commit: d401a937. Fixed outstanding P2: independent bar items block neighboring panel hit ranges, including tray and dictation. Fix commit: 2cd0dbb3. Generated translation conflicts resolved preserving both parents translations. No linked issues or PRs.
+Claude Code added regression tests and passed make test; manager independently reran make test with isolated absolute HOME/XDG directories: exit 0 (18 Python tests, go vet, full Go race suite). No installs; protected paths unchanged. master and annotated tag v0.1.30 atomically pushed at 2cd0dbb3.
+Not checked: visual UI, actual drag/drop, multi-monitor behavior, restart persistence, real-application key delivery and real compositor behavior. Moved ready/ → done/.
