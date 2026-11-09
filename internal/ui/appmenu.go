@@ -98,40 +98,60 @@ func (s *shellUI) syncAppMenus() {
 // gtkx.Post, dropped when another search started meanwhile. A window that
 // is no longer the one searched for has no menu until its own is found.
 func (s *shellUI) findAppMenu() {
-	window := s.snap.FocusedWindow
-	if window == s.appmenu.window && !s.appmenu.stale {
+	request, ok := s.appmenu.beginSearch(s.snap.FocusedWindow)
+	if !ok {
 		return
 	}
-	if window != s.appmenu.window {
-		s.appmenu.found = appmenu.Registration{}
-		s.appmenu.searched = false
-	}
-	s.appmenu.window = window
-	s.appmenu.stale = false
-	s.appmenu.finding++
-	request := s.appmenu.finding
 	pid := focusedPID(s.snap)
 	if pid <= 0 || s.appmenu.registrar == nil {
-		s.appmenu.found = appmenu.Registration{}
-		s.appmenu.searched = true
+		s.appmenu.endSearch(request, appmenu.Registration{})
 		return
 	}
 	go func() {
 		reg, _ := s.appmenu.registrar.Focused(pid)
 		gtkx.Post(func() {
-			if s.appmenu.finding != request {
-				return
+			if s.appmenu.endSearch(request, reg) {
+				s.syncAppMenus()
 			}
-			// The end of a search says something even when nothing was
-			// found: the bar can stop waiting and show a pack's menu.
-			if s.appmenu.searched && s.appmenu.found == reg {
-				return
-			}
-			s.appmenu.found = reg
-			s.appmenu.searched = true
-			s.syncAppMenus()
 		})
 	}()
+}
+
+// beginSearch starts a search for window's menu when it is not the window
+// searched for last, or the menus changed since, and reports its number.
+// Every search starts unanswered, even one for the same window: that the
+// application had no menu says nothing about one it may just have
+// published, so a pack's menu waits for this search too. A menu found for
+// the same window before stays until the search replaces it; reading or
+// clicking it asks the registrar whether the application still has it.
+func (a *appMenuState) beginSearch(window string) (uint64, bool) {
+	if window == a.window && !a.stale {
+		return 0, false
+	}
+	if window != a.window {
+		a.found = appmenu.Registration{}
+	}
+	a.searched = false
+	a.window = window
+	a.stale = false
+	a.finding++
+	return a.finding, true
+}
+
+// endSearch records what search request found, and reports whether that
+// changed what the bar shows. The end of a search says something even when
+// nothing was found: the bar can stop waiting and show a pack's menu. A
+// search overtaken by a newer one is dropped.
+func (a *appMenuState) endSearch(request uint64, reg appmenu.Registration) bool {
+	if a.finding != request {
+		return false
+	}
+	if a.searched && a.found == reg {
+		return false
+	}
+	a.found = reg
+	a.searched = true
+	return true
 }
 
 // focusedAppMenu is the menu found for the focused window, and whether

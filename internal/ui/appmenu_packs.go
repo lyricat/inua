@@ -250,6 +250,19 @@ func (s *shellUI) showPackedMenu(b *bar, i int, w *gtk.Widget) {
 	s.appmenu.menu = pop
 }
 
+// packMenuShown is whether a bar shows the pack's menu for window id.
+func (s *shellUI) packMenuShown(id string) bool {
+	if id == "" {
+		return false
+	}
+	for _, b := range s.bars {
+		if b.appMenuWindow == id && b.appMenuReg == (appmenu.Registration{}) {
+			return true
+		}
+	}
+	return false
+}
+
 // packTarget is what an activated pack entry acts on, read from the
 // snapshot on the main thread so nothing that runs later reads it.
 type packTarget struct {
@@ -281,9 +294,14 @@ func packTargetOf(snap compositor.Snapshot, e appmenu.Entry) (packTarget, bool) 
 }
 
 // activatePackedEntry runs a pack item while the window it was built for
-// still has the focus. What it needs of the snapshot is read here, on the
-// main thread; only the key strokes are sent from a goroutine.
+// still has the focus and a bar still shows the pack's menu for it: one
+// withdrawn while a published menu is looked for again runs nothing. What
+// it needs of the snapshot is read here, on the main thread; only the key
+// strokes are sent from a goroutine.
 func (s *shellUI) activatePackedEntry(e appmenu.Entry) {
+	if !s.packMenuShown(e.Action.Bus) {
+		return
+	}
 	t, ok := packTargetOf(s.snap, e)
 	if !ok {
 		return
