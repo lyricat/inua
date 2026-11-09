@@ -66,6 +66,13 @@ func SetIconShape(shape IconShape) {
 	appIconShape = shape
 	for _, a := range appIcons.by {
 		a.shape = shape
+		// The outline is cached for the icon's square; a new shape has to
+		// be built now, not when the icon next moves.
+		if a.path != nil {
+			a.path.Unref()
+			a.path = nil
+		}
+		a.pathAt = [3]float32{}
 		a.canvas.QueueDraw()
 	}
 	appIcons.mu.Unlock()
