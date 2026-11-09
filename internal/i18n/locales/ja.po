@@ -52,6 +52,7 @@ msgstr "正しい方法:"
 
 #: cmd/inua-keyring/main.go:117
 #: internal/ui/settings_keyring.go:324
+#: internal/ui/systemmenu.go:23
 #: ui/settings.ui:4465
 msgid "Keyring"
 msgstr "キーリング"
@@ -585,6 +586,7 @@ msgstr "DEV"
 #: internal/mailui/panel.go:309
 #: internal/mailui/settings.go:203
 #: internal/mailui/settings.go:548
+#: internal/ui/systemmenu.go:20
 #: ui/mail-compose.ui:269
 #: ui/mail.ui:384
 #: ui/settings.ui:2790
@@ -3212,7 +3214,7 @@ msgstr "ホーム"
 #: internal/lightui/tailscale.go:568
 #: internal/ui/bar.go:487
 #: internal/ui/settings.go:662
-#: internal/ui/systemmenu.go:34
+#: internal/ui/systemmenu.go:64
 #: ui/vm.ui:2981
 msgid "System"
 msgstr "システム"
@@ -8495,7 +8497,8 @@ msgstr "スペースピンボール"
 
 #: internal/hyprconf/keys.go:23
 #: internal/shell/dock.go:312
-#: internal/ui/systemmenu.go:36
+#: internal/ui/systemmenu.go:18
+#: internal/ui/systemmenu.go:66
 #: ui/settings.ui:2478
 msgid "Launcher"
 msgstr "ランチャー"
@@ -8537,7 +8540,7 @@ msgstr "フォーカスのオンまたはオフ"
 #: internal/term/settings/settings.go:126
 #: internal/term/web/strings.go:96
 #: internal/termui/headmenu.go:110
-#: internal/ui/systemmenu.go:35
+#: internal/ui/systemmenu.go:51
 #: ui/control.ui:58
 #: ui/settings.ui:30
 msgid "Settings"
@@ -8579,6 +8582,7 @@ msgid "Pick a colour"
 msgstr "色を選ぶ"
 
 #: internal/hyprconf/keys.go:40
+#: internal/ui/systemmenu.go:30
 #: internal/ui/voice_page.go:169
 #: ui/bar.ui:223
 #: ui/settings.ui:6858
@@ -10331,6 +10335,7 @@ msgid "wired"
 msgstr "有線"
 
 #: internal/lightui/sysmon.go:1043
+#: internal/ui/systemmenu.go:24
 #: ui/control.ui:273
 #: ui/settings.ui:5651
 #: ui/settings.ui:5727
@@ -10676,7 +10681,7 @@ msgstr "アカウント"
 
 #: internal/lightui/tailscale.go:664
 #: internal/shell/commands.go:31
-#: internal/ui/systemmenu.go:42
+#: internal/ui/systemmenu.go:74
 msgid "Log Out"
 msgstr "ログアウト"
 
@@ -12625,7 +12630,7 @@ msgid "Remote Desktop"
 msgstr "リモートデスクトップ"
 
 #: internal/remoteui/menubar.go:50
-#: internal/ui/systemmenu.go:40
+#: internal/ui/systemmenu.go:72
 msgid "Session"
 msgstr "セッション"
 
@@ -13021,7 +13026,7 @@ msgid "Desktop"
 msgstr "デスクトップ"
 
 #: internal/shell/commands.go:27
-#: internal/ui/systemmenu.go:41
+#: internal/ui/systemmenu.go:73
 msgid "Lock Screen"
 msgstr "画面をロック"
 
@@ -13041,7 +13046,7 @@ msgstr "サスペンド、最初にロック"
 #: internal/shell/commands.go:29
 #: internal/termui/restart.go:44
 #: internal/ui/control.go:541
-#: internal/ui/systemmenu.go:30
+#: internal/ui/systemmenu.go:60
 #: ui/control.ui:168
 msgid "Restart"
 msgstr "再起動"
@@ -13055,7 +13060,7 @@ msgid "Press Enter again to restart"
 msgstr "もう一度 Enter を押すと再起動します"
 
 #: internal/shell/commands.go:30
-#: internal/ui/systemmenu.go:31
+#: internal/ui/systemmenu.go:61
 msgid "Shut Down"
 msgstr "シャットダウン"
 
@@ -13269,7 +13274,7 @@ msgstr "アプリ、ウィンドウ、および回答を見つける"
 
 #: internal/shell/dock.go:313
 #: internal/ui/screenshot.go:1144
-#: internal/ui/systemmenu.go:37
+#: internal/ui/systemmenu.go:67
 #: ui/settings.ui:2438
 msgid "Screenshot"
 msgstr "スクリーンショット"
@@ -13444,14 +13449,14 @@ msgstr "パフォーマンス"
 
 #: internal/shell/power.go:24
 #: internal/ui/control.go:539
-#: internal/ui/systemmenu.go:23
+#: internal/ui/systemmenu.go:53
 #: ui/control.ui:120
 msgid "Suspend"
 msgstr "サスペンド"
 
 #: internal/shell/power.go:26
 #: internal/ui/control.go:540
-#: internal/ui/systemmenu.go:26
+#: internal/ui/systemmenu.go:56
 #: ui/control.ui:144
 msgid "Hibernate"
 msgstr "ハイバネート"
@@ -13930,6 +13935,7 @@ msgid "Key panel"
 msgstr "キーパネル"
 
 #: internal/term/web/strings.go:63
+#: internal/ui/systemmenu.go:27
 #: ui/settings.ui:6299
 msgid "Keyboard"
 msgstr "キーボード"
@@ -14520,6 +14526,7 @@ msgstr "bash、zsh、fish がプロンプトに印を付け、コマンドを記
 
 #: internal/termui/prefs.go:184
 #: internal/ui/notify.go:324
+#: internal/ui/systemmenu.go:21
 #: ui/bar.ui:193
 #: ui/settings.ui:3848
 msgid "Notifications"
@@ -14972,6 +14979,7 @@ msgid "Search clipboard history"
 msgstr "クリップボード履歴を検索"
 
 #: internal/ui/clipboard.go:360
+#: internal/ui/systemmenu.go:22
 #: ui/connect.ui:728
 #: ui/settings.ui:4112
 msgid "Clipboard"
@@ -16144,6 +16152,7 @@ msgid "What the next login runs inua on"
 msgstr ""
 
 #: internal/ui/settings_compositor.go:77
+#: internal/ui/systemmenu.go:33
 #: ui/settings.ui:6994
 msgid "Compositor"
 msgstr ""
@@ -16401,6 +16410,7 @@ msgid "No displays"
 msgstr "ディスプレイなし"
 
 #: internal/ui/settings_displays.go:212
+#: internal/ui/systemmenu.go:26
 #: ui/settings.ui:6161
 msgid "Displays"
 msgstr "ディスプレイ"
@@ -17219,15 +17229,63 @@ msgid "%d window"
 msgid_plural "%d windows"
 msgstr[0] "%d ウィンドウ"
 
-#: internal/ui/systemmenu.go:38
+#: internal/ui/systemmenu.go:16
+#: ui/settings.ui:95
+msgid "Appearance"
+msgstr "外観"
+
+#: internal/ui/systemmenu.go:17
+#: ui/settings.ui:1227
+msgid "Bar & Dock"
+msgstr "バーとドック"
+
+#: internal/ui/systemmenu.go:19
+#: ui/settings.ui:2652
+msgid "Default Apps"
+msgstr "既定のアプリ"
+
+#: internal/ui/systemmenu.go:25
+#: ui/control.ui:346
+#: ui/settings.ui:5932
+#: ui/settings.ui:6008
+msgid "Bluetooth"
+msgstr "ブルートゥース"
+
+#: internal/ui/systemmenu.go:28
+#: ui/settings.ui:6591
+msgid "Mouse & Touch"
+msgstr "マウスとタッチパッド"
+
+#: internal/ui/systemmenu.go:29
+#: ui/control.ui:666
+#: ui/settings.ui:6926
+msgid "Sound"
+msgstr "音"
+
+#: internal/ui/systemmenu.go:31
+#: ui/settings.ui:6892
+msgid "Security Keys"
+msgstr ""
+
+#: internal/ui/systemmenu.go:32
+#: ui/settings.ui:5330
+msgid "Shortcuts"
+msgstr "ショートカット"
+
+#: internal/ui/systemmenu.go:34
+#: internal/ui/systemmenu.go:76
+#: ui/settings.ui:6960
+msgid "Power"
+msgstr "電源"
+
+#: internal/ui/systemmenu.go:68
 #: ui/bar.ui:238
 msgid "Control Center"
 msgstr "コントロールセンター"
 
-#: internal/ui/systemmenu.go:44
-#: ui/settings.ui:6960
-msgid "Power"
-msgstr "電源"
+#: internal/ui/systemmenu.go:70
+msgid "About inua"
+msgstr "inua について"
 
 #: internal/ui/updates.go:91
 msgid "You have %s."
@@ -18851,12 +18909,6 @@ msgstr "サスペンド、ハイバネート、再起動、シャットダウン
 msgid "Wi-Fi networks"
 msgstr "Wi-Fi ネットワーク"
 
-#: ui/control.ui:346
-#: ui/settings.ui:5932
-#: ui/settings.ui:6008
-msgid "Bluetooth"
-msgstr "ブルートゥース"
-
 #: ui/control.ui:371
 msgid "Bluetooth devices"
 msgstr "Bluetooth デバイス"
@@ -18872,11 +18924,6 @@ msgstr "Tailscale を開く"
 #: ui/control.ui:604
 msgid "Display"
 msgstr "ディスプレイ"
-
-#: ui/control.ui:666
-#: ui/settings.ui:6926
-msgid "Sound"
-msgstr "音"
 
 #: ui/control.ui:734
 msgid "Now playing"
@@ -19601,10 +19648,6 @@ msgstr "設定を検索"
 msgid "Nothing matches."
 msgstr "一致するものはありません。"
 
-#: ui/settings.ui:95
-msgid "Appearance"
-msgstr "外観"
-
 #: ui/settings.ui:133
 msgid "<span alpha='55%'>[</span>THEME<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>テーマ<span alpha='55%'>]</span>"
@@ -19805,10 +19848,6 @@ msgstr "テーマ"
 #: ui/settings.ui:1192
 msgid "#rrggbb, shown around the image. Empty: the theme's ground"
 msgstr "#rrggbb、画像の周囲に示されている。空: テーマのグラウンド"
-
-#: ui/settings.ui:1227
-msgid "Bar & Dock"
-msgstr "バーとドック"
 
 #: ui/settings.ui:1265
 msgid "<span alpha='55%'>[</span>BAR<span alpha='55%'>]</span>"
@@ -20069,10 +20108,6 @@ msgstr "$TERMINAL、次に xdg-terminal-exec"
 #: ui/settings.ui:2619
 msgid "Runs apps marked Terminal=true"
 msgstr "Terminal=true とマークされたアプリを実行します"
-
-#: ui/settings.ui:2652
-msgid "Default Apps"
-msgstr "既定のアプリ"
 
 #: ui/settings.ui:2690
 msgid "<span alpha='55%'>[</span>DEFAULT APPS<span alpha='55%'>]</span>"
@@ -20506,10 +20541,6 @@ msgstr "<span alpha='55%'>[</span>アプリ<span alpha='55%'>]</span>"
 msgid "Filter by app, program or secret"
 msgstr "アプリ・プログラム・秘密で絞り込む"
 
-#: ui/settings.ui:5330
-msgid "Shortcuts"
-msgstr "ショートカット"
-
 #: ui/settings.ui:5360
 msgid "Press the new shortcut. Esc cancels; Backspace turns it off."
 msgstr "新しいショートカットを押します。 Esc でキャンセルします。バックスペースキーを押すとオフになります。"
@@ -20667,10 +20698,6 @@ msgstr "inua はこれらを Hyprland の inua.conf に書き込みます"
 msgid "Stop setting keyboard options in inua"
 msgstr "inua でのキーボード オプションの設定を停止する"
 
-#: ui/settings.ui:6591
-msgid "Mouse & Touch"
-msgstr "マウスとタッチパッド"
-
 #: ui/settings.ui:6639
 msgid "<span alpha='55%'>[</span>POINTER<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>POINTER<span alpha='55%'>]</span>"
@@ -20694,10 +20721,6 @@ msgstr "スワイプが速いとポインタがさらに遠くに移動します
 #: ui/settings.ui:6827
 msgid "Stop setting the touchpad in inua"
 msgstr "inua でのタッチパッドの設定を停止する"
-
-#: ui/settings.ui:6892
-msgid "Security Keys"
-msgstr ""
 
 #: ui/settings.ui:7028
 msgid "About"
