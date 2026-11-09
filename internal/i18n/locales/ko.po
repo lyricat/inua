@@ -52,6 +52,7 @@ msgstr "올바른 방법:"
 
 #: cmd/inua-keyring/main.go:117
 #: internal/ui/settings_keyring.go:324
+#: internal/ui/systemmenu.go:25
 #: ui/settings.ui:4079
 msgid "Keyring"
 msgstr "키링"
@@ -586,6 +587,7 @@ msgstr "DEV"
 #: internal/mailui/panel.go:309
 #: internal/mailui/settings.go:203
 #: internal/mailui/settings.go:548
+#: internal/ui/systemmenu.go:22
 #: ui/mail-compose.ui:269
 #: ui/mail.ui:384
 #: ui/settings.ui:2404
@@ -3226,6 +3228,7 @@ msgstr "홈"
 #: internal/lightui/tailscale.go:527
 #: internal/lightui/tailscale.go:568
 #: internal/ui/settings.go:598
+#: internal/ui/systemmenu.go:65
 #: ui/vm.ui:2981
 msgid "System"
 msgstr "시스템"
@@ -8504,6 +8507,8 @@ msgstr "우주 핀볼"
 
 #: internal/hyprconf/keys.go:23
 #: internal/shell/dock.go:312
+#: internal/ui/systemmenu.go:20
+#: internal/ui/systemmenu.go:67
 #: ui/settings.ui:2092
 msgid "Launcher"
 msgstr "실행기"
@@ -8545,6 +8550,7 @@ msgstr "포커스 온 또는 오프"
 #: internal/term/settings/settings.go:126
 #: internal/term/web/strings.go:96
 #: internal/termui/headmenu.go:110
+#: internal/ui/systemmenu.go:52
 #: ui/control.ui:58
 #: ui/settings.ui:30
 msgid "Settings"
@@ -8586,6 +8592,7 @@ msgid "Pick a colour"
 msgstr "색상을 선택하세요"
 
 #: internal/hyprconf/keys.go:40
+#: internal/ui/systemmenu.go:32
 #: internal/ui/voice_page.go:169
 #: ui/bar.ui:205
 #: ui/settings.ui:6472
@@ -10322,6 +10329,7 @@ msgid "wired"
 msgstr "유선"
 
 #: internal/lightui/sysmon.go:1043
+#: internal/ui/systemmenu.go:26
 #: ui/control.ui:273
 #: ui/settings.ui:5265
 #: ui/settings.ui:5341
@@ -10666,6 +10674,7 @@ msgstr "계정"
 
 #: internal/lightui/tailscale.go:664
 #: internal/shell/commands.go:31
+#: internal/ui/systemmenu.go:73
 msgid "Log Out"
 msgstr "로그아웃"
 
@@ -11383,12 +11392,14 @@ msgstr ""
 
 #: internal/mailui/menubar.go:53
 #: internal/termui/menubar.go:45
+#: internal/ui/systemmenu.go:76
 msgid "Help"
-msgstr ""
+msgstr "도움말"
 
 #: internal/mailui/menubar.go:54
+#: internal/ui/systemmenu.go:78
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "키보드 단축키"
 
 #: internal/mailui/panel.go:75
 msgid "Open a conversation: AI sums it up, suggests replies and writes them, and judges a message that looks suspicious."
@@ -12613,6 +12624,7 @@ msgid "Remote Desktop"
 msgstr "원격 데스크톱"
 
 #: internal/remoteui/menubar.go:50
+#: internal/ui/systemmenu.go:71
 msgid "Session"
 msgstr ""
 
@@ -13008,6 +13020,7 @@ msgid "Desktop"
 msgstr "데스크톱"
 
 #: internal/shell/commands.go:27
+#: internal/ui/systemmenu.go:72
 msgid "Lock Screen"
 msgstr "화면 잠금"
 
@@ -13027,6 +13040,7 @@ msgstr "일시 중지, 먼저 잠금"
 #: internal/shell/commands.go:29
 #: internal/termui/restart.go:44
 #: internal/ui/control.go:522
+#: internal/ui/systemmenu.go:61
 #: ui/control.ui:168
 msgid "Restart"
 msgstr "다시 시작"
@@ -13040,6 +13054,7 @@ msgid "Press Enter again to restart"
 msgstr "Enter를 다시 누르면 다시 시작합니다"
 
 #: internal/shell/commands.go:30
+#: internal/ui/systemmenu.go:62
 msgid "Shut Down"
 msgstr "종료"
 
@@ -13251,6 +13266,7 @@ msgstr "앱, 창 및 답변 찾기"
 
 #: internal/shell/dock.go:313
 #: internal/ui/screenshot.go:1144
+#: internal/ui/systemmenu.go:68
 #: ui/settings.ui:2052
 msgid "Screenshot"
 msgstr "스크린샷"
@@ -13425,12 +13441,14 @@ msgstr "성능"
 
 #: internal/shell/power.go:24
 #: internal/ui/control.go:520
+#: internal/ui/systemmenu.go:54
 #: ui/control.ui:120
 msgid "Suspend"
 msgstr "절전"
 
 #: internal/shell/power.go:26
 #: internal/ui/control.go:521
+#: internal/ui/systemmenu.go:57
 #: ui/control.ui:144
 msgid "Hibernate"
 msgstr "최대 절전"
@@ -13909,6 +13927,7 @@ msgid "Key panel"
 msgstr "키 패널"
 
 #: internal/term/web/strings.go:63
+#: internal/ui/systemmenu.go:29
 #: ui/settings.ui:5913
 msgid "Keyboard"
 msgstr "키보드"
@@ -14499,6 +14518,7 @@ msgstr "bash, zsh, fish가 프롬프트를 표시해 명령을 기억할 수 있
 
 #: internal/termui/prefs.go:184
 #: internal/ui/notify.go:324
+#: internal/ui/systemmenu.go:23
 #: ui/bar.ui:175
 #: ui/settings.ui:3462
 msgid "Notifications"
@@ -14895,11 +14915,11 @@ msgstr "스크린샷을 위해 숨겨집니다."
 msgid "The passphrases do not match."
 msgstr "암호 문구가 일치하지 않습니다."
 
-#: internal/ui/bar.go:499
+#: internal/ui/bar.go:502
 msgid "Workspace %s"
 msgstr "작업공간 %s"
 
-#: internal/ui/bar.go:512
+#: internal/ui/bar.go:515
 msgid "WORKSPACE"
 msgstr "작업 공간"
 
@@ -14925,6 +14945,7 @@ msgid "Search clipboard history"
 msgstr "클립보드 기록 검색"
 
 #: internal/ui/clipboard.go:360
+#: internal/ui/systemmenu.go:24
 #: ui/connect.ui:728
 #: ui/settings.ui:3726
 msgid "Clipboard"
@@ -16089,6 +16110,7 @@ msgid "What the next login runs inua on"
 msgstr ""
 
 #: internal/ui/settings_compositor.go:77
+#: internal/ui/systemmenu.go:35
 #: ui/settings.ui:6608
 msgid "Compositor"
 msgstr ""
@@ -16346,6 +16368,7 @@ msgid "No displays"
 msgstr "디스플레이 없음"
 
 #: internal/ui/settings_displays.go:212
+#: internal/ui/systemmenu.go:28
 #: ui/settings.ui:5775
 msgid "Displays"
 msgstr "디스플레이"
@@ -17163,6 +17186,64 @@ msgstr "작업 공간 %s"
 msgid "%d window"
 msgid_plural "%d windows"
 msgstr[0] "%d개 창"
+
+#: internal/ui/systemmenu.go:18
+#: ui/settings.ui:95
+msgid "Appearance"
+msgstr "모양"
+
+#: internal/ui/systemmenu.go:19
+#: ui/settings.ui:1065
+msgid "Bar & Dock"
+msgstr "상단 표시줄 및 독"
+
+#: internal/ui/systemmenu.go:21
+#: ui/settings.ui:2266
+msgid "Default Apps"
+msgstr "기본 앱"
+
+#: internal/ui/systemmenu.go:27
+#: ui/control.ui:346
+#: ui/settings.ui:5546
+#: ui/settings.ui:5622
+msgid "Bluetooth"
+msgstr "블루투스"
+
+#: internal/ui/systemmenu.go:30
+#: ui/settings.ui:6205
+msgid "Mouse & Touch"
+msgstr "마우스 및 터치패드"
+
+#: internal/ui/systemmenu.go:31
+#: ui/control.ui:666
+#: ui/settings.ui:6540
+msgid "Sound"
+msgstr "소리"
+
+#: internal/ui/systemmenu.go:33
+#: ui/settings.ui:6506
+msgid "Security Keys"
+msgstr ""
+
+#: internal/ui/systemmenu.go:34
+#: ui/settings.ui:4944
+msgid "Shortcuts"
+msgstr "단축키"
+
+#: internal/ui/systemmenu.go:36
+#: internal/ui/systemmenu.go:75
+#: ui/settings.ui:6574
+msgid "Power"
+msgstr "전원"
+
+#: internal/ui/systemmenu.go:69
+#: ui/bar.ui:220
+msgid "Control Center"
+msgstr "제어 센터"
+
+#: internal/ui/systemmenu.go:77
+msgid "About inua"
+msgstr "inua 정보"
 
 #: internal/ui/updates.go:91
 msgid "You have %s."
@@ -18571,10 +18652,6 @@ msgstr "녹음 버리기"
 msgid "Stop recording"
 msgstr "녹화 중지"
 
-#: ui/bar.ui:220
-msgid "Control Center"
-msgstr "제어 센터"
-
 #: ui/calculator.ui:32
 msgid "Scientific"
 msgstr "과학적"
@@ -18790,12 +18867,6 @@ msgstr "절전, 최대 절전, 다시 시작, 종료, 로그아웃"
 msgid "Wi-Fi networks"
 msgstr "Wi-Fi 네트워크"
 
-#: ui/control.ui:346
-#: ui/settings.ui:5546
-#: ui/settings.ui:5622
-msgid "Bluetooth"
-msgstr "블루투스"
-
 #: ui/control.ui:371
 msgid "Bluetooth devices"
 msgstr "블루투스 기기"
@@ -18811,11 +18882,6 @@ msgstr "Tailscale 열기"
 #: ui/control.ui:604
 msgid "Display"
 msgstr "디스플레이"
-
-#: ui/control.ui:666
-#: ui/settings.ui:6540
-msgid "Sound"
-msgstr "소리"
 
 #: ui/control.ui:734
 msgid "Now playing"
@@ -19540,10 +19606,6 @@ msgstr "설정 검색"
 msgid "Nothing matches."
 msgstr "일치하는 항목이 없습니다."
 
-#: ui/settings.ui:95
-msgid "Appearance"
-msgstr "모양"
-
 #: ui/settings.ui:133
 msgid "<span alpha='55%'>[</span>THEME<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>주제<span alpha='55%'>]</span>"
@@ -19715,10 +19777,6 @@ msgstr "테마"
 #: ui/settings.ui:1030
 msgid "#rrggbb, shown around the image. Empty: the theme's ground"
 msgstr "#rrggbb, 이미지 주위에 표시됩니다. 비어 있음: 테마의 그라운드"
-
-#: ui/settings.ui:1065
-msgid "Bar & Dock"
-msgstr "상단 표시줄 및 독"
 
 #: ui/settings.ui:1103
 msgid "<span alpha='55%'>[</span>BAR<span alpha='55%'>]</span>"
@@ -19931,10 +19989,6 @@ msgstr "$TERMINAL, xdg-terminal-exec"
 #: ui/settings.ui:2233
 msgid "Runs apps marked Terminal=true"
 msgstr "Terminal=true로 표시된 앱을 실행합니다."
-
-#: ui/settings.ui:2266
-msgid "Default Apps"
-msgstr "기본 앱"
 
 #: ui/settings.ui:2304
 msgid "<span alpha='55%'>[</span>DEFAULT APPS<span alpha='55%'>]</span>"
@@ -20368,10 +20422,6 @@ msgstr "<span alpha='55%'>[</span>앱<span alpha='55%'>]</span>"
 msgid "Filter by app, program or secret"
 msgstr "앱, 프로그램, 비밀로 거르기"
 
-#: ui/settings.ui:4944
-msgid "Shortcuts"
-msgstr "단축키"
-
 #: ui/settings.ui:4974
 msgid "Press the new shortcut. Esc cancels; Backspace turns it off."
 msgstr "새로운 단축키를 누른다. Esc는 취소합니다. 백스페이스는 이 기능을 끕니다."
@@ -20529,10 +20579,6 @@ msgstr "inua는 이것을 Hyprland의 inua.conf에 씁니다."
 msgid "Stop setting keyboard options in inua"
 msgstr "inua에서 키보드 옵션 설정을 중지합니다."
 
-#: ui/settings.ui:6205
-msgid "Mouse & Touch"
-msgstr "마우스 및 터치패드"
-
 #: ui/settings.ui:6253
 msgid "<span alpha='55%'>[</span>POINTER<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>포인터<span alpha='55%'>]</span>"
@@ -20556,14 +20602,6 @@ msgstr "더 빠르게 스와이프하면 포인터가 더 멀리 이동합니다
 #: ui/settings.ui:6441
 msgid "Stop setting the touchpad in inua"
 msgstr "inua에서 터치패드 설정을 중지합니다."
-
-#: ui/settings.ui:6506
-msgid "Security Keys"
-msgstr ""
-
-#: ui/settings.ui:6574
-msgid "Power"
-msgstr "전원"
 
 #: ui/settings.ui:6642
 msgid "About"

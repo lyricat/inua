@@ -76,7 +76,20 @@ type Entry struct {
 	// only when asked (AboutToShow), so Children can be empty until then.
 	Submenu  bool
 	Children []Entry
+	// Action says how to invoke an entry the shell itself made.
+	Action Action
 }
+
+// Action says how to invoke an entry.
+type Action struct {
+	Kind  string          // ActionSystem; empty when the entry only groups children
+	Bus   string          // the system command
+	Path  dbus.ObjectPath // unused by the system menu
+	Index int32
+}
+
+// ActionSystem runs one of the shell's own commands.
+const ActionSystem = "system"
 
 // registered is a registration, when it was made among the others, and the
 // items of its menu's first level as Menu last read them.
