@@ -96,3 +96,41 @@ func TestPackEntryRefusedOnceWithdrawn(t *testing.T) {
 		t.Fatalf("actions %q, want only %q", got, want)
 	}
 }
+
+// A first level read again with the same labels in the same places but
+// other entry ids (the application rebuilt its menu) is a new menu: the
+// open menu closes and a submenu read in flight is dropped, since both
+// carry the old ids. The same ids keep the buttons and the open menu.
+func TestAppMenuRebuiltWithOtherIDs(t *testing.T) {
+	menu := func(ids ...int32) []appmenu.Entry {
+		return []appmenu.Entry{
+			{ID: ids[0], Label: "File", Enabled: true, Submenu: true},
+			{Separator: true},
+			{ID: ids[1], Label: "Edit", Enabled: true, Submenu: true},
+		}
+	}
+	s := &shellUI{}
+	b := &bar{}
+	if !s.takeAppMenu(b, menu(1, 2)) {
+		t.Fatal("the first menu made no buttons")
+	}
+	if got := b.appMenuTop; len(got) != 2 || got[0].index != 0 || got[1].index != 2 || got[1].id != 2 {
+		t.Fatalf("buttons %+v", got)
+	}
+	request := s.appmenu.menuRequest // a submenu read in flight
+
+	if s.takeAppMenu(b, menu(1, 2)) || s.appmenu.menuRequest != request {
+		t.Fatal("the same menu read again was taken for a new one")
+	}
+
+	rebuilt := menu(11, 12)
+	if !s.takeAppMenu(b, rebuilt) {
+		t.Fatal("a menu rebuilt with other ids kept the old buttons")
+	}
+	if s.appmenu.menuRequest == request {
+		t.Fatal("the submenu read for the old ids was not dropped")
+	}
+	if b.appMenuTop[0].id != 11 || b.appMenuEntries[2].ID != 12 {
+		t.Fatalf("buttons %+v, entries %+v", b.appMenuTop, b.appMenuEntries)
+	}
+}

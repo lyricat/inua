@@ -36,7 +36,8 @@ type appMenuState struct {
 
 // appMenuTop is a button of the bar's menu.
 type appMenuTop struct {
-	id      int32
+	index   int32 // in the entries, the button's name
+	id      int32 // the entry's id, as the application published it
 	label   string
 	enabled bool
 	submenu bool
@@ -290,31 +291,50 @@ func (s *shellUI) loadAppMenu(b *bar, about bool) {
 // renderAppMenu shows a menu's first level as the bar's buttons. A menu
 // that reads as before is left alone, with the menu open under it.
 func (s *shellUI) renderAppMenu(b *bar, entries []appmenu.Entry) {
-	var top []appMenuTop
-	for i, e := range entries {
-		if e.Separator || e.Label == "" {
-			continue
-		}
-		top = append(top, appMenuTop{id: int32(i), label: e.Label, enabled: e.Enabled, submenu: e.Submenu || len(e.Children) > 0})
-	}
-	if slices.Equal(top, b.appMenuTop) {
-		b.appMenuEntries = entries
+	if !s.takeAppMenu(b, entries) {
 		return
 	}
-	s.closeAppMenu()
-	b.appMenuTop = top
-	b.appMenuEntries = entries
 	gtkx.Clear(&b.appMenu)
-	for _, t := range top {
+	for _, t := range b.appMenuTop {
 		btn := gtk.NewButton()
 		btn.SetLabel(t.label)
-		btn.SetName(strconv.Itoa(int(t.id)))
+		btn.SetName(strconv.Itoa(int(t.index)))
 		btn.SetFocusable(false)
 		btn.SetSensitive(t.enabled)
 		btn.ConnectClicked(&s.onAppMenuClicked)
 		gtkx.Append(&b.appMenu, &btn.Widget)
 	}
-	b.appMenu.SetVisible(len(top) > 0)
+	b.appMenu.SetVisible(len(b.appMenuTop) > 0)
+}
+
+// takeAppMenu keeps a bar's newly read first level and reports whether its
+// buttons are to be made again. One that reads as before, with the same
+// entry ids, keeps them and the open menu. One that differs, even only in
+// the ids the application gave the same labels in the same places (it
+// rebuilt its menu), closes the open menu and drops the submenu reads in
+// flight: their items carry the ids of the menu that was.
+func (s *shellUI) takeAppMenu(b *bar, entries []appmenu.Entry) bool {
+	top := appMenuTops(entries)
+	b.appMenuEntries = entries
+	if slices.Equal(top, b.appMenuTop) {
+		return false
+	}
+	s.closeAppMenu()
+	b.appMenuTop = top
+	return true
+}
+
+// appMenuTops is the bar's buttons for a menu's first level: its entries
+// with a label, separators left out.
+func appMenuTops(entries []appmenu.Entry) []appMenuTop {
+	var top []appMenuTop
+	for i, e := range entries {
+		if e.Separator || e.Label == "" {
+			continue
+		}
+		top = append(top, appMenuTop{index: int32(i), id: e.ID, label: e.Label, enabled: e.Enabled, submenu: e.Submenu || len(e.Children) > 0})
+	}
+	return top
 }
 
 func (s *shellUI) bindAppMenuHandlers() {
