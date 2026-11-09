@@ -249,6 +249,14 @@ func (s *shellUI) renderAppMenu(b *bar, entries []appmenu.Entry) {
 }
 
 func (s *shellUI) bindAppMenuHandlers() {
+	s.onAppTitle = func(btn gtk.Button) {
+		for _, b := range s.bars {
+			if b.appButton.GoPointer() == btn.GoPointer() {
+				s.openAppTitleMenu(b)
+				return
+			}
+		}
+	}
 	s.onAppMenuClicked = func(btn gtk.Button) {
 		i, err := strconv.Atoi(btn.GetName())
 		if err != nil {

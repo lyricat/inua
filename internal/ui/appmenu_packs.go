@@ -13,6 +13,7 @@ import (
 	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/gtkx"
 	"github.com/lyricat/inua/internal/i18n"
+	"github.com/lyricat/inua/internal/shell"
 	"github.com/lyricat/inua/internal/uikit"
 )
 
@@ -244,11 +245,103 @@ func (s *shellUI) showPackedMenu(b *bar, i int, w *gtk.Widget) {
 	s.appmenu.menu = pop
 }
 
+// openAppTitleMenu hangs the menu every window has (About, Close, Quit,
+// Fullscreen, Float) under the application's icon and name.
+func (s *shellUI) openAppTitleMenu(b *bar) {
+	if b.appPopover.GoPointer() != 0 {
+		if b.appPopover.GetVisible() {
+			b.appPopover.Popdown()
+			return
+		}
+		b.appPopover.Unparent()
+		b.appPopover = gtk.Popover{}
+	}
+	w, ok := shell.BarWindow(s.snap, b.connector())
+	if !ok {
+		// No window on this bar: the system's own menu, as an empty
+		// workspace has.
+		s.showTitleMenu(b, s.systemMenuItems())
+		return
+	}
+	sections := s.genericAppSections(w.PID)
+	if len(sections) == 0 {
+		return
+	}
+	s.showTitleMenu(b, s.titleMenuItems(w.PID, sections[0].Children))
+}
+
+// titleMenuItems turns entries into the title menu's lines.
+func (s *shellUI) titleMenuItems(pid int, entries []appmenu.Entry) []uikit.Item {
+	var out []uikit.Item
+	for _, e := range entries {
+		if e.Separator {
+			if len(out) > 0 && !out[len(out)-1].Separator {
+				out = append(out, uikit.Item{Separator: true})
+			}
+			continue
+		}
+		if len(e.Children) > 0 {
+			continue
+		}
+		entry := e
+		out = append(out, uikit.Item{Label: e.Label, Run: func() { s.doPackedEntry(pid, entry) }})
+	}
+	if len(out) > 0 && out[len(out)-1].Separator {
+		out = out[:len(out)-1]
+	}
+	return out
+}
+
+// showTitleMenu hangs items under the application's icon and name.
+func (s *shellUI) showTitleMenu(b *bar, items []uikit.Item) {
+	if len(items) == 0 {
+		return
+	}
+	pop := uikit.NewMenu(items, uikit.Below)
+	pop.SetParent(&b.appButton.Widget)
+	pop.Unref() // the button owns it
+	pop.Popup()
+	b.appPopover = *pop
+}
+
+// systemMenuItems is the system's menu on an empty workspace: the shell's
+// own actions, then the power actions the control center offers.
+func (s *shellUI) systemMenuItems() []uikit.Item {
+	items := []uikit.Item{
+		{Label: i18n.T("Settings"), Run: func() { s.openSettings() }},
+		{Label: i18n.T("Launcher"), Run: func() { s.showLauncher(shell.Apps) }},
+		{Label: i18n.T("Screenshot"), Run: func() { s.screenshotRequest("area") }},
+		{Label: i18n.T("Control Center"), Run: func() { s.toggleControl() }},
+		{Separator: true},
+		{Label: i18n.T("Lock Screen"), Run: func() {
+			if err := s.lockScreen(); err != nil {
+				log.Printf("system menu: lock: %v", err)
+			}
+		}},
+		{Label: i18n.T("Log Out"), Run: func() { s.doPower("logout") }},
+	}
+	if s.control.canHibernate {
+		items = append(items, uikit.Item{Label: i18n.T("Hibernate"), Run: func() { s.doPower("hibernate") }})
+	}
+	return append(items,
+		uikit.Item{Separator: true},
+		uikit.Item{Label: i18n.T("Suspend"), Run: func() { s.doPower("suspend") }},
+		uikit.Item{Label: i18n.T("Restart"), Run: func() { s.doPower("reboot") }},
+		uikit.Item{Label: i18n.T("Shut Down"), Run: func() { s.doPower("poweroff") }},
+	)
+}
+
 // activatePackedEntry runs a pack item while its process still has the focus.
 func (s *shellUI) activatePackedEntry(pid int, e appmenu.Entry) {
 	if pid <= 0 || focusedPID(s.snap) != pid {
 		return
 	}
+	s.doPackedEntry(pid, e)
+}
+
+// doPackedEntry runs a pack item, whatever has the focus: the title menu
+// belongs to a bar, not to the focused window.
+func (s *shellUI) doPackedEntry(pid int, e appmenu.Entry) {
 	go func() {
 		var err error
 		switch e.Action.Kind {
