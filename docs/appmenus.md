@@ -307,8 +307,9 @@ To change a shipped pack, put a file with the same `id` in
 `~/.config/inua/menus/`. For example, a copy of `kitty.toml` with the
 shortcuts of your own `kitty.conf` replaces the shipped kitty menu. The
 same directory can contain packs for applications that have no shipped
-pack. Pack files are limited to 256 KiB and submenu nesting to eight
-levels. Unknown fields, unknown includes or actions, invalid `when`
+pack. A pack file must be a regular file (or a link to one) of at most
+256 KiB, and submenus nest at most eight levels; a FIFO, a device or a
+socket named like a pack is skipped without being read. Unknown fields, unknown includes or actions, invalid `when`
 values, punctuation written as a character in `keys` or `sequence`, and
 malformed items make that file invalid; it is skipped and the reason
 appears in the shell log. Other valid packs continue to load.
@@ -333,8 +334,9 @@ above).
 
 #### Reloading and troubleshooting
 
-The shell checks pack files by their size and modification time. After
-editing, change focus away from the target window and back. If the menu
+The shell checks pack files by their size and modification time, off the
+bar's thread, whenever the focus or the menus change. After editing,
+change focus away from the target window and back. If the menu
 does not change:
 
 - Check that the filename ends in `.toml` and is directly inside

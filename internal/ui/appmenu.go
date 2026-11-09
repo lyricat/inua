@@ -48,6 +48,7 @@ func (s *shellUI) startAppMenu() {
 		dev = filepath.Join(filepath.Dir(s.opts.UIDir), "share", "inua", "menus")
 	}
 	s.appmenu.packs = appmenu.NewPacks(dev)
+	s.checkAppMenuPacks()
 	conn, err := system.SessionBus()
 	if err != nil {
 		log.Printf("appmenu: %v", err)
@@ -68,6 +69,15 @@ func (s *shellUI) startAppMenu() {
 			log.Printf("appmenu registrar: %v", err)
 		}
 	}()
+}
+
+// checkAppMenuPacks has the menu packs read again off the main thread, and
+// the bars' menus redrawn when they changed: a pack file is opened and read
+// there, never while GTK waits.
+func (s *shellUI) checkAppMenuPacks() {
+	s.appmenu.packs.Check(func() {
+		gtkx.Post(s.syncAppMenus)
+	})
 }
 
 func focusedPID(snap compositor.Snapshot) int {
@@ -141,17 +151,19 @@ func (s *shellUI) focusedAppMenu() (reg appmenu.Registration, searched bool) {
 // a menu gets it; one confirmed to have none gets its pack's menu, or the
 // generic one when no pack adds anything. While the search for a published
 // menu runs the bar shows none, so a pack's commands never stand in for a
-// real menu that is about to be found.
+// real menu that is about to be found. Until the packs are first read
+// the bar shows none either: a pack may replace the published menu.
 func (s *shellUI) syncAppMenu(b *bar) {
 	if s.appmenu.packs == nil {
 		return
 	}
+	s.checkAppMenuPacks()
 	var want appmenu.Registration
 	window := ""
 	var pack appmenu.Pack
 	matched := false
 	w, focused := s.snap.Window(s.snap.FocusedWindow)
-	if b.connector() == s.snap.FocusedOutput && focused {
+	if b.connector() == s.snap.FocusedOutput && focused && s.appmenu.packs.Loaded() {
 		pack, matched = s.menuPack(w)
 		replace := matched && pack.When == appmenu.PackReplace
 		searched := true

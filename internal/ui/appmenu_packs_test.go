@@ -52,6 +52,7 @@ func TestPackMenuActsOnTheFocusedWindow(t *testing.T) {
 	isolatePacks(t)
 	s := &shellUI{snap: twoBrowserWindows()}
 	s.appmenu.packs = appmenu.NewPacks("")
+	s.appmenu.packs.Refresh()
 	w, _ := s.snap.Window(s.snap.FocusedWindow)
 	pack, ok := s.menuPack(w)
 	if !ok {
@@ -125,6 +126,7 @@ func TestEmptyPackShowsTheGenericMenu(t *testing.T) {
 		snap := compositor.Snapshot{Windows: []compositor.Window{{ID: "0x1", PID: 7, AppID: class}}, FocusedWindow: "0x1"}
 		s := &shellUI{snap: snap}
 		s.appmenu.packs = appmenu.NewPacks("")
+		s.appmenu.packs.Refresh()
 		w := snap.Windows[0]
 		pack, matched := s.menuPack(w)
 		if class != "unknown.app" && !matched {
