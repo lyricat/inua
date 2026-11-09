@@ -61,7 +61,7 @@ func Details(m *Message) []Detail {
 		text(i18n.T("Checks"), strings.Join(checks, " · "), false)
 	}
 	if m.Header.Len() > 0 {
-		text(i18n.T("List"), m.Header.Get("List-Id"), true)
+		text(i18n.T("Mailing list"), m.Header.Get("List-Id"), true)
 	}
 	if m.MessageID != "" {
 		text(i18n.T("Message-ID"), "<"+strings.Trim(m.MessageID, "<>")+">", true)

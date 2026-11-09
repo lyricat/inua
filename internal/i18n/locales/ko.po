@@ -1474,7 +1474,7 @@ msgid "Checks"
 msgstr "검사"
 
 #: internal/apps/mail/details.go:64
-msgid "List"
+msgid "Mailing list"
 msgstr ""
 
 #: internal/apps/mail/details.go:67
@@ -4057,6 +4057,10 @@ msgstr "폴더"
 #: internal/ui/settings_keyring.go:326
 msgid "Program"
 msgstr "프로그램"
+
+#: internal/filesui/menubar.go:82
+msgid "List"
+msgstr ""
 
 #: internal/filesui/openwith.go:107
 #: internal/filesui/openwith.go:112

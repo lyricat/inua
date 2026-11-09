@@ -1474,7 +1474,7 @@ msgid "Checks"
 msgstr "チェック"
 
 #: internal/apps/mail/details.go:64
-msgid "List"
+msgid "Mailing list"
 msgstr "メーリングリスト"
 
 #: internal/apps/mail/details.go:67
@@ -4057,6 +4057,10 @@ msgstr "フォルダー"
 #: internal/ui/settings_keyring.go:326
 msgid "Program"
 msgstr "プログラム"
+
+#: internal/filesui/menubar.go:82
+msgid "List"
+msgstr "リスト"
 
 #: internal/filesui/openwith.go:107
 #: internal/filesui/openwith.go:112
@@ -8238,7 +8242,7 @@ msgstr "ロビーに接続できません: %v。再試行しています…"
 
 #: internal/gamesui/lobbywin.go:165
 msgid "Games at %d of %d tables; %d free."
-msgstr "全 %d テーブル中 %d でゲーム中、空席は %d です。"
+msgstr "%[1]d テーブル中 %[2]d でゲーム中、空きは %[3]d です。"
 
 #: internal/gamesui/lobbywin.go:237
 msgid "Host a game here: it opens set to this table."
@@ -16202,7 +16206,7 @@ msgstr "Inuaで割り当てたショートカット"
 
 #: internal/ui/settings_compositor.go:133
 msgid "Holding other shortcuts back while one is recorded"
-msgstr "録音中は、ほかのショートカットを一時停止"
+msgstr "ショートカット記録中は、ほかのショートカットを保留"
 
 #: internal/ui/settings_compositor.go:134
 msgid "Display settings from inua"

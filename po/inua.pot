@@ -1477,7 +1477,7 @@ msgid "Checks"
 msgstr ""
 
 #: internal/apps/mail/details.go:64
-msgid "List"
+msgid "Mailing list"
 msgstr ""
 
 #: internal/apps/mail/details.go:67
@@ -4071,6 +4071,10 @@ msgstr ""
 #: internal/lightui/sysmon.go:794
 #: internal/ui/settings_keyring.go:326
 msgid "Program"
+msgstr ""
+
+#: internal/filesui/menubar.go:82
+msgid "List"
 msgstr ""
 
 #: internal/filesui/openwith.go:107
