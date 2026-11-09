@@ -49,3 +49,15 @@ Checks: coder and manager independently passed `make test` with isolated throwaw
 Limitations: UI was not checked by eye and actual drag/drop was not exercised. Real Hyprland/layer-shell, multi-monitor behavior, restart persistence, moved popover placement, keyboard controls, compact density and edge-gap appearance still need manual checking. Reordering shows an insertion line rather than sliding neighboring items (documented design difference). Existing icons reused; new strings remain untranslated in catalogs. First coder test used relative HOME and failed three VM tests; corrected to absolute isolated HOME and full suite passed; stray files removed.
 
 Moved new/ → review/.
+
+## factory · review · 2026-11-09 16:41
+head: d26f57f5a0fbb51f2b6f2463da591cc1d36e1ba0
+verdict: pass
+notes:
+- [P2] internal/ui/bar.go:637: 重排后面板扩展命中范围跨过托盘。布局 ["control_center","tray","notifications"] 中 tray 未被标记为 Break；独立运行命中函数验证托盘内坐标返回控制中心且 onButton=false，后续悬停/滚轮逻辑可进入音量调整分支。让托盘等独立交互组件阻断相邻面板的扩展命中范围。
+
+Codex reviewed all 32 changed files in origin/master...HEAD; no P0/P1 findings. No merge conflicts with master. Required make test passed with isolated absolute HOME/XDG directories: 18 Python tests, go vet, and race tests across 115 Go packages. Blueprint compilation and regenerated i18n in a temporary copy matched committed output. Initial GTK probe crashed on an ordinary widget; rerun with isolated D-Bus passed, not attributed to this change. No unpinned installs. Code worktree clean; protected paths unchanged.
+
+UI was not checked by eye. Actual drag/drop, multi-monitor behavior, restart persistence and relocated popover placement still need manual checking. No code fixes made. No linked GitHub issue or PR to comment on.
+
+Moved review/ → ready/ under the no-P0/P1 review rule; P2 remains for owner attention.
