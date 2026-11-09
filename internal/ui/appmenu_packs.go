@@ -52,12 +52,19 @@ func (s *shellUI) windowMenuItems(w compositor.Window, pid int) []appmenu.Entry 
 
 // appWindowOf is the window of process pid the bar names.
 func (s *shellUI) appWindowOf(pid int) (compositor.Window, bool) {
+	var first compositor.Window
 	for _, w := range s.snap.Windows {
-		if w.PID == pid {
+		if w.PID != pid {
+			continue
+		}
+		if w.Focused {
 			return w, true
 		}
+		if first.ID == "" {
+			first = w
+		}
 	}
-	return compositor.Window{}, false
+	return first, first.ID != ""
 }
 
 // appNameOf is what the bar calls an application: its desktop entry's

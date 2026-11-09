@@ -2085,7 +2085,7 @@ msgstr "尝试"
 #: internal/gamesui/menubar.go:36
 #: internal/mailui/menubar.go:39
 #: internal/remoteui/menubar.go:47
-#: internal/ui/appmenu_packs.go:88
+#: internal/ui/appmenu_packs.go:95
 #: internal/ui/settings_menu.go:25
 #: internal/viewerui/menubar.go:36
 #: internal/vmui/menubar.go:36
@@ -2105,7 +2105,7 @@ msgstr "新对话"
 #: internal/mailui/menubar.go:42
 #: internal/remoteui/menubar.go:48
 #: internal/shell/commands.go:46
-#: internal/ui/appmenu_packs.go:89
+#: internal/ui/appmenu_packs.go:96
 #: internal/viewerui/menubar.go:39
 #: internal/vmui/menubar.go:39
 msgid "Close Window"
@@ -2115,7 +2115,7 @@ msgstr "关闭窗口"
 #: internal/diskui/menubar.go:38
 #: internal/lightui/clock.go:404
 #: internal/termui/menubar.go:31
-#: internal/ui/appmenu_packs.go:91
+#: internal/ui/appmenu_packs.go:98
 #: internal/viewerui/menubar.go:41
 #: ui/pass.ui:252
 msgid "Edit"
@@ -2132,7 +2132,7 @@ msgstr ""
 #: internal/mailui/menubar.go:44
 #: internal/remoteui/menubar.go:56
 #: internal/termui/menubar.go:32
-#: internal/ui/appmenu_packs.go:94
+#: internal/ui/appmenu_packs.go:101
 #: internal/ui/settings_menu.go:28
 #: internal/viewerui/menubar.go:46
 #: internal/vmui/menubar.go:48
@@ -3636,7 +3636,7 @@ msgstr[0] "……还有 %d 项"
 #: internal/termui/keys.go:295
 #: internal/termui/sessionmenu.go:113
 #: internal/termui/wsmenu.go:129
-#: internal/ui/appmenu_packs.go:132
+#: internal/ui/appmenu_packs.go:139
 #: internal/ui/settings_bench.go:132
 #: internal/ui/settings_menu.go:26
 #: internal/ui/settings_wifi_details.go:62
@@ -8250,7 +8250,7 @@ msgstr ""
 
 #: internal/gamesui/menubar.go:34
 #: internal/ui/appmenu_packs.go:47
-#: internal/ui/appmenu_packs.go:95
+#: internal/ui/appmenu_packs.go:102
 #: internal/viewerui/menubar.go:57
 msgid "Fullscreen"
 msgstr ""
@@ -11389,7 +11389,7 @@ msgstr ""
 
 #: internal/mailui/menubar.go:53
 #: internal/termui/menubar.go:34
-#: internal/ui/appmenu_packs.go:98
+#: internal/ui/appmenu_packs.go:105
 msgid "Help"
 msgstr ""
 
@@ -13195,7 +13195,7 @@ msgstr "切换全屏"
 
 #: internal/shell/commands.go:49
 #: internal/ui/appmenu_packs.go:49
-#: internal/ui/appmenu_packs.go:97
+#: internal/ui/appmenu_packs.go:104
 msgid "Center Window"
 msgstr "窗口居中"
 
@@ -14704,28 +14704,28 @@ msgid "Snooze"
 msgstr "稍后提醒"
 
 #: internal/ui/appmenu_packs.go:48
-#: internal/ui/appmenu_packs.go:96
+#: internal/ui/appmenu_packs.go:103
 msgid "Float"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:90
+#: internal/ui/appmenu_packs.go:97
 msgid "Quit %s"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:92
+#: internal/ui/appmenu_packs.go:99
 msgid "Copy Window Title"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:93
+#: internal/ui/appmenu_packs.go:100
 msgid "Copy Window Class"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:99
-#: internal/ui/appmenu_packs.go:118
+#: internal/ui/appmenu_packs.go:106
+#: internal/ui/appmenu_packs.go:125
 msgid "About %s"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:130
+#: internal/ui/appmenu_packs.go:137
 msgid "Process %d"
 msgstr ""
 
