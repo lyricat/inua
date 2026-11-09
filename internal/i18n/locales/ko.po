@@ -2085,7 +2085,7 @@ msgstr "시도하다"
 #: internal/gamesui/menubar.go:36
 #: internal/mailui/menubar.go:39
 #: internal/remoteui/menubar.go:47
-#: internal/ui/appmenu_packs.go:88
+#: internal/ui/appmenu_packs.go:89
 #: internal/ui/settings_menu.go:25
 #: internal/viewerui/menubar.go:36
 #: internal/vmui/menubar.go:36
@@ -2105,7 +2105,7 @@ msgstr "새로운 대화"
 #: internal/mailui/menubar.go:42
 #: internal/remoteui/menubar.go:48
 #: internal/shell/commands.go:46
-#: internal/ui/appmenu_packs.go:89
+#: internal/ui/appmenu_packs.go:90
 #: internal/viewerui/menubar.go:39
 #: internal/vmui/menubar.go:39
 msgid "Close Window"
@@ -2115,7 +2115,7 @@ msgstr "창 닫기"
 #: internal/diskui/menubar.go:38
 #: internal/lightui/clock.go:404
 #: internal/termui/menubar.go:31
-#: internal/ui/appmenu_packs.go:91
+#: internal/ui/appmenu_packs.go:92
 #: internal/viewerui/menubar.go:41
 #: ui/pass.ui:252
 msgid "Edit"
@@ -2132,7 +2132,7 @@ msgstr ""
 #: internal/mailui/menubar.go:44
 #: internal/remoteui/menubar.go:56
 #: internal/termui/menubar.go:32
-#: internal/ui/appmenu_packs.go:94
+#: internal/ui/appmenu_packs.go:95
 #: internal/ui/settings_menu.go:28
 #: internal/viewerui/menubar.go:46
 #: internal/vmui/menubar.go:48
@@ -3212,6 +3212,7 @@ msgstr "홈"
 #: internal/lightui/tailscale.go:568
 #: internal/ui/bar.go:487
 #: internal/ui/settings.go:662
+#: internal/ui/systemmenu.go:34
 #: ui/vm.ui:2981
 msgid "System"
 msgstr "시스템"
@@ -3636,7 +3637,7 @@ msgstr[0] "… 그 외 %d개"
 #: internal/termui/keys.go:295
 #: internal/termui/sessionmenu.go:113
 #: internal/termui/wsmenu.go:129
-#: internal/ui/appmenu_packs.go:132
+#: internal/ui/appmenu_packs.go:133
 #: internal/ui/settings_bench.go:132
 #: internal/ui/settings_menu.go:26
 #: internal/ui/settings_wifi_details.go:62
@@ -8249,8 +8250,8 @@ msgid "The browser could not be opened: %v"
 msgstr ""
 
 #: internal/gamesui/menubar.go:34
-#: internal/ui/appmenu_packs.go:47
-#: internal/ui/appmenu_packs.go:95
+#: internal/ui/appmenu_packs.go:48
+#: internal/ui/appmenu_packs.go:96
 #: internal/viewerui/menubar.go:57
 msgid "Fullscreen"
 msgstr ""
@@ -8494,6 +8495,7 @@ msgstr "우주 핀볼"
 
 #: internal/hyprconf/keys.go:23
 #: internal/shell/dock.go:312
+#: internal/ui/systemmenu.go:36
 #: ui/settings.ui:2478
 msgid "Launcher"
 msgstr "실행기"
@@ -8535,6 +8537,7 @@ msgstr "포커스 온 또는 오프"
 #: internal/term/settings/settings.go:126
 #: internal/term/web/strings.go:96
 #: internal/termui/headmenu.go:110
+#: internal/ui/systemmenu.go:35
 #: ui/control.ui:58
 #: ui/settings.ui:30
 msgid "Settings"
@@ -10673,6 +10676,7 @@ msgstr "계정"
 
 #: internal/lightui/tailscale.go:664
 #: internal/shell/commands.go:31
+#: internal/ui/systemmenu.go:42
 msgid "Log Out"
 msgstr "로그아웃"
 
@@ -11390,7 +11394,7 @@ msgstr ""
 
 #: internal/mailui/menubar.go:53
 #: internal/termui/menubar.go:34
-#: internal/ui/appmenu_packs.go:98
+#: internal/ui/appmenu_packs.go:99
 msgid "Help"
 msgstr ""
 
@@ -12621,8 +12625,9 @@ msgid "Remote Desktop"
 msgstr "원격 데스크톱"
 
 #: internal/remoteui/menubar.go:50
+#: internal/ui/systemmenu.go:40
 msgid "Session"
-msgstr ""
+msgstr "세션"
 
 #: internal/remoteui/menubar.go:52
 msgid "End Remote Session"
@@ -13016,6 +13021,7 @@ msgid "Desktop"
 msgstr "데스크톱"
 
 #: internal/shell/commands.go:27
+#: internal/ui/systemmenu.go:41
 msgid "Lock Screen"
 msgstr "화면 잠금"
 
@@ -13035,6 +13041,7 @@ msgstr "일시 중지, 먼저 잠금"
 #: internal/shell/commands.go:29
 #: internal/termui/restart.go:44
 #: internal/ui/control.go:541
+#: internal/ui/systemmenu.go:30
 #: ui/control.ui:168
 msgid "Restart"
 msgstr "다시 시작"
@@ -13048,6 +13055,7 @@ msgid "Press Enter again to restart"
 msgstr "Enter를 다시 누르면 다시 시작합니다"
 
 #: internal/shell/commands.go:30
+#: internal/ui/systemmenu.go:31
 msgid "Shut Down"
 msgstr "종료"
 
@@ -13195,8 +13203,8 @@ msgid "Toggle Fullscreen"
 msgstr "전체 화면 전환"
 
 #: internal/shell/commands.go:49
-#: internal/ui/appmenu_packs.go:49
-#: internal/ui/appmenu_packs.go:97
+#: internal/ui/appmenu_packs.go:50
+#: internal/ui/appmenu_packs.go:98
 msgid "Center Window"
 msgstr "창 가운데로 이동"
 
@@ -13261,6 +13269,7 @@ msgstr "앱, 창 및 답변 찾기"
 
 #: internal/shell/dock.go:313
 #: internal/ui/screenshot.go:1144
+#: internal/ui/systemmenu.go:37
 #: ui/settings.ui:2438
 msgid "Screenshot"
 msgstr "스크린샷"
@@ -13435,12 +13444,14 @@ msgstr "성능"
 
 #: internal/shell/power.go:24
 #: internal/ui/control.go:539
+#: internal/ui/systemmenu.go:23
 #: ui/control.ui:120
 msgid "Suspend"
 msgstr "절전"
 
 #: internal/shell/power.go:26
 #: internal/ui/control.go:540
+#: internal/ui/systemmenu.go:26
 #: ui/control.ui:144
 msgid "Hibernate"
 msgstr "최대 절전"
@@ -14704,29 +14715,29 @@ msgstr "알람 · %02d:%02d"
 msgid "Snooze"
 msgstr "다시 알림"
 
-#: internal/ui/appmenu_packs.go:48
-#: internal/ui/appmenu_packs.go:96
+#: internal/ui/appmenu_packs.go:49
+#: internal/ui/appmenu_packs.go:97
 msgid "Float"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:90
+#: internal/ui/appmenu_packs.go:91
 msgid "Quit %s"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:92
+#: internal/ui/appmenu_packs.go:93
 msgid "Copy Window Title"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:93
+#: internal/ui/appmenu_packs.go:94
 msgid "Copy Window Class"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:99
-#: internal/ui/appmenu_packs.go:118
+#: internal/ui/appmenu_packs.go:100
+#: internal/ui/appmenu_packs.go:119
 msgid "About %s"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:130
+#: internal/ui/appmenu_packs.go:131
 msgid "Process %d"
 msgstr ""
 
@@ -17208,6 +17219,16 @@ msgid "%d window"
 msgid_plural "%d windows"
 msgstr[0] "%d개 창"
 
+#: internal/ui/systemmenu.go:38
+#: ui/bar.ui:238
+msgid "Control Center"
+msgstr "제어 센터"
+
+#: internal/ui/systemmenu.go:44
+#: ui/settings.ui:6960
+msgid "Power"
+msgstr "전원"
+
 #: internal/ui/updates.go:91
 msgid "You have %s."
 msgstr "%s가 있습니다."
@@ -18614,10 +18635,6 @@ msgstr "녹음 버리기"
 #: ui/bar.ui:133
 msgid "Stop recording"
 msgstr "녹화 중지"
-
-#: ui/bar.ui:238
-msgid "Control Center"
-msgstr "제어 센터"
 
 #: ui/calculator.ui:32
 msgid "Scientific"
@@ -20681,10 +20698,6 @@ msgstr "inua에서 터치패드 설정을 중지합니다."
 #: ui/settings.ui:6892
 msgid "Security Keys"
 msgstr ""
-
-#: ui/settings.ui:6960
-msgid "Power"
-msgstr "전원"
 
 #: ui/settings.ui:7028
 msgid "About"

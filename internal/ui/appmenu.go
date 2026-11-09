@@ -152,6 +152,9 @@ func (s *shellUI) syncAppMenu(b *bar) {
 		s.loadAppMenu(b, true)
 	case pid > 0 && matched:
 		s.renderAppMenu(b, s.entriesFromPack(pid, pack))
+	case pid == 0:
+		// No window on this workspace: the bar's menu is the system's.
+		s.renderAppMenu(b, s.systemMenuEntries())
 	}
 }
 

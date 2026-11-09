@@ -2088,7 +2088,7 @@ msgstr ""
 #: internal/gamesui/menubar.go:36
 #: internal/mailui/menubar.go:39
 #: internal/remoteui/menubar.go:47
-#: internal/ui/appmenu_packs.go:88
+#: internal/ui/appmenu_packs.go:89
 #: internal/ui/settings_menu.go:25
 #: internal/viewerui/menubar.go:36
 #: internal/vmui/menubar.go:36
@@ -2109,7 +2109,7 @@ msgstr ""
 #: internal/mailui/menubar.go:42
 #: internal/remoteui/menubar.go:48
 #: internal/shell/commands.go:46
-#: internal/ui/appmenu_packs.go:89
+#: internal/ui/appmenu_packs.go:90
 #: internal/viewerui/menubar.go:39
 #: internal/vmui/menubar.go:39
 msgid "Close Window"
@@ -2119,7 +2119,7 @@ msgstr ""
 #: internal/diskui/menubar.go:38
 #: internal/lightui/clock.go:404
 #: internal/termui/menubar.go:31
-#: internal/ui/appmenu_packs.go:91
+#: internal/ui/appmenu_packs.go:92
 #: internal/viewerui/menubar.go:41
 #: ui/pass.ui:252
 msgid "Edit"
@@ -2136,7 +2136,7 @@ msgstr ""
 #: internal/mailui/menubar.go:44
 #: internal/remoteui/menubar.go:56
 #: internal/termui/menubar.go:32
-#: internal/ui/appmenu_packs.go:94
+#: internal/ui/appmenu_packs.go:95
 #: internal/ui/settings_menu.go:28
 #: internal/viewerui/menubar.go:46
 #: internal/vmui/menubar.go:48
@@ -3217,6 +3217,7 @@ msgstr ""
 #: internal/lightui/tailscale.go:568
 #: internal/ui/bar.go:487
 #: internal/ui/settings.go:662
+#: internal/ui/systemmenu.go:34
 #: ui/vm.ui:2981
 msgid "System"
 msgstr ""
@@ -3648,7 +3649,7 @@ msgstr[1] ""
 #: internal/termui/keys.go:295
 #: internal/termui/sessionmenu.go:113
 #: internal/termui/wsmenu.go:129
-#: internal/ui/appmenu_packs.go:132
+#: internal/ui/appmenu_packs.go:133
 #: internal/ui/settings_bench.go:132
 #: internal/ui/settings_menu.go:26
 #: internal/ui/settings_wifi_details.go:62
@@ -8283,8 +8284,8 @@ msgid "The browser could not be opened: %v"
 msgstr ""
 
 #: internal/gamesui/menubar.go:34
-#: internal/ui/appmenu_packs.go:47
-#: internal/ui/appmenu_packs.go:95
+#: internal/ui/appmenu_packs.go:48
+#: internal/ui/appmenu_packs.go:96
 #: internal/viewerui/menubar.go:57
 msgid "Fullscreen"
 msgstr ""
@@ -8529,6 +8530,7 @@ msgstr ""
 
 #: internal/hyprconf/keys.go:23
 #: internal/shell/dock.go:312
+#: internal/ui/systemmenu.go:36
 #: ui/settings.ui:2478
 msgid "Launcher"
 msgstr ""
@@ -8570,6 +8572,7 @@ msgstr ""
 #: internal/term/settings/settings.go:126
 #: internal/term/web/strings.go:96
 #: internal/termui/headmenu.go:110
+#: internal/ui/systemmenu.go:35
 #: ui/control.ui:58
 #: ui/settings.ui:30
 msgid "Settings"
@@ -10724,6 +10727,7 @@ msgstr ""
 
 #: internal/lightui/tailscale.go:664
 #: internal/shell/commands.go:31
+#: internal/ui/systemmenu.go:42
 msgid "Log Out"
 msgstr ""
 
@@ -11445,7 +11449,7 @@ msgstr ""
 
 #: internal/mailui/menubar.go:53
 #: internal/termui/menubar.go:34
-#: internal/ui/appmenu_packs.go:98
+#: internal/ui/appmenu_packs.go:99
 msgid "Help"
 msgstr ""
 
@@ -12687,6 +12691,7 @@ msgid "Remote Desktop"
 msgstr ""
 
 #: internal/remoteui/menubar.go:50
+#: internal/ui/systemmenu.go:40
 msgid "Session"
 msgstr ""
 
@@ -13084,6 +13089,7 @@ msgid "Desktop"
 msgstr ""
 
 #: internal/shell/commands.go:27
+#: internal/ui/systemmenu.go:41
 msgid "Lock Screen"
 msgstr ""
 
@@ -13103,6 +13109,7 @@ msgstr ""
 #: internal/shell/commands.go:29
 #: internal/termui/restart.go:44
 #: internal/ui/control.go:541
+#: internal/ui/systemmenu.go:30
 #: ui/control.ui:168
 msgid "Restart"
 msgstr ""
@@ -13116,6 +13123,7 @@ msgid "Press Enter again to restart"
 msgstr ""
 
 #: internal/shell/commands.go:30
+#: internal/ui/systemmenu.go:31
 msgid "Shut Down"
 msgstr ""
 
@@ -13263,8 +13271,8 @@ msgid "Toggle Fullscreen"
 msgstr ""
 
 #: internal/shell/commands.go:49
-#: internal/ui/appmenu_packs.go:49
-#: internal/ui/appmenu_packs.go:97
+#: internal/ui/appmenu_packs.go:50
+#: internal/ui/appmenu_packs.go:98
 msgid "Center Window"
 msgstr ""
 
@@ -13329,6 +13337,7 @@ msgstr ""
 
 #: internal/shell/dock.go:313
 #: internal/ui/screenshot.go:1144
+#: internal/ui/systemmenu.go:37
 #: ui/settings.ui:2438
 msgid "Screenshot"
 msgstr ""
@@ -13505,12 +13514,14 @@ msgstr ""
 
 #: internal/shell/power.go:24
 #: internal/ui/control.go:539
+#: internal/ui/systemmenu.go:23
 #: ui/control.ui:120
 msgid "Suspend"
 msgstr ""
 
 #: internal/shell/power.go:26
 #: internal/ui/control.go:540
+#: internal/ui/systemmenu.go:26
 #: ui/control.ui:144
 msgid "Hibernate"
 msgstr ""
@@ -14781,29 +14792,29 @@ msgstr ""
 msgid "Snooze"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:48
-#: internal/ui/appmenu_packs.go:96
+#: internal/ui/appmenu_packs.go:49
+#: internal/ui/appmenu_packs.go:97
 msgid "Float"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:90
+#: internal/ui/appmenu_packs.go:91
 msgid "Quit %s"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:92
+#: internal/ui/appmenu_packs.go:93
 msgid "Copy Window Title"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:93
+#: internal/ui/appmenu_packs.go:94
 msgid "Copy Window Class"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:99
-#: internal/ui/appmenu_packs.go:118
+#: internal/ui/appmenu_packs.go:100
+#: internal/ui/appmenu_packs.go:119
 msgid "About %s"
 msgstr ""
 
-#: internal/ui/appmenu_packs.go:130
+#: internal/ui/appmenu_packs.go:131
 msgid "Process %d"
 msgstr ""
 
@@ -17303,6 +17314,16 @@ msgid_plural "%d windows"
 msgstr[0] ""
 msgstr[1] ""
 
+#: internal/ui/systemmenu.go:38
+#: ui/bar.ui:238
+msgid "Control Center"
+msgstr ""
+
+#: internal/ui/systemmenu.go:44
+#: ui/settings.ui:6960
+msgid "Power"
+msgstr ""
+
 #: internal/ui/updates.go:91
 msgid "You have %s."
 msgstr ""
@@ -18714,10 +18735,6 @@ msgstr ""
 
 #: ui/bar.ui:133
 msgid "Stop recording"
-msgstr ""
-
-#: ui/bar.ui:238
-msgid "Control Center"
 msgstr ""
 
 #: ui/calculator.ui:32
@@ -20781,10 +20798,6 @@ msgstr ""
 
 #: ui/settings.ui:6892
 msgid "Security Keys"
-msgstr ""
-
-#: ui/settings.ui:6960
-msgid "Power"
 msgstr ""
 
 #: ui/settings.ui:7028

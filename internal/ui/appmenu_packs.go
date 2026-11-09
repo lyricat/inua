@@ -304,33 +304,6 @@ func (s *shellUI) showTitleMenu(b *bar, items []uikit.Item) {
 	b.appPopover = *pop
 }
 
-// systemMenuItems is the system's menu on an empty workspace: the shell's
-// own actions, then the power actions the control center offers.
-func (s *shellUI) systemMenuItems() []uikit.Item {
-	items := []uikit.Item{
-		{Label: i18n.T("Settings"), Run: func() { s.openSettings() }},
-		{Label: i18n.T("Launcher"), Run: func() { s.showLauncher(shell.Apps) }},
-		{Label: i18n.T("Screenshot"), Run: func() { s.screenshotRequest("area") }},
-		{Label: i18n.T("Control Center"), Run: func() { s.toggleControl() }},
-		{Separator: true},
-		{Label: i18n.T("Lock Screen"), Run: func() {
-			if err := s.lockScreen(); err != nil {
-				log.Printf("system menu: lock: %v", err)
-			}
-		}},
-		{Label: i18n.T("Log Out"), Run: func() { s.doPower("logout") }},
-	}
-	if s.control.canHibernate {
-		items = append(items, uikit.Item{Label: i18n.T("Hibernate"), Run: func() { s.doPower("hibernate") }})
-	}
-	return append(items,
-		uikit.Item{Separator: true},
-		uikit.Item{Label: i18n.T("Suspend"), Run: func() { s.doPower("suspend") }},
-		uikit.Item{Label: i18n.T("Restart"), Run: func() { s.doPower("reboot") }},
-		uikit.Item{Label: i18n.T("Shut Down"), Run: func() { s.doPower("poweroff") }},
-	)
-}
-
 // activatePackedEntry runs a pack item while its process still has the focus.
 func (s *shellUI) activatePackedEntry(pid int, e appmenu.Entry) {
 	if pid <= 0 || focusedPID(s.snap) != pid {
@@ -383,6 +356,8 @@ func (s *shellUI) doPackedEntry(pid int, e appmenu.Entry) {
 					}
 				})
 			}
+		case appmenu.ActionSystem:
+			s.runSystemAction(e.Action.Bus)
 		case appmenu.ActionKeys:
 			k, ok := s.comp.(compositor.Keystroker)
 			if !ok || !s.caps.Has(compositor.CapKeystrokes) {
