@@ -6,6 +6,7 @@ import (
 
 	"github.com/godbus/dbus/v5"
 
+	"github.com/lyricat/inua/internal/dbusexport"
 	"github.com/lyricat/inua/internal/dbustest"
 )
 
@@ -241,7 +242,7 @@ func callRecorder(t *testing.T, seen func(kind string)) *dbus.Conn {
 	t.Helper()
 	addr := dbustest.Start(t)
 	conn := dbustest.Conn(t, addr)
-	if err := conn.Export(&recorder{seen: seen}, "/x", a11yActionIface); err != nil {
+	if err := dbusexport.Export(conn, &recorder{seen: seen}, "/x", a11yActionIface); err != nil {
 		t.Fatal(err)
 	}
 	return conn
