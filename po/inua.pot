@@ -373,7 +373,7 @@ msgstr ""
 #: internal/filesui/cards.go:678
 #: internal/filesui/picker.go:488
 #: internal/filesui/window.go:808
-#: internal/lightui/workshop_blocks.go:427
+#: internal/lightui/workshop_blocks.go:431
 #: internal/lightui/workshop_manager.go:63
 #: internal/mailui/actions.go:533
 #: internal/mailui/people.go:297
@@ -10915,7 +10915,7 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: internal/lightui/workshop_blocks.go:438
+#: internal/lightui/workshop_blocks.go:442
 #: internal/mailui/settings.go:612
 #: internal/mailui/welcome.go:823
 #: internal/term/web/strings.go:93

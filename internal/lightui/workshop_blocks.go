@@ -18,6 +18,7 @@ import (
 	"github.com/lyricat/inua/internal/apps/chart"
 	"github.com/lyricat/inua/internal/gtkx"
 	"github.com/lyricat/inua/internal/i18n"
+	"github.com/lyricat/inua/internal/uikit"
 	"github.com/lyricat/inua/internal/workshop"
 )
 
@@ -151,6 +152,9 @@ func (a *workshopApp) makeMore(w *wsNode, n workshop.Node) bool {
 			w.icon = gtk.NewImageFromIconName("")
 			w.icon.AddCssClass("ws-image-icon")
 			w.w = &w.icon.Widget
+			if n.Style == "app" {
+				w.w = uikit.AppIcon(w.icon, nil) // an app's icon, as the dock shows it
+			}
 		}
 	default:
 		return false
@@ -195,7 +199,7 @@ func sameMore(old, n workshop.Node) bool {
 		nl, nh, ns := sliderRange(n)
 		return ol == nl && oh == nh && os == ns
 	case "image":
-		return (old.Src == "") == (n.Src == "")
+		return (old.Src == "") == (n.Src == "") && (old.Style == "app") == (n.Style == "app")
 	}
 	return true
 }
