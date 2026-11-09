@@ -11,6 +11,7 @@ import (
 
 	"github.com/lyricat/inua/internal/appmenu"
 	"github.com/lyricat/inua/internal/compositor"
+	"github.com/lyricat/inua/internal/gtkx"
 	"github.com/lyricat/inua/internal/i18n"
 	"github.com/lyricat/inua/internal/uikit"
 )
@@ -90,7 +91,8 @@ func genericAppSections(w compositor.Window, name string) []appmenu.Entry {
 }
 
 // showAppAbout says what the application behind window w is: its name and
-// icon, the window's title, and its process.
+// icon, the window's title, and its process. Every About window is its own;
+// GTK owns it from here, and Close or the compositor's close destroys it.
 func (s *shellUI) showAppAbout(w compositor.Window) {
 	name, icon := s.appNameOf(w), w.AppID
 	if e := s.dockState.apps.ForClass(w.AppID); e != nil {
@@ -115,14 +117,27 @@ func (s *shellUI) showAppAbout(w compositor.Window) {
 	process := gtk.NewLabel(i18n.Tf("Process %d", w.PID))
 	process.AddCssClass("about-process")
 	okButton := gtk.NewButtonWithLabel(i18n.T("Close"))
-	onClose := func(gtk.Button) { win.Destroy() }
-	okButton.ConnectClicked(&onClose)
+	okButton.ConnectClicked(&s.onAppAboutClose) // shared: one trampoline for every opening
 	for _, child := range []*gtk.Widget{&mark.Widget, &title.Widget, &window.Widget, &process.Widget, &okButton.Widget} {
-		body.Append(child)
+		gtkx.Append(body, child)
 	}
 	win.SetChild(&body.Widget)
 	body.Unref()
 	win.Present()
+	win.Unref() // GTK keeps its toplevel until it is destroyed
+}
+
+// closeAppAbout is the About window's Close: it destroys the window the
+// button is in, whichever of the open ones that is.
+func closeAppAbout(btn gtk.Button) {
+	root := btn.GetRoot()
+	if root == nil {
+		return
+	}
+	win := gtk.Window{}
+	win.Ptr = root.GoPointer()
+	win.Destroy()
+	win.Unref() // GetRoot's reference
 }
 
 // appMenuKeyLabel formats a pack shortcut the same way uikit shows other

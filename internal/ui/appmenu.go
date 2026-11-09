@@ -286,6 +286,7 @@ func (s *shellUI) renderAppMenu(b *bar, entries []appmenu.Entry) {
 }
 
 func (s *shellUI) bindAppMenuHandlers() {
+	s.onAppAboutClose = closeAppAbout
 	s.onAppMenuClicked = func(btn gtk.Button) {
 		i, err := strconv.Atoi(btn.GetName())
 		if err != nil {
