@@ -24,6 +24,53 @@ const (
 	iconPlate  = 0.78   // an icon of another shape, on a plate: its size
 )
 
+// IconShape is how an app icon is drawn in the dock, its drawer and the
+// launcher.
+type IconShape int
+
+const (
+	// IconShapeSquircle is the continuous-corner square.
+	IconShapeSquircle IconShape = iota
+	// IconShapeCircle is a circle filling the icon's square.
+	IconShapeCircle
+	// IconShapePebble is a soft, slightly uneven round square.
+	IconShapePebble
+	// IconShapeNone draws the icon as it is: no shape, plate or light.
+	IconShapeNone
+)
+
+// IconShapeFromName reads a shape's name from the settings: "squircle",
+// "circle", "pebble" or "none".
+func IconShapeFromName(name string) IconShape {
+	switch name {
+	case "circle":
+		return IconShapeCircle
+	case "pebble":
+		return IconShapePebble
+	case "none":
+		return IconShapeNone
+	default:
+		return IconShapeSquircle
+	}
+}
+
+// IconShapeNames are the settings' names for the shapes, in order.
+var IconShapeNames = []string{"squircle", "circle", "pebble", "none"}
+
+var appIconShape = IconShapeSquircle
+
+// SetIconShape changes the shape every app icon is drawn in, now and for
+// the icons made after it.
+func SetIconShape(shape IconShape) {
+	appIcons.mu.Lock()
+	appIconShape = shape
+	for _, a := range appIcons.by {
+		a.shape = shape
+		a.canvas.QueueDraw()
+	}
+	appIcons.mu.Unlock()
+}
+
 // An app icon's light, as fractions of the icon's side. Light from above
 // catches its top edge as a fine bright line with a soft glow inside it,
 // and its bottom edge as a fainter one; each thins out round the corners
@@ -46,6 +93,7 @@ type appIcon struct {
 
 	art    any // what the image shows, when fit was measured
 	fit    artFit
+	shape  IconShape
 	path   *gsk.Path
 	pathAt [3]float32 // its square: x, y, side
 }
@@ -78,7 +126,10 @@ var appIcons struct {
 // to the new image, and the caller owns the widget's, as with a new
 // widget (gtkx.Append): it puts the widget where the image would go.
 func AppIcon(img *gtk.Image, box *gtk.Box) *gtk.Widget {
-	a := &appIcon{img: img}
+	appIcons.mu.Lock()
+	shape := appIconShape
+	appIcons.mu.Unlock()
+	a := &appIcon{img: img, shape: shape}
 	a.canvas = gtkx.NewCanvas(&gtkx.Canvas{Snapshot: a.snapshot, Allocate: a.allocate, Measure: a.measure})
 	(&gobject.Object{Ptr: a.canvas.GoPointer()}).RefSink() // a strong reference, as puregotk's constructors give
 	a.canvas.AddCssClass("app-icon")
@@ -172,6 +223,10 @@ func (a *appIcon) snapshot(w *gtk.Widget, s *gtk.Snapshot) {
 	x, y := bx+(bw-side)/2, by+(bh-side)/2
 	var square graphene.Rect
 	square.Init(x, y, side, side)
+	if a.shape == IconShapeNone {
+		icon()
+		return
+	}
 	if art := a.showing(); art != a.art {
 		if fit, ok := a.measureArt(w, &square); ok {
 			a.art, a.fit = art, fit
@@ -184,7 +239,7 @@ func (a *appIcon) snapshot(w *gtk.Widget, s *gtk.Snapshot) {
 		if a.path != nil {
 			a.path.Unref()
 		}
-		a.path, a.pathAt = gsk.PathParse(squircle(x, y, side)), [3]float32{x, y, side}
+		a.path, a.pathAt = gsk.PathParse(iconPath(a.shape, x, y, side)), [3]float32{x, y, side}
 	}
 	path := a.path
 	shape := func() { s.AppendFill(path, gsk.FillRuleWindingValue, &gdk.RGBA{Red: 1, Green: 1, Blue: 1, Alpha: 1}) }
@@ -346,6 +401,33 @@ func fitArt(n, m int, alpha func(i, j int) float32) artFit {
 		}
 	}
 	return f
+}
+
+// iconPath is the shape's outline in the square at x, y, side long.
+func iconPath(shape IconShape, x, y, side float32) string {
+	switch shape {
+	case IconShapeCircle:
+		r := float64(side) / 2
+		cx, cy := float64(x)+r, float64(y)+r
+		return fmt.Sprintf("M %g %g a %g %g 0 1 0 %g 0 a %g %g 0 1 0 %g 0 Z",
+			cx-r, cy, r, r, 2*r, r, r, -2*r)
+	case IconShapePebble:
+		return pebble(x, y, side)
+	}
+	return squircle(x, y, side)
+}
+
+// pebble is a round square with corners of slightly different radii, as a
+// stone worn smooth: soft arcs, no continuous-corner easing.
+func pebble(x, y, side float32) string {
+	S := float64(side)
+	r := [4]float64{S * 0.27, S * 0.43, S * 0.31, S * 0.45} // tl, tr, br, bl
+	X, Y := float64(x), float64(y)
+	return fmt.Sprintf("M %g %g A %g %g 0 0 1 %g %g L %g %g A %g %g 0 0 1 %g %g L %g %g A %g %g 0 0 1 %g %g L %g %g A %g %g 0 0 1 %g %g Z",
+		X+r[0], Y, r[0], r[0], X+S-r[1], Y,
+		X+S, Y+r[1], r[1], r[1], X+S, Y+S-r[2],
+		X+S-r[2], Y+S, r[2], r[2], X+r[3], Y+S,
+		X, Y+S-r[3], r[3], r[3], X, Y+r[0])
 }
 
 // squircle is the icon's shape in the square at x, y, side long, as an

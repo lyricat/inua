@@ -609,6 +609,56 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
                                                 <style>
                                                   <class name="title"/>
                                                 </style>
+                                                <property name="label" translatable="yes">App icon shape</property>
+                                                <property name="xalign">0</property>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <style>
+                                                  <class name="sub"/>
+                                                </style>
+                                                <property name="label" translatable="yes">The dock, its drawer and the launcher: a continuous-corner square, a circle, a pebble, or the icon as its file is</property>
+                                                <property name="xalign">0</property>
+                                                <property name="wrap">true</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkDropDown" id="icon_shape">
+                                            <property name="name">icon_shape</property>
+                                            <property name="valign">3</property>
+                                            <property name="model">
+                                              <object class="GtkStringList">
+                                                <items>
+                                                  <item translatable="yes">Rounded square</item>
+                                                  <item translatable="yes">Circle</item>
+                                                  <item translatable="yes">Pebble</item>
+                                                  <item translatable="yes">None</item>
+                                                </items>
+                                              </object>
+                                            </property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkBox">
+                                        <style>
+                                          <class name="row"/>
+                                        </style>
+                                        <property name="spacing">16</property>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="orientation">1</property>
+                                            <property name="hexpand">true</property>
+                                            <property name="valign">3</property>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <style>
+                                                  <class name="title"/>
+                                                </style>
                                                 <property name="label" translatable="yes">Line icons</property>
                                                 <property name="xalign">0</property>
                                               </object>
