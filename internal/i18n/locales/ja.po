@@ -11,7 +11,7 @@ msgstr ""
 #: internal/diskui/details.go:332
 #: internal/mailui/assist.go:43
 msgid "The assistant is turned off. Turn it on in Settings → AI."
-msgstr "アシスタントはオフにされる。 「設定」→「AI」でオンにします。"
+msgstr "アシスタントはオフです。「設定」→「AI」でオンにしてください。"
 
 #: cmd/inua-assistant/answer.go:52
 msgid "No profile makes quick choices. Turn on Decision for one in Settings → AI."
@@ -138,7 +138,7 @@ msgstr "黒"
 #: internal/ui/lock.go:248
 #: internal/ui/widgets.go:987
 msgid "Monday, January 2"
-msgstr "1月2日 Monday"
+msgstr "1月2日（Monday）"
 
 #: internal/apps/calendar/calendar.go:79
 msgid "TODAY"
@@ -208,7 +208,7 @@ msgstr "土"
 
 #: internal/apps/clock/clock.go:78
 msgid "Once"
-msgstr "かつて"
+msgstr "一度だけ"
 
 #: internal/apps/clock/clock.go:80
 msgid "Every day"
@@ -331,7 +331,7 @@ msgstr "ペアリング中…"
 #: internal/remoteui/window.go:337
 #: internal/shell/bluetooth.go:52
 msgid "Connected"
-msgstr "接続された"
+msgstr "接続済み"
 
 #: internal/apps/connect/service.go:512
 msgid "Away"
@@ -399,7 +399,7 @@ msgstr "開く"
 #: internal/ui/settings_custom.go:41
 #: internal/viewerui/menubar.go:44
 msgid "Show in Folder"
-msgstr "フォルダ内で表示"
+msgstr "フォルダーで表示"
 
 #: internal/apps/connect/share.go:160
 msgid "Shared file"
@@ -494,7 +494,7 @@ msgstr "いいえ。どの git プロジェクトにも入っていません。"
 #: internal/apps/disk/decide.go:118
 #: internal/apps/disk/decide.go:121
 msgid "A kind inua knows?"
-msgstr "inua が知っている種類?"
+msgstr "inua が認識している種類ですか？"
 
 #: internal/apps/disk/decide.go:121
 msgid "No rule knows it."
@@ -1330,7 +1330,7 @@ msgstr "名前には %[1]s とありますが、%[2]s から届いています�
 
 #: internal/apps/mail/check.go:108
 msgid "%s looks like %s."
-msgstr "%[1]s は %[2]s に似せています。"
+msgstr "%[1]s は %[2]s に似ています。"
 
 #: internal/apps/mail/check.go:110
 msgid "It names %s, but comes from %s."
@@ -1425,11 +1425,11 @@ msgstr "差出人"
 
 #: internal/apps/mail/details.go:38
 msgid "Sent by"
-msgstr ""
+msgstr "送信者"
 
 #: internal/apps/mail/details.go:41
 msgid "Reply to"
-msgstr ""
+msgstr "返信先"
 
 #: internal/apps/mail/details.go:43
 #: ui/mail-compose.ui:79
@@ -1448,11 +1448,11 @@ msgstr "Bcc"
 
 #: internal/apps/mail/details.go:47
 msgid "Date"
-msgstr ""
+msgstr "日付"
 
 #: internal/apps/mail/details.go:47
 msgid "Mon Jan 2, 2006, 15:04:05 -0700"
-msgstr ""
+msgstr "Mon Jan 2, 2006, 15:04:05 -0700"
 
 #: internal/apps/mail/details.go:49
 #: internal/viewerui/app.go:824
@@ -1462,11 +1462,11 @@ msgstr "件名"
 
 #: internal/apps/mail/details.go:51
 msgid "Mailed by"
-msgstr ""
+msgstr "送信者"
 
 #: internal/apps/mail/details.go:52
 msgid "Signed by"
-msgstr ""
+msgstr "署名者"
 
 #: internal/apps/mail/details.go:61
 #: internal/mailui/panel.go:53
@@ -1475,11 +1475,11 @@ msgstr "チェック"
 
 #: internal/apps/mail/details.go:64
 msgid "List"
-msgstr ""
+msgstr "メーリングリスト"
 
 #: internal/apps/mail/details.go:67
 msgid "Message-ID"
-msgstr ""
+msgstr "メッセージ ID"
 
 #: internal/apps/mail/oauth.go:56
 msgid "Google sign-in needs a client ID and its secret: this build has none. Add your own under Your own OAuth client (docs/mail.md), or add the account as IMAP with an app password."
@@ -1911,7 +1911,7 @@ msgstr "コンソールトークンを読み取れません: %s"
 
 #: internal/assistant/assistant.go:183
 msgid "No API key for %s (%s): type one in Settings → AI."
-msgstr "%s (%s) には API キーがありません。[設定] → [AI] に API キーを入力します。"
+msgstr "%s（%s）の API キーがありません。「設定」→「AI」で入力してください。"
 
 #: internal/assistant/assistant.go:645
 msgid "Remote Console: %s"
@@ -1989,7 +1989,7 @@ msgstr "尋ねる"
 
 #: internal/assistantui/assistantui.go:546
 msgid "Stopped."
-msgstr "停止した。"
+msgstr "停止しました。"
 
 #: internal/assistantui/assistantui.go:549
 msgid "Something went wrong: %s"
@@ -2076,7 +2076,7 @@ msgstr "クリップボードを利用できません。"
 
 #: internal/assistantui/assistantui.go:867
 msgid "TRY"
-msgstr "トライ"
+msgstr "試してみる"
 
 #: internal/assistantui/assistantui.go:912
 #: internal/connectui/menubar.go:26
@@ -2123,7 +2123,7 @@ msgstr "編集"
 
 #: internal/assistantui/assistantui.go:917
 msgid "Clear conversation"
-msgstr ""
+msgstr "会話を消去"
 
 #: internal/assistantui/assistantui.go:919
 #: internal/connectui/menubar.go:29
@@ -2137,7 +2137,7 @@ msgstr ""
 #: internal/viewerui/menubar.go:46
 #: internal/vmui/menubar.go:48
 msgid "View"
-msgstr ""
+msgstr "表示"
 
 #: internal/assistantui/assistantui.go:920
 #: ui/assistant.ui:63
@@ -2154,7 +2154,7 @@ msgstr "更新"
 
 #: internal/connectui/menubar.go:31
 msgid "Add Device by Address…"
-msgstr ""
+msgstr "アドレスを指定してデバイスを追加…"
 
 #: internal/connectui/reply.go:39
 msgid "Answer %s"
@@ -2601,7 +2601,7 @@ msgstr "%s 時点の為替レート"
 
 #: internal/convert/convert.go:313
 msgid "prices from Coinbase · %s"
-msgstr "Coinbase からの  価格 · %s"
+msgstr "Coinbase の価格 · %s"
 
 #: internal/convert/convert.go:317
 msgid "%s %s in %s · %s"
@@ -2654,7 +2654,7 @@ msgstr "ウィンドウを確認中"
 
 #: internal/desk/tools.go:254
 msgid "Focusing %s"
-msgstr "フォーカシング %s"
+msgstr "%s にフォーカスを移しています"
 
 #: internal/desk/tools.go:267
 msgid "Moving %s to workspace %s"
@@ -2674,7 +2674,7 @@ msgstr "ワークスペースを確認中"
 
 #: internal/desk/tools.go:388
 msgid "Looking at the apps"
-msgstr "アプリを見ると"
+msgstr "アプリを確認中"
 
 #: internal/desk/tools.go:404
 msgid "Opening %s"
@@ -2834,7 +2834,7 @@ msgstr "プロセスを見ると"
 
 #: internal/desk/tools.go:670
 msgid "Killing %s(%d)"
-msgstr "%[1]s(%[2]d)を殺す"
+msgstr "%[1]s（%[2]d）を強制終了しています"
 
 #: internal/desk/tools.go:672
 msgid "Asking %s(%d) to quit"
@@ -3182,11 +3182,11 @@ msgstr "%s が %s を削除しました:%s 空きました。"
 
 #: internal/diskui/menubar.go:34
 msgid "Choose Folder…"
-msgstr ""
+msgstr "フォルダーを選択…"
 
 #: internal/diskui/menubar.go:39
 msgid "Copy Cleanup Command"
-msgstr ""
+msgstr "クリーンアップコマンドをコピー"
 
 #: internal/diskui/menubar.go:42
 #: internal/diskui/window.go:528
@@ -3196,7 +3196,7 @@ msgstr "スキャン"
 
 #: internal/diskui/menubar.go:43
 msgid "Stop Scanning"
-msgstr ""
+msgstr "スキャンを停止"
 
 #: internal/diskui/window.go:333
 #: internal/filesui/cards.go:682
@@ -3351,7 +3351,7 @@ msgstr "元に戻す操作はありません。"
 
 #: internal/filesui/appchooser.go:63
 msgid "Choose an app"
-msgstr ""
+msgstr "アプリを選択"
 
 #: internal/filesui/appchooser.go:65
 #: internal/filesui/openwith.go:166
@@ -3360,11 +3360,11 @@ msgstr "「%s」を開くアプリケーション"
 
 #: internal/filesui/appchooser.go:67
 msgid "Open the link with"
-msgstr ""
+msgstr "リンクを開くアプリ"
 
 #: internal/filesui/appchooser.go:81
 msgid "%s asks which app to use."
-msgstr ""
+msgstr "%s が使用するアプリを尋ねています。"
 
 #: internal/filesui/appchooser.go:87
 #: internal/filesui/openwith.go:175
@@ -4130,7 +4130,7 @@ msgstr[0] "%d 件見つかりました"
 #: internal/filesui/pane.go:1158
 msgid "%d not of this kind"
 msgid_plural "%d not of this kind"
-msgstr[0] ""
+msgstr[0] "%d 件はこの種類ではありません"
 
 #: internal/filesui/pane.go:1162
 msgid "%d hidden"
@@ -4162,40 +4162,40 @@ msgstr "2006年1月2日"
 #: internal/filesui/picker.go:247
 #: internal/filesui/picker.go:337
 msgid "Files cannot be saved in this folder."
-msgstr ""
+msgstr "このフォルダーにはファイルを保存できません。"
 
 #: internal/filesui/picker.go:302
 msgid "Choose a file."
-msgstr ""
+msgstr "ファイルを選択してください。"
 
 #: internal/filesui/picker.go:351
 msgid "Type a name to save under."
-msgstr ""
+msgstr "保存する名前を入力してください。"
 
 #: internal/filesui/picker.go:353
 msgid "There is no such folder."
-msgstr ""
+msgstr "そのフォルダーはありません。"
 
 #: internal/filesui/picker.go:355
 msgid "A folder has this name."
-msgstr ""
+msgstr "同じ名前のフォルダーがあります。"
 
 #: internal/filesui/picker.go:357
 msgid "A name cannot hold that."
-msgstr ""
+msgstr "この名前は使用できません。"
 
 #: internal/filesui/picker.go:363
 msgid "Replace “%s”?"
-msgstr ""
+msgstr "「%s」を置き換えますか？"
 
 #: internal/filesui/picker.go:365
 msgid "Replace %d file?"
 msgid_plural "Replace %d files?"
-msgstr[0] ""
+msgstr[0] "%d 個のファイルを置き換えますか？"
 
 #: internal/filesui/picker.go:370
 msgid "A file of the same name is in this folder; the app will write over it."
-msgstr ""
+msgstr "同じ名前のファイルがこのフォルダーにあります。置き換えて保存します。"
 
 #: internal/filesui/picker.go:494
 #: internal/filesui/window.go:844
@@ -5057,7 +5057,7 @@ msgstr "あなたの番です。自分のビー玉を選んでください。"
 #: internal/games/checkersnet/texts.go:47
 #: internal/gamesui/checkers.go:1003
 msgid "You are home: move %s's marbles."
-msgstr "ゴールしました。%s のビー玉を動かしてください。"
+msgstr "自分のゴールに入りました。%s のビー玉を動かしてください。"
 
 #: internal/games/checkersnet/texts.go:48
 msgid "Now pick where it goes, or another marble."
@@ -5356,7 +5356,7 @@ msgstr "全員に昼食を奢る：各プレーヤーに１５ドルを支払う
 
 #: internal/games/fortune.go:816
 msgid "Caught jaywalking: go to jail."
-msgstr "歩道橋を歩いているところを捕まり、刑務所に行きます。"
+msgstr "道路を不法横断して捕まりました。刑務所へ行きます。"
 
 #: internal/games/fortune.go:817
 msgid "A card left on a bench: take it."
@@ -5464,7 +5464,7 @@ msgstr "ライバルと位置を入れ替えます。どちらもマスに止ま
 
 #: internal/games/fortune_cards.go:61
 msgid "Jail Pass"
-msgstr "出所券"
+msgstr "出獄カード"
 
 #: internal/games/fortune_cards.go:61
 msgid "Walk out of jail before you roll, without paying bail."
@@ -5617,7 +5617,7 @@ msgstr "清澄"
 
 #: internal/games/fortune_cities.go:23
 msgid "Kanda"
-msgstr "カンダ"
+msgstr "神田"
 
 #: internal/games/fortune_cities.go:23
 msgid "Jimbocho"
@@ -5681,7 +5681,7 @@ msgstr "代官山"
 
 #: internal/games/fortune_cities.go:25
 msgid "Ebisu"
-msgstr "エビス"
+msgstr "恵比寿"
 
 #: internal/games/fortune_cities.go:25
 msgid "Meguro"
@@ -6262,7 +6262,7 @@ msgstr "静安寺"
 
 #: internal/games/fortune_cities.go:51
 msgid "Nanshi Power"
-msgstr "ナンシパワー"
+msgstr "南市電力"
 
 #: internal/games/fortune_cities.go:51
 msgid "Yuyuan Road"
@@ -6310,7 +6310,7 @@ msgstr "復興公園"
 
 #: internal/games/fortune_cities.go:53
 msgid "Sinan Road"
-msgstr "新安路"
+msgstr "思南路"
 
 #: internal/games/fortune_cities.go:53
 msgid "Hengshan Road"
@@ -6330,7 +6330,7 @@ msgstr "安福路"
 
 #: internal/games/fortune_cities.go:53
 msgid "Shiliupu Ferry"
-msgstr "四六埔フェリー"
+msgstr "十六铺フェリー乗り場"
 
 #: internal/games/fortune_cities.go:53
 msgid "Jiangning Road"
@@ -6462,7 +6462,7 @@ msgstr "古北"
 
 #: internal/games/fortune_cities.go:59
 msgid "Dongjiadu"
-msgstr "董家都"
+msgstr "董家渡"
 
 #: internal/games/fortune_cities.go:59
 msgid "Laoximen"
@@ -6686,7 +6686,7 @@ msgstr "パリオリ"
 
 #: internal/games/fortune_cities.go:69
 msgid "Via Veneto"
-msgstr "ヴェネト経由"
+msgstr "ヴェネト通り"
 
 #: internal/games/fortune_cities.go:69
 msgid "Villa Borghese"
@@ -6786,7 +6786,7 @@ msgstr "ガルバテラ"
 
 #: internal/games/fortune_cities.go:73
 msgid "Piramide"
-msgstr "ピラミド"
+msgstr "ピラミデ"
 
 #: internal/games/fortune_cities.go:73
 msgid "San Saba"
@@ -6971,7 +6971,7 @@ msgstr "あなたの番です"
 #: internal/games/fortunenet/texts.go:48
 #: internal/gamesui/fortune_board.go:1139
 msgid "round %d of %d"
-msgstr "%[2]dの%[1]dラウンド"
+msgstr "全 %[2]d ラウンド中 %[1]d ラウンド目"
 
 #: internal/games/fortunenet/texts.go:49
 #: internal/gamesui/fortune.go:1125
@@ -7136,11 +7136,11 @@ msgstr "家賃はサイコロの目にこれを掛けた額です。"
 
 #: internal/games/fortunenet/texts.go:84
 msgid "Sound on: M turns it off"
-msgstr "サウンド オン: M でオフ"
+msgstr "サウンド：オン（M キーでオフ）"
 
 #: internal/games/fortunenet/texts.go:85
 msgid "Sound off: M turns it on"
-msgstr "サウンド オフ: M でオン"
+msgstr "サウンド：オフ（M キーでオン）"
 
 #: internal/games/fortunenet/texts.go:86
 #: internal/gamesui/fortune_menu.go:177
@@ -7150,11 +7150,11 @@ msgstr "家賃は持ち主の桟橋の数で決まります。"
 
 #: internal/games/fortunenet/texts.go:88
 msgid "You set up the game: the city, the rounds, the money, the rules."
-msgstr ""
+msgstr "都市、ラウンド数、資金、ルールを決めてゲームを設定します。"
 
 #: internal/games/fortunenet/texts.go:91
 msgid "City"
-msgstr ""
+msgstr "都市"
 
 #: internal/games/fortunenet/texts.go:92
 #: internal/gamesui/fortune.go:562
@@ -7188,7 +7188,7 @@ msgstr "買ったその日に建てよう"
 
 #: internal/games/fortunenet/texts.go:98
 msgid "Computer players"
-msgstr ""
+msgstr "コンピューターのプレイヤー"
 
 #: internal/games/fortunenet/texts.go:99
 msgid "AI players"
@@ -7316,32 +7316,32 @@ msgstr "AI が動いていません"
 
 #: internal/games/gamerelay/publish.go:131
 msgid "Give the lobby's address."
-msgstr ""
+msgstr "ロビーのアドレスを入力してください。"
 
 #: internal/games/gamerelay/publish.go:146
 #: internal/games/gamerelay/publish.go:154
 msgid "%s is not a lobby's address."
-msgstr ""
+msgstr "%s はロビーのアドレスではありません。"
 
 #: internal/games/gamerelay/publish.go:227
 msgid "There is no lobby at this address."
-msgstr ""
+msgstr "このアドレスにロビーはありません。"
 
 #: internal/games/gamerelay/publish.go:248
 msgid "The connection to the lobby was lost."
-msgstr ""
+msgstr "ロビーへの接続が切れました。"
 
 #: internal/games/gamerelay/publish.go:287
 msgid "The lobby asks for another key."
-msgstr ""
+msgstr "ロビーから別のキーを求められました。"
 
 #: internal/games/gamerelay/publish.go:289
 msgid "Every table at the lobby is taken."
-msgstr ""
+msgstr "ロビーのテーブルはすべて使用中です。"
 
 #: internal/games/gamerelay/publish.go:291
 msgid "The lobby turned the game away."
-msgstr ""
+msgstr "ロビーがゲームを拒否しました。"
 
 #: internal/games/lobby/hosted.go:55
 msgid "Only a host opens games at this lobby."
@@ -7362,26 +7362,26 @@ msgstr "先にほかの人がこのテーブルを使い始めました。"
 
 #: internal/games/lobby/lobby.go:145
 msgid "No game is at this table now."
-msgstr ""
+msgstr "現在、このテーブルにゲームはありません。"
 
 #: internal/games/lobby/lobby.go:166
 msgid "The table's host does not answer."
-msgstr ""
+msgstr "テーブルのホストから応答がありません。"
 
 #: internal/games/lobby/texts.go:9
 #: internal/gamesui/catalog.go:34
 #: config/apps/io.github.lyricat.Inua.GameLobby.desktop:3
 msgid "Game Lobby"
-msgstr ""
+msgstr "ゲームロビー"
 
 #: internal/games/lobby/texts.go:10
 msgid "Join a game at a table, or watch one. A host opens a game here from Small Fortune or Chinese Checkers in inua."
-msgstr ""
+msgstr "テーブルのゲームに参加するか、観戦します。ホストは inua の Small Fortune または Chinese Checkers から、ここにゲームを開きます。"
 
 #: internal/games/lobby/texts.go:11
 #: internal/gamesui/lobbywin.go:187
 msgid "TABLE %d"
-msgstr ""
+msgstr "テーブル %d"
 
 #: internal/games/lobby/texts.go:12
 #: internal/gamesui/lobbywin.go:236
@@ -7391,7 +7391,7 @@ msgstr "無料"
 
 #: internal/games/lobby/texts.go:13
 msgid "A host can open a game here."
-msgstr ""
+msgstr "ホストがここにゲームを開けます。"
 
 #: internal/games/lobby/texts.go:14
 msgid "Join a game at a table, watch one, or open one at a free table. A host can also open a game here from Small Fortune or Chinese Checkers in inua."
@@ -7409,42 +7409,42 @@ msgstr "ゲームを開けませんでした: %s"
 #: internal/gamesui/lobbywin.go:231
 #: internal/gamesui/lobbywin.go:247
 msgid "The host’s connection dropped: waiting for it to come back…"
-msgstr ""
+msgstr "ホストとの接続が切れました。再接続を待っています…"
 
 #: internal/games/lobby/texts.go:18
 #: internal/gamesui/lobbywin.go:226
 msgid "Reconnecting…"
-msgstr ""
+msgstr "再接続中…"
 
 #: internal/games/lobby/texts.go:19
 #: internal/gamesui/lobbywin.go:251
 msgid "Waiting to start"
-msgstr ""
+msgstr "開始待ち"
 
 #: internal/games/lobby/texts.go:20
 #: internal/gamesui/lobbywin.go:253
 msgid "Open seats: %d"
-msgstr ""
+msgstr "空席: %d"
 
 #: internal/games/lobby/texts.go:21
 #: internal/gamesui/lobbywin.go:257
 msgid "Playing"
-msgstr ""
+msgstr "プレイ中"
 
 #: internal/games/lobby/texts.go:22
 #: internal/gamesui/lobbywin.go:259
 msgid "Over"
-msgstr ""
+msgstr "終了"
 
 #: internal/games/lobby/texts.go:25
 #: internal/gamesui/lobbywin.go:293
 msgid "%s sets up the game"
-msgstr ""
+msgstr "%s がゲームを設定中"
 
 #: internal/games/lobby/texts.go:29
 #: internal/gamesui/lobbywin.go:263
 msgid "computer"
-msgstr ""
+msgstr "コンピューター"
 
 #: internal/games/lobbyservice/service_linux.go:49
 msgid "inua-game-lobby is not installed"
@@ -7802,11 +7802,11 @@ msgstr "自分のビー玉をクリックし、次に行き先をクリック  �
 
 #: internal/gamesui/catalog.go:35
 msgid "The tables of a game lobby (inua-game-lobby) on the internet, as they change: the game at each, who plays, and the seats open. Join or Watch opens the table's game in the browser. A free table's buttons start Small Fortune or Chinese Checkers here, set to host at that table: set it up and start it, and others join it from the lobby. Give the lobby's address as its host gave it, with ?key=… when the lobby asks for a key to host."
-msgstr ""
+msgstr "インターネット上のゲームロビー（inua-game-lobby）の各テーブルの状況を表示します。テーブルごとのゲーム、参加者、空席を確認できます。「参加」または「観戦」を選ぶと、ブラウザーでそのテーブルのゲームが開きます。空席のボタンから Small Fortune または Chinese Checkers をここで始めると、そのテーブルのホストになります。ゲームを設定して開始すれば、ほかの人がロビーから参加できます。ロビーのアドレスはホストから受け取ったものを入力してください。ホスト用キーを求められる場合は ?key=… を付けます。"
 
 #: internal/gamesui/catalog.go:36
 msgid "Enter connects  ·  N connects again"
-msgstr ""
+msgstr "Enter で接続  ·  N で再接続"
 
 #: internal/gamesui/checkers.go:347
 #: internal/gamesui/fortune.go:479
@@ -7820,11 +7820,11 @@ msgstr "同じネットワークのほかの人が、リンクか QR コード�
 #: internal/gamesui/checkers.go:361
 #: internal/gamesui/fortune.go:500
 msgid "At a lobby"
-msgstr ""
+msgstr "ロビーで"
 
 #: internal/gamesui/checkers.go:361
 msgid "Others join from a game lobby on the internet, where the game takes a table."
-msgstr ""
+msgstr "インターネット上のゲームロビーでテーブルを確保し、ほかの人がそこから参加します。"
 
 #: internal/gamesui/checkers.go:458
 msgid "At this screen"
@@ -7900,7 +7900,7 @@ msgstr "このコンピュータは、ブラウザからつながるネットワ
 #: internal/gamesui/checkers.go:790
 #: internal/gamesui/fortune_host.go:115
 msgid "Scan the code, or open the link in a browser."
-msgstr ""
+msgstr "コードをスキャンするか、ブラウザーでリンクを開いてください。"
 
 #: internal/gamesui/checkers.go:792
 #: internal/gamesui/fortune_host.go:117
@@ -7929,7 +7929,7 @@ msgstr "ブラウザーからの参加者用"
 
 #: internal/gamesui/fortune.go:760
 msgid "Open the game at the lobby"
-msgstr ""
+msgstr "ロビーでゲームを開く"
 
 #: internal/gamesui/fortune.go:763
 msgid "Open the game to the network"
@@ -8039,11 +8039,11 @@ msgstr "参加者を待っています。同じネットワークのスマート
 
 #: internal/gamesui/fortune_host.go:200
 msgid "Waiting for visitors: open the link in a browser."
-msgstr ""
+msgstr "参加者を待っています。ブラウザーでリンクを開いてください。"
 
 #: internal/gamesui/fortune_host.go:204
 msgid "%s sets up the game from a browser, and may start it."
-msgstr ""
+msgstr "%s がブラウザーからゲームを設定し、開始することもできます。"
 
 #: internal/gamesui/fortune_host.go:255
 msgid "Others join from a browser"
@@ -8125,24 +8125,24 @@ msgstr "選択中のマスに使います: %s。"
 
 #: internal/gamesui/lobby.go:69
 msgid "The lobby's address"
-msgstr ""
+msgstr "ロビーのアドレス"
 
 #: internal/gamesui/lobby.go:70
 msgid "As the lobby's host gave it: lobby.example.org, with ?key=… when it asks for a key."
-msgstr ""
+msgstr "ロビーのホストから受け取ったアドレスを入力します（例: lobby.example.org）。キーが求められる場合は ?key=… を付けます。"
 
 #: internal/gamesui/lobby.go:100
 msgid "At table %d of the lobby."
-msgstr ""
+msgstr "ロビーのテーブル %d にいます。"
 
 #: internal/gamesui/lobby.go:102
 msgid "Not at the lobby: %v"
-msgstr ""
+msgstr "ロビーに接続していません: %v"
 
 #: internal/gamesui/lobby.go:104
 #: internal/gamesui/lobbywin.go:108
 msgid "Connecting to the lobby…"
-msgstr ""
+msgstr "ロビーに接続中…"
 
 #: internal/gamesui/lobbyhost.go:70
 msgid "Run a lobby on this computer"
@@ -8226,34 +8226,34 @@ msgstr "同じネットワークのブラウザーで開いてください。"
 
 #: internal/gamesui/lobbywin.go:65
 msgid "Open in the browser"
-msgstr ""
+msgstr "ブラウザーで開く"
 
 #: internal/gamesui/lobbywin.go:100
 msgid "Give the address of a game lobby to see its tables."
-msgstr ""
+msgstr "テーブルを表示するには、ゲームロビーのアドレスを入力してください。"
 
 #: internal/gamesui/lobbywin.go:131
 msgid "The lobby cannot be reached: %v. Trying again…"
-msgstr ""
+msgstr "ロビーに接続できません: %v。再試行しています…"
 
 #: internal/gamesui/lobbywin.go:165
 msgid "Games at %d of %d tables; %d free."
-msgstr ""
+msgstr "全 %d テーブル中 %d でゲーム中、空席は %d です。"
 
 #: internal/gamesui/lobbywin.go:237
 msgid "Host a game here: it opens set to this table."
-msgstr ""
+msgstr "ここでゲームをホストします。このテーブルを指定した状態で開きます。"
 
 #: internal/gamesui/lobbywin.go:330
 msgid "The browser could not be opened: %v"
-msgstr ""
+msgstr "ブラウザーを開けませんでした: %v"
 
 #: internal/gamesui/menubar.go:34
 #: internal/ui/appmenu_packs.go:47
 #: internal/ui/appmenu_packs.go:95
 #: internal/viewerui/menubar.go:57
 msgid "Fullscreen"
-msgstr ""
+msgstr "全画面表示"
 
 #: internal/gamesui/mines.go:37
 msgid "Small · 9 × 9"
@@ -8564,7 +8564,7 @@ msgstr "画面全体を一度に"
 
 #: internal/hyprconf/keys.go:37
 msgid "The focused window, at once"
-msgstr "フォーカスされたウィンドウはすぐに"
+msgstr "フォーカス中のウィンドウをすぐに撮影"
 
 #: internal/hyprconf/keys.go:38
 msgid "Record the screen (again: stop)"
@@ -8717,7 +8717,7 @@ msgstr "午後"
 
 #: internal/keyring/portal.go:96
 msgid "Passwords of %s"
-msgstr ""
+msgstr "%s のパスワード"
 
 #: internal/lightui/apps.go:16
 #: internal/ui/alarms.go:106
@@ -8782,20 +8782,20 @@ msgstr "GPG"
 
 #: internal/lightui/calculator.go:63
 msgid "Change sign"
-msgstr "チェンジサイン"
+msgstr "符号を反転"
 
 #: internal/lightui/calculator.go:355
 #: internal/term/web/strings.go:94
 msgid "Select all"
-msgstr ""
+msgstr "すべて選択"
 
 #: internal/lightui/calculator.go:415
 msgid "Enter a valid expression."
-msgstr ""
+msgstr "有効な式を入力してください。"
 
 #: internal/lightui/calculator.go:445
 msgid "No calculations yet"
-msgstr "まだ計算はされていない"
+msgstr "計算履歴はありません"
 
 #: internal/lightui/calculator.go:467
 msgid "Use %s"
@@ -8909,7 +8909,7 @@ msgstr "一時停止"
 #: internal/lightui/clock.go:570
 #: internal/lightui/clock.go:578
 msgid "ENDS AT %s"
-msgstr "は %s で終了します"
+msgstr "終了時刻：%s"
 
 #: internal/lightui/clock.go:583
 #: internal/lightui/sysmon.go:871
@@ -9037,11 +9037,11 @@ msgstr "自分の鍵にも暗号化して、あとで開けるようにします
 
 #: internal/lightui/gpg.go:488
 msgid "This key only signs; it cannot be encrypted to"
-msgstr "この鍵は署名専用で、宛先にはできません"
+msgstr "この鍵は署名専用のため、暗号化の宛先には指定できません"
 
 #: internal/lightui/gpg.go:539
 msgid "Take off"
-msgstr "外す"
+msgstr "削除"
 
 #: internal/lightui/gpg.go:550
 #: ui/gpg.ui:140
@@ -9547,7 +9547,7 @@ msgstr "表示"
 #: internal/ui/notify.go:410
 #: internal/ui/passwords.go:642
 msgid "Hide"
-msgstr "ヒデ"
+msgstr "非表示"
 
 #: internal/lightui/pass.go:800
 #: internal/lightui/pass_otp.go:237
@@ -9768,98 +9768,98 @@ msgstr "QR コードを読み取り中…"
 
 #: internal/lightui/pass_seckey.go:201
 msgid "Install libfido2's tools (fido2-tools) to use a security key."
-msgstr ""
+msgstr "セキュリティキーを使うには、libfido2 のツール（fido2-tools）をインストールしてください。"
 
 #: internal/lightui/pass_seckey.go:204
 msgid "The keys could not be read: %v"
-msgstr ""
+msgstr "キーを読み取れませんでした: %v"
 
 #: internal/lightui/pass_seckey.go:207
 msgid "None of the keys this store encrypts to has its secret part on this computer."
-msgstr ""
+msgstr "このストアの暗号化に使われているキーの秘密鍵が、このコンピューターにありません。"
 
 #: internal/lightui/pass_seckey.go:212
 msgid "SECURITY KEYS"
-msgstr ""
+msgstr "セキュリティキー"
 
 #: internal/lightui/pass_seckey.go:216
 msgid "None: the passphrase is typed."
-msgstr ""
+msgstr "なし: パスフレーズを入力します。"
 
 #: internal/lightui/pass_seckey.go:222
 #: internal/securitykey/unlock.go:50
 msgid "Security key"
-msgstr ""
+msgstr "セキュリティキー"
 
 #: internal/lightui/pass_seckey.go:223
 msgid "Added %s"
-msgstr ""
+msgstr "追加日時: %s"
 
 #: internal/lightui/pass_seckey.go:228
 msgid "It no longer unlocks the key; the passphrase is typed again"
-msgstr ""
+msgstr "このキーではロックを解除できなくなりました。パスフレーズを再入力します。"
 
 #: internal/lightui/pass_seckey.go:233
 msgid "Add a security key"
-msgstr ""
+msgstr "セキュリティキーを追加"
 
 #: internal/lightui/pass_seckey.go:251
 msgid "Add a security key to %s. Type the key's passphrase, which is kept sealed under the security key, and the security key's PIN; then touch the security key twice when it blinks."
-msgstr ""
+msgstr "%s にセキュリティキーを追加します。キーで保護されるパスフレーズとセキュリティキーの PIN を入力し、キーが点滅したら 2 回タッチしてください。"
 
 #: internal/lightui/pass_seckey.go:288
 msgid "Looking for the security key…"
-msgstr ""
+msgstr "セキュリティキーを検索中…"
 
 #: internal/lightui/pass_seckey.go:332
 msgid "Checking the passphrase…"
-msgstr ""
+msgstr "パスフレーズを確認中…"
 
 #: internal/lightui/pass_seckey.go:334
 msgid "Touch %s when it blinks."
-msgstr ""
+msgstr "点滅したら %s にタッチしてください。"
 
 #: internal/lightui/pass_seckey.go:334
 msgid "the security key"
-msgstr ""
+msgstr "セキュリティキー"
 
 #: internal/lightui/pass_seckey.go:336
 msgid "Touch it once more."
-msgstr ""
+msgstr "もう一度タッチしてください。"
 
 #: internal/lightui/pass_seckey.go:345
 msgid "No security key is plugged in. Plug one in, then try again."
-msgstr ""
+msgstr "セキュリティキーが接続されていません。接続してから、もう一度お試しください。"
 
 #: internal/lightui/pass_seckey.go:347
 msgid "The passphrase does not open the key."
-msgstr ""
+msgstr "パスフレーズでキーを解除できません。"
 
 #: internal/lightui/pass_seckey.go:349
 msgid "The key has no passphrase, so there is nothing for a security key to unlock."
-msgstr ""
+msgstr "このキーにはパスフレーズがないため、セキュリティキーで解除する対象がありません。"
 
 #: internal/lightui/pass_seckey.go:351
 #: internal/securitykey/unlock.go:127
 msgid "Wrong PIN."
-msgstr ""
+msgstr "PIN が違います。"
 
 #: internal/lightui/pass_seckey.go:353
 msgid "The security key's PIN is blocked."
-msgstr ""
+msgstr "セキュリティキーの PIN がブロックされています。"
 
 #: internal/lightui/pass_seckey.go:355
 msgid "The security key has no PIN. Set one first, e.g. with fido2-token -S."
-msgstr ""
+msgstr "セキュリティキーに PIN が設定されていません。先に fido2-token -S などで設定してください。"
 
 #: internal/lightui/pass_seckey.go:357
 #: internal/securitykey/unlock.go:78
 msgid "The security key was not touched in time."
-msgstr ""
+msgstr "時間内にセキュリティキーにタッチしませんでした。"
 
 #: internal/lightui/pass_seckey.go:359
 msgid "This security key cannot keep a secret (it has no hmac-secret)."
-msgstr ""
+msgstr "このセキュリティキーは秘密情報を保持できません（hmac-secret に対応していません）。"
 
 #: internal/lightui/stocks.go:277
 msgid "Search for a symbol to add it."
@@ -9868,11 +9868,11 @@ msgstr "シンボルを検索して追加する。"
 #: internal/lightui/stocks.go:284
 #: internal/mailui/window.go:1000
 msgid "Loading %s…"
-msgstr "%sをロード中..."
+msgstr "%s を読み込み中…"
 
 #: internal/lightui/stocks.go:297
 msgid "%s could not be read.\n%s"
-msgstr "%[1]sを読み取ることができなかった。\n%[2]s"
+msgstr "%[1]sを読み取れませんでした。\n%[2]s"
 
 #: internal/lightui/stocks.go:320
 msgid "Previous close"
@@ -9880,7 +9880,7 @@ msgstr "前回の取引終了"
 
 #: internal/lightui/stocks.go:322
 msgid "Range start"
-msgstr "レンジスタート"
+msgstr "期間開始"
 
 #: internal/lightui/stocks.go:325
 #: internal/ui/settings_ai.go:100
@@ -9934,7 +9934,7 @@ msgstr "端末におけるCtrl+Cとして。"
 #: internal/lightui/sysmon.go:57
 #: internal/lightui/sysmon.go:57
 msgid "Hang Up"
-msgstr "電話を切る"
+msgstr "SIGHUP を送信"
 
 #: internal/lightui/sysmon.go:57
 msgid "As closing its terminal. Many services reload instead."
@@ -9955,16 +9955,16 @@ msgstr "すぐに終了する。保存していない作業内容は失われま
 
 #: internal/lightui/sysmon.go:60
 msgid "Quit with Children"
-msgstr "子供と一緒にやめる"
+msgstr "子プロセスも終了"
 
 #: internal/lightui/sysmon.go:60
 #: internal/lightui/sysmon.go:61
 msgid "Quit All"
-msgstr "すべてをやめてください"
+msgstr "すべて終了"
 
 #: internal/lightui/sysmon.go:61
 msgid "Quit All by Name"
-msgstr "名前で全員を辞める"
+msgstr "名前を指定してすべて終了"
 
 #: internal/lightui/sysmon.go:145
 #: internal/lightui/sysmon.go:728
@@ -9977,7 +9977,7 @@ msgstr "CPU"
 #: internal/lightui/sysmon.go:789
 #: internal/lightui/sysmon.go:993
 msgid "MEMORY"
-msgstr "記憶"
+msgstr "メモリ"
 
 #: internal/lightui/sysmon.go:149
 msgid "GPU"
@@ -10013,11 +10013,11 @@ msgstr "CPU %d：%.0f%%"
 
 #: internal/lightui/sysmon.go:419
 msgid "of %s · cache %s"
-msgstr "/%[1]s · キャッシュ %[2]s"
+msgstr "全体 %[1]s · キャッシュ %[2]s"
 
 #: internal/lightui/sysmon.go:421
 msgid " · swap %s of %s"
-msgstr "· %[2]s の %[1]s を交換する"
+msgstr " · スワップ %[1]s / %[2]s"
 
 #: internal/lightui/sysmon.go:436
 msgid " · video memory %s of %s"
@@ -10029,11 +10029,11 @@ msgstr "↑ %[1]s · 受信 %[2]s、送信 %[3]s"
 
 #: internal/lightui/sysmon.go:455
 msgid "of %s on / · %s free"
-msgstr "%[1]sの/・%[2]s無料"
+msgstr " / ：合計 %[1]s · 空き %[2]s"
 
 #: internal/lightui/sysmon.go:457
 msgid " · read %s · write %s"
-msgstr "・%[1]sを読み取る・%[2]sを書き込む"
+msgstr " · 読み取り %[1]s · 書き込み %[2]s"
 
 #: internal/lightui/sysmon.go:473
 msgid "health %.0f%%"
@@ -10105,7 +10105,7 @@ msgstr "ユニット"
 
 #: internal/lightui/sysmon.go:790
 msgid "Resident"
-msgstr "居住者"
+msgstr "常駐メモリ"
 
 #: internal/lightui/sysmon.go:790
 msgid "Private"
@@ -10117,7 +10117,7 @@ msgstr "共有"
 
 #: internal/lightui/sysmon.go:790
 msgid "Swapped out"
-msgstr "スワップアウトされました"
+msgstr "スワップアウト"
 
 #: internal/lightui/sysmon.go:790
 msgid "Peak"
@@ -10160,11 +10160,11 @@ msgstr "1月2日 15:04:05"
 
 #: internal/lightui/sysmon.go:847
 msgid "nice %d"
-msgstr "素敵な%d"
+msgstr "nice 値 %d"
 
 #: internal/lightui/sysmon.go:871
 msgid "It is paused. Lets it go on."
-msgstr "一時停止中です。続けましょう。"
+msgstr "一時停止中です。再開します。"
 
 #: internal/lightui/sysmon.go:875
 msgid "Also its %d child process, the youngest first."
@@ -10173,7 +10173,7 @@ msgstr[0] "また、その %d 子プロセスも、最も若いものが最初�
 
 #: internal/lightui/sysmon.go:878
 msgid "All %d processes named %s."
-msgstr "すべての%[1]dプロセスは、%[2]sと名付けられる。"
+msgstr "%[2]s という名前のプロセス %[1]d 件すべて。"
 
 #: internal/lightui/sysmon.go:900
 msgid "This process has ended."
@@ -10181,7 +10181,7 @@ msgstr "このプロセスは終了した。"
 
 #: internal/lightui/sysmon.go:931
 msgid "Asked %s to quit."
-msgstr "%sに辞めるよう依頼した。"
+msgstr "%s に終了を要求しました。"
 
 #: internal/lightui/sysmon.go:933
 msgid "Interrupted %s."
@@ -10189,7 +10189,7 @@ msgstr "%sが中断されました。"
 
 #: internal/lightui/sysmon.go:935
 msgid "Hung up on %s."
-msgstr "%sで電話を切りました。"
+msgstr "%s に SIGHUP を送信しました。"
 
 #: internal/lightui/sysmon.go:937
 msgid "Ended %s."
@@ -10234,7 +10234,7 @@ msgstr "%[1]s · %[2]s以降"
 
 #: internal/lightui/sysmon.go:975
 msgid "Up"
-msgstr "上へ"
+msgstr "稼働時間"
 
 #: internal/lightui/sysmon.go:978
 msgid "PROCESSOR"
@@ -10355,11 +10355,11 @@ msgstr "ハードウェア"
 #: internal/lightui/tailscale.go:527
 #: internal/lightui/tailscale.go:571
 msgid "Traffic"
-msgstr "交通"
+msgstr "通信量"
 
 #: internal/lightui/sysmon.go:1057
 msgid "received %s · sent %s"
-msgstr "%[1]sを受信しました・%[2]sを送信しました"
+msgstr "受信 %[1]s · 送信 %[2]s"
 
 #: internal/lightui/sysmon.go:1063
 msgid "SENSORS"
@@ -10383,7 +10383,7 @@ msgstr "充電しない"
 
 #: internal/lightui/sysmon.go:1090
 msgid "%.1f s"
-msgstr "%.1f"
+msgstr "%.1f 秒"
 
 #: internal/lightui/tailscale.go:41
 msgid "Use Tailscale DNS"
@@ -10407,7 +10407,7 @@ msgstr "着信接続をブロックする"
 
 #: internal/lightui/tailscale.go:49
 msgid "Other devices cannot reach this one; it can still reach them."
-msgstr "他のデバイスはこのデバイスに到達できません。まだ彼らに届く可能性があります。"
+msgstr "他のデバイスからこのデバイスへは接続できませんが、このデバイスから他のデバイスへは接続できます。"
 
 #: internal/lightui/tailscale.go:54
 msgid "Offer as exit node"
@@ -10474,7 +10474,7 @@ msgstr "スタート…"
 
 #: internal/lightui/tailscale.go:374
 msgid "Started Tailscale."
-msgstr "テイルスケール社を設立。"
+msgstr "Tailscale を起動しました。"
 
 #: internal/lightui/tailscale.go:378
 msgid "This device is logged out of its tailnet."
@@ -10507,11 +10507,11 @@ msgstr "このアプリは Tailscale を管理できるようになりました�
 
 #: internal/lightui/tailscale.go:418
 msgid "No device matches."
-msgstr "0001 一致するデバイスがありません。"
+msgstr "一致するデバイスがありません。"
 
 #: internal/lightui/tailscale.go:420
 msgid "No other devices in the tailnet yet."
-msgstr "テールネットにはまだ他のデバイスが存在しない。"
+msgstr "tailnet に他のデバイスはまだありません。"
 
 #: internal/lightui/tailscale.go:437
 msgid "exit node in use"
@@ -10652,7 +10652,7 @@ msgstr "設定"
 
 #: internal/lightui/tailscale.go:648
 msgid "RECEIVED FILES"
-msgstr "個のファイルを受信しました"
+msgstr "受信したファイル"
 
 #: internal/lightui/tailscale.go:651
 msgid "Files sent to this device show here once this app may manage Tailscale."
@@ -10660,7 +10660,7 @@ msgstr "このアプリが Tailscale を管理できるようになるまで、�
 
 #: internal/lightui/tailscale.go:655
 msgid "None waiting. Files other devices send with Taildrop show here."
-msgstr "待っている人はいない。他のデバイスが Taildrop で送信したファイルがここに表示されます。"
+msgstr "受信待ちのファイルはありません。他のデバイスから Taildrop で送信されたファイルがここに表示されます。"
 
 #: internal/lightui/tailscale.go:660
 msgid "Save to Downloads"
@@ -10698,7 +10698,7 @@ msgstr "ログアウトした。"
 
 #: internal/lightui/tailscale.go:807
 msgid "Pinging %s…"
-msgstr "%s を鳴らしています…"
+msgstr "%s に ping を送信中…"
 
 #: internal/lightui/tailscale.go:821
 msgid "%s did not answer"
@@ -10730,11 +10730,11 @@ msgstr "%[1]s を %[2]s に保存しました。"
 
 #: internal/lightui/tailscale.go:916
 msgid "Opening the login page…"
-msgstr "ログインページを開くと…"
+msgstr "ログインページを開いています…"
 
 #: internal/lightui/tailscale.go:943
 msgid "No password prompt is running in this session (a polkit agent); run in a terminal: sudo %s"
-msgstr "このセッション (polkit エージェント) ではパスワード プロンプトが実行されていません。ターミナルで実行: sudo %s"
+msgstr "このセッションでパスワード入力ダイアログ（polkit エージェント）が起動していません。端末で sudo %s を実行してください。"
 
 #: internal/lightui/tailscale.go:945
 msgid "not done: no administrator's password was given"
@@ -11008,18 +11008,18 @@ msgstr "ゴミ箱に移動しました"
 
 #: internal/mailui/actions.go:228
 msgid "Permanently Delete?"
-msgstr ""
+msgstr "完全に削除しますか？"
 
 #: internal/mailui/actions.go:229
 msgid "Its %d message is deleted from the server, not moved to the Trash. This cannot be undone."
 msgid_plural "Its %d messages are deleted from the server, not moved to the Trash. This cannot be undone."
-msgstr[0] ""
+msgstr[0] "%d 件のメッセージをゴミ箱に移さず、サーバーから完全に削除します。この操作は取り消せません。"
 
 #: internal/mailui/actions.go:230
 #: internal/mailui/picker.go:144
 #: internal/mailui/reader.go:377
 msgid "Permanently Delete"
-msgstr ""
+msgstr "完全に削除"
 
 #: internal/mailui/actions.go:243
 msgid "The server did not delete it: %v"
@@ -11027,23 +11027,23 @@ msgstr "サーバーが削除しませんでした：%v"
 
 #: internal/mailui/actions.go:265
 msgid "Empty the Trash?"
-msgstr ""
+msgstr "ゴミ箱を空にしますか？"
 
 #: internal/mailui/actions.go:267
 msgid "Empty Spam?"
-msgstr ""
+msgstr "迷惑メールを空にしますか？"
 
 #: internal/mailui/actions.go:267
 msgid "Empty Spam"
-msgstr ""
+msgstr "迷惑メールを空にする"
 
 #: internal/mailui/actions.go:270
 msgid "Every message in it is permanently deleted from the server. This cannot be undone."
-msgstr ""
+msgstr "中のすべてのメッセージがサーバーから完全に削除されます。この操作は取り消せません。"
 
 #: internal/mailui/actions.go:277
 msgid "The server did not empty it: %v"
-msgstr ""
+msgstr "サーバーで空にできませんでした：%v"
 
 #: internal/mailui/actions.go:356
 msgid "The server did not take it: %v"
@@ -11315,36 +11315,36 @@ msgstr "AI から文章が返ってきませんでした。"
 #: internal/mailui/details.go:78
 #: internal/mailui/people.go:270
 msgid "Write"
-msgstr ""
+msgstr "メールを作成"
 
 #: internal/mailui/details.go:79
 msgid "Copy address"
-msgstr ""
+msgstr "アドレスをコピー"
 
 #: internal/mailui/details.go:80
 msgid "Their conversations"
-msgstr ""
+msgstr "この相手とのスレッド"
 
 #: internal/mailui/details.go:87
 msgid "Always load pictures"
-msgstr ""
+msgstr "画像を常に読み込む"
 
 #: internal/mailui/details.go:89
 msgid "Ask before loading pictures"
-msgstr ""
+msgstr "画像の読み込み前に確認"
 
 #: internal/mailui/details.go:157
 #: internal/viewerui/menubar.go:56
 msgid "Source"
-msgstr ""
+msgstr "ソース"
 
 #: internal/mailui/details.go:180
 msgid "The message's source is not kept on this computer yet: open it first."
-msgstr ""
+msgstr "このメッセージのソースはまだこのコンピューターに保存されていません。先に開いてください。"
 
 #: internal/mailui/details.go:192
 msgid "Source of “%s”"
-msgstr ""
+msgstr "「%s」のソース"
 
 #: internal/mailui/details.go:226
 #: internal/mailui/reader.go:826
@@ -11356,11 +11356,11 @@ msgstr "保存…"
 
 #: internal/mailui/details.go:229
 msgid "Save the message"
-msgstr ""
+msgstr "メッセージを保存"
 
 #: internal/mailui/details.go:236
 msgid "The first %s are shown; Save keeps all of it."
-msgstr ""
+msgstr "最初の%sを表示しています。「保存」すると全体を保存できます。"
 
 #: internal/mailui/formatted.go:172
 msgid "%d picture hidden"
@@ -11381,21 +11381,21 @@ msgstr "この送信者からは常に"
 
 #: internal/mailui/menubar.go:40
 msgid "New Message"
-msgstr ""
+msgstr "新しいメッセージ"
 
 #: internal/mailui/menubar.go:51
 msgid "Mark All Read"
-msgstr ""
+msgstr "すべて既読にする"
 
 #: internal/mailui/menubar.go:53
 #: internal/termui/menubar.go:34
 #: internal/ui/appmenu_packs.go:98
 msgid "Help"
-msgstr ""
+msgstr "ヘルプ"
 
 #: internal/mailui/menubar.go:54
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "キーボードショートカット"
 
 #: internal/mailui/panel.go:75
 msgid "Open a conversation: AI sums it up, suggests replies and writes them, and judges a message that looks suspicious."
@@ -11451,28 +11451,28 @@ msgstr "アシスタントが書けませんでした"
 
 #: internal/mailui/people.go:114
 msgid "Nobody found"
-msgstr ""
+msgstr "見つかりません"
 
 #: internal/mailui/people.go:124
 msgid "No one chosen"
-msgstr ""
+msgstr "選択されていません"
 
 #: internal/mailui/people.go:171
 msgid "%s and %d more"
 msgid_plural "%s and %d more"
-msgstr[0] ""
+msgstr[0] "%s、ほか%d件"
 
 #: internal/mailui/people.go:273
 msgid "Write a message to %s"
-msgstr ""
+msgstr "%sにメッセージを作成"
 
 #: internal/mailui/people.go:280
 msgid "CONVERSATIONS"
-msgstr ""
+msgstr "スレッド"
 
 #: internal/mailui/people.go:285
 msgid "No mail with them kept on this computer."
-msgstr ""
+msgstr "この相手とのメールはこのコンピューターに保存されていません。"
 
 #: internal/mailui/people.go:346
 #: ui/mail.ui:311
@@ -11658,7 +11658,7 @@ msgstr "ブラウザーで開く"
 
 #: internal/mailui/reader.go:374
 msgid "Show source"
-msgstr ""
+msgstr "ソースを表示"
 
 #: internal/mailui/reader.go:440
 msgid "Why: %d check"
@@ -11675,11 +11675,11 @@ msgstr "考えています…"
 
 #: internal/mailui/reader.go:559
 msgid "Unfold"
-msgstr ""
+msgstr "展開"
 
 #: internal/mailui/reader.go:627
 msgid "details"
-msgstr ""
+msgstr "詳細"
 
 #: internal/mailui/reader.go:641
 #: internal/ui/settings_keyring.go:498
@@ -11688,11 +11688,11 @@ msgstr "詳細を表示"
 
 #: internal/mailui/reader.go:643
 msgid "Hide the details"
-msgstr ""
+msgstr "詳細を隠す"
 
 #: internal/mailui/reader.go:659
 msgid "Fold"
-msgstr ""
+msgstr "折りたたむ"
 
 #: internal/mailui/reader.go:670
 #: internal/mailui/window.go:1337
@@ -11723,7 +11723,7 @@ msgstr "%sを開く"
 
 #: internal/mailui/reader.go:818
 msgid "Sum up: the assistant reads it and sums it up"
-msgstr ""
+msgstr "要約：アシスタントが内容を読んで要約します"
 
 #: internal/mailui/reader.go:836
 msgid "%d bytes"
@@ -12398,11 +12398,11 @@ msgstr "ここの会話をすべて既読にする"
 
 #: internal/mailui/window.go:273
 msgid "EMPTY"
-msgstr ""
+msgstr "空"
 
 #: internal/mailui/window.go:276
 msgid "Permanently delete every message here"
-msgstr ""
+msgstr "ここにあるすべてのメッセージを完全に削除"
 
 #: internal/mailui/window.go:484
 msgid "Signed out"
@@ -12410,7 +12410,7 @@ msgstr "サインアウト済み"
 
 #: internal/mailui/window.go:486
 msgid "No client ID"
-msgstr ""
+msgstr "クライアントIDがありません"
 
 #: internal/mailui/window.go:503
 msgid "Offline: server not found"
@@ -12460,11 +12460,11 @@ msgstr "スター付き"
 
 #: internal/mailui/window.go:596
 msgid "Newsletters"
-msgstr ""
+msgstr "ニュースレター"
 
 #: internal/mailui/window.go:602
 msgid "Contacts"
-msgstr ""
+msgstr "連絡先"
 
 #: internal/mailui/window.go:611
 msgid "This account's settings"
@@ -12497,7 +12497,7 @@ msgstr "迷惑メール"
 
 #: internal/mailui/window.go:822
 msgid "Search contacts"
-msgstr ""
+msgstr "連絡先を検索"
 
 #: internal/mailui/window.go:824
 #: internal/mailui/window.go:1770
@@ -12527,7 +12527,7 @@ msgstr "スター付きの会話はありません"
 
 #: internal/mailui/window.go:1063
 msgid "No newsletter"
-msgstr ""
+msgstr "ニュースレターはありません"
 
 #: internal/mailui/window.go:1065
 msgid "All read"
@@ -12555,7 +12555,7 @@ msgstr "疑わしい"
 
 #: internal/mailui/window.go:1352
 msgid "EMPTY PREVIEW"
-msgstr ""
+msgstr "プレビューなし"
 
 #: internal/mailui/window.go:1392
 msgid "Mark as read"
@@ -12621,19 +12621,19 @@ msgstr "リモートデスクトップ"
 
 #: internal/remoteui/menubar.go:50
 msgid "Session"
-msgstr ""
+msgstr "セッション"
 
 #: internal/remoteui/menubar.go:52
 msgid "End Remote Session"
-msgstr ""
+msgstr "リモートセッションを終了"
 
 #: internal/remoteui/menubar.go:54
 msgid "This Computer"
-msgstr ""
+msgstr "このコンピューター"
 
 #: internal/remoteui/menubar.go:58
 msgid "Find Machines"
-msgstr ""
+msgstr "コンピューターを検索"
 
 #: internal/remoteui/stream.go:126
 msgid "%s — Remote Desktop"
@@ -12664,11 +12664,11 @@ msgstr "このコンピュータ"
 
 #: internal/remoteui/window.go:270
 msgid "Not sharing"
-msgstr ""
+msgstr "共有していません"
 
 #: internal/remoteui/window.go:273
 msgid "Sharing its desktop"
-msgstr ""
+msgstr "デスクトップを共有中"
 
 #: internal/remoteui/window.go:334
 msgid "Paired"
@@ -12844,33 +12844,33 @@ msgstr "接続が終了しました：%v"
 
 #: internal/securitykey/unlock.go:36
 msgid "The passphrase kept with the security key no longer opens this key. Type it, then add the security key again in Pass."
-msgstr ""
+msgstr "セキュリティキーに保存されたパスフレーズでは、この鍵を開けなくなりました。パスフレーズを入力し、「Pass」でセキュリティキーを再登録してください。"
 
 #: internal/securitykey/unlock.go:56
 #: internal/ui/settings_securitykeys.go:279
 msgid "PIN"
-msgstr ""
+msgstr "PIN"
 
 #: internal/securitykey/unlock.go:58
 msgid "Type Passphrase"
-msgstr ""
+msgstr "パスフレーズを入力"
 
 #: internal/securitykey/unlock.go:81
 msgid "The security key's PIN is blocked. Type the passphrase."
-msgstr ""
+msgstr "セキュリティキーのPINがブロックされています。パスフレーズを入力してください。"
 
 #: internal/securitykey/unlock.go:84
 msgid "The security key could not unlock the key: %v"
-msgstr ""
+msgstr "セキュリティキーで鍵を解除できませんでした：%v"
 
 #: internal/securitykey/unlock.go:89
 msgid "The security key could not open the passphrase kept with it. Type the passphrase."
-msgstr ""
+msgstr "セキュリティキーに保存されたパスフレーズを取り出せませんでした。パスフレーズを入力してください。"
 
 #: internal/securitykey/unlock.go:125
 msgid "Wrong PIN. %d try left before the security key locks."
 msgid_plural "Wrong PIN. %d tries left before the security key locks."
-msgstr[0] ""
+msgstr[0] "PINが違います。セキュリティキーがロックされるまであと%d回試せます。"
 
 #: internal/shell/bluetooth.go:40
 #: internal/shell/wifi.go:40
@@ -13564,23 +13564,23 @@ msgstr "%s が完了しました"
 
 #: internal/term/host/secrets.go:40
 msgid "%s asks for your passphrase"
-msgstr ""
+msgstr "%sがパスフレーズを求めています"
 
 #: internal/term/host/secrets.go:42
 msgid "%s asks"
-msgstr ""
+msgstr "%sからの確認"
 
 #: internal/term/host/secrets.go:45
 msgid "inua-keyring asks for your passphrase, for %s"
-msgstr ""
+msgstr "inua-keyringが%sのパスフレーズを求めています"
 
 #: internal/term/host/sessions.go:270
 msgid "No folder given."
-msgstr ""
+msgstr "フォルダーが指定されていません。"
 
 #: internal/term/host/sessions.go:273
 msgid "%s is not a folder."
-msgstr ""
+msgstr "%sはフォルダーではありません。"
 
 #: internal/term/host/sessions.go:317
 #: ui/connect.ui:851
@@ -13761,7 +13761,7 @@ msgstr "%s PX"
 
 #: internal/term/web/strings.go:16
 msgid "%s is over 100 MB"
-msgstr ""
+msgstr "%sは100 MBを超えています"
 
 #: internal/term/web/strings.go:17
 msgid "%s px"
@@ -13773,7 +13773,7 @@ msgstr "INUA-TERM と同じ"
 
 #: internal/term/web/strings.go:19
 msgid "Add a snippet"
-msgstr ""
+msgstr "スニペットを追加"
 
 #: internal/term/web/strings.go:20
 #: internal/termui/agents.go:337
@@ -13798,7 +13798,7 @@ msgstr "基本"
 
 #: internal/term/web/strings.go:26
 msgid "Built in"
-msgstr ""
+msgstr "組み込み"
 
 #: internal/term/web/strings.go:27
 msgid "CONNECTED"
@@ -13814,7 +13814,7 @@ msgstr "列 × 行：この画面に文字の大きさで合わせたペイン�
 
 #: internal/term/web/strings.go:33
 msgid "Continue."
-msgstr ""
+msgstr "続行。"
 
 #: internal/term/web/strings.go:34
 msgid "Control"
@@ -13822,11 +13822,11 @@ msgstr "Ctrl の組み合わせ"
 
 #: internal/term/web/strings.go:37
 msgid "Could not open %s"
-msgstr ""
+msgstr "%sを開けませんでした"
 
 #: internal/term/web/strings.go:38
 msgid "Could not upload %s"
-msgstr ""
+msgstr "%sをアップロードできませんでした"
 
 #: internal/term/web/strings.go:39
 #: internal/vmui/window.go:1113
@@ -13863,7 +13863,7 @@ msgstr "グラフィックチップが描画：速い方法です。"
 
 #: internal/term/web/strings.go:48
 msgid "Encryption"
-msgstr ""
+msgstr "暗号化"
 
 #: internal/term/web/strings.go:49
 msgid "Esc, Tab, Ctrl, the arrows and the rest a touch keyboard lacks."
@@ -13875,7 +13875,7 @@ msgstr "ここで開いてからこのペインから届いたすべて。"
 
 #: internal/term/web/strings.go:51
 msgid "Explain it first, before you change anything."
-msgstr ""
+msgstr "変更する前に、まず説明してください。"
 
 #: internal/term/web/strings.go:53
 msgid "First load"
@@ -13892,11 +13892,11 @@ msgstr "ファンクション"
 
 #: internal/term/web/strings.go:56
 msgid "Go"
-msgstr ""
+msgstr "移動"
 
 #: internal/term/web/strings.go:57
 msgid "Go to a folder or a file"
-msgstr ""
+msgstr "フォルダーまたはファイルへ移動"
 
 #: internal/term/web/strings.go:59
 #: internal/termui/agents.go:49
@@ -13933,7 +13933,7 @@ msgstr "応答待ち"
 
 #: internal/term/web/strings.go:67
 msgid "New pane"
-msgstr ""
+msgstr "新しいペイン"
 
 #: internal/term/web/strings.go:68
 #: internal/termui/columns.go:177
@@ -13943,11 +13943,11 @@ msgstr "新しいセッション"
 
 #: internal/term/web/strings.go:69
 msgid "New snippet"
-msgstr ""
+msgstr "新しいスニペット"
 
 #: internal/term/web/strings.go:71
 msgid "New workspace, in the folder"
-msgstr ""
+msgstr "フォルダー内に新しいワークスペースを作成"
 
 #: internal/term/web/strings.go:73
 msgid "No agent is running."
@@ -13959,19 +13959,19 @@ msgstr "開いているペインはありません。エージェントかワー
 
 #: internal/term/web/strings.go:75
 msgid "Not copied"
-msgstr ""
+msgstr "コピーされていません"
 
 #: internal/term/web/strings.go:76
 msgid "Not encrypted, unless over Tailscale or a VPN."
-msgstr ""
+msgstr "Tailscale または VPN 経由でない限り、暗号化されません。"
 
 #: internal/term/web/strings.go:77
 msgid "Nothing at %s"
-msgstr ""
+msgstr "%s に何もありません"
 
 #: internal/term/web/strings.go:78
 msgid "Nothing here"
-msgstr ""
+msgstr "ここには何もありません"
 
 #: internal/term/web/strings.go:79
 msgid "OFFLINE"
@@ -13991,7 +13991,7 @@ msgstr "標準"
 
 #: internal/term/web/strings.go:84
 msgid "PLAIN HTTP"
-msgstr ""
+msgstr "暗号化なしの HTTP"
 
 #: internal/term/web/strings.go:85
 msgid "Panes are fitted to this screen at this size; pinching changes it too."
@@ -14016,7 +14016,7 @@ msgstr "往復"
 
 #: internal/term/web/strings.go:92
 msgid "SNIPPETS"
-msgstr ""
+msgstr "スニペット"
 
 #: internal/term/web/strings.go:95
 msgid "Session %d"
@@ -14030,7 +14030,7 @@ msgstr "シェル"
 
 #: internal/term/web/strings.go:99
 msgid "Sure, please do it."
-msgstr ""
+msgstr "はい、お願いします。"
 
 #: internal/term/web/strings.go:100
 msgid "Symbols"
@@ -14060,7 +14060,7 @@ msgstr "ウインドウのテーマの背景と文字"
 
 #: internal/term/web/strings.go:109
 msgid "This connection may not be encrypted."
-msgstr ""
+msgstr "この接続は暗号化されていない可能性があります。"
 
 #: internal/term/web/strings.go:110
 msgid "This device"
@@ -14076,23 +14076,23 @@ msgstr "下線"
 
 #: internal/term/web/strings.go:113
 msgid "Up a folder"
-msgstr ""
+msgstr "親フォルダーへ"
 
 #: internal/term/web/strings.go:114
 msgid "Up to 100 MB each, kept on the computer until you log out. Their paths are typed in the pane."
-msgstr ""
+msgstr "各ファイルは最大 100 MB です。ログアウトするまでこのコンピューターに保存され、パスはペインに入力されます。"
 
 #: internal/term/web/strings.go:115
 msgid "Upload files"
-msgstr ""
+msgstr "ファイルをアップロード"
 
 #: internal/term/web/strings.go:116
 msgid "Uploading %s (%d of %d)…"
-msgstr ""
+msgstr "%s をアップロード中（%d / %d）…"
 
 #: internal/term/web/strings.go:117
 msgid "Uploading %s…"
-msgstr ""
+msgstr "%s をアップロード中…"
 
 #: internal/term/web/strings.go:118
 msgid "WEBGL"
@@ -14105,7 +14105,7 @@ msgstr "作業中"
 
 #: internal/term/web/strings.go:120
 msgid "Wait, let me think."
-msgstr ""
+msgstr "少し考えさせてください。"
 
 #: internal/term/web/strings.go:122
 #: ui/settings.ui:1445
@@ -14114,7 +14114,7 @@ msgstr "ワークスペース"
 
 #: internal/term/web/strings.go:124
 msgid "gpg asks for your passphrase"
-msgstr ""
+msgstr "gpg がパスフレーズを求めています"
 
 #: internal/term/web/strings.go:126
 #: internal/ui/settings_keyring.go:640
@@ -14132,15 +14132,15 @@ msgstr "テーマの色"
 
 #: internal/term/web/web.go:137
 msgid "The Web Terminal's token"
-msgstr ""
+msgstr "Web Terminal のトークン"
 
 #: internal/term/web/web.go:138
 msgid "It is in the link the computer gives: in inua-term's Terminal Settings, Web Terminal, Link. Paste the whole link or the part after t=."
-msgstr ""
+msgstr "コンピューターが表示するリンク内にあります。inua-term の「Terminal Settings」→「Web Terminal」→「Link」で確認できます。リンク全体、または t= の後ろの部分を貼り付けてください。"
 
 #: internal/term/web/web.go:140
 msgid "That token is not right. The link may be an old one, from before New link."
-msgstr ""
+msgstr "トークンが正しくありません。「New link」を作成する前の古いリンクかもしれません。"
 
 #: internal/termui/agents.go:37
 msgid "EXITED %d"
@@ -14287,11 +14287,11 @@ msgstr "オンですが動いていません"
 
 #: internal/termui/keys.go:275
 msgid "Close pane?"
-msgstr ""
+msgstr "ペインを閉じますか？"
 
 #: internal/termui/keys.go:276
 msgid "A program may still be running. Closing the pane ends it."
-msgstr ""
+msgstr "プログラムがまだ実行中かもしれません。ペインを閉じると終了します。"
 
 #: internal/termui/keys.go:278
 #: internal/termui/sessionmenu.go:103
@@ -14592,7 +14592,7 @@ msgstr "電話で開きます。新しいリンクを作ると古いリンクは
 
 #: internal/termui/prefsweb.go:150
 msgid "The link's token could be kept neither in the keyring nor in a file."
-msgstr ""
+msgstr "リンクのトークンをキーリングにもファイルにも保存できませんでした。"
 
 #: internal/termui/prefsweb.go:154
 msgid "The Web Terminal did not start in time."
@@ -14633,7 +14633,7 @@ msgstr "閉じる…"
 
 #: internal/termui/sessionmenu.go:104
 msgid "All panes in this session close, and every program running in them quits."
-msgstr ""
+msgstr "このセッションのすべてのペインが閉じ、実行中のプログラムもすべて終了します。"
 
 #: internal/termui/tiles.go:657
 msgid "%s\nBranch %s"
@@ -14706,28 +14706,28 @@ msgstr "スヌーズ"
 #: internal/ui/appmenu_packs.go:48
 #: internal/ui/appmenu_packs.go:96
 msgid "Float"
-msgstr ""
+msgstr "フロート表示"
 
 #: internal/ui/appmenu_packs.go:90
 msgid "Quit %s"
-msgstr ""
+msgstr "%s を終了"
 
 #: internal/ui/appmenu_packs.go:92
 msgid "Copy Window Title"
-msgstr ""
+msgstr "ウィンドウタイトルをコピー"
 
 #: internal/ui/appmenu_packs.go:93
 msgid "Copy Window Class"
-msgstr ""
+msgstr "ウィンドウクラスをコピー"
 
 #: internal/ui/appmenu_packs.go:99
 #: internal/ui/appmenu_packs.go:118
 msgid "About %s"
-msgstr ""
+msgstr "%s について"
 
 #: internal/ui/appmenu_packs.go:130
 msgid "Process %d"
-msgstr ""
+msgstr "プロセス %d"
 
 #: internal/ui/askpass.go:80
 msgid "password: want one JSON request"
@@ -14751,7 +14751,7 @@ msgstr "OpenPGP 鍵のロック解除"
 
 #: internal/ui/askpass.go:264
 msgid "Unlock with Security Key"
-msgstr ""
+msgstr "セキュリティキーでロック解除"
 
 #: internal/ui/askpass.go:279
 #: ui/gpg.ui:174
@@ -14916,7 +14916,7 @@ msgstr "個人情報を隠す: 鍵の所有者、フィンガープリント、p
 
 #: internal/ui/askpass.go:702
 msgid "Type the PIN of %s, then touch it when it blinks."
-msgstr ""
+msgstr "%s の PIN を入力し、ランプが点滅したらキーにタッチしてください。"
 
 #: internal/ui/askpass.go:714
 msgid "Hidden while the screen is being recorded or shared."
@@ -15043,7 +15043,7 @@ msgstr "ログアウトしますか？"
 
 #: internal/ui/control.go:580
 msgid "%s is busy. %s"
-msgstr ""
+msgstr "%s は使用中です。%s"
 
 #: internal/ui/control_detail.go:92
 msgid "Settings…"
@@ -15196,19 +15196,19 @@ msgstr "inua音量"
 
 #: internal/ui/osd.go:218
 msgid "Wi-Fi on"
-msgstr ""
+msgstr "Wi-Fi オン"
 
 #: internal/ui/osd.go:220
 msgid "Wi-Fi off"
-msgstr ""
+msgstr "Wi-Fi オフ"
 
 #: internal/ui/osd.go:233
 msgid "Bluetooth on"
-msgstr ""
+msgstr "Bluetooth オン"
 
 #: internal/ui/osd.go:235
 msgid "Bluetooth off"
-msgstr ""
+msgstr "Bluetooth オフ"
 
 #: internal/ui/overview.go:188
 msgid "restore focus"
@@ -15376,31 +15376,31 @@ msgstr "申し訳ありませんが、うまくいきませんでした。もう
 
 #: internal/ui/portal_ask.go:51
 msgid "An app"
-msgstr ""
+msgstr "アプリ"
 
 #: internal/ui/portal_ask.go:78
 msgid "%s is running in the background"
-msgstr ""
+msgstr "%s はバックグラウンドで実行中です"
 
 #: internal/ui/portal_ask.go:79
 msgid "It has no window open."
-msgstr ""
+msgstr "ウィンドウは開いていません。"
 
 #: internal/ui/portal_ask.go:166
 msgid "Set as background?"
-msgstr ""
+msgstr "背景に設定しますか？"
 
 #: internal/ui/portal_ask.go:167
 msgid "%s asks to make %s the background."
-msgstr ""
+msgstr "%s が %s を背景に設定しようとしています。"
 
 #: internal/ui/portal_ask.go:168
 msgid "Set as background"
-msgstr ""
+msgstr "背景に設定"
 
 #: internal/ui/portal_share.go:39
 msgid "The screenshot tool is in use."
-msgstr ""
+msgstr "スクリーンショットツールは使用中です。"
 
 #: internal/ui/record.go:69
 msgid "Recording needs wf-recorder"
@@ -15481,7 +15481,7 @@ msgstr "%d px"
 
 #: internal/ui/settings.go:495
 msgid "Follow interface language"
-msgstr ""
+msgstr "インターフェースの言語に合わせる"
 
 #: internal/ui/settings.go:654
 msgid "Connections"
@@ -15695,7 +15695,7 @@ msgstr "トークンの作成"
 
 #: internal/ui/settings_ai.go:250
 msgid "Show token"
-msgstr "ショートークン"
+msgstr "トークンを表示"
 
 #: internal/ui/settings_ai.go:261
 msgid "The one that answers"
@@ -16125,218 +16125,218 @@ msgstr "Hyprland、その上に inua。"
 
 #: internal/ui/settings_compositor.go:76
 msgid "COMPOSITOR"
-msgstr ""
+msgstr "コンポジター"
 
 #: internal/ui/settings_compositor.go:76
 msgid "What the next login runs inua on"
-msgstr ""
+msgstr "次回ログイン時に inua を実行するコンポジター"
 
 #: internal/ui/settings_compositor.go:77
 #: ui/settings.ui:6944
 msgid "Compositor"
-msgstr ""
+msgstr "コンポジター"
 
 #: internal/ui/settings_compositor.go:94
 msgid "Applies at the next login"
-msgstr ""
+msgstr "次回ログイン時に適用"
 
 #: internal/ui/settings_compositor.go:95
 msgid "Log out…"
-msgstr ""
+msgstr "ログアウト…"
 
 #: internal/ui/settings_compositor.go:104
 msgid "LOGIN"
-msgstr ""
+msgstr "ログイン"
 
 #: internal/ui/settings_compositor.go:104
 msgid "The login screen starts the Inua session, which starts the compositor"
-msgstr ""
+msgstr "ログイン画面が Inua セッションを開始し、そのセッションがコンポジターを起動します"
 
 #: internal/ui/settings_compositor.go:105
 msgid "Login manager"
-msgstr ""
+msgstr "ログインマネージャー"
 
 #: internal/ui/settings_compositor.go:111
 msgid "THIS SESSION"
-msgstr ""
+msgstr "このセッション"
 
 #: internal/ui/settings_compositor.go:111
 msgid "What the compositor running now does not give inua"
-msgstr ""
+msgstr "現在実行中のコンポジターが inua に提供していない機能"
 
 #: internal/ui/settings_compositor.go:112
 msgid "Running on"
-msgstr ""
+msgstr "実行先"
 
 #: internal/ui/settings_compositor.go:125
 msgid "Live window previews in the overview"
-msgstr ""
+msgstr "オーバービューでのウィンドウのライブプレビュー"
 
 #: internal/ui/settings_compositor.go:126
 msgid "Windows laid out as they are, in the overview"
-msgstr ""
+msgstr "オーバービューでのウィンドウ配置の再現"
 
 #: internal/ui/settings_compositor.go:127
 msgid "New workspaces from the overview"
-msgstr ""
+msgstr "オーバービューからの新しいワークスペース作成"
 
 #: internal/ui/settings_compositor.go:128
 msgid "Dragging windows between workspaces in the overview"
-msgstr ""
+msgstr "オーバービューでのワークスペース間のウィンドウ移動"
 
 #: internal/ui/settings_compositor.go:129
 msgid "Super alone for the overview, and its number slots"
-msgstr ""
+msgstr "オーバービューを開く Super 単独キーと番号キーの割り当て"
 
 #: internal/ui/settings_compositor.go:130
 msgid "Keyboard settings from inua"
-msgstr ""
+msgstr "inua のキーボード設定"
 
 #: internal/ui/settings_compositor.go:131
 msgid "Touchpad settings from inua"
-msgstr ""
+msgstr "inua のタッチパッド設定"
 
 #: internal/ui/settings_compositor.go:132
 msgid "Shortcuts set in inua"
-msgstr ""
+msgstr "Inuaで割り当てたショートカット"
 
 #: internal/ui/settings_compositor.go:133
 msgid "Holding other shortcuts back while one is recorded"
-msgstr ""
+msgstr "録音中は、ほかのショートカットを一時停止"
 
 #: internal/ui/settings_compositor.go:134
 msgid "Display settings from inua"
-msgstr ""
+msgstr "Inuaのディスプレイ設定"
 
 #: internal/ui/settings_compositor.go:135
 msgid "Pasting into a window from the clipboard history and dictation"
-msgstr ""
+msgstr "クリップボード履歴や音声入力からウィンドウへ貼り付け"
 
 #: internal/ui/settings_compositor.go:136
 msgid "A virtual screen for remote desktop without a monitor"
-msgstr ""
+msgstr "モニターなしでリモートデスクトップを使う仮想画面"
 
 #: internal/ui/settings_compositor.go:137
 msgid "Moving the pointer for you"
-msgstr ""
+msgstr "ポインターを自動で動かす"
 
 #: internal/ui/settings_compositor.go:170
 msgid "%s. The login starts Hyprland instead until this is put right."
-msgstr ""
+msgstr "%s。問題が解決するまで、ログイン時には代わりにHyprlandが起動します。"
 
 #: internal/ui/settings_compositor.go:176
 msgid "%s is not installed: install it to choose it."
-msgstr ""
+msgstr "%sがインストールされていません。選択するにはインストールしてください。"
 
 #: internal/ui/settings_compositor.go:178
 msgid "%s are not installed: install one to choose it."
-msgstr ""
+msgstr "%sがインストールされていません。選択するにはいずれかをインストールしてください。"
 
 #: internal/ui/settings_compositor.go:183
 msgid "No known compositor is running."
-msgstr ""
+msgstr "既知のコンポジターは起動していません。"
 
 #: internal/ui/settings_compositor.go:185
 msgid "%s is running. This session was not started by the Inua session entry; the choice applies when you log in through it."
-msgstr ""
+msgstr "%sは起動中です。このセッションはInuaのセッションエントリーから起動されていません。ここでの選択は、そのエントリーからログインしたときに適用されます。"
 
 #: internal/ui/settings_compositor.go:187
 msgid "%s is running, and is what the next login starts."
-msgstr ""
+msgstr "%sは起動中で、次回のログイン時にも起動します。"
 
 #: internal/ui/settings_compositor.go:189
 msgid "%s is running."
-msgstr ""
+msgstr "%sは起動中です。"
 
 #: internal/ui/settings_compositor.go:192
 msgid "%s starts when you log in again."
-msgstr ""
+msgstr "次回のログイン時に%sが起動します。"
 
 #: internal/ui/settings_compositor.go:197
 msgid "None enabled"
-msgstr ""
+msgstr "有効なものはありません"
 
 #: internal/ui/settings_compositor.go:199
 msgid "the Inua session is installed"
-msgstr ""
+msgstr "Inuaセッションはインストール済みです"
 
 #: internal/ui/settings_compositor.go:203
 msgid "the Inua session is not installed"
-msgstr ""
+msgstr "Inuaセッションはインストールされていません"
 
 #: internal/ui/settings_compositor.go:204
 msgid "Install it from inua's source: make install-session (asks for the administrator's password)."
-msgstr ""
+msgstr "Inuaのソースからインストールしてください: make install-session（管理者パスワードの入力が必要です）。"
 
 #: internal/ui/settings_compositor.go:206
 msgid "the Inua session is an older one"
-msgstr ""
+msgstr "Inuaセッションが古いバージョンです"
 
 #: internal/ui/settings_compositor.go:207
 msgid "The installed session script always starts Hyprland. Update it from inua's source: sudo sh scripts/install-session.sh"
-msgstr ""
+msgstr "インストール済みのセッションスクリプトは常にHyprlandを起動します。Inuaのソースから更新してください: sudo sh scripts/install-session.sh"
 
 #: internal/ui/settings_compositor.go:213
 msgid "Nothing inua knows"
-msgstr ""
+msgstr "Inuaが認識しているものはありません"
 
 #: internal/ui/settings_compositor.go:224
 #: internal/ui/settings_displays.go:185
 #: internal/ui/settings_displays.go:217
 msgid "Not available on %s"
-msgstr ""
+msgstr "%sでは利用できません"
 
 #: internal/ui/settings_compositor.go:226
 msgid "Not available now"
-msgstr ""
+msgstr "現在は利用できません"
 
 #: internal/ui/settings_compositor.go:235
 msgid "Everything inua uses"
-msgstr ""
+msgstr "Inuaが使用するすべての機能"
 
 #: internal/ui/settings_compositor.go:235
 msgid "Nothing is missing on this compositor."
-msgstr ""
+msgstr "このコンポジターで不足しているものはありません。"
 
 #: internal/ui/settings_compositor.go:252
 msgid "%s's config was not written: %s"
-msgstr ""
+msgstr "%sの設定を書き込めませんでした: %s"
 
 #: internal/ui/settings_compositor.go:255
 msgid "Wrote %s, which starts inua on %s."
-msgstr ""
+msgstr "%sを書き込みました。%sでInuaが起動します。"
 
 #: internal/ui/settings_compositor.go:286
 msgid "Started on %s"
-msgstr ""
+msgstr "%sで起動しました"
 
 #: internal/ui/settings_compositor.go:287
 msgid "The compositor chosen in Settings was passed over."
-msgstr ""
+msgstr "設定で選択したコンポジターは使用されませんでした。"
 
 #: internal/ui/settings_compositor.go:325
 msgid "Not available on %s now."
-msgstr ""
+msgstr "現在、%sでは利用できません。"
 
 #: internal/ui/settings_compositor.go:327
 msgid "Not available on %s."
-msgstr ""
+msgstr "%sでは利用できません。"
 
 #: internal/ui/settings_compositor.go:359
 msgid "inua writes these to %s"
-msgstr ""
+msgstr "Inuaはこれらを%sに書き込みます"
 
 #: internal/ui/settings_compositor.go:362
 msgid "Use %s's own"
-msgstr ""
+msgstr "%s本来の設定を使う"
 
 #: internal/ui/settings_compositor.go:366
 msgid "Other shortcuts, from %s's own config"
-msgstr ""
+msgstr "%s本来の設定にあるその他のショートカット"
 
 #: internal/ui/settings_compositor.go:386
 msgid "Not applied to %s: %s"
-msgstr ""
+msgstr "%sには適用されません: %s"
 
 #: internal/ui/settings_custom.go:97
 msgid "Not moved to the trash: %s"
@@ -16374,7 +16374,7 @@ msgstr "ほかのディスプレイの左"
 
 #: internal/ui/settings_displays.go:56
 msgid "Right of the others"
-msgstr "ほかのディスプレイの右"
+msgstr "他のディスプレイの右側"
 
 #: internal/ui/settings_displays.go:57
 msgid "Above the others"
@@ -16395,15 +16395,15 @@ msgstr "ディスプレイ"
 
 #: internal/ui/settings_displays.go:215
 msgid "%s lists no displays"
-msgstr ""
+msgstr "%sにディスプレイがありません"
 
 #: internal/ui/settings_displays.go:215
 msgid "Is the shell connected to %s?"
-msgstr ""
+msgstr "シェルは%sに接続されていますか？"
 
 #: internal/ui/settings_displays.go:217
 msgid "Resolution, scale and arrangement are set in the compositor's own configuration."
-msgstr ""
+msgstr "解像度、拡大率、配置はコンポジター側の設定で指定します。"
 
 #: internal/ui/settings_displays.go:252
 msgid "Use this display"
@@ -16456,11 +16456,11 @@ msgstr "hyprland.confを使用する"
 
 #: internal/ui/settings_displays.go:349
 msgid "Set in %s's own configuration"
-msgstr ""
+msgstr "%s本来の設定で指定"
 
 #: internal/ui/settings_displays.go:349
 msgid "Use %s's"
-msgstr ""
+msgstr "%sの設定を使う"
 
 #: internal/ui/settings_displays.go:358
 msgid "Stop setting this display in inua"
@@ -16727,43 +16727,43 @@ msgstr "許可をやめる：プログラムに再び確認します"
 
 #: internal/ui/settings_portals.go:27
 msgid "Open and save"
-msgstr ""
+msgstr "開く・保存する"
 
 #: internal/ui/settings_portals.go:27
 msgid "inua's file chooser and Open With, for every app"
-msgstr ""
+msgstr "すべてのアプリで使うInuaのファイル選択と「アプリケーションで開く」"
 
 #: internal/ui/settings_portals.go:29
 msgid "Share the screen"
-msgstr ""
+msgstr "画面を共有する"
 
 #: internal/ui/settings_portals.go:29
 msgid "Choose a screen, a window or an area with inua's screenshot tool"
-msgstr ""
+msgstr "Inuaのスクリーンショットツールで画面、ウィンドウ、範囲を選択"
 
 #: internal/ui/settings_portals.go:31
 msgid "Notifications and the rest"
-msgstr ""
+msgstr "通知など"
 
 #: internal/ui/settings_portals.go:31
 msgid "Apps' notifications, screenshots, the theme and more"
-msgstr ""
+msgstr "アプリの通知、スクリーンショット、テーマなど"
 
 #: internal/ui/settings_portals.go:33
 msgid "Secrets"
-msgstr ""
+msgstr "シークレット"
 
 #: internal/ui/settings_portals.go:33
 msgid "Passwords of sandboxed apps, kept by inua-keyring"
-msgstr ""
+msgstr "サンドボックス化されたアプリのパスワードをInua Keyringで保管"
 
 #: internal/ui/settings_portals.go:151
 msgid "On from the next inua session"
-msgstr ""
+msgstr "次回のInuaセッションから有効"
 
 #: internal/ui/settings_portals.go:154
 msgid "Not served: restart the shell"
-msgstr ""
+msgstr "提供されていません: シェルを再起動してください"
 
 #: internal/ui/settings_power.go:110
 msgid "POWER"
@@ -16854,130 +16854,130 @@ msgstr "ページ"
 #: internal/ui/settings_securitykeys.go:229
 #: internal/ui/settings_securitykeys.go:242
 msgid "SECURITY KEY"
-msgstr ""
+msgstr "セキュリティキー"
 
 #: internal/ui/settings_securitykeys.go:220
 msgid "Install libfido2's tools (fido2-tools) to manage a security key here."
-msgstr ""
+msgstr "ここでセキュリティキーを管理するには、libfido2のツール（fido2-tools）をインストールしてください。"
 
 #: internal/ui/settings_securitykeys.go:225
 msgid "The security keys could not be listed: %v"
-msgstr ""
+msgstr "セキュリティキーを一覧表示できませんでした: %v"
 
 #: internal/ui/settings_securitykeys.go:229
 msgid "FIDO2, such as a YubiKey"
-msgstr ""
+msgstr "YubiKeyなどのFIDO2キー"
 
 #: internal/ui/settings_securitykeys.go:230
 msgid "Plug in a security key."
-msgstr ""
+msgstr "セキュリティキーを接続してください。"
 
 #: internal/ui/settings_securitykeys.go:262
 msgid "It could not be read"
-msgstr ""
+msgstr "読み取れませんでした"
 
 #: internal/ui/settings_securitykeys.go:269
 msgid "Not set: unlocking a gpg key with it needs one"
-msgstr ""
+msgstr "未設定: gpgキーのロック解除に使うには設定が必要です"
 
 #: internal/ui/settings_securitykeys.go:271
 msgid "Set"
-msgstr ""
+msgstr "設定済み"
 
 #: internal/ui/settings_securitykeys.go:273
 msgid "Set · %d try left before it locks"
 msgid_plural "Set · %d tries left before it locks"
-msgstr[0] ""
+msgstr[0] "設定済み · ロックまで残り%d回"
 
 #: internal/ui/settings_securitykeys.go:276
 msgid "Blocked: too many wrong tries. Only a reset of the key unlocks it, which erases its credentials."
-msgstr ""
+msgstr "ブロックされています: PINの誤入力が多すぎます。キーをリセットするとロックが解除されますが、認証情報は消去されます。"
 
 #: internal/ui/settings_securitykeys.go:281
 msgid "Set PIN"
-msgstr ""
+msgstr "PINを設定"
 
 #: internal/ui/settings_securitykeys.go:283
 msgid "Change PIN"
-msgstr ""
+msgstr "PINを変更"
 
 #: internal/ui/settings_securitykeys.go:289
 msgid "The PIN was changed. The gpg keys it unlocks still open with it."
-msgstr ""
+msgstr "PINを変更しました。このPINでロック解除するgpgキーは、引き続き使用できます。"
 
 #: internal/ui/settings_securitykeys.go:310
 msgid "Current PIN"
-msgstr ""
+msgstr "現在のPIN"
 
 #: internal/ui/settings_securitykeys.go:312
 msgid "New PIN"
-msgstr ""
+msgstr "新しいPIN"
 
 #: internal/ui/settings_securitykeys.go:313
 msgid "New PIN again"
-msgstr ""
+msgstr "新しいPIN（確認）"
 
 #: internal/ui/settings_securitykeys.go:315
 msgid "From %d to 63 characters"
-msgstr ""
+msgstr "%d～63文字"
 
 #: internal/ui/settings_securitykeys.go:333
 msgid "Unlocks no gpg key"
-msgstr ""
+msgstr "ロック解除するgpgキーがありません"
 
 #: internal/ui/settings_securitykeys.go:333
 msgid "Add it to a password store's key in Pass: File → Security keys"
-msgstr ""
+msgstr "Passのパスワードストアキーに追加してください: 「ファイル」→「セキュリティキー」"
 
 #: internal/ui/settings_securitykeys.go:334
 #: internal/ui/settings_securitykeys.go:343
 msgid "Open Pass"
-msgstr ""
+msgstr "Passを開く"
 
 #: internal/ui/settings_securitykeys.go:341
 msgid "Unlocks %s"
-msgstr ""
+msgstr "%sのロックを解除します"
 
 #: internal/ui/settings_securitykeys.go:341
 msgid "Added in Pass on %s"
-msgstr ""
+msgstr "Passに%sに追加"
 
 #: internal/ui/settings_securitykeys.go:349
 msgid "Firmware"
-msgstr ""
+msgstr "ファームウェア"
 
 #: internal/ui/settings_securitykeys.go:411
 msgid "Type the current PIN."
-msgstr ""
+msgstr "現在のPINを入力してください。"
 
 #: internal/ui/settings_securitykeys.go:419
 msgid "A PIN has %d to 63 characters, and is on one line."
-msgstr ""
+msgstr "PINは%d～63文字で、改行は使用できません。"
 
 #: internal/ui/settings_securitykeys.go:423
 msgid "The new PINs do not match."
-msgstr ""
+msgstr "新しいPINが一致しません。"
 
 #: internal/ui/settings_securitykeys.go:466
 msgid "The current PIN is wrong."
-msgstr ""
+msgstr "現在のPINが正しくありません。"
 
 #: internal/ui/settings_securitykeys.go:468
 msgid "The current PIN is wrong. %d try left before the key locks."
 msgid_plural "The current PIN is wrong. %d tries left before the key locks."
-msgstr[0] ""
+msgstr[0] "現在のPINが正しくありません。キーのロックまで残り%d回です。"
 
 #: internal/ui/settings_securitykeys.go:474
 msgid "The key does not take this PIN: it is too short, too long, or too simple."
-msgstr ""
+msgstr "キーでこのPINを使用できません。短すぎる、長すぎる、または単純すぎます。"
 
 #: internal/ui/settings_securitykeys.go:477
 msgid "The PIN is blocked: too many wrong tries. Unplug the key and plug it in again; after that, only a reset unlocks it."
-msgstr ""
+msgstr "PINがブロックされています: 誤入力が多すぎます。キーをいったん抜いてから差し直してください。その後も、リセットしないとロックは解除されません。"
 
 #: internal/ui/settings_securitykeys.go:479
 msgid "The PIN was not changed: %v"
-msgstr ""
+msgstr "PINを変更できませんでした: %v"
 
 #: internal/ui/settings_sound.go:85
 msgid "OUTPUT"
@@ -17142,7 +17142,7 @@ msgstr "Hyprland から"
 
 #: internal/ui/shortcuts.go:115
 msgid "From %s"
-msgstr ""
+msgstr "%sから"
 
 #: internal/ui/shortcuts.go:157
 msgid "Lua function"
@@ -17166,7 +17166,7 @@ msgstr "hyprland.conf のショートカットを再度使用する"
 
 #: internal/ui/shortcuts.go:254
 msgid "Use %s's own shortcut again"
-msgstr ""
+msgstr "%s本来のショートカットに戻す"
 
 #: internal/ui/shortcuts.go:258
 msgid "Turn the shortcut off"
@@ -17243,7 +17243,7 @@ msgstr "ディクテーションはうまくいきませんでした"
 
 #: internal/ui/voice.go:274
 msgid "dictation pastes through the compositor, which cannot send keys"
-msgstr ""
+msgstr "音声入力はコンポジター経由で貼り付けるため、キー入力を送信できません"
 
 #: internal/ui/voice.go:278
 msgid "no window has the focus to type into"
@@ -17799,7 +17799,7 @@ msgstr "未保存: もう一度 Esc で閉じる"
 
 #: internal/viewerui/edit.go:173
 msgid "Not saved: choose it again to leave"
-msgstr ""
+msgstr "未保存です: 閉じるにはもう一度選択してください"
 
 #: internal/viewerui/edit.go:248
 msgid "Save the Edited Image"
@@ -17826,39 +17826,39 @@ msgstr "ウィンドウに合わせる (0)"
 
 #: internal/viewerui/menubar.go:37
 msgid "Open…"
-msgstr ""
+msgstr "開く…"
 
 #: internal/viewerui/menubar.go:42
 msgid "Copy Image"
-msgstr ""
+msgstr "画像をコピー"
 
 #: internal/viewerui/menubar.go:43
 msgid "Set as Wallpaper"
-msgstr ""
+msgstr "壁紙に設定"
 
 #: internal/viewerui/menubar.go:47
 msgid "Zoom In"
-msgstr ""
+msgstr "拡大"
 
 #: internal/viewerui/menubar.go:48
 msgid "Zoom Out"
-msgstr ""
+msgstr "縮小"
 
 #: internal/viewerui/menubar.go:49
 msgid "Reset Zoom"
-msgstr ""
+msgstr "拡大率をリセット"
 
 #: internal/viewerui/menubar.go:51
 msgid "Previous File"
-msgstr ""
+msgstr "前のファイル"
 
 #: internal/viewerui/menubar.go:52
 msgid "Next File"
-msgstr ""
+msgstr "次のファイル"
 
 #: internal/viewerui/menubar.go:53
 msgid "Rotate"
-msgstr ""
+msgstr "回転"
 
 #: internal/viewerui/pdf.go:188
 msgid "%s has no pages."
@@ -17950,11 +17950,11 @@ msgstr "アシスタントを起動できませんでした: %v"
 
 #: internal/vmui/menubar.go:37
 msgid "New Machine…"
-msgstr ""
+msgstr "新しい仮想マシン…"
 
 #: internal/vmui/menubar.go:41
 msgid "Machine"
-msgstr ""
+msgstr "仮想マシン"
 
 #: internal/vmui/menubar.go:113
 #: internal/vmui/window.go:2005
@@ -18180,7 +18180,7 @@ msgstr "確認できませんでした。"
 
 #: internal/vmui/window.go:1311
 msgid "Choose an install image first."
-msgstr ""
+msgstr "インストールイメージを先に選択してください。"
 
 #: internal/vmui/window.go:1313
 msgid "Installs from the files the earlier attempt left."
@@ -18196,11 +18196,11 @@ msgstr "%s ダウンロード済み"
 
 #: internal/vmui/window.go:1405
 msgid "Choose an install image"
-msgstr ""
+msgstr "インストールイメージを選択"
 
 #: internal/vmui/window.go:1407
 msgid "Disc images"
-msgstr ""
+msgstr "ディスクイメージ"
 
 #: internal/vmui/window.go:1460
 msgid "Every architecture"
@@ -18276,7 +18276,7 @@ msgstr "適用中…"
 
 #: internal/vmui/window.go:1945
 msgid "Finishing…"
-msgstr ""
+msgstr "完了処理中…"
 
 #: internal/vmui/window.go:1999
 msgid "Delete this machine's disk?"
@@ -18393,7 +18393,7 @@ msgstr "未インストール"
 
 #: internal/vmui/window.go:2357
 msgid "Custom"
-msgstr ""
+msgstr "カスタム"
 
 #: internal/vmui/window.go:2386
 msgid "Downloads about 8 GB and installs Windows; takes 30+ minutes. Windows needs a licence."
@@ -18413,7 +18413,7 @@ msgstr "%s からインストールします。"
 
 #: internal/vmui/window.go:2411
 msgid "A file of your own, or one to download; the machine boots it as a disc."
-msgstr ""
+msgstr "手持ちのファイル、またはダウンロードするファイルです。仮想マシンはこれをディスクとして起動します。"
 
 #: internal/vmui/window.go:2417
 msgid "osinfo-db is not installed, so this is inua's short built-in list."
@@ -18421,7 +18421,7 @@ msgstr "osinfo-db がインストールされていないため、inua の短い
 
 #: internal/vmui/window.go:2419
 msgid "Pick a system, then one of its images. It is downloaded once and becomes this machine's install image."
-msgstr ""
+msgstr "システムを選び、イメージを選択してください。ダウンロードは一度だけ行われ、仮想マシンのインストールイメージになります。"
 
 #: internal/vmui/window.go:2452
 #: internal/vmui/window.go:2486
@@ -18451,27 +18451,27 @@ msgstr "公開されたチェックサムなし"
 #: internal/vmui/window.go:2507
 #: internal/vmui/window.go:2509
 msgid "In a container, with %s"
-msgstr ""
+msgstr "コンテナーで%sを使用"
 
 #: internal/vmui/window.go:2511
 msgid "In a virtual machine, with %s"
-msgstr ""
+msgstr "仮想マシンで%sを使用"
 
 #: internal/vmui/window.go:2520
 msgid "Downloads and installs Windows 11 for you; you reach it over Remote Desktop."
-msgstr ""
+msgstr "Windows 11を自動でダウンロードしてインストールします。リモートデスクトップから接続できます。"
 
 #: internal/vmui/window.go:2522
 msgid "Boots your own Windows 11 ISO, with the virtio drivers."
-msgstr ""
+msgstr "手持ちのWindows 11 ISOをvirtioドライバーとともに起動します。"
 
 #: internal/vmui/window.go:2524
 msgid "Boots the install image you pick next, with 3D where the guest has a driver."
-msgstr ""
+msgstr "次に選ぶインストールイメージを起動します。ゲスト側にドライバーがあれば3Dを利用できます。"
 
 #: internal/vmui/window.go:2526
 msgid "Android beside your apps, with the host's display and GPU."
-msgstr ""
+msgstr "ホストのディスプレイとGPUを使って、アプリと並べてAndroidを実行します。"
 
 #: internal/vmui/window.go:2528
 msgid "Your own system: an ISO, a disk or a kernel, on any architecture."
@@ -18641,12 +18641,12 @@ msgstr "歴史"
 #: ui/calculator.ui:91
 #: ui/calculator.ui:93
 msgid "Formula"
-msgstr ""
+msgstr "数式"
 
 #: ui/calculator.ui:105
 #: ui/calculator.ui:107
 msgid "Value"
-msgstr ""
+msgstr "値"
 
 #: ui/calculator.ui:169
 msgid "HISTORY"
@@ -19375,19 +19375,19 @@ msgstr "アカウント（例：you@example.org）"
 
 #: ui/pass.ui:1085
 msgid "Security keys"
-msgstr ""
+msgstr "セキュリティキー"
 
 #: ui/pass.ui:1095
 msgid "Unlock the store's key with a FIDO2 security key, such as a YubiKey: its PIN and a touch in place of the passphrase. The passphrase keeps working."
-msgstr ""
+msgstr "YubiKeyなどのFIDO2セキュリティキーを使ってストアのキーをロック解除します。パスフレーズの代わりにPINとタッチ操作を使います。パスフレーズも引き続き使えます。"
 
 #: ui/pass.ui:1121
 msgid "The key's passphrase"
-msgstr ""
+msgstr "キーのパスフレーズ"
 
 #: ui/pass.ui:1127
 msgid "The security key's PIN"
-msgstr ""
+msgstr "セキュリティキーのPIN"
 
 #: ui/polkit.ui:157
 msgid "<span alpha='55%'>[</span>KEY<span alpha='55%'>]</span>"
@@ -19443,7 +19443,7 @@ msgstr "認証する"
 
 #: ui/remote.ui:52
 msgid "See and control your other computers, or share this one."
-msgstr ""
+msgstr "ほかのコンピューターを表示・操作したり、このコンピューターを共有したりできます。"
 
 #: ui/remote.ui:67
 msgid "Look for machines sharing their desktop"
@@ -19460,7 +19460,7 @@ msgstr "マシン"
 
 #: ui/remote.ui:161
 msgid "None found yet. Add one by its address, or look again."
-msgstr ""
+msgstr "まだ見つかりません。アドレスを指定して追加するか、もう一度検索してください。"
 
 #: ui/remote.ui:267
 msgid "[SHARING]"
@@ -19488,7 +19488,7 @@ msgstr "[ペアリング済みデバイス]"
 
 #: ui/remote.ui:572
 msgid "[CONNECTION]"
-msgstr ""
+msgstr "[接続]"
 
 #: ui/remote.ui:624
 msgid "End its session"
@@ -19538,7 +19538,7 @@ msgstr "マシン側でも音を鳴らす"
 #: ui/remote.ui:985
 #: ui/remote.ui:1002
 msgid "Add a machine"
-msgstr ""
+msgstr "コンピューターを追加"
 
 #: ui/remote.ui:1011
 msgid "Its address on the network: a name, an IP address, or either with :port."
@@ -19626,7 +19626,7 @@ msgstr "アイコンのサイズ"
 
 #: ui/settings.ui:477
 msgid "Icon spacing"
-msgstr ""
+msgstr "アイコンの間隔"
 
 #: ui/settings.ui:530
 msgid "Animations"
@@ -19710,15 +19710,15 @@ msgstr "すべての画面のウィンドウの背後"
 
 #: ui/settings.ui:963
 msgid "inua draws the wallpaper"
-msgstr ""
+msgstr "Inuaが壁紙を描画"
 
 #: ui/settings.ui:972
 msgid "A new picture each day, drawn for your theme: a sunset, the cosmos, a cat watching the moon …"
-msgstr ""
+msgstr "テーマに合わせた新しい画像を毎日生成します。夕焼け、宇宙、月を見上げる猫など…"
 
 #: ui/settings.ui:987
 msgid "Draw another"
-msgstr ""
+msgstr "別の画像を生成"
 
 #: ui/settings.ui:1016
 msgid "Image"
@@ -19810,11 +19810,11 @@ msgstr "strftime: %a 平日、%b 月、%-d 日、%H:%M 時間"
 
 #: ui/settings.ui:1402
 msgid "Date language"
-msgstr ""
+msgstr "日付の言語"
 
 #: ui/settings.ui:1411
 msgid "The clock's weekday and month names"
-msgstr ""
+msgstr "時計に表示する曜日と月の名前"
 
 #: ui/settings.ui:1454
 msgid "Which workspaces each bar shows"
@@ -19826,7 +19826,7 @@ msgstr "すべてのモニター"
 
 #: ui/settings.ui:1470
 msgid "Do not show"
-msgstr ""
+msgstr "表示しない"
 
 #: ui/settings.ui:1497
 msgid "Application in bar"
@@ -19862,11 +19862,11 @@ msgstr "現在のワークスペースにウィンドウがないとき、バー
 
 #: ui/settings.ui:1634
 msgid "Global menu"
-msgstr ""
+msgstr "グローバルメニュー"
 
 #: ui/settings.ui:1643
 msgid "The focused application's menus in the bar, when it publishes them"
-msgstr ""
+msgstr "対応アプリのメニューをバーに表示"
 
 #: ui/settings.ui:1677
 msgid "Tray icons"
@@ -19906,35 +19906,35 @@ msgstr "一覧の上に Dock を表示したままにする"
 
 #: ui/settings.ui:1898
 msgid "Scope"
-msgstr ""
+msgstr "対象範囲"
 
 #: ui/settings.ui:1907
 msgid "With several displays: this display's windows, or every window"
-msgstr ""
+msgstr "ディスプレイが複数ある場合: このディスプレイのウィンドウ、またはすべてのウィンドウ"
 
 #: ui/settings.ui:1921
 msgid "This display's"
-msgstr ""
+msgstr "このディスプレイ"
 
 #: ui/settings.ui:1922
 msgid "All displays"
-msgstr ""
+msgstr "すべてのディスプレイ"
 
 #: ui/settings.ui:1949
 msgid "Overview hints"
-msgstr ""
+msgstr "概要のヒント"
 
 #: ui/settings.ui:1958
 msgid "The line under the cards: the controls, and the window under the pointer"
-msgstr ""
+msgstr "カードの下の行に操作方法とポインター下のウィンドウを表示"
 
 #: ui/settings.ui:1992
 msgid "Overview shortcut"
-msgstr ""
+msgstr "概要のショートカット"
 
 #: ui/settings.ui:2001
 msgid "The control shortcut in the overview: a new workspace with the launcher, and back"
-msgstr ""
+msgstr "概要での操作ショートカット: ランチャー付きの新しいワークスペースへ移動し、戻る"
 
 #: ui/settings.ui:2035
 msgid "Hide automatically"
@@ -19962,7 +19962,7 @@ msgstr "左"
 
 #: ui/settings.ui:2104
 msgid "Right"
-msgstr "そうです"
+msgstr "右"
 
 #: ui/settings.ui:2128
 msgid "Remove screen edge gaps"
@@ -20046,11 +20046,11 @@ msgstr "リンク、フォルダー、ファイルを開くアプリ"
 
 #: ui/settings.ui:2692
 msgid "<span alpha='55%'>[</span>DIALOGS<span alpha='55%'>]</span>"
-msgstr ""
+msgstr "<span alpha='55%'>[</span>ダイアログ<span alpha='55%'>]</span>"
 
 #: ui/settings.ui:2700
 msgid "What apps show when they ask the desktop"
-msgstr ""
+msgstr "アプリがデスクトップに要求するときに表示する内容"
 
 #: ui/settings.ui:2781
 msgid "<span alpha='55%'>[</span>ASSISTANT<span alpha='55%'>]</span>"
@@ -20651,7 +20651,7 @@ msgstr "加速度"
 
 #: ui/settings.ui:6687
 msgid "Faster swipes move the pointer further"
-msgstr "スワイプが速いとポインタがさらに遠くに移動します"
+msgstr "スワイプが速いほど、ポインターがより遠くまで移動します"
 
 #: ui/settings.ui:6777
 msgid "Stop setting the touchpad in inua"
@@ -20659,7 +20659,7 @@ msgstr "inua でのタッチパッドの設定を停止する"
 
 #: ui/settings.ui:6842
 msgid "Security Keys"
-msgstr ""
+msgstr "セキュリティキー"
 
 #: ui/settings.ui:6910
 msgid "Power"
@@ -20715,7 +20715,7 @@ msgstr "毎日チェックする"
 
 #: ui/settings.ui:7247
 msgid "A notification says when a new release is out, with a button to upgrade"
-msgstr "新しいリリースがリリースされると、アップグレードするボタンが表示される通知が表示されます。"
+msgstr "新しいリリースが公開されると、アップグレードボタン付きの通知が表示されます。"
 
 #: ui/settings.ui:7292
 msgid "<span alpha='55%'>[</span>CHANGELOG<span alpha='55%'>]</span>"
@@ -20727,7 +20727,7 @@ msgstr "最新リリースの変更点"
 
 #: ui/shotdrawer.ui:34
 msgid "RECENT"
-msgstr "最近の"
+msgstr "最近"
 
 #: ui/shotdrawer.ui:44
 msgid "Drag into an app · click to open"
@@ -20735,15 +20735,15 @@ msgstr "アプリにドラッグし、クリックして開きます"
 
 #: ui/shotdrawer.ui:67
 msgid "Screenshots and recordings you take show here."
-msgstr "あなたが撮影したスクリーンショットと記録がここに表示されます。"
+msgstr "撮影したスクリーンショットと録画がここに表示されます。"
 
 #: ui/shotdrawer.ui:87
 msgid "Take an area"
-msgstr "面積を取る"
+msgstr "範囲を撮影"
 
 #: ui/shotdrawer.ui:111
 msgid "Take a window"
-msgstr "窓を取る"
+msgstr "ウィンドウを撮影"
 
 #: ui/shotdrawer.ui:135
 msgid "Take a screen"
@@ -20767,7 +20767,7 @@ msgstr "<span alpha='55%'>[</span>今日<span alpha='55%'>]</span>"
 
 #: ui/stocks.ui:281
 msgid "Prices from Yahoo Finance, delayed"
-msgstr "Yahoo Finance からの価格、遅延"
+msgstr "Yahoo Finance の遅延価格"
 
 #: ui/sysmon.ui:38
 msgid "OVERVIEW"
@@ -20783,7 +20783,7 @@ msgstr "名前、PID、またはユーザーによるフィルター"
 
 #: ui/tailscale.ui:56
 msgid "Connect this device to the tailnet"
-msgstr "このデバイスをテールネットに接続します"
+msgstr "このデバイスを Tailscale の tailnet に接続する"
 
 #: ui/tailscale.ui:124
 msgid "Filter by name, address, OS or tag"
@@ -20999,11 +20999,11 @@ msgstr "[イメージ]"
 
 #: ui/vm.ui:1363
 msgid "Install image"
-msgstr ""
+msgstr "インストールイメージ"
 
 #: ui/vm.ui:1395
 msgid "Download…"
-msgstr ""
+msgstr "ダウンロード…"
 
 #: ui/vm.ui:1485
 #: ui/vm.ui:2530
@@ -21048,15 +21048,15 @@ msgstr "ゲストをもう一度起動し、インストールを途中から続
 
 #: ui/vm.ui:1852
 msgid "Finish the installation"
-msgstr ""
+msgstr "インストールを完了"
 
 #: ui/vm.ui:1861
 msgid "Takes the install image out, so the machine starts from its own disk."
-msgstr ""
+msgstr "インストールイメージを取り外し、仮想マシンが内蔵ディスクから起動するようにします。"
 
 #: ui/vm.ui:1874
 msgid "Finish"
-msgstr ""
+msgstr "完了"
 
 #: ui/vm.ui:2147
 #: ui/vm.ui:2878
@@ -21110,11 +21110,11 @@ msgstr "新しいマシン"
 
 #: ui/vm.ui:2971
 msgid "Pick the system, how it runs, and a name."
-msgstr ""
+msgstr "システム、実行方法、名前を選択してください。"
 
 #: ui/vm.ui:2997
 msgid "How it runs"
-msgstr ""
+msgstr "実行方法"
 
 #: ui/vm.ui:3024
 msgid "Machine name"
@@ -21130,7 +21130,7 @@ msgstr "フォルダにはこの名前が付きます。"
 
 #: ui/vm.ui:3073
 msgid "What it gets from this computer. Memory and CPU cores can change later."
-msgstr ""
+msgstr "このコンピューターから割り当てるリソースです。メモリとCPUコア数は後から変更できます。"
 
 #: ui/vm.ui:3249
 msgid "Writes the machine's definition. Nothing is installed or started yet."
@@ -21139,7 +21139,7 @@ msgstr "マシンの定義を書き出します。インストールも起動も
 #: ui/vm.ui:3316
 #: ui/vm.ui:3336
 msgid "Download an install image"
-msgstr ""
+msgstr "インストールイメージをダウンロード"
 
 #: ui/vm.ui:3372
 msgid "Search systems and images"
@@ -21219,7 +21219,7 @@ msgstr "[縁側]"
 
 #: ui/widgets.ui:57
 msgid "Drag a head to move it on the grid · Right-click to remove"
-msgstr "見出しをドラッグしてグリッド上で移動 · 右クリックで削除"
+msgstr "ウィジェットのヘッダーをドラッグしてグリッド上で移動 · 右クリックで削除"
 
 #: ui/widgets.ui:65
 msgid "Add widget"
@@ -21299,7 +21299,7 @@ msgstr "gpg;gnupg;pgp;openpgp;暗号化;復号;署名;鍵;"
 
 #: config/apps/io.github.lyricat.Inua.GameLobby.desktop:4
 msgid "See the tables at a game lobby, join a game in the browser, or host one"
-msgstr ""
+msgstr "ゲームロビーでテーブルを確認し、ブラウザーからゲームに参加したり、ゲームを主催したりできます"
 
 #: config/apps/io.github.lyricat.Inua.GameLobby.desktop:8
 msgid "games;lobby;tables;online;multiplayer;"
@@ -21357,11 +21357,11 @@ msgstr "リモート;デスクトップ;moonlight;sunshine;共有;"
 
 #: config/apps/io.github.lyricat.Inua.SmallFortune.desktop:10
 msgid "Buy streets, build houses and outlast up to three computer players"
-msgstr "道路を購入し、家を建て、最大 3 人のコンピュータ プレーヤーよりも長持ちします。"
+msgstr "通りを買い、家を建て、最大3人のコンピューター対戦相手より長く生き残る"
 
 #: config/apps/io.github.lyricat.Inua.SpacePinball.desktop:10
 msgid "Three balls, two flippers, one more orbit"
-msgstr "3 つのボール、2 つの足ひれ、もう 1 つの軌道"
+msgstr "ボール3個、フリッパー2本、もう一度オービットへ"
 
 #: config/apps/io.github.lyricat.Inua.Stocks.desktop:10
 msgid "Prices and charts of stocks and indices"

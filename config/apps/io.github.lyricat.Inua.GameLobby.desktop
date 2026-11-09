@@ -1,7 +1,9 @@
 [Desktop Entry]
 Type=Application
 Name=Game Lobby
+Name[ja]=ゲームロビー
 Comment=See the tables at a game lobby, join a game in the browser, or host one
+Comment[ja]=ゲームロビーでテーブルを確認し、ブラウザーからゲームに参加したり、ゲームを主催したりできます
 Exec=inua-games game-lobby
 Icon=io.github.lyricat.Inua.GameLobby
 Categories=Game;
