@@ -14895,11 +14895,11 @@ msgstr "スクリーンショットのため隠しています。"
 msgid "The passphrases do not match."
 msgstr "パスフレーズが一致しません。"
 
-#: internal/ui/bar.go:499
+#: internal/ui/bar.go:503
 msgid "Workspace %s"
 msgstr "ワークスペース%s"
 
-#: internal/ui/bar.go:512
+#: internal/ui/bar.go:516
 msgid "WORKSPACE"
 msgstr "ワークスペース"
 

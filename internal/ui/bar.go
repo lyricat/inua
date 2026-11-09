@@ -58,6 +58,10 @@ type bar struct {
 	focusRing   *focusRing
 
 	appMenuReg     appmenu.Registration // whose menu it shows, if any
+	appMenuPID     int                  // the process whose menu it shows
+	appMenuWindow  string               // the window the search below was for
+	appMenuSearch  appmenu.Registration // what the search found
+	appMenuFinding uint64               // the newest search
 	appMenuTop     []appMenuTop         // the buttons, as last drawn
 	appMenuLoading bool                 // the menu is being read
 	appMenuStale   bool                 // and changed meanwhile

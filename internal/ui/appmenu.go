@@ -11,6 +11,7 @@ import (
 	"github.com/lyricat/inua/internal/appmenu"
 	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/gtkx"
+	"github.com/lyricat/inua/internal/shell"
 	"github.com/lyricat/inua/internal/system"
 	"github.com/lyricat/inua/internal/uikit"
 )
@@ -22,13 +23,6 @@ type appMenuState struct {
 	menu        *gtk.Popover // the open one, borrowed from its button
 	menuRequest uint64       // the newest pending submenu read
 
-	// The menu found for the focused window: looking for one asks the bus,
-	// so it runs off the main thread, once when the focus moves to another
-	// window and again when the registrar or a published menu changes.
-	window  string               // the focused window it was found for
-	found   appmenu.Registration // its menu, if any
-	finding uint64               // the newest search
-	stale   bool                 // search again for the same window
 }
 
 // appMenuTop is a button of the bar's menu.
@@ -48,7 +42,10 @@ func (s *shellUI) startAppMenu() {
 	s.appmenu.registrar = appmenu.New(conn)
 	s.appmenu.registrar.SetOnChange(func() {
 		gtkx.Post(func() {
-			s.appmenu.stale = true
+			// The menus changed: every bar searches again for its window.
+			for _, b := range s.bars {
+				b.appMenuWindow = ""
+			}
 			s.syncAppMenus()
 		})
 	})
@@ -73,67 +70,69 @@ func (s *shellUI) syncAppMenus() {
 	}
 }
 
-// findAppMenu looks for the focused window's menu when the focus moved to
-// another window since the last search, or the menus changed. The search
-// asks the bus, and an application that does not answer holds it for
+// findAppMenu looks for a bar's window menu when that window changed since
+// the last search, or the menus changed. Each monitor has its own search and
+// its own menu: focus on one monitor does not take the other's away. The
+// search asks the bus, and an application that does not answer holds it for
 // seconds, so it runs on a goroutine and its result comes back through
-// gtkx.Post, dropped when another search started meanwhile. A window that
-// is no longer the one searched for has no menu until its own is found.
-func (s *shellUI) findAppMenu() {
-	window := s.snap.FocusedWindow
-	if window == s.appmenu.window && !s.appmenu.stale {
+// gtkx.Post, dropped when another search started meanwhile.
+func (s *shellUI) findAppMenu(b *bar) {
+	w, ok := shell.BarWindow(s.snap, b.connector())
+	window := ""
+	pid := 0
+	if ok {
+		window, pid = w.ID, w.PID
+	}
+	if window == b.appMenuWindow {
 		return
 	}
-	if window != s.appmenu.window {
-		s.appmenu.found = appmenu.Registration{}
-	}
-	s.appmenu.window = window
-	s.appmenu.stale = false
-	s.appmenu.finding++
-	request := s.appmenu.finding
-	pid := focusedPID(s.snap)
+	b.appMenuWindow = window
+	b.appMenuSearch = appmenu.Registration{}
+	b.appMenuFinding++
+	request := b.appMenuFinding
 	if pid <= 0 {
-		s.appmenu.found = appmenu.Registration{}
 		return
 	}
 	go func() {
 		reg, _ := s.appmenu.registrar.Focused(pid)
 		gtkx.Post(func() {
-			if s.appmenu.finding != request || s.appmenu.found == reg {
+			if b.appMenuFinding != request || b.appMenuSearch == reg {
 				return
 			}
-			s.appmenu.found = reg
+			b.appMenuSearch = reg
 			s.syncAppMenus()
 		})
 	}()
 }
 
-// focusedAppMenu is the menu found for the focused window, if the search
-// for it has ended.
-func (s *shellUI) focusedAppMenu() appmenu.Registration {
-	s.findAppMenu()
-	if s.appmenu.window != s.snap.FocusedWindow {
+// focusedAppMenu is the menu found for a bar's window, if the search for it
+// has ended.
+func (s *shellUI) focusedAppMenu(b *bar) appmenu.Registration {
+	s.findAppMenu(b)
+	w, ok := shell.BarWindow(s.snap, b.connector())
+	if !ok || w.ID != b.appMenuWindow {
 		return appmenu.Registration{}
 	}
-	return s.appmenu.found
+	return b.appMenuSearch
 }
 
-// syncAppMenu gives a bar the menu of the focused application when the bar
-// is the focused monitor's, and none otherwise. It runs whenever the focus,
-// the monitors or the registrations change.
+// syncAppMenu gives a bar the menu of the application its monitor shows. It
+// runs whenever the focus, the monitors or the registrations change.
 func (s *shellUI) syncAppMenu(b *bar) {
 	if s.appmenu.registrar == nil {
 		return
 	}
 	var want appmenu.Registration
-	if b.connector() == s.snap.FocusedOutput {
-		want = s.focusedAppMenu()
+	pid := 0
+	if w, ok := shell.BarWindow(s.snap, b.connector()); ok {
+		pid = w.PID
+		want = s.focusedAppMenu(b)
 	}
-	if b.appMenuReg == want {
+	if b.appMenuReg == want && b.appMenuPID == pid {
 		return
 	}
 	s.clearAppMenu(b)
-	b.appMenuReg = want
+	b.appMenuReg, b.appMenuPID = want, pid
 	if want != (appmenu.Registration{}) {
 		s.loadAppMenu(b, true)
 	}
@@ -146,6 +145,7 @@ func (s *shellUI) clearAppMenu(b *bar) {
 		s.closeAppMenu()
 	}
 	b.appMenuReg = appmenu.Registration{}
+	b.appMenuPID = 0
 	b.appMenuTop = nil
 	gtkx.Clear(&b.appMenu)
 	b.appMenu.SetVisible(false)
@@ -241,9 +241,9 @@ func (s *shellUI) bindAppMenuHandlers() {
 				continue
 			}
 			if b.appMenuTop[i].submenu {
-				s.showAppMenu(b.appMenuReg, int32(id), &btn.Widget)
+				s.showAppMenu(b, b.appMenuReg, int32(id), &btn.Widget)
 			} else {
-				s.activateAppMenu(b.appMenuReg, int32(id))
+				s.activateAppMenu(b, b.appMenuReg, int32(id))
 			}
 			return
 		}
@@ -277,10 +277,10 @@ func (s *shellUI) closeAppMenu() {
 // showAppMenu reads what a button of the bar's menu opens and pops it up
 // under the button w. It is read each time, so it is the menu as the
 // application has it now, filled in if it is one built when asked for.
-func (s *shellUI) showAppMenu(reg appmenu.Registration, id int32, w *gtk.Widget) {
+func (s *shellUI) showAppMenu(b *bar, reg appmenu.Registration, id int32, w *gtk.Widget) {
 	s.appmenu.menuRequest++
 	request := s.appmenu.menuRequest
-	pid := focusedPID(s.snap)
+	pid := b.appMenuPID
 	w.Ref() // kept until the menu is built
 	go func() {
 		entries, err := s.appmenu.registrar.Submenu(reg, id)
@@ -291,10 +291,10 @@ func (s *shellUI) showAppMenu(reg appmenu.Registration, id int32, w *gtk.Widget)
 				log.Printf("appmenu %s: %v", reg.Service, err)
 				return
 			}
-			items := s.appMenuItems(reg, entries)
+			items := s.appMenuItems(b, reg, entries)
 			// The bar's menu was redrawn or went to another application
 			// meanwhile.
-			if s.appmenu.menuRequest != request || len(items) == 0 || !w.GetMapped() || !live || !s.appMenuCurrent(reg) {
+			if s.appmenu.menuRequest != request || len(items) == 0 || !w.GetMapped() || !live || !s.appMenuShows(b, reg) {
 				return
 			}
 			s.closeAppMenu()
@@ -308,19 +308,22 @@ func (s *shellUI) showAppMenu(reg appmenu.Registration, id int32, w *gtk.Widget)
 	}()
 }
 
-// appMenuCurrent is whether reg is still the menu found for the focused
-// window. It asks nothing of the bus: what reads or clicks a menu checks off
-// the main thread, with the registrar's Current, that the application still
-// has it.
-func (s *shellUI) appMenuCurrent(reg appmenu.Registration) bool {
-	return reg != (appmenu.Registration{}) && s.focusedAppMenu() == reg
+// appMenuShows is whether reg is still the menu of the window the bar shows.
+// It asks nothing of the bus: what reads or clicks a menu checks off the main
+// thread, with the registrar's Current, that the application still has it.
+func (s *shellUI) appMenuShows(b *bar, reg appmenu.Registration) bool {
+	if reg == (appmenu.Registration{}) || b.appMenuReg != reg {
+		return false
+	}
+	w, ok := shell.BarWindow(s.snap, b.connector())
+	return ok && w.PID == b.appMenuPID
 }
 
 // appMenuItems turns dbusmenu entries into a menu's lines, as the tray's
 // are: a toggle's mark, a submenu's lines, a hairline for a separator (none
 // at either end or twice); a disabled entry, or a submenu the application
 // left empty, greys out.
-func (s *shellUI) appMenuItems(reg appmenu.Registration, entries []appmenu.Entry) []uikit.Item {
+func (s *shellUI) appMenuItems(b *bar, reg appmenu.Registration, entries []appmenu.Entry) []uikit.Item {
 	var out []uikit.Item
 	for _, e := range entries {
 		if e.Separator {
@@ -341,11 +344,11 @@ func (s *shellUI) appMenuItems(reg appmenu.Registration, entries []appmenu.Entry
 		switch {
 		case e.Submenu:
 			if e.Enabled {
-				it.Items = s.appMenuItems(reg, e.Children)
+				it.Items = s.appMenuItems(b, reg, e.Children)
 			}
 		case e.Enabled:
 			id := e.ID
-			it.Run = func() { s.activateAppMenu(reg, id) }
+			it.Run = func() { s.activateAppMenu(b, reg, id) }
 		}
 		out = append(out, it)
 	}
@@ -357,11 +360,11 @@ func (s *shellUI) appMenuItems(reg appmenu.Registration, entries []appmenu.Entry
 
 // activateAppMenu clicks an item, if the application it belongs to still
 // has the focus.
-func (s *shellUI) activateAppMenu(reg appmenu.Registration, id int32) {
-	if !s.appMenuCurrent(reg) {
+func (s *shellUI) activateAppMenu(b *bar, reg appmenu.Registration, id int32) {
+	if !s.appMenuShows(b, reg) {
 		return
 	}
-	pid := focusedPID(s.snap)
+	pid := b.appMenuPID
 	go func() {
 		if !s.appmenu.registrar.Current(reg, pid) {
 			return
