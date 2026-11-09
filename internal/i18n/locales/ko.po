@@ -396,7 +396,7 @@ msgstr "열기"
 
 #: internal/apps/connect/share.go:129
 #: internal/ui/record.go:157
-#: internal/ui/screenshot.go:1150
+#: internal/ui/screenshot.go:1158
 #: internal/ui/settings_custom.go:41
 #: internal/viewerui/menubar.go:44
 msgid "Show in Folder"
@@ -13250,7 +13250,7 @@ msgid "Find apps, windows and answers"
 msgstr "앱, 창 및 답변 찾기"
 
 #: internal/shell/dock.go:313
-#: internal/ui/screenshot.go:1144
+#: internal/ui/screenshot.go:1152
 #: ui/settings.ui:2052
 msgid "Screenshot"
 msgstr "스크린샷"
@@ -15415,19 +15415,19 @@ msgstr "드래그해서 조정 · 안쪽을 클릭해 캡처"
 msgid "Drag to adjust · click inside to record"
 msgstr "드래그해서 조정 · 안쪽을 클릭해 녹화"
 
-#: internal/ui/screenshot.go:1138
+#: internal/ui/screenshot.go:1146
 msgid "Screenshot saved and copied"
 msgstr "스크린샷이 저장되고 복사되었습니다."
 
-#: internal/ui/screenshot.go:1139
+#: internal/ui/screenshot.go:1147
 msgid "Screenshot saved"
 msgstr "스크린샷이 저장되었습니다."
 
-#: internal/ui/screenshot.go:1140
+#: internal/ui/screenshot.go:1148
 msgid "Screenshot copied"
 msgstr "스크린샷이 복사되었습니다."
 
-#: internal/ui/screenshot.go:1141
+#: internal/ui/screenshot.go:1149
 msgid "Screenshot taken"
 msgstr "촬영된 스크린샷"
 
