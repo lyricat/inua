@@ -21297,11 +21297,11 @@ msgstr "GnuPG でメッセージやファイルを暗号化・復号し、誰が
 msgid "gpg;gnupg;pgp;openpgp;encrypt;decrypt;sign;signature;key;"
 msgstr "gpg;gnupg;pgp;openpgp;暗号化;復号;署名;鍵;"
 
-#: config/apps/io.github.lyricat.Inua.GameLobby.desktop:4
+#: config/apps/io.github.lyricat.Inua.GameLobby.desktop:5
 msgid "See the tables at a game lobby, join a game in the browser, or host one"
 msgstr "ゲームロビーでテーブルを確認し、ブラウザーからゲームに参加したり、ゲームを主催したりできます"
 
-#: config/apps/io.github.lyricat.Inua.GameLobby.desktop:8
+#: config/apps/io.github.lyricat.Inua.GameLobby.desktop:10
 msgid "games;lobby;tables;online;multiplayer;"
 msgstr "ゲーム;ロビー;テーブル;オンライン;マルチプレイヤー;"
 

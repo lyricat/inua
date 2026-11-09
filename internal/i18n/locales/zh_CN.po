@@ -21297,11 +21297,11 @@ msgstr "用 GnuPG 加密、解密消息和文件，并查看是谁签的名"
 msgid "gpg;gnupg;pgp;openpgp;encrypt;decrypt;sign;signature;key;"
 msgstr "gpg;gnupg;pgp;openpgp;加密;解密;签名;密钥;"
 
-#: config/apps/io.github.lyricat.Inua.GameLobby.desktop:4
+#: config/apps/io.github.lyricat.Inua.GameLobby.desktop:5
 msgid "See the tables at a game lobby, join a game in the browser, or host one"
 msgstr ""
 
-#: config/apps/io.github.lyricat.Inua.GameLobby.desktop:8
+#: config/apps/io.github.lyricat.Inua.GameLobby.desktop:10
 msgid "games;lobby;tables;online;multiplayer;"
 msgstr "游戏;大厅;牌桌;在线;多人;"
 

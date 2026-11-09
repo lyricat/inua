@@ -21400,11 +21400,11 @@ msgstr "Chiffrez et déchiffrez messages et fichiers avec GnuPG, et voyez qui le
 msgid "gpg;gnupg;pgp;openpgp;encrypt;decrypt;sign;signature;key;"
 msgstr "gpg;gnupg;pgp;openpgp;chiffrer;déchiffrer;signer;signature;clé;"
 
-#: config/apps/io.github.lyricat.Inua.GameLobby.desktop:4
+#: config/apps/io.github.lyricat.Inua.GameLobby.desktop:5
 msgid "See the tables at a game lobby, join a game in the browser, or host one"
 msgstr ""
 
-#: config/apps/io.github.lyricat.Inua.GameLobby.desktop:8
+#: config/apps/io.github.lyricat.Inua.GameLobby.desktop:10
 msgid "games;lobby;tables;online;multiplayer;"
 msgstr "jeux;salon;tables;en ligne;multijoueur;"
 
