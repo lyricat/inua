@@ -247,6 +247,39 @@ func (s *shellUI) renderAppMenu(b *bar, entries []appmenu.Entry) {
 }
 
 func (s *shellUI) bindAppMenuHandlers() {
+	s.onAppTitle = func(btn gtk.Button) {
+		for _, b := range s.bars {
+			if b.appButton.GoPointer() != btn.GoPointer() {
+				continue
+			}
+			if b.appPopover.GoPointer() != 0 {
+				if b.appPopover.GetVisible() {
+					b.appPopover.Popdown()
+					return
+				}
+				b.appPopover.Unparent()
+				b.appPopover = gtk.Popover{}
+			}
+			w, ok := shell.BarWindow(s.snap, b.connector())
+			if !ok {
+				return
+			}
+			sections := s.genericAppSections(w.PID)
+			if len(sections) == 0 {
+				return
+			}
+			items := s.packedMenuItems(w.PID, sections[0].Children)
+			if len(items) == 0 {
+				return
+			}
+			pop := uikit.NewMenu(items, uikit.Below)
+			pop.SetParent(&b.appButton.Widget)
+			pop.Unref()
+			pop.Popup()
+			b.appPopover = *pop
+			return
+		}
+	}
 	s.onAppMenuClicked = func(btn gtk.Button) {
 		i, err := strconv.Atoi(btn.GetName())
 		if err != nil {
