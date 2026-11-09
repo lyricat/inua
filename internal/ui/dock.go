@@ -27,6 +27,7 @@ import (
 	"github.com/lyricat/inua/internal/i18n"
 	"github.com/lyricat/inua/internal/layershell"
 	"github.com/lyricat/inua/internal/shell"
+	"github.com/lyricat/inua/internal/uikit"
 	"github.com/lyricat/inua/internal/workshop"
 )
 
@@ -73,9 +74,10 @@ type dock struct {
 // dockButton is one app's button and the parts that change in place, so
 // their CSS transitions play.
 type dockButton struct {
-	btn *gtk.Button
-	img *gtk.Image
-	dot *gtk.Box
+	btn  *gtk.Button
+	img  *gtk.Image
+	icon *gtk.Widget // img in its light (uikit.AppIcon)
+	dot  *gtk.Box
 
 	// The gap beside the button, as margins: where they are and where
 	// they are going (animated by onDockGapTick).
@@ -417,7 +419,8 @@ func (s *shellUI) newDockButton(it shell.DockItem, size int) *dockButton {
 	img := gtk.NewImage()
 	setIcon(img, it.Icon)
 	img.SetPixelSize(int32(size))
-	gtkx.Append(box, &img.Widget)
+	icon := uikit.AppIcon(img, nil)
+	gtkx.Append(box, icon)
 	dot := gtk.NewBox(gtk.OrientationHorizontalValue, 0)
 	dot.AddCssClass("dock-dot")
 	dot.SetHalign(gtk.AlignCenterValue)
@@ -445,7 +448,7 @@ func (s *shellUI) newDockButton(it shell.DockItem, size int) *dockButton {
 	menu.SetButton(3)
 	menu.ConnectPressed(&s.onDockMenu)
 	btn.AddController(&menu.EventController)
-	return &dockButton{btn: btn, img: img, dot: dot}
+	return &dockButton{btn: btn, img: img, icon: icon, dot: dot}
 }
 
 // updateDockButton shows whether the app runs, is in front, or is starting;
@@ -628,7 +631,7 @@ func (s *shellUI) bindDockHandlers() {
 				}
 				// The icon follows the pointer: a still of it, as the
 				// button goes from the dock.
-				live := gtk.NewWidgetPaintable(&db.img.Widget)
+				live := gtk.NewWidgetPaintable(db.icon)
 				still := live.GetCurrentImage()
 				live.Unref()
 				size := int32(b.dock.size / 2)

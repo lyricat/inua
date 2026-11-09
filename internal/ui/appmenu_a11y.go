@@ -11,28 +11,63 @@ import (
 )
 
 // loadA11yMenu reads a bar's menu through the application's accessibility
-// tree, for toolkits that publish no dbusmenu.
+// tree, for toolkits that publish no dbusmenu. A tree with no menu the bar
+// can show gives the window its pack's menu, or the generic one; a reading
+// that fails once the accessibility menu is shown keeps it. For a pack that
+// says never_press, only the sections that already hold their items are
+// kept: the others are filled by pressing them.
 func (s *shellUI) loadA11yMenu(b *bar, pid int) {
 	if s.appmenu.a11y == nil {
 		s.appmenu.a11y = appmenu.NewA11y()
 	}
 	a11y := s.appmenu.a11y
+	window := b.appMenuWindow
 	go func() {
 		entries, err := a11y.Menu(pid)
 		gtkx.Post(func() {
-			if b.appMenuPID != pid || b.appMenuReg != (appmenu.Registration{}) {
+			if b.appMenuPID != pid || b.appMenuWindow != window || b.appMenuReg != (appmenu.Registration{}) {
 				return
 			}
 			if err != nil {
 				log.Printf("appmenu accessibility %d: %v", pid, err)
+				if !b.appMenuA11y {
+					s.renderPackFallback(b)
+				}
 				return
 			}
-			if !appmenu.FillableMenu(entries) {
-				entries = nil
+			if b.appMenuNoPress {
+				entries = appmenu.Prefilled(entries)
 			}
+			if !appmenu.FillableMenu(entries) {
+				s.renderPackFallback(b)
+				return
+			}
+			if !b.appMenuA11y {
+				s.closeAppMenu()
+				b.appMenuTop = nil
+			}
+			b.appMenuA11y = true
 			s.renderAppMenu(b, entries)
 		})
 	}()
+}
+
+// renderPackFallback shows the pack's or the generic menu of the bar's
+// window in place of an accessibility menu it does not have.
+func (s *shellUI) renderPackFallback(b *bar) {
+	w, ok := s.snap.Window(b.appMenuWindow)
+	if !ok {
+		return
+	}
+	if b.appMenuA11y {
+		// A menu that reads the same must not keep the accessibility one's
+		// buttons or open menu.
+		s.closeAppMenu()
+		b.appMenuTop = nil
+	}
+	b.appMenuA11y = false
+	pack, matched := s.menuPack(w)
+	s.renderAppMenu(b, s.packMenuEntries(w, pack, matched))
 }
 
 // a11yMenuItems turns accessibility entries into a menu's lines.
@@ -118,7 +153,7 @@ func (s *shellUI) a11yMenuCurrent(pid int) bool {
 		return false
 	}
 	for _, b := range s.bars {
-		if b.appMenuPID == pid && b.appMenuReg == (appmenu.Registration{}) {
+		if b.appMenuPID == pid && b.appMenuA11y && b.appMenuReg == (appmenu.Registration{}) {
 			return true
 		}
 	}
@@ -141,7 +176,7 @@ func (s *shellUI) activateA11yEntry(pid int, e appmenu.Entry) {
 				return
 			}
 			for _, b := range s.bars {
-				if b.appMenuPID == pid && b.appMenuReg == (appmenu.Registration{}) {
+				if b.appMenuPID == pid && b.appMenuA11y && b.appMenuReg == (appmenu.Registration{}) {
 					s.loadA11yMenu(b, pid)
 				}
 			}

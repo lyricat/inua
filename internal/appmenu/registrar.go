@@ -77,7 +77,8 @@ type Entry struct {
 	Submenu  bool
 	Children []Entry
 	// Action says how to invoke the entry: through the application's
-	// accessibility tree, or its dbusmenu.
+	// accessibility tree, a shortcut sent to the window, or one of the
+	// shell's own window actions.
 	Action Action
 	// PID is the process whose accessibility tree the entry came from,
 	// kept so a section can be found again on that tree after an open and
@@ -96,15 +97,44 @@ type OpenStep struct {
 
 // Action says how to invoke an entry.
 type Action struct {
-	Kind  string          // ActionA11y or ActionDbusmenu; empty when the entry only groups children
-	Bus   string          // the connection that owns the menu
-	Path  dbus.ObjectPath // the menu or accessible object
-	Index int32           // an action index (AT-SPI) or an item id (dbusmenu)
+	// Kind is ActionA11y, ActionDbusmenu, ActionKeys, ActionKeySequence or
+	// a shell action; empty when the entry only groups children.
+	Kind string
+	// Bus is the connection that owns an accessibility menu, or the window
+	// id for a shell action or a shortcut.
+	Bus string
+	// Path is the accessible object; unused by packs.
+	Path dbus.ObjectPath
+	// Index is an action index (AT-SPI), an item id (dbusmenu), or the
+	// process id for pack actions.
+	Index int32
+	// Mods and Key are the shortcut ActionKeys sends to the window.
+	Mods string
+	Key  string
+	// Sequence sends several key strokes in order (for Vim-style chords).
+	Sequence []KeyStroke
+}
+
+// KeyStroke is one press in a sequence action.
+type KeyStroke struct {
+	Mods string
+	Key  string
 }
 
 const (
 	ActionA11y     = "atspi"
 	ActionDbusmenu = "dbusmenu"
+	// ActionKeySequence sends several key strokes in order.
+	ActionKeySequence = "key-sequence"
+	// Actions the shell itself runs for a menu item.
+	ActionAbout       = "about"
+	ActionCloseWindow = "close-window"
+	ActionQuitApp     = "quit-app"
+	ActionFullscreen  = "fullscreen"
+	ActionFloat       = "float"
+	ActionCenter      = "center"
+	ActionCopyTitle   = "copy-title"
+	ActionCopyClass   = "copy-class"
 )
 
 // registered is a registration, when it was made among the others, and the
