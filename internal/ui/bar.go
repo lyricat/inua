@@ -58,6 +58,9 @@ type bar struct {
 	focusRing   *focusRing
 
 	appMenuReg     appmenu.Registration // whose menu it shows, if any
+	appMenuWindow  string               // the window whose pack or generic menu it shows, if any
+	appMenuGen     uint64               // the menu-pack reading it was drawn from
+	appMenuEntries []appmenu.Entry      // the first level, as last read
 	appMenuTop     []appMenuTop         // the buttons, as last drawn
 	appMenuLoading bool                 // the menu is being read
 	appMenuStale   bool                 // and changed meanwhile
