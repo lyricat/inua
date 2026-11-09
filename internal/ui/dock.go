@@ -59,6 +59,7 @@ type dock struct {
 	gaps                bool // style.edge_gaps
 	vertical            bool // apps stack along a vertical screen edge
 	hide                bool // autohide
+	exclusive           bool // reserves its edge, shortening the windows
 	hover               bool
 	hideGen             uintptr
 	overviewShown       bool
@@ -106,7 +107,7 @@ func (s *shellUI) syncDock(b *bar) {
 	// A dock the desktop does not show is still built when the overview
 	// asks for it: the overview raises it there while it is open.
 	want := s.layer && (c.Enable || s.cfg.Overview.ShowDock)
-	if b.dock != nil && (!want || b.dock.size != c.Size || b.dock.hide != c.Autohide || b.dock.position != c.Position || b.dock.gaps != s.cfg.Style.EdgeGaps) {
+	if b.dock != nil && (!want || b.dock.size != c.Size || b.dock.hide != c.Autohide || b.dock.exclusive != (!c.Autohide && c.Enable) || b.dock.position != c.Position || b.dock.gaps != s.cfg.Style.EdgeGaps) {
 		dropDock(b)
 	}
 	if want && b.dock == nil {
@@ -248,8 +249,14 @@ func (s *shellUI) newDock(b *bar) *dock {
 		edge = layershell.EdgeRight
 	}
 	layershell.SetAnchor(w, edge, true)
-	if d.hide {
+	// A dock that autohides, or one only the overview shows while the desktop
+	// dock is off, lies over the windows instead of short of them: otherwise
+	// opening the overview resized everything under it.
+	d.exclusive = !d.hide && s.cfg.Dock.Enable
+	if !d.exclusive {
 		layershell.SetExclusiveZone(w, 0)
+	}
+	if d.hide {
 		d.reveal.SetRevealChild(false)
 		d.edge.SetVisible(true)
 		motion := gtk.NewEventControllerMotion()
@@ -257,7 +264,7 @@ func (s *shellUI) newDock(b *bar) *dock {
 		motion.ConnectLeave(&s.onDockLeave)
 		d.win.AddController(&motion.EventController)
 		gtkx.ConnectNotify(&d.reveal, "child-revealed", &s.onDockRevealed)
-	} else {
+	} else if d.exclusive {
 		layershell.AutoExclusiveZone(w)
 	}
 	d.win.Present()
