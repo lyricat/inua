@@ -614,9 +614,6 @@ var barReaches = map[string]string{
 	"passwords": "passwords", "clipboard": "clipboard", "notifications": "notes", "control_center": "status",
 }
 
-// barBreaks are the items the toggles' reaches do not run across.
-var barBreaks = []string{"workspaces", "app_menu", "app_title", "clock"}
-
 // spots are the bar's items as shown, in their order, with the names of
 // those with a reach (barReaches): the items of its layout that are on the
 // bar and visible, and its spaces.
@@ -633,14 +630,22 @@ func (b *bar) spots() (names []string, spots []shell.BarSpot) {
 			continue // hidden, or not on the bar
 		}
 		f := *(*[4]float32)(unsafe.Pointer(&r)) // x, y, width, height; see rect
-		names = append(names, barReaches[id])
-		spots = append(spots, shell.BarSpot{
-			Rect:  shell.Rect{X: float64(f[0]), Y: float64(f[1]), W: float64(f[2]), H: float64(f[3])},
-			Reach: barReaches[id] != "",
-			Break: slices.Contains(barBreaks, id),
-		})
+		name, spot := barSpot(id, shell.Rect{X: float64(f[0]), Y: float64(f[1]), W: float64(f[2]), H: float64(f[3])})
+		names = append(names, name)
+		spots = append(spots, spot)
 	}
 	return names, spots
+}
+
+// barSpot is the bar's item id shown at r, with the name endReach gives
+// it. Only a panel's toggle has a reach; every other item breaks the
+// reaches, so none runs across it: the tray, the recording's button and
+// dictation take their own pointer, and the workspaces, the app's menu
+// and title and the clock are their own places. A toggle's hover, clicks
+// and the wheel never land on another item between two toggles.
+func barSpot(id string, r shell.Rect) (string, shell.BarSpot) {
+	name := barReaches[id]
+	return name, shell.BarSpot{Rect: r, Reach: name != "", Break: name == ""}
 }
 
 // endReach names the panel's toggle button whose reach a point in the

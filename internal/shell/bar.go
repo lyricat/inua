@@ -81,8 +81,9 @@ type BarSpot struct {
 	Rect Rect
 	// Reach is a panel's button, whose reach goes past it (BarReach).
 	Reach bool
-	// Break is what the reaches do not run across: a space, the clock,
-	// the workspaces, the app's title or menu.
+	// Break is what the reaches do not run across: a space, and every
+	// item that is not a panel's button (the tray, the clock, the
+	// workspaces, ...), which takes its own pointer.
 	Break bool
 }
 

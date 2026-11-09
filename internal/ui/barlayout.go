@@ -131,13 +131,17 @@ func (b *bar) arrange(layout []string) {
 		// The island's spacing is the end's (6 px); the start's items and
 		// the clock keep the start's 14 px from one another.
 		margin := int32(0)
-		if slices.Contains(barBreaks, id) {
+		if slices.Contains(barStartItems, id) {
 			margin = 4
 		}
 		setItemMargin(w, margin)
 		b.island.Append(w)
 	}
 }
+
+// barStartItems are the items of the default bar's start and the clock,
+// which keep 14 px from one another where the end's keep 6.
+var barStartItems = []string{"workspaces", "app_menu", "app_title", "clock"}
 
 // sameLayout reports whether two layouts are one: unset is not empty.
 func sameLayout(a, b []string) bool {
