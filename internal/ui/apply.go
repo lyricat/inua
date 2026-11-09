@@ -225,6 +225,9 @@ func (s *shellUI) applyConfig(c config.Config) {
 			s.loadStyles()
 		}
 	}
+	if old.Style.IconShape != c.Style.IconShape {
+		uikit.SetIconShape(uikit.IconShapeFromName(c.Style.IconShape))
+	}
 	if old.Style.AppIcons != c.Style.AppIcons {
 		for _, b := range s.bars {
 			if b.dock != nil {

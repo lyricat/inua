@@ -185,6 +185,9 @@ type Style struct {
 	// the app style; "system", the system's icon theme; or an installed
 	// icon theme (IconThemes). inua's apps keep the app style.
 	AppIcons string `toml:"app_icons"`
+	// IconShape is how app icons are drawn in the dock, its drawer and the
+	// launcher: one of IconShapes. "none" draws them as their files are.
+	IconShape string `toml:"icon_shape"`
 	// EdgeGaps leaves a small gap between the screen edges and the bar and
 	// dock; off puts them flush against the edges.
 	EdgeGaps bool `toml:"edge_gaps"`
@@ -905,6 +908,10 @@ var Fits = []string{"cover", "contain", "tile", "center"}
 // own, then the catalogs.
 var ClockLanguages = []string{"auto", "en", "zh_CN", "zh_TW", "ja", "ko", "es", "fr"}
 
+// IconShapes are the shapes app icons take in the dock, its drawer and the
+// launcher.
+var IconShapes = []string{"squircle", "circle", "pebble", "none"}
+
 // IconSets are the line icons' sets: "phosphor", Phosphor's regular icons
 // (ui/icons), or "system", the system's icon theme. Sets of the user's
 // follow them (IconSetNames); an installed icon theme can be named too.
@@ -951,7 +958,7 @@ func Default() Config {
 			Lock:       "inua call lock now",
 			Screenshot: "inua call screenshot area",
 		},
-		Style:      Style{Theme: "yoru", CSS: "style.css", Icons: "phosphor", AppStyle: ObjectsTheme, EdgeGaps: true, TextScale: 100, Transparency: 16, Radius: 4, Animations: boolPointer(true)},
+		Style:      Style{Theme: "yoru", CSS: "style.css", Icons: "phosphor", AppStyle: ObjectsTheme, IconShape: "squircle", EdgeGaps: true, TextScale: 100, Transparency: 16, Radius: 4, Animations: boolPointer(true)},
 		Background: Background{Enable: true, Fit: "cover", Generate: true},
 		Displays:   Displays{LidOff: true},
 		Notify:     Notify{Enable: true, Banner: 5, CriticalInFocus: true, Updates: true},
@@ -1103,6 +1110,7 @@ func (c *Config) validate() []string {
 		c.Style.AppIcons = "" // the same
 	}
 	oneOf("style.app_style", &c.Style.AppStyle, d.Style.AppStyle, InuaThemes...)
+	oneOf("style.icon_shape", &c.Style.IconShape, d.Style.IconShape, IconShapes...)
 	if sets := c.IconSetNames(); !slices.Contains(sets, c.Style.Icons) && !IsIconTheme(c.Style.Icons) {
 		w = append(w, fmt.Sprintf("style.icons = %q: want %s or an installed icon theme; using %q", c.Style.Icons, strings.Join(sets, " or "), d.Style.Icons))
 		c.Style.Icons = d.Style.Icons
