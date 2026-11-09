@@ -58,8 +58,10 @@ func newFocusRing(app *gtk.Application, mon *gdk.Monitor) *focusRing {
 			if r.rect.GetWidth() <= 0 || r.rect.GetHeight() <= 0 {
 				return
 			}
+			// Square like the compositor's own border: the last focused
+			// window on another monitor must read as the same highlight.
 			var outline gsk.RoundedRect
-			outline.InitFromRect(&r.rect, 6)
+			outline.InitFromRect(&r.rect, 0)
 			colors := [4]gdk.RGBA{r.color, r.color, r.color, r.color}
 			snap.AppendBorder(&outline, [4]float32{2, 2, 2, 2}, colors)
 		},
