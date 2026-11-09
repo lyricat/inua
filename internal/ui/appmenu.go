@@ -197,7 +197,15 @@ func (s *shellUI) loadAppMenu(b *bar, about bool) {
 	b.appMenuLoading = true
 	reg := b.appMenuReg
 	go func() {
-		entries, err := s.appmenu.registrar.Menu(reg, about)
+		var entries []appmenu.Entry
+		var err error
+		if appmenu.IsFirefoxService(reg) {
+			// Firefox's item ids change with every layout read, so read the
+			// whole tree once and keep its children for opening.
+			entries, err = s.appmenu.registrar.MenuFull(reg, about)
+		} else {
+			entries, err = s.appmenu.registrar.Menu(reg, about)
+		}
 		gtkx.Post(func() {
 			b.appMenuLoading = false
 			if b.appMenuStale || b.appMenuReg != reg {
@@ -273,7 +281,7 @@ func (s *shellUI) bindAppMenuHandlers() {
 					s.activatePackedEntry(b.appMenuPID, entry)
 				}
 			case submenu:
-				s.showAppMenu(b.appMenuReg, entry.ID, &btn.Widget)
+				s.showAppMenu(b.appMenuReg, entry, &btn.Widget)
 			default:
 				s.activateAppMenu(b.appMenuReg, entry.ID)
 			}
@@ -309,13 +317,19 @@ func (s *shellUI) closeAppMenu() {
 // showAppMenu reads what a button of the bar's menu opens and pops it up
 // under the button w. It is read each time, so it is the menu as the
 // application has it now, filled in if it is one built when asked for.
-func (s *shellUI) showAppMenu(reg appmenu.Registration, id int32, w *gtk.Widget) {
+func (s *shellUI) showAppMenu(reg appmenu.Registration, entry appmenu.Entry, w *gtk.Widget) {
 	s.appmenu.menuRequest++
 	request := s.appmenu.menuRequest
 	pid := focusedPID(s.snap)
 	w.Ref() // kept until the menu is built
 	go func() {
-		entries, err := s.appmenu.registrar.Submenu(reg, id)
+		var entries []appmenu.Entry
+		var err error
+		if len(entry.Children) > 0 {
+			entries = entry.Children
+		} else {
+			entries, err = s.appmenu.registrar.Submenu(reg, entry.ID)
+		}
 		live := err == nil && s.appmenu.registrar.Current(reg, pid)
 		gtkx.Post(func() {
 			defer w.Unref()
