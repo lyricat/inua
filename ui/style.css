@@ -227,6 +227,11 @@ button.plain.tight, button.image-button.tight { min-width: 20px; min-height: 20p
 .bar.compact .island .tray button { min-height: 0; padding: 1px 6px; margin: 1px 0; }
 .bar.compact .island .tray button { padding-left: 4px; padding-right: 4px; }
 .bar .island .title { color: @t1; }
+/* The focused window's title and its app menu change with the focus, which
+   follows the pointer; a fallback font (Arabic, Thai) or the menu's 13px
+   line would make the bar taller, and the windows under it move. One
+   16px line, the clock's, keeps it as tall whatever they say. */
+.bar .island .title, .bar .island .app-menu button label { line-height: 16px; }
 .bar .island .clock {
   color: @t0; /* not the button's colour it sits in */
   font-size: 12px;

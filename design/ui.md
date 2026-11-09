@@ -424,6 +424,16 @@ text, under 80 KB each, with a simpler drawing for 16 px. Apps the theme
 does not draw fall back to the desktop's theme; `inua icons missing` lists
 them.
 
+Where an app icon stands for the app (the dock, its drawer, the
+launcher), `uikit.AppIcon` shows it with a light of its own, whatever
+theme drew it, in one shape: a square with continuous corners (radius
+22.4% of the side, eased into the sides as Apple's icons are). An icon
+that is a square or a tile fills it; one of another shape (a circle, a
+figure) sits smaller on a light plate. Over it, a fine bright line along
+the top edge and a fainter one along the bottom, a faint shade from top
+to bottom, and a soft shadow below; the edges' light grows with the
+icon's size. Icon files can be plain squares; they are not changed.
+
 ## Words
 
 All text the user reads is translatable (`docs/i18n.md`). Plain words:
