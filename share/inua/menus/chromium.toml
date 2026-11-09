@@ -1,0 +1,257 @@
+# Chromium and Chrome draw their own menu bar. On XWayland they publish it
+# on their bus name (/com/canonical/menu), and the bar reads it. Running
+# natively on Wayland they publish neither that nor an accessibility menu,
+# so this pack sends their Linux default shortcuts instead
+# (chrome://settings/keyboardShortcuts). Commands without a default
+# shortcut are shown disabled.
+id = "chromium"
+match = ["chromium", "chromium-browser", "chrome", "google-chrome", "google-chrome-stable", "google-chrome-beta", "google-chrome-unstable", "com.google.Chrome", "org.chromium.Chromium"]
+skip_a11y = true
+
+[[section]]
+label = "File"
+
+[[section.item]]
+label = "New Tab"
+keys = ["CTRL", "T"]
+
+[[section.item]]
+label = "New Window"
+keys = ["CTRL", "N"]
+
+[[section.item]]
+label = "New Incognito Window"
+keys = ["CTRL", "SHIFT", "N"]
+
+[[section.item]]
+label = "Open File…"
+keys = ["CTRL", "O"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Save Page As…"
+keys = ["CTRL", "S"]
+
+[[section.item]]
+label = "Print…"
+keys = ["CTRL", "P"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Close Window"
+keys = ["CTRL", "SHIFT", "W"]
+
+[[section.item]]
+label = "Quit"
+keys = ["CTRL", "SHIFT", "Q"]
+
+[[section]]
+label = "Edit"
+
+[[section.item]]
+label = "Undo"
+keys = ["CTRL", "Z"]
+
+[[section.item]]
+label = "Redo"
+keys = ["CTRL", "SHIFT", "Z"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Cut"
+keys = ["CTRL", "X"]
+
+[[section.item]]
+label = "Copy"
+keys = ["CTRL", "C"]
+
+[[section.item]]
+label = "Paste"
+keys = ["CTRL", "V"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Find…"
+keys = ["CTRL", "F"]
+
+[[section.item]]
+label = "Find Next"
+keys = ["CTRL", "G"]
+
+[[section.item]]
+label = "Find Previous"
+keys = ["CTRL", "SHIFT", "G"]
+
+[[section]]
+label = "View"
+
+[[section.item]]
+label = "Reload"
+keys = ["CTRL", "R"]
+
+[[section.item]]
+label = "Force Reload"
+keys = ["CTRL", "SHIFT", "R"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Zoom In"
+keys = ["CTRL", "equal"]
+
+[[section.item]]
+label = "Zoom Out"
+keys = ["CTRL", "minus"]
+
+[[section.item]]
+label = "Reset Zoom"
+keys = ["CTRL", "0"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Full Screen"
+keys = ["f11"]
+
+[[section.item]]
+label = "Developer Tools"
+keys = ["CTRL", "SHIFT", "I"]
+
+[[section]]
+label = "History"
+
+[[section.item]]
+label = "Back"
+keys = ["ALT", "left"]
+
+[[section.item]]
+label = "Forward"
+keys = ["ALT", "right"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "History"
+keys = ["CTRL", "H"]
+
+[[section.item]]
+label = "Downloads"
+keys = ["CTRL", "J"]
+
+[[section.item]]
+label = "Clear Browsing Data…"
+disabled = true
+
+[[section]]
+label = "Bookmarks"
+
+[[section.item]]
+label = "Bookmark This Tab"
+keys = ["CTRL", "D"]
+
+[[section.item]]
+label = "Bookmark Manager"
+keys = ["CTRL", "SHIFT", "O"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Import Bookmarks and Settings…"
+disabled = true
+
+[[section]]
+label = "Profiles"
+
+[[section.item]]
+label = "Manage Profiles"
+disabled = true
+
+[[section.item]]
+label = "Add Profile"
+disabled = true
+
+[[section.item]]
+label = "Open Guest Window"
+disabled = true
+
+[[section]]
+label = "Tab"
+
+[[section.item]]
+label = "New Tab"
+keys = ["CTRL", "T"]
+
+[[section.item]]
+label = "Reopen Closed Tab"
+keys = ["CTRL", "SHIFT", "T"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Next Tab"
+keys = ["CTRL", "Tab"]
+
+[[section.item]]
+label = "Previous Tab"
+keys = ["CTRL", "SHIFT", "Tab"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Duplicate"
+disabled = true
+
+[[section.item]]
+label = "Pin Tab"
+disabled = true
+
+[[section.item]]
+label = "Mute Site"
+disabled = true
+
+[[section]]
+label = "Window"
+
+[[section.item]]
+label = "New Window"
+keys = ["CTRL", "N"]
+
+[[section.item]]
+label = "New Incognito Window"
+keys = ["CTRL", "SHIFT", "N"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Close Window"
+keys = ["CTRL", "SHIFT", "W"]
+
+[[section]]
+label = "Help"
+
+[[section.item]]
+label = "Chrome Help"
+disabled = true
+
+[[section.item]]
+label = "Report an Issue…"
+disabled = true
+
+[[section.item]]
+label = "About Chromium"
+disabled = true
