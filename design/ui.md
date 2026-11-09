@@ -180,6 +180,22 @@ a `small` one 28 px (`window.files .files-head`, `.files-status`).
 
 They follow `docs/performance.md` for start-up.
 
+### The top bar
+
+**Its height never changes with what it shows.** The bar is 30px (24px
+compact) and windows are tiled under it, so a bar one pixel taller
+moves every window on the monitor. Focus follows the pointer, so the
+title and the app menu change as the pointer crosses windows, and
+anything that can appear on the bar (a label, a button, the tray, the
+recording) must fit inside it:
+
+- A button is 24px tall with its 3px margins inside the bar: a 16px
+  icon or a 16px line, 3px padding, a 1px border.
+- Text in the bar has the clock's 16px `line-height`. A 13px label is
+  19px tall, and a fallback font (Arabic, Thai) taller still, without it.
+- Check a change with the tallest content: an app's menu shown, a title
+  in Arabic, the compact density. The bar's height must not move.
+
 ### Top bar panels
 
 What a top bar button opens (the notification center, the clipboard
