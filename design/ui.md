@@ -462,6 +462,10 @@ cannot see services on the session bus (Mobile Link shows "starting").
 
 ## Known differences
 
+- Settings' bar layout (Bar & Dock, *Layout*) is dragged into and along,
+  but its items do not slide aside yet: a line in the accent marks where
+  the drop goes.
+
 - The settings window and Mobile Link report errors in the index's
   status line, not where they happen.
 - Two fills for a main action exist: the accent (`suggested-action`) and

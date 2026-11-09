@@ -8,198 +8,207 @@ ApplicationWindow bar {
   // A panel hangs from the bar inside its window (drop.go), over the
   // island, the window grown down over the screen meanwhile.
   Overlay frame {
-    CenterBox island {
+    // The bar's items as bar.layout places them (bar.go, arrange): unset,
+    // they stay in the centred box below, the clock in the screen's
+    // middle; a layout of the user's takes them out into the island in
+    // its order, its spaces sharing the room left.
+    Box island {
       styles ["island"]
       valign: start;
       margin-top: 4;
       margin-start: 4;
       margin-end: 4;
       height-request: 30;
+      spacing: 6;
 
-      start-widget: Box {
-        spacing: 14;
+      CenterBox centered {
+        hexpand: true;
 
-        // Go puts the workspaces' dots after the widget page's mark, the
-        // place before the first workspace: hollow, filled while the page
-        // shows; hidden with widgets.enable off.
-        Box workspaces {
-          styles ["workspaces"]
-          spacing: 5;
-          valign: center;
+        start-widget: Box bar_start {
+          spacing: 14;
 
-          Button widgets {
-            styles ["widgets-mark"]
-            tooltip-text: _("Engawa");
-            focusable: false;
+          // Go puts the workspaces' dots after the widget page's mark, the
+          // place before the first workspace: hollow, filled while the page
+          // shows; hidden with widgets.enable off.
+          Box workspaces {
+            styles ["workspaces"]
+            spacing: 5;
             valign: center;
-          }
-        }
 
-        Box app_menu {
-          styles ["app-menu"]
-          spacing: 2;
-          valign: center;
-        }
-
-        Box app_title {
-          styles ["app-title"]
-          spacing: 7;
-          valign: center;
-
-          Image app_icon {
-            styles ["app-icon"]
-            pixel-size: 16;
-            valign: center;
-            visible: false;
-          }
-
-          Label title {
-            styles ["title"]
-            ellipsize: end;
-            max-width-chars: 48;
-          }
-        }
-      };
-
-      // The clock opens Calendar.
-      center-widget: Button clock_button {
-        styles ["clock-button"]
-        name: "calendar";
-        focusable: false;
-        tooltip-text:  _("Calendar");
-
-        Label clock {
-          styles ["clock"]
-        }
-      };
-
-      end-widget: Box {
-        spacing: 6;
-
-        Box tray {
-          styles ["tray"]
-          spacing: 2;
-          valign: center;
-        }
-
-        // While the screen is being recorded: a red square and the time so
-        // far; a click stops the recording.
-        Button rec {
-          styles ["rec"]
-          name: "rec";
-          focusable: false;
-          visible: false;
-          tooltip-text:  _("Stop recording");
-
-          Box {
-            spacing: 6;
-
-            Box {
-              styles ["rec-mark"]
+            Button widgets {
+              styles ["widgets-mark"]
+              tooltip-text: _("Engawa");
+              focusable: false;
               valign: center;
             }
-
-            Label rec_time {
-              styles ["numeric"]
-            }
           }
-        }
 
-        // Opens the search through the password store; shown when there is
-        // one.
-        Button passwords {
-          styles ["passwords"]
-          name: "passwords";
-          focusable: false;
-          visible: false;
-          tooltip-text: _("Passwords");
-          icon-name: "dialog-password-symbolic";
-        }
-
-        Button clipboard {
-          styles ["clipboard"]
-          focusable: false;
-          tooltip-text: _("Clipboard history");
-          icon-name: "edit-paste-symbolic";
-        }
-
-        // Opens the notification center: a bell, a moon while Focus is on,
-        // and a square on its corner for unread notifications, so it is as
-        // wide as the other icon buttons.
-        Button notes {
-          styles ["notes"]
-          name: "notes";
-          focusable: false;
-          tooltip-text:  _("Notifications");
-
-          Overlay {
-            Image notes_icon {
-              icon-name: "preferences-system-notifications-symbolic";
-            }
-
-            [overlay]
-            Box unread {
-              styles ["unread"]
-              halign: end;
-              valign: start;
-              visible: false;
-            }
+          Box app_menu {
+            styles ["app-menu"]
+            spacing: 2;
+            valign: center;
           }
-        }
 
-        // Dictation's microphone: what the voxtype daemon is doing. A click
-        // toggles a recording, or opens the settings when voxtype is not
-        // ready; hidden while dictation is off.
-        Button voice {
-          styles ["voice"]
-          name: "voice";
-          focusable: false;
-          visible: false;
-          tooltip-text: _("Dictation");
+          Box app_title {
+            styles ["app-title"]
+            spacing: 7;
+            valign: center;
 
-          Image voice_icon {
-            icon-name: "audio-input-microphone-symbolic";
-          }
-        }
-
-        // Opens the control center.
-        Button status {
-          styles ["status"]
-          name: "status";
-          focusable: false;
-          tooltip-text:  _("Control Center");
-
-          Box {
-            spacing: 9;
-
-            Image net_icon {
-              icon-name: "network-offline-symbolic";
-            }
-
-            Image bt_icon {
-              icon-name: "bluetooth-disabled-symbolic";
+            Image app_icon {
+              styles ["app-icon"]
+              pixel-size: 16;
+              valign: center;
               visible: false;
             }
 
-            Image vol_icon {
-              icon-name: "audio-volume-muted-symbolic";
+            Label title {
+              styles ["title"]
+              ellipsize: end;
+              max-width-chars: 48;
             }
+          }
+        };
 
-            Box battery {
-              spacing: 3;
-              visible: false;
+        // The clock opens Calendar.
+        center-widget: Button clock_button {
+          styles ["clock-button"]
+          name: "calendar";
+          focusable: false;
+          tooltip-text:  _("Calendar");
 
-              Image bat_icon {
-                icon-name: "battery-level-50-symbolic";
+          Label clock {
+            styles ["clock"]
+          }
+        };
+
+        end-widget: Box bar_end {
+          spacing: 6;
+
+          Box tray {
+            styles ["tray"]
+            spacing: 2;
+            valign: center;
+          }
+
+          // While the screen is being recorded: a red square and the time so
+          // far; a click stops the recording.
+          Button rec {
+            styles ["rec"]
+            name: "rec";
+            focusable: false;
+            visible: false;
+            tooltip-text:  _("Stop recording");
+
+            Box {
+              spacing: 6;
+
+              Box {
+                styles ["rec-mark"]
+                valign: center;
               }
 
-              Label bat_label {
+              Label rec_time {
                 styles ["numeric"]
               }
             }
           }
-        }
-      };
+
+          // Opens the search through the password store; shown when there is
+          // one.
+          Button passwords {
+            styles ["passwords"]
+            name: "passwords";
+            focusable: false;
+            visible: false;
+            tooltip-text: _("Passwords");
+            icon-name: "dialog-password-symbolic";
+          }
+
+          Button clipboard {
+            styles ["clipboard"]
+            focusable: false;
+            tooltip-text: _("Clipboard history");
+            icon-name: "edit-paste-symbolic";
+          }
+
+          // Opens the notification center: a bell, a moon while Focus is on,
+          // and a square on its corner for unread notifications, so it is as
+          // wide as the other icon buttons.
+          Button notes {
+            styles ["notes"]
+            name: "notes";
+            focusable: false;
+            tooltip-text:  _("Notifications");
+
+            Overlay {
+              Image notes_icon {
+                icon-name: "preferences-system-notifications-symbolic";
+              }
+
+              [overlay]
+              Box unread {
+                styles ["unread"]
+                halign: end;
+                valign: start;
+                visible: false;
+              }
+            }
+          }
+
+          // Dictation's microphone: what the voxtype daemon is doing. A click
+          // toggles a recording, or opens the settings when voxtype is not
+          // ready; hidden while dictation is off.
+          Button voice {
+            styles ["voice"]
+            name: "voice";
+            focusable: false;
+            visible: false;
+            tooltip-text: _("Dictation");
+
+            Image voice_icon {
+              icon-name: "audio-input-microphone-symbolic";
+            }
+          }
+
+          // Opens the control center.
+          Button status {
+            styles ["status"]
+            name: "status";
+            focusable: false;
+            tooltip-text:  _("Control Center");
+
+            Box {
+              spacing: 9;
+
+              Image net_icon {
+                icon-name: "network-offline-symbolic";
+              }
+
+              Image bt_icon {
+                icon-name: "bluetooth-disabled-symbolic";
+                visible: false;
+              }
+
+              Image vol_icon {
+                icon-name: "audio-volume-muted-symbolic";
+              }
+
+              Box battery {
+                spacing: 3;
+                visible: false;
+
+                Image bat_icon {
+                  icon-name: "battery-level-50-symbolic";
+                }
+
+                Label bat_label {
+                  styles ["numeric"]
+                }
+              }
+            }
+          }
+        };
+      }
     }
   }
 }

@@ -1122,6 +1122,138 @@ ApplicationWindow settings {
               }
 
 
+              // [LAYOUT]: what the bar shows, in its order (bar.layout).
+              // Go fills the strip, a small bar, and the items still to
+              // add (settings_barlayout.go).
+              Box {
+                styles ["section"]
+                orientation: vertical;
+
+                Box {
+                  styles ["section-head"]
+                  spacing: 10;
+
+                  Box {
+                    styles ["mark"]
+                    valign: center;
+                  }
+
+                  Label {
+                    styles ["section-label"]
+                    use-markup: true;
+                    label:  _("<span alpha='55%'>[</span>LAYOUT<span alpha='55%'>]</span>");
+                  }
+
+                  Label {
+                    styles ["section-meta"]
+                    label:  _("What the bar shows, in its order");
+                    hexpand: true;
+                    xalign: 0;
+                    ellipsize: end;
+                  }
+
+                  Button bar_layout_reset {
+                    styles ["outlined", "small"]
+                    name: "bar_layout_reset";
+                    label: _("Default");
+                    tooltip-text: _("The default layout, the clock in the middle of the screen");
+                    valign: center;
+                  }
+                }
+
+                Box {
+                  styles ["section-body"]
+                  orientation: vertical;
+
+                  Box {
+                    styles ["field"]
+                    orientation: vertical;
+                    spacing: 8;
+
+                    Label {
+                      styles ["label"]
+                      label:  _("Bar layout");
+                      xalign: 0;
+                    }
+
+                    // The strip: the items in the bar's order, a space as
+                    // wide as its share; the mark shows where a drop goes.
+                    Overlay {
+                      child: Box bar_layout {
+                        styles ["bar-layout"]
+                        spacing: 4;
+                      };
+
+                      [overlay]
+                      Box bar_layout_mark {
+                        styles ["bar-layout-mark"]
+                        halign: start;
+                        visible: false;
+                        can-target: false;
+                      }
+                    }
+
+                    Box {
+                      spacing: 6;
+
+                      Label bar_layout_selected {
+                        styles ["sub"]
+                        hexpand: true;
+                        xalign: 0;
+                        wrap: true;
+                      }
+
+                      Button bar_layout_left {
+                        styles ["tool", "small"]
+                        name: "bar_layout_left";
+                        icon-name: "go-previous-symbolic";
+                        tooltip-text: _("Move earlier");
+                        valign: center;
+                      }
+
+                      Button bar_layout_right {
+                        styles ["tool", "small"]
+                        name: "bar_layout_right";
+                        icon-name: "go-next-symbolic";
+                        tooltip-text: _("Move later");
+                        valign: center;
+                      }
+
+                      Button bar_layout_remove {
+                        styles ["tool", "small"]
+                        name: "bar_layout_remove";
+                        icon-name: "list-remove-symbolic";
+                        tooltip-text: _("Remove from the bar");
+                        valign: center;
+                      }
+                    }
+
+                    Label {
+                      styles ["kicker"]
+                      label: _("Add");
+                      xalign: 0;
+                    }
+
+                    // The items not on the bar, and the space, always.
+                    FlowBox bar_layout_palette {
+                      styles ["bar-layout-palette"]
+                      selection-mode: none;
+                      homogeneous: false;
+                      column-spacing: 6;
+                      row-spacing: 6;
+                      max-children-per-line: 12;
+                    }
+
+                    Label {
+                      styles ["sub"]
+                      label:  _("Drag items into the bar, along it, or back here to remove them; or click one to add it after the one selected. Spaces share the room left equally. Arranged, the clock sits between its spaces rather than in the screen's middle. Each item still shows only when its own setting has it.");
+                      xalign: 0;
+                      wrap: true;
+                    }
+                  }
+                }
+              }
+
               // [DOCK]
               Box {
                 styles ["section"]
