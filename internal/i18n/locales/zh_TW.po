@@ -52,7 +52,7 @@ msgstr "正確的方法："
 
 #: cmd/inua-keyring/main.go:117
 #: internal/ui/settings_keyring.go:324
-#: ui/settings.ui:4465
+#: ui/settings.ui:4129
 msgid "Keyring"
 msgstr "鑰匙圈"
 
@@ -134,7 +134,7 @@ msgstr "黑"
 
 #: internal/apps/calendar/calendar.go:69
 #: internal/lightui/clock.go:220
-#: internal/ui/control.go:341
+#: internal/ui/control.go:322
 #: internal/ui/lock.go:248
 #: internal/ui/widgets.go:987
 msgid "Monday, January 2"
@@ -165,13 +165,14 @@ msgid "%s · WEEK %d · DAY %d"
 msgstr "%[1]s · 週 %[2]d · 日 %[3]d"
 
 #: internal/apps/clock/clock.go:69
-#: internal/i18n/time.go:12
+#: internal/i18n/time.go:11
 #: ui/calendar.ui:132
 msgid "Sun"
 msgstr "週日"
 
 #: internal/apps/clock/clock.go:69
-#: internal/i18n/time.go:12
+#: internal/config/strftime.go:50
+#: internal/i18n/time.go:11
 #: internal/lightui/weather.go:360
 #: internal/mailui/window.go:1444
 #: internal/shell/notify.go:28
@@ -182,27 +183,27 @@ msgid "Mon"
 msgstr "週一"
 
 #: internal/apps/clock/clock.go:69
-#: internal/i18n/time.go:12
+#: internal/i18n/time.go:11
 msgid "Tue"
 msgstr "週二"
 
 #: internal/apps/clock/clock.go:69
-#: internal/i18n/time.go:12
+#: internal/i18n/time.go:11
 msgid "Wed"
 msgstr "週三"
 
 #: internal/apps/clock/clock.go:69
-#: internal/i18n/time.go:12
+#: internal/i18n/time.go:11
 msgid "Thu"
 msgstr "週四"
 
 #: internal/apps/clock/clock.go:69
-#: internal/i18n/time.go:12
+#: internal/i18n/time.go:11
 msgid "Fri"
 msgstr "週五"
 
 #: internal/apps/clock/clock.go:69
-#: internal/i18n/time.go:12
+#: internal/i18n/time.go:11
 msgid "Sat"
 msgstr "週六"
 
@@ -347,9 +348,9 @@ msgid "%d%%, charging"
 msgstr "%d%%，正在充電"
 
 #: internal/apps/connect/service.go:520
-#: internal/ui/settings.go:379
-#: internal/ui/settings.go:875
-#: internal/ui/settings.go:987
+#: internal/ui/settings.go:353
+#: internal/ui/settings.go:804
+#: internal/ui/settings.go:912
 #: internal/ui/settings_displays.go:460
 msgid "%d%%"
 msgstr "%d%%"
@@ -587,7 +588,7 @@ msgstr "開發"
 #: internal/mailui/settings.go:548
 #: ui/mail-compose.ui:269
 #: ui/mail.ui:384
-#: ui/settings.ui:2790
+#: ui/settings.ui:2454
 msgid "AI"
 msgstr "人工智慧"
 
@@ -1928,7 +1929,7 @@ msgstr "正在用這些工具執行指令碼"
 #: internal/assistantui/assistantui.go:38
 #: internal/mailui/menubar.go:49
 #: ui/assistant.ui:35
-#: ui/settings.ui:2869
+#: ui/settings.ui:2533
 #: config/apps/io.github.lyricat.Inua.Assistant.desktop:3
 msgid "Assistant"
 msgstr "助理"
@@ -2043,7 +2044,7 @@ msgid "Canceled"
 msgstr "已取消"
 
 #: internal/assistantui/assistantui.go:754
-#: ui/settings.ui:4712
+#: ui/settings.ui:4376
 msgid "Allowed"
 msgstr "允許"
 
@@ -2065,7 +2066,7 @@ msgstr "允許"
 #: ui/disk.ui:697
 #: ui/gpg.ui:764
 #: ui/gpg.ui:1010
-#: ui/settings.ui:3668
+#: ui/settings.ui:3332
 #: ui/vm.ui:639
 msgid "Copy"
 msgstr "複製"
@@ -2085,8 +2086,6 @@ msgstr "嘗試"
 #: internal/gamesui/menubar.go:36
 #: internal/mailui/menubar.go:39
 #: internal/remoteui/menubar.go:47
-#: internal/ui/appmenu_packs.go:88
-#: internal/ui/settings_menu.go:25
 #: internal/viewerui/menubar.go:36
 #: internal/vmui/menubar.go:36
 msgid "File"
@@ -2105,7 +2104,6 @@ msgstr "新對話"
 #: internal/mailui/menubar.go:42
 #: internal/remoteui/menubar.go:48
 #: internal/shell/commands.go:46
-#: internal/ui/appmenu_packs.go:89
 #: internal/viewerui/menubar.go:39
 #: internal/vmui/menubar.go:39
 msgid "Close Window"
@@ -2114,8 +2112,7 @@ msgstr "關閉窗口"
 #: internal/assistantui/assistantui.go:916
 #: internal/diskui/menubar.go:38
 #: internal/lightui/clock.go:404
-#: internal/termui/menubar.go:31
-#: internal/ui/appmenu_packs.go:91
+#: internal/termui/menubar.go:42
 #: internal/viewerui/menubar.go:41
 #: ui/pass.ui:252
 msgid "Edit"
@@ -2131,9 +2128,7 @@ msgstr ""
 #: internal/gamesui/menubar.go:33
 #: internal/mailui/menubar.go:44
 #: internal/remoteui/menubar.go:56
-#: internal/termui/menubar.go:32
-#: internal/ui/appmenu_packs.go:94
-#: internal/ui/settings_menu.go:28
+#: internal/termui/menubar.go:43
 #: internal/viewerui/menubar.go:46
 #: internal/vmui/menubar.go:48
 msgid "View"
@@ -2144,11 +2139,31 @@ msgstr ""
 msgid "AI settings"
 msgstr "AI設置"
 
+#: internal/config/strftime.go:52
+#: internal/i18n/time.go:10
+msgid "Monday"
+msgstr "星期一"
+
+#: internal/config/strftime.go:54
+#: internal/i18n/time.go:9
+msgid "Jan"
+msgstr "1月"
+
+#: internal/config/strftime.go:56
+#: internal/i18n/time.go:8
+msgid "January"
+msgstr "一月"
+
+#: internal/config/strftime.go:82
+#: internal/i18n/time.go:24
+msgid "PM"
+msgstr "下午"
+
 #: internal/connectui/menubar.go:30
 #: internal/mailui/menubar.go:45
 #: internal/remoteui/menubar.go:57
 #: internal/vmui/menubar.go:49
-#: ui/settings.ui:4947
+#: ui/settings.ui:4611
 msgid "Refresh"
 msgstr "重新整理"
 
@@ -2216,7 +2231,7 @@ msgstr "服務正在啟動。"
 #: internal/ui/settings_displays.go:431
 #: internal/ui/settings_wifi.go:285
 #: ui/remote.ui:359
-#: ui/settings.ui:6408
+#: ui/settings.ui:6072
 msgid "Off"
 msgstr "關閉"
 
@@ -2327,7 +2342,7 @@ msgstr "已請求 %s 連接。"
 #: ui/connect.ui:291
 #: ui/files.ui:233
 #: ui/gpg.ui:1445
-#: ui/settings.ui:5543
+#: ui/settings.ui:5207
 #: ui/sysmon.ui:96
 msgid "Name"
 msgstr "名稱"
@@ -2891,17 +2906,17 @@ msgstr "開啟資料夾"
 
 #: internal/desktop/defaults.go:39
 #: internal/term/web/strings.go:101
-#: internal/termui/app.go:117
-#: internal/termui/app.go:153
-#: internal/termui/app.go:360
-#: internal/termui/app.go:362
-#: internal/termui/menubar.go:29
+#: internal/termui/app.go:115
+#: internal/termui/app.go:151
+#: internal/termui/app.go:357
+#: internal/termui/app.go:359
+#: internal/termui/menubar.go:40
 #: internal/termui/prefs.go:160
 #: internal/termui/quick.go:29
 #: internal/termui/quick.go:47
 #: internal/termui/quick.go:145
 #: internal/termui/tiles.go:756
-#: ui/settings.ui:2601
+#: ui/settings.ui:2265
 #: config/apps/io.github.lyricat.Inua.Term.desktop:3
 msgid "Terminal"
 msgstr "終端"
@@ -2936,7 +2951,7 @@ msgstr "開啟影片檔案"
 
 #: internal/desktop/defaults.go:48
 #: internal/lightui/pass_otp.go:330
-#: internal/ui/settings.go:1149
+#: internal/ui/settings.go:1074
 msgid "Images"
 msgstr "影像"
 
@@ -3210,8 +3225,7 @@ msgstr "家目錄"
 #: internal/lightui/sysmon.go:969
 #: internal/lightui/tailscale.go:527
 #: internal/lightui/tailscale.go:568
-#: internal/ui/bar.go:487
-#: internal/ui/settings.go:662
+#: internal/ui/settings.go:601
 #: ui/vm.ui:2981
 msgid "System"
 msgstr "系統"
@@ -3636,15 +3650,13 @@ msgstr[0] "……還有 %d 項"
 #: internal/termui/keys.go:295
 #: internal/termui/sessionmenu.go:113
 #: internal/termui/wsmenu.go:129
-#: internal/ui/appmenu_packs.go:132
 #: internal/ui/settings_bench.go:132
-#: internal/ui/settings_menu.go:26
 #: internal/ui/settings_wifi_details.go:62
 #: ui/mail-compose.ui:292
 #: ui/mail.ui:395
 #: ui/pass.ui:1163
-#: ui/settings.ui:3817
-#: ui/settings.ui:5298
+#: ui/settings.ui:3481
+#: ui/settings.ui:4962
 #: ui/vm.ui:3503
 msgid "Close"
 msgstr "關閉"
@@ -3802,7 +3814,7 @@ msgid "Terminal here"
 msgstr "在此開啟終端機"
 
 #: internal/filesui/cards.go:702
-#: internal/termui/menubar.go:33
+#: internal/termui/menubar.go:44
 #: ui/screenshot.ui:180
 #: ui/shotdrawer.ui:122
 msgid "Window"
@@ -8073,7 +8085,7 @@ msgstr "返回選單"
 #: internal/term/web/strings.go:24
 #: internal/termui/guide.go:111
 #: ui/gpg.ui:736
-#: ui/settings.ui:4998
+#: ui/settings.ui:4662
 #: ui/vm.ui:510
 #: ui/vm.ui:3278
 msgid "Back"
@@ -8249,8 +8261,6 @@ msgid "The browser could not be opened: %v"
 msgstr ""
 
 #: internal/gamesui/menubar.go:34
-#: internal/ui/appmenu_packs.go:47
-#: internal/ui/appmenu_packs.go:95
 #: internal/viewerui/menubar.go:57
 msgid "Fullscreen"
 msgstr ""
@@ -8444,7 +8454,7 @@ msgstr "多球"
 
 #: internal/gamesui/pinball.go:776
 #: ui/control.ui:78
-#: ui/settings.ui:2409
+#: ui/settings.ui:2073
 msgid "Lock"
 msgstr "鎖"
 
@@ -8494,7 +8504,7 @@ msgstr "太空彈珠"
 
 #: internal/hyprconf/keys.go:23
 #: internal/shell/dock.go:312
-#: ui/settings.ui:2478
+#: ui/settings.ui:2142
 msgid "Launcher"
 msgstr "啟動器"
 
@@ -8515,7 +8525,7 @@ msgid "Notification center"
 msgstr "通知中心"
 
 #: internal/hyprconf/keys.go:28
-#: ui/bar.ui:178
+#: ui/bar.ui:164
 msgid "Clipboard history"
 msgstr "剪貼簿歷史"
 
@@ -8541,7 +8551,7 @@ msgid "Settings"
 msgstr "設定"
 
 #: internal/hyprconf/keys.go:32
-#: ui/settings.ui:939
+#: ui/settings.ui:827
 msgid "Restart the shell"
 msgstr "重新啟動外殼"
 
@@ -8577,8 +8587,8 @@ msgstr "選擇顏色"
 
 #: internal/hyprconf/keys.go:40
 #: internal/ui/voice_page.go:169
-#: ui/bar.ui:223
-#: ui/settings.ui:6858
+#: ui/bar.ui:205
+#: ui/settings.ui:6522
 msgid "Dictation"
 msgstr "聽寫"
 
@@ -8586,134 +8596,118 @@ msgstr "聽寫"
 msgid "Widget page"
 msgstr "小工具頁"
 
-#: internal/i18n/time.go:9
-msgid "January"
-msgstr "一月"
-
-#: internal/i18n/time.go:9
+#: internal/i18n/time.go:8
 msgid "February"
 msgstr "二月"
 
-#: internal/i18n/time.go:9
+#: internal/i18n/time.go:8
 msgid "March"
 msgstr "三月"
 
-#: internal/i18n/time.go:9
+#: internal/i18n/time.go:8
 msgid "April"
 msgstr "四月"
 
+#: internal/i18n/time.go:8
 #: internal/i18n/time.go:9
-#: internal/i18n/time.go:10
 msgid "May"
 msgstr "5月"
 
-#: internal/i18n/time.go:9
+#: internal/i18n/time.go:8
 msgid "June"
 msgstr "六月"
 
-#: internal/i18n/time.go:9
+#: internal/i18n/time.go:8
 msgid "July"
 msgstr "七月"
 
-#: internal/i18n/time.go:9
+#: internal/i18n/time.go:8
 msgid "August"
 msgstr "八月"
 
-#: internal/i18n/time.go:9
+#: internal/i18n/time.go:8
 msgid "September"
 msgstr "九月"
 
-#: internal/i18n/time.go:9
+#: internal/i18n/time.go:8
 msgid "October"
 msgstr "十月"
 
-#: internal/i18n/time.go:9
+#: internal/i18n/time.go:8
 msgid "November"
 msgstr "十一月"
 
-#: internal/i18n/time.go:9
+#: internal/i18n/time.go:8
 msgid "December"
 msgstr "十二月"
 
-#: internal/i18n/time.go:10
-msgid "Jan"
-msgstr "1月"
-
-#: internal/i18n/time.go:10
+#: internal/i18n/time.go:9
 msgid "Feb"
 msgstr "2月"
 
-#: internal/i18n/time.go:10
+#: internal/i18n/time.go:9
 msgid "Mar"
 msgstr "3月"
 
-#: internal/i18n/time.go:10
+#: internal/i18n/time.go:9
 msgid "Apr"
 msgstr "4月"
 
-#: internal/i18n/time.go:10
+#: internal/i18n/time.go:9
 msgid "Jun"
 msgstr "6月"
 
-#: internal/i18n/time.go:10
+#: internal/i18n/time.go:9
 msgid "Jul"
 msgstr "7月"
 
-#: internal/i18n/time.go:10
+#: internal/i18n/time.go:9
 msgid "Aug"
 msgstr "8月"
 
-#: internal/i18n/time.go:10
+#: internal/i18n/time.go:9
 msgid "Sep"
 msgstr "9月"
 
-#: internal/i18n/time.go:10
+#: internal/i18n/time.go:9
 msgid "Oct"
 msgstr "10月"
 
-#: internal/i18n/time.go:10
+#: internal/i18n/time.go:9
 msgid "Nov"
 msgstr "11月"
 
-#: internal/i18n/time.go:10
+#: internal/i18n/time.go:9
 msgid "Dec"
 msgstr "12月"
 
-#: internal/i18n/time.go:11
+#: internal/i18n/time.go:10
 msgid "Sunday"
 msgstr "星期日"
 
-#: internal/i18n/time.go:11
-msgid "Monday"
-msgstr "星期一"
-
-#: internal/i18n/time.go:11
+#: internal/i18n/time.go:10
 msgid "Tuesday"
 msgstr "星期二"
 
-#: internal/i18n/time.go:11
+#: internal/i18n/time.go:10
 msgid "Wednesday"
 msgstr "星期三"
 
-#: internal/i18n/time.go:11
+#: internal/i18n/time.go:10
 msgid "Thursday"
 msgstr "星期四"
 
-#: internal/i18n/time.go:11
+#: internal/i18n/time.go:10
 msgid "Friday"
 msgstr "星期五"
 
-#: internal/i18n/time.go:11
+#: internal/i18n/time.go:10
 msgid "Saturday"
 msgstr "星期六"
 
-#: internal/i18n/time.go:82
+#: internal/i18n/time.go:22
 msgid "AM"
 msgstr "上午"
-
-#: internal/i18n/time.go:84
-msgid "PM"
-msgstr "下午"
 
 #: internal/keyring/portal.go:96
 msgid "Passwords of %s"
@@ -8722,7 +8716,7 @@ msgstr ""
 #: internal/lightui/apps.go:16
 #: internal/ui/alarms.go:106
 #: internal/ui/widgets.go:582
-#: ui/settings.ui:1393
+#: ui/settings.ui:1281
 #: config/apps/io.github.lyricat.Inua.Clock.desktop:3
 msgid "Clock"
 msgstr "時鐘"
@@ -8749,7 +8743,7 @@ msgstr "計算機"
 
 #: internal/lightui/apps.go:20
 #: internal/ui/widgets.go:583
-#: ui/bar.ui:103
+#: ui/bar.ui:93
 #: config/apps/io.github.lyricat.Inua.Calendar.desktop:3
 msgid "Calendar"
 msgstr "日曆"
@@ -8961,7 +8955,7 @@ msgstr "5 年"
 #: internal/lightui/gpg.go:152
 #: internal/mailui/settings.go:497
 #: internal/shell/idle.go:162
-#: ui/settings.ui:4657
+#: ui/settings.ui:4321
 msgid "Never"
 msgstr "永不過期"
 
@@ -9471,8 +9465,8 @@ msgid "Top level"
 msgstr "頂層"
 
 #: internal/lightui/pass.go:432
-#: internal/ui/settings.go:1012
-#: internal/ui/settings.go:1039
+#: internal/ui/settings.go:937
+#: internal/ui/settings.go:964
 msgid "%d entry"
 msgid_plural "%d entries"
 msgstr[0] "%d 筆"
@@ -9912,8 +9906,8 @@ msgstr "無法搜尋:%s"
 #: internal/lightui/sysmon.go:55
 #: internal/lightui/sysmon.go:55
 #: internal/shell/launcher_actions.go:45
-#: internal/termui/menubar.go:27
-#: internal/ui/dock.go:555
+#: internal/termui/menubar.go:34
+#: internal/ui/dock.go:543
 #: internal/ui/portal_ask.go:80
 msgid "Quit"
 msgstr "退出"
@@ -10329,8 +10323,8 @@ msgstr "有線"
 
 #: internal/lightui/sysmon.go:1043
 #: ui/control.ui:273
-#: ui/settings.ui:5651
-#: ui/settings.ui:5727
+#: ui/settings.ui:5315
+#: ui/settings.ui:5391
 msgid "Wi-Fi"
 msgstr "Wi-Fi"
 
@@ -10618,7 +10612,7 @@ msgstr "使用中"
 #: internal/ui/settings_keyring.go:572
 #: internal/ui/shortcuts.go:173
 #: internal/ui/voice_page.go:302
-#: ui/settings.ui:750
+#: ui/settings.ui:638
 msgid "None"
 msgstr "無"
 
@@ -10919,7 +10913,7 @@ msgid "A folder with an app.toml; it is copied."
 msgstr "含有 app.toml 的資料夾；會被複製。"
 
 #: internal/lightui/workshop_manager.go:90
-#: ui/settings.ui:1086
+#: ui/settings.ui:974
 msgid "Choose…"
 msgstr "選擇…"
 
@@ -11351,7 +11345,7 @@ msgstr ""
 #: internal/mailui/reader.go:826
 #: ui/gpg.ui:755
 #: ui/gpg.ui:999
-#: ui/settings.ui:7107
+#: ui/settings.ui:6771
 msgid "Save…"
 msgstr "儲存…"
 
@@ -11389,8 +11383,7 @@ msgid "Mark All Read"
 msgstr ""
 
 #: internal/mailui/menubar.go:53
-#: internal/termui/menubar.go:34
-#: internal/ui/appmenu_packs.go:98
+#: internal/termui/menubar.go:45
 msgid "Help"
 msgstr ""
 
@@ -12658,8 +12651,8 @@ msgstr "這台電腦沒有用於配對的身分：%v"
 
 #: internal/remoteui/window.go:174
 #: internal/shell/card.go:80
-#: ui/settings.ui:5697
-#: ui/settings.ui:5978
+#: ui/settings.ui:5361
+#: ui/settings.ui:5642
 msgid "This computer"
 msgstr "這台電腦"
 
@@ -13011,7 +13004,7 @@ msgid "%d thr"
 msgstr "%d 執行緒"
 
 #: internal/shell/cardterm.go:136
-#: internal/ui/settings.go:660
+#: internal/ui/settings.go:599
 msgid "Desktop"
 msgstr "桌面"
 
@@ -13020,7 +13013,7 @@ msgid "Lock Screen"
 msgstr "鎖定螢幕"
 
 #: internal/shell/commands.go:27
-#: ui/settings.ui:4609
+#: ui/settings.ui:4273
 msgid "Lock now"
 msgstr "立即鎖定"
 
@@ -13034,7 +13027,7 @@ msgstr "暫停，先鎖定"
 
 #: internal/shell/commands.go:29
 #: internal/termui/restart.go:44
-#: internal/ui/control.go:541
+#: internal/ui/control.go:522
 #: ui/control.ui:168
 msgid "Restart"
 msgstr "重新啟動"
@@ -13195,8 +13188,6 @@ msgid "Toggle Fullscreen"
 msgstr "切換全螢幕"
 
 #: internal/shell/commands.go:49
-#: internal/ui/appmenu_packs.go:49
-#: internal/ui/appmenu_packs.go:97
 msgid "Center Window"
 msgstr "視窗置中"
 
@@ -13261,7 +13252,7 @@ msgstr "尋找應用程式、視窗和答案"
 
 #: internal/shell/dock.go:313
 #: internal/ui/screenshot.go:1144
-#: ui/settings.ui:2438
+#: ui/settings.ui:2102
 msgid "Screenshot"
 msgstr "螢幕截圖"
 
@@ -13366,22 +13357,22 @@ msgid "%s · workspace %s"
 msgstr "%[1]s·工作區%[2]s"
 
 #: internal/shell/launcher_actions.go:33
-#: internal/ui/dock.go:546
+#: internal/ui/dock.go:534
 msgid "New Window"
 msgstr "新視窗"
 
 #: internal/shell/launcher_actions.go:39
-#: internal/ui/dock.go:549
+#: internal/ui/dock.go:537
 msgid "Remove from Dock"
 msgstr "從 Dock 移除"
 
 #: internal/shell/launcher_actions.go:41
-#: internal/ui/dock.go:551
+#: internal/ui/dock.go:539
 msgid "Keep in Dock"
 msgstr "釘選至 Dock"
 
 #: internal/shell/launcher_actions.go:47
-#: internal/ui/dock.go:557
+#: internal/ui/dock.go:545
 msgid "Quit (%d windows)"
 msgstr "退出(%d視窗)"
 
@@ -13434,13 +13425,13 @@ msgid "Performance"
 msgstr "性能"
 
 #: internal/shell/power.go:24
-#: internal/ui/control.go:539
+#: internal/ui/control.go:520
 #: ui/control.ui:120
 msgid "Suspend"
 msgstr "暫停"
 
 #: internal/shell/power.go:26
-#: internal/ui/control.go:540
+#: internal/ui/control.go:521
 #: ui/control.ui:144
 msgid "Hibernate"
 msgstr "休眠"
@@ -13919,7 +13910,7 @@ msgid "Key panel"
 msgstr "按鍵面板"
 
 #: internal/term/web/strings.go:63
-#: ui/settings.ui:6299
+#: ui/settings.ui:5963
 msgid "Keyboard"
 msgstr "鍵盤"
 
@@ -14024,7 +14015,7 @@ msgid "Session %d"
 msgstr "工作階段 %d"
 
 #: internal/term/web/strings.go:97
-#: internal/termui/menubar.go:30
+#: internal/termui/menubar.go:41
 #: internal/termui/prefs.go:181
 msgid "Shell"
 msgstr "Shell"
@@ -14109,7 +14100,7 @@ msgid "Wait, let me think."
 msgstr ""
 
 #: internal/term/web/strings.go:122
-#: ui/settings.ui:1495
+#: ui/settings.ui:1340
 msgid "Workspaces"
 msgstr "工作區"
 
@@ -14509,8 +14500,8 @@ msgstr "讓 bash、zsh 和 fish 標記提示字元，以便記住命令"
 
 #: internal/termui/prefs.go:184
 #: internal/ui/notify.go:324
-#: ui/bar.ui:193
-#: ui/settings.ui:3848
+#: ui/bar.ui:175
+#: ui/settings.ui:3512
 msgid "Notifications"
 msgstr "通知"
 
@@ -14703,32 +14694,6 @@ msgstr "鬧鐘 · %02d:%02d"
 #: internal/ui/alarms.go:108
 msgid "Snooze"
 msgstr "稍後提醒"
-
-#: internal/ui/appmenu_packs.go:48
-#: internal/ui/appmenu_packs.go:96
-msgid "Float"
-msgstr ""
-
-#: internal/ui/appmenu_packs.go:90
-msgid "Quit %s"
-msgstr ""
-
-#: internal/ui/appmenu_packs.go:92
-msgid "Copy Window Title"
-msgstr ""
-
-#: internal/ui/appmenu_packs.go:93
-msgid "Copy Window Class"
-msgstr ""
-
-#: internal/ui/appmenu_packs.go:99
-#: internal/ui/appmenu_packs.go:118
-msgid "About %s"
-msgstr ""
-
-#: internal/ui/appmenu_packs.go:130
-msgid "Process %d"
-msgstr ""
 
 #: internal/ui/askpass.go:80
 msgid "password: want one JSON request"
@@ -14931,11 +14896,11 @@ msgstr "為截圖已隱藏。"
 msgid "The passphrases do not match."
 msgstr "密碼短語不符。"
 
-#: internal/ui/bar.go:587
+#: internal/ui/bar.go:499
 msgid "Workspace %s"
 msgstr "工作空間%s"
 
-#: internal/ui/bar.go:600
+#: internal/ui/bar.go:512
 msgid "WORKSPACE"
 msgstr "工作區"
 
@@ -14962,7 +14927,7 @@ msgstr "搜尋剪貼簿歷史"
 
 #: internal/ui/clipboard.go:360
 #: ui/connect.ui:728
-#: ui/settings.ui:4112
+#: ui/settings.ui:3776
 msgid "Clipboard"
 msgstr "剪貼簿"
 
@@ -15012,37 +14977,37 @@ msgstr "[複製於 %s，來自 %s]"
 msgid "[COPIED %s]"
 msgstr "[複製於 %s]"
 
-#: internal/ui/control.go:318
+#: internal/ui/control.go:299
 msgid "inua control center"
 msgstr "inua控制中心"
 
-#: internal/ui/control.go:540
+#: internal/ui/control.go:521
 msgid "Hibernate?"
 msgstr "休眠？"
 
-#: internal/ui/control.go:541
+#: internal/ui/control.go:522
 msgid "Restart?"
 msgstr "重新啟動？"
 
-#: internal/ui/control.go:542
+#: internal/ui/control.go:523
 #: ui/control.ui:192
 msgid "Shut down"
 msgstr "關閉"
 
-#: internal/ui/control.go:542
+#: internal/ui/control.go:523
 msgid "Shut down?"
 msgstr "確定關機？"
 
-#: internal/ui/control.go:543
+#: internal/ui/control.go:524
 #: ui/control.ui:216
 msgid "Log out"
 msgstr "退出"
 
-#: internal/ui/control.go:543
+#: internal/ui/control.go:524
 msgid "Log out?"
 msgstr "確定登出？"
 
-#: internal/ui/control.go:580
+#: internal/ui/control.go:561
 msgid "%s is busy. %s"
 msgstr ""
 
@@ -15065,13 +15030,13 @@ msgstr "範圍內沒有網路。"
 #: internal/ui/control_detail.go:182
 #: internal/ui/settings_bluetooth.go:224
 #: internal/ui/settings_wifi.go:305
-#: ui/settings.ui:5892
-#: ui/settings.ui:6121
+#: ui/settings.ui:5556
+#: ui/settings.ui:5785
 msgid "Searching…"
 msgstr "正在搜尋…"
 
 #: internal/ui/control_detail.go:214
-#: internal/ui/settings.go:659
+#: internal/ui/settings.go:598
 msgid "Devices"
 msgstr "裝置"
 
@@ -15090,10 +15055,10 @@ msgid "No devices paired yet"
 msgstr "還沒有配對的裝置"
 
 #: internal/ui/drawer.go:218
-#: internal/ui/settings.go:661
+#: internal/ui/settings.go:600
 #: internal/ui/widgets.go:586
 #: ui/settings.ui:181
-#: ui/settings.ui:2577
+#: ui/settings.ui:2241
 msgid "Apps"
 msgstr "應用程式"
 
@@ -15145,7 +15110,7 @@ msgstr "hyprland.lua 在載入 inua.lua 之後又設定了這些,會蓋過 inua 
 msgid "hyprland.conf sets these again after loading inua.conf, which wins over inua: %s. Move the source line below them."
 msgstr "hyprland.conf 在載入 inua.conf 後再次設定這些,這贏得了 inua: %s。將原始程式碼行移到它們下方。"
 
-#: internal/ui/launcher.go:562
+#: internal/ui/launcher.go:561
 msgid "inua launcher"
 msgstr "inua發射器"
 
@@ -15260,19 +15225,19 @@ msgstr "沒有匹配項"
 msgid "＋  New workspace"
 msgstr "＋  新工作區"
 
-#: internal/ui/overview.go:982
+#: internal/ui/overview.go:980
 msgid "Filter by window title or app"
 msgstr "按視窗標題或應用程式過濾"
 
-#: internal/ui/overview.go:998
+#: internal/ui/overview.go:996
 msgid "TYPE TO FILTER WINDOWS"
 msgstr "輸入以篩選視窗"
 
-#: internal/ui/overview.go:1011
+#: internal/ui/overview.go:1009
 msgid "Type or / to filter windows   Esc · clear / close   Arrows / Tab · select   Middle click · close   Ctrl+Shift+X · kill   Drag · move"
 msgstr "鍵入 或 / 來過濾視窗 Esc · 清除/關閉箭頭/ Tab · 選擇中按一下 · 關閉 Ctrl+Shift+X · 刪除 拖曳 · 移動"
 
-#: internal/ui/overview.go:1056
+#: internal/ui/overview.go:1053
 msgid "inua overview"
 msgstr "inua概述"
 
@@ -15306,8 +15271,8 @@ msgid "Search every entry"
 msgstr "搜尋所有項目"
 
 #: internal/ui/passwords.go:283
-#: ui/bar.ui:164
-#: ui/settings.ui:1770
+#: ui/bar.ui:154
+#: ui/settings.ui:1571
 msgid "Passwords"
 msgstr "密碼"
 
@@ -15467,127 +15432,119 @@ msgstr "螢幕截圖已複製"
 msgid "Screenshot taken"
 msgstr "截圖"
 
-#: internal/ui/settings.go:361
+#: internal/ui/settings.go:335
 msgid "Not restarted: %s"
 msgstr "未重新啟動：%s"
 
-#: internal/ui/settings.go:386
-#: internal/ui/settings.go:393
-#: internal/ui/settings.go:400
-#: internal/ui/settings.go:877
-#: internal/ui/settings.go:879
-#: internal/ui/settings.go:881
+#: internal/ui/settings.go:360
+#: internal/ui/settings.go:806
 msgid "%d px"
 msgstr "%d 像素"
 
-#: internal/ui/settings.go:498
-msgid "Follow interface language"
-msgstr ""
-
-#: internal/ui/settings.go:658
+#: internal/ui/settings.go:597
 msgid "Connections"
 msgstr "連線"
 
-#: internal/ui/settings.go:773
+#: internal/ui/settings.go:710
 msgid "%s · yours: right-click for more"
 msgstr "%s · 你的主題：按右鍵檢視更多"
 
-#: internal/ui/settings.go:790
+#: internal/ui/settings.go:727
 msgid "A CSS file of @define-color lines, kept in themes beside config.toml"
 msgstr "由 @define-color 行組成的 CSS 檔案，放在 config.toml 旁的 themes 中"
 
-#: internal/ui/settings.go:799
+#: internal/ui/settings.go:736
 msgid "Add Theme…"
 msgstr "新增主題…"
 
-#: internal/ui/settings.go:916
+#: internal/ui/settings.go:841
 msgid "As the bar (%s)"
 msgstr "同欄（%s）"
 
-#: internal/ui/settings.go:933
+#: internal/ui/settings.go:858
 msgid "inua objects"
 msgstr "inua objects"
 
-#: internal/ui/settings.go:934
+#: internal/ui/settings.go:859
 msgid "inua objects soft"
 msgstr "inua objects soft"
 
-#: internal/ui/settings.go:935
+#: internal/ui/settings.go:860
 msgid "inua objects flat"
 msgstr "inua objects flat"
 
-#: internal/ui/settings.go:943
+#: internal/ui/settings.go:868
 msgid "Phosphor"
 msgstr "Phosphor"
 
-#: internal/ui/settings.go:943
-#: internal/ui/settings.go:944
+#: internal/ui/settings.go:868
+#: internal/ui/settings.go:869
 msgid "System theme"
 msgstr "系統主題"
 
-#: internal/ui/settings.go:944
-#: ui/settings.ui:700
+#: internal/ui/settings.go:869
+#: ui/settings.ui:588
 msgid "As the app style"
 msgstr "跟隨應用程式風格"
 
-#: internal/ui/settings.go:1038
+#: internal/ui/settings.go:963
 msgid "%s (%s, %s) · %s"
 msgstr "%s(%s,%s)· %s"
 
-#: internal/ui/settings.go:1040
+#: internal/ui/settings.go:965
 msgid "%d text"
 msgid_plural "%d texts"
 msgstr[0] "%d 段文字"
 
-#: internal/ui/settings.go:1041
+#: internal/ui/settings.go:966
 msgid "%d image"
 msgid_plural "%d images"
 msgstr[0] "%d 張圖片"
 
-#: internal/ui/settings.go:1042
+#: internal/ui/settings.go:967
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: internal/ui/settings.go:1121
+#: internal/ui/settings.go:1046
 #: internal/ui/settings_apps.go:168
 #: internal/ui/settings_card.go:288
 #: internal/ui/settings_portals.go:177
 msgid "Not saved: %s"
 msgstr "未儲存：%s"
 
-#: internal/ui/settings.go:1147
+#: internal/ui/settings.go:1072
 msgid "Choose a wallpaper"
 msgstr "選擇壁紙"
 
-#: internal/ui/settings.go:1189
+#: internal/ui/settings.go:1114
 msgid "Off: another notification daemon can show them"
 msgstr "關閉：另一個通知守護程式可以顯示它們"
 
-#: internal/ui/settings.go:1191
+#: internal/ui/settings.go:1116
 msgid "Banners, then the notification center (the bell in the bar, or Super+N)"
 msgstr "先顯示橫幅，再存入通知中心（頂欄鈴鐺或 Super+N）"
 
-#: internal/ui/settings.go:1193
+#: internal/ui/settings.go:1118
 msgid "Waiting: another notification daemon is running"
 msgstr "等待：另一個通知守護程式正在執行"
 
-#: internal/ui/settings.go:1214
+#: internal/ui/settings.go:1137
 msgid "Nothing pinned"
 msgstr "尚未釘選應用程式"
 
-#: internal/ui/settings.go:1230
+#: internal/ui/settings.go:1153
 msgid "%s (not installed)"
 msgstr "%s(未安裝)"
 
-#: internal/ui/settings.go:1243
+#: internal/ui/settings.go:1166
 msgid "Move earlier"
 msgstr "向前移動"
 
-#: internal/ui/settings.go:1244
+#: internal/ui/settings.go:1167
 msgid "Move later"
 msgstr "向後移動"
 
-#: internal/ui/settings.go:1245
+#: internal/ui/settings.go:1168
 msgid "Remove from the dock"
 msgstr "從 Dock 移除"
 
@@ -15657,7 +15614,7 @@ msgid "Minimal"
 msgstr "最小"
 
 #: internal/ui/settings_ai.go:100
-#: ui/settings.ui:2236
+#: ui/settings.ui:1900
 msgid "Medium"
 msgstr "中"
 
@@ -15690,7 +15647,7 @@ msgid "Hide token"
 msgstr "隱藏式令牌"
 
 #: internal/ui/settings_ai.go:248
-#: ui/settings.ui:3462
+#: ui/settings.ui:3126
 msgid "Create token"
 msgstr "建立令牌"
 
@@ -16133,7 +16090,7 @@ msgid "What the next login runs inua on"
 msgstr ""
 
 #: internal/ui/settings_compositor.go:77
-#: ui/settings.ui:6994
+#: ui/settings.ui:6658
 msgid "Compositor"
 msgstr ""
 
@@ -16390,7 +16347,7 @@ msgid "No displays"
 msgstr "沒有顯示器"
 
 #: internal/ui/settings_displays.go:212
-#: ui/settings.ui:6161
+#: ui/settings.ui:5825
 msgid "Displays"
 msgstr "顯示器"
 
@@ -16436,7 +16393,7 @@ msgid "Where it is (%s, %s)"
 msgstr "目前位置 (%s, %s)"
 
 #: internal/ui/settings_displays.go:323
-#: ui/settings.ui:2128
+#: ui/settings.ui:1792
 msgid "Position"
 msgstr "位置"
 
@@ -16450,8 +16407,8 @@ msgid "Mirror"
 msgstr "鏡像"
 
 #: internal/ui/settings_displays.go:347
-#: ui/settings.ui:6559
-#: ui/settings.ui:6826
+#: ui/settings.ui:6223
+#: ui/settings.ui:6490
 msgid "Use hyprland.conf"
 msgstr "使用hyprland.conf"
 
@@ -16525,7 +16482,7 @@ msgid "Added %s."
 msgstr "已新增 %s。"
 
 #: internal/ui/settings_keyring.go:270
-#: ui/settings.ui:5286
+#: ui/settings.ui:4950
 msgid "<span alpha='55%'>[</span>READ<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>讀取<span alpha='55%'>]</span>"
 
@@ -16654,7 +16611,7 @@ msgid "The record of reads cannot be read: %s"
 msgstr "無法讀取讀取紀錄：%s"
 
 #: internal/ui/settings_keyring.go:424
-#: ui/settings.ui:4925
+#: ui/settings.ui:4589
 msgid "No app has read a secret yet."
 msgstr "還沒有應用程式讀取過密鑰。"
 
@@ -17217,7 +17174,7 @@ msgid "%s Upgrade with: inua upgrade"
 msgstr "%s 升級方式:inua 升級"
 
 #: internal/ui/updates.go:99
-#: ui/settings.ui:7253
+#: ui/settings.ui:6917
 msgid "Upgrade"
 msgstr "升級"
 
@@ -18143,7 +18100,7 @@ msgid "Network device (TUN)"
 msgstr "網路裝置 (TUN)"
 
 #: internal/vmui/window.go:1246
-#: ui/settings.ui:4552
+#: ui/settings.ui:4216
 msgid "Secret Service"
 msgstr "Secret Service"
 
@@ -18220,7 +18177,7 @@ msgid "BSD"
 msgstr "BSD"
 
 #: internal/vmui/window.go:1515
-#: ui/settings.ui:2578
+#: ui/settings.ui:2242
 msgid "Windows"
 msgstr "視窗"
 
@@ -18611,11 +18568,11 @@ msgstr "詢問，或告訴我該怎麼做"
 msgid "Discard the recording"
 msgstr "放棄錄音"
 
-#: ui/bar.ui:133
+#: ui/bar.ui:123
 msgid "Stop recording"
 msgstr "停止錄製"
 
-#: ui/bar.ui:238
+#: ui/bar.ui:220
 msgid "Control Center"
 msgstr "控制中心"
 
@@ -18835,8 +18792,8 @@ msgid "Wi-Fi networks"
 msgstr "Wi-Fi 網路"
 
 #: ui/control.ui:346
-#: ui/settings.ui:5932
-#: ui/settings.ui:6008
+#: ui/settings.ui:5596
+#: ui/settings.ui:5672
 msgid "Bluetooth"
 msgstr "藍牙"
 
@@ -18857,7 +18814,7 @@ msgid "Display"
 msgstr "顯示"
 
 #: ui/control.ui:666
-#: ui/settings.ui:6926
+#: ui/settings.ui:6590
 msgid "Sound"
 msgstr "聲音"
 
@@ -19512,7 +19469,7 @@ msgid "The machine shows its desktop at this size."
 msgstr "那台機器以此尺寸顯示桌面。"
 
 #: ui/remote.ui:782
-#: ui/settings.ui:1518
+#: ui/settings.ui:1363
 msgid "This monitor's"
 msgstr "該顯示器的"
 
@@ -19620,1129 +19577,1072 @@ msgstr "透明度"
 msgid "Corner radius"
 msgstr "圓角半徑"
 
-#: ui/settings.ui:421
-#: ui/settings.ui:2221
-msgid "Icon size"
-msgstr "圖示尺寸"
-
-#: ui/settings.ui:477
-msgid "Icon spacing"
-msgstr ""
-
-#: ui/settings.ui:530
+#: ui/settings.ui:418
 msgid "Animations"
 msgstr "動畫"
 
-#: ui/settings.ui:539
+#: ui/settings.ui:427
 msgid "Motion in inua and the compositor; off makes changes immediate"
 msgstr "inua 與合成器的動效；關閉後變化立即生效"
 
-#: ui/settings.ui:584
+#: ui/settings.ui:472
 msgid "<span alpha='55%'>[</span>ICONS<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>圖示<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:592
+#: ui/settings.ui:480
 msgid "The shell's own, and those of apps and files"
 msgstr "Shell 自身的，以及應用程式和檔案的"
 
-#: ui/settings.ui:622
+#: ui/settings.ui:510
 msgid "App style"
 msgstr "應用程式風格"
 
-#: ui/settings.ui:631
+#: ui/settings.ui:519
 msgid "How inua draws apps: its own, and the other apps it draws"
 msgstr "inua 繪製應用程式的方式：內建的和它繪製的其他應用程式"
 
-#: ui/settings.ui:646
+#: ui/settings.ui:534
 msgid "Every app of the style in use"
 msgstr "目前風格的全部應用程式"
 
-#: ui/settings.ui:677
+#: ui/settings.ui:565
 msgid "Other apps"
 msgstr "其他應用程式"
 
-#: ui/settings.ui:686
+#: ui/settings.ui:574
 msgid "Apps that aren't inua's, and files: as the app style, the system's or an installed theme"
 msgstr "非 inua 的應用程式和檔案：跟隨應用程式風格、系統的或已安裝的主題"
 
-#: ui/settings.ui:724
+#: ui/settings.ui:612
 msgid "App icon shape"
 msgstr "應用圖示形狀"
 
-#: ui/settings.ui:733
+#: ui/settings.ui:621
 msgid "The dock, its drawer and the launcher: a continuous-corner square, a circle, a pebble, or the icon as its file is"
 msgstr "塢站、其抽屜和啟動器中的圖示：連續圓角方形、圓形、鵝卵石形，或保持檔案原樣"
 
-#: ui/settings.ui:747
+#: ui/settings.ui:635
 msgid "Rounded square"
 msgstr "圓角方形"
 
-#: ui/settings.ui:748
+#: ui/settings.ui:636
 msgid "Circle"
 msgstr "圓形"
 
-#: ui/settings.ui:749
+#: ui/settings.ui:637
 msgid "Pebble"
 msgstr "鵝卵石"
 
-#: ui/settings.ui:774
+#: ui/settings.ui:662
 msgid "Line icons"
 msgstr "線條圖示"
 
-#: ui/settings.ui:783
+#: ui/settings.ui:671
 msgid "The bar, the settings and inua's apps: Phosphor's, the system's, an installed theme or one of yours"
 msgstr "工具列、設定和 inua 的應用程式：Phosphor、系統的、已安裝的主題或你自己的"
 
-#: ui/settings.ui:804
+#: ui/settings.ui:692
 msgid "Every icon of the set in use"
 msgstr "目前圖示集的全部圖示"
 
-#: ui/settings.ui:839
+#: ui/settings.ui:727
 msgid "<span alpha='55%'>[</span>LANGUAGE<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>語言<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:847
+#: ui/settings.ui:735
 msgid "The shell, settings and light apps"
 msgstr "外殼、設定和輕應用程式"
 
-#: ui/settings.ui:877
+#: ui/settings.ui:765
 msgid "Language"
 msgstr "語言"
 
-#: ui/settings.ui:886
+#: ui/settings.ui:774
 msgid "Programs use it when they start"
 msgstr "程式啟動時套用"
 
-#: ui/settings.ui:900
+#: ui/settings.ui:788
 msgid "Same as the system"
 msgstr "與系統相同"
 
-#: ui/settings.ui:927
+#: ui/settings.ui:815
 msgid "Restart the shell to use it now; open apps change when you open them again."
 msgstr "重新啟動外殼即可立即套用；已開啟的應用程式在重新開啟後切換。"
 
-#: ui/settings.ui:975
+#: ui/settings.ui:863
 msgid "<span alpha='55%'>[</span>PICTURE<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>圖片<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:983
+#: ui/settings.ui:871
 msgid "Behind your windows, on every monitor"
 msgstr "在每台顯示器的視窗後方"
 
-#: ui/settings.ui:1013
+#: ui/settings.ui:901
 msgid "inua draws the wallpaper"
 msgstr ""
 
-#: ui/settings.ui:1022
+#: ui/settings.ui:910
 msgid "A new picture each day, drawn for your theme: a sunset, the cosmos, a cat watching the moon …"
 msgstr ""
 
-#: ui/settings.ui:1037
+#: ui/settings.ui:925
 msgid "Draw another"
 msgstr ""
 
-#: ui/settings.ui:1066
+#: ui/settings.ui:954
 msgid "Image"
 msgstr "影像"
 
-#: ui/settings.ui:1077
+#: ui/settings.ui:965
 msgid "none: a fine texture"
 msgstr "無圖片：顯示細紋理背景"
 
-#: ui/settings.ui:1096
+#: ui/settings.ui:984
 msgid "No image"
 msgstr "無影像"
 
-#: ui/settings.ui:1122
+#: ui/settings.ui:1010
 msgid "Fit"
 msgstr "符合視窗"
 
-#: ui/settings.ui:1131
+#: ui/settings.ui:1019
 msgid "How the picture fills each monitor"
 msgstr "圖片如何填滿每個顯示器"
 
-#: ui/settings.ui:1145
+#: ui/settings.ui:1033
 msgid "Cover: fill, cropping"
 msgstr "填滿並裁切"
 
-#: ui/settings.ui:1146
+#: ui/settings.ui:1034
 msgid "Contain: show it all"
 msgstr "完整顯示"
 
-#: ui/settings.ui:1147
+#: ui/settings.ui:1035
 msgid "Tile: repeat"
 msgstr "平鋪：重複"
 
-#: ui/settings.ui:1148
+#: ui/settings.ui:1036
 msgid "Center: actual size"
 msgstr "置中，原始大小"
 
-#: ui/settings.ui:1171
+#: ui/settings.ui:1059
 msgid "Colour"
 msgstr "顏色"
 
-#: ui/settings.ui:1184
+#: ui/settings.ui:1072
 msgid "theme"
 msgstr "主題"
 
-#: ui/settings.ui:1192
+#: ui/settings.ui:1080
 msgid "#rrggbb, shown around the image. Empty: the theme's ground"
 msgstr "#rrggbb，顯示在影像周圍。空：主題的地面"
 
-#: ui/settings.ui:1227
+#: ui/settings.ui:1115
 msgid "Bar & Dock"
 msgstr "頂欄與 Dock"
 
-#: ui/settings.ui:1265
+#: ui/settings.ui:1153
 msgid "<span alpha='55%'>[</span>BAR<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>頂欄<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:1273
+#: ui/settings.ui:1161
 msgid "The bar along the top of each monitor"
 msgstr "每個顯示器頂部的欄"
 
-#: ui/settings.ui:1303
+#: ui/settings.ui:1191
 msgid "Show the bar"
 msgstr "顯示欄"
 
-#: ui/settings.ui:1312
+#: ui/settings.ui:1200
 msgid "Off: Super+Space, Super+A and Super+N still open the launcher, control center and notifications"
 msgstr "關閉：Super+Space、Super+A和Super+N仍然打開啟動器、控制中心和通知"
 
-#: ui/settings.ui:1346
+#: ui/settings.ui:1234
 msgid "Bar spacing"
 msgstr "頂欄間距"
 
-#: ui/settings.ui:1355
+#: ui/settings.ui:1243
 msgid "Choose the standard or compact bar layout"
 msgstr "選擇標準或緊湊的頂欄版面"
 
-#: ui/settings.ui:1369
+#: ui/settings.ui:1257
 msgid "Default"
 msgstr "預設"
 
-#: ui/settings.ui:1370
+#: ui/settings.ui:1258
 msgid "Compact"
 msgstr "緊湊"
 
-#: ui/settings.ui:1426
+#: ui/settings.ui:1314
 msgid "strftime: %a weekday, %b month, %-d day, %H:%M time"
 msgstr "strftime: %a 工作日、%b 月份、%-d 日期、%H:%M 時間"
 
-#: ui/settings.ui:1452
-msgid "Date language"
-msgstr ""
-
-#: ui/settings.ui:1461
-msgid "The clock's weekday and month names"
-msgstr ""
-
-#: ui/settings.ui:1504
+#: ui/settings.ui:1349
 msgid "Which workspaces each bar shows"
 msgstr "每個條顯示哪些工作區"
 
-#: ui/settings.ui:1519
+#: ui/settings.ui:1364
 msgid "All monitors'"
 msgstr "所有監視器"
 
-#: ui/settings.ui:1520
-msgid "Do not show"
-msgstr ""
-
-#: ui/settings.ui:1547
+#: ui/settings.ui:1391
 msgid "Application in bar"
 msgstr "工具列中的應用程式"
 
-#: ui/settings.ui:1556
+#: ui/settings.ui:1400
 msgid "Show the current application's icon and label"
 msgstr "顯示目前應用程式的圖示和名稱"
 
-#: ui/settings.ui:1590
+#: ui/settings.ui:1434
 msgid "Application label"
 msgstr "應用程式標籤"
 
-#: ui/settings.ui:1599
+#: ui/settings.ui:1443
 msgid "Choose the name shown beside the app icon"
 msgstr "選擇顯示在應用程式圖示旁的名稱"
 
-#: ui/settings.ui:1613
+#: ui/settings.ui:1457
 msgid "Application name"
 msgstr "應用程式名稱"
 
-#: ui/settings.ui:1614
+#: ui/settings.ui:1458
 msgid "Window title"
 msgstr "視窗標題"
 
-#: ui/settings.ui:1641
+#: ui/settings.ui:1485
 msgid "Transparent on empty workspaces"
 msgstr "空工作區透明"
 
-#: ui/settings.ui:1650
+#: ui/settings.ui:1494
 msgid "The bar panel is transparent when the current workspace has no windows"
 msgstr "目前工作區沒有視窗時，頂欄面板會變為透明"
 
-#: ui/settings.ui:1684
-msgid "Global menu"
-msgstr ""
-
-#: ui/settings.ui:1693
-msgid "The focused application's menus in the bar, when it publishes them"
-msgstr ""
-
-#: ui/settings.ui:1727
+#: ui/settings.ui:1528
 msgid "Tray icons"
 msgstr "托盤圖標"
 
-#: ui/settings.ui:1736
+#: ui/settings.ui:1537
 msgid "Status icons from apps"
 msgstr "來自應用程式的狀態圖標"
 
-#: ui/settings.ui:1779
+#: ui/settings.ui:1580
 msgid "Search the password store and copy from it, when there is one"
 msgstr "有密碼庫時，搜尋並從中複製"
 
-#: ui/settings.ui:1824
+#: ui/settings.ui:1625
 msgid "<span alpha='55%'>[</span>DOCK<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>Dock<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:1832
+#: ui/settings.ui:1633
 msgid "Apps along the chosen screen edge on each monitor"
 msgstr "沿著每台監視器上選定的螢幕邊緣的應用程式"
 
-#: ui/settings.ui:1862
+#: ui/settings.ui:1663
 msgid "Show the dock"
 msgstr "顯示塢站"
 
-#: ui/settings.ui:1871
+#: ui/settings.ui:1672
 msgid "Pinned apps, then the others with open windows"
 msgstr "固定的應用程序，然後是其他開啟的窗口"
 
-#: ui/settings.ui:1905
+#: ui/settings.ui:1706
 msgid "Show during workspace overview"
 msgstr "在工作區總覽中顯示"
 
-#: ui/settings.ui:1914
+#: ui/settings.ui:1715
 msgid "Keep the dock visible above the overview"
 msgstr "在總覽上方保持 Dock 可見"
 
-#: ui/settings.ui:1948
-msgid "Scope"
-msgstr ""
-
-#: ui/settings.ui:1957
-msgid "With several displays: this display's windows, or every window"
-msgstr ""
-
-#: ui/settings.ui:1971
-msgid "This display's"
-msgstr ""
-
-#: ui/settings.ui:1972
-msgid "All displays"
-msgstr ""
-
-#: ui/settings.ui:1999
-msgid "Overview hints"
-msgstr ""
-
-#: ui/settings.ui:2008
-msgid "The line under the cards: the controls, and the window under the pointer"
-msgstr ""
-
-#: ui/settings.ui:2042
-msgid "Overview shortcut"
-msgstr ""
-
-#: ui/settings.ui:2051
-msgid "The control shortcut in the overview: a new workspace with the launcher, and back"
-msgstr ""
-
-#: ui/settings.ui:2085
+#: ui/settings.ui:1749
 msgid "Hide automatically"
 msgstr "自動隱藏"
 
-#: ui/settings.ui:2094
+#: ui/settings.ui:1758
 msgid "Comes back when the pointer reaches the dock's screen edge"
 msgstr "當指標到達擴充座的螢幕邊緣時返回"
 
-#: ui/settings.ui:2137
+#: ui/settings.ui:1801
 msgid "Choose a screen edge for the dock"
 msgstr "選擇擴充座的螢幕邊緣"
 
-#: ui/settings.ui:2151
+#: ui/settings.ui:1815
 msgid "Bottom"
 msgstr "底部"
 
-#: ui/settings.ui:2152
+#: ui/settings.ui:1816
 msgid "Top"
 msgstr "頂部"
 
-#: ui/settings.ui:2153
+#: ui/settings.ui:1817
 msgid "Left"
 msgstr "左"
 
-#: ui/settings.ui:2154
+#: ui/settings.ui:1818
 msgid "Right"
 msgstr "右"
 
-#: ui/settings.ui:2178
+#: ui/settings.ui:1842
 msgid "Remove screen edge gaps"
 msgstr "去除螢幕邊緣間隙"
 
-#: ui/settings.ui:2187
+#: ui/settings.ui:1851
 msgid "Remove the screen-edge margins around the dock and top bar"
 msgstr "移除擴充座和頂欄周圍的螢幕邊緣邊距"
 
-#: ui/settings.ui:2234
+#: ui/settings.ui:1885
+msgid "Icon size"
+msgstr "圖示尺寸"
+
+#: ui/settings.ui:1898
 msgid "Smaller"
 msgstr "較小"
 
-#: ui/settings.ui:2235
+#: ui/settings.ui:1899
 msgid "Small"
 msgstr "小"
 
-#: ui/settings.ui:2237
+#: ui/settings.ui:1901
 msgid "Large"
 msgstr "大號"
 
-#: ui/settings.ui:2264
+#: ui/settings.ui:1928
 msgid "Apps drawer"
 msgstr "應用程式抽屜"
 
-#: ui/settings.ui:2273
+#: ui/settings.ui:1937
 msgid "A button at the end for Clock, Weather, Stocks and Calculator"
 msgstr "末尾的按鈕用於時鐘、天氣、股票和計算器"
 
-#: ui/settings.ui:2318
+#: ui/settings.ui:1982
 msgid "<span alpha='55%'>[</span>PINNED<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>已釘選<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:2326
+#: ui/settings.ui:1990
 msgid "Right-click an app on the dock to keep it there"
 msgstr "右鍵單擊擴充座上的應用程式以將其保留在那裡"
 
-#: ui/settings.ui:2375
+#: ui/settings.ui:2039
 msgid "<span alpha='55%'>[</span>CONTROL CENTER<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>控制中心<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:2383
+#: ui/settings.ui:2047
 msgid "Shell commands behind the control center's buttons"
 msgstr "控制中心鈕後方的 Shell 指令"
 
-#: ui/settings.ui:2516
+#: ui/settings.ui:2180
 msgid "<span alpha='55%'>[</span>LAUNCHER<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>啟動器<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:2524
+#: ui/settings.ui:2188
 msgid "Super+Space finds apps and open windows"
 msgstr "Super+Space尋找應用程式並開啟窗口"
 
-#: ui/settings.ui:2554
+#: ui/settings.ui:2218
 msgid "Opens with"
 msgstr "開頭為"
 
-#: ui/settings.ui:2563
+#: ui/settings.ui:2227
 msgid "What Super+Space shows"
 msgstr "Super+Space 顯示的內容"
 
-#: ui/settings.ui:2611
+#: ui/settings.ui:2275
 msgid "$TERMINAL, then xdg-terminal-exec"
 msgstr "$TERMINAL，然後是 xdg-terminal-exec"
 
-#: ui/settings.ui:2619
+#: ui/settings.ui:2283
 msgid "Runs apps marked Terminal=true"
 msgstr "運行標記為 Terminal=true 的應用程式"
 
-#: ui/settings.ui:2652
+#: ui/settings.ui:2316
 msgid "Default Apps"
 msgstr "預設應用程式"
 
-#: ui/settings.ui:2690
+#: ui/settings.ui:2354
 msgid "<span alpha='55%'>[</span>DEFAULT APPS<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>預設應用程式<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:2698
+#: ui/settings.ui:2362
 msgid "What opens links, folders and files"
 msgstr "用什麼開啟連結、資料夾和檔案"
 
-#: ui/settings.ui:2742
+#: ui/settings.ui:2406
 msgid "<span alpha='55%'>[</span>DIALOGS<span alpha='55%'>]</span>"
 msgstr ""
 
-#: ui/settings.ui:2750
+#: ui/settings.ui:2414
 msgid "What apps show when they ask the desktop"
 msgstr ""
 
-#: ui/settings.ui:2831
+#: ui/settings.ui:2495
 msgid "<span alpha='55%'>[</span>ASSISTANT<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>助理<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:2839
+#: ui/settings.ui:2503
 msgid "An agent with inua's tools, run by Mister Morph"
 msgstr "使用 inua 工具的助理，由 Mister Morph 驅動"
 
-#: ui/settings.ui:2878
+#: ui/settings.ui:2542
 msgid "Ask it from the launcher (the last row, or ? first) or open Assistant"
 msgstr "從啟動器詢問（最後一行，或第一個？）或打開助手"
 
-#: ui/settings.ui:2912
+#: ui/settings.ui:2576
 msgid "Answers with"
 msgstr "回答使用的模型設定"
 
-#: ui/settings.ui:2921
+#: ui/settings.ui:2585
 msgid "The profile asked first; the assistant's window can switch for a conversation"
 msgstr "優先使用的模型設定；可在助理視窗為目前對話切換"
 
-#: ui/settings.ui:2955
+#: ui/settings.ui:2619
 msgid "Quick choices with"
 msgstr "快速選擇使用的模型設定"
 
-#: ui/settings.ui:2964
+#: ui/settings.ui:2628
 msgid "The profile that picks from a fixed list, as an AI player in the games does"
 msgstr "從固定清單中做選擇的設定檔，例如遊戲中的 AI 玩家"
 
-#: ui/settings.ui:2998
+#: ui/settings.ui:2662
 msgid "Voice input with"
 msgstr "語音輸入使用"
 
-#: ui/settings.ui:3040
-#: ui/settings.ui:3624
+#: ui/settings.ui:2704
+#: ui/settings.ui:3288
 msgid "Ask before changes"
 msgstr "變更前詢問"
 
-#: ui/settings.ui:3049
+#: ui/settings.ui:2713
 msgid "Wi-Fi, volume, windows, the clipboard …; power, ending processes and closing windows always ask"
 msgstr "Wi-Fi、音量、視窗、剪貼簿…；電源供應器、結束進程和關閉視窗總是詢問"
 
-#: ui/settings.ui:3083
+#: ui/settings.ui:2747
 msgid "Search the web"
 msgstr "搜尋網絡"
 
-#: ui/settings.ui:3092
+#: ui/settings.ui:2756
 msgid "Mister Morph's web search and page reading"
 msgstr "使用 Mister Morph 搜尋網路和讀取網頁"
 
-#: ui/settings.ui:3126
+#: ui/settings.ui:2790
 msgid "Read files"
 msgstr "讀取文件"
 
-#: ui/settings.ui:3135
+#: ui/settings.ui:2799
 msgid "Any file you can read; asks each time"
 msgstr "您可以讀取的任何文件；每次都會詢問"
 
-#: ui/settings.ui:3169
+#: ui/settings.ui:2833
 msgid "Run commands"
 msgstr "運行指令"
 
-#: ui/settings.ui:3178
+#: ui/settings.ui:2842
 msgid "A shell, as you; asks each time"
 msgstr "以您的身分執行 shell 指令，每次都會詢問"
 
-#: ui/settings.ui:3212
+#: ui/settings.ui:2876
 msgid "As administrator"
 msgstr "以管理員身分"
 
-#: ui/settings.ui:3221
+#: ui/settings.ui:2885
 msgid "A command as root, once you approve it in a dialog that shows it, with your password"
 msgstr "以 root 身分執行命令，前提是你在顯示該命令的對話框中輸入密碼核准"
 
-#: ui/settings.ui:3266
+#: ui/settings.ui:2930
 msgid "<span alpha='55%'>[</span>CONSOLE ENDPOINT<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>控制台端點<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:3274
+#: ui/settings.ui:2938
 msgid "Connect other Consoles to this desktop"
 msgstr "將其他控制台連接到該桌面"
 
-#: ui/settings.ui:3304
-#: ui/settings.ui:3323
+#: ui/settings.ui:2968
+#: ui/settings.ui:2987
 msgid "Serve endpoint"
 msgstr "服務端點"
 
-#: ui/settings.ui:3313
+#: ui/settings.ui:2977
 msgid "Allow Console connections; the assistant keeps running when this is off"
 msgstr "允許控制台連接；關閉時助手會繼續運行"
 
-#: ui/settings.ui:3348
+#: ui/settings.ui:3012
 msgid "Listen address"
 msgstr "監聽地址"
 
-#: ui/settings.ui:3357
+#: ui/settings.ui:3021
 msgid "Host:port; kept when serving is off"
 msgstr "主機：連接埠；服務關閉時保留"
 
-#: ui/settings.ui:3368
+#: ui/settings.ui:3032
 msgid "Use host:port, with a port from 1 to 65535. For IPv6, use [address]:port."
 msgstr "使用主機:端口，端口範圍為1到65535。對於IPv6，使用[位址]:連接埠。"
 
-#: ui/settings.ui:3390
+#: ui/settings.ui:3054
 msgid "Endpoint URL"
 msgstr "端點 URL"
 
-#: ui/settings.ui:3401
+#: ui/settings.ui:3065
 msgid "Set a listen address first"
 msgstr "先設定監聽地址"
 
-#: ui/settings.ui:3410
+#: ui/settings.ui:3074
 msgid "Copy URL"
 msgstr "複製網址"
 
-#: ui/settings.ui:3441
+#: ui/settings.ui:3105
 msgid "Access token"
 msgstr "訪問令牌"
 
-#: ui/settings.ui:3453
+#: ui/settings.ui:3117
 msgid "Token hidden"
 msgstr "令牌隱藏"
 
-#: ui/settings.ui:3471
+#: ui/settings.ui:3135
 msgid "Copy token"
 msgstr "複製令牌"
 
-#: ui/settings.ui:3481
+#: ui/settings.ui:3145
 msgid "Kept in the keyring (pass with inua-keyring). Creating or reading it may ask for your passphrase."
 msgstr "保存在密鑰環中(與inua-keyring一起傳遞)。建立或閱讀它可能會要求您輸入密碼。"
 
-#: ui/settings.ui:3518
+#: ui/settings.ui:3182
 msgid "<span alpha='55%'>[</span>MCP<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>MCP<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:3526
+#: ui/settings.ui:3190
 msgid "Let AI agents on this computer use inua's tools"
 msgstr "讓這台電腦上的 AI 代理使用 inua 的工具"
 
-#: ui/settings.ui:3556
-#: ui/settings.ui:3575
+#: ui/settings.ui:3220
+#: ui/settings.ui:3239
 msgid "MCP server"
 msgstr "MCP 伺服器"
 
-#: ui/settings.ui:3565
+#: ui/settings.ui:3229
 msgid "Agents such as Claude Code or Codex see the windows, open apps, change settings and more, through inua mcp. The assistant uses these tools either way."
 msgstr "Claude Code、Codex 等代理可透過 inua mcp 查看視窗、開啟應用程式、變更設定等。無論開關如何，助理都會使用這些工具。"
 
-#: ui/settings.ui:3600
+#: ui/settings.ui:3264
 msgid "What agents may do"
 msgstr "代理可以做什麼"
 
-#: ui/settings.ui:3609
+#: ui/settings.ui:3273
 msgid "Closing windows, ending processes, power, the clipboard and notifications always ask"
 msgstr "關閉視窗、結束程序、電源、剪貼簿和通知一律會詢問"
 
-#: ui/settings.ui:3623
+#: ui/settings.ui:3287
 msgid "Look only"
 msgstr "只能查看"
 
-#: ui/settings.ui:3625
+#: ui/settings.ui:3289
 msgid "Change without asking"
 msgstr "無須詢問即可變更"
 
-#: ui/settings.ui:3648
+#: ui/settings.ui:3312
 msgid "Connect an agent"
 msgstr "連線代理"
 
-#: ui/settings.ui:3678
+#: ui/settings.ui:3342
 msgid "Other agents: a stdio server that runs inua mcp. Each call is recorded; asking happens in inua's dialog."
 msgstr "其他代理：一個執行 inua mcp 的 stdio 伺服器。每次呼叫都會記錄；詢問在 inua 的對話框中進行。"
 
-#: ui/settings.ui:3715
+#: ui/settings.ui:3379
 msgid "<span alpha='55%'>[</span>PROFILES<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>模型設定<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:3723
+#: ui/settings.ui:3387
 msgid "The models it can use; fallbacks answer when the first fails"
 msgstr "可使用的模型；首選模型失敗時嘗試備用模型"
 
-#: ui/settings.ui:3753
+#: ui/settings.ui:3417
 msgid "Add Profile"
 msgstr "新增模型設定"
 
-#: ui/settings.ui:3886
+#: ui/settings.ui:3550
 msgid "<span alpha='55%'>[</span>NOTIFICATIONS<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>通知<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:3894
+#: ui/settings.ui:3558
 msgid "Banners, then the notification center"
 msgstr "橫幅、接通知中心"
 
-#: ui/settings.ui:3924
+#: ui/settings.ui:3588
 msgid "Show notifications"
 msgstr "顯示通知"
 
-#: ui/settings.ui:3966
+#: ui/settings.ui:3630
 msgid "Banner duration"
 msgstr "橫幅持續時間"
 
-#: ui/settings.ui:3975
+#: ui/settings.ui:3639
 msgid "How long a banner shows; critical ones stay"
 msgstr "橫幅顯示多長時間；關鍵的留下來"
 
-#: ui/settings.ui:3989
+#: ui/settings.ui:3653
 msgid "3 seconds"
 msgstr "3秒"
 
-#: ui/settings.ui:3990
+#: ui/settings.ui:3654
 msgid "5 seconds"
 msgstr "5秒"
 
-#: ui/settings.ui:3991
+#: ui/settings.ui:3655
 msgid "8 seconds"
 msgstr "8秒"
 
-#: ui/settings.ui:3992
+#: ui/settings.ui:3656
 msgid "12 seconds"
 msgstr "12秒"
 
-#: ui/settings.ui:4019
+#: ui/settings.ui:3683
 msgid "Critical during Focus"
 msgstr "專注模式下顯示緊急通知"
 
-#: ui/settings.ui:4028
+#: ui/settings.ui:3692
 msgid "Critical notifications still show banners"
 msgstr "重要通知仍顯示橫幅"
 
-#: ui/settings.ui:4062
+#: ui/settings.ui:3726
 msgid "Keep a history"
 msgstr "保留歷史"
 
-#: ui/settings.ui:4071
+#: ui/settings.ui:3735
 msgid "The last 500 notifications, dismissed ones too, for the assistant, agents and workshop apps allowed to read them. Off clears it."
 msgstr "最近 500 則通知（含已關閉的），供獲准讀取的助理、代理和工坊應用程式使用。關閉即清空。"
 
-#: ui/settings.ui:4150
+#: ui/settings.ui:3814
 msgid "<span alpha='55%'>[</span>CLIPBOARD<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>剪貼簿<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:4158
+#: ui/settings.ui:3822
 msgid "History, panel appearance and pasting"
 msgstr "歷史、面板外觀與貼上"
 
-#: ui/settings.ui:4188
+#: ui/settings.ui:3852
 msgid "Keep a clipboard history"
 msgstr "保留剪貼簿歷史"
 
-#: ui/settings.ui:4197
+#: ui/settings.ui:3861
 msgid "Text and images you copy, kept on this computer; a password manager's copies are left out"
 msgstr "你複製的文字和圖片,只保存在這台電腦上;密碼管理器複製的內容不會保存"
 
-#: ui/settings.ui:4227
+#: ui/settings.ui:3891
 msgid "Never record copies from"
 msgstr "從不記錄來自以下來源的複製"
 
-#: ui/settings.ui:4237
+#: ui/settings.ui:3901
 msgid "pass, keepassxc, …"
 msgstr "pass, keepassxc, …"
 
-#: ui/settings.ui:4245
+#: ui/settings.ui:3909
 msgid "Programs or window classes, separated by commas. The program that ran wl-copy and the focused window are checked; hover over an entry in the history to see where it came from"
 msgstr "程式或視窗類別，以逗號分隔。會檢查執行 wl-copy 的程式和目前聚焦的視窗；將指標停在歷史項目上可查看其來源"
 
-#: ui/settings.ui:4271
+#: ui/settings.ui:3935
 msgid "Show in top bar"
 msgstr "在頂列顯示"
 
-#: ui/settings.ui:4280
+#: ui/settings.ui:3944
 msgid "A button in the status area opens the clipboard history"
 msgstr "狀態區的按鈕可開啟剪貼簿歷史"
 
-#: ui/settings.ui:4314
+#: ui/settings.ui:3978
 msgid "Paste on click"
 msgstr "點擊即貼上"
 
-#: ui/settings.ui:4323
+#: ui/settings.ui:3987
 msgid "Clicking an entry pastes it into the window you were in; off only copies it"
 msgstr "點擊項目會把它貼到你之前所在的視窗;關閉後只複製"
 
-#: ui/settings.ui:4357
+#: ui/settings.ui:4021
 msgid "History limit"
 msgstr "歷史筆數上限"
 
-#: ui/settings.ui:4366
+#: ui/settings.ui:4030
 msgid "How many entries it keeps; the oldest go first"
 msgstr "保留多少筆;最舊的先刪除"
 
-#: ui/settings.ui:4400
+#: ui/settings.ui:4064
 msgid "History storage"
 msgstr "歷史佔用"
 
-#: ui/settings.ui:4409
+#: ui/settings.ui:4073
 msgid "Loading history…"
 msgstr "正在讀取歷史…"
 
-#: ui/settings.ui:4422
+#: ui/settings.ui:4086
 msgid "Reveal"
 msgstr "顯示"
 
-#: ui/settings.ui:4433
+#: ui/settings.ui:4097
 msgid "Clear the history"
 msgstr "清除歷史"
 
-#: ui/settings.ui:4514
+#: ui/settings.ui:4178
 msgid "<span alpha='55%'>[</span>KEYRING<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>鑰匙圈<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:4522
+#: ui/settings.ui:4186
 msgid "Apps' secrets: browsers' keys, Wi-Fi passwords, API keys"
 msgstr "應用程式的密鑰：瀏覽器金鑰、Wi-Fi 密碼、API 金鑰"
 
-#: ui/settings.ui:4588
+#: ui/settings.ui:4252
 msgid "Unlocked secrets"
 msgstr "已解鎖的機密"
 
-#: ui/settings.ui:4634
+#: ui/settings.ui:4298
 msgid "Lock when unused"
 msgstr "閒置時鎖定"
 
-#: ui/settings.ui:4643
+#: ui/settings.ui:4307
 msgid "It locks with the screen and before suspend, and after this long without a read"
 msgstr "隨螢幕鎖定與暫停前鎖定，並在這麼久沒有讀取後鎖定"
 
-#: ui/settings.ui:4658
+#: ui/settings.ui:4322
 msgid "5 minutes"
 msgstr "5 分鐘"
 
-#: ui/settings.ui:4659
+#: ui/settings.ui:4323
 msgid "15 minutes"
 msgstr "15 分鐘"
 
-#: ui/settings.ui:4660
+#: ui/settings.ui:4324
 msgid "30 minutes"
 msgstr "30 分鐘"
 
-#: ui/settings.ui:4661
+#: ui/settings.ui:4325
 msgid "1 hour"
 msgstr "1 小時"
 
-#: ui/settings.ui:4662
+#: ui/settings.ui:4326
 msgid "4 hours"
 msgstr "4 小時"
 
-#: ui/settings.ui:4689
+#: ui/settings.ui:4353
 msgid "With no one to ask"
 msgstr "無人可詢問時"
 
-#: ui/settings.ui:4698
+#: ui/settings.ui:4362
 msgid "A read by an app not trusted with the secret, while the inua shell is not running"
 msgstr "inua shell 未執行時，未獲信任的應用程式對機密的讀取"
 
-#: ui/settings.ui:4713
+#: ui/settings.ui:4377
 msgid "Denied"
 msgstr "拒絕"
 
-#: ui/settings.ui:4740
+#: ui/settings.ui:4404
 msgid "Tell when an app reads a secret"
 msgstr "應用程式讀取密鑰時通知"
 
-#: ui/settings.ui:4749
+#: ui/settings.ui:4413
 msgid "A notification for each app's first read since inua-keyring started"
 msgstr "inua-keyring 啟動後，每個應用程式首次讀取時發出通知"
 
-#: ui/settings.ui:4794
-#: ui/settings.ui:5008
+#: ui/settings.ui:4458
+#: ui/settings.ui:4672
 msgid "<span alpha='55%'>[</span>TRUSTED APPS<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>受信任的應用程式<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:4802
+#: ui/settings.ui:4466
 msgid "Apps that read a secret without asking; any other app is asked about first"
 msgstr "無須詢問即可讀取機密的應用程式；其他應用程式會先詢問"
 
-#: ui/settings.ui:4838
+#: ui/settings.ui:4502
 msgid "Trusted apps"
 msgstr "受信任的應用程式"
 
-#: ui/settings.ui:4893
+#: ui/settings.ui:4557
 msgid "<span alpha='55%'>[</span>READS<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>讀取<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:4901
+#: ui/settings.ui:4565
 msgid "Every secret inua-keyring handed out and passphrase asked for, newest first"
 msgstr "inua-keyring 交出的每個密鑰和要求的每個密碼短語，最新的在前"
 
-#: ui/settings.ui:5041
+#: ui/settings.ui:4705
 msgid "The list is not trusted"
 msgstr "該清單不受信任"
 
-#: ui/settings.ui:5062
+#: ui/settings.ui:4726
 msgid "Trust this list again"
 msgstr "再次信任此清單"
 
-#: ui/settings.ui:5102
+#: ui/settings.ui:4766
 msgid "<span alpha='55%'>[</span>ALLOWED PATHS<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>允許的路徑<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:5129
+#: ui/settings.ui:4793
 msgid "Any program at one of these paths reads every secret without asking, even after it changes: for an app that updates every day. inua-keyring asks you before a path is added."
 msgstr "這些路徑下的任何程式都會不經詢問讀取所有密鑰，即使程式更新之後也是如此：適合每天更新的應用。新增路徑前，inua-keyring 會先詢問你。"
 
-#: ui/settings.ui:5149
+#: ui/settings.ui:4813
 msgid "A path; * within a folder: ~/.local/share/app/versions/*"
 msgstr "路徑；* 比對資料夾內：~/.local/share/app/versions/*"
 
-#: ui/settings.ui:5158
+#: ui/settings.ui:4822
 msgid "Allow path"
 msgstr "允許路徑"
 
-#: ui/settings.ui:5203
+#: ui/settings.ui:4867
 msgid "<span alpha='55%'>[</span>APPS<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>應用程式<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:5218
+#: ui/settings.ui:4882
 msgid "Filter by app, program or secret"
 msgstr "依應用程式、程式或機密篩選"
 
-#: ui/settings.ui:5330
+#: ui/settings.ui:4994
 msgid "Shortcuts"
 msgstr "快捷鍵"
 
-#: ui/settings.ui:5360
+#: ui/settings.ui:5024
 msgid "Press the new shortcut. Esc cancels; Backspace turns it off."
 msgstr "按新的捷徑。 Esc 取消；退格鍵將其關閉。"
 
-#: ui/settings.ui:5389
-#: ui/settings.ui:7152
+#: ui/settings.ui:5053
+#: ui/settings.ui:6816
 msgid "<span alpha='55%'>[</span>INUA<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>INUA<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:5397
+#: ui/settings.ui:5061
 msgid "The shell's own actions"
 msgstr "shell自身的動作"
 
-#: ui/settings.ui:5446
+#: ui/settings.ui:5110
 msgid "<span alpha='55%'>[</span>SCREENSHOTS<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>螢幕截圖<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:5454
+#: ui/settings.ui:5118
 msgid "With grim and slurp"
 msgstr "使用 grim 和 slurp"
 
-#: ui/settings.ui:5503
+#: ui/settings.ui:5167
 msgid "<span alpha='55%'>[</span>CUSTOM<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>自訂<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:5511
+#: ui/settings.ui:5175
 msgid "Your own commands"
 msgstr "你自己的命令"
 
-#: ui/settings.ui:5553
+#: ui/settings.ui:5217
 msgid "Command, e.g. kitty"
 msgstr "指令，例如 kitty"
 
-#: ui/settings.ui:5562
+#: ui/settings.ui:5226
 msgid "Add…"
 msgstr "新增…"
 
-#: ui/settings.ui:5563
+#: ui/settings.ui:5227
 msgid "Add, then press its shortcut"
 msgstr "添加，然後按其快捷鍵"
 
-#: ui/settings.ui:5598
+#: ui/settings.ui:5262
 msgid "<span alpha='55%'>[</span>HYPRLAND<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>HYPRLAND<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:5606
+#: ui/settings.ui:5270
 msgid "Other shortcuts, from hyprland.conf"
 msgstr "其他快捷方式，來自hyprland.conf"
 
-#: ui/settings.ui:5689
+#: ui/settings.ui:5353
 msgid "<span alpha='55%'>[</span>WI-FI<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>WI-FI<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:5780
+#: ui/settings.ui:5444
 msgid "<span alpha='55%'>[</span>CONNECTED<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>已連線<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:5788
+#: ui/settings.ui:5452
 msgid "The network in use"
 msgstr "正在使用的網路"
 
-#: ui/settings.ui:5832
+#: ui/settings.ui:5496
 msgid "<span alpha='55%'>[</span>KNOWN NETWORKS<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>已知網路<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:5840
+#: ui/settings.ui:5504
 msgid "Saved on this computer; joined again by themselves"
 msgstr "已儲存在此電腦上；會自動重新加入"
 
-#: ui/settings.ui:5884
-#: ui/settings.ui:6113
+#: ui/settings.ui:5548
+#: ui/settings.ui:5777
 msgid "<span alpha='55%'>[</span>NEARBY<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>附近<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:5970
+#: ui/settings.ui:5634
 msgid "<span alpha='55%'>[</span>BLUETOOTH<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>藍牙<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6061
+#: ui/settings.ui:5725
 msgid "<span alpha='55%'>[</span>MY DEVICES<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>我的裝置<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6069
+#: ui/settings.ui:5733
 msgid "Paired with this computer"
 msgstr "已與這台電腦配對"
 
-#: ui/settings.ui:6210
+#: ui/settings.ui:5874
 msgid "<span alpha='55%'>[</span>LID<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>蓋子<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6218
+#: ui/settings.ui:5882
 msgid "With another display connected"
 msgstr "連接了其他顯示器時"
 
-#: ui/settings.ui:6248
+#: ui/settings.ui:5912
 msgid "Closing the lid turns off the built-in display"
 msgstr "闔上蓋子時關閉內建顯示器"
 
-#: ui/settings.ui:6258
+#: ui/settings.ui:5922
 msgid "Its windows move to the other display. Open the lid to use both."
 msgstr "它的視窗會移到另一台顯示器。打開蓋子即可同時使用兩台。"
 
-#: ui/settings.ui:6347
+#: ui/settings.ui:6011
 msgid "<span alpha='55%'>[</span>KEYS<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>按鍵<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6355
+#: ui/settings.ui:6019
 msgid "Every keyboard"
 msgstr "每個鍵盤"
 
-#: ui/settings.ui:6385
+#: ui/settings.ui:6049
 msgid "Swap Ctrl and Alt"
 msgstr "交換 Ctrl 和 Alt"
 
-#: ui/settings.ui:6394
+#: ui/settings.ui:6058
 msgid "Alt acts as Ctrl, and Ctrl as Alt"
 msgstr "Alt充當Ctrl，並且Ctrl充當Alt"
 
-#: ui/settings.ui:6409
+#: ui/settings.ui:6073
 msgid "Left side"
 msgstr "左側"
 
-#: ui/settings.ui:6410
+#: ui/settings.ui:6074
 msgid "Both sides"
 msgstr "左右兩側"
 
-#: ui/settings.ui:6437
-#: ui/settings.ui:6460
+#: ui/settings.ui:6101
+#: ui/settings.ui:6124
 msgid "Caps Lock"
 msgstr "大寫鎖定"
 
-#: ui/settings.ui:6446
+#: ui/settings.ui:6110
 msgid "What the Caps Lock key does"
 msgstr "Caps Lock鍵的作用"
 
-#: ui/settings.ui:6461
+#: ui/settings.ui:6125
 msgid "Escape"
 msgstr "Esc"
 
-#: ui/settings.ui:6462
+#: ui/settings.ui:6126
 msgid "Ctrl"
 msgstr "Ctrl"
 
-#: ui/settings.ui:6500
-#: ui/settings.ui:6782
+#: ui/settings.ui:6164
+#: ui/settings.ui:6446
 msgid "<span alpha='55%'>[</span>SOURCE<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>來源<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6508
-#: ui/settings.ui:6790
+#: ui/settings.ui:6172
+#: ui/settings.ui:6454
 msgid "inua writes these to Hyprland's inua.conf"
 msgstr "inua 將這些寫入 Hyprland 的 inua.conf"
 
-#: ui/settings.ui:6560
+#: ui/settings.ui:6224
 msgid "Stop setting keyboard options in inua"
 msgstr "停止在inua中設定鍵盤選項"
 
-#: ui/settings.ui:6591
+#: ui/settings.ui:6255
 msgid "Mouse & Touch"
 msgstr "滑鼠與觸控板"
 
-#: ui/settings.ui:6639
+#: ui/settings.ui:6303
 msgid "<span alpha='55%'>[</span>POINTER<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>指針<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:6647
+#: ui/settings.ui:6311
 msgid "Every touchpad"
 msgstr "每個觸控板"
 
-#: ui/settings.ui:6677
+#: ui/settings.ui:6341
 msgid "Pointer speed"
 msgstr "指針速度"
 
-#: ui/settings.ui:6728
+#: ui/settings.ui:6392
 msgid "Acceleration"
 msgstr "加速度"
 
-#: ui/settings.ui:6737
+#: ui/settings.ui:6401
 msgid "Faster swipes move the pointer further"
 msgstr "更快的滑動使指針移動得更遠"
 
-#: ui/settings.ui:6827
+#: ui/settings.ui:6491
 msgid "Stop setting the touchpad in inua"
 msgstr "停止在inua中設定觸控板"
 
-#: ui/settings.ui:6892
+#: ui/settings.ui:6556
 msgid "Security Keys"
 msgstr ""
 
-#: ui/settings.ui:6960
+#: ui/settings.ui:6624
 msgid "Power"
 msgstr "電源"
 
-#: ui/settings.ui:7028
+#: ui/settings.ui:6692
 msgid "About"
 msgstr "關於"
 
-#: ui/settings.ui:7066
+#: ui/settings.ui:6730
 msgid "<span alpha='55%'>[</span>SYSTEM<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>系統<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:7074
+#: ui/settings.ui:6738
 msgid "This computer, as a card to share"
 msgstr "這台電腦，做成可分享的卡片"
 
-#: ui/settings.ui:7086
+#: ui/settings.ui:6750
 msgid "Copy image"
 msgstr "複製圖片"
 
-#: ui/settings.ui:7096
+#: ui/settings.ui:6760
 msgid "Copy text"
 msgstr "複製文字"
 
-#: ui/settings.ui:7098
+#: ui/settings.ui:6762
 msgid "As Markdown"
 msgstr "以 Markdown 格式"
 
-#: ui/settings.ui:7109
+#: ui/settings.ui:6773
 msgid "As a PNG image"
 msgstr "儲存為 PNG 圖片"
 
-#: ui/settings.ui:7160
+#: ui/settings.ui:6824
 msgid "The version, and new releases"
 msgstr "版本與新版本"
 
-#: ui/settings.ui:7190
+#: ui/settings.ui:6854
 msgid "Version"
 msgstr "版本"
 
-#: ui/settings.ui:7226
+#: ui/settings.ui:6890
 msgid "Updates"
 msgstr "更新"
 
-#: ui/settings.ui:7262
+#: ui/settings.ui:6926
 msgid "Check for updates"
 msgstr "檢查更新"
 
-#: ui/settings.ui:7288
+#: ui/settings.ui:6952
 msgid "Check every day"
 msgstr "每天檢查"
 
-#: ui/settings.ui:7297
+#: ui/settings.ui:6961
 msgid "A notification says when a new release is out, with a button to upgrade"
 msgstr "新版本發佈時會出現通知，並附有升級按鈕"
 
-#: ui/settings.ui:7342
+#: ui/settings.ui:7006
 msgid "<span alpha='55%'>[</span>CHANGELOG<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>變更日誌<span alpha='55%'>]</span>"
 
-#: ui/settings.ui:7350
+#: ui/settings.ui:7014
 msgid "What the latest release changed"
 msgstr "最新版本改變了什麼"
 
