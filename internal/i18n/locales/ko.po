@@ -374,7 +374,7 @@ msgstr "%s에서 온 파일"
 #: internal/filesui/cards.go:678
 #: internal/filesui/picker.go:488
 #: internal/filesui/window.go:808
-#: internal/lightui/workshop_blocks.go:427
+#: internal/lightui/workshop_blocks.go:431
 #: internal/lightui/workshop_manager.go:63
 #: internal/mailui/actions.go:533
 #: internal/mailui/people.go:297
@@ -9913,7 +9913,7 @@ msgstr "검색할 수 없습니다: %s"
 #: internal/lightui/sysmon.go:55
 #: internal/shell/launcher_actions.go:45
 #: internal/termui/menubar.go:27
-#: internal/ui/dock.go:545
+#: internal/ui/dock.go:548
 #: internal/ui/portal_ask.go:80
 msgid "Quit"
 msgstr "종료"
@@ -10870,7 +10870,7 @@ msgstr "알 수 없는 블록 %q"
 msgid "OK"
 msgstr "OK"
 
-#: internal/lightui/workshop_blocks.go:438
+#: internal/lightui/workshop_blocks.go:442
 #: internal/mailui/settings.go:612
 #: internal/mailui/welcome.go:823
 #: internal/term/web/strings.go:93
@@ -13365,22 +13365,22 @@ msgid "%s · workspace %s"
 msgstr "%[1]s · 작업 공간 %[2]s"
 
 #: internal/shell/launcher_actions.go:33
-#: internal/ui/dock.go:536
+#: internal/ui/dock.go:539
 msgid "New Window"
 msgstr "새 창"
 
 #: internal/shell/launcher_actions.go:39
-#: internal/ui/dock.go:539
+#: internal/ui/dock.go:542
 msgid "Remove from Dock"
 msgstr "도크에서 제거"
 
 #: internal/shell/launcher_actions.go:41
-#: internal/ui/dock.go:541
+#: internal/ui/dock.go:544
 msgid "Keep in Dock"
 msgstr "독에 고정"
 
 #: internal/shell/launcher_actions.go:47
-#: internal/ui/dock.go:547
+#: internal/ui/dock.go:550
 msgid "Quit (%d windows)"
 msgstr "종료(%d 창)"
 
@@ -15088,7 +15088,7 @@ msgstr "블루투스가 꺼져 있습니다."
 msgid "No devices paired yet"
 msgstr "아직 페어링된 기기가 없습니다"
 
-#: internal/ui/drawer.go:217
+#: internal/ui/drawer.go:218
 #: internal/ui/settings.go:657
 #: internal/ui/widgets.go:586
 #: ui/settings.ui:181
@@ -15096,11 +15096,11 @@ msgstr "아직 페어링된 기기가 없습니다"
 msgid "Apps"
 msgstr "앱"
 
-#: internal/ui/drawer.go:220
+#: internal/ui/drawer.go:221
 msgid "Workshop apps"
 msgstr "워크숍 앱"
 
-#: internal/ui/drawer.go:338
+#: internal/ui/drawer.go:339
 msgid "The light apps are not installed (make install)."
 msgstr "라이트 앱이 설치되지 않았습니다(make install)."
 
