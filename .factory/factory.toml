@@ -21,7 +21,6 @@ read = ["AGENTS.md", "docs/architecture.md", "design/ui.md"]
 
 never = [".github/workflows/", ".factory/factory.toml"]
 
-
 # A review with P0 or P1 findings sends the item back to new/ for another
 # build while its round is below this; at the limit it waits for you.
 max_rounds = 3
