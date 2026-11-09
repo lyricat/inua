@@ -23,3 +23,6 @@
 ### 待设计细节
 
 slots 的具体组织方式、space 的空间分配规则、保存或即时应用的交互、隐藏元素后的恢复方式，在进入开发前确定；当前不指定固定 slot 数量或左中右分区。
+
+## factory · 2026-11-09 15:22
+Moved backlog/ → new/ at the owner's request: “move FT88 to new”. The details left open above (slots, how spaces share the room, save or apply at once, bringing back a removed element) are for the build to decide and record in its plan.
