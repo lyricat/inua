@@ -3,7 +3,7 @@
 
 import math
 
-from lib import brass, glare, icon, shadow, small, tile, wood
+from lib import brand_strokes, brass, glare, icon, shadow, small, tile, wood
 
 
 # --- magpie: a magpie on the rim of its nest, its hoard of bright chips -----
@@ -119,67 +119,53 @@ def magpie16(ic):
     ic.path("M7.2 4.4L5.6 5.1L7.2 5.5Z", fill="#121417")
 
 
-# --- MrMorph: a blue-and-white porcelain ball on a turned wooden stand -----
+# --- MrMorph: Mister Morph's own icon in its bunko colours
+# (brands/mistermorph.svg, Apache 2.0): a black glass dome placed as Chrome's
+# is, the mark's lines lit in it, inua's light over it --------------------
 
-def _morph_lines(cx, cy, r, n=7, top=0.83, ends=0.87):
-    """The mark's lines on a disc: evenly spaced where they end (on a circle
-    a little inside the disc's edge), sagging in to crowd at the middle; the
-    path data of each, and how far from the middle it is (0 to 1)."""
-    out = []
-    for i in range(-n, n + 1):
-        t = top * i / n
-        ye = cy + r * t
-        half = r * math.sqrt(ends * ends - t * t)
-        ym = cy + r * t * (abs(t) / top) ** 0.9
-        # a quadratic through the two ends and (cx, ym)
-        out.append((f"M{cx - half:.1f} {ye:.1f}Q{cx:.1f} {2 * ym - ye:.1f} {cx + half:.1f} {ye:.1f}", abs(t) / top))
-    return out
+MORPH = (128, 120, 98)  # the disc's centre and radius on the tile, as Chrome's
+MORPH_TILE = ("#3E4270", "#14162C")
+
+
+def morph_lines(ic, weight=1.0, core=1.8):
+    """The mark's lines as they are, on the disc MORPH, clipped to it: each a
+    pink and a cyan line weight times as wide, its white core core times;
+    the white core stands for where the two mix (screen) in the original."""
+    cx, cy, r = MORPH
+    k = r / 49
+    disc = ic.clip(f'<circle cx="{cx}" cy="{cy}" r="{r}"/>')
+    with ic.g(clip_path=disc):
+        with ic.g(transform=f"translate({cx - 50 * k:.3f} {cy - 50 * k:.3f}) scale({k:.5f})"):
+            for d, colour, w in brand_strokes("mistermorph", every=3):
+                white = colour.upper() == "#F2F7FF"
+                ic.path(d, fill="none", stroke=colour, stroke_width=w * (core if white else weight),
+                        stroke_linecap="round")
 
 
 @icon("com.mistermorph", kind="app", names=["com.mistermorph", "mistermorph", "org.wails.mistermorph"],
       title="MrMorph")
 def mistermorph(ic):
-    tile(ic, "#3E5577", "#18253D")
-    shadow(ic, 128, 214, 78, 10)
-    cx, cy, r = 128, 108, 80
-    # the stand: turned wood, a cup under the ball and a flared foot
-    ic.path("M76 206C76 196 90 192 98 188L158 188C166 192 180 196 180 206Z", fill=wood(ic, "#B07444", "#5A3214"))
-    ic.ellipse(128, 206, 52, 6, fill="#3E220C")
-    ic.path("M76 206C76 196 90 192 98 188L158 188C166 192 180 196 180 206Z", fill=ic.lin(
-        [(0, "#000", 0.35), (0.3, "#fff", 0.12), (0.55, "#fff", 0), (1, "#000", 0.45)], 0, 0, 1, 0))
-    ic.rect(92, 176, 72, 14, rx=4, fill=wood(ic, "#C48A55", "#6A3E1A"))
-    ic.rect(92, 176, 72, 14, rx=4, fill=ic.lin(
-        [(0, "#000", 0.35), (0.3, "#fff", 0.15), (0.55, "#fff", 0), (1, "#000", 0.45)], 0, 0, 1, 0))
-    ic.line(94, 183, 162, 183, stroke="#3E220C", stroke_opacity=0.5, stroke_width=1.2)
-    ic.line(94, 184.5, 162, 184.5, stroke="#F0C894", stroke_opacity=0.25, stroke_width=1)
-    ic.line(80, 199, 176, 199, stroke="#F0C894", stroke_opacity=0.2, stroke_width=1)
-    # a brass plate on the foot
-    ic.rect(110, 194, 36, 9, rx=1.5, fill=brass(ic))
-    ic.text("MR MORPH", 128, 200.6, 5, font="mono-semibold", anchor="middle", spacing=0.4, fill="#5A3E12")
-    # the ball: white glaze, cobalt lines painted round it
-    ic.circle(cx, cy, r, fill=ic.rad([(0, "#FFFFFF"), (0.55, "#F1F4F8"), (0.85, "#D3DBE6"), (1, "#A9B6C8")],
-                                     cx=0.4, cy=0.36, r=0.72))
-    ball = ic.clip(f'<circle cx="{cx}" cy="{cy}" r="{r}"/>')
-    with ic.g(clip_path=ball):
-        for d, t in _morph_lines(cx, cy, r):
-            ic.path(d, fill="none", stroke="#2463AE", stroke_width=3.4, stroke_linecap="round")
-        # the ball's shade over the paint, lower right
-        ic.circle(cx, cy, r, fill=ic.rad([(0, "#0B2A55", 0), (0.6, "#0B2A55", 0.06), (1, "#0B2A55", 0.5)],
-                                         cx=0.36, cy=0.32, r=0.78))
-    ic.circle(cx, cy, r - 0.75, fill="none", stroke="#fff", stroke_opacity=0.5, stroke_width=1.5)
-    # the glaze: a window's light top left, and the bounce off the stand
-    ic.ellipse(96, 66, 24, 13, fill=ic.lin([(0, "#fff", 0.95), (1, "#fff", 0.2)], 0, 0, 1, 1),
-               transform="rotate(-38 96 66)")
-    ic.path(f"M{cx - 52} {cy + 56}A{r - 4} {r - 4} 0 0 0 {cx + 52} {cy + 56}A{r + 10} {r + 10} 0 0 1 {cx - 52} {cy + 56}Z",
-            fill="#F4D6B0", opacity=0.35)
-    ic.circle(cx, cy, r, fill=glare(ic, 0.5))
+    tile(ic, *MORPH_TILE)
+    cx, cy, r = MORPH
+    shadow(ic, cx, 224, 86, 10)
+    # the face: black glass, a little lighter where the light comes from
+    ic.circle(cx, cy, r, fill=ic.rad([(0, "#1C2033"), (0.7, "#0A0B14"), (1, "#05060B")], cx=0.4, cy=0.36, r=0.75))
+    morph_lines(ic)
+    # the glass's dome: light from the top left, shade to the lower right
+    ic.circle(cx, cy, r, fill=ic.rad([(0, "#fff", 0.2), (0.45, "#fff", 0.03), (1, "#fff", 0)],
+                                     cx=0.3, cy=0.25, r=0.65))
+    ic.circle(cx, cy, r, fill=ic.rad([(0.7, "#000", 0), (1, "#000", 0.35)], cx=0.42, cy=0.38, r=0.62))
+    ic.circle(cx, cy, r - 0.8, fill="none", stroke="#fff", stroke_opacity=0.3, stroke_width=1.6)
+    ic.ellipse(cx - 46, cy - 50, 20, 7, fill=ic.lin([(0, "#fff", 0.55), (1, "#fff", 0)], 0, 0, 1, 1),
+               transform=f"rotate(-40 {cx - 46} {cy - 50})")
+    ic.circle(cx, cy, r, fill=glare(ic, 0.4))
 
 
 @small("com.mistermorph")
 def mistermorph16(ic):
-    tile(ic, "#3E5577", "#18253D")
-    ic.path("M4.6 14C4.6 13 5.6 12.4 6.4 12.2H9.6C10.4 12.4 11.4 13 11.4 14Z", fill="#8A5A30")
-    ic.circle(8, 7.4, 5.6, fill="#F4F6FA")
-    for ye, ym, w in ((3.8, 4.8, 4), (5.6, 6.6, 5.4), (7.4, 7.4, 6), (9.2, 8.2, 5.4), (11, 10, 4)):
-        ic.path(f"M{8 - w / 2:.1f} {ye}Q8 {2 * ym - ye:.1f} {8 + w / 2:.1f} {ye}", fill="none", stroke="#2463AE",
-                stroke_width=0.85, stroke_linecap="round")
+    tile(ic, *MORPH_TILE)
+    ic.circle(8, 8, 6.5, fill="#0A0B14")
+    for ye, ym, half in ((5.4, 6.1, 3.6), (8, 8, 4.8), (10.6, 9.9, 3.6)):
+        for dy, colour, w in ((0.3, "#FF2E8A", 1.0), (-0.3, "#1FE5FF", 1.0), (0, "#F2F7FF", 0.7)):
+            ic.path(f"M{8 - half:.1f} {ye + dy:.1f}Q8 {2 * ym - ye + dy:.1f} {8 + half:.1f} {ye + dy:.1f}",
+                    fill="none", stroke=colour, stroke_width=w, stroke_linecap="round")
