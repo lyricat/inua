@@ -1115,7 +1115,15 @@ func copyImage(path string) error {
 func wlCopy(stdin *os.File, args ...string) error {
 	errs, err := os.CreateTemp("", "inua-wl-copy-*")
 	if err != nil {
-		return err
+		// TMPDIR can point into a directory that has gone (a build shell's
+		// temporary home): wl-copy's own output has to land somewhere.
+		dir := os.Getenv("XDG_RUNTIME_DIR")
+		if dir == "" {
+			dir = "/tmp"
+		}
+		if errs, err = os.CreateTemp(dir, "inua-wl-copy-*"); err != nil {
+			return err
+		}
 	}
 	defer os.Remove(errs.Name())
 	defer errs.Close()
