@@ -9907,7 +9907,7 @@ msgstr "검색할 수 없습니다: %s"
 #: internal/lightui/sysmon.go:55
 #: internal/shell/launcher_actions.go:45
 #: internal/termui/menubar.go:34
-#: internal/ui/dock.go:543
+#: internal/ui/dock.go:548
 #: internal/ui/portal_ask.go:80
 msgid "Quit"
 msgstr "종료"
@@ -13356,22 +13356,22 @@ msgid "%s · workspace %s"
 msgstr "%[1]s · 작업 공간 %[2]s"
 
 #: internal/shell/launcher_actions.go:33
-#: internal/ui/dock.go:534
+#: internal/ui/dock.go:539
 msgid "New Window"
 msgstr "새 창"
 
 #: internal/shell/launcher_actions.go:39
-#: internal/ui/dock.go:537
+#: internal/ui/dock.go:542
 msgid "Remove from Dock"
 msgstr "도크에서 제거"
 
 #: internal/shell/launcher_actions.go:41
-#: internal/ui/dock.go:539
+#: internal/ui/dock.go:544
 msgid "Keep in Dock"
 msgstr "독에 고정"
 
 #: internal/shell/launcher_actions.go:47
-#: internal/ui/dock.go:545
+#: internal/ui/dock.go:550
 msgid "Quit (%d windows)"
 msgstr "종료(%d 창)"
 

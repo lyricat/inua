@@ -103,7 +103,9 @@ type dockState struct {
 // dock.enable; a change of size, position or autohide builds it anew.
 func (s *shellUI) syncDock(b *bar) {
 	c := s.cfg.Dock
-	want := c.Enable && s.layer
+	// A dock the desktop does not show is still built when the overview
+	// asks for it: the overview raises it there while it is open.
+	want := s.layer && (c.Enable || s.cfg.Overview.ShowDock)
 	if b.dock != nil && (!want || b.dock.size != c.Size || b.dock.hide != c.Autohide || b.dock.position != c.Position || b.dock.gaps != s.cfg.Style.EdgeGaps) {
 		dropDock(b)
 	}
@@ -111,6 +113,7 @@ func (s *shellUI) syncDock(b *bar) {
 		b.dock = s.newDock(b)
 	}
 	if b.dock != nil {
+		b.dock.win.SetVisible(c.Enable || b.dock.overviewShown)
 		s.renderDock(b)
 	}
 }
@@ -134,6 +137,7 @@ func (s *shellUI) syncOverviewDock(b *bar) {
 	}
 	d.overviewShown = want
 	if want {
+		d.win.SetVisible(true)
 		d.overviewWasRevealed = d.reveal.GetRevealChild()
 		layershell.SetLayer(d.win.GoPointer(), layershell.LayerOverlay)
 		if d.hide {
@@ -143,6 +147,7 @@ func (s *shellUI) syncOverviewDock(b *bar) {
 		return
 	}
 	layershell.SetLayer(d.win.GoPointer(), layershell.LayerTop)
+	d.win.SetVisible(s.cfg.Dock.Enable)
 	if d.hide {
 		d.reveal.SetRevealChild(d.overviewWasRevealed || d.hover)
 		fitDock(d)
