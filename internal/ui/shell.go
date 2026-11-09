@@ -76,6 +76,10 @@ type shellUI struct {
 	// has (Lua listeners, binds, displays, the virtual screen).
 	comp compositor.Backend
 	hypr *hypr.Backend
+	// focusRingColorValue is the compositor's active border colour, read when
+	// the settings load and on reload: the ring on another monitor uses it.
+	focusRingColorValue gdk.RGBA
+	focusRingColorSet   bool
 	// saidFallback: the login's fallback, if any, has been told (sayFallback).
 	saidFallback bool
 	caps         compositor.Capabilities

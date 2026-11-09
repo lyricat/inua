@@ -320,6 +320,7 @@ func (s *shellUI) reload() ipc.Response {
 	}
 	same := s.cfg.Style == c.Style
 	s.applyConfig(c)
+	s.loadFocusRingColor()
 	if same {
 		// The user's theme or icon set may have changed on disk.
 		s.loadStyles()
