@@ -3217,7 +3217,7 @@ msgstr "Carpeta personal"
 #: internal/lightui/sysmon.go:969
 #: internal/lightui/tailscale.go:527
 #: internal/lightui/tailscale.go:568
-#: internal/ui/bar.go:484
+#: internal/ui/bar.go:487
 #: internal/ui/settings.go:658
 #: ui/vm.ui:2981
 msgid "System"
@@ -15010,11 +15010,11 @@ msgstr "Oculto para la captura de pantalla."
 msgid "The passphrases do not match."
 msgstr "Las frases de contraseña no coinciden."
 
-#: internal/ui/bar.go:584
+#: internal/ui/bar.go:587
 msgid "Workspace %s"
 msgstr "Espacio de trabajo %s"
 
-#: internal/ui/bar.go:597
+#: internal/ui/bar.go:600
 msgid "WORKSPACE"
 msgstr "ESPACIO DE TRABAJO"
 

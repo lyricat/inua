@@ -3210,7 +3210,7 @@ msgstr "主文件夹"
 #: internal/lightui/sysmon.go:969
 #: internal/lightui/tailscale.go:527
 #: internal/lightui/tailscale.go:568
-#: internal/ui/bar.go:484
+#: internal/ui/bar.go:487
 #: internal/ui/settings.go:658
 #: ui/vm.ui:2981
 msgid "System"
@@ -14930,11 +14930,11 @@ msgstr "为截图已隐藏。"
 msgid "The passphrases do not match."
 msgstr "密码短语不匹配。"
 
-#: internal/ui/bar.go:584
+#: internal/ui/bar.go:587
 msgid "Workspace %s"
 msgstr "工作空间%s"
 
-#: internal/ui/bar.go:597
+#: internal/ui/bar.go:600
 msgid "WORKSPACE"
 msgstr "工作区"
 

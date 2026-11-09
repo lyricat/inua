@@ -64,6 +64,9 @@ type bar struct {
 	refs          gtkx.Scope
 
 	appMenuReg     appmenu.Registration // whose menu it shows, if any
+	appMenuWindow  string               // the window the search below was for
+	appMenuSearch  appmenu.Registration // what the search found
+	appMenuFinding uint64               // the newest search
 	appMenuPID     int                  // the process whose accessibility menu it shows, if any
 	appMenuGen     uint64               // the menu-pack reading it was drawn from
 	appMenuEntries []appmenu.Entry      // the first level, as last read

@@ -3215,7 +3215,7 @@ msgstr ""
 #: internal/lightui/sysmon.go:969
 #: internal/lightui/tailscale.go:527
 #: internal/lightui/tailscale.go:568
-#: internal/ui/bar.go:484
+#: internal/ui/bar.go:487
 #: internal/ui/settings.go:658
 #: ui/vm.ui:2981
 msgid "System"
@@ -15008,11 +15008,11 @@ msgstr ""
 msgid "The passphrases do not match."
 msgstr ""
 
-#: internal/ui/bar.go:584
+#: internal/ui/bar.go:587
 msgid "Workspace %s"
 msgstr ""
 
-#: internal/ui/bar.go:597
+#: internal/ui/bar.go:600
 msgid "WORKSPACE"
 msgstr ""
 
