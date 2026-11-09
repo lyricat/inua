@@ -1,7 +1,7 @@
 ---
 source: pr #88
 branch: factory/FT87-appmenu-toml-packs
-round: 2
+round: 3
 ---
 # feat(appmenu): per-application menus from TOML packs
 
@@ -61,3 +61,11 @@ Decision: stays in review/ for owner direction; not approved or merged. Add an o
 
 ## factory · 2026-11-09 15:12
 Moved review/ → new/ at the owner's request: “move FT87 back to new”. The next build is fix round 3 on factory/FT87-appmenu-toml-packs, for the fix: list of the review at head 07e98b83.
+
+## factory · plan · 2026-11-09 15:42
+Round 3 addendum. Behaviour: repeatedly opening About reuses one native Close handler; Close destroys only its own window, compositor close remains supported, and window/child references are released. Multiple About windows remain independent. Scope: latest required P1 callback exhaustion and ownership fix only; the two P2 notes on bounded regular-file config reads and same-window rediscovery remain deferred. Decisions: use existing shared-handler and gtkx ownership patterns, no new callback registry or visual redesign. Checking: isolated Broadway regression for independent close, simulated compositor close and 2500 open/close cycles with finalization checks; make test and make i18n.
+
+## factory · 2026-11-09 15:42
+Claude Code completed fix round 3 in 5dce048e; pushed factory/FT87-appmenu-toml-packs. About windows share a long-lived Close handler, resolve the clicked button's own window, and release constructor/getter references. Regression exercises 2500 cycles and checks all 5000 window/button objects are freed; coder reports the same probe fails on old code with callback exhaustion and missing finalization.
+Validation: coder ran make i18n before commit and make test successfully. Manager independently reran make test with throwaway HOME/XDG directories: exit 0 (18 Python tests, go vet, full Go race suite). Commit history contains only this item's fixes; no protected paths changed. No unpinned tools or dependencies installed; pinned Go modules restored. No layouts changed.
+Not checked: visual UI inspection, real compositor close, real application key delivery. Broadway's gtk_window_close simulation is not a real compositor check. Latest two P2 notes remain deliberately unresolved, as this round targets the required fix list. Moved new/ → review/; not approved or merged into master.
