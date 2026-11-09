@@ -9954,7 +9954,7 @@ msgstr ""
 #: internal/lightui/sysmon.go:55
 #: internal/shell/launcher_actions.go:45
 #: internal/termui/menubar.go:34
-#: internal/ui/dock.go:540
+#: internal/ui/dock.go:543
 #: internal/ui/portal_ask.go:80
 msgid "Quit"
 msgstr ""
@@ -13426,22 +13426,22 @@ msgid "%s · workspace %s"
 msgstr ""
 
 #: internal/shell/launcher_actions.go:33
-#: internal/ui/dock.go:531
+#: internal/ui/dock.go:534
 msgid "New Window"
 msgstr ""
 
 #: internal/shell/launcher_actions.go:39
-#: internal/ui/dock.go:534
+#: internal/ui/dock.go:537
 msgid "Remove from Dock"
 msgstr ""
 
 #: internal/shell/launcher_actions.go:41
-#: internal/ui/dock.go:536
+#: internal/ui/dock.go:539
 msgid "Keep in Dock"
 msgstr ""
 
 #: internal/shell/launcher_actions.go:47
-#: internal/ui/dock.go:542
+#: internal/ui/dock.go:545
 msgid "Quit (%d windows)"
 msgstr ""
 
@@ -15133,7 +15133,7 @@ msgstr ""
 msgid "No devices paired yet"
 msgstr ""
 
-#: internal/ui/drawer.go:217
+#: internal/ui/drawer.go:218
 #: internal/ui/settings.go:597
 #: internal/ui/widgets.go:586
 #: ui/settings.ui:181
@@ -15141,11 +15141,11 @@ msgstr ""
 msgid "Apps"
 msgstr ""
 
-#: internal/ui/drawer.go:220
+#: internal/ui/drawer.go:221
 msgid "Workshop apps"
 msgstr ""
 
-#: internal/ui/drawer.go:338
+#: internal/ui/drawer.go:339
 msgid "The light apps are not installed (make install)."
 msgstr ""
 
