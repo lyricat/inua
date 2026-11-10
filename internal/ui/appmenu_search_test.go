@@ -15,7 +15,7 @@ import (
 // looked for. A published menu found before stays until the search ends.
 func TestAppMenuSearchAgainForgetsTheAbsence(t *testing.T) {
 	published := appmenu.Registration{Service: ":1.9", Path: "/menu"}
-	var a appMenuState
+	var a appMenuSearch
 	source := func() int { return appMenuSource(a.found, a.searched, false) }
 
 	first, ok := a.beginSearch("0xa")

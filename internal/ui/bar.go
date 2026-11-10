@@ -70,6 +70,7 @@ type bar struct {
 	appMenuA11y    bool                 // the entries shown are appMenuPID's accessibility menu
 	appMenuNoPress bool                 // the pack says the accessibility menu's sections are never pressed
 	appMenuEntries []appmenu.Entry      // the first level, as last read
+	appMenuSearch  appMenuSearch        // the search for the menu of the window it speaks for
 	appMenuTop     []appMenuTop         // the buttons, as last drawn
 	appMenuLoading bool                 // the menu is being read
 	appMenuStale   bool                 // and changed meanwhile
