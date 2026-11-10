@@ -52,3 +52,15 @@ Built fix round 2 with Claude Code at 18fd7084; pushed factory/FT104-files-list-
 Fixed the P1 header/row misalignment with g.SetHexpand(false). Translation line references regenerated before commit; no Blueprint changes. No installations or dependency changes. Manager verified item-only history and unchanged protected paths.
 Tests: coder and manager independently passed make test with throwaway HOME/XDG/TMPDIR (18 Python session tests, go vet, Go race tests). Coder's isolated Python/GTK Broadway stand-in reproduced misalignment before and matching header/cell positions after at requested widths 700, 1000 and 1600; the largest may have been limited by the headless display. This was not the actual Files window.
 Not checked: UI was not viewed or exercised by hand. Dragging/sorting, empty/error folders, scaling/zoom, narrow windows, long names and restart persistence remain unverified. Known review notes unchanged: P2 names displayed wider than 1600px can snap when frozen; P3 grips lack keyboard resize/reset access. No linked issue or PR.
+
+## factory · review · 2026-11-10 18:55
+head: 18fd70847bf516af1af221203cbf0bb568d53713
+verdict: pass
+notes:
+- [P2] internal/apps/files/settings.go:131: The 1600px cap still clamps an automatically expanded name when frozen by columns.go:206 or resized. With a displayed name around 1900px, a 3px SIZE-edge drag pins it to 1600 and shifts the remaining columns left. Preserve the displayed name width and accept it on reload. Code-path evidence only; the headless display was too narrow for a runtime reproduction.
+- [P3] internal/filesui/columns.go:165: Grips cannot take keyboard focus and no keyboard resize/reset action exists, contrary to design/ui.md's keyboard-first requirement. Add keyboard actions or obtain an explicit owner exception.
+
+Claude Code reviewed origin/master...HEAD, all 17 changed files, against the request and plan. No P0/P1 findings. Prior P1 fixed: a Python/GTK Broadway stand-in verified matching header/row positions at 1000 and 1024px, both flexible and fixed name sizing; grips remained 10px. Actual Files UI was not run or visually checked.
+Validation: make test passed with throwaway HOME/XDG/TMPDIR (18 Python session tests, go vet, 115 passing Go race-test packages). make i18n and make generate in a throwaway copy reproduced committed outputs. No installs, dependency changes, code edits or commits. Manager verified clean worktree and unchanged reviewed head. Temporary artifacts remained within the review directory and were removed.
+Unverified: actual drag/sort interactions, double-click reset, empty/error folders, narrow-window horizontal scrolling, long names, zoom/scaling, restart persistence, and widths over 1024px. The P2 and P3 notes remain nonblocking under the factory's P0/P1 gate.
+Moved review/ → ready/. No linked issue or PR. FT89 and FT91 skipped because their current heads already have reviews.
