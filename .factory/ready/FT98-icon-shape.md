@@ -35,3 +35,12 @@ Installs: none; no dependency changes. make generate and make i18n left generate
 Tests: coder and manager independently passed make test on final head with throwaway HOME/XDG/runtime and session/compositor addresses unset: 18 Python tests, go vet and race-enabled Go suite. No baseline failures. Worktree clean; no forbidden paths changed against PR start point.
 Not checked: UI was not checked by eye; Appearance dropdown and immediate redraw inspected in code only. Pebble radii retain the PR choices but visual suitability after geometry correction remains to check.
 Push initially failed because gh credential helper required repository path; retried once with command-local credential.useHttpPath=true and succeeded. No persistent Git settings changed. No review or merge performed.
+
+## factory · review · 2026-11-10 15:56
+head: 80a94efa31e597e7de0cdc5e5e20b0d8caa3ffc5
+verdict: pass
+notes:
+- [P3] docs/architecture.md:416-417: Documentation says light apps set the icon shape, but the final build deliberately removed that propagation. With icon_shape=circle the shell uses circles while workshop app icons remain squircles. Remove the claim or document the exclusion; do not restore out-of-scope propagation.
+
+Claude Code reviewed origin/master...HEAD, all 20 changed files. No P0/P1/P2 findings. Branch merges cleanly with current base. make test passed with isolated HOME/XDG/runtime and no live session addresses: 18 Python tests, go vet, race-enabled Go suite (116 packages). Generated layouts and catalogs reproduced unchanged in a throwaway copy; GSK outline parsing checked at three sizes. Worktree unchanged, no review commits. Installs: none.
+Not checked: visual UI, actual live dropdown/redraw behavior and appearance of the four shapes. Shape-setting behavior has no automated GTK widget test. Moved review → ready; no merge to master.
