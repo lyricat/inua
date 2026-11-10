@@ -76,17 +76,38 @@ type Entry struct {
 	// only when asked (AboutToShow), so Children can be empty until then.
 	Submenu  bool
 	Children []Entry
-	// Action says how to invoke an entry: a shortcut sent to the window,
-	// or one of the shell's own window actions.
+	// Action says how to invoke the entry: through the application's
+	// accessibility tree, a shortcut sent to the window, or one of the
+	// shell's own window actions.
+	Action Action
+	// PID is the process whose accessibility tree the entry came from,
+	// kept so a section can be found again on that tree after an open and
+	// close has replaced its nodes.
+	PID int
+	// Open is the menus that must be open for Action to work, outermost
+	// first.
+	Open []OpenStep
+}
+
+// OpenStep is one menu to open before an entry can be pressed.
+type OpenStep struct {
+	Label  string
 	Action Action
 }
 
 // Action says how to invoke an entry.
 type Action struct {
-	Kind  string          // ActionKeys, ActionKeySequence, or a shell action; empty when the entry only groups children
-	Bus   string          // the window id for a shell action or a shortcut
-	Path  dbus.ObjectPath // unused by packs
-	Index int32           // the process id for pack actions
+	// Kind is ActionA11y, ActionDbusmenu, ActionKeys, ActionKeySequence or
+	// a shell action; empty when the entry only groups children.
+	Kind string
+	// Bus is the connection that owns an accessibility menu, or the window
+	// id for a shell action or a shortcut.
+	Bus string
+	// Path is the accessible object; unused by packs.
+	Path dbus.ObjectPath
+	// Index is an action index (AT-SPI), an item id (dbusmenu), or the
+	// process id for pack actions.
+	Index int32
 	// Mods and Key are the shortcut ActionKeys sends to the window.
 	Mods string
 	Key  string
@@ -101,6 +122,8 @@ type KeyStroke struct {
 }
 
 const (
+	ActionA11y     = "atspi"
+	ActionDbusmenu = "dbusmenu"
 	// ActionKeySequence sends several key strokes in order.
 	ActionKeySequence = "key-sequence"
 	// Actions the shell itself runs for a menu item.

@@ -20,6 +20,7 @@ import (
 // first level as buttons, what each opens as a menu read when it opens.
 type appMenuState struct {
 	registrar   *appmenu.Registrar
+	a11y        *appmenu.A11y
 	packs       *appmenu.Packs
 	menu        *gtk.Popover // the open one, borrowed from its button
 	menuRequest uint64       // the newest pending submenu read
@@ -169,11 +170,14 @@ func (s *shellUI) focusedAppMenu() (reg appmenu.Registration, searched bool) {
 // syncAppMenu gives a bar the menu of the focused application when the bar
 // is the focused monitor's, and none otherwise. It runs whenever the focus,
 // the monitors or the registrations change. An application that published
-// a menu gets it; one confirmed to have none gets its pack's menu, or the
-// generic one when no pack adds anything. While the search for a published
-// menu runs the bar shows none, so a pack's commands never stand in for a
-// real menu that is about to be found. Until the packs are first read
-// the bar shows none either: a pack may replace the published menu.
+// a menu gets it; one confirmed to have none gets the menu its
+// accessibility tree shows, read first unless its pack replaces every menu
+// or skips that tree, and else its pack's menu, or the generic one when no
+// pack adds anything. While the search for a published menu, or the
+// reading of the accessibility tree, runs the bar shows none, so a pack's
+// commands never stand in for a real menu that is about to be found. Until
+// the packs are first read the bar shows none either: a pack may replace
+// the published menu.
 func (s *shellUI) syncAppMenu(b *bar) {
 	if s.appmenu.packs == nil {
 		return
@@ -181,6 +185,8 @@ func (s *shellUI) syncAppMenu(b *bar) {
 	s.checkAppMenuPacks()
 	var want appmenu.Registration
 	window := ""
+	pid := 0
+	noPress := false
 	var pack appmenu.Pack
 	matched := false
 	w, focused := s.snap.Window(s.snap.FocusedWindow)
@@ -194,17 +200,24 @@ func (s *shellUI) syncAppMenu(b *bar) {
 		}
 		if appMenuSource(want, searched, replace) == appMenuFromPack {
 			window = w.ID
+			if appMenuTriesA11y(w.PID, replace, pack, matched) {
+				pid = w.PID
+				noPress = matched && pack.NeverPress
+			}
 		}
 	}
 	gen := s.appmenu.packs.Generation()
-	if b.appMenuReg == want && b.appMenuWindow == window && b.appMenuGen == gen {
+	if b.appMenuReg == want && b.appMenuWindow == window && b.appMenuGen == gen && b.appMenuPID == pid && b.appMenuNoPress == noPress {
 		return
 	}
 	s.clearAppMenu(b)
 	b.appMenuReg, b.appMenuWindow, b.appMenuGen = want, window, gen
+	b.appMenuPID, b.appMenuNoPress = pid, noPress
 	switch {
 	case want != (appmenu.Registration{}):
 		s.loadAppMenu(b, true)
+	case pid > 0:
+		s.loadA11yMenu(b, pid)
 	case window != "":
 		s.renderAppMenu(b, s.packMenuEntries(w, pack, matched))
 	}
@@ -232,6 +245,14 @@ func appMenuSource(found appmenu.Registration, searched, replace bool) int {
 	return appMenuNone
 }
 
+// appMenuTriesA11y is whether a window that is to get its pack's or the
+// generic menu has the menu of its accessibility tree read first: not
+// without a process, nor when a pack replaces every menu or says to skip
+// that tree.
+func appMenuTriesA11y(pid int, replace bool, pack appmenu.Pack, matched bool) bool {
+	return pid > 0 && !replace && !(matched && pack.SkipA11y)
+}
+
 // clearAppMenu takes a bar's menu away, with the open menu if it is this
 // bar's; what is still being read for it is dropped when it comes.
 func (s *shellUI) clearAppMenu(b *bar) {
@@ -241,6 +262,9 @@ func (s *shellUI) clearAppMenu(b *bar) {
 	b.appMenuReg = appmenu.Registration{}
 	b.appMenuWindow = ""
 	b.appMenuGen = 0
+	b.appMenuPID = 0
+	b.appMenuA11y = false
+	b.appMenuNoPress = false
 	b.appMenuEntries = nil
 	b.appMenuTop = nil
 	gtkx.Clear(&b.appMenu)
@@ -357,9 +381,14 @@ func (s *shellUI) bindAppMenuHandlers() {
 			entry := b.appMenuEntries[i]
 			submenu := entry.Submenu || len(entry.Children) > 0
 			if b.appMenuReg == (appmenu.Registration{}) {
-				if submenu {
+				switch {
+				case b.appMenuA11y && (submenu || appmenu.Fillable(entry)):
+					s.showA11yMenu(b, i, &btn.Widget)
+				case b.appMenuA11y:
+					s.activateA11yEntry(b.appMenuPID, entry)
+				case submenu:
 					s.showPackedMenu(b, i, &btn.Widget)
-				} else {
+				default:
 					s.activatePackedEntry(entry)
 				}
 				return
