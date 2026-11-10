@@ -39,3 +39,15 @@ Installs: none. UI changed but was not checked by eye; no nested session run. Po
 Initial branch push failed because the credential helper required a repository path; retry with command-local credential.useHttpPath=true succeeded. No settings changed.
 
 Moved new/ → review/; round 1.
+
+## factory · review · 2026-11-10 16:56
+head: 4ad265dabc2440bbdd17e3dff8da31dc8474cb37
+verdict: pass
+notes:
+- [P3] internal/filesui/pathbar.go:90: In the file picker, Ctrl+L → trash: → right-click the Trash segment exposes a no-op New tab and Empty Trash with permanent-deletion confirmation. The trash case precedes the picker guard. Check picker mode first and suppress the trash menu there, preserving the documented restricted picker actions.
+
+Claude Code reviewed origin/master...HEAD, all 14 changed files and relevant callers, against the request and plan. No P0/P1 findings; no merge conflicts. Manager confirmed unchanged head and clean worktree.
+
+Validation: coder ran make test successfully with throwaway HOME/XDG/TMPDIR and live session variables unset (Python session tests, go vet, Go race tests). Focused GTK/filesui tests passed, including TestCrumbMenuActsOnItsFolder. Catalog regeneration on a throwaway copy matched committed catalogs; gofmt check clean.
+
+Installs: none. UI not checked by eye; no nested session. Pointer/keyboard menu placement, repeated rebuild interactions and dual-pane behavior remain manual checks. Real-folder Terminal, new window, Tidy and Paste effects were not exercised. No linked issue or PR. Moved review/ → ready/ under the no-P0/P1 review policy; P3 remains for owner consideration.
