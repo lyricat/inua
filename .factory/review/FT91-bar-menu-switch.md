@@ -13,3 +13,8 @@ Uses the existing PR branch; no code changes made during import.
 
 Review the PR against the current base, including its requested behavior, regressions and tests.
 No review, tests or visual UI checks run during import. Awaiting review; not approved for merge.
+
+## factory · 2026-11-10 10:01
+Review blocked: the recorded branch `feat/bar-menu-switch` does not exist on origin (lyricat/inua). GitHub PR #75 is open, but its head is on the fork iamcheyan/inua at d9712fa602e043366083f128eba945e27e2d72aa. The review workflow requires the recorded origin branch, including push access if base conflicts require resolution; no replacement branch was created or header changed. Owner must correct the branch setup before review can proceed.
+
+No coder invoked, tests run, installs, or review verdict. Item remains in review/. FT89 was skipped because its current head already has a review.
