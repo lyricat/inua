@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/lyricat/inua/internal/compositor"
@@ -238,39 +239,122 @@ func (b *Backend) ApplySettings(ctx context.Context, s compositor.Settings) erro
 	return motion
 }
 
-// animationOptions are the on/off options of Wayfire's animation plugins.
-// Only those Wayfire lists are set: a plugin that is not installed has
-// none, and Wayfire 0.9 cannot list its options at all, so its own config
-// decides there.
-var animationOptions = []string{"animate/enabled", "fade/enabled", "fire/enabled", "extra-animations/enabled"}
+// motionOptions are the options of Wayfire's own plugins that move
+// windows and workspaces (metadata/animate.xml, grid.xml and vswitch.xml
+// as Wayfire 0.9 and 0.10 ship them), each with the value that stills it.
+// The animation plugins have no on/off option of their own: animate picks
+// an effect per window, from open/close/minimize_animation or, over them,
+// from the fade/zoom/fire_enabled_for matchers ("none" matches no
+// window); grid's type is how a window snaps; vswitch's duration is the
+// workspace slide ("0" is the shortest, a single frame). Wayfire has every
+// option its metadata names whether the plugin is loaded or not; one it
+// does not have (minimize_animation before 0.10) is left out.
+var motionOptions = []struct{ name, off string }{
+	{"animate/open_animation", "none"},
+	{"animate/close_animation", "none"},
+	{"animate/minimize_animation", "none"},
+	{"animate/fade_enabled_for", "none"},
+	{"animate/zoom_enabled_for", "none"},
+	{"animate/fire_enabled_for", "none"},
+	{"grid/type", "none"},
+	{"vswitch/duration", "0"},
+}
 
-// applyAnimations turns the listed animation options on or off; nil
-// leaves them as Wayfire has them.
+// still reports whether an option's value is the one that stills it. An
+// animation's length is read as Wayfire writes it ("0ms circle", "300").
+func still(off, value string) bool {
+	if off != "0" {
+		return strings.TrimSpace(value) == off
+	}
+	v := strings.TrimSpace(value)
+	n := strings.IndexFunc(v, func(r rune) bool { return !strings.ContainsRune("+-.0123456789", r) })
+	if n < 0 {
+		n = len(v)
+	}
+	length, err := strconv.ParseFloat(v[:n], 64)
+	return err == nil && length == 0
+}
+
+// motionFile keeps what the motion options were before inua stilled them.
+func motionFile() string {
+	dir := os.Getenv("XDG_RUNTIME_DIR")
+	if dir == "" {
+		dir = os.TempDir()
+	}
+	return filepath.Join(dir, "inua", "wayfire-motion.json")
+}
+
+// applyAnimations stills Wayfire's motion options (false) or puts back
+// what they were before inua stilled them (true); nil leaves them alone.
+// On is no more than that: an animation wayfire.ini itself turns off stays
+// off, and one Wayfire has again from wayfire.ini (it started again) is
+// left as it is. Options already as asked are not set again.
 func (b *Backend) applyAnimations(ctx context.Context, on *bool) error {
-	if on == nil || !b.has("wayfire/list-config-options") {
+	if on == nil {
 		return nil
 	}
-	body, err := b.Client.Call(ctx, "wayfire/list-config-options", nil)
-	if err != nil {
-		return err
+	saved := map[string]string{}
+	if data, err := os.ReadFile(motionFile()); err == nil {
+		json.Unmarshal(data, &saved)
 	}
-	var listed struct {
-		Options map[string]map[string]json.RawMessage `json:"options"`
+	if *on && len(saved) == 0 {
+		return nil // nothing inua stilled
 	}
-	if err := json.Unmarshal(body, &listed); err != nil {
-		return fmt.Errorf("wayfire: list-config-options: %w", err)
+	if !b.has("wayfire/set-config-options") || !b.has("wayfire/get-config-option") {
+		if *on {
+			return nil
+		}
+		return fmt.Errorf("%w: turning animations off needs Wayfire's ipc-rules plugin", compositor.ErrUnavailable)
 	}
-	options := map[string]any{}
-	for _, key := range animationOptions {
-		section, option, _ := strings.Cut(key, "/")
-		if _, ok := listed.Options[section][option]; ok {
-			options[key] = *on
+	save := func() error {
+		if err := os.MkdirAll(filepath.Dir(motionFile()), 0o700); err != nil {
+			return err
+		}
+		data, _ := json.Marshal(saved)
+		return os.WriteFile(motionFile(), data, 0o600)
+	}
+
+	set := map[string]any{}
+	for _, o := range motionOptions {
+		now, err := b.option(ctx, o.name)
+		if errors.Is(err, errNoOption) {
+			continue
+		}
+		if err != nil {
+			return err
+		}
+		if *on {
+			was, ok := saved[o.name]
+			if !ok {
+				continue
+			}
+			if still(o.off, now) && !still(o.off, was) {
+				set[o.name] = was
+			}
+		} else if !still(o.off, now) {
+			// Kept before it is set: a value set by halves is put back
+			// only where it is still stilled.
+			saved[o.name] = now
+			set[o.name] = o.off
 		}
 	}
-	if len(options) == 0 {
-		return nil
+	if !*on && len(set) > 0 {
+		if err := save(); err != nil {
+			return fmt.Errorf("wayfire: keeping the animation options: %w", err)
+		}
 	}
-	return b.call(ctx, "wayfire/set-config-options", options)
+	if len(set) > 0 {
+		if err := b.call(ctx, "wayfire/set-config-options", set); err != nil {
+			return err
+		}
+	}
+	if *on {
+		// Put back, or Wayfire's own again: none is kept any longer.
+		if err := os.Remove(motionFile()); err != nil && !errors.Is(err, os.ErrNotExist) {
+			return fmt.Errorf("wayfire: the animation options: %w", err)
+		}
+	}
+	return nil
 }
 
 // applyBinds registers binds with the command plugin, in place of those

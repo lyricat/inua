@@ -1,0 +1,173 @@
+<?xml version="1.0"?>
+<wayfire>
+	<plugin name="animate">
+		<_short>Animate</_short>
+		<_long>A plugin which provides animations when a window is opened or closed.</_long>
+		<category>Effects</category>
+		<!-- Open/Close animation -->
+		<option name="open_animation" type="string">
+			<_short>Open animation</_short>
+			<_long>Specifies the type of animation when opening a window.</_long>
+			<default>zoom</default>
+			<desc>
+				<value>none</value>
+				<_name>None</_name>
+			</desc>
+			<desc>
+				<value>fade</value>
+				<_name>Fade</_name>
+			</desc>
+			<desc>
+				<value>zoom</value>
+				<_name>Zoom</_name>
+			</desc>
+			<desc>
+				<value>fire</value>
+				<_name>Fire</_name>
+			</desc>
+			<desc>
+				<value>zap</value>
+				<_name>Zap</_name>
+			</desc>
+			<desc>
+				<value>spin</value>
+				<_name>Spin</_name>
+			</desc>
+		</option>
+		<option name="close_animation" type="string">
+			<_short>Close animation</_short>
+			<_long>Specifies the type of animation when closing a window.</_long>
+			<default>zoom</default>
+			<desc>
+				<value>none</value>
+				<_name>None</_name>
+			</desc>
+			<desc>
+				<value>fade</value>
+				<_name>Fade</_name>
+			</desc>
+			<desc>
+				<value>zoom</value>
+				<_name>Zoom</_name>
+			</desc>
+			<desc>
+				<value>fire</value>
+				<_name>Fire</_name>
+			</desc>
+			<desc>
+				<value>zap</value>
+				<_name>Zap</_name>
+			</desc>
+			<desc>
+				<value>spin</value>
+				<_name>Spin</_name>
+			</desc>
+		</option>
+		<option name="minimize_animation" type="string">
+			<_short>Minimze animation</_short>
+			<_long>Specifies the type of animation when minimizing a window.</_long>
+			<default>squeezimize</default>
+			<desc>
+				<value>none</value>
+				<_name>None</_name>
+			</desc>
+			<desc>
+				<value>zoom</value>
+				<_name>Zoom</_name>
+			</desc>
+			<desc>
+				<value>squeezimize</value>
+				<_name>Squeezimize</_name>
+			</desc>
+		</option>
+		<!-- Preferred animation -->
+		<option name="enabled_for" type="string">
+			<_short>Animation enabled for specified window types</_short>
+			<_long>Specifies the window types to be animated.</_long>
+			<default>(type equals "toplevel" | (type equals "x-or" &amp; focusable equals true))</default>
+		</option>
+		<option name="duration" type="animation">
+			<_short>Duration</_short>
+			<_long>Sets the duration of the animation in milliseconds.</_long>
+			<default>400ms</default>
+		</option>
+		<option name="startup_duration" type="animation">
+			<_short>System fade duration when Wayfire starts</_short>
+			<_long>Sets the duration of fading (in milliseconds) when Wayfire starts.</_long>
+			<default>600ms linear</default>
+		</option>
+		<!-- Fade animation -->
+		<option name="fade_enabled_for" type="string">
+			<_short>Fade animation enabled for specified window types</_short>
+			<_long>Specifies the window types to be animated with a fade effect.</_long>
+			<default>type equals "overlay"</default>
+		</option>
+		<option name="fade_duration" type="animation">
+			<_short>Fade duration</_short>
+			<_long>Sets the duration for the _fade_ animation in milliseconds.  Only applies for windows matched by `animate.fade_enabled_for`.</_long>
+			<default>400ms</default>
+		</option>
+		<!-- Zoom animation -->
+		<option name="zoom_enabled_for" type="string">
+			<_short>Zoom animation enabled for specified window types</_short>
+			<_long>Specifies the window types to be animated with a zoom effect.</_long>
+			<default>none</default>
+		</option>
+		<option name="zoom_duration" type="animation">
+			<_short>Zoom duration</_short>
+			<_long>Sets the duration for the _zoom_ animation in milliseconds.  Only applies for windows matched by `animate.zoom_enabled_for`.</_long>
+			<default>500ms circle</default>
+		</option>
+		<!-- Fire animation -->
+		<option name="fire_enabled_for" type="string">
+			<_short>Fire animation enabled for specified window types</_short>
+			<_long>Specifies the window types to be animated with a fire effect.</_long>
+			<default>none</default>
+		</option>
+		<option name="fire_duration" type="animation">
+			<_short>Fire duration</_short>
+			<_long>Sets the duration for the _fire_ animation in milliseconds.  Only applies for windows matched by `animate.fire_enabled_for`.</_long>
+			<default>300ms linear</default>
+		</option>
+		<option name="fire_particles" type="int">
+			<_short>Fire particles</_short>
+			<_long>Sets the number of fire particles.</_long>
+			<default>2000</default>
+		</option>
+		<option name="fire_particle_size" type="double">
+			<_short>Fire particle size</_short>
+			<_long>Sets the size of the fire particles in pixels.</_long>
+			<default>16.0</default>
+		</option>
+		<option name="random_fire_color" type="bool">
+			<_short>Random fire colors</_short>
+			<_long>Sets whether to use one solid color or select a random color for each particle</_long>
+			<default>false</default>
+		</option>
+		<option name="fire_color" type="color">
+			<_short>Color of the fire</_short>
+			<_long>Sets the color of the fire effects, alpha is ignored</_long>
+			<default>#b22303ff</default>
+		</option>
+		<option name="squeezimize_duration" type="animation">
+			<_short>Squeezimize duration</_short>
+			<_long>Sets the duration of the squeezimize animation in milliseconds.</_long>
+			<default>150ms linear</default>
+		</option>
+		<option name="zap_duration" type="animation">
+			<_short>Zap duration</_short>
+			<_long>Sets the duration for the zap animation in milliseconds.</_long>
+			<default>250ms linear</default>
+		</option>
+		<option name="spin_duration" type="animation">
+			<_short>Spin duration</_short>
+			<_long>Sets the duration for the spin animation in milliseconds.</_long>
+			<default>250ms linear</default>
+		</option>
+		<option name="spin_rotations" type="int">
+			<_short>Spin rotations</_short>
+			<_long>Number of rotations for the spin animation. Negative values reverse the spin direction.</_long>
+			<default>1</default>
+		</option>
+	</plugin>
+</wayfire>
