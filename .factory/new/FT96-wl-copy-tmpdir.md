@@ -1,6 +1,5 @@
 ---
 source: pr #92
-branch: pr/wl-copy-tmpdir
 round: 1
 ---
 # fix(screenshot): keep wl-copy working when TMPDIR is gone
@@ -16,3 +15,8 @@ No review, tests or visual UI checks run during import. Awaiting review; not app
 
 ## Lyric · 2026-11-10 09:53
 先把 FT92~FT100移动到 backlog
+
+## factory · 2026-11-10 10:41
+Moved from backlog to new at the owner's request: “那把 FT96 放入 new，也是 fork 分支。”
+Confirmed PR #92 is open and its head is iamcheyan/inua:pr/wl-copy-tmpdir (5bda2a3ea929c7be1a23d52e65ccd85695f6993a). Removed the imported fork-only branch header so build uses source PR #92, fetches origin pull/92/head, and creates factory/FT96-wl-copy-tmpdir instead of looking for the fork branch on origin.
+Queue update only; no build, tests, review or merge performed.
