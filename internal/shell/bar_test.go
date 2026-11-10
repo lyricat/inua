@@ -309,3 +309,57 @@ func TestBarReachRearranged(t *testing.T) {
 		t.Errorf("alone, left corner: %d", i)
 	}
 }
+
+func TestEmptyDesktop(t *testing.T) {
+	empty := func() compositor.Snapshot {
+		snap := twoMonitors()
+		snap.Outputs[0].ActiveWorkspace = "3"
+		snap.Workspaces = append(snap.Workspaces, compositor.Workspace{ID: "3", Order: 3, Output: "eDP-1"})
+		snap.FocusedWindow = ""
+		return snap
+	}
+	for _, tc := range []struct {
+		name      string
+		change    func(*compositor.Snapshot)
+		connector string
+		want      bool
+	}{
+		{"empty and focused", func(*compositor.Snapshot) {}, "eDP-1", true},
+		{"another monitor's bar", func(*compositor.Snapshot) {}, "HDMI-A-1", false},
+		{"monitor unknown to the compositor", func(*compositor.Snapshot) {}, "WL-1", false},
+		{"no focused output", func(s *compositor.Snapshot) { s.FocusedOutput = "" }, "eDP-1", false},
+		{"no active workspace", func(s *compositor.Snapshot) { s.Outputs[0].ActiveWorkspace = "" }, "eDP-1", false},
+		{"a window without a process", func(s *compositor.Snapshot) {
+			s.Windows = append(s.Windows, compositor.Window{ID: "0x9", Workspace: "3"})
+		}, "eDP-1", false},
+		{"a focused window without a process", func(s *compositor.Snapshot) {
+			s.Windows = append(s.Windows, compositor.Window{ID: "0x9", Workspace: "3"})
+			s.FocusedWindow = "0x9"
+		}, "eDP-1", false},
+		{"a window on the special workspace shown over it", func(s *compositor.Snapshot) {
+			s.Outputs[0].SpecialWorkspace = "-98"
+			s.Windows = append(s.Windows, compositor.Window{ID: "0x9", PID: 9, Workspace: "-98"})
+		}, "eDP-1", false},
+		{"an empty special workspace shown over it", func(s *compositor.Snapshot) {
+			s.Outputs[0].SpecialWorkspace = "-98"
+		}, "eDP-1", true},
+		{"a window on this monitor with no workspace", func(s *compositor.Snapshot) {
+			s.Windows = append(s.Windows, compositor.Window{ID: "0x9", PID: 9, Output: "eDP-1"})
+		}, "eDP-1", false},
+		{"a window nowhere known", func(s *compositor.Snapshot) {
+			s.Windows = append(s.Windows, compositor.Window{ID: "0x9", PID: 9})
+		}, "eDP-1", false},
+		{"a focused window not listed yet", func(s *compositor.Snapshot) { s.FocusedWindow = "0x9" }, "eDP-1", false},
+		{"the focus not yet moved from another monitor", func(s *compositor.Snapshot) { s.FocusedWindow = "0x3" }, "eDP-1", true},
+		{"windows on other workspaces only", func(s *compositor.Snapshot) {}, "eDP-1", true},
+	} {
+		snap := empty()
+		tc.change(&snap)
+		if got := EmptyDesktop(snap, tc.connector); got != tc.want {
+			t.Errorf("%s: %v, want %v", tc.name, got, tc.want)
+		}
+	}
+	if EmptyDesktop(twoMonitors(), "eDP-1") {
+		t.Error("a monitor with its focused window: empty")
+	}
+}

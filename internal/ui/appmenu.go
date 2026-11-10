@@ -12,6 +12,7 @@ import (
 	"github.com/lyricat/inua/internal/appmenu"
 	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/gtkx"
+	"github.com/lyricat/inua/internal/shell"
 	"github.com/lyricat/inua/internal/system"
 	"github.com/lyricat/inua/internal/uikit"
 )
@@ -180,9 +181,7 @@ func (s *shellUI) focusedAppMenu() (reg appmenu.Registration, searched bool) {
 // the published menu. Over an empty desktop the bar shows the system menu,
 // which waits for nothing.
 func (s *shellUI) syncAppMenu(b *bar) {
-	// The focused monitor shows an empty workspace: its menu is the
-	// system's.
-	system := b.connector() == s.snap.FocusedOutput && focusedPID(s.snap) <= 0
+	system := shell.EmptyDesktop(s.snap, b.connector())
 	if s.appmenu.packs == nil && !system {
 		return
 	}
@@ -219,7 +218,8 @@ func (s *shellUI) syncAppMenu(b *bar) {
 	b.appMenuPID, b.appMenuNoPress, b.appMenuSystem = pid, noPress, system
 	switch {
 	case system:
-		s.renderAppMenu(b, s.systemMenuEntries())
+		s.askHibernate() // for the Power section, by the time it opens
+		s.renderAppMenu(b, systemMenuEntries(s.control.canHibernate))
 	case want != (appmenu.Registration{}):
 		s.loadAppMenu(b, true)
 	case pid > 0:
@@ -403,16 +403,12 @@ func (s *shellUI) bindAppMenuHandlers() {
 			if b.appMenuReg.Whole && b.appMenuLoading {
 				return
 			}
-			entry := b.appMenuEntries[i]
-			submenu := entry.Submenu || len(entry.Children) > 0
 			if b.appMenuSystem {
-				if submenu {
-					s.showSystemMenu(&btn.Widget, entry)
-				} else {
-					s.runSystemAction(entry.Action.Bus)
-				}
+				s.showSystemMenu(i, &btn.Widget)
 				return
 			}
+			entry := b.appMenuEntries[i]
+			submenu := entry.Submenu || len(entry.Children) > 0
 			if b.appMenuReg == (appmenu.Registration{}) {
 				switch {
 				case b.appMenuA11y && (submenu || appmenu.Fillable(entry)):

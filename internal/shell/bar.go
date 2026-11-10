@@ -70,6 +70,35 @@ func windowOnMonitor(snap compositor.Snapshot, w compositor.Window, connector st
 	return ok && ws.Output == connector
 }
 
+// EmptyDesktop reports whether the bar on a monitor stands over an empty
+// desktop: the monitor has the focus and the workspace it shows, with the
+// special one shown over it, holds no window. A window is never taken for
+// none for what the compositor does not say of it (no process, no
+// workspace), and a focused window the snapshot does not list yet keeps the
+// desktop from being empty; one focused on another monitor is the focus a
+// snapshot has not moved yet.
+func EmptyDesktop(snap compositor.Snapshot, connector string) bool {
+	o, ok := snap.Output(connector)
+	if !ok || connector != snap.FocusedOutput || o.ActiveWorkspace == "" {
+		return false
+	}
+	if snap.FocusedWindow != "" {
+		w, ok := snap.Window(snap.FocusedWindow)
+		if !ok || w.Workspace == "" && w.Output == "" || windowOnMonitor(snap, w, connector) {
+			return false
+		}
+	}
+	for _, w := range snap.Windows {
+		switch {
+		case w.Workspace == o.ActiveWorkspace, o.SpecialWorkspace != "" && w.Workspace == o.SpecialWorkspace:
+			return false
+		case w.Workspace == "" && (w.Output == "" || w.Output == connector):
+			return false
+		}
+	}
+	return true
+}
+
 // BarTitle is the window title the bar on a monitor shows.
 func BarTitle(snap compositor.Snapshot, connector string) string {
 	w, _ := BarWindow(snap, connector)

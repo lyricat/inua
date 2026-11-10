@@ -51,6 +51,17 @@ For the focused window, in this order:
    actions are the shell's and the compositor's. They do not depend on
    the application having a menu.
 
+When the focused monitor shows an empty workspace, with no window on it
+or on the special workspace shown over it, its bar shows the system menu
+instead: System (Settings, with every settings page, then Launcher,
+Screenshot and Control Center), Session (Lock Screen, Log Out), Power
+(Suspend, Hibernate where logind says the machine can, Restart, Shut
+Down) and Help (About inua, Keyboard Shortcuts). A window the compositor
+gives no process id still counts as a window and gets its pack's or the
+generic menu. Log Out, Hibernate, Restart and Shut Down open the control
+center with the action waiting for its second click there, as its own
+power buttons do; Suspend and Lock Screen act at once.
+
 GTK 4 has no module that exports a menu bar, and the Wayland protocols
 KDE and GTK use to point at a menu (`org_kde_kwin_appmenu`, `gtk-shell`)
 are not a shared standard. The registrar was designed around an X11

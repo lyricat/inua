@@ -52,7 +52,7 @@ msgstr "올바른 방법:"
 
 #: cmd/inua-keyring/main.go:117
 #: internal/ui/settings_keyring.go:324
-#: internal/ui/systemmenu.go:25
+#: internal/ui/systemmenu.go:49
 #: ui/settings.ui:4315
 msgid "Keyring"
 msgstr "키링"
@@ -587,7 +587,7 @@ msgstr "DEV"
 #: internal/mailui/panel.go:309
 #: internal/mailui/settings.go:203
 #: internal/mailui/settings.go:548
-#: internal/ui/systemmenu.go:22
+#: internal/ui/systemmenu.go:47
 #: ui/mail-compose.ui:269
 #: ui/mail.ui:384
 #: ui/settings.ui:2640
@@ -3232,7 +3232,7 @@ msgstr "홈"
 #: internal/lightui/tailscale.go:527
 #: internal/lightui/tailscale.go:568
 #: internal/ui/settings.go:603
-#: internal/ui/systemmenu.go:65
+#: internal/ui/systemmenu.go:79
 #: ui/vm.ui:2981
 msgid "System"
 msgstr "시스템"
@@ -8581,8 +8581,8 @@ msgstr "우주 핀볼"
 
 #: internal/hyprconf/keys.go:23
 #: internal/shell/dock.go:312
-#: internal/ui/systemmenu.go:20
-#: internal/ui/systemmenu.go:67
+#: internal/ui/systemmenu.go:43
+#: internal/ui/systemmenu.go:82
 #: ui/settings.ui:2328
 msgid "Launcher"
 msgstr "실행기"
@@ -8625,7 +8625,7 @@ msgstr "포커스 온 또는 오프"
 #: internal/term/settings/settings.go:126
 #: internal/term/web/strings.go:96
 #: internal/termui/headmenu.go:110
-#: internal/ui/systemmenu.go:52
+#: internal/ui/systemmenu.go:80
 #: ui/control.ui:58
 #: ui/settings.ui:30
 msgid "Settings"
@@ -8668,7 +8668,7 @@ msgstr "색상을 선택하세요"
 
 #: internal/hyprconf/keys.go:40
 #: internal/ui/settings_barlayout.go:39
-#: internal/ui/systemmenu.go:32
+#: internal/ui/systemmenu.go:39
 #: internal/ui/voice_page.go:169
 #: ui/bar.ui:209
 #: ui/settings.ui:6708
@@ -10407,7 +10407,7 @@ msgid "wired"
 msgstr "유선"
 
 #: internal/lightui/sysmon.go:1043
-#: internal/ui/systemmenu.go:26
+#: internal/ui/systemmenu.go:33
 #: ui/control.ui:273
 #: ui/settings.ui:5501
 #: ui/settings.ui:5577
@@ -10753,7 +10753,7 @@ msgstr "계정"
 
 #: internal/lightui/tailscale.go:664
 #: internal/shell/commands.go:31
-#: internal/ui/systemmenu.go:73
+#: internal/ui/systemmenu.go:88
 msgid "Log Out"
 msgstr "로그아웃"
 
@@ -11472,12 +11472,12 @@ msgstr ""
 #: internal/mailui/menubar.go:53
 #: internal/termui/menubar.go:45
 #: internal/ui/appmenu_packs.go:88
-#: internal/ui/systemmenu.go:76
+#: internal/ui/systemmenu.go:91
 msgid "Help"
 msgstr "도움말"
 
 #: internal/mailui/menubar.go:54
-#: internal/ui/systemmenu.go:78
+#: internal/ui/systemmenu.go:93
 msgid "Keyboard Shortcuts"
 msgstr "키보드 단축키"
 
@@ -12704,9 +12704,9 @@ msgid "Remote Desktop"
 msgstr "원격 데스크톱"
 
 #: internal/remoteui/menubar.go:50
-#: internal/ui/systemmenu.go:71
+#: internal/ui/systemmenu.go:86
 msgid "Session"
-msgstr ""
+msgstr "세션"
 
 #: internal/remoteui/menubar.go:52
 msgid "End Remote Session"
@@ -13100,7 +13100,7 @@ msgid "Desktop"
 msgstr "데스크톱"
 
 #: internal/shell/commands.go:27
-#: internal/ui/systemmenu.go:72
+#: internal/ui/systemmenu.go:87
 msgid "Lock Screen"
 msgstr "화면 잠금"
 
@@ -13120,7 +13120,7 @@ msgstr "일시 중지, 먼저 잠금"
 #: internal/shell/commands.go:29
 #: internal/termui/restart.go:44
 #: internal/ui/control.go:522
-#: internal/ui/systemmenu.go:61
+#: internal/ui/systemmenu.go:75
 #: ui/control.ui:168
 msgid "Restart"
 msgstr "다시 시작"
@@ -13134,7 +13134,7 @@ msgid "Press Enter again to restart"
 msgstr "Enter를 다시 누르면 다시 시작합니다"
 
 #: internal/shell/commands.go:30
-#: internal/ui/systemmenu.go:62
+#: internal/ui/systemmenu.go:76
 msgid "Shut Down"
 msgstr "종료"
 
@@ -13348,7 +13348,7 @@ msgstr "앱, 창 및 답변 찾기"
 
 #: internal/shell/dock.go:313
 #: internal/ui/screenshot.go:1167
-#: internal/ui/systemmenu.go:68
+#: internal/ui/systemmenu.go:83
 #: ui/settings.ui:2288
 msgid "Screenshot"
 msgstr "스크린샷"
@@ -13523,14 +13523,14 @@ msgstr "성능"
 
 #: internal/shell/power.go:24
 #: internal/ui/control.go:520
-#: internal/ui/systemmenu.go:54
+#: internal/ui/systemmenu.go:69
 #: ui/control.ui:120
 msgid "Suspend"
 msgstr "절전"
 
 #: internal/shell/power.go:26
 #: internal/ui/control.go:521
-#: internal/ui/systemmenu.go:57
+#: internal/ui/systemmenu.go:71
 #: ui/control.ui:144
 msgid "Hibernate"
 msgstr "최대 절전"
@@ -14005,7 +14005,7 @@ msgid "Key panel"
 msgstr "키 패널"
 
 #: internal/term/web/strings.go:63
-#: internal/ui/systemmenu.go:29
+#: internal/ui/systemmenu.go:36
 #: ui/settings.ui:6149
 msgid "Keyboard"
 msgstr "키보드"
@@ -14597,7 +14597,7 @@ msgstr "bash, zsh, fish가 프롬프트를 표시해 명령을 기억할 수 있
 #: internal/termui/prefs.go:184
 #: internal/ui/notify.go:324
 #: internal/ui/settings_barlayout.go:38
-#: internal/ui/systemmenu.go:23
+#: internal/ui/systemmenu.go:44
 #: ui/bar.ui:179
 #: ui/settings.ui:3698
 msgid "Notifications"
@@ -15050,7 +15050,7 @@ msgid "Search clipboard history"
 msgstr "클립보드 기록 검색"
 
 #: internal/ui/clipboard.go:360
-#: internal/ui/systemmenu.go:24
+#: internal/ui/systemmenu.go:48
 #: ui/connect.ui:728
 #: ui/settings.ui:3962
 msgid "Clipboard"
@@ -16063,7 +16063,7 @@ msgid "Recording"
 msgstr ""
 
 #: internal/ui/settings_barlayout.go:40
-#: internal/ui/systemmenu.go:69
+#: internal/ui/systemmenu.go:84
 #: ui/bar.ui:224
 msgid "Control Center"
 msgstr "제어 센터"
@@ -16261,7 +16261,7 @@ msgid "What the next login runs inua on"
 msgstr ""
 
 #: internal/ui/settings_compositor.go:77
-#: internal/ui/systemmenu.go:35
+#: internal/ui/systemmenu.go:50
 #: ui/settings.ui:6844
 msgid "Compositor"
 msgstr ""
@@ -16519,7 +16519,7 @@ msgid "No displays"
 msgstr "디스플레이 없음"
 
 #: internal/ui/settings_displays.go:212
-#: internal/ui/systemmenu.go:28
+#: internal/ui/systemmenu.go:35
 #: ui/settings.ui:6011
 msgid "Displays"
 msgstr "디스플레이"
@@ -17338,56 +17338,61 @@ msgid "%d window"
 msgid_plural "%d windows"
 msgstr[0] "%d개 창"
 
-#: internal/ui/systemmenu.go:18
-#: ui/settings.ui:95
-msgid "Appearance"
-msgstr "모양"
-
-#: internal/ui/systemmenu.go:19
-#: ui/settings.ui:1115
-msgid "Bar & Dock"
-msgstr "상단 표시줄 및 독"
-
-#: internal/ui/systemmenu.go:21
-#: ui/settings.ui:2502
-msgid "Default Apps"
-msgstr "기본 앱"
-
-#: internal/ui/systemmenu.go:27
+#: internal/ui/systemmenu.go:34
 #: ui/control.ui:346
 #: ui/settings.ui:5782
 #: ui/settings.ui:5858
 msgid "Bluetooth"
 msgstr "블루투스"
 
-#: internal/ui/systemmenu.go:30
+#: internal/ui/systemmenu.go:37
 #: ui/settings.ui:6441
 msgid "Mouse & Touch"
 msgstr "마우스 및 터치패드"
 
-#: internal/ui/systemmenu.go:31
+#: internal/ui/systemmenu.go:38
 #: ui/control.ui:666
 #: ui/settings.ui:6776
 msgid "Sound"
 msgstr "소리"
 
-#: internal/ui/systemmenu.go:33
+#: internal/ui/systemmenu.go:40
 #: ui/settings.ui:6742
 msgid "Security Keys"
 msgstr ""
 
-#: internal/ui/systemmenu.go:34
+#: internal/ui/systemmenu.go:41
+#: ui/settings.ui:95
+msgid "Appearance"
+msgstr "모양"
+
+#: internal/ui/systemmenu.go:42
+#: ui/settings.ui:1115
+msgid "Bar & Dock"
+msgstr "상단 표시줄 및 독"
+
+#: internal/ui/systemmenu.go:45
 #: ui/settings.ui:5180
 msgid "Shortcuts"
 msgstr "단축키"
 
-#: internal/ui/systemmenu.go:36
-#: internal/ui/systemmenu.go:75
+#: internal/ui/systemmenu.go:46
+#: ui/settings.ui:2502
+msgid "Default Apps"
+msgstr "기본 앱"
+
+#: internal/ui/systemmenu.go:51
+#: internal/ui/systemmenu.go:90
 #: ui/settings.ui:6810
 msgid "Power"
 msgstr "전원"
 
-#: internal/ui/systemmenu.go:77
+#: internal/ui/systemmenu.go:52
+#: ui/settings.ui:6878
+msgid "About"
+msgstr "소개"
+
+#: internal/ui/systemmenu.go:92
 msgid "About inua"
 msgstr "inua 정보"
 
@@ -20789,10 +20794,6 @@ msgstr "더 빠르게 스와이프하면 포인터가 더 멀리 이동합니다
 #: ui/settings.ui:6677
 msgid "Stop setting the touchpad in inua"
 msgstr "inua에서 터치패드 설정을 중지합니다."
-
-#: ui/settings.ui:6878
-msgid "About"
-msgstr "소개"
 
 #: ui/settings.ui:6916
 msgid "<span alpha='55%'>[</span>SYSTEM<span alpha='55%'>]</span>"

@@ -140,8 +140,6 @@ const (
 	ActionCenter      = "center"
 	ActionCopyTitle   = "copy-title"
 	ActionCopyClass   = "copy-class"
-	// ActionSystem runs one of the shell's own commands.
-	ActionSystem = "system"
 )
 
 // registered is a registration, when it was made among the others, and the
