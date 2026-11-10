@@ -56,3 +56,14 @@ Round 2 built with Claude Code. Fixed the latest P1: animate effect types and ma
 Installs: none. make i18n left catalogs unchanged; no Blueprint changes. Coder and manager each passed make test with isolated HOME/XDG/runtime and live session variables unset (18 Python tests, go vet, race-enabled Go suite). Worktree clean; protected paths unchanged against original PR start point. Existing history beyond that point consists of item work and merged base history.
 Not checked: visual animation behavior and a real Wayfire session; Wayfire is not installed. Hyprland/niri unchanged in this round. Review limitations: scale/expo/cube and wobbly retain their own motion; IPC overrides lock corresponding ini settings until compositor restart; restarting Wayfire in the same login while off can make a later enable restore old values over newly disabled ini values (documented and tested). Inspect restoration and these scope limits before approval.
 First branch push failed because gh required a repository credential path; retried successfully with command-local credential.useHttpPath=true. No persistent git configuration changed.
+
+## factory · review · 2026-11-10 16:22
+head: 4fcb6190b11b66d15d2738cac6fd93af02c4c072
+verdict: pass
+notes:
+- [P2] internal/wayfire/config.go:281-287: With XDG_RUNTIME_DIR unset, motionFile falls back to a predictable shared temporary path; a precreated inua directory and symlinked wayfire-motion.json can cause the save to overwrite another file writable by the user. Reject missing runtime directories or use a private ownership-checked directory and no-follow file opening. Claude classified this P3; manager records P2 because the concrete consequence is unintended file overwrite. This does not meet the factory's P0/P1 blocking threshold.
+- Round-1 P1 is fixed: real Wayfire animate/grid/vswitch options replace fictional enabled options, with 0.9/0.10 metadata-backed tests. No P0/P1 findings.
+- Claude Code reviewed all 23 changed files in origin/master...HEAD, including animation propagation, Lua reload, restore state, partial failures and docs. make test passed in isolated HOME/XDG/runtime with live session variables unset: 18 Python tests, go vet, race-enabled Go suite. Manager checked the successful test log and clean unchanged head. No installs.
+- UI/animation behavior not checked by eye; no live Wayfire/niri or Hyprland Lua validation. Wayfire IPC behavior validated against fakes, not a real session. Documented scale/expo/cube/wobbly motion, IPC override locking and stale restoration after compositor restart remain limitations. Hyprland's default true still overrides a user's off setting. Other plugin motion outside the metadata fixtures remains unverified.
+
+Round 2 of 3: moved review → ready. FT89 and FT91 skipped because their current heads already have reviews. No code changes or merge to master.
