@@ -334,7 +334,9 @@ windows to PNG files for checking layouts without a screenshot tool.
   unknown keys and bad values warn one by one, and bad values fall back. The
   warnings go to the log, and `inua config check` checks without loading GTK.
 - Sections: `[bar]` (shown, clock in a strftime subset, workspace scope,
-  title, tray), `[launcher]`, `[control]` (lock and screenshot commands),
+  title, tray, the layout: `config.BarItems` in order and spaces, unset
+  for the default with the clock centred; edited by `shell.BarLayout*`,
+  arranged on each bar by `bar.arrange`), `[launcher]`, `[control]` (lock and screenshot commands),
   `[style]` (theme, icon set, extra stylesheet), `[background]`, `[input]`
   (XKB options, touchpad), `[notifications]`, `[dock]` and `[[shortcuts]]`.
 - `[input]` and `[[shortcuts]]` are Hyprland settings: written to

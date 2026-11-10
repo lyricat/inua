@@ -76,7 +76,43 @@ type Entry struct {
 	// only when asked (AboutToShow), so Children can be empty until then.
 	Submenu  bool
 	Children []Entry
+	// Action says how to invoke an entry: a shortcut sent to the window,
+	// or one of the shell's own window actions.
+	Action Action
 }
+
+// Action says how to invoke an entry.
+type Action struct {
+	Kind  string          // ActionKeys, ActionKeySequence, or a shell action; empty when the entry only groups children
+	Bus   string          // the window id for a shell action or a shortcut
+	Path  dbus.ObjectPath // unused by packs
+	Index int32           // the process id for pack actions
+	// Mods and Key are the shortcut ActionKeys sends to the window.
+	Mods string
+	Key  string
+	// Sequence sends several key strokes in order (for Vim-style chords).
+	Sequence []KeyStroke
+}
+
+// KeyStroke is one press in a sequence action.
+type KeyStroke struct {
+	Mods string
+	Key  string
+}
+
+const (
+	// ActionKeySequence sends several key strokes in order.
+	ActionKeySequence = "key-sequence"
+	// Actions the shell itself runs for a menu item.
+	ActionAbout       = "about"
+	ActionCloseWindow = "close-window"
+	ActionQuitApp     = "quit-app"
+	ActionFullscreen  = "fullscreen"
+	ActionFloat       = "float"
+	ActionCenter      = "center"
+	ActionCopyTitle   = "copy-title"
+	ActionCopyClass   = "copy-class"
+)
 
 // registered is a registration, when it was made among the others, and the
 // items of its menu's first level as Menu last read them.
