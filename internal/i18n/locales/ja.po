@@ -3947,7 +3947,7 @@ msgstr "フォルダー"
 msgid "Columns"
 msgstr "列"
 
-#: internal/filesui/columns.go:346
+#: internal/filesui/columns.go:349
 #: internal/lightui/pass.go:972
 msgid "NAME"
 msgstr "名前"

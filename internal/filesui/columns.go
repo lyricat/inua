@@ -162,6 +162,9 @@ func (p *pane) grip(by files.SortBy) *gtk.Box {
 	g := gtk.NewBox(gtk.OrientationHorizontalValue, 0)
 	g.AddCssClass("files-col-grip")
 	g.SetSizeRequest(gap, -1)
+	// The rule's expansion would reach the grip and give it a share of
+	// the heads' spare width, which the rows give the name alone.
+	g.SetHexpand(false)
 	g.SetCursorFromName("col-resize")
 	rule := gtk.NewBox(gtk.OrientationHorizontalValue, 0)
 	rule.AddCssClass("files-col-rule")

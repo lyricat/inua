@@ -3959,7 +3959,7 @@ msgstr ""
 msgid "Columns"
 msgstr ""
 
-#: internal/filesui/columns.go:346
+#: internal/filesui/columns.go:349
 #: internal/lightui/pass.go:972
 msgid "NAME"
 msgstr ""
