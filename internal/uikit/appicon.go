@@ -424,17 +424,23 @@ func iconPath(shape IconShape, x, y, side float32) string {
 	return squircle(x, y, side)
 }
 
-// pebble is a round square with corners of slightly different radii, as a
-// stone worn smooth: soft arcs, no continuous-corner easing.
+// pebble is a round square with corners of different radii, as a stone
+// worn smooth: straight sides and plain arcs, without the squircle's
+// easing.
 func pebble(x, y, side float32) string {
 	S := float64(side)
-	r := [4]float64{S * 0.27, S * 0.43, S * 0.31, S * 0.45} // tl, tr, br, bl
+	r := [4]float64{S * 0.27, S * 0.43, S * 0.31, S * 0.45} // top left, top right, bottom right, bottom left
 	X, Y := float64(x), float64(y)
-	return fmt.Sprintf("M %g %g A %g %g 0 0 1 %g %g L %g %g A %g %g 0 0 1 %g %g L %g %g A %g %g 0 0 1 %g %g L %g %g A %g %g 0 0 1 %g %g Z",
-		X+r[0], Y, r[0], r[0], X+S-r[1], Y,
-		X+S, Y+r[1], r[1], r[1], X+S, Y+S-r[2],
-		X+S-r[2], Y+S, r[2], r[2], X+r[3], Y+S,
-		X, Y+S-r[3], r[3], r[3], X, Y+r[0])
+	return fmt.Sprintf("M %g %g "+
+		"L %g %g A %g %g 0 0 1 %g %g "+
+		"L %g %g A %g %g 0 0 1 %g %g "+
+		"L %g %g A %g %g 0 0 1 %g %g "+
+		"L %g %g A %g %g 0 0 1 %g %g Z",
+		X+r[0], Y,
+		X+S-r[1], Y, r[1], r[1], X+S, Y+r[1],
+		X+S, Y+S-r[2], r[2], r[2], X+S-r[2], Y+S,
+		X+r[3], Y+S, r[3], r[3], X, Y+S-r[3],
+		X, Y+r[0], r[0], r[0], X+r[0], Y)
 }
 
 // squircle is the icon's shape in the square at x, y, side long, as an
