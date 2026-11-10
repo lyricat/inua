@@ -33,3 +33,12 @@ Installs: none. Coder reports go build ./... and make test passed; manager indep
 UI changed and was not checked by eye. Manual checks listed above remain pending. Initial branch push needed command-scoped credential.useHttpPath=true; retry succeeded, without changing user configuration.
 
 Moved new/ → review/ for review round 1.
+
+## factory · review · 2026-11-10 17:20
+head: 2f9560e3341d1fabb3e62e111dcef46a094d4e3f
+verdict: pass
+notes:
+- Claude Code reviewed origin/master...HEAD (base a6787817), all 10 changed files. No findings. Sections, empty handling, bookmark storage/management, visible shortcut order and six translated headings match the request and plan.
+- Required make test passed with throwaway HOME and isolated XDG/TMP directories: 18 Python session tests, go vet and Go race tests. Catalog extraction reproduced committed files in a scratch checkout; gofmt clean. Review worktree remained clean; no code commits or installs.
+- UI was not checked by eye. Manual checks remain: empty/nonempty sections, last-bookmark removal across windows, restart persistence, navigation/Alt-number, translations and picker without Trash. Trash preceding bookmarks intentionally changes Alt-number assignments.
+- Moved review/ → ready/. No linked GitHub issues or PRs to comment on.
