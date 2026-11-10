@@ -38,3 +38,8 @@ This item has no source PR or branch recorded; no fork branch was inferred.
 Owner corrected the requested destination: “诶不对，他们应该放到 review”。
 Moved new → review at the owner’s request; no build, review or tests performed in this update.
 No source PR or implementation branch is recorded; locating the implementation is required before code review. This move does not certify that implementation exists.
+
+
+## factory · 2026-11-10 21:03
+Owner corrected FT101 specifically: “FT101 应该是 new”。
+Moved review → new; implementation is pending. Other items remain unchanged. No build or review performed.
