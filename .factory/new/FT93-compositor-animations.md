@@ -1,7 +1,5 @@
 ---
 source: pr #78
-branch: feat/compositor-animations
-round: 1
 ---
 # feat(compositor): apply the animation setting through each backend
 
@@ -16,3 +14,8 @@ No review, tests or visual UI checks run during import. Awaiting review; not app
 
 ## Lyric · 2026-11-10 09:53
 先把 FT92~FT100移动到 backlog
+
+## factory · 2026-11-10 13:44
+Moved from backlog to new at the owner’s request. Confirmed source PR #78 is open and its head is iamcheyan/inua:feat/compositor-animations.
+Removed the imported fork branch and round headers: no factory build has run for this item. Keep source: pr #78; the next build must fetch origin pull/78/head and create factory/FT93-compositor-animations from that PR head, not look for the fork branch in the main repository.
+This update changes the queue only; no build, tests, review or merge performed.

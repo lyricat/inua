@@ -1,7 +1,5 @@
 ---
 source: pr #94
-branch: pr/icon-shape
-round: 1
 ---
 # feat(style): choose the shape of app icons in the dock and launcher
 
@@ -16,3 +14,8 @@ No review, tests or visual UI checks run during import. Awaiting review; not app
 
 ## Lyric · 2026-11-10 09:53
 先把 FT92~FT100移动到 backlog
+
+## factory · 2026-11-10 13:44
+Moved from backlog to new at the owner’s request. Confirmed source PR #94 is open and its head is iamcheyan/inua:pr/icon-shape.
+Removed the imported fork branch and round headers: no factory build has run for this item. Keep source: pr #94; the next build must fetch origin pull/94/head and create factory/FT98-icon-shape from that PR head, not look for the fork branch in the main repository.
+This update changes the queue only; no build, tests, review or merge performed.

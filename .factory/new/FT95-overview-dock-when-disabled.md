@@ -1,7 +1,5 @@
 ---
 source: pr #91
-branch: pr/overview-dock-when-disabled
-round: 1
 ---
 # fix(dock): show the dock in the overview while it is off the desktop
 
@@ -16,3 +14,8 @@ No review, tests or visual UI checks run during import. Awaiting review; not app
 
 ## Lyric · 2026-11-10 09:53
 先把 FT92~FT100移动到 backlog
+
+## factory · 2026-11-10 13:44
+Moved from backlog to new at the owner’s request. Confirmed source PR #91 is open and its head is iamcheyan/inua:pr/overview-dock-when-disabled.
+Removed the imported fork branch and round headers: no factory build has run for this item. Keep source: pr #91; the next build must fetch origin pull/91/head and create factory/FT95-overview-dock-when-disabled from that PR head, not look for the fork branch in the main repository.
+This update changes the queue only; no build, tests, review or merge performed.
