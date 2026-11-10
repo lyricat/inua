@@ -1216,7 +1216,7 @@ msgstr "프로젝트의 기록, 브랜치, stash입니다. 푸시하지 않은 �
 #: internal/apps/disk/rules.go:331
 #: internal/filesui/details.go:55
 #: internal/filesui/pane.go:1068
-#: internal/filesui/sidebar.go:50
+#: internal/filesui/sidebar.go:46
 #: internal/filesui/tabs.go:97
 #: internal/filesui/window.go:314
 #: internal/mailui/window.go:785
@@ -3219,7 +3219,7 @@ msgstr ""
 
 #: internal/diskui/window.go:333
 #: internal/filesui/cards.go:682
-#: internal/filesui/sidebar.go:36
+#: internal/filesui/sidebar.go:41
 #: internal/filesui/tabs.go:99
 #: internal/filesui/window.go:318
 msgid "Home"
@@ -3241,7 +3241,7 @@ msgstr "스캔 중…"
 
 #: internal/diskui/window.go:367
 #: internal/filesui/remote.go:266
-#: internal/filesui/sidebar.go:65
+#: internal/filesui/sidebar.go:76
 msgid "%s free of %s"
 msgstr "%s 남음 / %s"
 
@@ -3588,7 +3588,7 @@ msgid "They do not go to the trash, and this cannot be undone."
 msgstr "휴지통으로 가지 않으며 되돌릴 수 없습니다."
 
 #: internal/filesui/cards.go:452
-#: internal/filesui/sidebar.go:51
+#: internal/filesui/sidebar.go:47
 #: internal/filesui/window.go:781
 #: internal/filesui/window.go:787
 #: internal/mailui/actions.go:265
@@ -4682,36 +4682,40 @@ msgstr "붙일 수 없는 이름이 있습니다. 표시되어 있습니다."
 msgid "PLACES"
 msgstr "위치"
 
-#: internal/filesui/sidebar.go:40
+#: internal/filesui/sidebar.go:52
+msgid "BOOKMARKS"
+msgstr "북마크"
+
+#: internal/filesui/sidebar.go:57
 msgid "Remove from the bookmarks"
 msgstr "북마크에서 제거"
 
-#: internal/filesui/sidebar.go:54
+#: internal/filesui/sidebar.go:65
 #: ui/connect.ui:112
 #: ui/tailscale.ui:112
 msgid "DEVICES"
 msgstr "장치"
 
-#: internal/filesui/sidebar.go:55
+#: internal/filesui/sidebar.go:66
 #: internal/games/checkersnet/texts.go:30
 msgid "Computer"
 msgstr "컴퓨터"
 
-#: internal/filesui/sidebar.go:68
+#: internal/filesui/sidebar.go:79
 msgid "%s, locked"
 msgstr "%s, 잠김"
 
-#: internal/filesui/sidebar.go:79
-#: internal/filesui/sidebar.go:172
+#: internal/filesui/sidebar.go:90
+#: internal/filesui/sidebar.go:183
 msgid "Eject"
 msgstr "꺼내기"
 
-#: internal/filesui/sidebar.go:143
+#: internal/filesui/sidebar.go:154
 #: internal/filesui/window.go:813
 msgid "Open in a new tab"
 msgstr "새 탭에서 열기"
 
-#: internal/filesui/sidebar.go:144
+#: internal/filesui/sidebar.go:155
 #: internal/filesui/window.go:814
 msgid "Open in a new window"
 msgstr "새 창에서 열기"

@@ -1216,7 +1216,7 @@ msgstr "プロジェクトの履歴、ブランチ、stash です。プッシュ
 #: internal/apps/disk/rules.go:331
 #: internal/filesui/details.go:55
 #: internal/filesui/pane.go:1068
-#: internal/filesui/sidebar.go:50
+#: internal/filesui/sidebar.go:46
 #: internal/filesui/tabs.go:97
 #: internal/filesui/window.go:314
 #: internal/mailui/window.go:785
@@ -3219,7 +3219,7 @@ msgstr ""
 
 #: internal/diskui/window.go:333
 #: internal/filesui/cards.go:682
-#: internal/filesui/sidebar.go:36
+#: internal/filesui/sidebar.go:41
 #: internal/filesui/tabs.go:99
 #: internal/filesui/window.go:318
 msgid "Home"
@@ -3241,7 +3241,7 @@ msgstr "スキャン中…"
 
 #: internal/diskui/window.go:367
 #: internal/filesui/remote.go:266
-#: internal/filesui/sidebar.go:65
+#: internal/filesui/sidebar.go:76
 msgid "%s free of %s"
 msgstr "%s 空き（全 %s）"
 
@@ -3588,7 +3588,7 @@ msgid "They do not go to the trash, and this cannot be undone."
 msgstr "ゴミ箱には移動せず、元に戻せません。"
 
 #: internal/filesui/cards.go:452
-#: internal/filesui/sidebar.go:51
+#: internal/filesui/sidebar.go:47
 #: internal/filesui/window.go:781
 #: internal/filesui/window.go:787
 #: internal/mailui/actions.go:265
@@ -4682,36 +4682,40 @@ msgstr "付けられない名前があります。印が付いています。"
 msgid "PLACES"
 msgstr "場所"
 
-#: internal/filesui/sidebar.go:40
+#: internal/filesui/sidebar.go:52
+msgid "BOOKMARKS"
+msgstr "ブックマーク"
+
+#: internal/filesui/sidebar.go:57
 msgid "Remove from the bookmarks"
 msgstr "ブックマークから削除"
 
-#: internal/filesui/sidebar.go:54
+#: internal/filesui/sidebar.go:65
 #: ui/connect.ui:112
 #: ui/tailscale.ui:112
 msgid "DEVICES"
 msgstr "デバイス"
 
-#: internal/filesui/sidebar.go:55
+#: internal/filesui/sidebar.go:66
 #: internal/games/checkersnet/texts.go:30
 msgid "Computer"
 msgstr "コンピューター"
 
-#: internal/filesui/sidebar.go:68
+#: internal/filesui/sidebar.go:79
 msgid "%s, locked"
 msgstr "%s、ロック中"
 
-#: internal/filesui/sidebar.go:79
-#: internal/filesui/sidebar.go:172
+#: internal/filesui/sidebar.go:90
+#: internal/filesui/sidebar.go:183
 msgid "Eject"
 msgstr "取り出す"
 
-#: internal/filesui/sidebar.go:143
+#: internal/filesui/sidebar.go:154
 #: internal/filesui/window.go:813
 msgid "Open in a new tab"
 msgstr "新しいタブで開く"
 
-#: internal/filesui/sidebar.go:144
+#: internal/filesui/sidebar.go:155
 #: internal/filesui/window.go:814
 msgid "Open in a new window"
 msgstr "新しいウィンドウで開く"

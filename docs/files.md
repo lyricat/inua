@@ -46,17 +46,18 @@ opens a folder in it: `open .`, `open ~/Downloads`.
 │ Desktop  │ ▸ cmd           12 items   14:02     │ name       │
 │ …        │ ▸ docs           9 items   11:40     │ KIND       │
 │ Trash    │   go.mod          3.1 kB   Oct 3     │ SIZE       │
-│ DEVICES  │   README.md      14.2 kB   Oct 14    │ MODIFIED   │
-│ USB    ⏏ │                                      │ …          │
-│ REMOTE   │ /flt · 23 items · 2 sel. · 9 GB free │            │
-│          │ Copying photo.jpg ━━━━━━  38 MB/s  ✕ │            │
+│ BOOKMARKS│   README.md      14.2 kB   Oct 14    │ MODIFIED   │
+│ Code     │                                      │ …          │
+│ DEVICES  │ /flt · 23 items · 2 sel. · 9 GB free │            │
+│ USB    ⏏ │ Copying photo.jpg ━━━━━━  38 MB/s  ✕ │            │
+│ REMOTE   │                                      │            │
 │ ◉ ▥ ⓘ  ⌘ │                                      │            │
 └──────────┴──────────────────────────────────────┴────────────┘
 ```
 
 | Part | What | Key |
 | --- | --- | --- |
-| Sidebar (left) | Its toggle at the top, as Mail's (hidden, the toggle moves to the left pane's head); places, the trash, devices and remote disks; at its foot, framed toggles (as Calculator's) for hidden files, two panes and details, and the keys. A right click on an entry: open it in a new tab or window, and remove a bookmark, empty the trash, eject a drive, or disconnect or forget a remote disk. | F9 slides it in or out |
+| Sidebar (left) | Its toggle at the top, as Mail's (hidden, the toggle moves to the left pane's head); places and the trash, bookmarks, devices and remote disks; at its foot, framed toggles (as Calculator's) for hidden files, two panes and details, and the keys. A right click on an entry: open it in a new tab or window, and remove a bookmark, empty the trash, eject a drive, or disconnect or forget a remote disk. | F9 slides it in or out |
 | Panes (centre) | One pane, or two side by side (commander style). In the list, a pane narrower than the name and the columns scrolls sideways, the column heads with it; the name keeps its width. Each has its own tabs, and each tab its own folder and history; a pane's view, order and selection are its folder's. With two panes, a status square starts each path: filled for the one the keys go to, hollow for the other, whose selection loses the accent. | F3 two panes; Tab the other pane |
 | Tabs | A pane's tabs show above it once it has two: the folder's name, a button that closes it (a middle click too). | Ctrl+T, Ctrl+W, Ctrl+Tab |
 | Details (right) | The selection: a thumbnail or the first lines of a text, its kind (MIME type), size, modified, opened and changed times, permissions, owner, where it is and where a link points; a folder's size and count, added up on a goroutine. Several selected: how many, and their size. In a window too narrow for it beside the panes it stays hidden, the toggle on, until the window widens. | Space, Ctrl+I, Alt+Enter |
@@ -154,11 +155,14 @@ The sidebar is the shell's index column, as Pass and Tailscale have:
 
 - **Places**: Home, then the XDG user folders that exist
   (`~/.config/user-dirs.dirs`: Desktop, Documents, Downloads, Music,
-  Pictures, Videos), then the bookmarks. Bookmarks are GTK's
-  (`~/.config/gtk-3.0/bookmarks`), the list GTK's file chooser and
-  Nautilus show; one that repeats a place above is not listed twice.
-  Ctrl+D adds and removes them.
-- **Trash**: the freedesktop trash (below).
+  Pictures, Videos), then the trash: the freedesktop trash (below; the
+  picker leaves it out).
+- **Bookmarks**: GTK's (`~/.config/gtk-3.0/bookmarks`), the list GTK's
+  file chooser and Nautilus show, in the file's order; one that repeats
+  a place above or another bookmark is not listed twice. Ctrl+D adds and
+  removes them, as does an entry's menu. Without bookmarks (none yet,
+  the last one removed, the file missing or unreadable) the section and
+  its head are left out.
 - **Devices**: the computer's root; then drives and partitions with a
   filesystem, from UDisks2 (`org.freedesktop.UDisks2` on the system bus):
   USB sticks, SD cards, other disks' partitions, LUKS volumes, removable
