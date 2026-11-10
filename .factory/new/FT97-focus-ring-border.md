@@ -29,3 +29,15 @@ The existing branch header names the fork branch, not an origin branch. For the 
 Owner corrected the requested destination: “诶不对，他们应该放到 review”。
 Moved new → review at the owner’s request; no build, review or tests performed in this update.
 Review the existing fork PR implementation using the source PR head (refs/pull/<PR>/head); the branch header is a fork branch, not necessarily an origin branch. The preceding instruction to build is superseded by this review request.
+
+## factory · review · 2026-11-10 21:22
+head: cdbc2ad761e065260337789f2015fb05a9f9f48b
+verdict: fix
+fix:
+- [P1] internal/ui/focusring.go:42-44: Decode Hyprland's custom JSON field, not gradient/color. Example: {"option":"general:col.active_border","custom":"ee33ccff ee00ff99 45deg","set":true} leaves both current fields empty and selects fallback #89b4fa instead of the active border colour. Add a regression test using this reply shape. Installed Hyprland getoption format strings and internal/hypr/room.go corroborate the contract; no live session was queried.
+notes:
+- [P2] internal/ui/shell.go:796: configreloaded never refreshes the new cached ring colour. Once reply decoding is fixed, changing col.active_border in hyprland.conf leaves the old colour until inua reload/restart. Refresh it in the existing event handler.
+
+Claude Code reviewed origin/master...HEAD (three files, merge base bf807607). Isolated make test passed: 18 Python tests, go vet, 115 Go race-test packages. No installs or code changes. No visual UI check. Reply shape checked against installed binary format strings, not live Hyprland. make i18n was not successfully run; no changed translatable strings. Speculative low-alpha parsing and generic blocking-I/O concerns excluded from confirmed findings.
+
+Fetched PR #93 head per owner request; merge-tree against origin/master passed. Published the unchanged head to origin/pr/focus-ring-border, preserving the recorded branch identity for the next fix build; contributor fork unchanged. Initial push credential-path error resolved on one retry with command-local credential.useHttpPath=true. Round 1 of 3: review/ → new/.
