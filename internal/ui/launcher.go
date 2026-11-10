@@ -972,7 +972,7 @@ func (s *shellUI) ghostCell(i int) *gtk.Widget {
 	}
 	icon.SetPixelSize(64)
 	icon.SetHalign(gtk.AlignCenterValue)
-	gtkx.Append(cell, &icon.Widget)
+	gtkx.Append(cell, uikit.AppIcon(icon, nil))
 	title := gtk.NewLabel(r.Title)
 	title.AddCssClass("title")
 	title.SetJustify(gtk.JustifyCenterValue)
@@ -1007,6 +1007,7 @@ func (s *shellUI) launcherRow(rowUI string, i int) *gtk.Widget {
 		glyph.SetVisible(true)
 	} else {
 		setIcon(&icon, r.Icon)
+		uikit.AppIcon(&icon, &row)
 	}
 	title.SetText(r.Title)
 	detail.SetText(r.Detail)
@@ -1032,6 +1033,7 @@ func (s *shellUI) launcherCell(cellUI string, i int) *gtk.Widget {
 	ui.Get("title", &title)
 	ui.Close()
 	setIcon(&icon, r.Icon)
+	uikit.AppIcon(&icon, &cell)
 	title.SetText(r.Title)
 	cell.SetTooltipText(cmp.Or(r.Detail, r.Title))
 	cell.SetHexpand(false) // its name's expanding must not widen it

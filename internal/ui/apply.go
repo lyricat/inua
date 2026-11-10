@@ -243,6 +243,7 @@ func (s *shellUI) applyConfig(c config.Config) {
 	if old.Style.Theme != c.Style.Theme || old.Background != c.Background || old.Dir != c.Dir {
 		s.loadWallpaper()
 	}
+	s.arrangeBars()
 	for _, b := range s.bars {
 		if old.Bar.Density != c.Bar.Density {
 			b.setDensity(c.Bar.Density)

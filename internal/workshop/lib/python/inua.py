@@ -366,9 +366,9 @@ class ui:
         return _node("tile", None, id=id, title=title, sub=sub, icon=icon, selected=selected)
 
     @staticmethod
-    def image(src=None, icon=None, width=None, height=None):
-        """An image file, or an icon by name."""
-        return _node("image", None, src=src, icon=icon, width=width, height=height)
+    def image(src=None, icon=None, width=None, height=None, style=None):
+        """An image file, or an icon by name; style "app" shows an icon as the dock does."""
+        return _node("image", None, src=src, icon=icon, width=width, height=height, style=style)
 
 
 app = App()

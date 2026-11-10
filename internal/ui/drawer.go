@@ -19,6 +19,7 @@ import (
 	"github.com/lyricat/inua/internal/i18n"
 	"github.com/lyricat/inua/internal/layershell"
 	"github.com/lyricat/inua/internal/shell"
+	"github.com/lyricat/inua/internal/uikit"
 	"github.com/lyricat/inua/internal/workshop"
 )
 
@@ -304,7 +305,7 @@ func (s *shellUI) drawerContent(kind string) *gtk.Box {
 			img := gtk.NewImage()
 			setIcon(img, e.Icon)
 			img.SetPixelSize(44)
-			gtkx.Append(col, &img.Widget)
+			gtkx.Append(col, uikit.AppIcon(img, nil))
 			name, comment := e.Name, e.Comment
 			if strings.HasPrefix(e.ID, "inua:") {
 				name, comment = i18n.T(name), i18n.T(comment)
