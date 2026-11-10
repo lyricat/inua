@@ -44,3 +44,9 @@ notes:
 
 Claude Code reviewed origin/master...HEAD, all 20 changed files. No P0/P1/P2 findings. Branch merges cleanly with current base. make test passed with isolated HOME/XDG/runtime and no live session addresses: 18 Python tests, go vet, race-enabled Go suite (116 packages). Generated layouts and catalogs reproduced unchanged in a throwaway copy; GSK outline parsing checked at three sizes. Worktree unchanged, no review commits. Installs: none.
 Not checked: visual UI, actual live dropdown/redraw behavior and appearance of the four shapes. Shape-setting behavior has no automated GTK widget test. Moved review → ready; no merge to master.
+
+## factory · 2026-11-10 19:48
+Shipped at owner request: ready → done. Merge: 25ff4a525168bb200ac6ce4a4aa27988a1ad08dd. Tag: v0.1.31. Master and tag pushed atomically.
+PR #94 already MERGED automatically on master push; explicit close skipped.
+Merged without conflicts.
+Validation: make generate and make i18n completed; make test passed after this integration (18 Python tests, go vet, Go race suite), under isolated throwaway HOME/XDG with no live session. Final generation reproduced cleanly. Installs: none. UI was not checked by eye; no deployment or process restart. Existing reviewed P3 findings remain accepted.

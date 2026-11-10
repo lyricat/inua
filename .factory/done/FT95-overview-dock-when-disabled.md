@@ -45,3 +45,9 @@ notes:
 - Catalog source references were checked against code and all six locales. make i18n was not rerun: preparing a scratch copy failed before generation; no full regeneration claim is made.
 - Installs: none. UI was not checked by eye; startup hiding, repeated open/close, stable tiled geometry, drawer/menu closing, autohide animations, settings toggles and monitor hot-plug still need nested-session verification.
 - Moved review → ready. No merge to master or release.
+
+## factory · 2026-11-10 19:48
+Shipped at owner request: ready → done. Merge: 5aca70178a44ea8c0503f4cd82a8a7454bc336e2. Tag: v0.1.31. Master and tag pushed atomically.
+PR #91 already MERGED automatically on master push; explicit close was refused because already merged.
+Merged without conflicts.
+Validation: make generate and make i18n completed; make test passed after this integration (18 Python tests, go vet, Go race suite), under isolated throwaway HOME/XDG with no live session. Final generation reproduced cleanly. Installs: none. UI was not checked by eye; no deployment or process restart. Existing reviewed P3 findings remain accepted.

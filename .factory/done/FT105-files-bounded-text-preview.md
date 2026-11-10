@@ -48,3 +48,9 @@ notes:
 - No installations or downloads. No linked issues or PRs to comment on.
 - UI not checked by eye. GTK stale-result wiring and file-type swap races were inspected, not exercised. Remote-mount performance and 64 KiB GTK label layout were not measured; in-flight slow FUSE reads are ignored when stale rather than cancelled.
 - Moved review/ → ready/. Owner should inspect sidebar appearance and CSV/log/image selection transitions before shipping.
+
+## factory · 2026-11-10 19:48
+Shipped at owner request: ready → done. Merge: 899ac84031ec2dbe1d1541bd32c42235034bf9e3. Tag: v0.1.31. Master and tag pushed atomically.
+No linked issue or PR.
+docs/files.md and catalog conflicts resolved by Claude, preserving folder menus, bookmark sections and bounded-preview docs/messages. Eight preview messages remain untranslated as on reviewed branch.
+Validation: make generate and make i18n completed; make test passed after this integration (18 Python tests, go vet, Go race suite), under isolated throwaway HOME/XDG with no live session. Final generation reproduced cleanly. Installs: none. UI was not checked by eye; no deployment or process restart. Existing reviewed P3 findings remain accepted.

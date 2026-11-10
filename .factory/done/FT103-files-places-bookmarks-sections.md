@@ -42,3 +42,9 @@ notes:
 - Required make test passed with throwaway HOME and isolated XDG/TMP directories: 18 Python session tests, go vet and Go race tests. Catalog extraction reproduced committed files in a scratch checkout; gofmt clean. Review worktree remained clean; no code commits or installs.
 - UI was not checked by eye. Manual checks remain: empty/nonempty sections, last-bookmark removal across windows, restart persistence, navigation/Alt-number, translations and picker without Trash. Trash preceding bookmarks intentionally changes Alt-number assignments.
 - Moved review/ → ready/. No linked GitHub issues or PRs to comment on.
+
+## factory · 2026-11-10 19:48
+Shipped at owner request: ready → done. Merge: 867b9d2bc2426bc456b5282e0d6a3aceb2a44b72. Tag: v0.1.31. Master and tag pushed atomically.
+No linked issue or PR.
+Catalog conflicts resolved by Claude, preserving existing translations and BOOKMARKS; catalogs regenerated.
+Validation: make generate and make i18n completed; make test passed after this integration (18 Python tests, go vet, Go race suite), under isolated throwaway HOME/XDG with no live session. Final generation reproduced cleanly. Installs: none. UI was not checked by eye; no deployment or process restart. Existing reviewed P3 findings remain accepted.

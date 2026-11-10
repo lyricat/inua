@@ -51,3 +51,9 @@ Claude Code reviewed origin/master...HEAD, all 14 changed files and relevant cal
 Validation: coder ran make test successfully with throwaway HOME/XDG/TMPDIR and live session variables unset (Python session tests, go vet, Go race tests). Focused GTK/filesui tests passed, including TestCrumbMenuActsOnItsFolder. Catalog regeneration on a throwaway copy matched committed catalogs; gofmt check clean.
 
 Installs: none. UI not checked by eye; no nested session. Pointer/keyboard menu placement, repeated rebuild interactions and dual-pane behavior remain manual checks. Real-folder Terminal, new window, Tidy and Paste effects were not exercised. No linked issue or PR. Moved review/ → ready/ under the no-P0/P1 review policy; P3 remains for owner consideration.
+
+## factory · 2026-11-10 19:48
+Shipped at owner request: ready → done. Merge: e9f914fc8a185299cf49b38e7d0e45d7ba481996. Tag: v0.1.31. Master and tag pushed atomically.
+No linked issue or PR.
+Merged without conflicts.
+Validation: make generate and make i18n completed; make test passed after this integration (18 Python tests, go vet, Go race suite), under isolated throwaway HOME/XDG with no live session. Final generation reproduced cleanly. Installs: none. UI was not checked by eye; no deployment or process restart. Existing reviewed P3 findings remain accepted.
