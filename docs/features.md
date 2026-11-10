@@ -15,6 +15,29 @@ reach as well, adjusts the volume 5% a notch; on the workspaces, it goes
 to the next workspace the bar shows (down) or the previous one (up), a
 notch a step, stopping at the ends. One per monitor.
 
+The Bar settings can make the panel transparent when the bar's current
+workspace has no windows. The panel becomes opaque again when a window
+appears. The controls keep their own look.
+
+What the bar shows, and in which order, is the user's: Settings → Bar &
+Dock → *Layout* is a small bar to drag the items into, along and back out
+of (`bar.layout`). Every item (the workspaces with Engawa's mark, the app
+menu, the app's name, the clock, the tray, the recording's stop button,
+passwords, the clipboard, notifications, dictation, the control center)
+goes on the bar once at most; a *space* as many times as wanted, the
+spaces sharing the room the items leave equally. A click on an item in the
+palette adds it after the one selected, and the tools under the strip move
+the selected one or take it off, without dragging. Changes apply to every
+bar at once and are saved as the other settings are. Unset, the bar has
+the default layout with the clock in the middle of the screen; once
+arranged, the clock sits between its spaces, and *Default* goes back to
+the unset layout. An item on the bar still shows only when its own setting
+and state have it (the tray, passwords with a store, a recording); one
+taken off does not come back when they do. The buttons' reaches run
+across the gaps between buttons side by side and into a corner from the
+first or last thing on the bar; a panel that hangs from the bar goes flush
+with its end only while its button is the last there.
+
 ## Engawa
 
 Engawa (縁側, a veranda at the edge of a house) is the widget page, the
@@ -258,7 +281,7 @@ its window to the current workspace.
 
 A two-column settings window for everything, its index grouped by what is
 most often looked for: Connections (Wi-Fi, Bluetooth), Devices (displays,
-keyboard, mouse and touchpad, sound, dictation), Desktop (appearance and wallpaper, the bar
+keyboard, mouse and touchpad, sound, dictation, security keys), Desktop (appearance and wallpaper, the bar
 and dock, the launcher, notifications, shortcuts), Apps (default apps, AI
 for the assistant's models, clipboard, keyring) and System (power, About).
 Changes apply as you make them.
@@ -648,6 +671,18 @@ the input records a few seconds and draws how loud it hears you. The
 page follows PipeWire as it changes: a headset plugged in, the volume
 keys, another app choosing the default. The microphone is the same one
 Settings → Dictation shows.
+
+## Security keys
+
+Each FIDO2 security key plugged in (a YubiKey, say), read through
+libfido2's tools: whether its PIN is set and how many tries are left, its
+firmware, and which gpg keys it unlocks (those Pass enrolled it for; see
+[security-key.md](security-key.md)), with Open Pass to add or remove one.
+Set PIN or Change PIN opens the fields under the PIN's row; changing the
+PIN keeps the gpg keys unlocking. The page looks again every few seconds
+while it is shown, for a key plugged in or out. Listing a key's other
+credentials (passkeys) and resetting it are left to the key's own tools:
+the one needs the PIN, the other erases every credential on it.
 
 ## Keyboard and touchpad
 

@@ -102,7 +102,7 @@ func Vouch(pid int, q *pinentry.Request) error {
 		if parent := proc.Parent(pid); proc.Name(parent) != "gpg-agent" {
 			// Not gpg's: what gpg would tell (the key, the pass entry, the
 			// app inua-keyring serves) is only what the program said.
-			q.Title, q.Keyring, q.Entry, q.Secret, q.Key = "", false, "", "", nil
+			q.Title, q.Keyring, q.Entry, q.Secret, q.Key, q.SecurityKey = "", false, "", "", nil, ""
 			q.App, q.Chain = proc.Name(parent), proc.Chain(proc.Parent(parent), 8)
 		}
 	case Is(pid, Assistant):

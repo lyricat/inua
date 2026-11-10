@@ -143,7 +143,7 @@ Python, `ui.<type>(…)` makes one.
 | chart | `ui.chart(points, height=80, min=None, max=None)` | A line over a soft fill, as System Monitor's; `min` and `max` fix its range |
 | tiles | `ui.tiles(*tiles)` | Tiles that wrap, as the control center's |
 | tile | `ui.tile(id, title, sub=None, icon=None, selected=False)` | A click is an event with its id |
-| image | `ui.image(src=None, icon=None, width=None, height=None)` | A file, or an icon by name |
+| image | `ui.image(src=None, icon=None, width=None, height=None, style=None)` | A file, or an icon by name (a path is a file too); `style="app"` shows an app's icon as the dock does, in its shape and light |
 
 Icons are freedesktop names from inua's icon theme: `edit-copy-symbolic`,
 `user-trash-symbolic`, `object-select-symbolic`, `list-add-symbolic`…

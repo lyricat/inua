@@ -60,6 +60,7 @@ type message struct {
 type view struct {
 	c          *appui.Ctx
 	win        *gtk.ApplicationWindow
+	menu       *appui.MenuBar
 	ctx        context.Context
 	background bool
 	enabled    bool
@@ -176,16 +177,7 @@ func (v *view) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 		}
 	}
 	v.onActivate = func(gtk.Entry) { v.submit() }
-	v.onReset = func(gtk.Button) {
-		if v.running || v.as == nil || len(v.approvals) != 0 {
-			return
-		}
-		v.as.Reset()
-		clear(v.messages)
-		v.answer = nil
-		gtkx.Clear(&v.talk)
-		v.showSuggestions()
-	}
+	v.onReset = func(gtk.Button) { v.newConversation() }
 	v.onCopy = func(b gtk.Button) {
 		m := v.messages[b.GoPointer()]
 		if v.closed || m == nil || !b.GetSensitive() {
@@ -268,6 +260,9 @@ func (v *view) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 		}
 		if v.apiCancel != nil {
 			v.apiCancel()
+			if v.menu != nil {
+				v.menu.Close()
+			}
 		}
 	}
 	win.ConnectCloseRequest(&v.onClose)
@@ -293,7 +288,7 @@ func (v *view) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	ask.ConnectActivate(&v.onAsk)
 	c.App.AddAction(ask)
 	ask.Unref()
-
+	v.menu = v.menuBar(win)
 	v.setUp()
 	v.built = true
 	v.showSuggestions()
@@ -893,4 +888,72 @@ func (v *view) dropSuggestions() {
 			return
 		}
 	}
+}
+
+func (v *view) menuBar(win *gtk.ApplicationWindow) *appui.MenuBar {
+	activate := func(action gio.SimpleAction, _ uintptr) {
+		switch action.GetName() {
+		case "new-conversation", "clear-conversation":
+			v.newConversation()
+		case "copy-reply":
+			v.copyLastReply()
+		case "settings":
+			openAISettings()
+		case "close-window":
+			if v.win != nil {
+				v.win.Close()
+			}
+		}
+	}
+	action := func(name, label string) appui.MenuAction {
+		return appui.MenuAction{Name: name, Label: label, Activate: activate}
+	}
+	groups := []appui.MenuGroup{
+		{Title: i18n.M("File"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
+			action("new-conversation", i18n.M("New conversation")),
+			action("close-window", i18n.M("Close Window")),
+		}}}},
+		{Title: i18n.M("Edit"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
+			action("clear-conversation", i18n.M("Clear conversation")),
+		}}}},
+		{Title: i18n.M("View"), Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
+			action("settings", i18n.M("AI settings")),
+		}}}},
+	}
+	return appui.NewMenuBar(v.c, groups)
+}
+
+func (v *view) newConversation() {
+	if v.running || v.as == nil || len(v.approvals) != 0 {
+		return
+	}
+	v.as.Reset()
+	clear(v.messages)
+	v.answer = nil
+	gtkx.Clear(&v.talk)
+	v.showSuggestions()
+}
+
+func (v *view) copyLastReply() {
+	if v.closed || v.answer == nil {
+		return
+	}
+	text := v.answer.text.GetText()
+	if text == "" || v.win == nil {
+		return
+	}
+	display := v.win.GetDisplay()
+	if display == nil || display.IsClosed() {
+		if display != nil {
+			display.Unref()
+		}
+		return
+	}
+	defer display.Unref()
+	clip := display.GetClipboard()
+	if clip == nil {
+		return
+	}
+	defer clip.Unref()
+	clip.SetText(text)
 }

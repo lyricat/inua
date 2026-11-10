@@ -32,8 +32,15 @@ clock = "%a %b %-d  %H:%M"
 # "all": every bar shows every workspace.
 workspaces = "monitor"
 
-# Show the focused window's title.
+# Show the focused application's icon and label.
 title = true
+
+# The label beside the icon: "app" for the application's name, "window"
+# for the focused window's title.
+title_mode = "app"
+
+# Draw the bar panel transparently when its workspace has no windows.
+transparent_empty = false
 
 # Show tray (StatusNotifierItem) icons.
 tray = true
@@ -42,6 +49,16 @@ tray = true
 # uses) and copies a password, a user name or a one-time code. Shown only
 # when there is a store. `inua call pass toggle` opens it too.
 pass = true
+
+# What the bar shows, from the left: "workspaces" (with the widget page's
+# mark), "app_menu", "app_title", "clock", "tray", "recording" (while the
+# screen is recorded), "passwords", "clipboard", "notifications",
+# "dictation", "control_center", each once at most, and any number of
+# "space", which share the room left over equally. Left unset (commented
+# out), the bar has the default below with the clock centred on the screen;
+# layout = [] is an empty bar. The settings for each item above still
+# decide whether it shows. Settings, Bar & Dock edits it by dragging.
+# layout = ["workspaces", "app_menu", "app_title", "space", "clock", "space", "tray", "recording", "passwords", "clipboard", "notifications", "dictation", "control_center"]
 
 [launcher]
 # What `inua call launcher toggle` opens: "apps" or "windows".

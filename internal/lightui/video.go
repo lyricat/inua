@@ -276,6 +276,7 @@ func (a *videoApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	})
 	a.showLoaded()
 	glib.TimeoutAdd(250, &a.onTick, 0)
+	menuWindow(c, a.win, []appui.MenuGroup{{Title: "File", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{{Name: "video-open", Label: "Open a video", Activate: func(gio.SimpleAction, uintptr) { a.choose() }}, {Name: "video-play-pause", Label: "Play or pause", Activate: func(gio.SimpleAction, uintptr) { a.playOrPause() }}, {Name: "video-fullscreen", Label: "Fullscreen", Activate: func(gio.SimpleAction, uintptr) { a.toggleFullscreen() }}}}}}})
 	return a.win
 }
 

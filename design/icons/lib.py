@@ -392,6 +392,27 @@ def brand(name):
     return grads, shapes
 
 
+def brand_strokes(name, every=1):
+    """A brand's stroked lines, brands/NAME.svg: (d, colour, width) each. A
+    line drawn as a polyline of many short steps (M x y L x y …) keeps
+    every n-th of its points and its last, to cost fewer bytes."""
+    import re
+    import xml.etree.ElementTree as ET
+    root = ET.parse(os.path.join(HERE, "brands", name + ".svg")).getroot()
+    out = []
+    for el in root.iter():
+        if not el.tag.endswith("}path") or el.get("stroke") in (None, "none"):
+            continue
+        d = el.get("d")
+        if every > 1 and re.fullmatch(r"M[\d.\s-]+(L[\d.\s-]+)*", d.strip()):
+            nums = [float(v) for v in re.findall(r"-?[\d.]+", d)]
+            pts = list(zip(nums[0::2], nums[1::2]))
+            pts = pts[:-1:every] + pts[-1:]
+            d = "M" + "L".join(f"{_fmt(x)} {_fmt(y)}" for x, y in pts)
+        out.append((d, el.get("stroke"), float(el.get("stroke-width", "1"))))
+    return out
+
+
 def brand_gradients(ic, grads):
     """Defines a brand's gradients in ic, as they are: their new ids, by
     their own."""

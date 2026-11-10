@@ -62,10 +62,21 @@ type Bar struct {
 	// or "all".
 	Workspaces string `toml:"workspaces"`
 	Title      bool   `toml:"title"`
-	Tray       bool   `toml:"tray"`
+	// TitleMode is "app" for the application's name or "window" for its
+	// focused window's title.
+	TitleMode string `toml:"title_mode"`
+	// TransparentEmpty removes the bar panel on a workspace with no windows.
+	TransparentEmpty bool `toml:"transparent_empty"`
+	Tray             bool `toml:"tray"`
 	// Pass shows a button that searches the password store (the Pass
 	// app's) and copies from it, when there is a store.
 	Pass bool `toml:"pass"`
+	// Layout is what the bar shows, in its order from the left: BarItems,
+	// each once at most, and any number of BarSpace. nil (unset) is
+	// DefaultBarLayout with the clock centred on the screen; empty is a
+	// bar with nothing on it. An item placed still shows only when its own
+	// setting has it shown (Tray, Pass, Clipboard.Bar...).
+	Layout []string `toml:"layout"`
 }
 
 type Launcher struct {
@@ -906,13 +917,15 @@ func Default() Config {
 		Language: "auto",
 		Session:  Session{Compositor: "hyprland"},
 		Bar: Bar{
-			Enable:     true,
-			Density:    "default",
-			Clock:      "%a %b %-d  %H:%M",
-			Workspaces: "monitor",
-			Title:      true,
-			Tray:       true,
-			Pass:       true,
+			Enable:           true,
+			Density:          "default",
+			Clock:            "%a %b %-d  %H:%M",
+			Workspaces:       "monitor",
+			Title:            true,
+			TitleMode:        "app",
+			TransparentEmpty: false,
+			Tray:             true,
+			Pass:             true,
 		},
 		Launcher: Launcher{Mode: "apps", Search: "https://www.google.com/search?q=%s", Quicklinks: slices.Clone(DefaultQuicklinks)},
 		Overview: Overview{MRU: false, PerMonitor: true, ShowDock: true},
@@ -988,6 +1001,9 @@ func Load(path string) (Config, []string, error) {
 		c.Widgets.Places = AutoPlaces(c.Widgets.Items) // the first version's list
 	}
 	c.Widgets.Items = nil
+	if md.IsDefined("bar", "layout") && c.Bar.Layout == nil {
+		c.Bar.Layout = []string{} // layout = []: nothing, not the default
+	}
 	warnings = append(warnings, c.validate()...)
 	c.AddVoiceShortcut() // voice input turned on in the file
 	return c, warnings, nil
@@ -1005,6 +1021,7 @@ func (c *Config) validate() []string {
 		*v = def
 	}
 	oneOf("bar.workspaces", &c.Bar.Workspaces, d.Bar.Workspaces, "monitor", "all")
+	oneOf("bar.title_mode", &c.Bar.TitleMode, d.Bar.TitleMode, "app", "window")
 	oneOf("bar.density", &c.Bar.Density, d.Bar.Density, "default", "compact")
 	oneOf("launcher.mode", &c.Launcher.Mode, d.Launcher.Mode, "apps", "windows")
 	if !ValidSearchURL(c.Launcher.Search) {
@@ -1200,6 +1217,7 @@ func (c *Config) validate() []string {
 		w = append(w, fmt.Sprintf("bar.clock is empty; using %q", d.Bar.Clock))
 		c.Bar.Clock = d.Bar.Clock
 	}
+	w = append(w, c.validateBarLayout()...)
 	return w
 }
 

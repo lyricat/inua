@@ -1,8 +1,9 @@
 // Pass, the password store, in three columns: the categories (the first
 // segment of each entry's path), under the search through every entry,
 // with the store in use at the bottom; the chosen category's entries; and
-// the chosen entry, or its editor, or the form that renames, moves,
-// creates or deletes. The search's results drop down over the columns.
+// the chosen entry, or its editor (a row for each line, or the text), or
+// the form that renames, moves, creates or deletes. The search's results
+// drop down over the columns.
 // Go fills them (internal/appui/pass.go).
 using Gtk 4.0;
 
@@ -310,31 +311,174 @@ ApplicationWindow pass {
             orientation: vertical;
             spacing: 10;
 
-            Label edit_title {
-              styles ["pass-title"]
-              xalign: 0;
-              ellipsize: middle;
+            // Its name, and the editor's two ways: a row for each line
+            // (the default), or the whole text.
+            Box {
+              spacing: 12;
+
+              Label edit_title {
+                styles ["pass-title"]
+                hexpand: true;
+                xalign: 0;
+                ellipsize: middle;
+              }
+
+              Box {
+                styles ["segmented", "linked"]
+                valign: center;
+
+                ToggleButton edit_rows {
+                  label:  _("Rows");
+                  tooltip-text:  _("A row for each line");
+                  active: true;
+                }
+
+                ToggleButton edit_text {
+                  label:  _("Text");
+                  tooltip-text:  _("The whole entry as text");
+                  group: edit_rows;
+                }
+              }
             }
 
-            Label {
-              styles ["sub"]
-              label:  _("The first line is the password; lines “key: value” are fields; an otpauth:// line is a one-time code.");
-              xalign: 0;
-              wrap: true;
-            }
-
-            ScrolledWindow {
-              styles ["pass-editor"]
+            Stack edit_mode {
               vexpand: true;
+              transition-type: crossfade;
+              transition-duration: 120;
 
-              TextView editor {
-                styles ["pass-text"]
-                monospace: true;
-                wrap-mode: word_char;
-                top-margin: 10;
-                bottom-margin: 10;
-                left-margin: 12;
-                right-margin: 12;
+              // The lines as they are, in their order, blank ones too:
+              // the password's, then the others, each in its row.
+              StackPage {
+                name: "rows";
+
+                child: Box {
+                  orientation: vertical;
+                  spacing: 10;
+
+                  Label {
+                    styles ["sub"]
+                    label:  _("The first line is the password. The lines after it are kept as written, blank ones too: “key: value” lines are fields, an otpauth:// line a one-time code.");
+                    xalign: 0;
+                    wrap: true;
+                  }
+
+                  ScrolledWindow {
+                    vexpand: true;
+                    hscrollbar-policy: never;
+
+                    Box {
+                      orientation: vertical;
+
+                      Box {
+                        styles ["pass-row", "pass-edit-row"]
+                        spacing: 6;
+
+                        Box {
+                          orientation: vertical;
+                          spacing: 6;
+                          hexpand: true;
+
+                          Label {
+                            styles ["kicker"]
+                            label:  _("PASSWORD");
+                            xalign: 0;
+                          }
+
+                          Entry edit_password {
+                            styles ["pass-edit-line"]
+                            visibility: false;
+                            input-purpose: password;
+
+                            accessibility {
+                              label:  _("Password");
+                            }
+                          }
+                        }
+
+                        Button edit_reveal {
+                          styles ["plain"]
+                          name: "edit-reveal";
+                          icon-name: "view-reveal-symbolic";
+                          tooltip-text:  _("Show");
+                          valign: end;
+                        }
+
+                        Button edit_generate {
+                          styles ["plain"]
+                          name: "edit-generate";
+                          icon-name: "pass-generate-symbolic";
+                          tooltip-text:  _("Generate a password");
+                          valign: end;
+
+                          accessibility {
+                            label:  _("Generate a password");
+                          }
+                        }
+                      }
+
+                      Label edit_lines_title {
+                        styles ["kicker", "pass-edit-lines-title"]
+                        label:  _("OTHER LINES");
+                        xalign: 0;
+                      }
+
+                      // Filled from Go: an entry and a remove button for
+                      // each line after the password.
+                      Box edit_lines {
+                        orientation: vertical;
+                      }
+
+                      Button edit_add_line {
+                        styles ["outlined", "small", "pass-edit-add"]
+                        name: "edit-add-line";
+                        halign: start;
+
+                        Box {
+                          spacing: 6;
+
+                          Image {
+                            icon-name: "list-add-symbolic";
+                          }
+
+                          Label {
+                            label:  _("Add a line");
+                          }
+                        }
+                      }
+                    }
+                  }
+                };
+              }
+
+              StackPage {
+                name: "text";
+
+                child: Box {
+                  orientation: vertical;
+                  spacing: 10;
+
+                  Label {
+                    styles ["sub"]
+                    label:  _("The first line is the password; lines “key: value” are fields; an otpauth:// line is a one-time code.");
+                    xalign: 0;
+                    wrap: true;
+                  }
+
+                  ScrolledWindow {
+                    styles ["pass-editor"]
+                    vexpand: true;
+
+                    TextView editor {
+                      styles ["pass-text"]
+                      monospace: true;
+                      wrap-mode: word_char;
+                      top-margin: 10;
+                      bottom-margin: 10;
+                      left-margin: 12;
+                      right-margin: 12;
+                    }
+                  }
+                };
               }
             }
 
@@ -648,6 +792,97 @@ Window otp_dialog {
         styles ["suggested-action"]
         name: "otp-ok";
         label:  _("Add");
+        sensitive: false;
+      }
+    }
+  }
+}
+
+// Security keys (docs/security-key.md): the store's keys, the
+// security keys that unlock each, and adding one.
+Window seckey_dialog {
+  styles ["app", "settings", "pass", "pass-dialog"]
+  modal: true;
+  resizable: false;
+  default-width: 520;
+  hide-on-close: true;
+
+  Box {
+    styles ["page"]
+    orientation: vertical;
+    spacing: 12;
+
+    Label {
+      styles ["pass-title"]
+      label:  _("Security keys");
+      xalign: 0;
+      wrap: true;
+    }
+
+    Label {
+      styles ["sub"]
+      label:  _("Unlock the store's key with a FIDO2 security key, such as a YubiKey: its PIN and a touch in place of the passphrase. The passphrase keeps working.");
+      xalign: 0;
+      wrap: true;
+    }
+
+    // A section for each of the store's keys, filled in when it opens.
+    Box seckey_keys {
+      orientation: vertical;
+    }
+
+    // Adding a security key to the key chosen.
+    Box seckey_form {
+      orientation: vertical;
+      spacing: 8;
+      visible: false;
+
+      Label seckey_form_title {
+        styles ["sub"]
+        xalign: 0;
+        wrap: true;
+      }
+
+      PasswordEntry seckey_passphrase {
+        placeholder-text:  _("The key's passphrase");
+        show-peek-icon: true;
+      }
+
+      PasswordEntry seckey_pin {
+        placeholder-text:  _("The security key's PIN");
+      }
+    }
+
+    Label seckey_status {
+      styles ["sub"]
+      xalign: 0;
+      wrap: true;
+      visible: false;
+    }
+
+    Label seckey_error {
+      styles ["pass-error"]
+      xalign: 0;
+      wrap: true;
+      visible: false;
+    }
+
+    Box {
+      spacing: 8;
+      halign: end;
+      margin-top: 4;
+
+      Button seckey_close {
+        styles ["outlined"]
+        name: "seckey-close";
+        label:  _("Close");
+      }
+
+      Button seckey_add {
+        styles ["suggested-action"]
+        name: "seckey-add";
+        label:  _("Add");
+        visible: false;
         sensitive: false;
       }
     }

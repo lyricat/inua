@@ -73,6 +73,7 @@ func TestPartialOverride(t *testing.T) {
 clock = "%H:%M:%S"
 workspaces = "all"
 tray = false
+transparent_empty = true
 
 [launcher]
 terminal = "foot --app-id term"
@@ -85,15 +86,15 @@ show_dock = false
 		t.Fatalf("err=%v warnings=%v", err, w)
 	}
 	want := withDir(Default(), filepath.Dir(path))
-	want.Bar.Clock, want.Bar.Workspaces, want.Bar.Tray = "%H:%M:%S", "all", false
+	want.Bar.Clock, want.Bar.Workspaces, want.Bar.Tray, want.Bar.TransparentEmpty = "%H:%M:%S", "all", false, true
 	want.Launcher.Terminal = "foot --app-id term"
 	want.Overview.ShowDock = false
 	if !reflect.DeepEqual(c, want) {
 		t.Errorf("got %+v\nwant %+v", c, want)
 	}
 	saved, warnings, err := Load(write(t, Format(c)))
-	if err != nil || len(warnings) != 0 || saved.Overview.ShowDock {
-		t.Errorf("show_dock did not survive a save: value=%v warnings=%v err=%v", saved.Overview.ShowDock, warnings, err)
+	if err != nil || len(warnings) != 0 || saved.Overview.ShowDock || !saved.Bar.TransparentEmpty {
+		t.Errorf("show_dock or transparent_empty did not survive a save: show_dock=%v transparent_empty=%v warnings=%v err=%v", saved.Overview.ShowDock, saved.Bar.TransparentEmpty, warnings, err)
 	}
 	if got := c.TerminalCommand(); !reflect.DeepEqual(got, []string{"foot", "--app-id", "term"}) {
 		t.Errorf("terminal = %q", got)
@@ -105,6 +106,7 @@ func TestBadValuesFallBack(t *testing.T) {
 [bar]
 workspaces = "every"
 clock = "  "
+title_mode = "program"
 colour = "red"
 
 [launcher]
@@ -121,11 +123,11 @@ x = 1
 		t.Fatal(err)
 	}
 	d := Default()
-	if c.Bar.Workspaces != d.Bar.Workspaces || c.Launcher.Mode != d.Launcher.Mode || c.Bar.Clock != d.Bar.Clock || c.Style.Theme != d.Style.Theme {
+	if c.Bar.Workspaces != d.Bar.Workspaces || c.Bar.TitleMode != d.Bar.TitleMode || c.Launcher.Mode != d.Launcher.Mode || c.Bar.Clock != d.Bar.Clock || c.Style.Theme != d.Style.Theme {
 		t.Errorf("not reset: %+v", c)
 	}
 	all := strings.Join(w, "\n")
-	for _, s := range []string{"unknown setting bar.colour", "unknown setting extra", "bar.workspaces", "launcher.mode", "bar.clock", "style.theme"} {
+	for _, s := range []string{"unknown setting bar.colour", "unknown setting extra", "bar.workspaces", "bar.title_mode", "launcher.mode", "bar.clock", "style.theme"} {
 		if !strings.Contains(all, s) {
 			t.Errorf("no warning about %s in:\n%s", s, all)
 		}
@@ -226,6 +228,7 @@ func TestSampleIsFormat(t *testing.T) {
 func TestFormatRoundTrip(t *testing.T) {
 	c := Default()
 	c.Bar.Clock = `%H:%M "now"`
+	c.Bar.TitleMode = "window"
 	c.Bar.Tray = false
 	c.Launcher.Terminal = "foot"
 	c.Control.Lock = `swaylock -c '000000'`
@@ -928,5 +931,63 @@ func TestAppTheme(t *testing.T) {
 	c, w, _ = Load(write(t, "[style]\ntheme = \"washi\"\napp_theme = \"nope\"\n"))
 	if len(w) != 1 || c.Style.ForApps() != "washi" {
 		t.Errorf("unknown: apps %q, warnings %v", c.Style.ForApps(), w)
+	}
+}
+
+// bar.layout: unset is the default layout (and written commented out),
+// empty is an empty bar, and a layout keeps its spaces while names not
+// known and repeats are left out, each with a warning.
+func TestBarLayout(t *testing.T) {
+	c, w, err := Load(write(t, "[bar]\ntray = false\n"))
+	if err != nil || len(w) != 0 || c.Bar.Layout != nil {
+		t.Fatalf("unset: %#v %v %v", c.Bar.Layout, w, err)
+	}
+	if !slices.Equal(c.Bar.BarLayout(), DefaultBarLayout) {
+		t.Errorf("unset shows %v", c.Bar.BarLayout())
+	}
+	if f := Format(c); !strings.Contains(f, "\n# layout = [\"workspaces\"") || strings.Contains(f, "\nlayout =") {
+		t.Errorf("unset is not written commented out:\n%s", f)
+	}
+	if again, _, _ := Load(write(t, Format(c))); again.Bar.Layout != nil {
+		t.Errorf("unset, written and read: %#v", again.Bar.Layout)
+	}
+
+	c, w, _ = Load(write(t, "[bar]\nlayout = []\n"))
+	if len(w) != 0 || c.Bar.Layout == nil || len(c.Bar.Layout) != 0 || len(c.Bar.BarLayout()) != 0 {
+		t.Fatalf("empty: %#v %v", c.Bar.Layout, w)
+	}
+	if again, _, _ := Load(write(t, Format(c))); again.Bar.Layout == nil || len(again.Bar.Layout) != 0 {
+		t.Errorf("empty, written and read: %#v", again.Bar.Layout)
+	}
+
+	c, w, _ = Load(write(t, "[bar]\nlayout = [\"space\", \"clock\", \"weather\", \"space\", \"clock\", \"control_center\", \"space\"]\n"))
+	want := []string{"space", "clock", "space", "control_center", "space"}
+	if !slices.Equal(c.Bar.Layout, want) || len(w) != 2 {
+		t.Errorf("normalized: %v %q", c.Bar.Layout, w)
+	}
+	if again, w, _ := Load(write(t, Format(c))); !slices.Equal(again.Bar.Layout, want) || len(w) != 0 {
+		t.Errorf("written and read: %v %q", again.Bar.Layout, w)
+	}
+
+	// Nothing known: an empty bar, not the default one.
+	c, w, _ = Load(write(t, "[bar]\nlayout = [\"weather\"]\n"))
+	if c.Bar.Layout == nil || len(c.Bar.Layout) != 0 || len(w) != 1 {
+		t.Errorf("all unknown: %#v %q", c.Bar.Layout, w)
+	}
+
+	// A layout the user's is that, even when it is the default's list.
+	c, _, _ = Load(write(t, "[bar]\nlayout = "+list(DefaultBarLayout)+"\n"))
+	if c.Bar.Layout == nil || !slices.Equal(c.Bar.Layout, DefaultBarLayout) {
+		t.Errorf("explicit default: %#v", c.Bar.Layout)
+	}
+
+	// Every item of the default is a bar item, each once.
+	if out, dropped := NormalizeBarLayout(DefaultBarLayout); len(dropped) != 0 || !slices.Equal(out, DefaultBarLayout) {
+		t.Errorf("default: %v %v", out, dropped)
+	}
+	for _, id := range BarItems {
+		if !slices.Contains(DefaultBarLayout, id) {
+			t.Errorf("%s is not in the default layout", id)
+		}
 	}
 }

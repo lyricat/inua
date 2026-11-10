@@ -62,6 +62,10 @@ type Request struct {
 	Secret string `json:"secret,omitempty"`
 	// Key is the key the passphrase unlocks; nil when it is not known.
 	Key *Key `json:"key,omitempty"`
+	// SecurityKey names the security key whose PIN GetPin asks for, to
+	// unlock Key with it (internal/securitykey); NotOK then types the
+	// passphrase instead.
+	SecurityKey string `json:"security_key,omitempty"`
 	// Approval is what Approve asks about.
 	Approval *Approval `json:"approval,omitempty"`
 }

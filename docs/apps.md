@@ -302,9 +302,21 @@ entry. Search looks through every category.
   Copies are hidden from clipboard histories and cleared after 45 seconds.
 - **+** makes an entry; Edit and Delete act on the one open; entries and
   categories can be renamed or moved, with a preview of what moves.
+- The editor opens in **Rows**: the password, then each line after it in
+  its own row, blank lines included, with buttons to add and remove
+  lines (Enter adds one under the cursor). **Text** shows the whole entry
+  instead; switching keeps what was typed, and lines are saved exactly as
+  written. The dice beside the password makes a new one: 24 characters
+  of letters, digits and `!#%+-.=@_` (no look-alikes such as `l`, `1`,
+  `O`, `0`) from the system's secure random source, asking first when it would replace a password. It changes only
+  the draft: nothing is saved or copied until Save.
 - A one-time code comes from a pasted secret or `otpauth://` link, or a
   QR code read from the screen, an area of it, or an image.
 - With more than one store, a menu at the foot of the categories switches.
+- **File → Security keys** adds a FIDO2 security key (a YubiKey, say) to
+  the store's key: then gpg's passphrase is asked as the security key's
+  PIN and a touch, and the passphrase still opens it
+  ([security-key.md](security-key.md)). It needs libfido2's tools.
 
 Every change goes through `pass`, so git and `.gpg-id` work as on the
 command line.

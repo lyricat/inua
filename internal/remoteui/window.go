@@ -26,8 +26,9 @@ import (
 // machines, the chosen one's page in a panel beside it, and a dialog to add
 // a machine.
 type window struct {
-	c   *appui.Ctx
-	win *gtk.ApplicationWindow
+	c    *appui.Ctx
+	win  *gtk.ApplicationWindow
+	menu *appui.MenuBar
 
 	sideFind, sideAdd                                       gtk.Button
 	sideThis, sideMachines                                  gtk.FlowBox
@@ -182,12 +183,17 @@ func openWindow(c *appui.Ctx) *window {
 	w.onClose = func(gtk.Window) bool {
 		w.closed = true
 		w.cancel()
+		if w.menu != nil {
+			w.menu.Close()
+		}
 		if w.pairing != nil {
 			w.pairing()
 		}
 		return false
 	}
 	w.win.ConnectCloseRequest(&w.onClose)
+
+	w.menu = w.menuBar()
 
 	w.loadStream()
 	w.fillSide()

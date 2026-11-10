@@ -298,8 +298,8 @@ const ui = {
   tiles: (...tiles) => node("tiles", {}, tiles),
   /** A tile of ui.tiles; a click is an event with its id. */
   tile: (id, title, { sub, icon, selected } = {}) => node("tile", { id, title, sub, icon, selected }),
-  /** An image file, or an icon by name. */
-  image: ({ src, icon, width, height } = {}) => node("image", { src, icon, width, height }),
+  /** An image file, or an icon by name; style "app" shows an icon as the dock does. */
+  image: ({ src, icon, width, height, style } = {}) => node("image", { src, icon, width, height, style }),
 };
 
 const app = new App();

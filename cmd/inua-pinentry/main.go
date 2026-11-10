@@ -3,7 +3,9 @@
 // inua-termd): the first answer wins. Point gpg-agent at it
 // (pinentry-program in ~/.gnupg/gpg-agent.conf). With no inua shell
 // running it runs the usual pinentry instead, so a passphrase can still
-// be asked for elsewhere.
+// be asked for elsewhere. A key a security key is enrolled for (in Pass)
+// is unlocked with the security key's PIN and a touch, the passphrase
+// still there to type instead.
 package main
 
 import (
@@ -20,6 +22,7 @@ import (
 	"github.com/lyricat/inua/internal/keyring"
 	"github.com/lyricat/inua/internal/passask"
 	"github.com/lyricat/inua/internal/pinentry"
+	"github.com/lyricat/inua/internal/securitykey"
 )
 
 // fallbacks are the pinentries run without a shell, the first found.
@@ -58,7 +61,15 @@ func main() {
 		}
 		return r.Answer, nil
 	}
-	if err := pinentry.Serve(os.Stdin, os.Stdout, ask); err != nil {
+	// A key a security key is enrolled for is unlocked with it first.
+	unlock := &securitykey.Unlocker{Path: securitykey.Path()}
+	answer := func(q pinentry.Request) (pinentry.Answer, error) {
+		if a, ok, err := unlock.Answer(&q, ask); ok {
+			return a, err
+		}
+		return ask(q)
+	}
+	if err := pinentry.Serve(os.Stdin, os.Stdout, answer); err != nil {
 		fmt.Fprintln(os.Stderr, "inua-pinentry:", err)
 		os.Exit(1)
 	}

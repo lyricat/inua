@@ -975,12 +975,12 @@ ApplicationWindow settings {
 
                       Label {
                         styles ["title"]
-                        label:  _("Window title");
+                        label:  _("Application in bar");
                         xalign: 0;
                       }
                       Label {
                         styles ["sub"]
-                        label:  _("The focused window's title");
+                        label:  _("Show the current application's icon and label");
                         xalign: 0;
                         wrap: true;
                       }
@@ -988,6 +988,73 @@ ApplicationWindow settings {
 
                     Switch title {
                       name: "title";
+                      valign: center;
+                    }
+                  }
+
+                  Separator {}
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+
+                      Label {
+                        styles ["title"]
+                        label:  _("Application label");
+                        xalign: 0;
+                      }
+                      Label {
+                        styles ["sub"]
+                        label:  _("Choose the name shown beside the app icon");
+                        xalign: 0;
+                        wrap: true;
+                      }
+                    }
+
+                    DropDown title_mode {
+                      name: "title_mode";
+                      valign: center;
+
+                      model: StringList {
+                        strings [
+                          _("Application name"),
+                          _("Window title"),
+                        ]
+                      };
+                    }
+                  }
+
+                  Separator {}
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+
+                      Label {
+                        styles ["title"]
+                        label:  _("Transparent on empty workspaces");
+                        xalign: 0;
+                      }
+                      Label {
+                        styles ["sub"]
+                        label:  _("The bar panel is transparent when the current workspace has no windows");
+                        xalign: 0;
+                        wrap: true;
+                      }
+                    }
+
+                    Switch bar_transparent_empty {
+                      name: "bar_transparent_empty";
                       valign: center;
                     }
                   }
@@ -1054,6 +1121,138 @@ ApplicationWindow settings {
                 }
               }
 
+
+              // [LAYOUT]: what the bar shows, in its order (bar.layout).
+              // Go fills the strip, a small bar, and the items still to
+              // add (settings_barlayout.go).
+              Box {
+                styles ["section"]
+                orientation: vertical;
+
+                Box {
+                  styles ["section-head"]
+                  spacing: 10;
+
+                  Box {
+                    styles ["mark"]
+                    valign: center;
+                  }
+
+                  Label {
+                    styles ["section-label"]
+                    use-markup: true;
+                    label:  _("<span alpha='55%'>[</span>LAYOUT<span alpha='55%'>]</span>");
+                  }
+
+                  Label {
+                    styles ["section-meta"]
+                    label:  _("What the bar shows, in its order");
+                    hexpand: true;
+                    xalign: 0;
+                    ellipsize: end;
+                  }
+
+                  Button bar_layout_reset {
+                    styles ["outlined", "small"]
+                    name: "bar_layout_reset";
+                    label: _("Default");
+                    tooltip-text: _("The default layout, the clock in the middle of the screen");
+                    valign: center;
+                  }
+                }
+
+                Box {
+                  styles ["section-body"]
+                  orientation: vertical;
+
+                  Box {
+                    styles ["field"]
+                    orientation: vertical;
+                    spacing: 8;
+
+                    Label {
+                      styles ["label"]
+                      label:  _("Bar layout");
+                      xalign: 0;
+                    }
+
+                    // The strip: the items in the bar's order, a space as
+                    // wide as its share; the mark shows where a drop goes.
+                    Overlay {
+                      child: Box bar_layout {
+                        styles ["bar-layout"]
+                        spacing: 4;
+                      };
+
+                      [overlay]
+                      Box bar_layout_mark {
+                        styles ["bar-layout-mark"]
+                        halign: start;
+                        visible: false;
+                        can-target: false;
+                      }
+                    }
+
+                    Box {
+                      spacing: 6;
+
+                      Label bar_layout_selected {
+                        styles ["sub"]
+                        hexpand: true;
+                        xalign: 0;
+                        wrap: true;
+                      }
+
+                      Button bar_layout_left {
+                        styles ["tool", "small"]
+                        name: "bar_layout_left";
+                        icon-name: "go-previous-symbolic";
+                        tooltip-text: _("Move earlier");
+                        valign: center;
+                      }
+
+                      Button bar_layout_right {
+                        styles ["tool", "small"]
+                        name: "bar_layout_right";
+                        icon-name: "go-next-symbolic";
+                        tooltip-text: _("Move later");
+                        valign: center;
+                      }
+
+                      Button bar_layout_remove {
+                        styles ["tool", "small"]
+                        name: "bar_layout_remove";
+                        icon-name: "list-remove-symbolic";
+                        tooltip-text: _("Remove from the bar");
+                        valign: center;
+                      }
+                    }
+
+                    Label {
+                      styles ["kicker"]
+                      label: _("Add");
+                      xalign: 0;
+                    }
+
+                    // The items not on the bar, and the space, always.
+                    FlowBox bar_layout_palette {
+                      styles ["bar-layout-palette"]
+                      selection-mode: none;
+                      homogeneous: false;
+                      column-spacing: 6;
+                      row-spacing: 6;
+                      max-children-per-line: 12;
+                    }
+
+                    Label {
+                      styles ["sub"]
+                      label:  _("Drag items into the bar, along it, or back here to remove them; or click one to add it after the one selected. Spaces share the room left equally. Arranged, the clock sits between its spaces rather than in the screen's middle. Each item still shows only when its own setting has it.");
+                      xalign: 0;
+                      wrap: true;
+                    }
+                  }
+                }
+              }
 
               // [DOCK]
               Box {
@@ -4588,6 +4787,33 @@ ApplicationWindow settings {
           }
         };
       }
+      StackPage {
+        name: "securitykeys";
+        title:  _("Security Keys");
+
+        child: Overlay {
+          child: ScrolledWindow scroll_securitykeys {
+            hscrollbar-policy: never;
+
+            // Each FIDO2 security key plugged in: its PIN, and the gpg
+            // keys it unlocks: laid out by settings_securitykeys.go.
+            Box securitykeys_page {
+              styles ["page"]
+              orientation: vertical;
+            }
+          };
+
+          // The head of the section scrolled under the top edge.
+          [overlay]
+          Box sticky_securitykeys {
+            styles ["section-head", "sticky"]
+            spacing: 10;
+            valign: start;
+            visible: false;
+          }
+        };
+      }
+
       StackPage {
         name: "sound";
         title:  _("Sound");

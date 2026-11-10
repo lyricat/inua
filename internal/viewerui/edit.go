@@ -158,6 +158,26 @@ func (a *App) leaveEdit() {
 	a.endEdit()
 }
 
+// editMenu is a menu command chosen while editing, as editKey takes the
+// keys: copy takes the edited image, a command that shows another file
+// first leaves editing as Done does (with edits not saved, a first time
+// warns), and what changes the view under the editor waits until it ends.
+func (a *App) editMenu(name string) {
+	e := &a.edit
+	switch name {
+	case "copy":
+		a.copyEdit()
+	case "open", "prev", "next":
+		if !e.saved && !e.leaving {
+			e.leaving = true
+			a.flash(i18n.T("Not saved: choose it again to leave"))
+			return
+		}
+		a.endEdit()
+		a.action(name)
+	}
+}
+
 // editKey takes the keys while editing; the words of a text are typed
 // into their entry.
 func (a *App) editKey(keyval uint32, state gdk.ModifierType) bool {

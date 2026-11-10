@@ -1,0 +1,8 @@
+# Firefox's accessibility menu is a row of sections whose actions end the
+# process. never_press records that they must never be pressed; the shell
+# does not read accessibility menus yet, so the flag has no effect. With
+# no sections the bar shows the generic menu, and this file never
+# replaces a menu Firefox publishes.
+id = "firefox"
+contains = ["firefox"]
+never_press = true
