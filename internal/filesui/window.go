@@ -5,6 +5,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"sync/atomic"
 
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/gobject"
@@ -48,7 +49,7 @@ type window struct {
 	sidePtr  []uintptr
 	card     *card
 	jobs     jobs
-	detGen   uint64
+	detGen   atomic.Uint64 // the details shown; a goroutine's results for another are dropped
 	flashes  uint64
 	closing  bool // asked to close while operations ran
 
@@ -242,6 +243,7 @@ func (w *window) closeRequested() bool {
 	} else {
 		w.saveSize()
 	}
+	w.detGen.Add(1) // the details' reads still out find the window gone
 	for _, p := range w.p {
 		p.destroy()
 	}
@@ -450,11 +452,10 @@ func (w *window) selectionChanged(p *pane) {
 	p.syncPreview()
 	w.pickSelectionChanged(p)
 	if p == w.cur() && w.detailsReveal.GetRevealChild() {
-		w.detGen++
-		gen := w.detGen
+		gen := w.detGen.Add(1)
 		// After the selection settles: a rubber band changes it many times.
 		w.app.h.later(60, func() {
-			if gen == w.detGen {
+			if gen == w.detGen.Load() {
 				w.showDetails()
 			}
 		})

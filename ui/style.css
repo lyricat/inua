@@ -3097,6 +3097,8 @@ window.files .files-text-preview {
   font-size: 12px;
   color: @t1;
 }
+window.files .files-preview-note { font-size: 12px; color: @t2; }
+window.files .files-preview-note.error { color: @danger; }
 
 /* The picker's footer (docs/picker.md): across the window, as the
    operations' line; its error under it in danger. */

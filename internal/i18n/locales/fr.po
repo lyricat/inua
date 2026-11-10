@@ -374,7 +374,7 @@ msgstr "Un fichier de %s"
 #: internal/apps/connect/share.go:129
 #: internal/filesui/cards.go:682
 #: internal/filesui/picker.go:488
-#: internal/filesui/window.go:810
+#: internal/filesui/window.go:811
 #: internal/lightui/workshop_blocks.go:431
 #: internal/lightui/workshop_manager.go:63
 #: internal/mailui/actions.go:533
@@ -1221,7 +1221,7 @@ msgstr "L'historique, les branches et les stashes du projet ; ce qui n'est pas p
 #: internal/filesui/pane.go:1068
 #: internal/filesui/sidebar.go:46
 #: internal/filesui/tabs.go:97
-#: internal/filesui/window.go:314
+#: internal/filesui/window.go:316
 #: internal/mailui/window.go:785
 msgid "Trash"
 msgstr "Corbeille"
@@ -2055,7 +2055,7 @@ msgstr "Autorisé"
 
 #: internal/assistantui/assistantui.go:788
 #: internal/diskui/details.go:581
-#: internal/filesui/window.go:826
+#: internal/filesui/window.go:827
 #: internal/gamesui/lobbyhost.go:169
 #: internal/lightui/calculator.go:351
 #: internal/lightui/pass.go:761
@@ -3228,7 +3228,7 @@ msgstr ""
 #: internal/filesui/cards.go:686
 #: internal/filesui/sidebar.go:41
 #: internal/filesui/tabs.go:99
-#: internal/filesui/window.go:318
+#: internal/filesui/window.go:320
 msgid "Home"
 msgstr "Dossier personnel"
 
@@ -3357,8 +3357,8 @@ msgstr[1] "%s dans %d dossiers · %s supprimables sans risque"
 #: internal/filesui/app.go:86
 #: internal/filesui/cards.go:693
 #: internal/filesui/remote.go:371
-#: internal/filesui/window.go:110
-#: internal/filesui/window.go:311
+#: internal/filesui/window.go:111
+#: internal/filesui/window.go:313
 #: ui/gpg.ui:548
 #: ui/gpg.ui:913
 #: config/apps/io.github.lyricat.Inua.Files.desktop:3
@@ -3528,7 +3528,7 @@ msgstr "« %s » est verrouillé"
 
 #: internal/filesui/caches.go:140
 #: internal/filesui/details.go:49
-#: internal/filesui/details.go:282
+#: internal/filesui/details.go:308
 #: internal/filesui/jobs.go:144
 #: internal/filesui/jobs.go:146
 #: internal/filesui/jobs.go:148
@@ -3607,8 +3607,8 @@ msgstr "Ils ne vont pas à la corbeille, et c’est irréversible."
 #: internal/filesui/cards.go:456
 #: internal/filesui/pathbar.go:91
 #: internal/filesui/sidebar.go:47
-#: internal/filesui/window.go:783
-#: internal/filesui/window.go:789
+#: internal/filesui/window.go:784
+#: internal/filesui/window.go:790
 #: internal/mailui/actions.go:265
 #: internal/shell/commands.go:32
 #: ui/filespane.ui:288
@@ -3794,7 +3794,7 @@ msgid "Copy the paths (none selected: the folder's)"
 msgstr "Copier les chemins (sans sélection : celui du dossier)"
 
 #: internal/filesui/cards.go:697
-#: internal/filesui/window.go:851
+#: internal/filesui/window.go:852
 #: internal/lightui/gpg.go:1619
 #: internal/mailui/picker.go:143
 #: internal/ui/settings_custom.go:42
@@ -3823,18 +3823,18 @@ msgid "Copy / move to the other pane"
 msgstr "Copier / déplacer vers l’autre volet"
 
 #: internal/filesui/cards.go:702
-#: internal/filesui/window.go:812
+#: internal/filesui/window.go:813
 msgid "Open with…"
 msgstr "Ouvrir avec…"
 
 #: internal/filesui/cards.go:703
-#: internal/filesui/window.go:865
+#: internal/filesui/window.go:866
 msgid "Bookmark"
 msgstr "Ajouter un signet"
 
 #: internal/filesui/cards.go:704
 #: internal/filesui/pathbar.go:137
-#: internal/filesui/window.go:798
+#: internal/filesui/window.go:799
 msgid "Terminal here"
 msgstr "Terminal ici"
 
@@ -3855,7 +3855,7 @@ msgstr "Onglet suivant / précédent"
 
 #: internal/filesui/cards.go:709
 #: internal/filesui/pathbar.go:89
-#: internal/filesui/window.go:815
+#: internal/filesui/window.go:816
 msgid "Middle click"
 msgstr "Clic du milieu"
 
@@ -3869,7 +3869,7 @@ msgstr "Liste / grille / colonnes"
 
 #: internal/filesui/cards.go:711
 #: internal/filesui/picker.go:501
-#: internal/filesui/window.go:803
+#: internal/filesui/window.go:804
 msgid "Hidden files"
 msgstr "Fichiers cachés"
 
@@ -3883,7 +3883,7 @@ msgid "Sidebar"
 msgstr "Panneau latéral"
 
 #: internal/filesui/cards.go:714
-#: internal/filesui/window.go:857
+#: internal/filesui/window.go:858
 #: internal/viewerui/menubar.go:55
 msgid "Details"
 msgstr "Détails"
@@ -3898,7 +3898,7 @@ msgstr "Nouvelle fenêtre, la fermer"
 
 #: internal/filesui/cards.go:717
 #: internal/filesui/picker.go:502
-#: internal/filesui/window.go:804
+#: internal/filesui/window.go:805
 msgid "Reload"
 msgstr "Recharger"
 
@@ -3926,7 +3926,7 @@ msgid "CREATED"
 msgstr "CRÉÉE"
 
 #: internal/filesui/columns.go:29
-#: internal/filesui/details.go:122
+#: internal/filesui/details.go:130
 msgid "OPENED"
 msgstr "OUVERT"
 
@@ -3936,12 +3936,12 @@ msgid "KIND"
 msgstr "TYPE"
 
 #: internal/filesui/columns.go:31
-#: internal/filesui/details.go:123
+#: internal/filesui/details.go:131
 msgid "PERMISSIONS"
 msgstr "PERMISSIONS"
 
 #: internal/filesui/columns.go:32
-#: internal/filesui/details.go:125
+#: internal/filesui/details.go:133
 #: ui/polkit.ui:185
 msgid "OWNER"
 msgstr "TITULAIRE"
@@ -4013,15 +4013,49 @@ msgstr[1] "%s octets"
 msgid "WHERE"
 msgstr "EMPLACEMENT"
 
-#: internal/filesui/details.go:122
+#: internal/filesui/details.go:130
 msgid "CHANGED"
 msgstr "CHANGÉ"
 
-#: internal/filesui/details.go:206
+#: internal/filesui/details.go:169
+msgid "No preview: this is not UTF-8 text."
+msgstr ""
+
+#: internal/filesui/details.go:171
+msgid "No preview: this is not a regular file."
+msgstr ""
+
+#: internal/filesui/details.go:173
+msgid "The file is no longer there."
+msgstr ""
+
+#: internal/filesui/details.go:175
+msgid "No permission to read the file."
+msgstr ""
+
+#: internal/filesui/details.go:181
+msgid "Could not read the file: %v"
+msgstr ""
+
+#: internal/filesui/details.go:183
+msgid "The file is empty."
+msgstr ""
+
+#: internal/filesui/details.go:185
+msgid "Only the first %d line is shown."
+msgid_plural "Only the first %d lines are shown."
+msgstr[0] ""
+msgstr[1] ""
+
+#: internal/filesui/details.go:187
+msgid "Only the first %d KiB are shown."
+msgstr ""
+
+#: internal/filesui/details.go:256
 msgid "Jan 2 2006 15:04"
 msgstr "2 Jan 2006 15:04"
 
-#: internal/filesui/details.go:284
+#: internal/filesui/details.go:310
 msgid "more than %s"
 msgstr "plus de %s"
 
@@ -4209,46 +4243,46 @@ msgstr "2 Jan 2006"
 
 #: internal/filesui/pathbar.go:89
 #: internal/filesui/sidebar.go:154
-#: internal/filesui/window.go:815
+#: internal/filesui/window.go:816
 msgid "Open in a new tab"
 msgstr "Ouvrir dans un nouvel onglet"
 
 #: internal/filesui/pathbar.go:116
-#: internal/filesui/window.go:800
+#: internal/filesui/window.go:801
 msgid "Copy the folder's path"
 msgstr "Copier le chemin du dossier"
 
 #: internal/filesui/pathbar.go:118
 #: internal/filesui/pathbar.go:129
 #: internal/filesui/picker.go:500
-#: internal/filesui/window.go:794
+#: internal/filesui/window.go:795
 msgid "New folder…"
 msgstr "Nouveau dossier…"
 
 #: internal/filesui/pathbar.go:122
 #: internal/filesui/sidebar.go:155
-#: internal/filesui/window.go:816
+#: internal/filesui/window.go:817
 msgid "Open in a new window"
 msgstr "Ouvrir dans une nouvelle fenêtre"
 
 #: internal/filesui/pathbar.go:126
-#: internal/filesui/window.go:818
+#: internal/filesui/window.go:819
 msgid "Open in the other pane"
 msgstr "Ouvrir dans l’autre volet"
 
 #: internal/filesui/pathbar.go:130
-#: internal/filesui/window.go:795
+#: internal/filesui/window.go:796
 msgid "New file…"
 msgstr "Nouveau fichier…"
 
 #: internal/filesui/pathbar.go:131
-#: internal/filesui/window.go:830
+#: internal/filesui/window.go:831
 msgid "Paste into the folder"
 msgstr "Coller dans le dossier"
 
 #: internal/filesui/pathbar.go:144
-#: internal/filesui/window.go:799
-#: internal/filesui/window.go:831
+#: internal/filesui/window.go:800
+#: internal/filesui/window.go:832
 msgid "Tidy with AI…"
 msgstr "Ranger avec l'IA…"
 
@@ -4305,7 +4339,7 @@ msgid "A file of the same name is in this folder; the app will write over it."
 msgstr ""
 
 #: internal/filesui/picker.go:494
-#: internal/filesui/window.go:846
+#: internal/filesui/window.go:847
 #: internal/termui/sessionmenu.go:81
 #: internal/termui/wsmenu.go:69
 msgid "Rename…"
@@ -4822,92 +4856,92 @@ msgstr "Activez Exécuter des commandes dans Paramètres → AI pour que l'assis
 msgid "Asked the assistant to tidy %s."
 msgstr "L'assistant va ranger %s."
 
-#: internal/filesui/window.go:786
+#: internal/filesui/window.go:787
 msgid "Restore"
 msgstr "Restaurer"
 
-#: internal/filesui/window.go:787
-#: internal/filesui/window.go:852
+#: internal/filesui/window.go:788
+#: internal/filesui/window.go:853
 msgid "Delete for good…"
 msgstr "Supprimer définitivement…"
 
-#: internal/filesui/window.go:796
+#: internal/filesui/window.go:797
 #: internal/lightui/calculator.go:352
 #: internal/term/settings/settings.go:120
 #: internal/termui/paste.go:339
 msgid "Paste"
 msgstr "Coller"
 
-#: internal/filesui/window.go:822
+#: internal/filesui/window.go:823
 msgid "Show in its folder"
 msgstr "Afficher dans son dossier"
 
-#: internal/filesui/window.go:825
+#: internal/filesui/window.go:826
 #: internal/lightui/calculator.go:350
 msgid "Cut"
 msgstr "Couper"
 
-#: internal/filesui/window.go:827
+#: internal/filesui/window.go:828
 msgid "Copy the path"
 msgstr "Copier le chemin"
 
-#: internal/filesui/window.go:835
+#: internal/filesui/window.go:836
 msgid "Extract here"
 msgstr "Extraire ici"
 
-#: internal/filesui/window.go:837
+#: internal/filesui/window.go:838
 msgid "Compress…"
 msgstr "Compresser…"
 
-#: internal/filesui/window.go:840
+#: internal/filesui/window.go:841
 msgid "Copy to the other pane"
 msgstr "Copier vers l’autre volet"
 
-#: internal/filesui/window.go:841
+#: internal/filesui/window.go:842
 msgid "Move to the other pane"
 msgstr "Déplacer vers l’autre volet"
 
-#: internal/filesui/window.go:848
+#: internal/filesui/window.go:849
 msgid "Rename %d item…"
 msgid_plural "Rename %d items…"
 msgstr[0] "Renommer %d élément…"
 msgstr[1] "Renommer %d éléments…"
 
-#: internal/filesui/window.go:863
+#: internal/filesui/window.go:864
 msgid "Remove the bookmark"
 msgstr "Retirer le signet"
 
-#: internal/filesui/window.go:918
+#: internal/filesui/window.go:919
 msgid "Cut %d item: paste to move it."
 msgid_plural "Cut %d items: paste to move them."
 msgstr[0] "%d élément coupé : collez-le pour le déplacer."
 msgstr[1] "%d éléments coupés : collez-les pour les déplacer."
 
-#: internal/filesui/window.go:920
+#: internal/filesui/window.go:921
 msgid "Copied %d item."
 msgid_plural "Copied %d items."
 msgstr[0] "%d élément copié."
 msgstr[1] "%d éléments copiés."
 
-#: internal/filesui/window.go:928
+#: internal/filesui/window.go:929
 msgid "Copied %d path."
 msgid_plural "Copied %d paths."
 msgstr[0] "%d chemin copié."
 msgstr[1] "%d chemins copiés."
 
-#: internal/filesui/window.go:1029
+#: internal/filesui/window.go:1030
 msgid "Bookmarked %s."
 msgstr "Signet ajouté pour %s."
 
-#: internal/filesui/window.go:1031
+#: internal/filesui/window.go:1032
 msgid "Removed the bookmark of %s."
 msgstr "Signet de %s retiré."
 
-#: internal/filesui/window.go:1046
+#: internal/filesui/window.go:1047
 msgid "Copied %s."
 msgstr "%s copié."
 
-#: internal/filesui/window.go:1075
+#: internal/filesui/window.go:1076
 msgid "No terminal was found: install xdg-terminal-exec or set $TERMINAL."
 msgstr "Aucun terminal trouvé : installez xdg-terminal-exec ou définissez $TERMINAL."
 
