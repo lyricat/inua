@@ -1,7 +1,7 @@
 ---
 source: pr #96
 branch: pr/empty-desktop-menu
-round: 1
+round: 2
 ---
 # feat(bar): a designed system menu on an empty workspace
 
@@ -29,3 +29,21 @@ The existing branch header names the fork branch, not an origin branch. For the 
 Owner corrected the requested destination: “诶不对，他们应该放到 review”。
 Moved new → review at the owner’s request; no build, review or tests performed in this update.
 Review the existing fork PR implementation using the source PR head (refs/pull/<PR>/head); the branch header is a fork branch, not necessarily an origin branch. The preceding instruction to build is superseded by this review request.
+
+
+## factory · plan · 2026-11-10 21:13
+Build started before the concurrent owner correction was read; there was no prior plan or review fix list.
+Behaviour: system menus on genuinely empty focused workspaces, normal app menus on occupied workspaces including unknown PIDs; settings route to translated pages; power actions reuse existing capability and confirmation handling.
+Scope: preserve PR #96, merge current master, fix regressions and cover menu logic; exclude unrelated per-monitor menu features.
+Decisions: retain branch identity, use existing shell actions, no live desktop or power operations.
+Checking: empty/focused/special workspace cases, settings entries and translations, power availability, existing asynchronous menu guards; make i18n and make test. UI not checked visually.
+
+## factory · 2026-11-10 21:13
+Concurrent update: the owner moved this item new → review at 21:01 while Claude Code was building. This was discovered on the required board pull after the code push. The item remains in review, respecting the corrected destination; no further implementation was started after discovering it.
+The completed work was pushed to origin/pr/empty-desktop-menu, not to the contributor fork. Reviewers must distinguish that built branch from the original PR #96 fork head; the built head is bf2bb23a (merge 421e968e, original PR fc7eed8a). No merge into master or release occurred.
+Built: integrated current master; detected truly empty desktops rather than missing PIDs; preserved app-menu handling; translated and completed settings entries; refreshed hibernate availability; routed destructive session/power actions through the existing Control Center confirmation. Added model regression tests and docs/appmenus.md; regenerated catalogs.
+Decisions: About appears in both Settings and Help; Screenshot opens its tool; Control Center opens rather than toggles. Existing untranslated settings labels remain as on master.
+Installs: none; no manifest or lockfile changes.
+Tests: Claude Code make test passed; manager independently reran make test with throwaway HOME/TMPDIR and it passed (Python tests, go vet, Go race tests). Protected paths unchanged; worktree clean.
+Not checked: visual UI, nested session, live logind detection and actual power actions. Owner should inspect menu appearance and confirmation flow.
+Push initially failed because the credential helper needed a repository path; the single retry with command-local credential.useHttpPath=true succeeded.
