@@ -32,3 +32,9 @@ DATETIME 和 PASS 组成一个连续组件组，整个组的中心应与 topbar 
 Owner requested moving all current backlog items to new: “把 backlog 这些放到 new，注意他们的分支也在 fork 上”。
 Moved backlog → new; no build or review performed in this update.
 This item has no source PR or branch recorded; no fork branch was inferred.
+
+
+## factory · 2026-11-10 21:01
+Owner corrected the requested destination: “诶不对，他们应该放到 review”。
+Moved new → review at the owner’s request; no build, review or tests performed in this update.
+No source PR or implementation branch is recorded; locating the implementation is required before code review. This move does not certify that implementation exists.

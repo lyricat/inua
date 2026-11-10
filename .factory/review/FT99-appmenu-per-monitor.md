@@ -23,3 +23,9 @@ Owner requested moving all current backlog items to new: “把 backlog 这些�
 Moved backlog → new; no build or review performed in this update.
 Verified source branch: `iamcheyan/inua:pr/appmenu-per-monitor` (fork), head `8122c416da7004bd6abd7f0f263fc9b7465ba4eb`.
 The existing branch header names the fork branch, not an origin branch. For the next build, fetch `refs/pull/95/head` from origin to obtain the PR head; continue from that code rather than assuming `origin/pr/appmenu-per-monitor` exists or starting again from master. Preserve the existing PR work and branch identity; do not push to the contributor's fork in this board update.
+
+
+## factory · 2026-11-10 21:01
+Owner corrected the requested destination: “诶不对，他们应该放到 review”。
+Moved new → review at the owner’s request; no build, review or tests performed in this update.
+Review the existing fork PR implementation using the source PR head (refs/pull/<PR>/head); the branch header is a fork branch, not necessarily an origin branch. The preceding instruction to build is superseded by this review request.
