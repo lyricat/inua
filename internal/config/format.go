@@ -15,7 +15,7 @@ import (
 func Format(c Config) string {
 	return fmt.Sprintf(template,
 		q(c.Language),
-		c.Bar.Enable, q(c.Bar.Density), q(c.Bar.Clock), q(c.Bar.Workspaces), c.Bar.Title, q(c.Bar.TitleMode), c.Bar.TransparentEmpty, c.Bar.Tray, c.Bar.Pass,
+		c.Bar.Enable, q(c.Bar.Density), q(c.Bar.Clock), q(c.Bar.Workspaces), c.Bar.Title, q(c.Bar.TitleMode), c.Bar.TransparentEmpty, c.Bar.Tray, c.Bar.Pass, barLayoutLine(c.Bar.Layout),
 		q(c.Launcher.Mode), q(c.Launcher.Terminal), q(c.Launcher.Search), quicklinks(c.Launcher.Quicklinks), c.Overview.MRU, c.Overview.PerMonitor, c.Overview.ShowDock,
 		q(c.Control.Lock), q(c.Control.Screenshot),
 		q(c.Screenshot.Folder), c.Screenshot.Copy, q(c.Screenshot.Recordings),
@@ -240,6 +240,16 @@ tray = %t
 # uses) and copies a password, a user name or a one-time code. Shown only
 # when there is a store. `+"`inua call pass toggle`"+` opens it too.
 pass = %t
+
+# What the bar shows, from the left: "workspaces" (with the widget page's
+# mark), "app_menu", "app_title", "clock", "tray", "recording" (while the
+# screen is recorded), "passwords", "clipboard", "notifications",
+# "dictation", "control_center", each once at most, and any number of
+# "space", which share the room left over equally. Left unset (commented
+# out), the bar has the default below with the clock centred on the screen;
+# layout = [] is an empty bar. The settings for each item above still
+# decide whether it shows. Settings, Bar & Dock edits it by dragging.
+%s
 
 [launcher]
 # What `+"`inua call launcher toggle`"+` opens: "apps" or "windows".

@@ -1,0 +1,119 @@
+# kitty draws no menu bar. These are its default shortcuts, so the menu
+# works without a kitty.conf. If a binding is remapped, change the item
+# here to the new keys.
+id = "kitty"
+match = ["kitty"]
+
+[[section]]
+label = "File"
+
+[[section.item]]
+label = "New Tab"
+keys = ["CTRL", "SHIFT", "T"]
+
+[[section.item]]
+label = "New Window"
+keys = ["CTRL", "SHIFT", "Return"]
+
+[[section.item]]
+label = "New OS Window"
+keys = ["CTRL", "SHIFT", "N"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Close Tab"
+keys = ["CTRL", "SHIFT", "Q"]
+
+[[section.item]]
+label = "Close Window"
+keys = ["CTRL", "SHIFT", "W"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Quit Kitty"
+action = "quit-app"
+
+[[section]]
+label = "Edit"
+
+[[section.item]]
+label = "Copy"
+keys = ["CTRL", "SHIFT", "C"]
+
+[[section.item]]
+label = "Paste"
+keys = ["CTRL", "SHIFT", "V"]
+
+[[section.item]]
+label = "Paste Selection"
+keys = ["CTRL", "SHIFT", "S"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Copy Window Title"
+action = "copy-title"
+
+[[section]]
+label = "Tabs"
+
+[[section.item]]
+label = "Next Tab"
+keys = ["CTRL", "SHIFT", "right"]
+
+[[section.item]]
+label = "Previous Tab"
+keys = ["CTRL", "SHIFT", "left"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Move Tab Forward"
+keys = ["CTRL", "SHIFT", "period"]
+
+[[section.item]]
+label = "Move Tab Backward"
+keys = ["CTRL", "SHIFT", "comma"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Next Window"
+keys = ["CTRL", "SHIFT", "bracketright"]
+
+[[section.item]]
+label = "Previous Window"
+keys = ["CTRL", "SHIFT", "bracketleft"]
+
+[[section]]
+label = "View"
+include = "window"
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Increase Font Size"
+keys = ["CTRL", "SHIFT", "equal"]
+
+[[section.item]]
+label = "Decrease Font Size"
+keys = ["CTRL", "SHIFT", "minus"]
+
+[[section.item]]
+label = "Reset Font Size"
+keys = ["CTRL", "SHIFT", "BackSpace"]
+
+[[section]]
+label = "Help"
+
+[[section.item]]
+label = "About Kitty"
+action = "about"

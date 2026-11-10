@@ -1292,6 +1292,27 @@ window.settings { background: @app; font-size: 14px; }
 }
 .settings switch image { opacity: 0; }
 
+/* Bar & Dock's [LAYOUT] (settings_barlayout.go): a strip that is a small
+   bar, its items as tools, its spaces dashed and as wide as their share;
+   an accent line where a drop goes; a lifted item's place left open. */
+.settings .bar-layout {
+  min-height: 34px;
+  padding: 4px;
+  border: 1px solid alpha(@line, 0.9);
+  border-radius: 4px;
+  background: @panel;
+}
+.settings .bar-layout button.space { border-style: dashed; }
+.settings .bar-layout button.space label { color: @t2; }
+.settings .bar-layout button.lifted { opacity: 0.25; }
+.settings .bar-layout-mark {
+  min-width: 2px;
+  margin: 5px 0;
+  border-radius: 1px;
+  background: @accent;
+}
+.settings .bar-layout-palette.drop { border-radius: 4px; background: alpha(@accent, 0.07); box-shadow: inset 0 0 0 1px alpha(@accent, 0.2); }
+
 /* Theme swatches: the theme's own colours (generated from the theme
    files), with the current theme framed in this theme's accent. */
 .settings flowboxchild { padding: 0; background: none; }
