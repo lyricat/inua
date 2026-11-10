@@ -55,3 +55,15 @@ Verification: Manager checked commits and protected paths; only original PR work
 Installs: none.
 Not checked: No visual UI check or live Hyprland query. Reload wiring inspected in code, not exercised by automated integration tests; unavailable-Hyprland fallback not integration-tested.
 new/ → review/; round 2 of 3. Awaiting review, not approved for merge.
+
+
+## factory · review · 2026-11-10 22:37
+head: a62741f979e80ae4f6032a2545ce97d0fd6f2fe1
+verdict: pass
+notes:
+- Claude Code reviewed origin/master...HEAD: four files, two commits, merge base bf807607; base 3478c014. No confirmed introduced defects. Previous P1 custom-field decoding and P2 configreloaded cache refresh/repaint are fixed.
+- Required make test passed with throwaway HOME and isolated session environment: 18 Python tests, go vet, 115 Go race-test packages (some cached). Fresh TestActiveBorderColor race tests also passed. No tracked changes or installs.
+- make i18n in a throwaway copy was blocked by the sandbox with Function not implemented; no changed translatable strings or catalog references to changed files were found. The build previously ran make i18n successfully.
+- No visual UI check or live Hyprland query. Reload repaint and unavailable-Hyprland behavior were inspected, not integration-tested. Low-alpha unpadded reply formatting remains unverified, not a confirmed finding.
+
+Merge check against origin/master passed. review/ → ready/; no code-branch push, merge to master or release.
