@@ -396,7 +396,7 @@ msgstr "開啟"
 
 #: internal/apps/connect/share.go:129
 #: internal/ui/record.go:157
-#: internal/ui/screenshot.go:1158
+#: internal/ui/screenshot.go:1173
 #: internal/ui/settings_custom.go:41
 #: internal/viewerui/menubar.go:44
 msgid "Show in Folder"
@@ -13264,7 +13264,7 @@ msgid "Find apps, windows and answers"
 msgstr "尋找應用程式、視窗和答案"
 
 #: internal/shell/dock.go:313
-#: internal/ui/screenshot.go:1152
+#: internal/ui/screenshot.go:1167
 #: ui/settings.ui:2238
 msgid "Screenshot"
 msgstr "螢幕截圖"
@@ -15457,19 +15457,19 @@ msgstr "拖曳以調整 · 點擊區域內截圖"
 msgid "Drag to adjust · click inside to record"
 msgstr "拖曳以調整 · 點擊區域內錄製"
 
-#: internal/ui/screenshot.go:1146
+#: internal/ui/screenshot.go:1161
 msgid "Screenshot saved and copied"
 msgstr "螢幕截圖已儲存並複製"
 
-#: internal/ui/screenshot.go:1147
+#: internal/ui/screenshot.go:1162
 msgid "Screenshot saved"
 msgstr "螢幕截圖已儲存"
 
-#: internal/ui/screenshot.go:1148
+#: internal/ui/screenshot.go:1163
 msgid "Screenshot copied"
 msgstr "螢幕截圖已複製"
 
-#: internal/ui/screenshot.go:1149
+#: internal/ui/screenshot.go:1164
 msgid "Screenshot taken"
 msgstr "截圖"
 

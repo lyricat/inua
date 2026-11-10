@@ -394,7 +394,7 @@ msgstr ""
 
 #: internal/apps/connect/share.go:129
 #: internal/ui/record.go:157
-#: internal/ui/screenshot.go:1158
+#: internal/ui/screenshot.go:1173
 #: internal/ui/settings_custom.go:41
 #: internal/viewerui/menubar.go:44
 msgid "Show in Folder"
@@ -13332,7 +13332,7 @@ msgid "Find apps, windows and answers"
 msgstr ""
 
 #: internal/shell/dock.go:313
-#: internal/ui/screenshot.go:1152
+#: internal/ui/screenshot.go:1167
 #: ui/settings.ui:2238
 msgid "Screenshot"
 msgstr ""
@@ -15541,19 +15541,19 @@ msgstr ""
 msgid "Drag to adjust · click inside to record"
 msgstr ""
 
-#: internal/ui/screenshot.go:1146
+#: internal/ui/screenshot.go:1161
 msgid "Screenshot saved and copied"
 msgstr ""
 
-#: internal/ui/screenshot.go:1147
+#: internal/ui/screenshot.go:1162
 msgid "Screenshot saved"
 msgstr ""
 
-#: internal/ui/screenshot.go:1148
+#: internal/ui/screenshot.go:1163
 msgid "Screenshot copied"
 msgstr ""
 
-#: internal/ui/screenshot.go:1149
+#: internal/ui/screenshot.go:1164
 msgid "Screenshot taken"
 msgstr ""
 
