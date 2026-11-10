@@ -13,3 +13,6 @@ Uses the existing PR branch; no code changes made during import.
 
 Review the PR against the current base, including its requested behavior, regressions and tests.
 No review, tests or visual UI checks run during import. Awaiting review; not approved for merge.
+
+## Lyric · 2026-11-10 09:53
+先把 FT92~FT100移动到 backlog
