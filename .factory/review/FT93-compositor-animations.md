@@ -1,7 +1,7 @@
 ---
 source: pr #78
 branch: factory/FT93-compositor-animations
-round: 1
+round: 2
 ---
 # feat(compositor): apply the animation setting through each backend
 
@@ -47,3 +47,12 @@ notes:
 - UI/animation behavior not checked by eye. No installed niri/Wayfire runtime or Hyprland Lua validation. Source PR #78 is linked.
 
 Round 1 of 3: moved review → new for a fix round. FT89 and FT91 skipped because their current heads already have reviews.
+
+## factory · plan · 2026-11-10 16:12
+Round 2 addition. Behaviour: replace fictional enabled switches with stock Wayfire controls for window and workspace motion; false disables supported effects, true restores saved values, nil leaves them alone. Preserve unrelated settings on animation errors. Scope: Wayfire implementation, metadata-backed regressions and docs only. Decisions: use real animate/grid/vswitch options, not plugin enabling; preserve prior values in the session runtime directory; skip absent version-specific options and avoid repeated writes. Checking: real 0.9/0.10 metadata fixtures, off/on/nil, repeats/restart, absent and partially rejected options, read failures and unavailable IPC, then isolated make test.
+
+## factory · 2026-11-10 16:12
+Round 2 built with Claude Code. Fixed the latest P1: animate effect types and matchers use none, grid/type uses none, vswitch/duration uses 0 (Wayfire's minimum single-frame duration). Restore saved values only where the options remain disabled. Added upstream metadata fixtures and license, regression tests, and accurate docs. Commits efdcf86c and 4fcb6190; pushed head 4fcb6190. Moved new → review. No merge needed; branch contains the fetched master.
+Installs: none. make i18n left catalogs unchanged; no Blueprint changes. Coder and manager each passed make test with isolated HOME/XDG/runtime and live session variables unset (18 Python tests, go vet, race-enabled Go suite). Worktree clean; protected paths unchanged against original PR start point. Existing history beyond that point consists of item work and merged base history.
+Not checked: visual animation behavior and a real Wayfire session; Wayfire is not installed. Hyprland/niri unchanged in this round. Review limitations: scale/expo/cube and wobbly retain their own motion; IPC overrides lock corresponding ini settings until compositor restart; restarting Wayfire in the same login while off can make a later enable restore old values over newly disabled ini values (documented and tested). Inspect restoration and these scope limits before approval.
+First branch push failed because gh required a repository credential path; retried successfully with command-local credential.useHttpPath=true. No persistent git configuration changed.
