@@ -38,3 +38,13 @@ Not checked: UI appearance, rapid selection/close interaction and existing image
 The initial branch push failed because the credential request omitted its repository path; the single retry with per-command credential.useHttpPath=true succeeded. No global credential settings changed.
 
 Moved new/ → review/ for round 1. Owner/reviewer should inspect sidebar presentation and selection transitions.
+
+## factory · review · 2026-11-10 18:20
+head: 506d3234b7b57004fc1a73c439934a1cf5ac38ba
+verdict: pass
+notes:
+- Claude Code reviewed origin/master...HEAD against the request and plan; no verified introduced defects found. Base merges cleanly; no code changes or commits made during review.
+- Validation: make test passed under an isolated canonical throwaway HOME/runtime environment (18 Python session tests, go vet, Go race tests). Additional counted-reader probes covered independent limits, exact boundaries, a long line, BOM-only input and a split UTF-8 character. make i18n in a disposable tracked-files copy reproduced catalogs without changes. Manager confirmed unchanged head and clean worktree.
+- No installations or downloads. No linked issues or PRs to comment on.
+- UI not checked by eye. GTK stale-result wiring and file-type swap races were inspected, not exercised. Remote-mount performance and 64 KiB GTK label layout were not measured; in-flight slow FUSE reads are ignored when stale rather than cancelled.
+- Moved review/ → ready/. Owner should inspect sidebar appearance and CSV/log/image selection transitions before shipping.
