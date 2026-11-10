@@ -59,7 +59,7 @@ opens a folder in it: `open .`, `open ~/Downloads`.
 | Sidebar (left) | Its toggle at the top, as Mail's (hidden, the toggle moves to the left pane's head); places, the trash, devices and remote disks; at its foot, framed toggles (as Calculator's) for hidden files, two panes and details, and the keys. A right click on an entry: open it in a new tab or window, and remove a bookmark, empty the trash, eject a drive, or disconnect or forget a remote disk. | F9 slides it in or out |
 | Panes (centre) | One pane, or two side by side (commander style). In the list, a pane narrower than the name and the columns scrolls sideways, the column heads with it; the name keeps its width. Each has its own tabs, and each tab its own folder and history; a pane's view, order and selection are its folder's. With two panes, a status square starts each path: filled for the one the keys go to, hollow for the other, whose selection loses the accent. | F3 two panes; Tab the other pane |
 | Tabs | A pane's tabs show above it once it has two: the folder's name, a button that closes it (a middle click too). | Ctrl+T, Ctrl+W, Ctrl+Tab |
-| Details (right) | The selection: a thumbnail or the first lines of a text, its kind (MIME type), size, modified, opened and changed times, permissions, owner, where it is and where a link points; a folder's size and count, added up on a goroutine. Several selected: how many, and their size. In a window too narrow for it beside the panes it stays hidden, the toggle on, until the window widens. | Space, Ctrl+I, Alt+Enter |
+| Details (right) | The selection: a thumbnail or the first lines of a text (see [Text preview](#text-preview)), its kind (MIME type), size, modified, opened and changed times, permissions, owner, where it is and where a link points; a folder's size and count, added up on a goroutine. Several selected: how many, and their size. In a window too narrow for it beside the panes it stays hidden, the toggle on, until the window widens. | Space, Ctrl+I, Alt+Enter |
 | Path bar | The folder as buttons, one a segment (home as a house), each going to its folder; a click beside them, or the pencil, edits it, the next button copies it, and the last opens a terminal there. Ctrl+L turns it into an entry (`~` is home, Tab completes folder names); a file typed opens its folder with it selected; a remote disk's address (`sftp://host/dir`, `smb://server/share`, `s3://KEY@host/bucket`) connects it; `trash:` is the trash. | Ctrl+L, Esc back |
 | Status | The count, the hidden count, the selection and its size, the filter typed, free space, and the zoom (− 100% +); a message for a moment after an action. The operation running shows under the panes, with its speed, time left and a cancel button. | |
 
@@ -84,6 +84,32 @@ buttons) goes from 80% to 150%: rows, text and icons, in every window.
 Order: by name (natural: `file2` before `file10`, case folded), size,
 modified or kind; folders first. Hidden files (dot files and those named in
 a folder's `.hidden`) show with Ctrl+H.
+
+### Text preview
+
+A plain-text file selected alone (a type GIO counts as `text/plain`,
+which takes in CSV, logs and source code, or a name ending in `.txt`,
+`.text`, `.csv`, `.tsv`, `.log`, `.jsonl` or `.ndjson`) shows its start
+in the details, read on a goroutine and shown as plain text, in mono,
+never as markup; CSV is shown as it is written, not as a table. The read
+stops at **200 lines or 64 KiB, whichever comes first**: no more than
+64 KiB is ever read, however long a line is, and once the 200th line ends
+reading stops (with what one read of 4 KiB took past it). A preview cut
+short says so under it ("Only the first 200 lines are shown.", "Only the
+first 64 KiB are shown."). Whether more follows the 64 KiB is told by the
+file's size rather than by reading on, so a file whose size says nothing
+(those in `/proc`) counts as cut when it fills the 64 KiB. A character the
+byte limit cuts in two is left out.
+
+Instead of text the note says that the file is empty, that it is not
+UTF-8 text (a NUL byte or a sequence that is not UTF-8 in what was read:
+binaries, UTF-16, Latin-1), or, in `danger`, that it is gone or could not
+be read. Only regular files are read, a link's target included: the file
+is checked before it is opened and again on what was opened, and opened
+without blocking, so a FIFO or a device, even one put in its place
+meanwhile, is never waited on or read. Another selection, or closing the
+window, drops a read still out, so an earlier file's text never replaces
+the current one.
 
 Thumbnails follow the freedesktop thumbnail standard
 (`~/.cache/thumbnails/large`, `Thumb::URI` and `Thumb::MTime`), so the
