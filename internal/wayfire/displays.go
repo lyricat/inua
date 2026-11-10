@@ -3,6 +3,7 @@ package wayfire
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"math"
 	"os"
@@ -50,10 +51,17 @@ func plugged(all []wlroutput.Head) []wlroutput.Head {
 	return real
 }
 
+// errNoOption is an option Wayfire does not have: no metadata names it.
+var errNoOption = errors.New("wayfire: no such option")
+
 // option reads one config option as Wayfire writes it.
 func (b *Backend) option(ctx context.Context, name string) (string, error) {
 	body, err := b.Client.Call(ctx, "wayfire/get-config-option", map[string]any{"option": name})
 	if err != nil {
+		var e struct{ Error string }
+		if json.Unmarshal(body, &e) == nil && e.Error == "Option not found!" {
+			return "", fmt.Errorf("%w: %s", errNoOption, name)
+		}
 		return "", err
 	}
 	var r struct {

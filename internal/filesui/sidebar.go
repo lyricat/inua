@@ -20,8 +20,8 @@ type sideItem struct {
 	open   func()
 }
 
-// buildSidebar fills the sidebar: places, the trash, drives and other
-// mounts, remote disks.
+// buildSidebar fills the sidebar: places and the trash, bookmarks, drives
+// and other mounts, remote disks.
 func (w *window) buildSidebar() {
 	w.app.h.forget(w.sidePtr)
 	w.sidePtr = w.sidePtr[:0]
@@ -29,26 +29,37 @@ func (w *window) buildSidebar() {
 	gtkx.Clear(&w.sidebar)
 
 	w.sideHead(i18n.T("PLACES"))
+	var marks []files.Place
 	for _, pl := range files.Places() {
+		if pl.Kind == "bookmark" {
+			marks = append(marks, pl)
+			continue
+		}
 		path := pl.Path
 		name := pl.Name
 		if pl.Kind == "home" {
 			name = i18n.T("Home")
 		}
-		var extra []menuItem
-		if pl.Kind == "bookmark" {
-			extra = append(extra, menuItem{label: i18n.T("Remove from the bookmarks"), run: func() {
+		w.sideEntry(name, "", pl.Icon, path, func() { w.cur().goTo(path, true) }, nil)
+	}
+	if w.pick == nil {
+		w.sideEntry(i18n.T("Trash"), "", trashIcon(), trashKey, func() { w.cur().showTrash(true) }, nil,
+			menuItem{label: i18n.T("Empty Trash"), run: func() { w.confirmEmptyTrash() }})
+	}
+
+	// Without bookmarks the section, head and all, is left out.
+	if len(marks) > 0 {
+		w.sideHead(i18n.T("BOOKMARKS"))
+	}
+	for _, pl := range marks {
+		path := pl.Path
+		w.sideEntry(pl.Name, "", pl.Icon, path, func() { w.cur().goTo(path, true) }, nil,
+			menuItem{label: i18n.T("Remove from the bookmarks"), run: func() {
 				if _, err := files.ToggleBookmark(path); err != nil {
 					w.flash(err.Error())
 				}
 				w.app.sidebarsChanged()
 			}})
-		}
-		w.sideEntry(name, "", pl.Icon, path, func() { w.cur().goTo(path, true) }, nil, extra...)
-	}
-	if w.pick == nil {
-		w.sideEntry(i18n.T("Trash"), "", trashIcon(), trashKey, func() { w.cur().showTrash(true) }, nil,
-			menuItem{label: i18n.T("Empty Trash"), run: func() { w.confirmEmptyTrash() }})
 	}
 
 	w.sideHead(i18n.T("DEVICES"))

@@ -117,7 +117,9 @@ url = "https://translate.google.com/?text=%s"
 mru = false
 # Show each display's workspaces on its own overview surface.
 per_monitor = true
-# Show the dock above the workspace overview while it is open.
+# Show the dock above the workspace overview while it is open. With
+# [dock] enable = false the dock appears only there, over the windows
+# without making them smaller, and goes when the overview closes.
 show_dock = true
 
 [control]
@@ -179,6 +181,13 @@ app_style = "inua-objects"
 # ~/.local/share/icons). inua's apps keep app_style; the tray's icons come
 # from each app.
 app_icons = ""
+
+# How app icons are drawn in the dock, its drawer and the launcher:
+#   "squircle"  a square with continuous corners (the default)
+#   "circle"    a circle
+#   "pebble"    a soft, slightly uneven round square
+#   "none"      the icon as its file is, without a shape or light
+icon_shape = "squircle"
 
 # Line icons of the bar, control center, launcher, settings and inua's
 # apps:

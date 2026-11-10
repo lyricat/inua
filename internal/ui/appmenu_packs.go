@@ -256,7 +256,7 @@ func (s *shellUI) packMenuShown(id string) bool {
 		return false
 	}
 	for _, b := range s.bars {
-		if b.appMenuWindow == id && b.appMenuReg == (appmenu.Registration{}) {
+		if b.appMenuWindow == id && !b.appMenuA11y && b.appMenuReg == (appmenu.Registration{}) {
 			return true
 		}
 	}

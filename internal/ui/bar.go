@@ -64,8 +64,11 @@ type bar struct {
 	focusRing   *focusRing
 
 	appMenuReg     appmenu.Registration // whose menu it shows, if any
-	appMenuWindow  string               // the window whose pack or generic menu it shows, if any
+	appMenuWindow  string               // the window whose pack, generic or accessibility menu it shows, if any
 	appMenuGen     uint64               // the menu-pack reading it was drawn from
+	appMenuPID     int                  // the process whose accessibility menu it tries first, if any
+	appMenuA11y    bool                 // the entries shown are appMenuPID's accessibility menu
+	appMenuNoPress bool                 // the pack says the accessibility menu's sections are never pressed
 	appMenuEntries []appmenu.Entry      // the first level, as last read
 	appMenuTop     []appMenuTop         // the buttons, as last drawn
 	appMenuLoading bool                 // the menu is being read

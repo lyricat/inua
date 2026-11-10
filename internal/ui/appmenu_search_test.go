@@ -134,3 +134,30 @@ func TestAppMenuRebuiltWithOtherIDs(t *testing.T) {
 		t.Fatalf("buttons %+v, entries %+v", b.appMenuTop, b.appMenuEntries)
 	}
 }
+
+// A window bound for its pack's or the generic menu has its accessibility
+// tree read first, except when a pack replaces every menu or skips the
+// tree, or there is no process to ask.
+func TestAppMenuTriesA11yUnlessThePackSaysNot(t *testing.T) {
+	cases := []struct {
+		name    string
+		pid     int
+		replace bool
+		pack    appmenu.Pack
+		matched bool
+		want    bool
+	}{
+		{"no pack", 42, false, appmenu.Pack{}, false, true},
+		{"fallback pack", 42, false, appmenu.Pack{When: appmenu.PackFallback}, true, true},
+		{"never_press pack still reads", 42, false, appmenu.Pack{NeverPress: true}, true, true},
+		{"skip_a11y pack", 42, false, appmenu.Pack{SkipA11y: true}, true, false},
+		{"replace pack", 42, true, appmenu.Pack{When: appmenu.PackReplace}, true, false},
+		{"skip_a11y of a pack that did not match", 42, false, appmenu.Pack{SkipA11y: true}, false, true},
+		{"no process", 0, false, appmenu.Pack{}, false, false},
+	}
+	for _, c := range cases {
+		if got := appMenuTriesA11y(c.pid, c.replace, c.pack, c.matched); got != c.want {
+			t.Errorf("%s: appMenuTriesA11y = %v, want %v", c.name, got, c.want)
+		}
+	}
+}

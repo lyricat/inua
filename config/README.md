@@ -169,7 +169,9 @@ pcall(require, "inua")
 Hyprland rejects a `source` of a missing file, so `inua init` writes an empty
 `inua.conf`, and `inua-shell` creates it when it starts. When `inua.conf`
 changes, Hyprland reloads by itself (inua asks it to when
-`misc:disable_autoreload` is on). After editing `config.toml` by hand, run
+`misc:disable_autoreload` is on). `inua.lua` is loaded with `require`, which
+Hyprland watches only after it has loaded the file once, so inua always asks
+for a reload after writing `inua.lua`. After editing `config.toml` by hand, run
 `inua config apply` or `inua call shell reload`. Touchpad settings are
 written per device (Hyprland has no touchpad-wide speed): for the touchpads
 Hyprland sees now and those already in `inua.conf` (a Bluetooth one that is
@@ -242,6 +244,17 @@ keyboard` opens one directly. After editing `config.toml` by hand, `inua call
 shell reload` applies it without a restart. A broken file never stops the
 shell: an unparsable file means all defaults, a bad value means that
 setting's default, and the problems go to the log and to `inua config check`.
+
+Appearance includes `style.animations` (on by default). Turning it off
+removes inua's GTK and CSS transitions and turns the compositor's
+animations off: `animations:enabled` in Hyprland's `inua.conf` or
+`inua.lua`, `animations { off }` in niri's `inua.kdl`. Wayfire has no
+single switch, so inua sets, over its IPC, the window animations of
+`animate` (open, close, minimize, and the fade, zoom and fire matchers),
+`grid`'s snapping and `vswitch`'s workspace slide to none; what they were
+is kept in the runtime directory. Turning it on again turns them back on;
+on Wayfire it puts back those values, and leaves an animation that
+`wayfire.ini` itself turns off as it is.
 
 The shell's own icons (bar, control center, launcher, settings) are the
 built-in [Phosphor](https://phosphoricons.com) regular icons (MIT; licence in

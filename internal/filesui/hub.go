@@ -29,6 +29,7 @@ type hub struct {
 	pressed   map[uintptr]func(button uint32, n int32, x, y float64)
 	closing   map[uintptr]func() bool
 	prepare   map[uintptr]func(x, y float64) uintptr
+	drags     map[uintptr]*drag
 	dropped   map[uintptr]func(v *gobject.Value, x, y float64, state gdk.ModifierType) bool
 	selection map[uintptr]func()
 	notified  map[uintptr]func()
@@ -52,6 +53,9 @@ type hub struct {
 	onPressed   func(gtk.GestureClick, int32, float64, float64)
 	onClose     func(gtk.Window) bool
 	onPrepare   func(gtk.DragSource, float64, float64) gdk.ContentProvider
+	onDragBegin func(gtk.GestureDrag, float64, float64)
+	onDragMove  func(gtk.GestureDrag, float64, float64)
+	onDragEnd   func(gtk.GestureDrag, float64, float64)
 	onDrop      func(gtk.DropTarget, uintptr, float64, float64) bool
 	onSelection func(uintptr, uint32, uint32, uintptr)
 	onNotify    func(uintptr, uintptr, uintptr)
@@ -72,6 +76,7 @@ func newHub() *hub {
 		pressed:   map[uintptr]func(uint32, int32, float64, float64){},
 		closing:   map[uintptr]func() bool{},
 		prepare:   map[uintptr]func(float64, float64) uintptr{},
+		drags:     map[uintptr]*drag{},
 		dropped:   map[uintptr]func(*gobject.Value, float64, float64, gdk.ModifierType) bool{},
 		selection: map[uintptr]func(){},
 		notified:  map[uintptr]func(){},
@@ -152,6 +157,21 @@ func newHub() *hub {
 			cp.Ptr = f(x, y) // transfer full: the drag takes it
 		}
 		return cp
+	}
+	h.onDragBegin = func(g gtk.GestureDrag, x, y float64) {
+		if d := h.drags[g.GoPointer()]; d != nil && d.begin != nil {
+			d.begin(&g, x, y)
+		}
+	}
+	h.onDragMove = func(g gtk.GestureDrag, dx, dy float64) {
+		if d := h.drags[g.GoPointer()]; d != nil && d.move != nil {
+			d.move(&g, dx, dy)
+		}
+	}
+	h.onDragEnd = func(g gtk.GestureDrag, dx, dy float64) {
+		if d := h.drags[g.GoPointer()]; d != nil && d.end != nil {
+			d.end(&g, dx, dy)
+		}
 	}
 	h.onDrop = func(d gtk.DropTarget, _ uintptr, x, y float64) bool {
 		f := h.dropped[d.GoPointer()]
@@ -278,6 +298,25 @@ func (h *hub) dragSource(w *gtk.Widget, f func(x, y float64) uintptr) uintptr {
 	return d.GoPointer()
 }
 
+// drag is what a pointer dragged over a widget does: begin at the press
+// (x, y in the widget), move and end with the offset from there.
+type drag struct {
+	begin     func(g *gtk.GestureDrag, x, y float64)
+	move, end func(g *gtk.GestureDrag, dx, dy float64)
+}
+
+// drag follows the primary button dragged over w. Nothing is claimed:
+// d.move claims the sequence when it is a drag.
+func (h *hub) drag(w *gtk.Widget, d *drag) uintptr {
+	g := gtk.NewGestureDrag()
+	h.drags[g.GoPointer()] = d
+	g.ConnectDragBegin(&h.onDragBegin)
+	g.ConnectDragUpdate(&h.onDragMove)
+	g.ConnectDragEnd(&h.onDragEnd)
+	w.AddController(&g.EventController)
+	return g.GoPointer()
+}
+
 // dropTarget takes files dropped on w.
 func (h *hub) dropTarget(w *gtk.Widget, f func(v *gobject.Value, x, y float64, state gdk.ModifierType) bool) uintptr {
 	d := gtk.NewDropTarget(gdk.FileListGLibType(), gdk.ActionCopyValue|gdk.ActionMoveValue)
@@ -344,6 +383,7 @@ func (h *hub) forget(ptrs []uintptr) {
 		delete(h.pressed, p)
 		delete(h.closing, p)
 		delete(h.prepare, p)
+		delete(h.drags, p)
 		delete(h.dropped, p)
 		delete(h.selection, p)
 		delete(h.notified, p)

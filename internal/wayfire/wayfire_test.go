@@ -33,12 +33,13 @@ var allMethods = []string{"list-methods", "window-rules/list-views", "window-rul
 	"window-rules/close-view", "window-rules/configure-view", "window-rules/get-focused-output", "window-rules/events/watch",
 	"vswitch/set-workspace", "vswitch/send-view", "wsets/send-view-to-wset"}
 
-// fakeWayfire serves the IPC: replies by method, the calls recorded, an
-// event connection fed by emit.
+// fakeWayfire serves the IPC: replies by method (or by serve, for a
+// method with none), the calls recorded, an event connection fed by emit.
 type fakeWayfire struct {
 	socket  string
 	mu      sync.Mutex
 	replies map[string]string
+	serve   func(method string, data json.RawMessage) (string, bool)
 	methods []string
 	calls   []string
 	streams []net.Conn
@@ -104,7 +105,14 @@ func (f *fakeWayfire) handle(conn net.Conn) {
 			f.calls = append(f.calls, req.Method+" "+string(req.Data))
 		}
 		methods, _ := json.Marshal(f.methods)
+		serve := f.serve
 		f.mu.Unlock()
+		if known && !ok && serve != nil {
+			if r, served := serve(req.Method, req.Data); served {
+				reply(r)
+				continue
+			}
+		}
 		switch {
 		case !known:
 			reply(`{"error":"No such method found!","method":"` + req.Method + `"}`)

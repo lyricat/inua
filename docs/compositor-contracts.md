@@ -440,6 +440,7 @@ type Settings struct {
     TouchpadSpeed *float64
     TouchpadAccel string
     Binds         []KeyBind // {Keys "SUPER+SHIFT+S", Command, Replaces}
+    Animations    *bool     // style.animations; nil leaves the compositor's
 }
 
 type Configurer interface {
@@ -468,6 +469,31 @@ moved in inua keeps its old key in the compositor's file until the user
 removes it there. Display settings (`Settings.Displays`, from
 `[displays]`) are applied by Hyprland's file and by Wayfire's backend;
 niri's are not wired and its Displays page says so.
+
+`style.animations` reaches the compositor too: Hyprland's file sets
+`animations:enabled` to it (on as well as off, so that on undoes an off in
+`hyprland.conf`); niri's file has `animations { off }` while it is off and
+nothing while it is on. Wayfire's animation plugins have no on/off option
+(their metadata, `animate.xml`, `grid.xml` and `vswitch.xml` of 0.9 and
+0.10, is in `internal/wayfire/testdata`), so off sets, by
+`wayfire/set-config-options`, the options that move windows and workspaces
+to the values that still them: `animate/open_animation`,
+`close_animation` and `minimize_animation` (0.10 on) to `none`, the
+`animate/fade_enabled_for`, `zoom_enabled_for` and `fire_enabled_for`
+matchers to `none` (no window), `grid/type` to `none`, and
+`vswitch/duration` to `0`. Wayfire has every option its metadata names,
+loaded plugin or not; one it lacks is skipped. Each option's value from
+before (read by `wayfire/get-config-option`) is kept in
+`$XDG_RUNTIME_DIR/inua/wayfire-motion.json`, and on puts back those still
+stilled and drops the file; on does not turn on an animation that
+`wayfire.ini` itself has off, and an option already as asked is not set
+again. Wayfire cannot say who stilled an option, so after Wayfire starts
+again in the same login with an option that `wayfire.ini` now has off, on
+gives it its value from before. Unset changes nothing. Off without the
+`ipc-rules` plugin is `ErrUnavailable`. The animation options are set
+apart from the input options, so that a failure with them leaves the
+rest, displays and shortcuts too, applied; it is returned after them.
+Overviews (`scale`, `expo`, `cube`) and `wobbly` keep their own motion.
 
 ### The settings pages
 

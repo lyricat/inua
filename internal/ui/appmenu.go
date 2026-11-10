@@ -20,6 +20,7 @@ import (
 // first level as buttons, what each opens as a menu read when it opens.
 type appMenuState struct {
 	registrar   *appmenu.Registrar
+	a11y        *appmenu.A11y
 	packs       *appmenu.Packs
 	menu        *gtk.Popover // the open one, borrowed from its button
 	menuRequest uint64       // the newest pending submenu read
@@ -169,11 +170,14 @@ func (s *shellUI) focusedAppMenu() (reg appmenu.Registration, searched bool) {
 // syncAppMenu gives a bar the menu of the focused application when the bar
 // is the focused monitor's, and none otherwise. It runs whenever the focus,
 // the monitors or the registrations change. An application that published
-// a menu gets it; one confirmed to have none gets its pack's menu, or the
-// generic one when no pack adds anything. While the search for a published
-// menu runs the bar shows none, so a pack's commands never stand in for a
-// real menu that is about to be found. Until the packs are first read
-// the bar shows none either: a pack may replace the published menu.
+// a menu gets it; one confirmed to have none gets the menu its
+// accessibility tree shows, read first unless its pack replaces every menu
+// or skips that tree, and else its pack's menu, or the generic one when no
+// pack adds anything. While the search for a published menu, or the
+// reading of the accessibility tree, runs the bar shows none, so a pack's
+// commands never stand in for a real menu that is about to be found. Until
+// the packs are first read the bar shows none either: a pack may replace
+// the published menu.
 func (s *shellUI) syncAppMenu(b *bar) {
 	if s.appmenu.packs == nil {
 		return
@@ -181,6 +185,8 @@ func (s *shellUI) syncAppMenu(b *bar) {
 	s.checkAppMenuPacks()
 	var want appmenu.Registration
 	window := ""
+	pid := 0
+	noPress := false
 	var pack appmenu.Pack
 	matched := false
 	w, focused := s.snap.Window(s.snap.FocusedWindow)
@@ -194,17 +200,24 @@ func (s *shellUI) syncAppMenu(b *bar) {
 		}
 		if appMenuSource(want, searched, replace) == appMenuFromPack {
 			window = w.ID
+			if appMenuTriesA11y(w.PID, replace, pack, matched) {
+				pid = w.PID
+				noPress = matched && pack.NeverPress
+			}
 		}
 	}
 	gen := s.appmenu.packs.Generation()
-	if b.appMenuReg == want && b.appMenuWindow == window && b.appMenuGen == gen {
+	if b.appMenuReg == want && b.appMenuWindow == window && b.appMenuGen == gen && b.appMenuPID == pid && b.appMenuNoPress == noPress {
 		return
 	}
 	s.clearAppMenu(b)
 	b.appMenuReg, b.appMenuWindow, b.appMenuGen = want, window, gen
+	b.appMenuPID, b.appMenuNoPress = pid, noPress
 	switch {
 	case want != (appmenu.Registration{}):
 		s.loadAppMenu(b, true)
+	case pid > 0:
+		s.loadA11yMenu(b, pid)
 	case window != "":
 		s.renderAppMenu(b, s.packMenuEntries(w, pack, matched))
 	}
@@ -232,6 +245,14 @@ func appMenuSource(found appmenu.Registration, searched, replace bool) int {
 	return appMenuNone
 }
 
+// appMenuTriesA11y is whether a window that is to get its pack's or the
+// generic menu has the menu of its accessibility tree read first: not
+// without a process, nor when a pack replaces every menu or says to skip
+// that tree.
+func appMenuTriesA11y(pid int, replace bool, pack appmenu.Pack, matched bool) bool {
+	return pid > 0 && !replace && !(matched && pack.SkipA11y)
+}
+
 // clearAppMenu takes a bar's menu away, with the open menu if it is this
 // bar's; what is still being read for it is dropped when it comes.
 func (s *shellUI) clearAppMenu(b *bar) {
@@ -241,6 +262,9 @@ func (s *shellUI) clearAppMenu(b *bar) {
 	b.appMenuReg = appmenu.Registration{}
 	b.appMenuWindow = ""
 	b.appMenuGen = 0
+	b.appMenuPID = 0
+	b.appMenuA11y = false
+	b.appMenuNoPress = false
 	b.appMenuEntries = nil
 	b.appMenuTop = nil
 	gtkx.Clear(&b.appMenu)
@@ -262,6 +286,17 @@ func (s *shellUI) reloadAppMenu(reg appmenu.Registration) {
 // when it ends, so an application that changes its menu all the time gets a
 // call after a call, not one for each change.
 func (s *shellUI) loadAppMenu(b *bar, about bool) {
+	s.readAppMenu(b, about, nil)
+}
+
+// readAppMenu is loadAppMenu, with first run on the reading's goroutine
+// before the menu is read. A menu read whole is read again only with its
+// open menu taken down, and clicks on it wait for the new reading: the
+// items of the one before have lost their ids.
+func (s *shellUI) readAppMenu(b *bar, about bool, first func()) {
+	if b.appMenuReg.Whole {
+		s.closeAppMenu()
+	}
 	if b.appMenuLoading {
 		b.appMenuStale = true
 		return
@@ -269,6 +304,9 @@ func (s *shellUI) loadAppMenu(b *bar, about bool) {
 	b.appMenuLoading = true
 	reg := b.appMenuReg
 	go func() {
+		if first != nil {
+			first()
+		}
 		entries, err := s.appmenu.registrar.Menu(reg, about)
 		gtkx.Post(func() {
 			b.appMenuLoading = false
@@ -354,18 +392,27 @@ func (s *shellUI) bindAppMenuHandlers() {
 			if b.appMenu.GoPointer() != parent.GoPointer() || i < 0 || i >= len(b.appMenuEntries) {
 				continue
 			}
+			// A menu read whole and being read again has lost its ids.
+			if b.appMenuReg.Whole && b.appMenuLoading {
+				return
+			}
 			entry := b.appMenuEntries[i]
 			submenu := entry.Submenu || len(entry.Children) > 0
 			if b.appMenuReg == (appmenu.Registration{}) {
-				if submenu {
+				switch {
+				case b.appMenuA11y && (submenu || appmenu.Fillable(entry)):
+					s.showA11yMenu(b, i, &btn.Widget)
+				case b.appMenuA11y:
+					s.activateA11yEntry(b.appMenuPID, entry)
+				case submenu:
 					s.showPackedMenu(b, i, &btn.Widget)
-				} else {
+				default:
 					s.activatePackedEntry(entry)
 				}
 				return
 			}
 			if submenu {
-				s.showAppMenu(b.appMenuReg, entry.ID, &btn.Widget)
+				s.showAppMenu(b.appMenuReg, entry, &btn.Widget)
 			} else {
 				s.activateAppMenu(b.appMenuReg, entry.ID)
 			}
@@ -400,14 +447,18 @@ func (s *shellUI) closeAppMenu() {
 
 // showAppMenu reads what a button of the bar's menu opens and pops it up
 // under the button w. It is read each time, so it is the menu as the
-// application has it now, filled in if it is one built when asked for.
-func (s *shellUI) showAppMenu(reg appmenu.Registration, id int32, w *gtk.Widget) {
+// application has it now, filled in if it is one built when asked for. A
+// menu read whole opens what its reading holds, read again by nothing.
+func (s *shellUI) showAppMenu(reg appmenu.Registration, entry appmenu.Entry, w *gtk.Widget) {
 	s.appmenu.menuRequest++
 	request := s.appmenu.menuRequest
 	pid := focusedPID(s.snap)
 	w.Ref() // kept until the menu is built
 	go func() {
-		entries, err := s.appmenu.registrar.Submenu(reg, id)
+		entries, err := entry.Children, error(nil)
+		if !reg.Whole {
+			entries, err = s.appmenu.registrar.Submenu(reg, entry.ID)
+		}
 		live := err == nil && s.appmenu.registrar.Current(reg, pid)
 		gtkx.Post(func() {
 			defer w.Unref()
@@ -481,19 +532,34 @@ func (s *shellUI) appMenuItems(reg appmenu.Registration, entries []appmenu.Entry
 }
 
 // activateAppMenu clicks an item, if the application it belongs to still
-// has the focus.
+// has the focus. An item of a menu read whole is clicked as the first step
+// of the bar's next reading: no other reading may come between the one its
+// id is from and the click, and none of its items is clicked again until
+// the next reading has its ids.
 func (s *shellUI) activateAppMenu(reg appmenu.Registration, id int32) {
 	if !s.appMenuCurrent(reg) {
 		return
 	}
 	pid := focusedPID(s.snap)
-	go func() {
+	click := func() {
 		if !s.appmenu.registrar.Current(reg, pid) {
 			return
 		}
 		if err := s.appmenu.registrar.Activate(reg, id); err != nil {
 			log.Printf("appmenu activate: %v", err)
 		}
+	}
+	if reg.Whole {
+		for _, b := range s.bars {
+			if b.appMenuReg == reg && !b.appMenuLoading {
+				s.readAppMenu(b, false, click)
+				return
+			}
+		}
+		return
+	}
+	go func() {
+		click()
 		gtkx.Post(func() { s.reloadAppMenu(reg) })
 	}()
 }

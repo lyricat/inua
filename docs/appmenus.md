@@ -16,12 +16,30 @@ For the focused window, in this order:
    `libdbusmenu` is installed and `UBUNTU_MENUPROXY=1`.
 2. A menu an inua application published on its own bus name
    (`io.github.lyricat.Inua.Menu.*`).
-3. A menu a Chromium-family browser serves on its own connection under
+3. The menu Firefox's own GTK bridge serves under `/com/canonical/menu`
+   on the connection that owns its `org.mozilla.firefox.*` names, without
+   registering it, as it does on Wayland. It is the focused process's
+   when that connection belongs to the process, or to the Firefox process
+   that started it; a terminal that started Firefox, or another program
+   Firefox started, does not get it. Firefox gives its items other ids
+   each time the menu is read, so the shell reads the whole tree at once,
+   opens submenus from that reading and reads it again after each click;
+   a submenu Firefox leaves empty in that reading opens nothing. A Firefox
+   serving menus for more than one window, or two Firefoxes of the same
+   process, give none, since the shell cannot tell which is the focused
+   window's.
+4. A menu a Chromium-family browser serves on its own connection under
    `/com/canonical/menu` without registering it, as it does through
    XWayland on a desktop that is not Unity. A browser serving menus for
    more than one window gets none, since the shell cannot tell which is
    the focused one.
-4. A [menu pack](#menu-packs) whose `when` is `replace` is used instead
+5. The menu bar the application shows on the accessibility bus
+   (AT-SPI), read once the search for the above has ended without a
+   menu, unless the window's pack sets `skip_a11y`. Sections that an
+   application fills only while open are filled one at a time, when the user opens that section from the bar, never all at
+   once; pressing an item replays the sections that hold it. A tree with
+   no section the bar can use is passed over.
+6. A [menu pack](#menu-packs) whose `when` is `replace` is used instead
    of all of the above. A pack whose `when` is `fallback` (the default)
    is used once the search for the above has ended without a menu. While
    that search runs, which asks the session bus and can take a moment,
@@ -32,10 +50,6 @@ For the focused window, in this order:
    View (Fullscreen, Float, Center Window) and Help (About). Those
    actions are the shell's and the compositor's. They do not depend on
    the application having a menu.
-
-The shell does not read a menu from the accessibility tree (AT-SPI) or
-from a bus name Firefox exports on its own; an application that offers
-its menu only there gets its pack or the generic menu.
 
 GTK 4 has no module that exports a menu bar, and the Wayland protocols
 KDE and GTK use to point at a menu (`org_kde_kwin_appmenu`, `gtk-shell`)
@@ -103,8 +117,8 @@ match = ["org.wezfurlong.wezterm", "wezterm"]
 suffix = [".wezterm"]      # the id ends with this
 contains = ["wezterm"]     # the id contains this; prefer match
 when = "fallback"          # or "replace"
-skip_a11y = false          # accepted, no effect yet (see below)
-never_press = false        # accepted, no effect yet (see below)
+skip_a11y = false          # do not read the accessibility menu (see below)
+never_press = false        # never press its sections open (see below)
 
 include = ["generic"]      # start from the generic File, Edit, View, Help
 
@@ -137,18 +151,20 @@ required. `when` is `fallback` or `replace`; omitted, it is `fallback`.
 own. `replace` is shown even when it has one, which is for a published
 menu that cannot be used.
 
-`skip_a11y` and `never_press` are read and checked, but nothing acts on
-them yet: the shell does not read menus from the accessibility bus (see
-[Where a menu comes from](#where-a-menu-comes-from)), so there is no
-accessibility menu for them to skip or guard. They are kept so a pack can
-record what is known about an application's accessibility menu for when
-that reading exists. `skip_a11y` is meant to keep the shell off an
-application's accessibility menu; `never_press` to show such a menu but
-never invoke one of its sections. The shipped `code` pack sets
-`skip_a11y` because VS Code draws its menu itself and its accessibility
-tree has only an overflow item. The shipped `firefox` pack sets
-`never_press` because pressing a section of Firefox's accessibility menu
-ends Firefox. Changing either flag today changes nothing in the bar.
+`skip_a11y` and `never_press` are about the application's accessibility
+menu (see [Where a menu comes from](#where-a-menu-comes-from)).
+`skip_a11y` keeps the shell off it: the pack's menu, or the generic one,
+is shown without reading the accessibility tree. `never_press` keeps
+only the sections that already hold their items when read, so the shell
+never presses a section open to fill it; a menu left with no such
+section is passed over for the pack's or the generic one. Either flag
+applies whatever the pack's `when`; a `replace` pack never reads the
+accessibility tree. The shipped `code` pack sets `skip_a11y` because
+VS Code draws its menu itself and its accessibility tree has only an
+overflow item. The shipped `firefox` pack sets `never_press` because
+pressing a section of Firefox's accessibility menu ends Firefox, so
+Firefox, whose sections are all filled when pressed, gets the generic
+menu.
 
 The shipped `zed` pack sets `skip_a11y` too: Zed draws its menu itself
 and exposes neither an accessible menu nor a D-Bus menu. Its pack
@@ -329,8 +345,7 @@ gap only when the application has no usable published menu. This is the
 usual choice. Use `when = "replace"` only when the published menu is
 unusable and you deliberately want the pack every time. A pack with no
 sections and no include adds no entries, and the generic menu is shown
-in its place. `skip_a11y` and `never_press` have no effect yet (see
-above).
+in its place. `skip_a11y` and `never_press` are described above.
 
 #### Reloading and troubleshooting
 

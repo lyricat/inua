@@ -69,7 +69,7 @@ type settings struct {
 	titleMode                                                                           gtk.DropDown
 	clipLimit                                                                           gtk.DropDown
 	clipLimits                                                                          []int // clipLimit's choices
-	textScale                                                                           gtk.DropDown
+	textScale, iconShape                                                                gtk.DropDown
 	textScales                                                                          []int    // textScale's choices
 	iconSets                                                                            []string // icons' choices
 	appIconSets                                                                         []string // appIcons' choices
@@ -245,6 +245,8 @@ func (s *shellUI) bindSettingsHandlers() {
 			c.Style.Icons = pick(s.settings.iconSets, i, c.Style.Icons)
 		case "app_icons":
 			c.Style.AppIcons = pick(s.settings.appIconSets, i, c.Style.AppIcons)
+		case "icon_shape":
+			c.Style.IconShape = pick(config.IconShapes, i, c.Style.IconShape)
 		case "text_scale":
 			if i >= 0 && i < len(s.settings.textScales) {
 				c.Style.TextScale = s.settings.textScales[i]
@@ -461,6 +463,7 @@ func (s *shellUI) openSettings() {
 	ui.Get("icons", &st.icons)
 	ui.Get("appstyles", &st.appstyles)
 	ui.Get("app_icons", &st.appIcons)
+	ui.Get("icon_shape", &st.iconShape)
 	ui.Get("app_theme", &st.appTheme)
 	ui.Get("language", &st.language)
 	ui.Get("text_scale", &st.textScale)
@@ -558,7 +561,7 @@ func (s *shellUI) openSettings() {
 		st.entries[e.GoPointer()] = e
 		gtkx.ConnectChanged(e, &s.onSettingsEntry)
 	}
-	for _, d := range []*gtk.DropDown{&st.bgFit, &st.ws, &st.titleMode, &st.barDensity, &st.launchMode, &st.swap, &st.caps, &st.icons, &st.appIcons, &st.appTheme, &st.textScale, &st.language, &st.banner, &st.dockSize, &st.dockPosition, &st.clipLimit} {
+	for _, d := range []*gtk.DropDown{&st.bgFit, &st.ws, &st.titleMode, &st.barDensity, &st.launchMode, &st.swap, &st.caps, &st.icons, &st.appIcons, &st.iconShape, &st.appTheme, &st.textScale, &st.language, &st.banner, &st.dockSize, &st.dockPosition, &st.clipLimit} {
 		st.drops[d.GoPointer()] = d
 		gtkx.ConnectNotify(d, "selected", &s.onSettingsDrop)
 	}
@@ -900,6 +903,7 @@ func (s *shellUI) showIconSets() {
 		toggle(&btn.Widget, "on", name == c.Style.AppStyle)
 	}
 	st.appIcons.SetSelected(uint32(max(0, slices.Index(apps, c.Style.AppIcons))))
+	st.iconShape.SetSelected(uint32(max(0, slices.Index(config.IconShapes, c.Style.IconShape))))
 }
 
 func (s *shellUI) showTextScale() {

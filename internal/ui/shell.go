@@ -38,6 +38,7 @@ import (
 	"github.com/lyricat/inua/internal/layershell"
 	"github.com/lyricat/inua/internal/portalconf"
 	"github.com/lyricat/inua/internal/shell"
+	"github.com/lyricat/inua/internal/uikit"
 	layouts "github.com/lyricat/inua/ui"
 )
 
@@ -383,6 +384,7 @@ func Run(opts Options) int {
 	restore := gtkx.ForcePortals(portalconf.PickerOn())
 	app := gtk.NewApplication(shell.AppID, gio.GApplicationNonUniqueValue)
 	s := &shellUI{opts: opts, cfg: opts.Config, app: app, bars: map[uintptr]*bar{}}
+	uikit.SetIconShape(uikit.IconShapeFromName(s.cfg.Style.IconShape))
 	s.pass.slot = make(chan struct{}, 1) // before the control socket serves
 	activate := func(gio.Application) {
 		restore() // the display is open
