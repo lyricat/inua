@@ -182,6 +182,13 @@ app_style = "inua-objects"
 # from each app.
 app_icons = ""
 
+# How app icons are drawn in the dock, its drawer and the launcher:
+#   "squircle"  a square with continuous corners (the default)
+#   "circle"    a circle
+#   "pebble"    a soft, slightly uneven round square
+#   "none"      the icon as its file is, without a shape or light
+icon_shape = "squircle"
+
 # Line icons of the bar, control center, launcher, settings and inua's
 # apps:
 #   "phosphor"  Phosphor's line icons, built in (the default)

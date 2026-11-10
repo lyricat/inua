@@ -453,6 +453,43 @@ ApplicationWindow settings {
 
                       Label {
                         styles ["title"]
+                        label:  _("App icon shape");
+                        xalign: 0;
+                      }
+                      Label {
+                        styles ["sub"]
+                        label:  _("The dock, its drawer and the launcher: a continuous-corner square, a circle, a pebble, or the icon as its file is");
+                        xalign: 0;
+                        wrap: true;
+                      }
+                    }
+
+                    DropDown icon_shape {
+                      name: "icon_shape";
+                      valign: center;
+
+                      model: StringList {
+                        strings [
+                          _("Rounded square"),
+                          _("Circle"),
+                          _("Pebble"),
+                          _("None"),
+                        ]
+                      };
+                    }
+                  }
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+
+                      Label {
+                        styles ["title"]
                         label:  _("Line icons");
                         xalign: 0;
                       }

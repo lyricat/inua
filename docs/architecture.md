@@ -408,6 +408,13 @@ how errors are shown, is in [design/ui.md](../design/ui.md); in short:
   icons; an icon given as a file, a snap's, by the snap's or the file's
   name, `fileIconNames`), in Files with the files' icons
   (`DesktopIcons`); the tray's stay each app's.
+- App icon shape: `style.icon_shape` (Appearance's "App icon shape"),
+  `squircle` (the default), `circle`, `pebble` or `none`, is the outline
+  `uikit.AppIcon` cuts the dock's, the drawer's and the launcher's icons
+  to, with its light; `none` draws them as their files are.
+  `uikit.SetIconShape` sets it at start and when the setting changes,
+  redrawing the icons shown without loading the styles again; inua's
+  apps set it with their style, for a workshop app's app icons.
 - Text size: `style.text_scale` (80 to 150 percent, the Appearance page's
   "Text size") multiplies the `font-size` pixel values of `ui/style.css` as
   it loads (`style.ScaleText`), in the shell and in inua's apps; icons,

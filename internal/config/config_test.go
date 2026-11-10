@@ -991,3 +991,29 @@ func TestBarLayout(t *testing.T) {
 		}
 	}
 }
+
+// style.icon_shape: the squircle when the file does not say, each shape
+// kept and saved as it is, anything else the squircle with a warning.
+func TestIconShape(t *testing.T) {
+	c, w, err := Load(write(t, "[style]\ntheme = \"yoru\"\n"))
+	if err != nil || len(w) != 0 || c.Style.IconShape != "squircle" {
+		t.Fatalf("no icon_shape: %q, warnings %v, err %v", c.Style.IconShape, w, err)
+	}
+	for _, shape := range IconShapes {
+		c, w, err := Load(write(t, "[style]\nicon_shape = \""+shape+"\"\n"))
+		if err != nil || len(w) != 0 || c.Style.IconShape != shape {
+			t.Errorf("icon_shape = %q: got %q, warnings %v, err %v", shape, c.Style.IconShape, w, err)
+			continue
+		}
+		saved, w, err := Load(write(t, Format(c)))
+		if err != nil || len(w) != 0 || saved.Style.IconShape != shape {
+			t.Errorf("icon_shape = %q did not survive a save: %q, warnings %v, err %v", shape, saved.Style.IconShape, w, err)
+		}
+	}
+	for _, bad := range []string{"", "Circle", "star"} {
+		c, w, err := Load(write(t, "[style]\nicon_shape = \""+bad+"\"\n"))
+		if err != nil || c.Style.IconShape != "squircle" || len(w) != 1 || !strings.Contains(w[0], "style.icon_shape") {
+			t.Errorf("icon_shape = %q: got %q, warnings %v, err %v", bad, c.Style.IconShape, w, err)
+		}
+	}
+}
