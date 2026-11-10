@@ -113,16 +113,21 @@ func (r *Registrar) Chromium(pid int) (Registration, bool) {
 
 // Focused finds the menu of the focused process: the one it registered with
 // the registrar first, the one an inua application published second, the
-// one a Chromium-family browser serves third. A process that registered
-// windows with menus the registrar cannot choose between gets none, not a
-// published one in their place. It asks the bus, and an application that
-// does not answer holds it for seconds: call it off the main thread.
+// one Firefox's own bridge serves third, the one a Chromium-family browser
+// serves fourth. A process that registered windows with menus the
+// registrar cannot choose between gets none, not a published one in their
+// place, and a Firefox with menus it cannot choose between gets none
+// either. It asks the bus, and an application that does not answer holds
+// it for seconds: call it off the main thread.
 func (r *Registrar) Focused(pid int) (Registration, bool) {
 	if reg, ok, seen := r.forPID(pid); seen {
 		return reg, ok
 	}
 	if reg, ok := r.Native(pid); ok {
 		return reg, true
+	}
+	if reg, ok, seen := r.firefox(pid); seen {
+		return reg, ok
 	}
 	return r.Chromium(pid)
 }

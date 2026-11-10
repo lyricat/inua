@@ -38,6 +38,21 @@ func TestRender(t *testing.T) {
 	}
 }
 
+// Off is written; on and unset leave niri's own, so turning them back on
+// takes inua's off away.
+func TestRenderAnimations(t *testing.T) {
+	off, on := false, true
+	text, _ := Render(compositor.Settings{Animations: &off}, nil)
+	if !strings.Contains(text, "animations {\n    off\n}") {
+		t.Fatalf("animations off not rendered:\n%s", text)
+	}
+	for _, s := range []compositor.Settings{{}, {Animations: &on}} {
+		if text, _ := Render(s, nil); strings.Contains(text, "animations") {
+			t.Fatalf("animations %v changed niri's own:\n%s", s.Animations != nil, text)
+		}
+	}
+}
+
 func TestXKBAndInclude(t *testing.T) {
 	config := `input {
     keyboard {

@@ -5,6 +5,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"sync/atomic"
 
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/gobject"
@@ -48,7 +49,7 @@ type window struct {
 	sidePtr  []uintptr
 	card     *card
 	jobs     jobs
-	detGen   uint64
+	detGen   atomic.Uint64 // the details shown; a goroutine's results for another are dropped
 	flashes  uint64
 	closing  bool // asked to close while operations ran
 
@@ -218,6 +219,10 @@ func (w *window) dragSource(v *gtk.Widget, f func(x, y float64) uintptr) {
 	w.own(w.app.h.dragSource(v, f))
 }
 
+func (w *window) drag(v *gtk.Widget, d *drag) {
+	w.own(w.app.h.drag(v, d))
+}
+
 func (w *window) dropTarget(v *gtk.Widget, f func(paths []string, x, y float64, state gdk.ModifierType)) {
 	w.own(w.app.h.dropTarget(v, func(val *gobject.Value, x, y float64, state gdk.ModifierType) bool {
 		paths := droppedPaths(val)
@@ -242,6 +247,7 @@ func (w *window) closeRequested() bool {
 	} else {
 		w.saveSize()
 	}
+	w.detGen.Add(1) // the details' reads still out find the window gone
 	for _, p := range w.p {
 		p.destroy()
 	}
@@ -450,11 +456,10 @@ func (w *window) selectionChanged(p *pane) {
 	p.syncPreview()
 	w.pickSelectionChanged(p)
 	if p == w.cur() && w.detailsReveal.GetRevealChild() {
-		w.detGen++
-		gen := w.detGen
+		gen := w.detGen.Add(1)
 		// After the selection settles: a rubber band changes it many times.
 		w.app.h.later(60, func() {
-			if gen == w.detGen {
+			if gen == w.detGen.Load() {
 				w.showDetails()
 			}
 		})
@@ -652,7 +657,9 @@ func (w *window) key(keyval uint32, state gdk.ModifierType) bool {
 		if keyval == uint32(gdk.KEY_F10) && !shift {
 			return false
 		}
-		p.menuAtSelection()
+		if !p.focusedCrumbMenu() {
+			p.menuAtSelection()
+		}
 	case uint32(gdk.KEY_Delete), uint32(gdk.KEY_KP_Delete):
 		if p.mode == inTrash || shift {
 			w.do("delete")
@@ -978,7 +985,7 @@ func (w *window) do(id string) {
 		w.confirmEmptyTrash()
 	case "new-folder", "new-file":
 		if p.mode == inFolder {
-			w.askNewName(p, id == "new-folder")
+			w.askNewName(p.dir, id == "new-folder")
 		}
 	case "terminal":
 		w.terminal(p.dir)
@@ -1000,16 +1007,7 @@ func (w *window) do(id string) {
 		if p.mode != inFolder && id == "bookmark" {
 			return
 		}
-		on, err := files.ToggleBookmark(dir)
-		switch {
-		case err != nil:
-			w.flash(err.Error())
-		case on:
-			w.flash(i18n.Tf("Bookmarked %s.", filepath.Base(dir)))
-		default:
-			w.flash(i18n.Tf("Removed the bookmark of %s.", filepath.Base(dir)))
-		}
-		w.app.sidebarsChanged()
+		w.toggleBookmark(dir)
 	case "hidden":
 		p.toggleHidden()
 		w.hiddenToggle.SetActive(p.fv.Order.ShowsHidden)
@@ -1026,13 +1024,31 @@ func (w *window) do(id string) {
 	}
 }
 
+// toggleBookmark bookmarks dir, or removes its bookmark.
+func (w *window) toggleBookmark(dir string) {
+	on, err := files.ToggleBookmark(dir)
+	switch {
+	case err != nil:
+		w.flash(err.Error())
+	case on:
+		w.flash(i18n.Tf("Bookmarked %s.", filepath.Base(dir)))
+	default:
+		w.flash(i18n.Tf("Removed the bookmark of %s.", filepath.Base(dir)))
+	}
+	w.app.sidebarsChanged()
+}
+
 // copyFolderPath copies the path of the folder p shows.
 func (w *window) copyFolderPath(p *pane) {
-	if p.mode == inTrash {
-		return
+	if p.mode != inTrash {
+		w.copyPath(p.dir)
 	}
-	w.app.copyText(w, p.dir)
-	w.flash(i18n.Tf("Copied %s.", shortHome(p.dir)))
+}
+
+// copyPath copies dir's path as text.
+func (w *window) copyPath(dir string) {
+	w.app.copyText(w, dir)
+	w.flash(i18n.Tf("Copied %s.", shortHome(dir)))
 }
 
 // terminal opens a terminal in dir: the one chosen in inua's settings

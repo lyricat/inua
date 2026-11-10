@@ -135,6 +135,9 @@ func Render(s compositor.Settings, xkb []string) (text string, skipped []string)
 		}
 		b.WriteString("}\n")
 	}
+	if s.Animations != nil && !*s.Animations {
+		b.WriteString("\n// Animations turned off in inua's settings.\nanimations {\n    off\n}\n")
+	}
 	var binds []string
 	for _, kb := range s.Binds {
 		if kb.Keys == "" || kb.Command == "" {

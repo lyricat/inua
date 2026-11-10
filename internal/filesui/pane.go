@@ -50,9 +50,10 @@ type pane struct {
 	columns                                         gtk.Box
 	columnsHead                                     gtk.ScrolledWindow
 	nameHead                                        gtk.Label
-	nameCol                                         *gtk.Button
+	nameCol, more                                   *gtk.Button
 	colHeads                                        [len(columns)]*gtk.Button
 	colLabels                                       [len(columns)]*gtk.Label
+	grips                                           [len(columns) + 1]*gtk.Box // the name's, then the columns'
 	views                                           gtk.Stack
 	listScroll, gridScroll, columnsScroll           gtk.ScrolledWindow
 	columnBox, trailBox                             gtk.Box
@@ -106,6 +107,7 @@ type row struct {
 	icon    gtk.Image
 	name    gtk.Label
 	cols    [len(columns)]*gtk.Label // the list's columns, in columns' order
+	end     *gtk.Box                 // a list row's, under the columns button
 	arrow   gtk.Image                // a column's: shown for a folder
 	grid    bool
 	compact bool // a column's row: the icon, the name and the arrow
@@ -264,7 +266,7 @@ func (p *pane) destroy() {
 func (p *pane) setupRow(item uintptr) {
 	li := gtk.ListItemNewFromInternalPtr(item)
 	r := &row{}
-	r.box = *gtk.NewBox(gtk.OrientationHorizontalValue, 10)
+	r.box = *gtk.NewBox(gtk.OrientationHorizontalValue, gap)
 	r.box.AddCssClass("files-row")
 	r.icon = *gtk.NewImage()
 	r.icon.AddCssClass("files-icon")
@@ -274,7 +276,6 @@ func (p *pane) setupRow(item uintptr) {
 	r.name.SetXalign(0)
 	r.name.SetHexpand(true)
 	r.name.SetEllipsize(2) // middle: the extension stays in view
-	r.name.SetSizeRequest(nameMin, -1)
 	gtkx.Append(&r.box, &r.name.Widget)
 	for k, c := range columns {
 		l := fixedLabel(c.width, c.right)
@@ -283,9 +284,10 @@ func (p *pane) setupRow(item uintptr) {
 		r.cols[k] = l
 		gtkx.Append(&r.box, &l.Widget)
 	}
-	end := gtk.NewBox(gtk.OrientationHorizontalValue, 0) // under the columns button
-	end.SetSizeRequest(trailing, -1)
-	gtkx.Append(&r.box, &end.Widget)
+	r.end = gtk.NewBox(gtk.OrientationHorizontalValue, 0) // under the columns button
+	r.end.SetSizeRequest(trailing, -1)
+	gtkx.Append(&r.box, &r.end.Widget)
+	p.sizeRow(r) // the widths chosen, a row made during a drag too
 	li.SetChild(&r.box.Widget)
 	r.box.Unref()
 	p.rows[item] = r
@@ -1068,32 +1070,14 @@ func (p *pane) showCrumbs() {
 		p.crumb(i18n.T("Trash"), "user-trash-symbolic", trashKey, true)
 		return
 	}
-	home := files.Home()
-	dir := p.dir
-	var start string
-	var parts []string
-	switch {
-	case dir == home || strings.HasPrefix(dir, home+"/"):
-		start = home
-		parts = strings.Split(strings.TrimPrefix(dir[len(home):], "/"), "/")
-		p.crumb("", "user-home-symbolic", home, dir == home)
-	default:
-		start = "/"
-		parts = strings.Split(strings.TrimPrefix(dir, "/"), "/")
-		p.crumb("/", "", "/", dir == "/")
-	}
-	at := start
-	for k, part := range parts {
-		if part == "" {
-			continue
-		}
-		if at != "/" { // the root's crumb is a slash already
+	segs := crumbTrail(p.dir, files.Home())
+	for i, s := range segs {
+		if i > 0 && segs[i-1].path != "/" { // the root's crumb is a slash already
 			sep := gtk.NewLabel("/")
 			sep.AddCssClass("files-crumb-sep")
 			gtkx.Append(&p.crumbs, &sep.Widget)
 		}
-		at = filepath.Join(at, part)
-		p.crumb(part, "", at, k == len(parts)-1)
+		p.crumb(s.label, s.icon, s.path, s.current)
 	}
 	if p.mode == inSearch {
 		sep := gtk.NewLabel("·")
@@ -1124,7 +1108,17 @@ func (p *pane) crumb(label, icon, target string, current bool) {
 		b.SetLabel(label)
 	}
 	p.w.app.h.click(b, func() { p.goKey(target, true) })
-	p.crumbPtr = append(p.crumbPtr, b.GoPointer())
+	// The other buttons leave the pane where it is: the middle one opens
+	// the folder in a new tab behind this one, the right one its menu.
+	g := p.w.app.h.press(&b.Widget, false, func(button uint32, _ int32, x, y float64) {
+		switch button {
+		case 2:
+			p.newTab(target, false)
+		case 3:
+			p.crumbMenu(&b.Widget, target, x, y)
+		}
+	})
+	p.crumbPtr = append(p.crumbPtr, b.GoPointer(), g)
 	gtkx.Append(&p.crumbs, &b.Widget)
 }
 

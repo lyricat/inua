@@ -1,8 +1,8 @@
 package filesui
 
 import (
+	"errors"
 	"fmt"
-	"io"
 	"io/fs"
 	"os"
 	"os/user"
@@ -10,7 +10,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"unicode/utf8"
 
 	"codeberg.org/puregotk/puregotk/v4/gio"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
@@ -23,13 +22,14 @@ import (
 // showDetails fills the details panel for the pane with the keys: its
 // selection, or the folder itself when nothing is selected. The facts
 // that take the disk (a stat, a text's first lines, a folder's size) are
-// read on a goroutine.
+// read on a goroutine; what it finds is dropped once the details show
+// something else.
 func (w *window) showDetails() {
 	if !w.detailsReveal.GetRevealChild() {
 		return
 	}
-	w.detGen++
-	gen := w.detGen
+	gen := w.detGen.Add(1)
+	stale := func() bool { return gen != w.detGen.Load() }
 	p := w.cur()
 	sel := p.selected()
 	gtkx.Clear(&w.details)
@@ -101,8 +101,9 @@ func (w *window) showDetails() {
 	extra := w.detailBox()
 	where := w.detailFact(i18n.T("WHERE"), shortHome(filepath.Dir(path)))
 	where.SetSelectable(true)
-	var preview *gtk.Label
-	if !e.Dir && gio.ContentTypeIsA(k.mime, "text/plain") {
+	var preview, note *gtk.Label
+	if !e.Dir && !e.Broken && (e.Mode.IsRegular() || e.Link != "") &&
+		(gio.ContentTypeIsA(k.mime, "text/plain") || files.TextExt(e.Ext())) {
 		preview = gtk.NewLabel("")
 		preview.AddCssClass("files-text-preview")
 		preview.SetXalign(0)
@@ -112,6 +113,13 @@ func (w *window) showDetails() {
 		preview.SetSelectable(true)
 		preview.SetVisible(false)
 		gtkx.Append(&w.details, &preview.Widget)
+		note = gtk.NewLabel("")
+		note.AddCssClass("files-preview-note")
+		note.SetXalign(0)
+		note.SetWrap(true)
+		note.SetWrapMode(2)
+		note.SetVisible(false)
+		gtkx.Append(&w.details, &note.Widget)
 	}
 
 	go func() {
@@ -127,14 +135,15 @@ func (w *window) showDetails() {
 		}
 		size := ""
 		if e.Dir {
-			size = folderSize(path, func() bool { return gen != w.detGen })
+			size = folderSize(path, stale)
 		}
-		head := ""
-		if preview != nil && e.Size > 0 {
-			head = textHead(path)
+		var text files.TextPreview
+		var textErr error
+		if preview != nil && !stale() {
+			text, textErr = files.ReadTextPreview(path)
 		}
 		gtkx.Post(func() {
-			if gen != w.detGen {
+			if stale() {
 				return
 			}
 			if e.Dir {
@@ -143,12 +152,53 @@ func (w *window) showDetails() {
 			for _, f := range facts {
 				w.detailFactIn(extra, f[0], f[1])
 			}
-			if head != "" {
-				preview.SetText(head)
-				preview.SetVisible(true)
+			if preview != nil {
+				showTextPreview(preview, note, text, textErr)
 			}
 		})
 	}()
+}
+
+// showTextPreview shows the start of a text file, as plain text (never
+// markup), with a note under it when it was cut, or the note alone saying
+// why there is no text.
+func showTextPreview(preview, note *gtk.Label, p files.TextPreview, err error) {
+	msg := ""
+	switch {
+	case errors.Is(err, files.ErrNotText):
+		msg = i18n.T("No preview: this is not UTF-8 text.")
+	case errors.Is(err, files.ErrNotRegular):
+		msg = i18n.T("No preview: this is not a regular file.")
+	case errors.Is(err, fs.ErrNotExist):
+		msg = i18n.T("The file is no longer there.")
+	case errors.Is(err, fs.ErrPermission):
+		msg = i18n.T("No permission to read the file.")
+	case err != nil:
+		var pe *fs.PathError
+		if errors.As(err, &pe) {
+			err = pe.Err
+		}
+		msg = i18n.Tf("Could not read the file: %v", err)
+	case p.Text == "":
+		msg = i18n.T("The file is empty.")
+	case p.Cut == files.LineLimit:
+		msg = i18n.Nf("Only the first %d line is shown.", "Only the first %d lines are shown.", files.PreviewLines, files.PreviewLines)
+	case p.Cut == files.ByteLimit:
+		msg = i18n.Tf("Only the first %d KiB are shown.", files.PreviewBytes>>10)
+	}
+	if err == nil && p.Text != "" {
+		text := strings.ReplaceAll(p.Text, "\r\n", "\n")
+		preview.SetText(strings.TrimSuffix(text, "\n"))
+		preview.SetVisible(true)
+	}
+	if msg != "" {
+		if err != nil && !errors.Is(err, files.ErrNotText) && !errors.Is(err, files.ErrNotRegular) {
+			note.AddCssClass("error")
+			note.SetSelectable(true)
+		}
+		note.SetText(msg)
+		note.SetVisible(true)
+	}
 }
 
 // detailIcon adds the panel's big icon, named or set later, and returns
@@ -232,30 +282,6 @@ func groupDigits(n int64) string {
 		b.WriteRune(c)
 	}
 	return b.String()
-}
-
-// textHead is the start of a text file, for its preview: up to 2 KB and
-// 40 lines, if it is text.
-func textHead(path string) string {
-	f, err := os.Open(path)
-	if err != nil {
-		return ""
-	}
-	defer f.Close()
-	buf := make([]byte, 2048)
-	n, _ := io.ReadFull(f, buf)
-	buf = buf[:n]
-	for !utf8.Valid(buf) && len(buf) > 0 && len(buf) > n-4 {
-		buf = buf[:len(buf)-1] // a character cut at the end
-	}
-	if !utf8.Valid(buf) || strings.ContainsRune(string(buf), 0) {
-		return ""
-	}
-	lines := strings.SplitN(string(buf), "\n", 41)
-	if len(lines) > 40 {
-		lines = lines[:40]
-	}
-	return strings.Join(lines, "\n")
 }
 
 // folderSize adds up what is below dir, giving up when stop says so or
