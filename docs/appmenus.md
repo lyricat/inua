@@ -16,18 +16,30 @@ For the focused window, in this order:
    `libdbusmenu` is installed and `UBUNTU_MENUPROXY=1`.
 2. A menu an inua application published on its own bus name
    (`io.github.lyricat.Inua.Menu.*`).
-3. A menu a Chromium-family browser serves on its own connection under
+3. The menu Firefox's own GTK bridge serves under `/com/canonical/menu`
+   on the connection that owns its `org.mozilla.firefox.*` names, without
+   registering it, as it does on Wayland. It is the focused process's
+   when that connection belongs to the process, or to the Firefox process
+   that started it; a terminal that started Firefox, or another program
+   Firefox started, does not get it. Firefox gives its items other ids
+   each time the menu is read, so the shell reads the whole tree at once,
+   opens submenus from that reading and reads it again after each click;
+   a submenu Firefox leaves empty in that reading opens nothing. A Firefox
+   serving menus for more than one window, or two Firefoxes of the same
+   process, give none, since the shell cannot tell which is the focused
+   window's.
+4. A menu a Chromium-family browser serves on its own connection under
    `/com/canonical/menu` without registering it, as it does through
    XWayland on a desktop that is not Unity. A browser serving menus for
    more than one window gets none, since the shell cannot tell which is
    the focused one.
-4. The menu bar the application shows on the accessibility bus
+5. The menu bar the application shows on the accessibility bus
    (AT-SPI), read once the search for the above has ended without a
    menu, unless the window's pack sets `skip_a11y`. Sections that an
    application fills only while open are filled one at a time, when the user opens that section from the bar, never all at
    once; pressing an item replays the sections that hold it. A tree with
    no section the bar can use is passed over.
-5. A [menu pack](#menu-packs) whose `when` is `replace` is used instead
+6. A [menu pack](#menu-packs) whose `when` is `replace` is used instead
    of all of the above. A pack whose `when` is `fallback` (the default)
    is used once the search for the above has ended without a menu. While
    that search runs, which asks the session bus and can take a moment,
@@ -38,10 +50,6 @@ For the focused window, in this order:
    View (Fullscreen, Float, Center Window) and Help (About). Those
    actions are the shell's and the compositor's. They do not depend on
    the application having a menu.
-
-The shell does not read a menu from a bus name Firefox exports on its
-own; an application that offers its menu only there gets its
-accessibility menu, its pack or the generic menu.
 
 GTK 4 has no module that exports a menu bar, and the Wayland protocols
 KDE and GTK use to point at a menu (`org_kde_kwin_appmenu`, `gtk-shell`)
