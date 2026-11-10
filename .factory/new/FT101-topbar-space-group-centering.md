@@ -26,3 +26,9 @@ DATETIME 和 PASS 组成一个连续组件组，整个组的中心应与 topbar 
 ### 构建前需明确的边界
 
 用户示例均为一对 SPACE 包夹一个非空组件组。若存在三段以上 SPACE、多个候选居中组、连续 SPACE，或栏宽不足以同时满足居中与不重叠，构建计划须明确选择规则与降级行为，不能承诺多个独立组件组同时占据同一中心。空间不足时应优先避免组件重叠并保持配置顺序；具体规则在计划中记录并测试。
+
+
+## factory · 2026-11-10 20:37
+Owner requested moving all current backlog items to new: “把 backlog 这些放到 new，注意他们的分支也在 fork 上”。
+Moved backlog → new; no build or review performed in this update.
+This item has no source PR or branch recorded; no fork branch was inferred.
