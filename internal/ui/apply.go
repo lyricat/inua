@@ -243,6 +243,7 @@ func (s *shellUI) applyConfig(c config.Config) {
 	if old.Style.Theme != c.Style.Theme || old.Background != c.Background || old.Dir != c.Dir {
 		s.loadWallpaper()
 	}
+	s.arrangeBars()
 	for _, b := range s.bars {
 		if old.Bar.Density != c.Bar.Density {
 			b.setDensity(c.Bar.Density)
@@ -259,7 +260,6 @@ func (s *shellUI) applyConfig(c config.Config) {
 		b.clipboard.SetVisible(c.Clipboard.Enable && c.Clipboard.Bar)
 		b.passwords.SetVisible(c.Bar.Pass && s.passwords.hasStore)
 		b.widgetsMark.SetVisible(c.Widgets.Enable)
-		b.setClockAtEnd(c.Bar.Menu)
 		b.setHypr(s, s.snap)
 		s.syncWallpaper(b)
 	}

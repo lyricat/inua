@@ -12,7 +12,13 @@ trademark of Google LLC. The Chromium icons are drawn from Chromium's icon
 (design/icons/brands/chromium.svg): Copyright (c) The Chromium Projects,
 redistributed with or without modification under the BSD 3-clause licence
 (https://chromium.googlesource.com/chromium/src/+/main/LICENSE), provided
-"as is", without warranty of any kind.
+"as is", without warranty of any kind. The Mister Morph icons are drawn
+from Mister Morph's own icon in its bunko colours
+(design/icons/brands/mistermorph.svg, from
+https://github.com/quailyquaily/mistermorph), under the Apache License 2.0
+(https://www.apache.org/licenses/LICENSE-2.0): its disc and lines as they
+are, with inua's light and depth added; Mister Morph's mark remains its
+owner's trademark.
 
 The text in the drawings is set in IBM Plex (Copyright 2017 IBM Corp.) and
 Caveat (Copyright 2014 The Caveat Project Authors), both under the SIL Open

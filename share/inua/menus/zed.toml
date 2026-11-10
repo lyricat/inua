@@ -1,0 +1,560 @@
+# Zed draws its own menu bar (Zed, File, Edit, Selection, View, Go, Run,
+# Window, Help) and exports nothing on the accessibility bus and no menu of
+# its own over D-Bus, so the bar cannot read it. This pack follows Zed's
+# menus (crates/zed/src/zed/app_menus.rs, Zed 1.25) and the Linux default
+# keymap (assets/keymaps/default-linux.json). An item can only send keys, so
+# commands with no default shortcut are shown disabled rather than left out.
+# A remapped keymap, another base_keymap, or vim_mode changes what a key
+# does; the package keeps Zed's defaults.
+id = "zed"
+match = ["dev.zed.Zed", "zed", "zeditor"]
+skip_a11y = true
+
+[[section]]
+label = "Zed"
+
+[[section.item]]
+label = "About Zed"
+disabled = true
+
+[[section.item]]
+label = "Check for Updates"
+disabled = true
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Settings"
+
+[[section.item.item]]
+label = "Open Settings"
+keys = ["CTRL", "comma"]
+
+[[section.item.item]]
+label = "Open Settings File"
+keys = ["CTRL", "ALT", "comma"]
+
+[[section.item.item]]
+label = "Open Project Settings"
+disabled = true
+
+[[section.item.item]]
+label = "Open Project Settings File"
+disabled = true
+
+[[section.item.item]]
+label = "Open Default Settings"
+disabled = true
+
+[[section.item.item]]
+label = "Open Keymap"
+sequence = ["CTRL+K", "CTRL+S"]
+
+[[section.item.item]]
+label = "Open Keymap File"
+keys = ["CTRL", "E"]
+
+[[section.item.item]]
+label = "Open Default Key Bindings"
+disabled = true
+
+[[section.item.item]]
+label = "Select Theme…"
+sequence = ["CTRL+K", "CTRL+T"]
+
+[[section.item.item]]
+label = "Select Icon Theme…"
+disabled = true
+
+[[section.item]]
+label = "Extensions"
+keys = ["CTRL", "SHIFT", "X"]
+
+[[section.item]]
+label = "Install CLI"
+disabled = true
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Quit Zed"
+action = "quit-app"
+
+[[section]]
+label = "File"
+
+[[section.item]]
+label = "New"
+keys = ["CTRL", "N"]
+
+[[section.item]]
+label = "New Window"
+keys = ["CTRL", "SHIFT", "N"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Open File…"
+keys = ["CTRL", "O"]
+
+[[section.item]]
+label = "Open Folder…"
+sequence = ["CTRL+K", "CTRL+O"]
+
+[[section.item]]
+label = "Open Recent…"
+keys = ["CTRL", "R"]
+
+[[section.item]]
+label = "Open Remote…"
+keys = ["CTRL", "ALT", "SHIFT", "O"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Add Folder to Project…"
+keys = ["CTRL", "SHIFT", "A"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Save"
+keys = ["CTRL", "S"]
+
+[[section.item]]
+label = "Save As…"
+keys = ["CTRL", "SHIFT", "S"]
+
+[[section.item]]
+label = "Save All"
+keys = ["CTRL", "ALT", "S"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Close Editor"
+keys = ["CTRL", "SHIFT", "W"]
+
+[[section.item]]
+label = "Close Project"
+disabled = true
+
+[[section.item]]
+label = "Close Window"
+action = "close-window"
+
+[[section]]
+label = "Edit"
+
+[[section.item]]
+label = "Undo"
+keys = ["CTRL", "Z"]
+
+[[section.item]]
+label = "Redo"
+keys = ["CTRL", "SHIFT", "Z"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Cut"
+keys = ["CTRL", "X"]
+
+[[section.item]]
+label = "Copy"
+keys = ["CTRL", "C"]
+
+[[section.item]]
+label = "Copy and Trim"
+disabled = true
+
+[[section.item]]
+label = "Paste"
+keys = ["CTRL", "V"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Find"
+keys = ["CTRL", "F"]
+
+[[section.item]]
+label = "Find in Project"
+keys = ["CTRL", "SHIFT", "F"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Toggle Line Comment"
+keys = ["CTRL", "slash"]
+
+[[section]]
+label = "Selection"
+
+[[section.item]]
+label = "Select All"
+keys = ["CTRL", "A"]
+
+[[section.item]]
+label = "Expand Selection"
+keys = ["ALT", "SHIFT", "right"]
+
+[[section.item]]
+label = "Shrink Selection"
+keys = ["ALT", "SHIFT", "left"]
+
+[[section.item]]
+label = "Select Next Sibling"
+disabled = true
+
+[[section.item]]
+label = "Select Previous Sibling"
+disabled = true
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Add Cursor Above"
+keys = ["SHIFT", "ALT", "up"]
+
+[[section.item]]
+label = "Add Cursor Below"
+keys = ["SHIFT", "ALT", "down"]
+
+[[section.item]]
+label = "Select Next Occurrence"
+keys = ["CTRL", "D"]
+
+[[section.item]]
+label = "Select Previous Occurrence"
+keys = ["CTRL", "SHIFT", "up"]
+
+[[section.item]]
+label = "Select All Occurrences"
+keys = ["CTRL", "SHIFT", "L"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Move Line Up"
+keys = ["ALT", "up"]
+
+[[section.item]]
+label = "Move Line Down"
+keys = ["ALT", "down"]
+
+[[section.item]]
+label = "Duplicate Selection"
+keys = ["CTRL", "ALT", "SHIFT", "down"]
+
+[[section]]
+label = "View"
+
+[[section.item]]
+label = "Zoom In"
+keys = ["CTRL", "equal"]
+
+[[section.item]]
+label = "Zoom Out"
+keys = ["CTRL", "minus"]
+
+[[section.item]]
+label = "Reset Zoom"
+keys = ["CTRL", "0"]
+
+[[section.item]]
+label = "Reset All Zoom"
+disabled = true
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Toggle Left Dock"
+keys = ["CTRL", "B"]
+
+[[section.item]]
+label = "Toggle Right Dock"
+keys = ["CTRL", "ALT", "B"]
+
+[[section.item]]
+label = "Toggle Bottom Dock"
+keys = ["CTRL", "J"]
+
+[[section.item]]
+label = "Toggle All Docks"
+keys = ["CTRL", "ALT", "Y"]
+
+[[section.item]]
+label = "Editor Layout"
+
+[[section.item.item]]
+label = "Split Up"
+disabled = true
+
+[[section.item.item]]
+label = "Split Down"
+disabled = true
+
+[[section.item.item]]
+label = "Split Left"
+disabled = true
+
+[[section.item.item]]
+label = "Split Right"
+disabled = true
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Project Panel"
+keys = ["CTRL", "SHIFT", "E"]
+
+[[section.item]]
+label = "Outline Panel"
+keys = ["CTRL", "SHIFT", "B"]
+
+[[section.item]]
+label = "Collab Panel"
+keys = ["CTRL", "SHIFT", "C"]
+
+[[section.item]]
+label = "Terminal Panel"
+keys = ["CTRL", "grave"]
+
+[[section.item]]
+label = "Debugger Panel"
+keys = ["CTRL", "SHIFT", "D"]
+
+[[section.item]]
+label = "Agent Panel"
+disabled = true
+
+[[section.item]]
+label = "Git Panel"
+keys = ["CTRL", "SHIFT", "G"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Diagnostics"
+keys = ["CTRL", "SHIFT", "M"]
+
+[[section]]
+label = "Go"
+
+[[section.item]]
+label = "Back"
+keys = ["CTRL", "ALT", "minus"]
+
+[[section.item]]
+label = "Forward"
+keys = ["CTRL", "ALT", "underscore"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Command Palette…"
+keys = ["CTRL", "SHIFT", "P"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Go to File…"
+keys = ["CTRL", "P"]
+
+[[section.item]]
+label = "Go to Symbol in Editor…"
+keys = ["CTRL", "SHIFT", "O"]
+
+[[section.item]]
+label = "Go to Line/Column…"
+keys = ["CTRL", "G"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Go to Definition"
+keys = ["f12"]
+
+[[section.item]]
+label = "Go to Declaration"
+disabled = true
+
+[[section.item]]
+label = "Go to Type Definition"
+keys = ["CTRL", "f12"]
+
+[[section.item]]
+label = "Find All References"
+keys = ["ALT", "SHIFT", "f12"]
+
+[[section.item]]
+label = "Show Incoming Calls"
+sequence = ["CTRL+K", "CTRL+H"]
+
+[[section.item]]
+label = "Show Outgoing Calls"
+disabled = true
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Next Problem"
+keys = ["f8"]
+
+[[section.item]]
+label = "Previous Problem"
+keys = ["SHIFT", "f8"]
+
+[[section]]
+label = "Run"
+
+[[section.item]]
+label = "Spawn Task"
+keys = ["ALT", "SHIFT", "T"]
+
+[[section.item]]
+label = "Start Debugger"
+keys = ["f4"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Edit tasks.json…"
+disabled = true
+
+[[section.item]]
+label = "Edit debug.json…"
+disabled = true
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Continue"
+keys = ["f5"]
+
+[[section.item]]
+label = "Step Over"
+keys = ["f7"]
+
+[[section.item]]
+label = "Step Into"
+keys = ["f11"]
+
+[[section.item]]
+label = "Step Out"
+keys = ["SHIFT", "f11"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Toggle Breakpoint"
+keys = ["f9"]
+
+[[section.item]]
+label = "Edit Breakpoint"
+keys = ["SHIFT", "f9"]
+
+[[section.item]]
+label = "Clear All Breakpoints"
+disabled = true
+
+[[section]]
+label = "Window"
+
+[[section.item]]
+label = "Minimize"
+disabled = true
+
+[[section.item]]
+label = "Zoom"
+disabled = true
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Fullscreen"
+action = "fullscreen"
+
+[[section.item]]
+label = "Float"
+action = "float"
+
+[[section.item]]
+label = "Center Window"
+action = "center"
+
+[[section]]
+label = "Help"
+
+[[section.item]]
+label = "View Release Notes Locally"
+disabled = true
+
+[[section.item]]
+label = "View Telemetry"
+disabled = true
+
+[[section.item]]
+label = "View Dependency Licenses"
+disabled = true
+
+[[section.item]]
+label = "Show Welcome"
+disabled = true
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "File Bug Report…"
+disabled = true
+
+[[section.item]]
+label = "Request Feature…"
+disabled = true
+
+[[section.item]]
+label = "Email Us…"
+disabled = true
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Documentation"
+disabled = true
+
+[[section.item]]
+label = "Zed Repository"
+disabled = true
+
+[[section.item]]
+label = "Zed Twitter"
+disabled = true
+
+[[section.item]]
+label = "Join the Team"
+disabled = true

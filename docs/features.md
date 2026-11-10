@@ -19,6 +19,28 @@ The Bar settings can make the panel transparent when the bar's current
 workspace has no windows. The panel becomes opaque again when a window
 appears. The controls keep their own look.
 
+What the bar shows, and in which order, is the user's: Settings → Bar &
+Dock → *Layout* is a small bar to drag the items into, along and back out
+of (`bar.layout`). Every item (the workspaces with Engawa's mark, the app
+menu, the app's name, the clock, the tray, the recording's stop button,
+passwords, the clipboard, notifications, dictation, the control center)
+goes on the bar once at most; a *space* as many times as wanted, the
+spaces sharing the room the items leave equally. A click on an item in the
+palette adds it after the one selected, and the tools under the strip move
+the selected one or take it off, without dragging. Changes apply to every
+bar at once and are saved as the other settings are. Unset, the bar has
+the default layout: *Global menu* (`bar.menu`, on by default) puts the
+focused application's menu in the bar and the clock at the right end. Turning
+it off clears the menu and centres the clock. Turning it on syncs the
+focused application's menu again. An explicit layout keeps its clock
+position regardless of the menu switch, and *Default* goes back to
+the unset layout. An item on the bar still shows only when its own setting
+and state have it (the tray, passwords with a store, a recording); one
+taken off does not come back when they do. The buttons' reaches run
+across the gaps between buttons side by side and into a corner from the
+first or last thing on the bar; a panel that hangs from the bar goes flush
+with its end only while its button is the last there.
+
 ## Engawa
 
 Engawa (縁側, a veranda at the edge of a house) is the widget page, the

@@ -24,13 +24,18 @@ import (
 
 // bar is one bar.ui instance, one per monitor, alive while the monitor is.
 type bar struct {
-	mon         *gdk.Monitor           // our reference, dropped in dropBar
-	wallpaper   *gtk.ApplicationWindow // this monitor's background, if inua draws it
-	dock        *dock                  // this monitor's dock, if shown
-	win         gtk.ApplicationWindow
-	frame       gtk.Overlay // the island, and the panel hanging from it
-	island      gtk.CenterBox
-	end         gtk.Box // the bar's right end, where the clock goes for the menu
+	mon       *gdk.Monitor           // our reference, dropped in dropBar
+	wallpaper *gtk.ApplicationWindow // this monitor's background, if inua draws it
+	dock      *dock                  // this monitor's dock, if shown
+	win       gtk.ApplicationWindow
+	frame     gtk.Overlay // the island, and the panel hanging from it
+	island    gtk.Box
+	// The default layout's boxes: the clock centred on the screen between
+	// the start's items and the end's (arrange).
+	centered    gtk.CenterBox
+	barStart    gtk.Box
+	barEnd      gtk.Box
+	appTitle    gtk.Box
 	workspaces  gtk.Box
 	widgetsMark gtk.Button // the widget page's place, before the workspaces
 	appIcon     gtk.Image
@@ -59,9 +64,19 @@ type bar struct {
 	focusRing   *focusRing
 
 	appMenuReg     appmenu.Registration // whose menu it shows, if any
+	appMenuWindow  string               // the window whose pack or generic menu it shows, if any
+	appMenuGen     uint64               // the menu-pack reading it was drawn from
+	appMenuEntries []appmenu.Entry      // the first level, as last read
 	appMenuTop     []appMenuTop         // the buttons, as last drawn
 	appMenuLoading bool                 // the menu is being read
 	appMenuStale   bool                 // and changed meanwhile
+
+	// The layout arranged (bar.layout as the settings had it; nil for
+	// the default, centred), and the spaces of a layout of the user's,
+	// owned by the island.
+	layout   []string
+	arranged bool
+	spaces   []*gtk.Box
 
 	edgeGaps bool
 	compact  bool
@@ -171,7 +186,10 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	ui.Get("bar", &b.win)
 	ui.Get("frame", &b.frame)
 	ui.Get("island", &b.island)
-	ui.Get("end", &b.end)
+	ui.Get("centered", &b.centered)
+	ui.Get("bar_start", &b.barStart)
+	ui.Get("bar_end", &b.barEnd)
+	ui.Get("app_title", &b.appTitle)
 	ui.Get("workspaces", &b.workspaces)
 	ui.Get("widgets", &b.widgetsMark)
 	ui.Get("app_icon", &b.appIcon)
@@ -205,6 +223,8 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	ui.Get("bat_icon", &b.batIcon)
 	ui.Get("bat_label", &b.batLabel)
 	ui.Close()
+	b.arrange(s.cfg.Bar.Layout)
+	b.setClockAtEnd(s.cfg.Bar.Menu)
 	b.setEdgeGap(s.cfg.Style.EdgeGaps)
 	b.setDensity(s.cfg.Bar.Density)
 	b.status.ConnectClicked(&s.onControlButton)
@@ -397,7 +417,7 @@ func (b *bar) setClock(s *shellUI, now time.Time) {
 
 // clockAtEnd reports whether the clock is at the bar's right end.
 func (b *bar) clockAtEnd() bool {
-	if w := b.island.GetCenterWidget(); w != nil {
+	if w := b.centered.GetCenterWidget(); w != nil {
 		w.Unref() // GetCenterWidget takes a reference
 		return false
 	}
@@ -406,18 +426,19 @@ func (b *bar) clockAtEnd() bool {
 
 // setClockAtEnd puts the clock at the bar's right end while the bar shows
 // the focused application's menu, and in the middle otherwise: the menu's
-// titles take the left of the bar.
+// titles take the left of the bar. An explicit layout keeps its clock position.
+// The builder keeps the clock alive while it moves between parents.
 func (b *bar) setClockAtEnd(atEnd bool) {
-	if b.clockAtEnd() == atEnd {
+	if b.layout != nil || b.clockAtEnd() == atEnd {
 		return
 	}
 	if atEnd {
-		b.island.SetCenterWidget(nil)
-		gtkx.Append(&b.end, &b.clockButton.Widget)
+		b.centered.SetCenterWidget(nil)
+		b.barEnd.Append(&b.clockButton.Widget)
 		return
 	}
-	b.end.Remove(&b.clockButton.Widget)
-	b.island.SetCenterWidget(&b.clockButton.Widget)
+	b.barEnd.Remove(&b.clockButton.Widget)
+	b.centered.SetCenterWidget(&b.clockButton.Widget)
 }
 
 func (b *bar) setHypr(s *shellUI, snap compositor.Snapshot) {
@@ -464,11 +485,7 @@ func (b *bar) setHypr(s *shellUI, snap compositor.Snapshot) {
 	order := s.overview.st
 	order.MRU = s.cfg.Overview.MRU
 	b.setWorkspaces(s, order.BarWorkspaces(snap, name, s.cfg.Bar.Workspaces == "all"))
-	if s.cfg.Bar.Menu {
-		s.syncAppMenu(b)
-	} else {
-		s.clearAppMenu(b)
-	}
+	s.syncAppMenu(b)
 }
 
 // scrollWorkspaces goes n notches' way (down the next, up the previous)
@@ -604,10 +621,10 @@ func (b *bar) overIsland(y float64) bool {
 }
 
 // hover marks the entry whose reach x, y is in as hovered (as overIsland
-// places them), and none off the bar.
+// places them), and none off the bar (-1, -1: the pointer left).
 func (b *bar) hover(x, y float64) {
 	end, clock := "", false
-	if b.overIsland(y) {
+	if x >= 0 && y >= 0 && b.overIsland(y) {
 		end, _ = b.endReach(x, y)
 		clock, _ = b.clockReach(x, y)
 	}
@@ -618,33 +635,56 @@ func (b *bar) hover(x, y float64) {
 	toggle(&b.clockButton.Widget, "hover", clock && end == "")
 }
 
-// endButtons are the bar's toggle buttons at its end, left to right, as
-// shown, with their names.
-func (b *bar) endButtons() (names []string, rects []shell.Rect) {
-	for _, c := range []struct {
-		name string
-		btn  *gtk.Button
-	}{{"passwords", &b.passwords}, {"clipboard", &b.clipboard}, {"notes", &b.notes}, {"status", &b.status}} {
-		var r graphene.Rect
-		if c.btn.IsVisible() && c.btn.ComputeBounds(&b.win.Widget, &r) {
-			f := *(*[4]float32)(unsafe.Pointer(&r)) // x, y, width, height; see rect
-			names = append(names, c.name)
-			rects = append(rects, shell.Rect{X: float64(f[0]), Y: float64(f[1]), W: float64(f[2]), H: float64(f[3])})
-		}
-	}
-	return names, rects
+// barReaches are the bar's items whose buttons reach past them, by the
+// names endReach gives them: the toggles of the panels.
+var barReaches = map[string]string{
+	"passwords": "passwords", "clipboard": "clipboard", "notifications": "notes", "control_center": "status",
 }
 
-// endReach names the toggle button at the bar's end whose reach a point in
-// the bar's window is in ("passwords", "clipboard", "notes", "status"; ""
-// for none), and
-// whether it is on the button itself, which takes its own clicks. The
-// reaches cover the gaps between them and run up to the screen's edges, so
-// the pointer thrown at the top or the corner lands on one (shell.BarReach).
+// spots are the bar's items as shown, in their order, with the names of
+// those with a reach (barReaches): the items of its layout that are on the
+// bar and visible, and its spaces.
+func (b *bar) spots() (names []string, spots []shell.BarSpot) {
+	for _, id := range b.shownLayout() {
+		if id == config.BarSpace {
+			names = append(names, "")
+			spots = append(spots, shell.BarSpot{Break: true})
+			continue
+		}
+		w := b.item(id)
+		var r graphene.Rect
+		if w == nil || !w.IsVisible() || !w.ComputeBounds(&b.win.Widget, &r) {
+			continue // hidden, or not on the bar
+		}
+		f := *(*[4]float32)(unsafe.Pointer(&r)) // x, y, width, height; see rect
+		name, spot := barSpot(id, shell.Rect{X: float64(f[0]), Y: float64(f[1]), W: float64(f[2]), H: float64(f[3])})
+		names = append(names, name)
+		spots = append(spots, spot)
+	}
+	return names, spots
+}
+
+// barSpot is the bar's item id shown at r, with the name endReach gives
+// it. Only a panel's toggle has a reach; every other item breaks the
+// reaches, so none runs across it: the tray, the recording's button and
+// dictation take their own pointer, and the workspaces, the app's menu
+// and title and the clock are their own places. A toggle's hover, clicks
+// and the wheel never land on another item between two toggles.
+func barSpot(id string, r shell.Rect) (string, shell.BarSpot) {
+	name := barReaches[id]
+	return name, shell.BarSpot{Rect: r, Reach: name != "", Break: name == ""}
+}
+
+// endReach names the panel's toggle button whose reach a point in the
+// bar's window is in ("passwords", "clipboard", "notes", "status"; ""
+// for none), and whether it is on the button itself, which takes its own
+// clicks. The reaches cover the gaps between such buttons side by side
+// and run up to the screen's edges, so the pointer thrown at the top or a
+// corner lands on one (shell.BarReach).
 func (b *bar) endReach(x, y float64) (name string, onButton bool) {
-	const gap = 6 // the end box's spacing
-	names, rects := b.endButtons()
-	i, on := shell.BarReach(rects, gap, x, y)
+	const gap = 6 // the items' spacing
+	names, spots := b.spots()
+	i, on := shell.BarReach(spots, gap, x, y)
 	if i < 0 {
 		return "", false
 	}

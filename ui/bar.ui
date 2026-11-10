@@ -13,7 +13,7 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
     <child>
       <object class="GtkOverlay" id="frame">
         <child>
-          <object class="GtkCenterBox" id="island">
+          <object class="GtkBox" id="island">
             <style>
               <class name="island"/>
             </style>
@@ -22,232 +22,122 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
             <property name="margin-start">4</property>
             <property name="margin-end">4</property>
             <property name="height-request">30</property>
-            <property name="start-widget">
-              <object class="GtkBox">
-                <property name="spacing">14</property>
-                <child>
-                  <object class="GtkBox" id="workspaces">
-                    <style>
-                      <class name="workspaces"/>
-                    </style>
-                    <property name="spacing">5</property>
-                    <property name="valign">3</property>
+            <property name="spacing">6</property>
+            <child>
+              <object class="GtkCenterBox" id="centered">
+                <property name="hexpand">true</property>
+                <property name="start-widget">
+                  <object class="GtkBox" id="bar_start">
+                    <property name="spacing">14</property>
                     <child>
-                      <object class="GtkButton" id="widgets">
+                      <object class="GtkBox" id="workspaces">
                         <style>
-                          <class name="widgets-mark"/>
+                          <class name="workspaces"/>
                         </style>
-                        <property name="tooltip-text" translatable="yes">Engawa</property>
-                        <property name="focusable">false</property>
+                        <property name="spacing">5</property>
                         <property name="valign">3</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkBox" id="app_menu">
-                    <style>
-                      <class name="app-menu"/>
-                    </style>
-                    <property name="spacing">2</property>
-                    <property name="valign">3</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkBox" id="app_title">
-                    <style>
-                      <class name="app-title"/>
-                    </style>
-                    <property name="spacing">7</property>
-                    <property name="valign">3</property>
-                    <child>
-                      <object class="GtkImage" id="app_icon">
-                        <style>
-                          <class name="app-icon"/>
-                        </style>
-                        <property name="pixel-size">16</property>
-                        <property name="valign">3</property>
-                        <property name="visible">false</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="title">
-                        <style>
-                          <class name="title"/>
-                        </style>
-                        <property name="ellipsize">3</property>
-                        <property name="max-width-chars">48</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </property>
-            <property name="center-widget">
-              <object class="GtkButton" id="clock_button">
-                <style>
-                  <class name="clock-button"/>
-                </style>
-                <property name="name">calendar</property>
-                <property name="focusable">false</property>
-                <property name="tooltip-text" translatable="yes">Calendar</property>
-                <child>
-                  <object class="GtkLabel" id="clock">
-                    <style>
-                      <class name="clock"/>
-                    </style>
-                  </object>
-                </child>
-              </object>
-            </property>
-            <property name="end-widget">
-              <object class="GtkBox" id="end">
-                <property name="spacing">6</property>
-                <child>
-                  <object class="GtkBox" id="tray">
-                    <style>
-                      <class name="tray"/>
-                    </style>
-                    <property name="spacing">2</property>
-                    <property name="valign">3</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkButton" id="rec">
-                    <style>
-                      <class name="rec"/>
-                    </style>
-                    <property name="name">rec</property>
-                    <property name="focusable">false</property>
-                    <property name="visible">false</property>
-                    <property name="tooltip-text" translatable="yes">Stop recording</property>
-                    <child>
-                      <object class="GtkBox">
-                        <property name="spacing">6</property>
                         <child>
-                          <object class="GtkBox">
+                          <object class="GtkButton" id="widgets">
                             <style>
-                              <class name="rec-mark"/>
+                              <class name="widgets-mark"/>
                             </style>
+                            <property name="tooltip-text" translatable="yes">Engawa</property>
+                            <property name="focusable">false</property>
                             <property name="valign">3</property>
                           </object>
                         </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="app_menu">
+                        <style>
+                          <class name="app-menu"/>
+                        </style>
+                        <property name="spacing">2</property>
+                        <property name="valign">3</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="app_title">
+                        <style>
+                          <class name="app-title"/>
+                        </style>
+                        <property name="spacing">7</property>
+                        <property name="valign">3</property>
                         <child>
-                          <object class="GtkLabel" id="rec_time">
+                          <object class="GtkImage" id="app_icon">
                             <style>
-                              <class name="numeric"/>
+                              <class name="app-icon"/>
                             </style>
+                            <property name="pixel-size">16</property>
+                            <property name="valign">3</property>
+                            <property name="visible">false</property>
                           </object>
                         </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkButton" id="passwords">
-                    <style>
-                      <class name="passwords"/>
-                    </style>
-                    <property name="name">passwords</property>
-                    <property name="focusable">false</property>
-                    <property name="visible">false</property>
-                    <property name="tooltip-text" translatable="yes">Passwords</property>
-                    <property name="icon-name">dialog-password-symbolic</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkButton" id="clipboard">
-                    <style>
-                      <class name="clipboard"/>
-                    </style>
-                    <property name="focusable">false</property>
-                    <property name="tooltip-text" translatable="yes">Clipboard history</property>
-                    <property name="icon-name">edit-paste-symbolic</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkButton" id="notes">
-                    <style>
-                      <class name="notes"/>
-                    </style>
-                    <property name="name">notes</property>
-                    <property name="focusable">false</property>
-                    <property name="tooltip-text" translatable="yes">Notifications</property>
-                    <child>
-                      <object class="GtkOverlay">
                         <child>
-                          <object class="GtkImage" id="notes_icon">
-                            <property name="icon-name">preferences-system-notifications-symbolic</property>
-                          </object>
-                        </child>
-                        <child type="overlay">
-                          <object class="GtkBox" id="unread">
+                          <object class="GtkLabel" id="title">
                             <style>
-                              <class name="unread"/>
+                              <class name="title"/>
                             </style>
-                            <property name="halign">2</property>
-                            <property name="valign">1</property>
-                            <property name="visible">false</property>
+                            <property name="ellipsize">3</property>
+                            <property name="max-width-chars">48</property>
                           </object>
                         </child>
                       </object>
                     </child>
                   </object>
-                </child>
-                <child>
-                  <object class="GtkButton" id="voice">
+                </property>
+                <property name="center-widget">
+                  <object class="GtkButton" id="clock_button">
                     <style>
-                      <class name="voice"/>
+                      <class name="clock-button"/>
                     </style>
-                    <property name="name">voice</property>
+                    <property name="name">calendar</property>
                     <property name="focusable">false</property>
-                    <property name="visible">false</property>
-                    <property name="tooltip-text" translatable="yes">Dictation</property>
+                    <property name="tooltip-text" translatable="yes">Calendar</property>
                     <child>
-                      <object class="GtkImage" id="voice_icon">
-                        <property name="icon-name">audio-input-microphone-symbolic</property>
+                      <object class="GtkLabel" id="clock">
+                        <style>
+                          <class name="clock"/>
+                        </style>
                       </object>
                     </child>
                   </object>
-                </child>
-                <child>
-                  <object class="GtkButton" id="status">
-                    <style>
-                      <class name="status"/>
-                    </style>
-                    <property name="name">status</property>
-                    <property name="focusable">false</property>
-                    <property name="tooltip-text" translatable="yes">Control Center</property>
+                </property>
+                <property name="end-widget">
+                  <object class="GtkBox" id="bar_end">
+                    <property name="spacing">6</property>
                     <child>
-                      <object class="GtkBox">
-                        <property name="spacing">9</property>
+                      <object class="GtkBox" id="tray">
+                        <style>
+                          <class name="tray"/>
+                        </style>
+                        <property name="spacing">2</property>
+                        <property name="valign">3</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="rec">
+                        <style>
+                          <class name="rec"/>
+                        </style>
+                        <property name="name">rec</property>
+                        <property name="focusable">false</property>
+                        <property name="visible">false</property>
+                        <property name="tooltip-text" translatable="yes">Stop recording</property>
                         <child>
-                          <object class="GtkImage" id="net_icon">
-                            <property name="icon-name">network-offline-symbolic</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="bt_icon">
-                            <property name="icon-name">bluetooth-disabled-symbolic</property>
-                            <property name="visible">false</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="vol_icon">
-                            <property name="icon-name">audio-volume-muted-symbolic</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkBox" id="battery">
-                            <property name="spacing">3</property>
-                            <property name="visible">false</property>
+                          <object class="GtkBox">
+                            <property name="spacing">6</property>
                             <child>
-                              <object class="GtkImage" id="bat_icon">
-                                <property name="icon-name">battery-level-50-symbolic</property>
+                              <object class="GtkBox">
+                                <style>
+                                  <class name="rec-mark"/>
+                                </style>
+                                <property name="valign">3</property>
                               </object>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="bat_label">
+                              <object class="GtkLabel" id="rec_time">
                                 <style>
                                   <class name="numeric"/>
                                 </style>
@@ -257,10 +147,126 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
                         </child>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkButton" id="passwords">
+                        <style>
+                          <class name="passwords"/>
+                        </style>
+                        <property name="name">passwords</property>
+                        <property name="focusable">false</property>
+                        <property name="visible">false</property>
+                        <property name="tooltip-text" translatable="yes">Passwords</property>
+                        <property name="icon-name">dialog-password-symbolic</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="clipboard">
+                        <style>
+                          <class name="clipboard"/>
+                        </style>
+                        <property name="focusable">false</property>
+                        <property name="tooltip-text" translatable="yes">Clipboard history</property>
+                        <property name="icon-name">edit-paste-symbolic</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="notes">
+                        <style>
+                          <class name="notes"/>
+                        </style>
+                        <property name="name">notes</property>
+                        <property name="focusable">false</property>
+                        <property name="tooltip-text" translatable="yes">Notifications</property>
+                        <child>
+                          <object class="GtkOverlay">
+                            <child>
+                              <object class="GtkImage" id="notes_icon">
+                                <property name="icon-name">preferences-system-notifications-symbolic</property>
+                              </object>
+                            </child>
+                            <child type="overlay">
+                              <object class="GtkBox" id="unread">
+                                <style>
+                                  <class name="unread"/>
+                                </style>
+                                <property name="halign">2</property>
+                                <property name="valign">1</property>
+                                <property name="visible">false</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="voice">
+                        <style>
+                          <class name="voice"/>
+                        </style>
+                        <property name="name">voice</property>
+                        <property name="focusable">false</property>
+                        <property name="visible">false</property>
+                        <property name="tooltip-text" translatable="yes">Dictation</property>
+                        <child>
+                          <object class="GtkImage" id="voice_icon">
+                            <property name="icon-name">audio-input-microphone-symbolic</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="status">
+                        <style>
+                          <class name="status"/>
+                        </style>
+                        <property name="name">status</property>
+                        <property name="focusable">false</property>
+                        <property name="tooltip-text" translatable="yes">Control Center</property>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="spacing">9</property>
+                            <child>
+                              <object class="GtkImage" id="net_icon">
+                                <property name="icon-name">network-offline-symbolic</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkImage" id="bt_icon">
+                                <property name="icon-name">bluetooth-disabled-symbolic</property>
+                                <property name="visible">false</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkImage" id="vol_icon">
+                                <property name="icon-name">audio-volume-muted-symbolic</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkBox" id="battery">
+                                <property name="spacing">3</property>
+                                <property name="visible">false</property>
+                                <child>
+                                  <object class="GtkImage" id="bat_icon">
+                                    <property name="icon-name">battery-level-50-symbolic</property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="bat_label">
+                                    <style>
+                                      <class name="numeric"/>
+                                    </style>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
                   </object>
-                </child>
+                </property>
               </object>
-            </property>
+            </child>
           </object>
         </child>
       </object>
