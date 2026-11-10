@@ -396,7 +396,7 @@ msgstr "Abrir"
 
 #: internal/apps/connect/share.go:129
 #: internal/ui/record.go:157
-#: internal/ui/screenshot.go:1158
+#: internal/ui/screenshot.go:1171
 #: internal/ui/settings_custom.go:41
 #: internal/viewerui/menubar.go:44
 msgid "Show in Folder"
@@ -13320,7 +13320,7 @@ msgid "Find apps, windows and answers"
 msgstr "Encuentra aplicaciones, ventanas y respuestas"
 
 #: internal/shell/dock.go:313
-#: internal/ui/screenshot.go:1152
+#: internal/ui/screenshot.go:1165
 #: ui/settings.ui:2052
 msgid "Screenshot"
 msgstr "Captura de pantalla"
@@ -15501,19 +15501,19 @@ msgstr "Arrastra para ajustar · haz clic dentro para capturar"
 msgid "Drag to adjust · click inside to record"
 msgstr "Arrastra para ajustar · haz clic dentro para grabar"
 
-#: internal/ui/screenshot.go:1146
+#: internal/ui/screenshot.go:1159
 msgid "Screenshot saved and copied"
 msgstr "Captura de pantalla guardada y copiada"
 
-#: internal/ui/screenshot.go:1147
+#: internal/ui/screenshot.go:1160
 msgid "Screenshot saved"
 msgstr "Captura de pantalla guardada"
 
-#: internal/ui/screenshot.go:1148
+#: internal/ui/screenshot.go:1161
 msgid "Screenshot copied"
 msgstr "Captura de pantalla copiada"
 
-#: internal/ui/screenshot.go:1149
+#: internal/ui/screenshot.go:1162
 msgid "Screenshot taken"
 msgstr "Captura de pantalla tomada"
 

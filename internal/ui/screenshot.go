@@ -1113,17 +1113,9 @@ func copyImage(path string) error {
 // leaves a process behind to serve the clipboard, and a pipe it holds
 // would keep the wait from returning until the clipboard changes.
 func wlCopy(stdin *os.File, args ...string) error {
-	errs, err := os.CreateTemp("", "inua-wl-copy-*")
+	errs, err := wlCopyOutput()
 	if err != nil {
-		// TMPDIR can point into a directory that has gone (a build shell's
-		// temporary home): wl-copy's own output has to land somewhere.
-		dir := os.Getenv("XDG_RUNTIME_DIR")
-		if dir == "" {
-			dir = "/tmp"
-		}
-		if errs, err = os.CreateTemp(dir, "inua-wl-copy-*"); err != nil {
-			return err
-		}
+		return fmt.Errorf("wl-copy: output file: %w", err)
 	}
 	defer os.Remove(errs.Name())
 	defer errs.Close()
@@ -1137,6 +1129,27 @@ func wlCopy(stdin *os.File, args ...string) error {
 		return fmt.Errorf("wl-copy: %v %s", err, strings.TrimSpace(string(out)))
 	}
 	return nil
+}
+
+// wlCopyOutput falls back when TMPDIR has gone; include both failures when
+// neither directory can hold wl-copy's output.
+func wlCopyOutput() (*os.File, error) {
+	f, err := os.CreateTemp("", "inua-wl-copy-*")
+	if err == nil {
+		return f, nil
+	}
+	dir := os.Getenv("XDG_RUNTIME_DIR")
+	if dir == "" {
+		dir = "/tmp"
+	}
+	if filepath.Clean(dir) == filepath.Clean(os.TempDir()) {
+		return nil, err
+	}
+	f, fallbackErr := os.CreateTemp(dir, "inua-wl-copy-*")
+	if fallbackErr != nil {
+		return nil, fmt.Errorf("%w; fallback: %w", err, fallbackErr)
+	}
+	return f, nil
 }
 
 // shotNote is the notification a screenshot leaves: its thumbnail; a
