@@ -35,3 +35,14 @@ Tests: coder and manager independently passed make test with throwaway HOME (18 
 Not checked: UI was not checked visually and real Firefox was not exercised. Bar GTK behavior lacks automated coverage. Multi-window Firefox deliberately shows no menu; empty full-tree submenus stay empty; layout signals are not followed (refresh on refocus/click); trees beyond 4096 entries fail; proxy-owned Flatpak bridges may not match.
 Initial push needed command-local credential.useHttpPath=true; retry succeeded without changing user settings.
 Moved new/ → review/ for round 1. Not reviewed or approved for merge.
+
+## factory · review · 2026-11-10 14:56
+head: bbd82b145d492058d1939dbeca7d00c84ab8926b
+verdict: pass
+notes:
+- [P2] internal/appmenu/firefox.go:117: A separate Firefox B launched by same-program parent A can receive A's menu when B owns a Firefox bus name but exposes no menu. Reviewer fake-process/bus probe confirmed Focused(B) returns A's menu, so actions target A. Collect all owner PIDs and stop ancestor matching at the nearest Firefox owner; add regression coverage.
+- [P2] internal/appmenu/firefox.go:80-90: A matching Firefox owner whose introspection times out reports seen=false, allowing Chromium fallback to rediscover the same bridge as Whole=false. Reviewer probe with a 2.2-second first introspection confirmed this result, violating snapshot-only reads and causing stale IDs or rejected submenu actions. Treat a matched but unreadable owner as seen, or exclude Firefox owners from Chromium discovery.
+
+Claude Code reviewed origin/master...HEAD (six changed files). No P0/P1 findings; pass follows factory severity policy, not absence of defects. make test passed with isolated HOME/XDG/runtime and no live session (18 Python tests, go vet, Go race tests); Firefox D-Bus tests ran. make i18n in a throwaway copy produced no changes. Both P2 cases were reproduced in throwaway-copy probes. Worktree unchanged; no installs or manifest changes. Branch merges cleanly with origin/master.
+Residual risks: no visual UI, GTK interaction or real Firefox verification. Failed whole-tree refresh may retain stale entries; not promoted to a confirmed finding without a concrete UI reproduction. Real Firefox ID renumbering, dynamically populated menus, proxy-owned Flatpak bridges and layout-signal behavior remain unverified or documented limitations. Multi-window ambiguity deliberately suppresses menus.
+Moved review/ → ready/. Owner should examine the two P2 findings before shipping. No merge to master.
