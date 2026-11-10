@@ -76,6 +76,10 @@ type shellUI struct {
 	// has (Lua listeners, binds, displays, the virtual screen).
 	comp compositor.Backend
 	hypr *hypr.Backend
+	// focusRingColorValue is the compositor's active border colour, read when
+	// the settings load and on reload: the ring on another monitor uses it.
+	focusRingColorValue gdk.RGBA
+	focusRingColorSet   bool
 	// saidFallback: the login's fallback, if any, has been told (sayFallback).
 	saidFallback bool
 	caps         compositor.Capabilities
@@ -793,8 +797,12 @@ func (s *shellUI) onHyprEvent(e hypr.Event) {
 		gtkx.Post(h.s.applyHyprland)
 	}
 	if e.Name == "configreloaded" {
+		// col.active_border may have changed: read it here, off the main
+		// thread, and repaint the rings with it there.
+		ring := h.s.readFocusRingColor()
 		// inua.conf may have changed what is in effect.
 		gtkx.Post(func() {
+			h.s.setFocusRingColor(ring)
 			h.s.refreshHyprInput()
 			h.s.installOverviewKeys()
 			if h.s.overview.st.Open {
