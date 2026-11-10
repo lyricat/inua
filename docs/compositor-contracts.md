@@ -440,6 +440,7 @@ type Settings struct {
     TouchpadSpeed *float64
     TouchpadAccel string
     Binds         []KeyBind // {Keys "SUPER+SHIFT+S", Command, Replaces}
+    Animations    *bool     // style.animations; nil leaves the compositor's
 }
 
 type Configurer interface {
@@ -468,6 +469,15 @@ moved in inua keeps its old key in the compositor's file until the user
 removes it there. Display settings (`Settings.Displays`, from
 `[displays]`) are applied by Hyprland's file and by Wayfire's backend;
 niri's are not wired and its Displays page says so.
+
+`style.animations` reaches the compositor too: Hyprland's file sets
+`animations:enabled` to it (on as well as off, so that on undoes an off in
+`hyprland.conf`); niri's file has `animations { off }` while it is off and
+nothing while it is on; Wayfire gets the `enabled` option of the animation
+plugins `wayfire/list-config-options` lists (`animate`, `fade`, `fire`,
+`extra-animations`), set apart from the input options so that a failure
+with them leaves the rest applied. A Wayfire that lists none of them, or
+cannot list its options (0.9), keeps its own animations.
 
 ### The settings pages
 
