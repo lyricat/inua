@@ -50,9 +50,10 @@ func (b *bar) shownLayout() []string {
 // arrange places the bar's items as layout (bar.layout) has them. Unset
 // (nil), they are where bar.ui has them: the clock centred on the screen
 // between the start's items and the end's. A layout of the user's has
-// them in the island in its order, its spaces sharing the room left over
-// equally (a GtkBox shares it equally between the children that expand);
-// the items it leaves out are off the bar, so that what shows them when
+// them in the island in its order, its spaces taking the room left over
+// as shell.BarRow has it (barRows): the items between two spaces in the
+// middle of the bar, or the room shared equally between the spaces of
+// any other layout; the items it leaves out are off the bar, so that what shows them when
 // their setting says so (the tray, a recording) cannot bring them back.
 // Each item keeps its widget, its state and its handlers wherever it goes.
 func (b *bar) arrange(layout []string) {

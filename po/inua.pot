@@ -15102,11 +15102,11 @@ msgstr ""
 msgid "The passphrases do not match."
 msgstr ""
 
-#: internal/ui/bar.go:525
+#: internal/ui/bar.go:527
 msgid "Workspace %s"
 msgstr ""
 
-#: internal/ui/bar.go:538
+#: internal/ui/bar.go:540
 msgid "WORKSPACE"
 msgstr ""
 
@@ -16162,15 +16162,15 @@ msgstr ""
 msgid "Space"
 msgstr ""
 
-#: internal/ui/settings_barlayout.go:338
+#: internal/ui/settings_barlayout.go:339
 msgid "Nothing on the bar: drag items here"
 msgstr ""
 
-#: internal/ui/settings_barlayout.go:371
+#: internal/ui/settings_barlayout.go:372
 msgid "Add to the bar"
 msgstr ""
 
-#: internal/ui/settings_barlayout.go:422
+#: internal/ui/settings_barlayout.go:423
 msgid "Select an item to move it or take it off the bar"
 msgstr ""
 

@@ -3,7 +3,10 @@ package ui
 import (
 	"os"
 	"path/filepath"
+	"slices"
 	"testing"
+
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 
 	"github.com/lyricat/inua/internal/config"
 	"github.com/lyricat/inua/internal/shell"
@@ -121,5 +124,32 @@ func TestBarDragContent(t *testing.T) {
 	}
 	if !sameLayout(nil, nil) || sameLayout(nil, []string{}) || !sameLayout([]string{}, []string{}) || sameLayout([]string{"clock"}, []string{"tray"}) {
 		t.Error("sameLayout")
+	}
+}
+
+// The island lays out the layout the bar has, each entry by its own
+// widget: the items' and, in their order, the spaces', so that the group
+// shell.BarRow centres is the one between the layout's spaces. The
+// default's are bar.ui's boxes, filling the island.
+func TestBarRowEntries(t *testing.T) {
+	spaces := []*gtk.Box{{}, {}}
+	b := &bar{spaces: spaces, layout: []string{"workspaces", config.BarSpace, "clock", "passwords", config.BarSpace, "tray"}}
+	layout, entries := b.rowEntries()
+	if !slices.Equal(layout, b.layout) || len(entries) != len(layout) {
+		t.Fatalf("%v, %d entries", layout, len(entries))
+	}
+	want := []*gtk.Widget{b.item("workspaces"), &spaces[0].Widget, b.item("clock"), b.item("passwords"), &spaces[1].Widget, b.item("tray")}
+	for i := range want {
+		if entries[i] != want[i] {
+			t.Errorf("entry %d (%s) is not its widget", i, layout[i])
+		}
+	}
+	b.layout = nil
+	if layout, entries := b.rowEntries(); layout != nil || entries != nil {
+		t.Errorf("the default: %v, %v", layout, entries)
+	}
+	b.layout = []string{}
+	if layout, _ := b.rowEntries(); layout != nil {
+		t.Errorf("an empty layout lays out %v", layout)
 	}
 }
