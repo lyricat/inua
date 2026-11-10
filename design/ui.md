@@ -442,13 +442,17 @@ them.
 
 Where an app icon stands for the app (the dock, its drawer, the
 launcher), `uikit.AppIcon` shows it with a light of its own, whatever
-theme drew it, in one shape: a square with continuous corners (radius
-22.4% of the side, eased into the sides as Apple's icons are). An icon
-that is a square or a tile fills it; one of another shape (a circle, a
-figure) sits smaller on a light plate. Over it, a fine bright line along
-the top edge and a fainter one along the bottom, a faint shade from top
-to bottom, and a soft shadow below; the edges' light grows with the
-icon's size. Icon files can be plain squares; they are not changed.
+theme drew it, in one shape for all, `style.icon_shape` (Appearance's
+"App icon shape"): a square with continuous corners (`squircle`, the
+default: radius 22.4% of the side, eased into the sides as Apple's icons
+are), a circle (`circle`), or a round square whose corners differ, plain
+arcs joining straight sides (`pebble`). An icon that is a square or a
+tile fills it; one of another shape (a circle, a figure) sits smaller on
+a light plate. Over it, a fine bright line along the top edge and a
+fainter one along the bottom, a faint shade from top to bottom, and a
+soft shadow below; the edges' light grows with the icon's size. `none`
+leaves all of that out and draws the icon as its file is. Icon files can
+be plain squares; they are not changed.
 
 ## Words
 
