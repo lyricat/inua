@@ -52,6 +52,7 @@ msgstr "La bonne méthode :"
 
 #: cmd/inua-keyring/main.go:117
 #: internal/ui/settings_keyring.go:324
+#: internal/ui/systemmenu.go:49
 #: ui/settings.ui:4315
 msgid "Keyring"
 msgstr "Trousseau"
@@ -589,6 +590,7 @@ msgstr "DEV"
 #: internal/mailui/panel.go:309
 #: internal/mailui/settings.go:203
 #: internal/mailui/settings.go:548
+#: internal/ui/systemmenu.go:47
 #: ui/mail-compose.ui:269
 #: ui/mail.ui:384
 #: ui/settings.ui:2640
@@ -3239,6 +3241,7 @@ msgstr "Dossier personnel"
 #: internal/lightui/tailscale.go:527
 #: internal/lightui/tailscale.go:568
 #: internal/ui/settings.go:606
+#: internal/ui/systemmenu.go:79
 #: ui/vm.ui:2981
 msgid "System"
 msgstr "Système"
@@ -8619,6 +8622,8 @@ msgstr "FLIPPER SPATIAL"
 
 #: internal/hyprconf/keys.go:23
 #: internal/shell/dock.go:312
+#: internal/ui/systemmenu.go:43
+#: internal/ui/systemmenu.go:82
 #: ui/settings.ui:2328
 msgid "Launcher"
 msgstr "Lanceur"
@@ -8661,6 +8666,7 @@ msgstr "Mise au point activée ou désactivée"
 #: internal/term/settings/settings.go:126
 #: internal/term/web/strings.go:96
 #: internal/termui/headmenu.go:110
+#: internal/ui/systemmenu.go:80
 #: ui/control.ui:58
 #: ui/settings.ui:30
 msgid "Settings"
@@ -8703,6 +8709,7 @@ msgstr "Choisissez une couleur"
 
 #: internal/hyprconf/keys.go:40
 #: internal/ui/settings_barlayout.go:39
+#: internal/ui/systemmenu.go:39
 #: internal/ui/voice_page.go:169
 #: ui/bar.ui:209
 #: ui/settings.ui:6708
@@ -10457,6 +10464,7 @@ msgid "wired"
 msgstr "filaire"
 
 #: internal/lightui/sysmon.go:1043
+#: internal/ui/systemmenu.go:33
 #: ui/control.ui:273
 #: ui/settings.ui:5501
 #: ui/settings.ui:5577
@@ -10802,6 +10810,7 @@ msgstr "COMPTE"
 
 #: internal/lightui/tailscale.go:664
 #: internal/shell/commands.go:31
+#: internal/ui/systemmenu.go:88
 msgid "Log Out"
 msgstr "Fermer la session"
 
@@ -11524,12 +11533,14 @@ msgstr ""
 #: internal/mailui/menubar.go:53
 #: internal/termui/menubar.go:34
 #: internal/ui/appmenu_packs.go:88
+#: internal/ui/systemmenu.go:91
 msgid "Help"
-msgstr ""
+msgstr "Aide"
 
 #: internal/mailui/menubar.go:54
+#: internal/ui/systemmenu.go:93
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "Raccourcis clavier"
 
 #: internal/mailui/panel.go:75
 msgid "Open a conversation: AI sums it up, suggests replies and writes them, and judges a message that looks suspicious."
@@ -12765,8 +12776,9 @@ msgid "Remote Desktop"
 msgstr "Bureau à distance"
 
 #: internal/remoteui/menubar.go:50
+#: internal/ui/systemmenu.go:86
 msgid "Session"
-msgstr ""
+msgstr "Session"
 
 #: internal/remoteui/menubar.go:52
 msgid "End Remote Session"
@@ -13162,6 +13174,7 @@ msgid "Desktop"
 msgstr "Bureau"
 
 #: internal/shell/commands.go:27
+#: internal/ui/systemmenu.go:87
 msgid "Lock Screen"
 msgstr "Verrouiller l’écran"
 
@@ -13181,6 +13194,7 @@ msgstr "Suspendre, verrouiller d'abord"
 #: internal/shell/commands.go:29
 #: internal/termui/restart.go:44
 #: internal/ui/control.go:522
+#: internal/ui/systemmenu.go:75
 #: ui/control.ui:168
 msgid "Restart"
 msgstr "Redémarrer"
@@ -13194,6 +13208,7 @@ msgid "Press Enter again to restart"
 msgstr "Appuyez à nouveau sur Entrée pour redémarrer"
 
 #: internal/shell/commands.go:30
+#: internal/ui/systemmenu.go:76
 msgid "Shut Down"
 msgstr "Éteindre"
 
@@ -13407,6 +13422,7 @@ msgstr "Rechercher des applications, des fenêtres et des réponses"
 
 #: internal/shell/dock.go:313
 #: internal/ui/screenshot.go:1167
+#: internal/ui/systemmenu.go:83
 #: ui/settings.ui:2288
 msgid "Screenshot"
 msgstr "Capture d’écran"
@@ -13583,12 +13599,14 @@ msgstr "Performances"
 
 #: internal/shell/power.go:24
 #: internal/ui/control.go:520
+#: internal/ui/systemmenu.go:69
 #: ui/control.ui:120
 msgid "Suspend"
 msgstr "Mettre en veille"
 
 #: internal/shell/power.go:26
 #: internal/ui/control.go:521
+#: internal/ui/systemmenu.go:71
 #: ui/control.ui:144
 msgid "Hibernate"
 msgstr "Mettre en veille prolongée"
@@ -14063,6 +14081,7 @@ msgid "Key panel"
 msgstr "Panneau de touches"
 
 #: internal/term/web/strings.go:63
+#: internal/ui/systemmenu.go:36
 #: ui/settings.ui:6149
 msgid "Keyboard"
 msgstr "Clavier"
@@ -14658,6 +14677,7 @@ msgstr "bash, zsh et fish marquent leurs invites, pour retenir les commandes"
 #: internal/termui/prefs.go:184
 #: internal/ui/notify.go:324
 #: internal/ui/settings_barlayout.go:38
+#: internal/ui/systemmenu.go:44
 #: ui/bar.ui:179
 #: ui/settings.ui:3698
 msgid "Notifications"
@@ -15084,11 +15104,11 @@ msgstr "Masqué pour la capture d’écran."
 msgid "The passphrases do not match."
 msgstr "Les phrases secrètes ne correspondent pas."
 
-#: internal/ui/bar.go:524
+#: internal/ui/bar.go:525
 msgid "Workspace %s"
 msgstr "Espace de travail %s"
 
-#: internal/ui/bar.go:537
+#: internal/ui/bar.go:538
 msgid "WORKSPACE"
 msgstr "ESPACE DE TRAVAIL"
 
@@ -15114,6 +15134,7 @@ msgid "Search clipboard history"
 msgstr "Rechercher dans l’historique"
 
 #: internal/ui/clipboard.go:360
+#: internal/ui/systemmenu.go:48
 #: ui/connect.ui:728
 #: ui/settings.ui:3962
 msgid "Clipboard"
@@ -16134,6 +16155,7 @@ msgid "Recording"
 msgstr ""
 
 #: internal/ui/settings_barlayout.go:40
+#: internal/ui/systemmenu.go:84
 #: ui/bar.ui:224
 msgid "Control Center"
 msgstr "Centre de contrôle"
@@ -16331,6 +16353,7 @@ msgid "What the next login runs inua on"
 msgstr ""
 
 #: internal/ui/settings_compositor.go:77
+#: internal/ui/systemmenu.go:50
 #: ui/settings.ui:6844
 msgid "Compositor"
 msgstr ""
@@ -16588,6 +16611,7 @@ msgid "No displays"
 msgstr "Aucun écran"
 
 #: internal/ui/settings_displays.go:212
+#: internal/ui/systemmenu.go:35
 #: ui/settings.ui:6011
 msgid "Displays"
 msgstr "Écrans"
@@ -17414,6 +17438,64 @@ msgid "%d window"
 msgid_plural "%d windows"
 msgstr[0] "%d fenêtre"
 msgstr[1] "%d fenêtres"
+
+#: internal/ui/systemmenu.go:34
+#: ui/control.ui:346
+#: ui/settings.ui:5782
+#: ui/settings.ui:5858
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#: internal/ui/systemmenu.go:37
+#: ui/settings.ui:6441
+msgid "Mouse & Touch"
+msgstr "Souris et pavé tactile"
+
+#: internal/ui/systemmenu.go:38
+#: ui/control.ui:666
+#: ui/settings.ui:6776
+msgid "Sound"
+msgstr "Son"
+
+#: internal/ui/systemmenu.go:40
+#: ui/settings.ui:6742
+msgid "Security Keys"
+msgstr ""
+
+#: internal/ui/systemmenu.go:41
+#: ui/settings.ui:95
+msgid "Appearance"
+msgstr "Apparence"
+
+#: internal/ui/systemmenu.go:42
+#: ui/settings.ui:1115
+msgid "Bar & Dock"
+msgstr "Barre et dock"
+
+#: internal/ui/systemmenu.go:45
+#: ui/settings.ui:5180
+msgid "Shortcuts"
+msgstr "Raccourcis clavier"
+
+#: internal/ui/systemmenu.go:46
+#: ui/settings.ui:2502
+msgid "Default Apps"
+msgstr "Applications par défaut"
+
+#: internal/ui/systemmenu.go:51
+#: internal/ui/systemmenu.go:90
+#: ui/settings.ui:6810
+msgid "Power"
+msgstr "Alimentation"
+
+#: internal/ui/systemmenu.go:52
+#: ui/settings.ui:6878
+msgid "About"
+msgstr "À propos"
+
+#: internal/ui/systemmenu.go:92
+msgid "About inua"
+msgstr "À propos d’inua"
 
 #: internal/ui/updates.go:91
 msgid "You have %s."
@@ -19043,12 +19125,6 @@ msgstr "Mettre en veille, veille prolongée, redémarrer, arrêter, se déconnec
 msgid "Wi-Fi networks"
 msgstr "Réseaux Wi-Fi"
 
-#: ui/control.ui:346
-#: ui/settings.ui:5782
-#: ui/settings.ui:5858
-msgid "Bluetooth"
-msgstr "Bluetooth"
-
 #: ui/control.ui:371
 msgid "Bluetooth devices"
 msgstr "Appareils Bluetooth"
@@ -19064,11 +19140,6 @@ msgstr "Ouvrir Tailscale"
 #: ui/control.ui:604
 msgid "Display"
 msgstr "Affichage"
-
-#: ui/control.ui:666
-#: ui/settings.ui:6776
-msgid "Sound"
-msgstr "Son"
 
 #: ui/control.ui:734
 msgid "Now playing"
@@ -19793,10 +19864,6 @@ msgstr "Rechercher dans les réglages"
 msgid "Nothing matches."
 msgstr "Aucun résultat."
 
-#: ui/settings.ui:95
-msgid "Appearance"
-msgstr "Apparence"
-
 #: ui/settings.ui:133
 msgid "<span alpha='55%'>[</span>THEME<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>THÈME<span alpha='55%'>]</span>"
@@ -19988,10 +20055,6 @@ msgstr "thème"
 #: ui/settings.ui:1080
 msgid "#rrggbb, shown around the image. Empty: the theme's ground"
 msgstr "#rrggbb, affiché autour de l'image. Vide : le fondement du thème"
-
-#: ui/settings.ui:1115
-msgid "Bar & Dock"
-msgstr "Barre et dock"
 
 #: ui/settings.ui:1153
 msgid "<span alpha='55%'>[</span>BAR<span alpha='55%'>]</span>"
@@ -20225,10 +20288,6 @@ msgstr "$TERMINAL, puis xdg-terminal-exec"
 #: ui/settings.ui:2469
 msgid "Runs apps marked Terminal=true"
 msgstr "Exécute les applications marquées Terminal=true"
-
-#: ui/settings.ui:2502
-msgid "Default Apps"
-msgstr "Applications par défaut"
 
 #: ui/settings.ui:2540
 msgid "<span alpha='55%'>[</span>DEFAULT APPS<span alpha='55%'>]</span>"
@@ -20662,10 +20721,6 @@ msgstr "<span alpha='55%'>[</span>APPS<span alpha='55%'>]</span>"
 msgid "Filter by app, program or secret"
 msgstr "Filtrer par app, programme ou secret"
 
-#: ui/settings.ui:5180
-msgid "Shortcuts"
-msgstr "Raccourcis clavier"
-
 #: ui/settings.ui:5210
 msgid "Press the new shortcut. Esc cancels; Backspace turns it off."
 msgstr "Appuyez sur le nouveau raccourci. Esc annule ; Retour arrière le désactive."
@@ -20823,10 +20878,6 @@ msgstr "inua les écrit dans le fichier inua.conf d'Hyprland"
 msgid "Stop setting keyboard options in inua"
 msgstr "Arrêtez de définir les options du clavier dans Inua"
 
-#: ui/settings.ui:6441
-msgid "Mouse & Touch"
-msgstr "Souris et pavé tactile"
-
 #: ui/settings.ui:6489
 msgid "<span alpha='55%'>[</span>POINTER<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>POINTER<span alpha='55%'>]</span>"
@@ -20850,18 +20901,6 @@ msgstr "Des balayages plus rapides déplacent le pointeur plus loin"
 #: ui/settings.ui:6677
 msgid "Stop setting the touchpad in inua"
 msgstr "Arrêtez de configurer le pavé tactile dans Inua"
-
-#: ui/settings.ui:6742
-msgid "Security Keys"
-msgstr ""
-
-#: ui/settings.ui:6810
-msgid "Power"
-msgstr "Alimentation"
-
-#: ui/settings.ui:6878
-msgid "About"
-msgstr "À propos"
 
 #: ui/settings.ui:6916
 msgid "<span alpha='55%'>[</span>SYSTEM<span alpha='55%'>]</span>"

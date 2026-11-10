@@ -52,6 +52,7 @@ msgstr "正確的方法："
 
 #: cmd/inua-keyring/main.go:117
 #: internal/ui/settings_keyring.go:324
+#: internal/ui/systemmenu.go:49
 #: ui/settings.ui:4315
 msgid "Keyring"
 msgstr "鑰匙圈"
@@ -586,6 +587,7 @@ msgstr "開發"
 #: internal/mailui/panel.go:309
 #: internal/mailui/settings.go:203
 #: internal/mailui/settings.go:548
+#: internal/ui/systemmenu.go:47
 #: ui/mail-compose.ui:269
 #: ui/mail.ui:384
 #: ui/settings.ui:2640
@@ -3232,6 +3234,7 @@ msgstr "家目錄"
 #: internal/lightui/tailscale.go:527
 #: internal/lightui/tailscale.go:568
 #: internal/ui/settings.go:606
+#: internal/ui/systemmenu.go:79
 #: ui/vm.ui:2981
 msgid "System"
 msgstr "系統"
@@ -8581,6 +8584,8 @@ msgstr "太空彈珠"
 
 #: internal/hyprconf/keys.go:23
 #: internal/shell/dock.go:312
+#: internal/ui/systemmenu.go:43
+#: internal/ui/systemmenu.go:82
 #: ui/settings.ui:2328
 msgid "Launcher"
 msgstr "啟動器"
@@ -8623,6 +8628,7 @@ msgstr "聚焦或關閉"
 #: internal/term/settings/settings.go:126
 #: internal/term/web/strings.go:96
 #: internal/termui/headmenu.go:110
+#: internal/ui/systemmenu.go:80
 #: ui/control.ui:58
 #: ui/settings.ui:30
 msgid "Settings"
@@ -8665,6 +8671,7 @@ msgstr "選擇顏色"
 
 #: internal/hyprconf/keys.go:40
 #: internal/ui/settings_barlayout.go:39
+#: internal/ui/systemmenu.go:39
 #: internal/ui/voice_page.go:169
 #: ui/bar.ui:209
 #: ui/settings.ui:6708
@@ -10403,6 +10410,7 @@ msgid "wired"
 msgstr "有線"
 
 #: internal/lightui/sysmon.go:1043
+#: internal/ui/systemmenu.go:33
 #: ui/control.ui:273
 #: ui/settings.ui:5501
 #: ui/settings.ui:5577
@@ -10748,6 +10756,7 @@ msgstr "帳戶"
 
 #: internal/lightui/tailscale.go:664
 #: internal/shell/commands.go:31
+#: internal/ui/systemmenu.go:88
 msgid "Log Out"
 msgstr "登出"
 
@@ -11466,12 +11475,14 @@ msgstr ""
 #: internal/mailui/menubar.go:53
 #: internal/termui/menubar.go:34
 #: internal/ui/appmenu_packs.go:88
+#: internal/ui/systemmenu.go:91
 msgid "Help"
-msgstr ""
+msgstr "說明"
 
 #: internal/mailui/menubar.go:54
+#: internal/ui/systemmenu.go:93
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "鍵盤快速鍵"
 
 #: internal/mailui/panel.go:75
 msgid "Open a conversation: AI sums it up, suggests replies and writes them, and judges a message that looks suspicious."
@@ -12696,8 +12707,9 @@ msgid "Remote Desktop"
 msgstr "遠端桌面"
 
 #: internal/remoteui/menubar.go:50
+#: internal/ui/systemmenu.go:86
 msgid "Session"
-msgstr ""
+msgstr "工作階段"
 
 #: internal/remoteui/menubar.go:52
 msgid "End Remote Session"
@@ -13091,6 +13103,7 @@ msgid "Desktop"
 msgstr "桌面"
 
 #: internal/shell/commands.go:27
+#: internal/ui/systemmenu.go:87
 msgid "Lock Screen"
 msgstr "鎖定螢幕"
 
@@ -13110,6 +13123,7 @@ msgstr "暫停，先鎖定"
 #: internal/shell/commands.go:29
 #: internal/termui/restart.go:44
 #: internal/ui/control.go:522
+#: internal/ui/systemmenu.go:75
 #: ui/control.ui:168
 msgid "Restart"
 msgstr "重新啟動"
@@ -13123,6 +13137,7 @@ msgid "Press Enter again to restart"
 msgstr "再次按 Enter 重新啟動"
 
 #: internal/shell/commands.go:30
+#: internal/ui/systemmenu.go:76
 msgid "Shut Down"
 msgstr "關機"
 
@@ -13336,6 +13351,7 @@ msgstr "尋找應用程式、視窗和答案"
 
 #: internal/shell/dock.go:313
 #: internal/ui/screenshot.go:1167
+#: internal/ui/systemmenu.go:83
 #: ui/settings.ui:2288
 msgid "Screenshot"
 msgstr "螢幕截圖"
@@ -13510,12 +13526,14 @@ msgstr "性能"
 
 #: internal/shell/power.go:24
 #: internal/ui/control.go:520
+#: internal/ui/systemmenu.go:69
 #: ui/control.ui:120
 msgid "Suspend"
 msgstr "暫停"
 
 #: internal/shell/power.go:26
 #: internal/ui/control.go:521
+#: internal/ui/systemmenu.go:71
 #: ui/control.ui:144
 msgid "Hibernate"
 msgstr "休眠"
@@ -13990,6 +14008,7 @@ msgid "Key panel"
 msgstr "按鍵面板"
 
 #: internal/term/web/strings.go:63
+#: internal/ui/systemmenu.go:36
 #: ui/settings.ui:6149
 msgid "Keyboard"
 msgstr "鍵盤"
@@ -14581,6 +14600,7 @@ msgstr "讓 bash、zsh 和 fish 標記提示字元，以便記住命令"
 #: internal/termui/prefs.go:184
 #: internal/ui/notify.go:324
 #: internal/ui/settings_barlayout.go:38
+#: internal/ui/systemmenu.go:44
 #: ui/bar.ui:179
 #: ui/settings.ui:3698
 msgid "Notifications"
@@ -15003,11 +15023,11 @@ msgstr "為截圖已隱藏。"
 msgid "The passphrases do not match."
 msgstr "密碼短語不符。"
 
-#: internal/ui/bar.go:524
+#: internal/ui/bar.go:525
 msgid "Workspace %s"
 msgstr "工作空間%s"
 
-#: internal/ui/bar.go:537
+#: internal/ui/bar.go:538
 msgid "WORKSPACE"
 msgstr "工作區"
 
@@ -15033,6 +15053,7 @@ msgid "Search clipboard history"
 msgstr "搜尋剪貼簿歷史"
 
 #: internal/ui/clipboard.go:360
+#: internal/ui/systemmenu.go:48
 #: ui/connect.ui:728
 #: ui/settings.ui:3962
 msgid "Clipboard"
@@ -16045,6 +16066,7 @@ msgid "Recording"
 msgstr ""
 
 #: internal/ui/settings_barlayout.go:40
+#: internal/ui/systemmenu.go:84
 #: ui/bar.ui:224
 msgid "Control Center"
 msgstr "控制中心"
@@ -16242,6 +16264,7 @@ msgid "What the next login runs inua on"
 msgstr ""
 
 #: internal/ui/settings_compositor.go:77
+#: internal/ui/systemmenu.go:50
 #: ui/settings.ui:6844
 msgid "Compositor"
 msgstr ""
@@ -16499,6 +16522,7 @@ msgid "No displays"
 msgstr "沒有顯示器"
 
 #: internal/ui/settings_displays.go:212
+#: internal/ui/systemmenu.go:35
 #: ui/settings.ui:6011
 msgid "Displays"
 msgstr "顯示器"
@@ -17316,6 +17340,64 @@ msgstr "工作區 %s"
 msgid "%d window"
 msgid_plural "%d windows"
 msgstr[0] "%d 個視窗"
+
+#: internal/ui/systemmenu.go:34
+#: ui/control.ui:346
+#: ui/settings.ui:5782
+#: ui/settings.ui:5858
+msgid "Bluetooth"
+msgstr "藍牙"
+
+#: internal/ui/systemmenu.go:37
+#: ui/settings.ui:6441
+msgid "Mouse & Touch"
+msgstr "滑鼠與觸控板"
+
+#: internal/ui/systemmenu.go:38
+#: ui/control.ui:666
+#: ui/settings.ui:6776
+msgid "Sound"
+msgstr "聲音"
+
+#: internal/ui/systemmenu.go:40
+#: ui/settings.ui:6742
+msgid "Security Keys"
+msgstr ""
+
+#: internal/ui/systemmenu.go:41
+#: ui/settings.ui:95
+msgid "Appearance"
+msgstr "外觀"
+
+#: internal/ui/systemmenu.go:42
+#: ui/settings.ui:1115
+msgid "Bar & Dock"
+msgstr "頂欄與 Dock"
+
+#: internal/ui/systemmenu.go:45
+#: ui/settings.ui:5180
+msgid "Shortcuts"
+msgstr "快捷鍵"
+
+#: internal/ui/systemmenu.go:46
+#: ui/settings.ui:2502
+msgid "Default Apps"
+msgstr "預設應用程式"
+
+#: internal/ui/systemmenu.go:51
+#: internal/ui/systemmenu.go:90
+#: ui/settings.ui:6810
+msgid "Power"
+msgstr "電源"
+
+#: internal/ui/systemmenu.go:52
+#: ui/settings.ui:6878
+msgid "About"
+msgstr "關於"
+
+#: internal/ui/systemmenu.go:92
+msgid "About inua"
+msgstr "關於 inua"
 
 #: internal/ui/updates.go:91
 msgid "You have %s."
@@ -18939,12 +19021,6 @@ msgstr "暫停、休眠、重新啟動、關機、登出"
 msgid "Wi-Fi networks"
 msgstr "Wi-Fi 網路"
 
-#: ui/control.ui:346
-#: ui/settings.ui:5782
-#: ui/settings.ui:5858
-msgid "Bluetooth"
-msgstr "藍牙"
-
 #: ui/control.ui:371
 msgid "Bluetooth devices"
 msgstr "藍牙裝置"
@@ -18960,11 +19036,6 @@ msgstr "開啟 Tailscale"
 #: ui/control.ui:604
 msgid "Display"
 msgstr "顯示"
-
-#: ui/control.ui:666
-#: ui/settings.ui:6776
-msgid "Sound"
-msgstr "聲音"
 
 #: ui/control.ui:734
 msgid "Now playing"
@@ -19689,10 +19760,6 @@ msgstr "搜尋設定"
 msgid "Nothing matches."
 msgstr "沒有相符項目。"
 
-#: ui/settings.ui:95
-msgid "Appearance"
-msgstr "外觀"
-
 #: ui/settings.ui:133
 msgid "<span alpha='55%'>[</span>THEME<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>主題<span alpha='55%'>]</span>"
@@ -19884,10 +19951,6 @@ msgstr "主題"
 #: ui/settings.ui:1080
 msgid "#rrggbb, shown around the image. Empty: the theme's ground"
 msgstr "#rrggbb，顯示在影像周圍。空：主題的地面"
-
-#: ui/settings.ui:1115
-msgid "Bar & Dock"
-msgstr "頂欄與 Dock"
 
 #: ui/settings.ui:1153
 msgid "<span alpha='55%'>[</span>BAR<span alpha='55%'>]</span>"
@@ -20121,10 +20184,6 @@ msgstr "$TERMINAL，然後是 xdg-terminal-exec"
 #: ui/settings.ui:2469
 msgid "Runs apps marked Terminal=true"
 msgstr "運行標記為 Terminal=true 的應用程式"
-
-#: ui/settings.ui:2502
-msgid "Default Apps"
-msgstr "預設應用程式"
 
 #: ui/settings.ui:2540
 msgid "<span alpha='55%'>[</span>DEFAULT APPS<span alpha='55%'>]</span>"
@@ -20558,10 +20617,6 @@ msgstr "<span alpha='55%'>[</span>應用程式<span alpha='55%'>]</span>"
 msgid "Filter by app, program or secret"
 msgstr "依應用程式、程式或機密篩選"
 
-#: ui/settings.ui:5180
-msgid "Shortcuts"
-msgstr "快捷鍵"
-
 #: ui/settings.ui:5210
 msgid "Press the new shortcut. Esc cancels; Backspace turns it off."
 msgstr "按新的捷徑。 Esc 取消；退格鍵將其關閉。"
@@ -20719,10 +20774,6 @@ msgstr "inua 將這些寫入 Hyprland 的 inua.conf"
 msgid "Stop setting keyboard options in inua"
 msgstr "停止在inua中設定鍵盤選項"
 
-#: ui/settings.ui:6441
-msgid "Mouse & Touch"
-msgstr "滑鼠與觸控板"
-
 #: ui/settings.ui:6489
 msgid "<span alpha='55%'>[</span>POINTER<span alpha='55%'>]</span>"
 msgstr "<span alpha='55%'>[</span>指針<span alpha='55%'>]</span>"
@@ -20746,18 +20797,6 @@ msgstr "更快的滑動使指針移動得更遠"
 #: ui/settings.ui:6677
 msgid "Stop setting the touchpad in inua"
 msgstr "停止在inua中設定觸控板"
-
-#: ui/settings.ui:6742
-msgid "Security Keys"
-msgstr ""
-
-#: ui/settings.ui:6810
-msgid "Power"
-msgstr "電源"
-
-#: ui/settings.ui:6878
-msgid "About"
-msgstr "關於"
 
 #: ui/settings.ui:6916
 msgid "<span alpha='55%'>[</span>SYSTEM<span alpha='55%'>]</span>"

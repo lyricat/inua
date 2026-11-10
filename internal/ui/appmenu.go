@@ -197,9 +197,11 @@ func (s *shellUI) barPID(b *bar) int {
 // accessibility tree, runs the bar shows none, so a pack's commands never
 // stand in for a real menu that is about to be found. Until the packs are
 // first read the bar shows none either: a pack may replace the published
-// menu.
+// menu. Over an empty desktop the bar shows the system menu, which waits
+// for nothing.
 func (s *shellUI) syncAppMenu(b *bar) {
-	if s.appmenu.packs == nil {
+	system := shell.EmptyDesktop(s.snap, b.connector())
+	if s.appmenu.packs == nil && !system {
 		return
 	}
 	s.checkAppMenuPacks()
@@ -210,7 +212,7 @@ func (s *shellUI) syncAppMenu(b *bar) {
 	var pack appmenu.Pack
 	matched := false
 	w, shown := shell.BarWindow(s.snap, b.connector())
-	if shown && s.appmenu.packs.Loaded() {
+	if !system && shown && s.appmenu.packs.Loaded() {
 		pack, matched = s.menuPack(w)
 		replace := matched && pack.When == appmenu.PackReplace
 		searched := true
@@ -227,13 +229,16 @@ func (s *shellUI) syncAppMenu(b *bar) {
 		}
 	}
 	gen := s.appmenu.packs.Generation()
-	if b.appMenuReg == want && b.appMenuWindow == window && b.appMenuGen == gen && b.appMenuPID == pid && b.appMenuNoPress == noPress {
+	if b.appMenuReg == want && b.appMenuWindow == window && b.appMenuGen == gen && b.appMenuPID == pid && b.appMenuNoPress == noPress && b.appMenuSystem == system {
 		return
 	}
 	s.clearAppMenu(b)
 	b.appMenuReg, b.appMenuWindow, b.appMenuGen = want, window, gen
-	b.appMenuPID, b.appMenuNoPress = pid, noPress
+	b.appMenuPID, b.appMenuNoPress, b.appMenuSystem = pid, noPress, system
 	switch {
+	case system:
+		s.askHibernate() // for the Power section, by the time it opens
+		s.renderAppMenu(b, systemMenuEntries(s.control.canHibernate))
 	case want != (appmenu.Registration{}):
 		s.loadAppMenu(b, true)
 	case pid > 0:
@@ -276,7 +281,7 @@ func appMenuTriesA11y(pid int, replace bool, pack appmenu.Pack, matched bool) bo
 // clearAppMenu takes a bar's menu away, with the open menu if it is this
 // bar's; what is still being read for it is dropped when it comes.
 func (s *shellUI) clearAppMenu(b *bar) {
-	if b.appMenuReg != (appmenu.Registration{}) || b.appMenuWindow != "" {
+	if b.appMenuReg != (appmenu.Registration{}) || b.appMenuWindow != "" || b.appMenuSystem {
 		s.closeAppMenu()
 	}
 	b.appMenuReg = appmenu.Registration{}
@@ -285,6 +290,7 @@ func (s *shellUI) clearAppMenu(b *bar) {
 	b.appMenuPID = 0
 	b.appMenuA11y = false
 	b.appMenuNoPress = false
+	b.appMenuSystem = false
 	b.appMenuEntries = nil
 	b.appMenuTop = nil
 	gtkx.Clear(&b.appMenu)
@@ -414,6 +420,10 @@ func (s *shellUI) bindAppMenuHandlers() {
 			}
 			// A menu read whole and being read again has lost its ids.
 			if b.appMenuReg.Whole && b.appMenuLoading {
+				return
+			}
+			if b.appMenuSystem {
+				s.showSystemMenu(i, &btn.Widget)
 				return
 			}
 			entry := b.appMenuEntries[i]
