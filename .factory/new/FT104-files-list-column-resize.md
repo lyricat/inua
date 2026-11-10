@@ -29,3 +29,17 @@ Implementation decision: any column drag freezes the flexible name at its displa
 Tests: coder and manager independently passed make test (Python session tests, go vet, Go race tests) with throwaway HOME/XDG paths. Added settings limit/reset and persistence tests. Layout and translation catalogs regenerated. No unpinned installs or dependency changes.
 Not checked: UI was not viewed or exercised in a graphical session. All manual cases in the plan remain unverified; grips are not keyboard reachable. Review should inspect drag coordinates, header/row alignment, reset and sizing behaviour in particular.
 Branch push initially failed because the credential helper needed a repository path; retry with command-local credential.useHttpPath=true succeeded. Temporary verification HOME cleanup needed writable module-cache directories and then completed.
+
+
+## factory · review · 2026-11-10 17:57
+head: 24021ac968d357197fd39460eed2604add10e517
+verdict: fix
+fix:
+- [P1] internal/filesui/columns.go:169: The rule's hexpand propagates to its grip, distributing spare header width among all grips while rows expand only the name/end spacer. A headless GTK stand-in at 1000px reproduced name header width 227 versus row width 546 and size-header x=346 versus cell x=582. Explicitly set g.SetHexpand(false) (or prevent inherited expansion) so headers and rows align and freezing the name does not jump.
+notes:
+- [P2] internal/filesui/columns.go:203: Freezing an automatically expanded name clamps it to 1600 via settings.go:131. With a displayed name around 1880px, a 3px drag snaps it to 1600; dragging right can shrink it. Preserve displayed widths when freezing/starting a drag instead of clamping below the displayed width.
+- [P3] internal/filesui/columns.go:161: Grips cannot take keyboard focus and no keyboard resize/reset action exists, contrary to design/ui.md's keyboard-first requirement. Provide keyboard actions or obtain an explicit exception.
+
+Reviewed by Claude Code against origin/master...HEAD, all 17 changed files. make test passed with isolated HOME/XDG (Python session tests, go vet, Go race tests; 115 packages). make generate and make i18n in a throwaway copy reproduced committed outputs. No installations or dependency changes; worktree clean, no code commits.
+Validation limit: alignment was reproduced in a Python/GTK stand-in using headless Broadway, not the actual Files window. UI not visually checked; actual dragging/sorting, empty/error directories, zoom/scaling, restart persistence and multiple panes/windows remain unverified. The coder used and removed a short temporary socket directory outside the run directory despite the directory constraint; no retained external artifacts reported.
+Moved review/ → new/ for fix round 2 (round 1 of max 3). No linked issue or PR.
