@@ -34,3 +34,16 @@ Hardened Hyprland empty-config comments and Lua reload regressions; retained mas
 Installs: none. make i18n left catalogs unchanged; no Blueprint edits, so make generate not needed.
 Tests: coder make test passed (18 Python tests, go vet, race-enabled Go suite); manager independently reran make test with throwaway HOME/runtime and no session bus: exit 0. Worktree clean; no never paths changed against the PR start point. No baseline failures observed.
 Not checked: visual UI/animation behavior was not checked by eye; niri and Wayfire are not installed, and installed Hyprland only verifies classic config, not Lua. IMPORTANT for review: actual Wayfire animation option availability is unverified; stock Wayfire may not advertise these enabled options, in which case this implementation safely skips them but does not disable its animations. Check this functional limitation before approving. Hyprland explicit/default true overrides an off setting in the user's compositor config; niri emits only the disabled block.
+
+## factory · review · 2026-11-10 14:20
+head: ebb85a7e489c7c38000ba2f5745ca500967ff6d9
+verdict: fix
+fix:
+- [P1] internal/wayfire/config.go:245: Animation disabling is ineffective on stock Wayfire: animate/enabled, fade/enabled, fire/enabled and extra-animations/enabled are not advertised options. With style.animations=false, the matching map is empty, no set-config-options call occurs, and window/workspace animations continue. Implement supported animation controls and test against real metadata rather than fictional enabled options; correct the corresponding docs.
+notes:
+- Reviewer checked Wayfire 0.10.0-1 and upstream plugin metadata, plus wayfire-plugins-extra metadata. animate exposes animation types/matchers/durations, not enabled; fade/fire are animation types, not separate plugins. Workspace durations also remain untouched.
+- Default Hyprland animation true overrides a user's existing off setting even when the inua setting is absent. This is explicitly documented in the build decisions, so retained as a compatibility consideration rather than a confirmed defect requiring fixes.
+- Claude Code reviewed origin/master...HEAD. make test passed with throwaway HOME/XDG/runtime and compositor/session variables unset: 18 Python tests, go vet, race-enabled Go tests. Targeted animation/reload tests passed; installed Hyprland 0.53.3 verified classic configuration. No installs; pinned dependency restoration only. Worktree unchanged.
+- UI/animation behavior not checked by eye. No installed niri/Wayfire runtime or Hyprland Lua validation. Source PR #78 is linked.
+
+Round 1 of 3: moved review → new for a fix round. FT89 and FT91 skipped because their current heads already have reviews.
