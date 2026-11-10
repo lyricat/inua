@@ -60,7 +60,7 @@ opens a folder in it: `open .`, `open ~/Downloads`.
 | Panes (centre) | One pane, or two side by side (commander style). In the list, a pane narrower than the name and the columns scrolls sideways, the column heads with it; the name keeps its width. Each has its own tabs, and each tab its own folder and history; a pane's view, order and selection are its folder's. With two panes, a status square starts each path: filled for the one the keys go to, hollow for the other, whose selection loses the accent. | F3 two panes; Tab the other pane |
 | Tabs | A pane's tabs show above it once it has two: the folder's name, a button that closes it (a middle click too). | Ctrl+T, Ctrl+W, Ctrl+Tab |
 | Details (right) | The selection: a thumbnail or the first lines of a text, its kind (MIME type), size, modified, opened and changed times, permissions, owner, where it is and where a link points; a folder's size and count, added up on a goroutine. Several selected: how many, and their size. In a window too narrow for it beside the panes it stays hidden, the toggle on, until the window widens. | Space, Ctrl+I, Alt+Enter |
-| Path bar | The folder as buttons, one a segment (home as a house), each going to its folder; a click beside them, or the pencil, edits it, the next button copies it, and the last opens a terminal there. Ctrl+L turns it into an entry (`~` is home, Tab completes folder names); a file typed opens its folder with it selected; a remote disk's address (`sftp://host/dir`, `smb://server/share`, `s3://KEY@host/bucket`) connects it; `trash:` is the trash. | Ctrl+L, Esc back |
+| Path bar | The folder as buttons, one a segment (home as a house), each going to its folder; a middle click opens a segment's folder in a new tab, and a right click its menu, about that folder alone, the pane staying where it is: open it in a new tab or window or the other pane; make a folder or a file in it, paste into it, a terminal there, tidy it (not the root), copy its path, bookmark it (the trash's: a new tab, Empty Trash; the picker's: a new folder, the path). A folder that is not there any more is said so in the pane's status line. A click beside them, or the pencil, edits it, the next button copies it, and the last opens a terminal there. Ctrl+L turns it into an entry (`~` is home, Tab completes folder names); a file typed opens its folder with it selected; a remote disk's address (`sftp://host/dir`, `smb://server/share`, `s3://KEY@host/bucket`) connects it; `trash:` is the trash. | Ctrl+L, Esc back |
 | Status | The count, the hidden count, the selection and its size, the filter typed, free space, and the zoom (− 100% +); a message for a moment after an action. The operation running shows under the panes, with its speed, time left and a cancel button. | |
 
 ### Views
@@ -127,7 +127,7 @@ Selection and changes
 | F5 / F6 | Copy / move the selection to the other pane (one pane: F5 reloads) |
 | Ctrl+D | Bookmark this folder, or remove its bookmark |
 | Ctrl+Alt+T | A terminal here (the default terminal, else `xdg-terminal-exec`, `$TERMINAL`, kitty) |
-| Menu, Shift+F10, right click | The selection's menu (or the folder's) |
+| Menu, Shift+F10, right click | The selection's menu (or the folder's); on a path bar segment, the menu of its folder |
 
 Window
 
