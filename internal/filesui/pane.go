@@ -1068,32 +1068,14 @@ func (p *pane) showCrumbs() {
 		p.crumb(i18n.T("Trash"), "user-trash-symbolic", trashKey, true)
 		return
 	}
-	home := files.Home()
-	dir := p.dir
-	var start string
-	var parts []string
-	switch {
-	case dir == home || strings.HasPrefix(dir, home+"/"):
-		start = home
-		parts = strings.Split(strings.TrimPrefix(dir[len(home):], "/"), "/")
-		p.crumb("", "user-home-symbolic", home, dir == home)
-	default:
-		start = "/"
-		parts = strings.Split(strings.TrimPrefix(dir, "/"), "/")
-		p.crumb("/", "", "/", dir == "/")
-	}
-	at := start
-	for k, part := range parts {
-		if part == "" {
-			continue
-		}
-		if at != "/" { // the root's crumb is a slash already
+	segs := crumbTrail(p.dir, files.Home())
+	for i, s := range segs {
+		if i > 0 && segs[i-1].path != "/" { // the root's crumb is a slash already
 			sep := gtk.NewLabel("/")
 			sep.AddCssClass("files-crumb-sep")
 			gtkx.Append(&p.crumbs, &sep.Widget)
 		}
-		at = filepath.Join(at, part)
-		p.crumb(part, "", at, k == len(parts)-1)
+		p.crumb(s.label, s.icon, s.path, s.current)
 	}
 	if p.mode == inSearch {
 		sep := gtk.NewLabel("·")
@@ -1124,7 +1106,17 @@ func (p *pane) crumb(label, icon, target string, current bool) {
 		b.SetLabel(label)
 	}
 	p.w.app.h.click(b, func() { p.goKey(target, true) })
-	p.crumbPtr = append(p.crumbPtr, b.GoPointer())
+	// The other buttons leave the pane where it is: the middle one opens
+	// the folder in a new tab behind this one, the right one its menu.
+	g := p.w.app.h.press(&b.Widget, false, func(button uint32, _ int32, x, y float64) {
+		switch button {
+		case 2:
+			p.newTab(target, false)
+		case 3:
+			p.crumbMenu(&b.Widget, target, x, y)
+		}
+	})
+	p.crumbPtr = append(p.crumbPtr, b.GoPointer(), g)
 	gtkx.Append(&p.crumbs, &b.Widget)
 }
 

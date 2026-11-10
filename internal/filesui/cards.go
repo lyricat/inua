@@ -383,9 +383,8 @@ func badName(n string) string {
 	return ""
 }
 
-// askNewName makes a folder or an empty file.
-func (w *window) askNewName(p *pane, folder bool) {
-	dir := p.dir
+// askNewName makes a folder or an empty file in dir.
+func (w *window) askNewName(dir string, folder bool) {
 	title, base := i18n.T("New file"), i18n.T("Untitled")
 	if folder {
 		title, base = i18n.T("New folder"), i18n.T("New Folder")
@@ -414,7 +413,12 @@ func (w *window) askNewName(p *pane, folder bool) {
 		}},
 	}}
 	c.edited = func(t string) { w.cardFail(badName(strings.TrimSpace(t))) }
-	w.openCard(c, cardParts{title: title, entry: true, entryText: suggested, selectStem: !folder})
+	// Made elsewhere than the folder shown (from the path bar): say where.
+	where := ""
+	if p := w.cur(); p.mode != inFolder || p.dir != dir {
+		where = i18n.Tf("In %s", shortHome(dir))
+	}
+	w.openCard(c, cardParts{title: title, text: where, entry: true, entryText: suggested, selectStem: !folder})
 }
 
 func (w *window) confirmDelete(p *pane) {
