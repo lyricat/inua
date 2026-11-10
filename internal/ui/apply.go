@@ -217,7 +217,9 @@ func (s *shellUI) applyConfig(c config.Config) {
 	if old.Overview != c.Overview {
 		s.installOverviewKeys()
 	}
-	if was, now := old.Style, c.Style; was != now {
+	was, now := old.Style, c.Style
+	was.IconShape = now.IconShape // the icons' outline, not the style sheets'
+	if was != now {
 		was.Transparency, was.Radius = now.Transparency, now.Radius
 		if was == now {
 			s.loadBase()

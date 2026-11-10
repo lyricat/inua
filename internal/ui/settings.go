@@ -67,8 +67,7 @@ type settings struct {
 	titleMode                                                                           gtk.DropDown
 	clipLimit                                                                           gtk.DropDown
 	clipLimits                                                                          []int // clipLimit's choices
-	textScale                                                                           gtk.DropDown
-	iconShape                                                                           gtk.DropDown
+	textScale, iconShape                                                                gtk.DropDown
 	textScales                                                                          []int    // textScale's choices
 	iconSets                                                                            []string // icons' choices
 	appIconSets                                                                         []string // appIcons' choices
@@ -77,6 +76,7 @@ type settings struct {
 	tpSpeed, transparency, radius                                                       gtk.Scale
 	transparencyVal, radiusVal, clipStats                                               gtk.Label
 	clipClear, clipReveal                                                               gtk.Button
+
 	// Keyboard and touchpad: where the settings come from, and why they
 	// would do nothing.
 	kbState, kbReadout, kbWarn, tpState, tpValue, tpWarn gtk.Label
