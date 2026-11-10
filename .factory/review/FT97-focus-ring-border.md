@@ -1,7 +1,7 @@
 ---
 source: pr #93
 branch: pr/focus-ring-border
-round: 1
+round: 2
 ---
 # fix(bar): match the other monitor's focus ring to the focused border
 
@@ -41,3 +41,17 @@ notes:
 Claude Code reviewed origin/master...HEAD (three files, merge base bf807607). Isolated make test passed: 18 Python tests, go vet, 115 Go race-test packages. No installs or code changes. No visual UI check. Reply shape checked against installed binary format strings, not live Hyprland. make i18n was not successfully run; no changed translatable strings. Speculative low-alpha parsing and generic blocking-I/O concerns excluded from confirmed findings.
 
 Fetched PR #93 head per owner request; merge-tree against origin/master passed. Published the unchanged head to origin/pr/focus-ring-border, preserving the recorded branch identity for the next fix build; contributor fork unchanged. Initial push credential-path error resolved on one retry with command-local credential.useHttpPath=true. Round 1 of 3: review/ → new/.
+
+## factory · plan · 2026-11-10 22:04
+Fix round 2.
+Behaviour: Decode the real getoption custom field, choose the first gradient stop and preserve alpha. Empty, invalid or missing replies and unavailable Hyprland retain the original blue. Refresh cached colour and existing rings on configreloaded.
+Scope: Correct the decoder and reload path and add regression tests; keep the PR's square corners and border width. No unrelated changes.
+Decisions: Use the actual custom contract rather than invented gradient/color fields. Read on the existing background event handler and repaint on the GTK main thread.
+Checking: Test the review's exact JSON, first-stop alpha and invalid/empty replies. Run make i18n and isolated make test. Inspect reload wiring; visual verification remains for the owner.
+
+## factory · 2026-11-10 22:04
+Claude Code completed fix round 2 in a62741f9 on pr/focus-ring-border; pushed to origin, contributor fork unchanged. Fixed P1 decoding and P2 cached colour refresh, including repainting existing rings. Added focusring_test.go regression coverage.
+Verification: Manager checked commits and protected paths; only original PR work and this fix are ahead of base, and no never paths changed. Merge check against origin/master (3478c014) clean. Both coder and manager ran make test with throwaway HOME and isolated session environment: passed (Python tests, go vet, Go race tests). make i18n ran before commit with no catalog changes; no Blueprint changes, so make generate unnecessary.
+Installs: none.
+Not checked: No visual UI check or live Hyprland query. Reload wiring inspected in code, not exercised by automated integration tests; unavailable-Hyprland fallback not integration-tested.
+new/ → review/; round 2 of 3. Awaiting review, not approved for merge.
