@@ -303,8 +303,6 @@ func (c *Ctx) loadStyle() {
 	}
 	c.css.LoadFromString(css)
 	uikit.Radius = cfg.Style.Radius // the menus' corners
-	// An app's icon in a workshop app, in the dock's shape.
-	uikit.SetIconShape(uikit.IconShapeFromName(cfg.Style.IconShape))
 	userCSS := ""
 	if p := cfg.CSSPath(); p != "" {
 		if b, err := os.ReadFile(p); err == nil {
