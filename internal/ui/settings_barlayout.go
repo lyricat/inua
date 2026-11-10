@@ -80,6 +80,7 @@ func (s *shellUI) getBarLayoutSettings(ui *gtkx.Builder) {
 	ui.Get("bar_layout_right", &bl.right)
 	ui.Get("bar_layout_remove", &bl.remove)
 	ui.Get("bar_layout_reset", &bl.reset)
+	s.layStrip()
 	bl.chips, bl.shown, bl.filled, bl.sel, bl.dragFrom = nil, nil, false, -1, -1
 	s.bindBarLayoutHandlers()
 	for _, b := range []*gtk.Button{&bl.left, &bl.right, &bl.remove, &bl.reset} {
@@ -348,7 +349,7 @@ func (s *shellUI) showBarLayout() {
 		c.SetTooltipText(i18n.T(face.label))
 		if id == config.BarSpace {
 			c.AddCssClass("space")
-			c.SetHexpand(true) // as the bar's spaces: a share of the room left
+			c.SetHexpand(true) // as the bar's spaces, the room left (barRows)
 			l := gtk.NewLabel(i18n.T(face.label))
 			c.SetChild(&l.Widget)
 			l.Unref()

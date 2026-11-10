@@ -245,10 +245,12 @@ pass = %t
 # mark), "app_menu", "app_title", "clock", "tray", "recording" (while the
 # screen is recorded), "passwords", "clipboard", "notifications",
 # "dictation", "control_center", each once at most, and any number of
-# "space", which share the room left over equally. Left unset (commented
-# out), the bar has the default below with the clock centred on the screen;
-# layout = [] is an empty bar. The settings for each item above still
-# decide whether it shows. Settings, Bar & Dock edits it by dragging.
+# "space", which take the room left over: what is between exactly two
+# spaces sits in the middle of the bar, else the spaces share it equally.
+# Left unset (commented out), the bar has the default below with the clock
+# centred on the screen; layout = [] is an empty bar. The settings for each
+# item above still decide whether it shows. Settings, Bar & Dock edits it
+# by dragging.
 %s
 
 [launcher]

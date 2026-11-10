@@ -25,12 +25,19 @@ of (`bar.layout`). Every item (the workspaces with Engawa's mark, the app
 menu, the app's name, the clock, the tray, the recording's stop button,
 passwords, the clipboard, notifications, dictation, the control center)
 goes on the bar once at most; a *space* as many times as wanted, the
-spaces sharing the room the items leave equally. A click on an item in the
+spaces taking the room the items leave. With exactly two spaces and
+something shown between them, what is between them sits in the middle of
+the bar as one group, however much is beside it either side, the two
+spaces as wide as that takes; where one side is too full for that, the
+group stops beside it, as near the middle as it can, never over another
+item or out of its order. Any other number of spaces (none, one, three or
+more, or two side by side) share the room equally. The small bar in the
+settings places its items by the same rule. A click on an item in the
 palette adds it after the one selected, and the tools under the strip move
 the selected one or take it off, without dragging. Changes apply to every
 bar at once and are saved as the other settings are. Unset, the bar has
 the default layout with the clock in the middle of the screen; once
-arranged, the clock sits between its spaces, and *Default* goes back to
+arranged, the clock between its two spaces stays there, and *Default* goes back to
 the unset layout. An item on the bar still shows only when its own setting
 and state have it (the tray, passwords with a store, a recording); one
 taken off does not come back when they do. The buttons' reaches run

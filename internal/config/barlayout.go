@@ -6,9 +6,11 @@ import (
 	"strings"
 )
 
-// BarSpace is the bar layout's flexible space: it takes a share of the
-// room the bar's items leave, as much as every other space on the bar, and
-// may be placed any number of times.
+// BarSpace is the bar layout's flexible space: it takes the room the bar's
+// items leave, and may be placed any number of times. Two of them with
+// items between put those items in the middle of the bar, each space as
+// wide as that takes; any other number share the room equally
+// (shell.BarRow).
 const BarSpace = "space"
 
 // BarItems are the things the bar can show, one of each at most, as
@@ -25,7 +27,7 @@ var BarItems = []string{
 // DefaultBarLayout is the bar's layout while bar.layout is unset: the
 // workspaces and the app at the start, the clock in the middle, the rest at
 // the end. Unset, the clock is centred on the screen exactly; a layout of
-// the user's shares the room between its spaces instead.
+// the user's with the clock between two spaces centres it too.
 var DefaultBarLayout = []string{
 	"workspaces", "app_menu", "app_title", BarSpace, "clock", BarSpace,
 	"tray", "recording", "passwords", "clipboard", "notifications", "dictation", "control_center",

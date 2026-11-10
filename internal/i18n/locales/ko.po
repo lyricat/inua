@@ -15000,11 +15000,11 @@ msgstr "스크린샷을 위해 숨겨집니다."
 msgid "The passphrases do not match."
 msgstr "암호 문구가 일치하지 않습니다."
 
-#: internal/ui/bar.go:523
+#: internal/ui/bar.go:525
 msgid "Workspace %s"
 msgstr "작업공간 %s"
 
-#: internal/ui/bar.go:536
+#: internal/ui/bar.go:538
 msgid "WORKSPACE"
 msgstr "작업 공간"
 
@@ -16050,15 +16050,15 @@ msgstr "제어 센터"
 msgid "Space"
 msgstr ""
 
-#: internal/ui/settings_barlayout.go:338
+#: internal/ui/settings_barlayout.go:339
 msgid "Nothing on the bar: drag items here"
 msgstr ""
 
-#: internal/ui/settings_barlayout.go:371
+#: internal/ui/settings_barlayout.go:372
 msgid "Add to the bar"
 msgstr ""
 
-#: internal/ui/settings_barlayout.go:422
+#: internal/ui/settings_barlayout.go:423
 msgid "Select an item to move it or take it off the bar"
 msgstr ""
 

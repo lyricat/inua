@@ -84,7 +84,7 @@ the view uses the tricky parts of puregotk only through `gtkx`.
 | `internal/layershell` | purego binding of gtk4-layer-shell and the `LD_PRELOAD` re-exec | Done |
 | `internal/gtkx` | Wrappers for puregotk's ownership, callbacks, main thread and `.ui` loading | Done |
 | `internal/uikit` | design/ui.md's pieces of several widgets, for the shell and the apps alike: a section and its head (`NewSection`, `NewHead`, `Bracketed`), a menu's look and motion (`Menu`) | Done |
-| `internal/shell` | Shell state: the launcher (modes, ranking, selection, focus rules for cancel and execute), each monitor's workspaces and title, the dock (apps and windows, order, click target), screenshot geometry (selections, window stacking, pixels), status icons and text, merging slider values, relative times | Done, tested |
+| `internal/shell` | Shell state: the launcher (modes, ranking, selection, focus rules for cancel and execute), each monitor's workspaces and title, the dock (apps and windows, order, click target), screenshot geometry (selections, window stacking, pixels), the bar layout's edits and its row geometry, status icons and text, merging slider values, relative times | Done, tested |
 | `internal/config` | `~/.config/inua/config.toml` (TOML): defaults, validation (bad values fall back with a warning), strftime clocks, the commented writer | Done, tested |
 | `internal/bootstrap` | `inua init`: writes the embedded samples without overwriting (`-force` keeps a `.bak`); checks that Hyprland starts the shell and loads `inua.conf` (or requires `inua.lua`) | Done, tested |
 | `internal/ui` | GTK4 views: bar and dock (per monitor), wallpaper, launcher, control center, notification banners and center, tray, settings window (with shortcut recording), screenshot tool, lock screen (on the session lock protocol; the screen stays locked if the shell stops, and a restarted shell takes the lock back), the Clock app's alarms, snapshots | Done |
@@ -336,7 +336,10 @@ windows to PNG files for checking layouts without a screenshot tool.
 - Sections: `[bar]` (shown, clock in a strftime subset, workspace scope,
   title, tray, the layout: `config.BarItems` in order and spaces, unset
   for the default with the clock centred; edited by `shell.BarLayout*`,
-  arranged on each bar by `bar.arrange`), `[launcher]`, `[control]` (lock and screenshot commands),
+  arranged on each bar by `bar.arrange` and laid out by `shell.BarRow`, the
+  same on the bar and in the settings' preview: the group between exactly
+  two spaces centred on the bar, as near as the items beside it let it, any
+  other spaces sharing the room equally), `[launcher]`, `[control]` (lock and screenshot commands),
   `[style]` (theme, icon set, extra stylesheet), `[background]`, `[input]`
   (XKB options, touchpad), `[notifications]`, `[dock]` and `[[shortcuts]]`.
 - `[input]` and `[[shortcuts]]` are Hyprland settings: written to

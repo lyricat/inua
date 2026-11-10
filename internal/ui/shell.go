@@ -96,6 +96,7 @@ type shellUI struct {
 	workspaceWheel, dockWheel shell.WheelStep
 
 	bars      map[uintptr]*bar // by GdkMonitor
+	barRows   barRows          // their islands' layout, and the editor's
 	styles    styles
 	clockGen  uintptr // the running clock timer; see restartClock
 	launcher  launcher
