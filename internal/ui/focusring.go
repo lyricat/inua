@@ -40,6 +40,7 @@ func (s *shellUI) loadFocusRingColor() {
 		return
 	}
 	var option struct {
+		Custom   string `json:"custom"`
 		Gradient string `json:"gradient"`
 		Color    string `json:"color"`
 	}
@@ -47,7 +48,10 @@ func (s *shellUI) loadFocusRingColor() {
 		s.focusRingColorValue, s.focusRingColorSet = out, true
 		return
 	}
-	spec := option.Gradient
+	spec := option.Custom
+	if spec == "" {
+		spec = option.Gradient
+	}
 	if spec != "" {
 		if fields := strings.Fields(spec); len(fields) > 0 {
 			spec = fields[0]

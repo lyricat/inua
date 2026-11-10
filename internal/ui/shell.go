@@ -796,6 +796,8 @@ func (s *shellUI) onHyprEvent(e hypr.Event) {
 	if e.Name == "configreloaded" {
 		// inua.conf may have changed what is in effect.
 		gtkx.Post(func() {
+			h.s.focusRingColorSet = false
+			h.s.loadFocusRingColor()
 			h.s.refreshHyprInput()
 			h.s.installOverviewKeys()
 			if h.s.overview.st.Open {
