@@ -15,6 +15,7 @@ type Settings struct {
 	TouchpadAccel string   // "adaptive", "flat", or "" for the compositor's
 	Binds         []KeyBind
 	Displays      []DisplayRule
+	Animations    *bool // nil leaves the compositor's own setting; false disables motion
 }
 
 // DisplayRule is what the display settings ask of one display. Output is

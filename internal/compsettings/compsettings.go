@@ -16,6 +16,12 @@ func From(c config.Config) compositor.Settings {
 		TouchpadSpeed: c.Input.TouchpadSpeed,
 		TouchpadAccel: c.Input.TouchpadAccel,
 	}
+	// style.animations as the file has it (on by default); unset leaves
+	// the compositor's own, as hypr/inua.conf does.
+	if c.Style.Animations != nil {
+		on := *c.Style.Animations
+		s.Animations = &on
+	}
 	for _, sc := range c.Shortcuts {
 		// A shortcut with no keys or no command (dictation while it is off)
 		// still takes its old keys away where the compositor can.
