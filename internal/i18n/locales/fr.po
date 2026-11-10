@@ -9967,7 +9967,7 @@ msgstr "Impossible de rechercher : %s"
 #: internal/lightui/sysmon.go:55
 #: internal/shell/launcher_actions.go:45
 #: internal/termui/menubar.go:34
-#: internal/ui/dock.go:543
+#: internal/ui/dock.go:590
 #: internal/ui/portal_ask.go:80
 msgid "Quit"
 msgstr "Quitter"
@@ -13442,22 +13442,22 @@ msgid "%s · workspace %s"
 msgstr "%[1]s · espace de travail %[2]s"
 
 #: internal/shell/launcher_actions.go:33
-#: internal/ui/dock.go:534
+#: internal/ui/dock.go:581
 msgid "New Window"
 msgstr "Nouvelle fenêtre"
 
 #: internal/shell/launcher_actions.go:39
-#: internal/ui/dock.go:537
+#: internal/ui/dock.go:584
 msgid "Remove from Dock"
 msgstr "Supprimer du Dock"
 
 #: internal/shell/launcher_actions.go:41
-#: internal/ui/dock.go:539
+#: internal/ui/dock.go:586
 msgid "Keep in Dock"
 msgstr "Épingler au dock"
 
 #: internal/shell/launcher_actions.go:47
-#: internal/ui/dock.go:545
+#: internal/ui/dock.go:592
 msgid "Quit (%d windows)"
 msgstr "Quitter (fenêtres %d)"
 

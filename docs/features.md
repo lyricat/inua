@@ -275,7 +275,10 @@ drag to reorder (the others move aside to make
 room) or off the pinned ones to unpin; a drawer at the end slides up the
 light apps, the Assistant, Settings, the launcher and Screenshot, grouped
 by kind; optional autohide. Starting a light app that is open brings
-its window to the current workspace.
+its window to the current workspace. The overview raises the dock above
+itself (`overview.show_dock`); with the dock off the desktop
+(`dock.enable = false`) it shows only there, over the windows rather than
+making them smaller.
 
 ## Settings
 
