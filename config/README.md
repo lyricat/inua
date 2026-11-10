@@ -248,10 +248,13 @@ setting's default, and the problems go to the log and to `inua config check`.
 Appearance includes `style.animations` (on by default). Turning it off
 removes inua's GTK and CSS transitions and turns the compositor's
 animations off: `animations:enabled` in Hyprland's `inua.conf` or
-`inua.lua`, `animations { off }` in niri's `inua.kdl`, and on Wayfire the
-`enabled` option of those animation plugins (`animate`, `fade`, `fire`,
-`extra-animations`) it lists; a Wayfire that lists none keeps its own.
-Turning it on again turns them back on.
+`inua.lua`, `animations { off }` in niri's `inua.kdl`. Wayfire has no
+single switch, so inua sets, over its IPC, the window animations of
+`animate` (open, close, minimize, and the fade, zoom and fire matchers),
+`grid`'s snapping and `vswitch`'s workspace slide to none; what they were
+is kept in the runtime directory. Turning it on again turns them back on;
+on Wayfire it puts back those values, and leaves an animation that
+`wayfire.ini` itself turns off as it is.
 
 The shell's own icons (bar, control center, launcher, settings) are the
 built-in [Phosphor](https://phosphoricons.com) regular icons (MIT; licence in
