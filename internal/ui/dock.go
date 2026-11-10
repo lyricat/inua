@@ -22,6 +22,7 @@ import (
 	"codeberg.org/puregotk/puregotk/v4/graphene"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
+	"github.com/lyricat/inua/internal/config"
 	"github.com/lyricat/inua/internal/desktop"
 	"github.com/lyricat/inua/internal/gtkx"
 	"github.com/lyricat/inua/internal/i18n"
@@ -101,26 +102,59 @@ type dockState struct {
 }
 
 // syncDock gives a bar's monitor a dock, or takes it away, following
-// dock.enable; a change of size, position or autohide builds it anew.
+// dock.enable and overview.show_dock; a change of size, position, autohide
+// or of whether it reserves its edge builds it anew.
 func (s *shellUI) syncDock(b *bar) {
 	c := s.cfg.Dock
-	// A dock the desktop does not show is still built when the overview
-	// asks for it: the overview raises it there while it is open.
-	want := s.layer && (c.Enable || s.cfg.Overview.ShowDock)
-	if b.dock != nil && (!want || b.dock.size != c.Size || b.dock.hide != c.Autohide || b.dock.exclusive != (!c.Autohide && c.Enable) || b.dock.position != c.Position || b.dock.gaps != s.cfg.Style.EdgeGaps) {
+	want := dockWanted(s.cfg, s.layer)
+	if b.dock != nil && (!want || b.dock.size != c.Size || b.dock.hide != c.Autohide || b.dock.exclusive != dockExclusive(c) || b.dock.position != c.Position || b.dock.gaps != s.cfg.Style.EdgeGaps) {
 		dropDock(b)
 	}
 	if want && b.dock == nil {
 		b.dock = s.newDock(b)
 	}
 	if b.dock != nil {
-		b.dock.win.SetVisible(c.Enable || b.dock.overviewShown)
+		s.setDockVisible(b, c.Enable || b.dock.overviewShown)
 		s.renderDock(b)
 	}
 }
 
-// syncOverviewDock temporarily raises the dock above the workspace overview.
-// Autohide state is restored when the overview closes.
+// dockWanted reports whether the monitors get a dock: the desktop shows
+// it (dock.enable), or only the overview does (overview.show_dock), which
+// keeps it hidden until the overview opens and after it closes.
+func dockWanted(c config.Config, layer bool) bool {
+	return layer && (c.Dock.Enable || c.Overview.ShowDock)
+}
+
+// dockExclusive reports whether the dock reserves its screen edge, so
+// tiled windows end short of it. An autohiding dock lies over them, and so
+// does one only the overview shows: opening the overview must not resize
+// the windows under it.
+func dockExclusive(c config.Dock) bool {
+	return c.Enable && !c.Autohide
+}
+
+// setDockVisible maps or unmaps a bar's dock. One going away takes its
+// drawer or menu with it, which would otherwise point at nothing, and the
+// pointer is no longer over it.
+func (s *shellUI) setDockVisible(b *bar, on bool) {
+	d := b.dock
+	if d.win.GetVisible() == on {
+		return
+	}
+	if !on {
+		d.hover = false
+		if p := s.dockState.drawer; p != nil && p.bar == b {
+			s.closeDrawer()
+		}
+	}
+	d.win.SetVisible(on)
+}
+
+// syncOverviewDocks raises the docks above the workspace overview while it
+// is open, showing one the desktop does not (dock.enable off). When it
+// closes, that dock is unmapped again and an autohiding one's state is
+// restored.
 func (s *shellUI) syncOverviewDocks() {
 	for _, b := range s.bars {
 		s.syncOverviewDock(b)
@@ -138,17 +172,17 @@ func (s *shellUI) syncOverviewDock(b *bar) {
 	}
 	d.overviewShown = want
 	if want {
-		d.win.SetVisible(true)
 		d.overviewWasRevealed = d.reveal.GetRevealChild()
 		layershell.SetLayer(d.win.GoPointer(), layershell.LayerOverlay)
+		s.setDockVisible(b, true) // mapped straight onto the overlay layer
 		if d.hide {
 			d.reveal.SetRevealChild(true)
 			fitDock(d)
 		}
 		return
 	}
+	s.setDockVisible(b, s.cfg.Dock.Enable)
 	layershell.SetLayer(d.win.GoPointer(), layershell.LayerTop)
-	d.win.SetVisible(s.cfg.Dock.Enable)
 	if d.hide {
 		d.reveal.SetRevealChild(d.overviewWasRevealed || d.hover)
 		fitDock(d)
@@ -249,10 +283,7 @@ func (s *shellUI) newDock(b *bar) *dock {
 		edge = layershell.EdgeRight
 	}
 	layershell.SetAnchor(w, edge, true)
-	// A dock that autohides, or one only the overview shows while the desktop
-	// dock is off, lies over the windows instead of short of them: otherwise
-	// opening the overview resized everything under it.
-	d.exclusive = !d.hide && s.cfg.Dock.Enable
+	d.exclusive = dockExclusive(s.cfg.Dock)
 	if !d.exclusive {
 		layershell.SetExclusiveZone(w, 0)
 	}
@@ -267,7 +298,11 @@ func (s *shellUI) newDock(b *bar) *dock {
 	} else if d.exclusive {
 		layershell.AutoExclusiveZone(w)
 	}
-	d.win.Present()
+	// A dock only the overview shows stays unmapped until it opens
+	// (syncOverviewDock), never flashing on the desktop at start.
+	if s.cfg.Dock.Enable {
+		d.win.Present()
+	}
 	return d
 }
 
