@@ -14,6 +14,7 @@ import (
 
 	"github.com/lyricat/inua/internal/config"
 	"github.com/lyricat/inua/internal/hypr"
+	"github.com/lyricat/inua/internal/sockdir"
 )
 
 func ptr[T any](v T) *T { return &v }
@@ -48,15 +49,43 @@ func TestRender(t *testing.T) {
 	}
 }
 
-func TestRenderAnimationsOff(t *testing.T) {
-	off := false
-	c := config.Default()
-	c.Style.Animations = &off
-	if got := Render(c, Devices{}); !strings.Contains(got, "animations {\n    enabled = false\n}") {
-		t.Fatalf("animations off not rendered:\n%s", got)
+// style.animations unset leaves Hyprland's own; on and off are written as
+// they are, so that turning them back on undoes hyprland.conf's off too.
+func TestRenderAnimations(t *testing.T) {
+	for _, tc := range []struct {
+		name    string
+		on      *bool
+		classic string
+		lua     string
+	}{
+		{"unset", nil, "", ""},
+		{"on", ptr(true), "animations {\n    enabled = true\n}", "hl.config({ animations = { enabled = true } })"},
+		{"off", ptr(false), "animations {\n    enabled = false\n}", "hl.config({ animations = { enabled = false } })"},
+	} {
+		c := config.Config{Style: config.Style{Animations: tc.on}}
+		classic, lua := Render(c, Devices{}), RenderLua(c, Devices{})
+		if tc.on == nil {
+			if strings.Contains(classic, "animations") || strings.Contains(lua, "animations") {
+				t.Errorf("%s: animations written:\n%s\n%s", tc.name, classic, lua)
+			}
+			if !strings.Contains(classic, "Nothing set in inua") || !strings.Contains(lua, "Nothing set in inua") {
+				t.Errorf("%s: an empty file does not say so:\n%s\n%s", tc.name, classic, lua)
+			}
+			continue
+		}
+		if !strings.Contains(classic, tc.classic) {
+			t.Errorf("%s: classic config without %q:\n%s", tc.name, tc.classic, classic)
+		}
+		if !strings.Contains(lua, tc.lua) {
+			t.Errorf("%s: Lua config without %q:\n%s", tc.name, tc.lua, lua)
+		}
+		if strings.Contains(classic, "Nothing set in inua") || strings.Contains(lua, "Nothing set in inua") {
+			t.Errorf("%s: says nothing is set beside the animations:\n%s\n%s", tc.name, classic, lua)
+		}
 	}
-	if got := RenderLua(c, Devices{}); !strings.Contains(got, "animations = { enabled = false }") {
-		t.Fatalf("Lua animations off not rendered:\n%s", got)
+	// The default settings have them on.
+	if got := Render(config.Default(), Devices{}); !strings.Contains(got, "enabled = true") {
+		t.Errorf("default settings:\n%s", got)
 	}
 }
 
@@ -65,14 +94,17 @@ func TestRenderVerifies(t *testing.T) {
 	if _, err := exec.LookPath("Hyprland"); err != nil {
 		t.Skip("Hyprland not installed")
 	}
-	path := filepath.Join(t.TempDir(), "hyprland.conf")
 	in := config.Input{KbOptions: ptr("caps:escape"), TouchpadSpeed: ptr(0.3), TouchpadAccel: "flat"}
-	if err := os.WriteFile(path, []byte(Render(config.Config{Input: in}, Devices{Touchpads: []string{"x-touchpad"}})), 0o644); err != nil {
-		t.Fatal(err)
-	}
-	out, _ := exec.Command("Hyprland", "--verify-config", "-c", path).CombinedOutput()
-	if !strings.Contains(string(out), "config ok") {
-		t.Errorf("Hyprland rejects the file:\n%s", out)
+	for _, on := range []*bool{nil, ptr(true), ptr(false)} {
+		path := filepath.Join(t.TempDir(), "hyprland.conf")
+		c := config.Config{Input: in, Style: config.Style{Animations: on}}
+		if err := os.WriteFile(path, []byte(Render(c, Devices{Touchpads: []string{"x-touchpad"}})), 0o644); err != nil {
+			t.Fatal(err)
+		}
+		out, _ := exec.Command("Hyprland", "--verify-config", "-c", path).CombinedOutput()
+		if !strings.Contains(string(out), "config ok") {
+			t.Errorf("Hyprland rejects the file (animations %v):\n%s", on != nil && *on, out)
+		}
 	}
 }
 
@@ -134,14 +166,14 @@ func TestPath(t *testing.T) {
 	}
 }
 
-// The sample inua init installs is the file for default settings.
+// The sample inua init installs is the file for no settings.
 func TestSample(t *testing.T) {
 	got, err := os.ReadFile("../../config/hypr/" + Name)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if string(got) != Render(config.Default(), Devices{}) {
-		t.Errorf("config/hypr/%s is not Render(config.Default(), Devices{})", Name)
+	if string(got) != Render(config.Config{}, Devices{}) {
+		t.Errorf("config/hypr/%s is not Render(config.Config{}, Devices{})", Name)
 	}
 }
 
@@ -511,7 +543,7 @@ func TestApplyLua(t *testing.T) {
 // from replies and recording each request.
 func fakeHyprlandSocket(t *testing.T, replies map[string]string) (*hypr.Client, func() []string) {
 	t.Helper()
-	sock := filepath.Join(t.TempDir(), "req.sock")
+	sock := filepath.Join(sockdir.New(t), "req.sock")
 	ln, err := net.Listen("unix", sock)
 	if err != nil {
 		t.Fatal(err)
@@ -556,17 +588,71 @@ func TestApplyReloadsLua(t *testing.T) {
 	ctx := context.Background()
 	devices := `{"mice":[],"switches":[]}`
 	dir := filepath.Join(t.TempDir(), "hypr")
+	lua := filepath.Join(dir, LuaName)
+	off := config.Config{Style: config.Style{Animations: ptr(false)}}
+	on := config.Config{Style: config.Style{Animations: ptr(true)}}
+
+	// The first run, before Hyprland is up: the file is written, and
+	// Hyprland reads it when it starts.
+	if changed, err := Apply(ctx, on, lua, nil); err != nil || !changed {
+		t.Fatalf("inua.lua without Hyprland: changed=%v err=%v", changed, err)
+	}
+	if got, _ := os.ReadFile(lua); !strings.Contains(string(got), "animations = { enabled = true }") {
+		t.Fatalf("inua.lua without Hyprland:\n%s", got)
+	}
 
 	client, requests := fakeHyprlandSocket(t, map[string]string{
 		"j/devices":                           devices,
 		"j/getoption misc:disable_autoreload": `{"int":0}`,
 		"reload":                              "ok",
 	})
-	if changed, err := Apply(ctx, config.Config{Input: config.Input{TouchpadSpeed: ptr(0.4)}}, filepath.Join(dir, LuaName), client); err != nil || !changed {
+	// Unchanged: neither written nor reloaded.
+	if changed, err := Apply(ctx, on, lua, client); err != nil || changed {
+		t.Fatalf("unchanged inua.lua: changed=%v err=%v", changed, err)
+	}
+	if got := requests(); !slices.Equal(got, []string{"j/devices"}) {
+		t.Errorf("unchanged inua.lua: requests %v", got)
+	}
+	// Changed: reloaded whatever autoreload says.
+	if changed, err := Apply(ctx, off, lua, client); err != nil || !changed {
 		t.Fatalf("inua.lua: changed=%v err=%v", changed, err)
 	}
-	if !slices.Contains(requests(), "reload") {
-		t.Errorf("inua.lua written without a reload: %v", requests())
+	if got := requests(); !slices.Equal(got, []string{"j/devices", "j/devices", "reload"}) {
+		t.Errorf("changed inua.lua: requests %v", got)
+	}
+	if got, _ := os.ReadFile(lua); !strings.Contains(string(got), "animations = { enabled = false }") {
+		t.Errorf("inua.lua:\n%s", got)
+	}
+
+	// A reload Hyprland refuses or cannot take is an error, the file
+	// written all the same.
+	for _, reply := range []string{"error: config broken", ""} {
+		replies := map[string]string{"j/devices": devices}
+		if reply != "" {
+			replies["reload"] = reply
+		}
+		client, _ := fakeHyprlandSocket(t, replies)
+		os.Remove(lua)
+		changed, err := Apply(ctx, on, lua, client)
+		if err == nil || !changed || !strings.Contains(err.Error(), "hyprland reload") {
+			t.Errorf("reload answered %q: changed=%v err=%v", reply, changed, err)
+		}
+		if _, err := os.Stat(lua); err != nil {
+			t.Errorf("reload answered %q: %v", reply, err)
+		}
+	}
+
+	// Devices Hyprland cannot list: nothing is written.
+	client, requests = fakeHyprlandSocket(t, map[string]string{"j/devices": "not json"})
+	before, _ := os.ReadFile(lua)
+	if changed, err := Apply(ctx, off, lua, client); err == nil || changed {
+		t.Errorf("unreadable devices: changed=%v err=%v", changed, err)
+	}
+	if after, _ := os.ReadFile(lua); string(after) != string(before) {
+		t.Errorf("unreadable devices rewrote inua.lua:\n%s", after)
+	}
+	if got := requests(); slices.Contains(got, "reload") {
+		t.Errorf("unreadable devices: requests %v", got)
 	}
 
 	client, requests = fakeHyprlandSocket(t, map[string]string{
@@ -574,17 +660,17 @@ func TestApplyReloadsLua(t *testing.T) {
 		"j/getoption misc:disable_autoreload": `{"int":0}`,
 	})
 	conf := filepath.Join(dir, Name)
-	if changed, err := Apply(ctx, config.Config{Input: config.Input{TouchpadSpeed: ptr(0.4)}}, conf, client); err != nil || !changed {
+	if changed, err := Apply(ctx, off, conf, client); err != nil || !changed {
 		t.Fatalf("inua.conf: changed=%v err=%v", changed, err)
 	}
 	if got := requests(); !slices.Contains(got, "j/getoption misc:disable_autoreload") || slices.Contains(got, "reload") {
 		t.Errorf("inua.conf reloaded with autoreload on: %v", got)
 	}
-	before := len(requests())
-	if changed, err := Apply(ctx, config.Config{Input: config.Input{TouchpadSpeed: ptr(0.4)}}, conf, client); err != nil || changed {
+	before2 := len(requests())
+	if changed, err := Apply(ctx, off, conf, client); err != nil || changed {
 		t.Fatalf("unchanged inua.conf: changed=%v err=%v", changed, err)
 	}
-	if got := requests()[before:]; slices.Contains(got, "reload") || slices.Contains(got, "j/getoption misc:disable_autoreload") {
+	if got := requests()[before2:]; slices.Contains(got, "reload") || slices.Contains(got, "j/getoption misc:disable_autoreload") {
 		t.Errorf("unchanged inua.conf: requests %v", got)
 	}
 }
