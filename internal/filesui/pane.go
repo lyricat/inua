@@ -50,9 +50,10 @@ type pane struct {
 	columns                                         gtk.Box
 	columnsHead                                     gtk.ScrolledWindow
 	nameHead                                        gtk.Label
-	nameCol                                         *gtk.Button
+	nameCol, more                                   *gtk.Button
 	colHeads                                        [len(columns)]*gtk.Button
 	colLabels                                       [len(columns)]*gtk.Label
+	grips                                           [len(columns) + 1]*gtk.Box // the name's, then the columns'
 	views                                           gtk.Stack
 	listScroll, gridScroll, columnsScroll           gtk.ScrolledWindow
 	columnBox, trailBox                             gtk.Box
@@ -106,6 +107,7 @@ type row struct {
 	icon    gtk.Image
 	name    gtk.Label
 	cols    [len(columns)]*gtk.Label // the list's columns, in columns' order
+	end     *gtk.Box                 // a list row's, under the columns button
 	arrow   gtk.Image                // a column's: shown for a folder
 	grid    bool
 	compact bool // a column's row: the icon, the name and the arrow
@@ -264,7 +266,7 @@ func (p *pane) destroy() {
 func (p *pane) setupRow(item uintptr) {
 	li := gtk.ListItemNewFromInternalPtr(item)
 	r := &row{}
-	r.box = *gtk.NewBox(gtk.OrientationHorizontalValue, 10)
+	r.box = *gtk.NewBox(gtk.OrientationHorizontalValue, gap)
 	r.box.AddCssClass("files-row")
 	r.icon = *gtk.NewImage()
 	r.icon.AddCssClass("files-icon")
@@ -274,7 +276,6 @@ func (p *pane) setupRow(item uintptr) {
 	r.name.SetXalign(0)
 	r.name.SetHexpand(true)
 	r.name.SetEllipsize(2) // middle: the extension stays in view
-	r.name.SetSizeRequest(nameMin, -1)
 	gtkx.Append(&r.box, &r.name.Widget)
 	for k, c := range columns {
 		l := fixedLabel(c.width, c.right)
@@ -283,9 +284,10 @@ func (p *pane) setupRow(item uintptr) {
 		r.cols[k] = l
 		gtkx.Append(&r.box, &l.Widget)
 	}
-	end := gtk.NewBox(gtk.OrientationHorizontalValue, 0) // under the columns button
-	end.SetSizeRequest(trailing, -1)
-	gtkx.Append(&r.box, &end.Widget)
+	r.end = gtk.NewBox(gtk.OrientationHorizontalValue, 0) // under the columns button
+	r.end.SetSizeRequest(trailing, -1)
+	gtkx.Append(&r.box, &r.end.Widget)
+	p.sizeRow(r) // the widths chosen, a row made during a drag too
 	li.SetChild(&r.box.Widget)
 	r.box.Unref()
 	p.rows[item] = r

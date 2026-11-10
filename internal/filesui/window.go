@@ -218,6 +218,10 @@ func (w *window) dragSource(v *gtk.Widget, f func(x, y float64) uintptr) {
 	w.own(w.app.h.dragSource(v, f))
 }
 
+func (w *window) drag(v *gtk.Widget, d *drag) {
+	w.own(w.app.h.drag(v, d))
+}
+
 func (w *window) dropTarget(v *gtk.Widget, f func(paths []string, x, y float64, state gdk.ModifierType)) {
 	w.own(w.app.h.dropTarget(v, func(val *gobject.Value, x, y float64, state gdk.ModifierType) bool {
 		paths := droppedPaths(val)
