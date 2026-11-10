@@ -1219,7 +1219,7 @@ msgstr "El historial, las ramas y los stashes del proyecto; lo que no se ha envi
 #: internal/apps/disk/rules.go:331
 #: internal/filesui/details.go:55
 #: internal/filesui/pane.go:1068
-#: internal/filesui/sidebar.go:50
+#: internal/filesui/sidebar.go:46
 #: internal/filesui/tabs.go:97
 #: internal/filesui/window.go:314
 #: internal/mailui/window.go:785
@@ -3226,7 +3226,7 @@ msgstr ""
 
 #: internal/diskui/window.go:333
 #: internal/filesui/cards.go:686
-#: internal/filesui/sidebar.go:36
+#: internal/filesui/sidebar.go:41
 #: internal/filesui/tabs.go:99
 #: internal/filesui/window.go:318
 msgid "Home"
@@ -3248,7 +3248,7 @@ msgstr "Escaneando…"
 
 #: internal/diskui/window.go:367
 #: internal/filesui/remote.go:266
-#: internal/filesui/sidebar.go:65
+#: internal/filesui/sidebar.go:76
 msgid "%s free of %s"
 msgstr "%s libres de %s"
 
@@ -3606,7 +3606,7 @@ msgstr "No van a la Papelera y no se puede deshacer."
 
 #: internal/filesui/cards.go:456
 #: internal/filesui/pathbar.go:91
-#: internal/filesui/sidebar.go:51
+#: internal/filesui/sidebar.go:47
 #: internal/filesui/window.go:783
 #: internal/filesui/window.go:789
 #: internal/mailui/actions.go:265
@@ -4208,7 +4208,7 @@ msgid "Jan 2 2006"
 msgstr "2 Jan 2006"
 
 #: internal/filesui/pathbar.go:89
-#: internal/filesui/sidebar.go:143
+#: internal/filesui/sidebar.go:154
 #: internal/filesui/window.go:815
 msgid "Open in a new tab"
 msgstr "Abrir en una pestaña nueva"
@@ -4226,7 +4226,7 @@ msgid "New folder…"
 msgstr "Nueva carpeta…"
 
 #: internal/filesui/pathbar.go:122
-#: internal/filesui/sidebar.go:144
+#: internal/filesui/sidebar.go:155
 #: internal/filesui/window.go:816
 msgid "Open in a new window"
 msgstr "Abrir en una ventana nueva"
@@ -4770,27 +4770,31 @@ msgstr "Algunos nombres no se pueden dar: están marcados."
 msgid "PLACES"
 msgstr "LUGARES"
 
-#: internal/filesui/sidebar.go:40
+#: internal/filesui/sidebar.go:52
+msgid "BOOKMARKS"
+msgstr "MARCADORES"
+
+#: internal/filesui/sidebar.go:57
 msgid "Remove from the bookmarks"
 msgstr "Quitar de los marcadores"
 
-#: internal/filesui/sidebar.go:54
+#: internal/filesui/sidebar.go:65
 #: ui/connect.ui:112
 #: ui/tailscale.ui:112
 msgid "DEVICES"
 msgstr "DISPOSITIVOS"
 
-#: internal/filesui/sidebar.go:55
+#: internal/filesui/sidebar.go:66
 #: internal/games/checkersnet/texts.go:30
 msgid "Computer"
 msgstr "Equipo"
 
-#: internal/filesui/sidebar.go:68
+#: internal/filesui/sidebar.go:79
 msgid "%s, locked"
 msgstr "%s, bloqueado"
 
-#: internal/filesui/sidebar.go:79
-#: internal/filesui/sidebar.go:172
+#: internal/filesui/sidebar.go:90
+#: internal/filesui/sidebar.go:183
 msgid "Eject"
 msgstr "Expulsar"
 
