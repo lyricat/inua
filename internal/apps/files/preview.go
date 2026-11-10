@@ -16,10 +16,6 @@ const (
 	PreviewBytes = 64 << 10
 )
 
-// previewChunk is how much one read asks for: past the last line kept,
-// at most this much less a byte is read.
-const previewChunk = 4096
-
 var (
 	// ErrNotText: the start of the file is not UTF-8 text (a NUL byte, or
 	// a sequence that is not UTF-8).
@@ -77,27 +73,20 @@ func readTextPreview(path string, maxLines, maxBytes int) (TextPreview, error) {
 }
 
 // readPreview reads r, whose size is size as far as is known, until
-// maxLines line ends or maxBytes bytes, whichever is first. Whether more
-// follows a cut is told by what was read past it, else by size; a file
-// cut at the byte limit counts as cut unless its size is exactly the
-// limit (a file in /proc says 0), so the limit is never read past to
-// find its end.
+// maxLines line ends or maxBytes bytes, whichever is first, and takes
+// not a byte from r past either: no read asks for more bytes than lines
+// are still wanted, so none can reach past the last line's end. Whether
+// more follows a cut is told by size, never by reading on; a file cut at
+// a limit counts as cut unless its size is exactly what was read (a file
+// in /proc says 0) or the read that reached the limit also met its end.
 func readPreview(r io.Reader, size int64, maxLines, maxBytes int) (TextPreview, error) {
 	buf := make([]byte, maxBytes)
-	n, lines, end, eof := 0, 0, -1, false
-	for n < maxBytes && end < 0 && !eof {
-		m, err := r.Read(buf[n:min(n+previewChunk, maxBytes)])
-		for i := n; i < n+m; {
-			j := bytes.IndexByte(buf[i:n+m], '\n')
-			if j < 0 {
-				break
-			}
-			i += j + 1
-			if lines++; lines == maxLines {
-				end = i
-				break
-			}
-		}
+	n, lines, eof := 0, 0, false
+	for n < maxBytes && lines < maxLines && !eof {
+		// m bytes hold at most m line ends: if they hold every line still
+		// wanted, they are all line ends and the last one ends the read.
+		m, err := r.Read(buf[n : n+min(maxLines-lines, maxBytes-n)])
+		lines += bytes.Count(buf[n:n+m], []byte{'\n'})
 		n += m
 		if eof = err == io.EOF; err != nil && !eof {
 			return TextPreview{Read: n}, err
@@ -105,15 +94,14 @@ func readPreview(r io.Reader, size int64, maxLines, maxBytes int) (TextPreview, 
 	}
 	p := TextPreview{Read: n}
 	text := buf[:n]
-	switch {
-	case end >= 0:
-		text = buf[:end]
-		if n > end || size > int64(end) {
+	if !eof && size != int64(n) {
+		switch {
+		case lines == maxLines:
 			p.Cut = LineLimit
+		case n == maxBytes:
+			p.Cut = ByteLimit
+			text = trimCutRune(text)
 		}
-	case n == maxBytes && !eof && size != int64(maxBytes):
-		p.Cut = ByteLimit
-		text = trimCutRune(text)
 	}
 	text = bytes.TrimPrefix(text, []byte("\xef\xbb\xbf"))
 	if bytes.IndexByte(text, 0) >= 0 || !utf8.Valid(text) {

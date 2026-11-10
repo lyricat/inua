@@ -9,6 +9,7 @@ import (
 	"strings"
 	"syscall"
 	"testing"
+	"testing/iotest"
 	"time"
 	"unicode/utf8"
 )
@@ -38,17 +39,41 @@ func (e endless) Read(b []byte) (int, error) {
 func lines(n int) string { return strings.Repeat("line of a log\n", n) }
 
 func TestPreviewLineLimit(t *testing.T) {
-	src := lines(1000)
-	r := &countReader{r: strings.NewReader(src)}
-	p, err := readPreview(r, int64(len(src)), 200, 1<<20)
-	if err != nil {
-		t.Fatal(err)
+	// Reading stops at the 200th line's end: not a byte is taken past it,
+	// however the reader splits its reads.
+	long := strings.Repeat("x", 5000)
+	for _, c := range []struct {
+		name string
+		src  string
+		keep string
+	}{
+		{"short lines", lines(1000), lines(200)},
+		{"a long last line", lines(199) + long + "\n" + lines(10), lines(199) + long + "\n"},
+		{"empty lines", strings.Repeat("\n", 300), strings.Repeat("\n", 200)},
+	} {
+		for _, wrap := range []struct {
+			name string
+			f    func(io.Reader) io.Reader
+		}{
+			{"whole", func(r io.Reader) io.Reader { return r }},
+			{"halves", iotest.HalfReader},
+			{"bytes", iotest.OneByteReader},
+		} {
+			r := &countReader{r: strings.NewReader(c.src)}
+			p, err := readPreview(wrap.f(r), int64(len(c.src)), 200, 64<<10)
+			if err != nil {
+				t.Fatalf("%s, %s: %v", c.name, wrap.name, err)
+			}
+			if p.Cut != LineLimit || p.Text != c.keep || r.n != len(c.keep) || p.Read != r.n {
+				t.Fatalf("%s, %s: cut %v, %d lines kept, read %d (reported %d), want %d",
+					c.name, wrap.name, p.Cut, strings.Count(p.Text, "\n"), r.n, p.Read, len(c.keep))
+			}
+		}
 	}
-	if p.Cut != LineLimit || p.Text != lines(200) {
-		t.Fatalf("cut %v, %d lines", p.Cut, strings.Count(p.Text, "\n"))
-	}
-	if r.n != p.Read || r.n >= len(lines(200))+previewChunk {
-		t.Fatalf("read %d bytes (reported %d) for %d kept", r.n, p.Read, len(p.Text))
+	// Line ends for ever: exactly 200 bytes are read.
+	r := &countReader{r: endless('\n')}
+	if p, err := readPreview(r, 0, 200, 64<<10); err != nil || p.Cut != LineLimit || r.n != 200 || len(p.Text) != 200 {
+		t.Fatalf("line ends: cut %v, read %d, kept %d, %v", p.Cut, r.n, len(p.Text), err)
 	}
 }
 
@@ -109,6 +134,16 @@ func TestPreviewSizeUnknown(t *testing.T) {
 	}
 	p, err = readPreview(strings.NewReader("short"), 0, 100, 10)
 	if err != nil || p.Cut != Whole || p.Text != "short" {
+		t.Fatalf("%q %v %v", p.Text, p.Cut, err)
+	}
+	// So does one that reaches the line limit, as nothing past it is read.
+	p, err = readPreview(strings.NewReader(lines(5)), 0, 5, 1000)
+	if err != nil || p.Cut != LineLimit || p.Text != lines(5) {
+		t.Fatalf("%q %v %v", p.Text, p.Cut, err)
+	}
+	// Unless the read that reached it also met the end.
+	p, err = readPreview(iotest.DataErrReader(strings.NewReader(lines(5))), 0, 5, 1000)
+	if err != nil || p.Cut != Whole || p.Text != lines(5) {
 		t.Fatalf("%q %v %v", p.Text, p.Cut, err)
 	}
 }

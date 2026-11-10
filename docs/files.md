@@ -93,13 +93,13 @@ which takes in CSV, logs and source code, or a name ending in `.txt`,
 in the details, read on a goroutine and shown as plain text, in mono,
 never as markup; CSV is shown as it is written, not as a table. The read
 stops at **200 lines or 64 KiB, whichever comes first**: no more than
-64 KiB is ever read, however long a line is, and once the 200th line ends
-reading stops (with what one read of 4 KiB took past it). A preview cut
-short says so under it ("Only the first 200 lines are shown.", "Only the
-first 64 KiB are shown."). Whether more follows the 64 KiB is told by the
-file's size rather than by reading on, so a file whose size says nothing
-(those in `/proc`) counts as cut when it fills the 64 KiB. A character the
-byte limit cuts in two is left out.
+64 KiB is ever read, however long a line is, and not a byte past the
+200th line's end is read either: no read asks for more bytes than lines
+are still wanted. A preview cut short says so under it ("Only the first
+200 lines are shown.", "Only the first 64 KiB are shown."). Whether more
+follows either limit is told by the file's size rather than by reading
+on, so a file whose size says nothing (those in `/proc`) counts as cut
+when it reaches one. A character the byte limit cuts in two is left out.
 
 Instead of text the note says that the file is empty, that it is not
 UTF-8 text (a NUL byte or a sequence that is not UTF-8 in what was read:
