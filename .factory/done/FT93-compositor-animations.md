@@ -67,3 +67,9 @@ notes:
 - UI/animation behavior not checked by eye; no live Wayfire/niri or Hyprland Lua validation. Wayfire IPC behavior validated against fakes, not a real session. Documented scale/expo/cube/wobbly motion, IPC override locking and stale restoration after compositor restart remain limitations. Hyprland's default true still overrides a user's off setting. Other plugin motion outside the metadata fixtures remains unverified.
 
 Round 2 of 3: moved review → ready. FT89 and FT91 skipped because their current heads already have reviews. No code changes or merge to master.
+
+## factory · 2026-11-10 20:03
+Owner-authorized ship: merged into master at fcc3559f615bd2c77523feb2759707ef6b17b546. Released and pushed atomically in v0.1.32. Moved ready → done.
+PR #78 already merged.
+Validation: make test passed after this merge (18 Python session tests, go vet, Go race suite); isolated HOME/XDG/runtime. make i18n completed; make generate also verified for FT104. No conflicts.
+Owner explicitly accepted the reported P2/P3 findings; they remain unresolved, not fixed by this ship. Prior review notes and limitations remain applicable. No visual UI or live/nested desktop verification. No deployment, unpinned installs or dependency changes.

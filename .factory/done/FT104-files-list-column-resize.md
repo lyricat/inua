@@ -64,3 +64,9 @@ Claude Code reviewed origin/master...HEAD, all 17 changed files, against the req
 Validation: make test passed with throwaway HOME/XDG/TMPDIR (18 Python session tests, go vet, 115 passing Go race-test packages). make i18n and make generate in a throwaway copy reproduced committed outputs. No installs, dependency changes, code edits or commits. Manager verified clean worktree and unchanged reviewed head. Temporary artifacts remained within the review directory and were removed.
 Unverified: actual drag/sort interactions, double-click reset, empty/error folders, narrow-window horizontal scrolling, long names, zoom/scaling, restart persistence, and widths over 1024px. The P2 and P3 notes remain nonblocking under the factory's P0/P1 gate.
 Moved review/ → ready/. No linked issue or PR. FT89 and FT91 skipped because their current heads already have reviews.
+
+## factory · 2026-11-10 20:03
+Owner-authorized ship: merged into master at 3478c014a6032277b3e6a8f089a67a4979d05b01. Released and pushed atomically in v0.1.32. Moved ready → done.
+No linked issue or PR.
+Validation: make test passed after this merge (18 Python session tests, go vet, Go race suite); isolated HOME/XDG/runtime. make i18n completed; make generate also verified for FT104. Resolved seven generated catalog conflicts by regeneration; generated layouts match.
+Owner explicitly accepted the reported P2/P3 findings; they remain unresolved, not fixed by this ship. Prior review notes and limitations remain applicable. No visual UI or live/nested desktop verification. No deployment, unpinned installs or dependency changes.

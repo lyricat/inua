@@ -49,3 +49,9 @@ Claude Code reviewed origin/master...HEAD (merge base a6787817), all nine change
 Review constraint breach disclosed by coder: after a scratch-copy failure, it briefly modified screenshot.go in the review worktree and ran one targeted test with its existing environment, using the real Go build cache and /tmp. It restored the tracked file and repeated checks in scratch isolation. Manager verified a clean worktree and unchanged head; no commits or code push. Tests used fake wl-copy; coder reports no live clipboard, runtime daemon or windows touched. The /tmp fallback test intentionally uses and removes short-lived /tmp files.
 
 Not checked: real screenshot/clipboard behavior, visual or nested UI, and unwritable system /tmp. No visual UI change. P2 test portability issues remain for owner attention. Moved review/ → ready/; not merged into master.
+
+## factory · 2026-11-10 20:03
+Owner-authorized ship: merged into master at 4e4efdfa82599fa7052076608c0a5d59c7ea5c76. Released and pushed atomically in v0.1.32. Moved ready → done.
+PR #92 closed.
+Validation: make test passed after this merge (18 Python session tests, go vet, Go race suite); isolated HOME/XDG/runtime. make i18n completed; make generate also verified for FT104. Resolved seven generated catalog conflicts by regeneration, preserving translations.
+Owner explicitly accepted the reported P2/P3 findings; they remain unresolved, not fixed by this ship. Prior review notes and limitations remain applicable. No visual UI or live/nested desktop verification. No deployment, unpinned installs or dependency changes.

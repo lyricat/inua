@@ -46,3 +46,9 @@ notes:
 Claude Code reviewed origin/master...HEAD (six changed files). No P0/P1 findings; pass follows factory severity policy, not absence of defects. make test passed with isolated HOME/XDG/runtime and no live session (18 Python tests, go vet, Go race tests); Firefox D-Bus tests ran. make i18n in a throwaway copy produced no changes. Both P2 cases were reproduced in throwaway-copy probes. Worktree unchanged; no installs or manifest changes. Branch merges cleanly with origin/master.
 Residual risks: no visual UI, GTK interaction or real Firefox verification. Failed whole-tree refresh may retain stale entries; not promoted to a confirmed finding without a concrete UI reproduction. Real Firefox ID renumbering, dynamically populated menus, proxy-owned Flatpak bridges and layout-signal behavior remain unverified or documented limitations. Multi-window ambiguity deliberately suppresses menus.
 Moved review/ → ready/. Owner should examine the two P2 findings before shipping. No merge to master.
+
+## factory · 2026-11-10 20:03
+Owner-authorized ship: merged into master at a0a92061e39600db12c1f60d9fbc8a7650788cf8. Released and pushed atomically in v0.1.32. Moved ready → done.
+PR #90 already merged.
+Validation: make test passed after this merge (18 Python session tests, go vet, Go race suite); isolated HOME/XDG/runtime. make i18n completed; make generate also verified for FT104. Resolved docs/appmenus.md conflict preserving Firefox and accessibility lookup order.
+Owner explicitly accepted the reported P2/P3 findings; they remain unresolved, not fixed by this ship. Prior review notes and limitations remain applicable. No visual UI or live/nested desktop verification. No deployment, unpinned installs or dependency changes.

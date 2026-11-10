@@ -31,3 +31,9 @@ Merged master into the PR head, resolved source/catalog conflicts, and pushed 5d
 Validation: isolated make test passed (18 Python tests, go vet, 115 Go packages under race detector; 36 cached). Manager's initial run hit TestBodyStructureMessagePart: unexpected EOF; reproduced on unchanged master and traced to the fake IMAP server CAPABILITY/FETCH race. Subsequent full runs passed; unrelated flake not changed. Five findings were verified with temporary fake-tree/UI/private-bus probes. Catalog regeneration matched committed catalogs; gofmt clean. No installs.
 
 Not checked visually or in a real/nested desktop: Firefox/Electron/Qt/GTK interoperability. Firefox derivatives may miss never_press matching; conflicting Firefox activation safety comments remain unresolved. Large-tree latency and accessibility bus autostart were not verified. Duplicate-label activation ambiguity has no concrete app example and is not a finding.
+
+## factory · 2026-11-10 20:03
+Owner-authorized ship: merged into master at 8d8aa5c614e046aaeeeb2581ebf95b24756249a2. Released and pushed atomically in v0.1.32. Moved ready → done.
+PR #74 already merged.
+Validation: make test passed after this merge (18 Python session tests, go vet, Go race suite); isolated HOME/XDG/runtime. make i18n completed; make generate also verified for FT104. No conflicts.
+Owner explicitly accepted the reported P2/P3 findings; they remain unresolved, not fixed by this ship. Prior review notes and limitations remain applicable. No visual UI or live/nested desktop verification. No deployment, unpinned installs or dependency changes.
