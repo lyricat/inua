@@ -63,3 +63,12 @@ Claude Code 完成构建，提交 a798c9ed、4f3eeab8；分支已推送。
 测试：Claude 首次完整测试遇到无关的 TestVisitorGame/chinese-checkers: websocket: bad handshake；该包连续四次重跑通过，第二次完整 make test 通过。管理者独立以临时 HOME 运行 make test 通过（Python、go vet、Go race tests）。工作树干净，未修改禁止路径。
 未检查：未目视检查 UI，未在真实 Hyprland 上检查热插拔、layer-shell 尺寸、compact density 或拖拽外观；Broadway 使用简单测试控件，未覆盖真实 shell 控件和完整样式表。请在审查时关注这些边界。
 new/ → review/；尚未合并或发布。
+
+## factory · review · 2026-11-10 22:23
+head: 4f3eeab8a37490d3a8571aad3643b3c8e9fe9539
+verdict: pass
+
+Claude Code reviewed origin/master...HEAD, both commits and all 24 changed files against the request and plan. No confirmed P0–P3 findings. Merge check against current base passed. No source changes or commits during review.
+Validation: isolated make test passed with throwaway HOME/TMPDIR/XDG_RUN2026-11-10 22:23_DIR and env -i: 18 Python tests, go vet, 117 Go race-test packages. TestBarRowsOnGTK ran successfully on Broadway (not skipped); TestBarRowEntries passed. Scratch-copy make i18n and make generate matched committed outputs. Verified asymmetric padding, group spacing, hidden items, insufficient-width clamping, GTK measurement/allocation and preview wiring. Installs: none.
+Residual risks: no visual UI check, real layer-shell sizing, hot-plug, real-bar compact density or drag appearance verification. Broadway used stand-in widgets rather than the complete shell and stylesheet. Unset layout retains its pre-existing small padding offset; explicit layout now centers exactly. RTL reversal is not implemented (no current RTL locale). Preview displays chips whose real widgets may be hidden; hidden-only center groups fall back as planned.
+review/ → ready/. Not merged or released. Owner should visually check the real bar and editor before shipping.
