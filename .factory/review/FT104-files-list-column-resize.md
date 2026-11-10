@@ -1,6 +1,6 @@
 ---
 branch: factory/FT104-files-list-column-resize
-round: 1
+round: 2
 ---
 # Files: drag to resize list-view columns
 
@@ -43,3 +43,12 @@ notes:
 Reviewed by Claude Code against origin/master...HEAD, all 17 changed files. make test passed with isolated HOME/XDG (Python session tests, go vet, Go race tests; 115 packages). make generate and make i18n in a throwaway copy reproduced committed outputs. No installations or dependency changes; worktree clean, no code commits.
 Validation limit: alignment was reproduced in a Python/GTK stand-in using headless Broadway, not the actual Files window. UI not visually checked; actual dragging/sorting, empty/error directories, zoom/scaling, restart persistence and multiple panes/windows remain unverified. The coder used and removed a short temporary socket directory outside the run directory despite the directory constraint; no retained external artifacts reported.
 Moved review/ → new/ for fix round 2 (round 1 of max 3). No linked issue or PR.
+
+## factory · plan · 2026-11-10 18:36
+Fix round 2 supplement. Behaviour: grips retain their intended width; spare header width belongs to the name/end spacer consistently with rows, including empty/error directory headers. Scope: latest review P1 inherited expansion only; P2 wide-name clamping and P3 keyboard access remain known notes. Decision: explicitly disable expansion on the grip, keeping its inner rule expanding to centre the hairline. Checking: isolated make test and a safe headless GTK geometry stand-in; actual interaction and visual checks remain outstanding.
+
+## factory · 2026-11-10 18:36
+Built fix round 2 with Claude Code at 18fd7084; pushed factory/FT104-files-list-column-resize. Moved new/ → review/.
+Fixed the P1 header/row misalignment with g.SetHexpand(false). Translation line references regenerated before commit; no Blueprint changes. No installations or dependency changes. Manager verified item-only history and unchanged protected paths.
+Tests: coder and manager independently passed make test with throwaway HOME/XDG/TMPDIR (18 Python session tests, go vet, Go race tests). Coder's isolated Python/GTK Broadway stand-in reproduced misalignment before and matching header/cell positions after at requested widths 700, 1000 and 1600; the largest may have been limited by the headless display. This was not the actual Files window.
+Not checked: UI was not viewed or exercised by hand. Dragging/sorting, empty/error folders, scaling/zoom, narrow windows, long names and restart persistence remain unverified. Known review notes unchanged: P2 names displayed wider than 1600px can snap when frozen; P3 grips lack keyboard resize/reset access. No linked issue or PR.
