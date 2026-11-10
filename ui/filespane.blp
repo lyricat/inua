@@ -130,9 +130,10 @@ Box pane {
     hscrollbar-policy: external;
     vscrollbar-policy: never;
 
+    // No spacing: between the heads, the grips that size the columns
+    // fill the rows' gaps (internal/filesui/columns.go).
     Box columns {
       styles ["files-columns"]
-      spacing: 10;
     }
   }
 

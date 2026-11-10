@@ -51,6 +51,7 @@ type Settings struct {
 	Dual     bool                   `json:"dual"`
 	Zoom     int                    `json:"zoom"`              // -2 … 3: the rows' and icons' size
 	Columns  []SortBy               `json:"columns"`           // the list's columns after the name, in order
+	Widths   map[SortBy]int         `json:"widths,omitempty"`  // the list's columns dragged to a width (ColumnWidth)
 	Remote   []remote.Disk          `json:"remote,omitempty"`  // the remote disks connected to, by name
 	Servers  []string               `json:"servers,omitempty"` // before remote disks: the addresses used
 	Jumps    Jumps                  `json:"jumps"`
@@ -82,6 +83,69 @@ func (s *Settings) ToggleColumn(c SortBy) {
 	s.modified = true
 }
 
+// The widths a list's column can be dragged to, in GTK's logical pixels
+// (the screen's scale does the rest). The name needs more than the
+// others to stay readable.
+const (
+	MinNameWidth   = 160
+	MinColumnWidth = 48
+	MaxColumnWidth = 1600
+)
+
+// ColumnWidth is the width column c was dragged to, or 0 if it never was:
+// a column then has its own width, and the name takes what the others
+// leave.
+func (s *Settings) ColumnWidth(c SortBy) int { return s.Widths[c] }
+
+// SetColumnWidth keeps column c at width w, held to ClampWidth.
+func (s *Settings) SetColumnWidth(c SortBy, w int) {
+	if !isColumn(c) {
+		return
+	}
+	w = ClampWidth(c, w)
+	if s.Widths[c] == w {
+		return
+	}
+	if s.Widths == nil {
+		s.Widths = map[SortBy]int{}
+	}
+	s.Widths[c] = w
+	s.modified = true
+}
+
+// ResetColumnWidth gives column c its own width again.
+func (s *Settings) ResetColumnWidth(c SortBy) {
+	if _, ok := s.Widths[c]; ok {
+		delete(s.Widths, c)
+		s.modified = true
+	}
+}
+
+// ClampWidth is w held between the least column c needs and
+// MaxColumnWidth.
+func ClampWidth(c SortBy, w int) int {
+	least := MinColumnWidth
+	if c == ByName {
+		least = MinNameWidth
+	}
+	return max(least, min(MaxColumnWidth, w))
+}
+
+// isColumn says whether the list has a column c: the name or one of
+// Columns.
+func isColumn(c SortBy) bool { return c == ByName || slices.Contains(Columns, c) }
+
+// checkWidths forgets the widths read that no column could have (a
+// column unknown, or a width out of bounds): those columns take their
+// own.
+func (s *Settings) checkWidths() {
+	for c, w := range s.Widths {
+		if !isColumn(c) || w != ClampWidth(c, w) {
+			delete(s.Widths, c)
+		}
+	}
+}
+
 // maxFolders is how many folders keep their own view; the oldest set
 // are forgotten past it (they then take the last used).
 const maxFolders = 500
@@ -93,6 +157,7 @@ func LoadSettings() *Settings {
 	if s.Folders == nil {
 		s.Folders = map[string]*FolderView{}
 	}
+	s.checkWidths()
 	s.adoptServers()
 	return s
 }

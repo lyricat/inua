@@ -8,6 +8,7 @@ import (
 	"image"
 	"image/png"
 	"io/fs"
+	"maps"
 	"os"
 	"path/filepath"
 	"slices"
@@ -17,6 +18,7 @@ import (
 	"time"
 
 	"github.com/lyricat/inua/internal/apps/files/remote"
+	"github.com/lyricat/inua/internal/apps/store"
 )
 
 func write(t *testing.T, path, data string) {
@@ -812,6 +814,51 @@ func TestToggleColumn(t *testing.T) {
 	s.ToggleColumn(BySize)
 	if s.ShowsColumn(BySize) || len(s.Columns) != 3 {
 		t.Fatalf("off: %v", s.Columns)
+	}
+}
+
+func TestColumnWidthsAreHeldToWhatAColumnNeeds(t *testing.T) {
+	s := &Settings{}
+	if s.ColumnWidth(ByName) != 0 || s.ColumnWidth(BySize) != 0 {
+		t.Fatal("a column never dragged has a width")
+	}
+	s.SetColumnWidth(BySize, 120)
+	s.SetColumnWidth(ByKind, 3)
+	s.SetColumnWidth(ByName, 40)
+	s.SetColumnWidth(ByModified, 1e6)
+	s.SetColumnWidth("colour", 200)
+	want := map[SortBy]int{BySize: 120, ByKind: MinColumnWidth, ByName: MinNameWidth, ByModified: MaxColumnWidth}
+	if !maps.Equal(s.Widths, want) || !s.modified {
+		t.Fatalf("Widths = %v, want %v", s.Widths, want)
+	}
+	s.modified = false
+	s.SetColumnWidth(BySize, 120)
+	s.ResetColumnWidth(ByOwner)
+	if s.modified {
+		t.Error("a width unchanged marks the settings changed")
+	}
+	s.ResetColumnWidth(ByName)
+	if s.ColumnWidth(ByName) != 0 || !s.modified {
+		t.Errorf("the name keeps %d after a reset", s.ColumnWidth(ByName))
+	}
+}
+
+func TestColumnWidthsReadBackAndBadOnesForgotten(t *testing.T) {
+	t.Setenv("XDG_DATA_HOME", t.TempDir())
+	s := LoadSettings()
+	s.SetColumnWidth(ByName, 300)
+	s.SetColumnWidth(ByOwner, 70)
+	if err := s.Save(); err != nil {
+		t.Fatal(err)
+	}
+	if got := LoadSettings().Widths; !maps.Equal(got, map[SortBy]int{ByName: 300, ByOwner: 70}) {
+		t.Fatalf("read back %v", got)
+	}
+
+	data := `{"columns": ["size"], "widths": {"name": 90, "size": 100, "kind": -4, "modified": 99999, "colour": 80, "owner": 0}}`
+	write(t, store.Path("files"), data)
+	if got := LoadSettings().Widths; !maps.Equal(got, map[SortBy]int{BySize: 100}) {
+		t.Errorf("kept %v, want only size's", got)
 	}
 }
 

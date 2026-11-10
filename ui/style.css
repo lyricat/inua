@@ -2987,13 +2987,18 @@ window.files button.files-crumb.current { color: @t0; font-weight: 500; }
 window.files .files-crumb-sep { margin: 0 1px; color: @t2; }
 window.files entry.files-location { min-height: 30px; margin: 0 6px; }
 
-/* The heads line up with the rows: the same padding, spacing and fixed
-   column widths (internal/filesui/columns.go). */
+/* The heads line up with the rows: the same padding, the grips in the
+   rows' gaps, and the same column widths (internal/filesui/columns.go). */
 window.files .files-columns { padding: 4px 14px; border-bottom: 1px solid alpha(@line, 0.4); }
 window.files button.files-col { min-height: 20px; min-width: 0; padding: 0; border: none; background: transparent; box-shadow: none; }
 window.files button.files-col:hover .kicker { color: @t0; }
 window.files button.files-col-more { color: @t2; }
 window.files button.files-col-more:hover { color: @t0; }
+/* A head's right edge, where a drag sizes the column: a hairline while
+   the pointer is on it or drags it. */
+window.files .files-col-grip > .files-col-rule { min-width: 1px; margin: 3px 0; }
+window.files .files-col-grip:hover > .files-col-rule,
+window.files .files-col-grip.dragging > .files-col-rule { background: @line; }
 
 window.files listview, window.files gridview { background: transparent; color: @t0; }
 window.files listview { padding: 4px 8px 12px; }
