@@ -29,3 +29,9 @@ The existing branch header names the fork branch, not an origin branch. For the 
 Owner corrected the requested destination: “诶不对，他们应该放到 review”。
 Moved new → review at the owner’s request; no build, review or tests performed in this update.
 Review the existing fork PR implementation using the source PR head (refs/pull/<PR>/head); the branch header is a fork branch, not necessarily an origin branch. The preceding instruction to build is superseded by this review request.
+
+
+## factory · 2026-11-10 22:01
+Review blocked: the recorded branch `pr/appmenu-per-monitor` does not exist on origin (lyricat/inua). Verified GitHub PR #95 is open with fork head `iamcheyan/inua:pr/appmenu-per-monitor` at `8122c416da7004bd6abd7f0f263fc9b7465ba4eb`. The owner requested review of the fork implementation, but the factory review procedure requires the recorded origin branch and does not authorize replacing an existing branch header or pushing to the contributor fork. No replacement branch was created. Owner must authorize branch setup repair before factory review can proceed.
+
+FT99 is the oldest unreviewed item; FT89 and FT91 already have reviews for their current heads. No Claude Code invocation, tests, installs or review verdict; item remains in review/. No code changes, merge or release.
