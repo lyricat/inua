@@ -41,3 +41,12 @@ notes:
 Reviewed origin/master...HEAD with Claude Code. Fetched PR #76 fork head 3786e78c, merged master 3478c014, resolved generated catalog conflicts preserving master translations, regenerated catalogs and pushed 36e3f62f to origin/feat/appmenu-shell-term. The contributor fork was not changed; this verdict covers the origin branch, not the original PR head.
 Validation: merge coder, manager and separate review coder each ran make test successfully with throwaway HOME. Review reports 18 Python tests, go vet, 117 Go packages with race checks; private-bus discovery test ran. Catalog regeneration is byte-identical; worktree clean. No installs. No P0/P1 findings; moved review → ready, not merged or released.
 Residual risks: UI not visually checked, no nested session or macOS validation; focus-dependent terminal actions need interactive verification. Independent publisher name counters can collide if both publishers are used in one process, but no current binary does so; excluded as a speculative finding.
+
+
+## factory · 2026-11-10 23:35
+Shipped to master; merge commit: d1a8bdf1c411409a5ccdc4ae0eaeccd1b5942f0c. Release: v0.1.33, final master 7dd6decf22e8e33fa026768cc2b673508dc59078; master and annotated tag pushed atomically.
+PR #76 already merged Contributor forks were not modified.
+Claude Code resolved integration conflicts and performed a fresh read-only combined-diff review (same persistent Claude session, not an independent reviewer): no P0/P1 findings. make test passed after every merge, on final combined review, and on independent manager rerun: 18 Python tests, go vet, Go race tests. make generate and make i18n current; protected paths unchanged. No installs or test failures this run.
+Remaining P3: Settings menu can target Settings while another shell window is focused; terminal menu Quit does not save latest UI layout.
+Tests used isolated HOME/TMPDIR/private XDG_RUNTIME_DIR and private D-Bus. UI not visually checked; no real multi-monitor/nested desktop, power actions or live settings exercised. Per-bar wiring lacks direct automated GDK monitor coverage.
+ready/ → done/.

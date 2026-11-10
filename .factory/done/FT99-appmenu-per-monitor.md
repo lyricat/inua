@@ -55,3 +55,12 @@ Read-only Claude Code review of fork PR #95, fetched via refs/pull/95/head per t
 Validation: initial make test failed because the review environment omitted XDG_RUN2026-11-10 22:56_DIR. After setting a private runtime directory, the manager reran the complete make test successfully (18 Python session tests, go vet, Go race tests), with throwaway HOME and TMPDIR. No remaining required-test failure. No installs or tracked code changes. Catalog references inspected; make i18n regeneration was not verified. No visual UI or live multi-monitor checks.
 
 Integration limitation: the fetched commit conflicts with current master in internal/ui/appmenu.go, internal/ui/bar.go and generated catalogs. Following the explicitly requested read-only fork review, no merge/conflict resolution or code-branch push was performed. Pass means no P0/P1 review findings, not merge readiness; integration and testing of the merged result remain required before shipment. Moved review/ → ready/ under the factory review threshold.
+
+
+## factory · 2026-11-10 23:35
+Shipped to master; merge commit: 0f8366de6c7181bd271a1aa19dd7a28a535c9726. Release: v0.1.33, final master 7dd6decf22e8e33fa026768cc2b673508dc59078; master and annotated tag pushed atomically.
+PR #95 already merged Contributor forks were not modified.
+Claude Code resolved integration conflicts and performed a fresh read-only combined-diff review (same persistent Claude session, not an independent reviewer): no P0/P1 findings. make test passed after every merge, on final combined review, and on independent manager rerun: 18 Python tests, go vet, Go race tests. make generate and make i18n current; protected paths unchanged. No installs or test failures this run.
+Fork PR head 8122c416da7004bd6abd7f0f263fc9b7465ba4eb fetched via refs/pull/95/head and integrated through explicit local ref. Conflicts resolved with master per-bar search state, preserving packs/accessibility/Firefox. Registrar-reset P2 fixed by retained stale-search state. Remaining P2: changes on another monitor can dismiss the shared open menu. Non-published fallback menus remain focused-window-only, preserving master behavior. P3 documentation still describes focused-window lookup.
+Tests used isolated HOME/TMPDIR/private XDG_RUNTIME_DIR and private D-Bus. UI not visually checked; no real multi-monitor/nested desktop, power actions or live settings exercised. Per-bar wiring lacks direct automated GDK monitor coverage.
+ready/ → done/.

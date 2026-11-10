@@ -67,3 +67,12 @@ notes:
 - No visual UI check or live Hyprland query. Reload repaint and unavailable-Hyprland behavior were inspected, not integration-tested. Low-alpha unpadded reply formatting remains unverified, not a confirmed finding.
 
 Merge check against origin/master passed. review/ → ready/; no code-branch push, merge to master or release.
+
+
+## factory · 2026-11-10 23:35
+Shipped to master; merge commit: 880b829dfdbca093da781a4727447fac5b37e1f6. Release: v0.1.33, final master 7dd6decf22e8e33fa026768cc2b673508dc59078; master and annotated tag pushed atomically.
+PR #93 closed Contributor forks were not modified.
+Claude Code resolved integration conflicts and performed a fresh read-only combined-diff review (same persistent Claude session, not an independent reviewer): no P0/P1 findings. make test passed after every merge, on final combined review, and on independent manager rerun: 18 Python tests, go vet, Go race tests. make generate and make i18n current; protected paths unchanged. No installs or test failures this run.
+Final review noted P3: initial border-colour read and shell reload can block GTK up to 1 second; failed initial read retains fallback until reload.
+Tests used isolated HOME/TMPDIR/private XDG_RUNTIME_DIR and private D-Bus. UI not visually checked; no real multi-monitor/nested desktop, power actions or live settings exercised. Per-bar wiring lacks direct automated GDK monitor coverage.
+ready/ → done/.

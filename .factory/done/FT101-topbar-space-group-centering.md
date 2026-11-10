@@ -72,3 +72,12 @@ Claude Code reviewed origin/master...HEAD, both commits and all 24 changed files
 Validation: isolated make test passed with throwaway HOME/TMPDIR/XDG_RUN2026-11-10 22:23_DIR and env -i: 18 Python tests, go vet, 117 Go race-test packages. TestBarRowsOnGTK ran successfully on Broadway (not skipped); TestBarRowEntries passed. Scratch-copy make i18n and make generate matched committed outputs. Verified asymmetric padding, group spacing, hidden items, insufficient-width clamping, GTK measurement/allocation and preview wiring. Installs: none.
 Residual risks: no visual UI check, real layer-shell sizing, hot-plug, real-bar compact density or drag appearance verification. Broadway used stand-in widgets rather than the complete shell and stylesheet. Unset layout retains its pre-existing small padding offset; explicit layout now centers exactly. RTL reversal is not implemented (no current RTL locale). Preview displays chips whose real widgets may be hidden; hidden-only center groups fall back as planned.
 review/ → ready/. Not merged or released. Owner should visually check the real bar and editor before shipping.
+
+
+## factory · 2026-11-10 23:35
+Shipped to master; merge commit: 7dd6decf22e8e33fa026768cc2b673508dc59078. Release: v0.1.33, final master 7dd6decf22e8e33fa026768cc2b673508dc59078; master and annotated tag pushed atomically.
+No linked issue or PR. Contributor forks were not modified.
+Claude Code resolved integration conflicts and performed a fresh read-only combined-diff review (same persistent Claude session, not an independent reviewer): no P0/P1 findings. make test passed after every merge, on final combined review, and on independent manager rerun: 18 Python tests, go vet, Go race tests. make generate and make i18n current; protected paths unchanged. No installs or test failures this run.
+Combined FT99/FT100/FT101 wiring reviewed. Broadway GTK allocation test ran; real monitor sizing and editor appearance remain unverified.
+Tests used isolated HOME/TMPDIR/private XDG_RUNTIME_DIR and private D-Bus. UI not visually checked; no real multi-monitor/nested desktop, power actions or live settings exercised. Per-bar wiring lacks direct automated GDK monitor coverage.
+ready/ → done/.

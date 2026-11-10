@@ -58,3 +58,12 @@ notes:
 - Residual UI risk: the reviewer estimated that the Settings submenu may exceed a short screen's height, but did not verify GTK placement/clipping. Its proposed P3 is retained as an unconfirmed risk, not a finding.
 - UI not visually checked; nested session, real power/session/lock/screenshot actions, live hibernate capability changes and pinned-window compositor behavior were not exercised. Menu lock/screenshot use built-in actions rather than custom Control Center command overrides.
 - Moved review → ready. No merge into master or release. Review applies to the origin built branch, not the unchanged fork PR head.
+
+
+## factory · 2026-11-10 23:35
+Shipped to master; merge commit: a14c78d47f13c934b64549f8fc84a283a9446df2. Release: v0.1.33, final master 7dd6decf22e8e33fa026768cc2b673508dc59078; master and annotated tag pushed atomically.
+PR #96 already merged Contributor forks were not modified.
+Claude Code resolved integration conflicts and performed a fresh read-only combined-diff review (same persistent Claude session, not an independent reviewer): no P0/P1 findings. make test passed after every merge, on final combined review, and on independent manager rerun: 18 Python tests, go vet, Go race tests. make generate and make i18n current; protected paths unchanged. No installs or test failures this run.
+Conflict resolution preserves empty-workspace menu alongside FT99 per-monitor published menus. Power confirmation behavior inspected; not exercised live.
+Tests used isolated HOME/TMPDIR/private XDG_RUNTIME_DIR and private D-Bus. UI not visually checked; no real multi-monitor/nested desktop, power actions or live settings exercised. Per-bar wiring lacks direct automated GDK monitor coverage.
+ready/ → done/.
