@@ -262,6 +262,17 @@ func (s *shellUI) reloadAppMenu(reg appmenu.Registration) {
 // when it ends, so an application that changes its menu all the time gets a
 // call after a call, not one for each change.
 func (s *shellUI) loadAppMenu(b *bar, about bool) {
+	s.readAppMenu(b, about, nil)
+}
+
+// readAppMenu is loadAppMenu, with first run on the reading's goroutine
+// before the menu is read. A menu read whole is read again only with its
+// open menu taken down, and clicks on it wait for the new reading: the
+// items of the one before have lost their ids.
+func (s *shellUI) readAppMenu(b *bar, about bool, first func()) {
+	if b.appMenuReg.Whole {
+		s.closeAppMenu()
+	}
 	if b.appMenuLoading {
 		b.appMenuStale = true
 		return
@@ -269,15 +280,10 @@ func (s *shellUI) loadAppMenu(b *bar, about bool) {
 	b.appMenuLoading = true
 	reg := b.appMenuReg
 	go func() {
-		var entries []appmenu.Entry
-		var err error
-		if appmenu.IsFirefoxService(reg) {
-			// Firefox's item ids change with every layout read, so read the
-			// whole tree once and keep its children for opening.
-			entries, err = s.appmenu.registrar.MenuFull(reg, about)
-		} else {
-			entries, err = s.appmenu.registrar.Menu(reg, about)
+		if first != nil {
+			first()
 		}
+		entries, err := s.appmenu.registrar.Menu(reg, about)
 		gtkx.Post(func() {
 			b.appMenuLoading = false
 			if b.appMenuStale || b.appMenuReg != reg {
@@ -362,6 +368,10 @@ func (s *shellUI) bindAppMenuHandlers() {
 			if b.appMenu.GoPointer() != parent.GoPointer() || i < 0 || i >= len(b.appMenuEntries) {
 				continue
 			}
+			// A menu read whole and being read again has lost its ids.
+			if b.appMenuReg.Whole && b.appMenuLoading {
+				return
+			}
 			entry := b.appMenuEntries[i]
 			submenu := entry.Submenu || len(entry.Children) > 0
 			if b.appMenuReg == (appmenu.Registration{}) {
@@ -408,18 +418,16 @@ func (s *shellUI) closeAppMenu() {
 
 // showAppMenu reads what a button of the bar's menu opens and pops it up
 // under the button w. It is read each time, so it is the menu as the
-// application has it now, filled in if it is one built when asked for.
+// application has it now, filled in if it is one built when asked for. A
+// menu read whole opens what its reading holds, read again by nothing.
 func (s *shellUI) showAppMenu(reg appmenu.Registration, entry appmenu.Entry, w *gtk.Widget) {
 	s.appmenu.menuRequest++
 	request := s.appmenu.menuRequest
 	pid := focusedPID(s.snap)
 	w.Ref() // kept until the menu is built
 	go func() {
-		var entries []appmenu.Entry
-		var err error
-		if len(entry.Children) > 0 {
-			entries = entry.Children
-		} else {
+		entries, err := entry.Children, error(nil)
+		if !reg.Whole {
 			entries, err = s.appmenu.registrar.Submenu(reg, entry.ID)
 		}
 		live := err == nil && s.appmenu.registrar.Current(reg, pid)
@@ -495,19 +503,34 @@ func (s *shellUI) appMenuItems(reg appmenu.Registration, entries []appmenu.Entry
 }
 
 // activateAppMenu clicks an item, if the application it belongs to still
-// has the focus.
+// has the focus. An item of a menu read whole is clicked as the first step
+// of the bar's next reading: no other reading may come between the one its
+// id is from and the click, and none of its items is clicked again until
+// the next reading has its ids.
 func (s *shellUI) activateAppMenu(reg appmenu.Registration, id int32) {
 	if !s.appMenuCurrent(reg) {
 		return
 	}
 	pid := focusedPID(s.snap)
-	go func() {
+	click := func() {
 		if !s.appmenu.registrar.Current(reg, pid) {
 			return
 		}
 		if err := s.appmenu.registrar.Activate(reg, id); err != nil {
 			log.Printf("appmenu activate: %v", err)
 		}
+	}
+	if reg.Whole {
+		for _, b := range s.bars {
+			if b.appMenuReg == reg && !b.appMenuLoading {
+				s.readAppMenu(b, false, click)
+				return
+			}
+		}
+		return
+	}
+	go func() {
+		click()
 		gtkx.Post(func() { s.reloadAppMenu(reg) })
 	}()
 }

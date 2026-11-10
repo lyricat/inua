@@ -35,6 +35,11 @@ type Registration struct {
 	Window  uint32
 	Service string
 	Path    dbus.ObjectPath
+	// Whole: the menu is read whole, in one GetLayout, and opened and
+	// clicked from that reading alone. Its application (Firefox's bridge)
+	// gives its items other ids each time the layout is read, so an id
+	// holds only until the next reading.
+	Whole bool
 }
 
 const registrarXML = `<node>
@@ -124,6 +129,7 @@ type registered struct {
 
 type Registrar struct {
 	conn     *dbus.Conn
+	proc     string // the process table, /proc but in tests
 	mu       sync.RWMutex
 	items    map[string]registered
 	seq      uint64
@@ -146,7 +152,7 @@ func (r *Registrar) changed() {
 }
 
 func New(conn *dbus.Conn) *Registrar {
-	return &Registrar{conn: conn, items: make(map[string]registered)}
+	return &Registrar{conn: conn, proc: "/proc", items: make(map[string]registered)}
 }
 
 // Run owns the registrar name when available and serves the registry.
@@ -206,8 +212,9 @@ func (r *Registrar) handle(sig *dbus.Signal) {
 		if a && b && c && next == "" {
 			r.removeOwner(name)
 		}
-		// A published menu came or went: the focused window's may be it.
-		if a && b && c && strings.HasPrefix(name, nativeMenuPrefix) {
+		// A published menu or a Firefox came or went: the focused window's
+		// menu may be it.
+		if a && b && c && (strings.HasPrefix(name, nativeMenuPrefix) || strings.HasPrefix(name, firefoxNamePrefix)) {
 			r.changed()
 		}
 	case layoutUpdated:
@@ -353,11 +360,12 @@ func (r *Registrar) forPID(pid int) (reg Registration, ok, seen bool) {
 	return found.Registration, found.Service != "", found.Service != ""
 }
 
-// Menu reads the first level of a registration's menu, what a bar shows.
-// With about set, the application is first told the menu is about to show,
-// so one that builds it lazily fills it in; a reading that follows the
-// application's own word of a change leaves that out, as the telling can
-// itself be answered with such a word.
+// Menu reads the first level of a registration's menu, what a bar shows,
+// and the whole tree under it for a menu read whole. With about set, the
+// application is first told the menu is about to show, so one that builds
+// it lazily fills it in; a reading that follows the application's own word
+// of a change leaves that out, as the telling can itself be answered with
+// such a word.
 func (r *Registrar) Menu(reg Registration, about bool) ([]Entry, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
 	defer cancel()
@@ -365,14 +373,20 @@ func (r *Registrar) Menu(reg Registration, about bool) ([]Entry, error) {
 		r.conn.Object(reg.Service, reg.Path).CallWithContext(ctx, menuInterface+".AboutToShow", 0, int32(0))
 	}
 	// Two levels: the second only shows which items of the first open one.
+	levels := int32(2)
+	if reg.Whole {
+		levels = -1
+	}
 	count := 0
 	top := make(map[int32]bool)
-	node, err := r.layout(ctx, reg, 0, 2, 0, &count, top)
+	node, err := r.layout(ctx, reg, 0, levels, 0, &count, top)
 	if err != nil {
 		return nil, err
 	}
-	for i := range node.Children {
-		node.Children[i].Children = nil
+	if !reg.Whole {
+		for i := range node.Children {
+			node.Children[i].Children = nil
+		}
 	}
 	key := registrationKey(reg.Service, reg.Window)
 	r.mu.Lock()
@@ -384,32 +398,15 @@ func (r *Registrar) Menu(reg Registration, about bool) ([]Entry, error) {
 	return node.Children, nil
 }
 
-// MenuFull reads a menu's whole tree in one GetLayout: what Firefox's GTK
-// bridge needs, as its item ids change when the layout is read again.
-func (r *Registrar) MenuFull(reg Registration, about bool) ([]Entry, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
-	defer cancel()
-	if about {
-		r.conn.Object(reg.Service, reg.Path).CallWithContext(ctx, menuInterface+".AboutToShow", 0, int32(0))
-	}
-	count := 0
-	node, err := r.layout(ctx, reg, 0, -1, 0, &count, nil)
-	if err != nil {
-		return nil, err
-	}
-	return node.Children, nil
-}
-
-// IsFirefoxService reports whether reg is Firefox's own GTK menu bridge.
-func IsFirefoxService(reg Registration) bool {
-	return strings.HasPrefix(reg.Service, "org.mozilla.firefox.")
-}
-
 // Submenu reads what item id opens, as it is now: the application and each
 // nested submenu are told that they are about to show before their contents
 // are read. One that stays empty, or that no longer fits the bounds, is left
-// empty.
+// empty. A menu read whole is not read in parts: that would give the
+// items of the reading it was opened from other ids.
 func (r *Registrar) Submenu(reg Registration, id int32) ([]Entry, error) {
+	if reg.Whole {
+		return nil, fmt.Errorf("appmenu: %s %s is read whole", reg.Service, reg.Path)
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
 	defer cancel()
 	count := 0
