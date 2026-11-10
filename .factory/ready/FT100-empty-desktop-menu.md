@@ -47,3 +47,14 @@ Installs: none; no manifest or lockfile changes.
 Tests: Claude Code make test passed; manager independently reran make test with throwaway HOME/TMPDIR and it passed (Python tests, go vet, Go race tests). Protected paths unchanged; worktree clean.
 Not checked: visual UI, nested session, live logind detection and actual power actions. Owner should inspect menu appearance and confirmation flow.
 Push initially failed because the credential helper needed a repository path; the single retry with command-local credential.useHttpPath=true succeeded.
+
+
+## factory · review · 2026-11-10 21:57
+head: bf2bb23aa83d5bc049b9cba2e04527d6ebecb263
+verdict: pass
+notes:
+- Claude Code reviewed origin/master...HEAD (merge-base 3478c014), 14 files, against the request and build plan. No confirmed P0/P1/P2/P3 defects.
+- Validation: isolated make test passed (18 Python tests, go vet, Go race tests). The initial run failed because the reviewer unset XDG_RUN2026-11-10 21:57_DIR; rerun with a private 0700 runtime directory passed. This was a test setup error, not a branch defect. make i18n on a throwaway tracked-files copy produced no changes. Worktree clean; no installs or commits.
+- Residual UI risk: the reviewer estimated that the Settings submenu may exceed a short screen's height, but did not verify GTK placement/clipping. Its proposed P3 is retained as an unconfirmed risk, not a finding.
+- UI not visually checked; nested session, real power/session/lock/screenshot actions, live hibernate capability changes and pinned-window compositor behavior were not exercised. Menu lock/screenshot use built-in actions rather than custom Control Center command overrides.
+- Moved review → ready. No merge into master or release. Review applies to the origin built branch, not the unchanged fork PR head.
