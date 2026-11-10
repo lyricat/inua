@@ -34,3 +34,14 @@ Preserved the PR's overview-only dock with zero exclusive zone. Prevented startu
 Tests: coder and manager independently passed make test (18 Python tests, go vet, race-enabled Go suite) with throwaway HOME/XDG/runtime and live session variables unset. make i18n run before Go commits; generated catalog changes are source references. No Blueprint changes; make generate unnecessary. Worktree clean and no forbidden paths changed against PR start point. Installs: none.
 Not checked: UI and animation behavior were not checked by eye; nested-session verification remains for startup hiding, repeated overview open/close, stable tiled-window geometry, drawer closing, settings toggles and multi-monitor behavior. The PR author's earlier live check is not this build's verification.
 First push lacked the credential repository path; retried successfully with command-local credential.useHttpPath=true. No user git settings changed.
+
+
+## factory · review · 2026-11-10 15:20
+head: d78d687d9e71550d0281fd1d1fb9722c0a130fb6
+verdict: pass
+notes:
+- Claude Code reviewed origin/master...HEAD against the request and plan; no confirmed P0–P3 findings. Base merges cleanly; no code changes or commits made during review.
+- make test passed in isolated HOME/XDG/runtime with live session variables absent: 18 Python tests, go vet, and race-enabled Go tests. Manager checked the clean worktree, reviewed head and successful test log.
+- Catalog source references were checked against code and all six locales. make i18n was not rerun: preparing a scratch copy failed before generation; no full regeneration claim is made.
+- Installs: none. UI was not checked by eye; startup hiding, repeated open/close, stable tiled geometry, drawer/menu closing, autohide animations, settings toggles and monitor hot-plug still need nested-session verification.
+- Moved review → ready. No merge to master or release.
