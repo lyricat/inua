@@ -1,0 +1,85 @@
+# Alacritty draws no menu bar. These are its Linux default shortcuts;
+# bindings that exist only on other platforms are left out. If a binding
+# is remapped, change the item here to the new keys.
+id = "alacritty"
+match = ["alacritty"]
+
+[[section]]
+label = "File"
+
+[[section.item]]
+label = "Close Window"
+action = "close-window"
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Quit Alacritty"
+action = "quit-app"
+
+[[section]]
+label = "Edit"
+
+[[section.item]]
+label = "Copy"
+keys = ["CTRL", "SHIFT", "C"]
+
+[[section.item]]
+label = "Paste"
+keys = ["CTRL", "SHIFT", "V"]
+
+[[section.item]]
+label = "Paste Selection"
+keys = ["SHIFT", "Insert"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Copy Window Title"
+action = "copy-title"
+
+[[section]]
+label = "Search"
+
+[[section.item]]
+label = "Search Forward"
+keys = ["CTRL", "SHIFT", "F"]
+
+[[section.item]]
+label = "Search Backward"
+keys = ["CTRL", "SHIFT", "B"]
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Toggle Vi Mode"
+keys = ["CTRL", "SHIFT", "space"]
+
+[[section]]
+label = "View"
+include = "window"
+
+[[section.item]]
+separator = true
+
+[[section.item]]
+label = "Increase Font Size"
+keys = ["CTRL", "equal"]
+
+[[section.item]]
+label = "Decrease Font Size"
+keys = ["CTRL", "minus"]
+
+[[section.item]]
+label = "Reset Font Size"
+keys = ["CTRL", "0"]
+
+[[section]]
+label = "Help"
+
+[[section.item]]
+label = "About Alacritty"
+action = "about"

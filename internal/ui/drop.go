@@ -51,7 +51,8 @@ type drop struct {
 	left, right, y float64
 	radius, corner float64
 	border         bool
-	end            bool    // flush with the bar's end
+	flush          bool    // flush with the bar's end when its button is at it
+	end            bool    // flush with the bar's end, as it hangs
 	under          float64 // the middle of the button it hangs under
 	x, w, h        float64 // the card's box, at rest
 	glass, line    gdk.RGBA
@@ -86,7 +87,7 @@ type drop struct {
 func (d *drop) attach(win *gtk.Window, keys *gtk.EventController, backdrop *gtk.Box, card *gtk.Widget, layer layershell.Layer, flush bool) {
 	d.win, d.keys, d.layer = win, keys, layer
 	d.backdrop, d.card, d.canvas, d.bar, d.host = backdrop, card, nil, nil, nil
-	d.end = flush
+	d.flush, d.end = flush, false
 	d.hanging, d.moving, d.back, d.gone = false, false, false, nil
 	d.shownW = 0
 	if d.onTick == nil {
@@ -144,7 +145,7 @@ func (d *drop) moveTo(b *bar) {
 
 // hang moves the card into a canvas, to hang from the bar b under the
 // button whose middle is at under.
-func (d *drop) hang(s *shellUI, b *bar, island [4]float32, under float64) bool {
+func (d *drop) hang(s *shellUI, b *bar, island [4]float32, under float64, atEnd bool) bool {
 	if !d.colors(b.win.HasCssClass("empty")) {
 		return false
 	}
@@ -165,6 +166,7 @@ func (d *drop) hang(s *shellUI, b *bar, island [4]float32, under float64) bool {
 	d.left, d.right = float64(island[0]), float64(island[0]+island[2])
 	d.y = float64(island[1] + island[3])
 	d.under = under
+	d.end = d.flush && atEnd // a button moved from the end (bar.layout) has the card under it
 	d.radius = float64(s.cfg.Style.Radius)
 	if !b.edgeGaps {
 		d.radius = 0 // flush: square
@@ -533,7 +535,10 @@ func (s *shellUI) dropFromBar(d *drop, mon *gdk.Monitor, button func(*bar) *gtk.
 	var r, br graphene.Rect
 	if on != nil && on.island.ComputeBounds(&on.win.Widget, &r) && button(on).ComputeBounds(&on.win.Widget, &br) {
 		b := *(*[4]float32)(unsafe.Pointer(&br))
-		if d.hang(s, on, *(*[4]float32)(unsafe.Pointer(&r)), float64(b[0]+b[2]/2)) {
+		island := *(*[4]float32)(unsafe.Pointer(&r))
+		// The last on the bar: no more than the island's padding after it.
+		atEnd := island[0]+island[2]-(b[0]+b[2]) <= 12
+		if d.hang(s, on, island, float64(b[0]+b[2]/2), atEnd) {
 			d.open()
 			return
 		}

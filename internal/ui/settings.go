@@ -94,6 +94,7 @@ type settings struct {
 	// controls start from what is in effect.
 	hyprKb string
 
+	barLayout    barLayoutSettings   // the Bar & Dock page's [LAYOUT]
 	sc           shortcutState       // the Shortcuts page
 	ai           aiSettings          // the AI page
 	about        aboutSettings       // the About page
@@ -546,6 +547,7 @@ func (s *shellUI) openSettings() {
 	s.getCompositorSettings(ui)
 	s.getVoiceSettings(ui)
 	s.getSoundSettings(ui)
+	s.getBarLayoutSettings(ui)
 	s.buildSettingsIndex()
 	s.getSettingsSearch(ui)
 	ui.Close()
@@ -818,6 +820,7 @@ func (s *shellUI) showSettings() {
 	s.showDisplays()
 	s.showNotifySettings()
 	s.showDockSettings()
+	s.showBarLayout()
 	s.showClipboardSettings()
 	s.showShortcuts()
 	s.showAISettings()
