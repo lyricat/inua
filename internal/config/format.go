@@ -273,7 +273,9 @@ search = %s
 mru = %t
 # Show each display's workspaces on its own overview surface.
 per_monitor = %t
-# Show the dock above the workspace overview while it is open.
+# Show the dock above the workspace overview while it is open. With
+# [dock] enable = false the dock appears only there, over the windows
+# without making them smaller, and goes when the overview closes.
 show_dock = %t
 
 [control]

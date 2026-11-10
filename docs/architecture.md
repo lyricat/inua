@@ -171,7 +171,7 @@ Creating a window: take the `ApplicationWindow` from its `.ui` →
 | --- | --- | --- | --- | --- | --- |
 | Wallpaper | Background | All edges, exclusive zone -1 | None | `inua-background` | One per monitor |
 | Bar | Top; a panel's while one hangs from it | Top, left, right; automatic exclusive zone | None; Exclusive while a panel hangs from it | `inua-bar` | One per monitor; hidden when `bar.enable` is off. A panel (control center, calendar, passwords) hangs inside its window, grown down over the monitor meanwhile with its exclusive zone kept (until the window has shrunk back), so the compositor blurs the bar and the panel as one surface |
-| Dock | Top | Selected edge; automatic exclusive zone, or 0 with autohide | None | `inua-dock` | One per monitor while `dock.enable` |
+| Dock | Top; Overlay while the overview is open (`overview.show_dock`) | Selected edge; automatic exclusive zone, or 0 with autohide or when only the overview shows it | None | `inua-dock` | One per monitor while `dock.enable` or `overview.show_dock`; with only the latter, unmapped outside the overview |
 | Dock drawer | Overlay | All edges (full screen, zone -1) | Exclusive | `inua-drawer` | Built on every open, destroyed on close; closes on a backdrop click or Esc. Glass with an arrow at its button, growing out of the arrow's tip |
 | Launcher | Overlay | None (centred) | Exclusive | `inua-launcher` | Built on every open, destroyed on close |
 | Control center | Overlay | All edges (full screen, zone -1) | Exclusive | `inua-control` | Built on every open, destroyed on close; closes on a backdrop click or Esc. Its backdrop and card hang in the bar's window; its own window shows only without a bar |
