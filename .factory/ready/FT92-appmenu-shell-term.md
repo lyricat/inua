@@ -29,3 +29,15 @@ The existing branch header names the fork branch, not an origin branch. For the 
 Owner corrected the requested destination: “诶不对，他们应该放到 review”。
 Moved new → review at the owner’s request; no build, review or tests performed in this update.
 Review the existing fork PR implementation using the source PR head (refs/pull/<PR>/head); the branch header is a fork branch, not necessarily an origin branch. The preceding instruction to build is superseded by this review request.
+
+
+## factory · review · 2026-11-10 21:44
+head: 36e3f62fe5f42dbd1c5aaaab7be5112ad10d376e
+verdict: pass
+notes:
+- [P3] internal/ui/settings_menu.go:33: Settings publishes a process-wide menu also discovered for other shell windows. With Settings open and an About window focused, File → Close closes Settings rather than About. Guard actions by active Settings window or publish only while active. Confirmed by code tracing; not exercised visually.
+- [P3] internal/termui/menubar.go:99: Terminal → Quit bypasses closeWindow and its SetUI save. Resize or fold a column, then quit from the new Linux menu: latest UI state is not saved. Route quit through window close. Confirmed by code tracing; not exercised visually.
+
+Reviewed origin/master...HEAD with Claude Code. Fetched PR #76 fork head 3786e78c, merged master 3478c014, resolved generated catalog conflicts preserving master translations, regenerated catalogs and pushed 36e3f62f to origin/feat/appmenu-shell-term. The contributor fork was not changed; this verdict covers the origin branch, not the original PR head.
+Validation: merge coder, manager and separate review coder each ran make test successfully with throwaway HOME. Review reports 18 Python tests, go vet, 117 Go packages with race checks; private-bus discovery test ran. Catalog regeneration is byte-identical; worktree clean. No installs. No P0/P1 findings; moved review → ready, not merged or released.
+Residual risks: UI not visually checked, no nested session or macOS validation; focus-dependent terminal actions need interactive verification. Independent publisher name counters can collide if both publishers are used in one process, but no current binary does so; excluded as a speculative finding.
