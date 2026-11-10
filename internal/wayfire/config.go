@@ -3,6 +3,7 @@ package wayfire
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -209,48 +210,74 @@ func bindsFile() string {
 // registered before with those of s. A key wayfire.ini binds itself stays
 // bound there: the command plugin reads its options only when it loads,
 // so a shortcut moved in inua keeps its old key too until the ini drops it.
+// The animation options go apart from the input ones, so that a failure
+// with them leaves the rest applied; it is returned once the rest is done.
 func (b *Backend) ApplySettings(ctx context.Context, s compositor.Settings) error {
-	options := map[string]any{}
+	input := map[string]any{}
 	if s.KbOptions != nil {
-		options["input/xkb_options"] = *s.KbOptions
+		input["input/xkb_options"] = *s.KbOptions
 	}
 	if s.TouchpadSpeed != nil {
-		options["input/touchpad_cursor_speed"] = *s.TouchpadSpeed
+		input["input/touchpad_cursor_speed"] = *s.TouchpadSpeed
 	}
 	if s.TouchpadAccel != "" {
-		options["input/touchpad_accel_profile"] = s.TouchpadAccel
+		input["input/touchpad_accel_profile"] = s.TouchpadAccel
 	}
-
-	// Wayfire's motion comes from plugins. Only set a plugin option when
-	// this compositor reports that it is installed.
-	if s.Animations != nil && b.has("wayfire/list-config-options") {
-		body, err := b.Client.Call(ctx, "wayfire/list-config-options", nil)
-		if err != nil {
-			return err
-		}
-		var listed struct {
-			Options map[string]map[string]json.RawMessage `json:"options"`
-		}
-		if err := json.Unmarshal(body, &listed); err != nil {
-			return fmt.Errorf("wayfire: list-config-options: %w", err)
-		}
-		for _, key := range []string{"animate/enabled", "fade/enabled", "zoom/enabled", "fire/enabled", "extra-animations/enabled"} {
-			section, option, _ := strings.Cut(key, "/")
-			if _, ok := listed.Options[section][option]; ok {
-				options[key] = *s.Animations
-			}
-		}
-	}
-	if len(options) > 0 {
-		if err := b.call(ctx, "wayfire/set-config-options", options); err != nil {
+	if len(input) > 0 {
+		if err := b.call(ctx, "wayfire/set-config-options", input); err != nil {
 			return err
 		}
 	}
+	motion := b.applyAnimations(ctx, s.Animations)
 	if err := b.applyDisplays(ctx, s.Displays); err != nil {
+		return errors.Join(err, motion)
+	}
+	if err := b.applyBinds(ctx, s.Binds); err != nil {
+		return errors.Join(err, motion)
+	}
+	return motion
+}
+
+// animationOptions are the on/off options of Wayfire's animation plugins.
+// Only those Wayfire lists are set: a plugin that is not installed has
+// none, and Wayfire 0.9 cannot list its options at all, so its own config
+// decides there.
+var animationOptions = []string{"animate/enabled", "fade/enabled", "fire/enabled", "extra-animations/enabled"}
+
+// applyAnimations turns the listed animation options on or off; nil
+// leaves them as Wayfire has them.
+func (b *Backend) applyAnimations(ctx context.Context, on *bool) error {
+	if on == nil || !b.has("wayfire/list-config-options") {
+		return nil
+	}
+	body, err := b.Client.Call(ctx, "wayfire/list-config-options", nil)
+	if err != nil {
 		return err
 	}
+	var listed struct {
+		Options map[string]map[string]json.RawMessage `json:"options"`
+	}
+	if err := json.Unmarshal(body, &listed); err != nil {
+		return fmt.Errorf("wayfire: list-config-options: %w", err)
+	}
+	options := map[string]any{}
+	for _, key := range animationOptions {
+		section, option, _ := strings.Cut(key, "/")
+		if _, ok := listed.Options[section][option]; ok {
+			options[key] = *on
+		}
+	}
+	if len(options) == 0 {
+		return nil
+	}
+	return b.call(ctx, "wayfire/set-config-options", options)
+}
+
+// applyBinds registers binds with the command plugin, in place of those
+// the last shell registered.
+func (b *Backend) applyBinds(ctx context.Context, binds []compositor.KeyBind) error {
 	if !b.has("command/register-binding") {
-		if len(s.Binds) > 0 {
+		if len(binds) > 0 {
 			return fmt.Errorf("%w: shortcuts need Wayfire's command plugin", compositor.ErrUnavailable)
 		}
 		return nil
@@ -274,7 +301,7 @@ func (b *Backend) ApplySettings(ctx context.Context, s compositor.Settings) erro
 	save()
 
 	var skipped []string
-	for _, kb := range s.Binds {
+	for _, kb := range binds {
 		if kb.Keys == "" || kb.Command == "" {
 			continue
 		}
