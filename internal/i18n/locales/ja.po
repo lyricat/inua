@@ -348,9 +348,9 @@ msgid "%d%%, charging"
 msgstr "%d%%、充電中"
 
 #: internal/apps/connect/service.go:520
-#: internal/ui/settings.go:354
-#: internal/ui/settings.go:806
-#: internal/ui/settings.go:915
+#: internal/ui/settings.go:356
+#: internal/ui/settings.go:811
+#: internal/ui/settings.go:920
 #: internal/ui/settings_displays.go:460
 msgid "%d%%"
 msgstr "%d%%"
@@ -2087,6 +2087,7 @@ msgstr "トライ"
 #: internal/mailui/menubar.go:39
 #: internal/remoteui/menubar.go:47
 #: internal/ui/appmenu_packs.go:78
+#: internal/ui/settings_menu.go:25
 #: internal/viewerui/menubar.go:36
 #: internal/vmui/menubar.go:36
 msgid "File"
@@ -2114,7 +2115,7 @@ msgstr "ウィンドウを閉じる"
 #: internal/assistantui/assistantui.go:916
 #: internal/diskui/menubar.go:38
 #: internal/lightui/clock.go:404
-#: internal/termui/menubar.go:42
+#: internal/termui/menubar.go:31
 #: internal/ui/appmenu_packs.go:81
 #: internal/viewerui/menubar.go:41
 #: ui/pass.ui:252
@@ -2131,8 +2132,9 @@ msgstr ""
 #: internal/gamesui/menubar.go:33
 #: internal/mailui/menubar.go:44
 #: internal/remoteui/menubar.go:56
-#: internal/termui/menubar.go:43
+#: internal/termui/menubar.go:32
 #: internal/ui/appmenu_packs.go:84
+#: internal/ui/settings_menu.go:28
 #: internal/viewerui/menubar.go:46
 #: internal/vmui/menubar.go:48
 msgid "View"
@@ -2910,11 +2912,11 @@ msgstr "フォルダーを開く"
 
 #: internal/desktop/defaults.go:39
 #: internal/term/web/strings.go:101
-#: internal/termui/app.go:115
-#: internal/termui/app.go:151
-#: internal/termui/app.go:357
-#: internal/termui/app.go:359
-#: internal/termui/menubar.go:40
+#: internal/termui/app.go:117
+#: internal/termui/app.go:153
+#: internal/termui/app.go:360
+#: internal/termui/app.go:362
+#: internal/termui/menubar.go:29
 #: internal/termui/prefs.go:160
 #: internal/termui/quick.go:29
 #: internal/termui/quick.go:47
@@ -2955,7 +2957,7 @@ msgstr "動画ファイルを開く"
 
 #: internal/desktop/defaults.go:48
 #: internal/lightui/pass_otp.go:330
-#: internal/ui/settings.go:1077
+#: internal/ui/settings.go:1082
 msgid "Images"
 msgstr "画像"
 
@@ -3229,7 +3231,7 @@ msgstr "ホーム"
 #: internal/lightui/sysmon.go:969
 #: internal/lightui/tailscale.go:527
 #: internal/lightui/tailscale.go:568
-#: internal/ui/settings.go:603
+#: internal/ui/settings.go:606
 #: ui/vm.ui:2981
 msgid "System"
 msgstr "システム"
@@ -3661,6 +3663,7 @@ msgstr[0] "…ほか %d 件"
 #: internal/termui/wsmenu.go:129
 #: internal/ui/appmenu_packs.go:119
 #: internal/ui/settings_bench.go:132
+#: internal/ui/settings_menu.go:26
 #: internal/ui/settings_wifi_details.go:62
 #: ui/mail-compose.ui:292
 #: ui/mail.ui:395
@@ -3825,7 +3828,7 @@ msgid "Terminal here"
 msgstr "ここで端末を開く"
 
 #: internal/filesui/cards.go:706
-#: internal/termui/menubar.go:44
+#: internal/termui/menubar.go:33
 #: ui/screenshot.ui:180
 #: ui/shotdrawer.ui:122
 msgid "Window"
@@ -9542,8 +9545,8 @@ msgid "Top level"
 msgstr "最上位"
 
 #: internal/lightui/pass.go:432
-#: internal/ui/settings.go:940
-#: internal/ui/settings.go:967
+#: internal/ui/settings.go:945
+#: internal/ui/settings.go:972
 msgid "%d entry"
 msgid_plural "%d entries"
 msgstr[0] "%d 件"
@@ -9984,7 +9987,7 @@ msgstr "検索できませんでした: %s"
 #: internal/lightui/sysmon.go:55
 #: internal/lightui/sysmon.go:55
 #: internal/shell/launcher_actions.go:45
-#: internal/termui/menubar.go:34
+#: internal/termui/menubar.go:27
 #: internal/ui/dock.go:590
 #: internal/ui/portal_ask.go:80
 msgid "Quit"
@@ -11461,7 +11464,7 @@ msgid "Mark All Read"
 msgstr ""
 
 #: internal/mailui/menubar.go:53
-#: internal/termui/menubar.go:45
+#: internal/termui/menubar.go:34
 #: internal/ui/appmenu_packs.go:88
 msgid "Help"
 msgstr ""
@@ -13083,7 +13086,7 @@ msgid "%d thr"
 msgstr "%d スレッド"
 
 #: internal/shell/cardterm.go:136
-#: internal/ui/settings.go:601
+#: internal/ui/settings.go:604
 msgid "Desktop"
 msgstr "デスクトップ"
 
@@ -14092,7 +14095,7 @@ msgid "Session %d"
 msgstr "セッション %d"
 
 #: internal/term/web/strings.go:97
-#: internal/termui/menubar.go:41
+#: internal/termui/menubar.go:30
 #: internal/termui/prefs.go:181
 msgid "Shell"
 msgstr "シェル"
@@ -15140,7 +15143,7 @@ msgid "Searching…"
 msgstr "検索中…"
 
 #: internal/ui/control_detail.go:214
-#: internal/ui/settings.go:600
+#: internal/ui/settings.go:603
 msgid "Devices"
 msgstr "デバイス"
 
@@ -15159,7 +15162,7 @@ msgid "No devices paired yet"
 msgstr "ペアリング済みのデバイスはまだありません"
 
 #: internal/ui/drawer.go:218
-#: internal/ui/settings.go:602
+#: internal/ui/settings.go:605
 #: internal/ui/widgets.go:586
 #: ui/settings.ui:181
 #: ui/settings.ui:2427
@@ -15537,121 +15540,121 @@ msgstr "スクリーンショットがコピーされました"
 msgid "Screenshot taken"
 msgstr "撮影されたスクリーンショット"
 
-#: internal/ui/settings.go:336
+#: internal/ui/settings.go:338
 msgid "Not restarted: %s"
 msgstr "再起動できませんでした: %s"
 
-#: internal/ui/settings.go:361
-#: internal/ui/settings.go:808
+#: internal/ui/settings.go:363
+#: internal/ui/settings.go:813
 msgid "%d px"
 msgstr "%d px"
 
-#: internal/ui/settings.go:599
+#: internal/ui/settings.go:602
 msgid "Connections"
 msgstr "接続"
 
-#: internal/ui/settings.go:712
+#: internal/ui/settings.go:717
 msgid "%s · yours: right-click for more"
 msgstr "%s · 自分のテーマ：右クリックでその他"
 
-#: internal/ui/settings.go:729
+#: internal/ui/settings.go:734
 msgid "A CSS file of @define-color lines, kept in themes beside config.toml"
 msgstr "@define-color 行の CSS ファイル。config.toml の隣の themes に置かれます"
 
-#: internal/ui/settings.go:738
+#: internal/ui/settings.go:743
 msgid "Add Theme…"
 msgstr "テーマを追加…"
 
-#: internal/ui/settings.go:844
+#: internal/ui/settings.go:849
 msgid "As the bar (%s)"
 msgstr "バーと同じ（%s）"
 
-#: internal/ui/settings.go:861
+#: internal/ui/settings.go:866
 msgid "inua objects"
 msgstr "inua objects"
 
-#: internal/ui/settings.go:862
+#: internal/ui/settings.go:867
 msgid "inua objects soft"
 msgstr "inua objects soft"
 
-#: internal/ui/settings.go:863
+#: internal/ui/settings.go:868
 msgid "inua objects flat"
 msgstr "inua objects flat"
 
-#: internal/ui/settings.go:871
+#: internal/ui/settings.go:876
 msgid "Phosphor"
 msgstr "Phosphor"
 
-#: internal/ui/settings.go:871
-#: internal/ui/settings.go:872
+#: internal/ui/settings.go:876
+#: internal/ui/settings.go:877
 msgid "System theme"
 msgstr "システムテーマ"
 
-#: internal/ui/settings.go:872
+#: internal/ui/settings.go:877
 #: ui/settings.ui:588
 msgid "As the app style"
 msgstr "アプリのスタイルどおり"
 
-#: internal/ui/settings.go:966
+#: internal/ui/settings.go:971
 msgid "%s (%s, %s) · %s"
 msgstr "%s(%s、%s)· %s"
 
-#: internal/ui/settings.go:968
+#: internal/ui/settings.go:973
 msgid "%d text"
 msgid_plural "%d texts"
 msgstr[0] "テキスト %d 件"
 
-#: internal/ui/settings.go:969
+#: internal/ui/settings.go:974
 msgid "%d image"
 msgid_plural "%d images"
 msgstr[0] "画像 %d 件"
 
-#: internal/ui/settings.go:970
+#: internal/ui/settings.go:975
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: internal/ui/settings.go:1049
+#: internal/ui/settings.go:1054
 #: internal/ui/settings_apps.go:168
 #: internal/ui/settings_card.go:288
 #: internal/ui/settings_portals.go:177
 msgid "Not saved: %s"
 msgstr "保存されていません: %s"
 
-#: internal/ui/settings.go:1075
+#: internal/ui/settings.go:1080
 msgid "Choose a wallpaper"
 msgstr "壁紙を選択してください"
 
-#: internal/ui/settings.go:1117
+#: internal/ui/settings.go:1122
 msgid "Off: another notification daemon can show them"
 msgstr "オフ: 別の通知デーモンがそれらを表示できる"
 
-#: internal/ui/settings.go:1119
+#: internal/ui/settings.go:1124
 msgid "Banners, then the notification center (the bell in the bar, or Super+N)"
 msgstr "バナー表示後に通知センターへ（バーのベル、または Super+N）"
 
-#: internal/ui/settings.go:1121
+#: internal/ui/settings.go:1126
 msgid "Waiting: another notification daemon is running"
 msgstr "待機中: 別の通知デーモンが実行中です"
 
-#: internal/ui/settings.go:1140
+#: internal/ui/settings.go:1145
 msgid "Nothing pinned"
 msgstr "固定したアプリはありません"
 
-#: internal/ui/settings.go:1156
+#: internal/ui/settings.go:1161
 msgid "%s (not installed)"
 msgstr "%s (未インストール)"
 
-#: internal/ui/settings.go:1169
+#: internal/ui/settings.go:1174
 #: ui/settings.ui:1718
 msgid "Move earlier"
 msgstr "前に移動"
 
-#: internal/ui/settings.go:1170
+#: internal/ui/settings.go:1175
 #: ui/settings.ui:1730
 msgid "Move later"
 msgstr "後ろに移動"
 
-#: internal/ui/settings.go:1171
+#: internal/ui/settings.go:1176
 msgid "Remove from the dock"
 msgstr "ドックから削除"
 
