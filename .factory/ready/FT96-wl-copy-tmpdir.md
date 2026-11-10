@@ -36,3 +36,16 @@ Installs: none.
 Not checked: no real screenshot/clipboard test or visual UI check in a live or nested session; unwritable system /tmp case not simulated. No visual UI change.
 Isolation note: coder reported its first full test used the existing user cache directory accidentally; it reran with isolated HOME and all XDG directories. Manager verification likewise used isolated HOME/XDG directories.
 Moved new/ → review/. Awaiting review; not merged into master.
+
+## factory · review · 2026-11-10 11:22
+head: 7c5223b6110250e7b076c8af2726b261c328b0e8
+verdict: pass
+notes:
+- [P2] internal/ui/screenshot_wlcopy_test.go:31-33: Fake-command log paths are unquoted shell redirects. A TMPDIR containing a space makes three clipboard tests fail with a redirection error. Quote paths safely or pass the log directory through an environment variable.
+- [P2] internal/ui/screenshot_wlcopy_test.go:87: The output path from /proc resolves symlinks while the expected t.TempDir path does not (also line 107). A symlinked TMPDIR makes two tests fail. Resolve expected paths or compare file identities.
+
+Claude Code reviewed origin/master...HEAD (merge base a6787817), all nine changed files: screenshot fallback, regression tests and catalog reference shifts. No P0/P1 findings. Required make test passed with isolated HOME, XDG directories, TMPDIR and Go cache (18 Python tests, go vet, Go race tests). Targeted clipboard race tests passed three times. Additional space/symlink TMPDIR probes reproduced the P2 findings. Scratch-copy make i18n reproduced catalogs; removing the fallback in a scratch copy made four of five tests fail. No installs. No merge conflicts with current master.
+
+Review constraint breach disclosed by coder: after a scratch-copy failure, it briefly modified screenshot.go in the review worktree and ran one targeted test with its existing environment, using the real Go build cache and /tmp. It restored the tracked file and repeated checks in scratch isolation. Manager verified a clean worktree and unchanged head; no commits or code push. Tests used fake wl-copy; coder reports no live clipboard, runtime daemon or windows touched. The /tmp fallback test intentionally uses and removes short-lived /tmp files.
+
+Not checked: real screenshot/clipboard behavior, visual or nested UI, and unwritable system /tmp. No visual UI change. P2 test portability issues remain for owner attention. Moved review/ → ready/; not merged into master.
