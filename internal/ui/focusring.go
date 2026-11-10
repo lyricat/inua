@@ -21,44 +21,57 @@ import (
 // focused border looks like.
 const focusRingColors = "#89b4faff"
 
-// focusRingColor is the compositor's active window border colour, so the
-// ring around another monitor's window reads as the same highlight. A
-// gradient uses its first stop; without Hyprland, or an answer, the
-// default blue is used.
+// loadFocusRingColor reads the compositor's active window border colour
+// and keeps it, so the ring around another monitor's window reads as the
+// same highlight.
 func (s *shellUI) loadFocusRingColor() {
+	s.setFocusRingColor(s.readFocusRingColor())
+}
+
+// readFocusRingColor asks Hyprland for its active border colour. A gradient
+// uses its first stop; without Hyprland, or an answer, the default blue is
+// used. It touches no GTK state, so it may run off the main thread.
+func (s *shellUI) readFocusRingColor() gdk.RGBA {
+	if s.hypr != nil && s.hypr.Client != nil {
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+		if reply, err := s.hypr.Client.Request(ctx, "j/getoption general:col.active_border"); err == nil {
+			if c, ok := activeBorderColor(reply); ok {
+				return c
+			}
+		}
+	}
 	out := gdk.RGBA{}
 	out.Parse(focusRingColors)
-	if s.hypr == nil || s.hypr.Client == nil {
-		s.focusRingColorValue, s.focusRingColorSet = out, true
-		return
+	return out
+}
+
+// setFocusRingColor keeps the colour and repaints the rings shown with it.
+func (s *shellUI) setFocusRingColor(c gdk.RGBA) {
+	s.focusRingColorValue, s.focusRingColorSet = c, true
+	for _, b := range s.bars {
+		if r := b.focusRing; r != nil {
+			r.color = c
+			r.canvas.QueueDraw()
+		}
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	defer cancel()
-	reply, err := s.hypr.Client.Request(ctx, "j/getoption general:col.active_border")
-	if err != nil {
-		s.focusRingColorValue, s.focusRingColorSet = out, true
-		return
-	}
+}
+
+// activeBorderColor reads getoption's reply for general:col.active_border.
+// Hyprland gives a gradient as its custom text, "AARRGGBB AARRGGBB 45deg";
+// the first stop is the colour.
+func activeBorderColor(reply []byte) (gdk.RGBA, bool) {
 	var option struct {
-		Gradient string `json:"gradient"`
-		Color    string `json:"color"`
+		Custom string `json:"custom"`
 	}
 	if json.Unmarshal(reply, &option) != nil {
-		s.focusRingColorValue, s.focusRingColorSet = out, true
-		return
+		return gdk.RGBA{}, false
 	}
-	spec := option.Gradient
-	if spec != "" {
-		if fields := strings.Fields(spec); len(fields) > 0 {
-			spec = fields[0]
-		}
-	} else {
-		spec = option.Color
+	fields := strings.Fields(option.Custom)
+	if len(fields) == 0 {
+		return gdk.RGBA{}, false
 	}
-	if c, ok := parseBorderColor(spec); ok {
-		out = c
-	}
-	s.focusRingColorValue, s.focusRingColorSet = out, true
+	return parseBorderColor(fields[0])
 }
 
 // focusRingColor is the cached active border colour; it is read again when
