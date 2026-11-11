@@ -53,3 +53,17 @@ Validation by Claude Code: make test passed (18 Python tests, go vet, 117 Go pac
 Scope: combined branch against master, 88 files before final targeted correction, including 38 backup binaries inspected only as metadata, not executed. No installs, visual UI/manual desktop checks, full Japanese proofread, real third-party menu checks, or niri/Wayfire runtime verification. Existing master's screen-recording wording remains outside introduced findings.
 
 Moved review → ready per factory's no-P0/P1 threshold, not a claim that all defects are fixed. No merge to master, release or deployment.
+
+## factory · review · 2026-11-11 14:34
+head: cd5761b124be7297856878b5c374058aead0a62f
+verdict: pass
+Owner requested Claude Code fix all three outstanding P2s, push the branch, and place FT89 in ready. Already in ready; retained that status with this updated head-specific record.
+
+Fixed and pushed to factory/FT89-japanese-translations:
+- f24b4d17: Japanese lobby summary uses total %[2]d, playing %[1]d, empty %[3]d; corrected the assertion for (2,10,8).
+- 461ff5ec: centralized bar.menu=false guard clears the menu on every sync/refresh, preventing hidden menus from reappearing; added headless GTK refresh and on/off coverage.
+- cd5761b1: restored launcher right-click Unref and renderLauncher from master; tests cover stable widget reference count and selected highlight.
+
+Claude demonstrated each regression test fails without its fix; targeted UI race tests passed five repeated runs. Full make test passed for Claude (isolated HOME, long TMPDIR) and independently for manager with throwaway HOME. make i18n reproduced catalogs; git diff --check passed, worktree clean, no forbidden paths changed. No new P0/P1 found in targeted self-review and manager diff inspection. Previous P3 notes remain outside this request.
+
+No installs, backup binaries executed, real desktop/visual verification, contributor fork changes, master merge, release, or deployment. Menu and launcher tests ran headless, not real third-party applications.
