@@ -39,6 +39,7 @@ import (
 	"github.com/lyricat/inua/internal/portalconf"
 	"github.com/lyricat/inua/internal/shell"
 	"github.com/lyricat/inua/internal/system"
+	"github.com/lyricat/inua/internal/uikit"
 	layouts "github.com/lyricat/inua/ui"
 )
 
@@ -76,6 +77,10 @@ type shellUI struct {
 	// has (Lua listeners, binds, displays, the virtual screen).
 	comp compositor.Backend
 	hypr *hypr.Backend
+	// focusRingColorValue is the compositor's active border colour, read when
+	// the settings load and on reload: the ring on another monitor uses it.
+	focusRingColorValue gdk.RGBA
+	focusRingColorSet   bool
 	// saidFallback: the login's fallback, if any, has been told (sayFallback).
 	saidFallback bool
 	caps         compositor.Capabilities
@@ -96,6 +101,7 @@ type shellUI struct {
 	workspaceWheel, dockWheel shell.WheelStep
 
 	bars      map[uintptr]*bar // by GdkMonitor
+	barRows   barRows          // their islands' layout, and the editor's
 	styles    styles
 	clockGen  uintptr // the running clock timer; see restartClock
 	launcher  launcher
@@ -175,6 +181,7 @@ type shellUI struct {
 	onAppTitle             func(gtk.Button)
 	onLauncherRight        func(gtk.GestureClick, int32, float64, float64)
 	onAppMenuClosed        func(gtk.Popover)
+	onAppAboutClose        func(gtk.Button) // an About window's Close, one for every opening
 	onSettingsEntry        func(uintptr, uintptr)
 	onSettingsSwitch       func(gtk.Switch, bool) bool
 	onAIAbility            func(gtk.ToggleButton)
@@ -385,6 +392,7 @@ func Run(opts Options) int {
 	restore := gtkx.ForcePortals(portalconf.PickerOn())
 	app := gtk.NewApplication(shell.AppID, gio.GApplicationNonUniqueValue)
 	s := &shellUI{opts: opts, cfg: opts.Config, app: app, bars: map[uintptr]*bar{}, distro: system.ReadDistribution("/")}
+	uikit.SetIconShape(uikit.IconShapeFromName(s.cfg.Style.IconShape))
 	s.pass.slot = make(chan struct{}, 1) // before the control socket serves
 	activate := func(gio.Application) {
 		restore() // the display is open
@@ -793,8 +801,12 @@ func (s *shellUI) onHyprEvent(e hypr.Event) {
 		gtkx.Post(h.s.applyHyprland)
 	}
 	if e.Name == "configreloaded" {
+		// col.active_border may have changed: read it here, off the main
+		// thread, and repaint the rings with it there.
+		ring := h.s.readFocusRingColor()
 		// inua.conf may have changed what is in effect.
 		gtkx.Post(func() {
+			h.s.setFocusRingColor(ring)
 			h.s.refreshHyprInput()
 			h.s.installOverviewKeys()
 			if h.s.overview.st.Open {

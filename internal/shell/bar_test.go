@@ -230,29 +230,138 @@ func TestSetterKeepsLatest(t *testing.T) {
 }
 
 func TestBarReach(t *testing.T) {
-	// The bar's end, as measured: clipboard, notifications, status, 6 px
-	// apart, each 24 px tall at y 8 in a 36 px window.
-	buttons := []Rect{{1036, 8, 34, 24}, {1076, 8, 34, 24}, {1116, 8, 150, 24}}
+	// The bar's end, as measured: the tray, then clipboard,
+	// notifications, status, 6 px apart, each 24 px tall at y 8 in a 36 px
+	// window; the clock before them.
+	spots := []BarSpot{
+		{Rect: Rect{600, 8, 120, 24}, Break: true}, // the clock
+		{Rect: Rect{0, 0, 0, 0}, Break: true},      // a space
+		{Rect: Rect{1000, 8, 30, 24}},              // the tray
+		{Rect: Rect{1036, 8, 34, 24}, Reach: true},
+		{Rect: Rect{1076, 8, 34, 24}, Reach: true},
+		{Rect: Rect{1116, 8, 150, 24}, Reach: true},
+	}
 	cases := []struct {
 		x, y float64
 		i    int
 		on   bool
 	}{
-		{1050, 0, 0, false},   // above the clipboard, at the screen's edge
-		{1050, 20, 0, true},   // on it
-		{1033, 20, 0, false},  // half the gap before the first
+		{1050, 0, 3, false},   // above the clipboard, at the screen's edge
+		{1050, 20, 3, true},   // on it
+		{1033, 20, 3, false},  // half the gap before the first
 		{1032, 20, -1, false}, // further: nothing
-		{1072.9, 2, 0, false}, // the gap's first half: the clipboard's
-		{1073, 2, 1, false},   // its second half: the notifications'
-		{1279, 35, 2, false},  // the screen's corner: the status button's
-		{1200, 20, 2, true},
+		{1072.9, 2, 3, false}, // the gap's first half: the clipboard's
+		{1073, 2, 4, false},   // its second half: the notifications'
+		{1279, 35, 5, false},  // the screen's corner: the status button's
+		{1200, 20, 5, true},
+		{650, 20, -1, false}, // the clock is not a reach
 	}
 	for _, c := range cases {
-		if i, on := BarReach(buttons, 6, c.x, c.y); i != c.i || on != c.on {
+		if i, on := BarReach(spots, 6, c.x, c.y); i != c.i || on != c.on {
 			t.Errorf("BarReach(%v, %v) = %d, %v; want %d, %v", c.x, c.y, i, on, c.i, c.on)
 		}
 	}
 	if i, _ := BarReach(nil, 6, 10, 10); i != -1 {
 		t.Errorf("no buttons: %d", i)
+	}
+}
+
+// Buttons moved elsewhere on the bar reach only across the gaps between
+// them: a space or the clock between two keeps their reaches apart, and
+// one first on the bar reaches the screen's left corner, not its right.
+func TestBarReachRearranged(t *testing.T) {
+	spots := []BarSpot{
+		{Rect: Rect{4, 8, 150, 24}, Reach: true},   // the control center, first
+		{Rect: Rect{160, 8, 34, 24}, Reach: true},  // notifications beside it
+		{Rect: Rect{200, 8, 80, 24}, Break: true},  // the workspaces
+		{Rect: Rect{0, 0, 0, 0}, Break: true},      // a space
+		{Rect: Rect{900, 8, 34, 24}, Reach: true},  // the clipboard
+		{Rect: Rect{0, 0, 0, 0}, Break: true},      // a space
+		{Rect: Rect{1200, 8, 76, 24}, Break: true}, // the clock, last
+	}
+	cases := []struct {
+		x  float64
+		i  int
+		on bool
+	}{
+		{0, 0, false},      // the screen's left corner: the control center
+		{-5, 0, false},     // and past it
+		{100, 0, true},     // on it
+		{156.9, 0, false},  // the first half of the gap to notifications
+		{157, 1, false},    // the second
+		{196.9, 1, false},  // half the gap past notifications
+		{197, -1, false},   // the workspaces break the reaches
+		{500, -1, false},   // across the space: nothing
+		{896.9, -1, false}, // just before half the gap before the clipboard
+		{897, 4, false},
+		{936.9, 4, false},
+		{937, -1, false},
+		{1279, -1, false}, // the right corner is the clock's, no button's
+	}
+	for _, c := range cases {
+		if i, on := BarReach(spots, 6, c.x, 20); i != c.i || on != c.on {
+			t.Errorf("BarReach(%v) = %d, %v; want %d, %v", c.x, i, on, c.i, c.on)
+		}
+	}
+	// Alone on an otherwise empty bar, a button reaches both corners.
+	if i, _ := BarReach([]BarSpot{{Rect: Rect{600, 8, 34, 24}, Reach: true}}, 6, 1279, 0); i != 0 {
+		t.Errorf("alone, right corner: %d", i)
+	}
+	if i, _ := BarReach([]BarSpot{{Rect: Rect{600, 8, 34, 24}, Reach: true}}, 6, 0, 0); i != 0 {
+		t.Errorf("alone, left corner: %d", i)
+	}
+}
+
+func TestEmptyDesktop(t *testing.T) {
+	empty := func() compositor.Snapshot {
+		snap := twoMonitors()
+		snap.Outputs[0].ActiveWorkspace = "3"
+		snap.Workspaces = append(snap.Workspaces, compositor.Workspace{ID: "3", Order: 3, Output: "eDP-1"})
+		snap.FocusedWindow = ""
+		return snap
+	}
+	for _, tc := range []struct {
+		name      string
+		change    func(*compositor.Snapshot)
+		connector string
+		want      bool
+	}{
+		{"empty and focused", func(*compositor.Snapshot) {}, "eDP-1", true},
+		{"another monitor's bar", func(*compositor.Snapshot) {}, "HDMI-A-1", false},
+		{"monitor unknown to the compositor", func(*compositor.Snapshot) {}, "WL-1", false},
+		{"no focused output", func(s *compositor.Snapshot) { s.FocusedOutput = "" }, "eDP-1", false},
+		{"no active workspace", func(s *compositor.Snapshot) { s.Outputs[0].ActiveWorkspace = "" }, "eDP-1", false},
+		{"a window without a process", func(s *compositor.Snapshot) {
+			s.Windows = append(s.Windows, compositor.Window{ID: "0x9", Workspace: "3"})
+		}, "eDP-1", false},
+		{"a focused window without a process", func(s *compositor.Snapshot) {
+			s.Windows = append(s.Windows, compositor.Window{ID: "0x9", Workspace: "3"})
+			s.FocusedWindow = "0x9"
+		}, "eDP-1", false},
+		{"a window on the special workspace shown over it", func(s *compositor.Snapshot) {
+			s.Outputs[0].SpecialWorkspace = "-98"
+			s.Windows = append(s.Windows, compositor.Window{ID: "0x9", PID: 9, Workspace: "-98"})
+		}, "eDP-1", false},
+		{"an empty special workspace shown over it", func(s *compositor.Snapshot) {
+			s.Outputs[0].SpecialWorkspace = "-98"
+		}, "eDP-1", true},
+		{"a window on this monitor with no workspace", func(s *compositor.Snapshot) {
+			s.Windows = append(s.Windows, compositor.Window{ID: "0x9", PID: 9, Output: "eDP-1"})
+		}, "eDP-1", false},
+		{"a window nowhere known", func(s *compositor.Snapshot) {
+			s.Windows = append(s.Windows, compositor.Window{ID: "0x9", PID: 9})
+		}, "eDP-1", false},
+		{"a focused window not listed yet", func(s *compositor.Snapshot) { s.FocusedWindow = "0x9" }, "eDP-1", false},
+		{"the focus not yet moved from another monitor", func(s *compositor.Snapshot) { s.FocusedWindow = "0x3" }, "eDP-1", true},
+		{"windows on other workspaces only", func(s *compositor.Snapshot) {}, "eDP-1", true},
+	} {
+		snap := empty()
+		tc.change(&snap)
+		if got := EmptyDesktop(snap, tc.connector); got != tc.want {
+			t.Errorf("%s: %v, want %v", tc.name, got, tc.want)
+		}
+	}
+	if EmptyDesktop(twoMonitors(), "eDP-1") {
+		t.Error("a monitor with its focused window: empty")
 	}
 }

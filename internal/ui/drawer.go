@@ -505,7 +505,9 @@ func (s *shellUI) drawerRequest(fn string) bool {
 		return true
 	}
 	for _, b := range s.bars {
-		if b.dock == nil || b.connector() != s.snap.FocusedOutput || b.dock.drawer == nil {
+		// A dock only the overview shows is unmapped outside it: no drawer
+		// to grow from.
+		if b.dock == nil || b.connector() != s.snap.FocusedOutput || b.dock.drawer == nil || !b.dock.win.GetVisible() {
 			continue
 		}
 		if kind == drawerWorkshop && b.dock.workshop == nil {

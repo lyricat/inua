@@ -20,7 +20,7 @@ type SettingsItem struct {
 // title is: what people call the things on it.
 var SettingsKeywords = map[string][]string{
 	"appearance":    {"theme", "dark", "light", "wallpaper", "background", "font", "text size", "icons", "language", "colour", "color"},
-	"bar":           {"dock", "panel", "clock", "tray", "taskbar", "control center"},
+	"bar":           {"dock", "panel", "clock", "tray", "taskbar", "control center", "top bar", "topbar", "layout", "arrange", "order"},
 	"launcher":      {"search", "run", "terminal"},
 	"apps":          {"default", "browser", "mail", "open with", "file types"},
 	"ai":            {"assistant", "model", "api key", "openai", "anthropic", "claude", "mcp"},

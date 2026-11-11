@@ -61,6 +61,18 @@ tray = true
 # when there is a store. `inua call pass toggle` opens it too.
 pass = true
 
+# What the bar shows, from the left: "workspaces" (with the widget page's
+# mark), "app_menu", "app_title", "clock", "tray", "recording" (while the
+# screen is recorded), "passwords", "clipboard", "notifications",
+# "dictation", "control_center", each once at most, and any number of
+# "space", which take the room left over: what is between exactly two
+# spaces sits in the middle of the bar, else the spaces share it equally.
+# Left unset (commented out), the bar has the default below with the clock
+# centred on the screen; layout = [] is an empty bar. The settings for each
+# item above still decide whether it shows. Settings, Bar & Dock edits it
+# by dragging.
+# layout = ["workspaces", "app_menu", "app_title", "space", "clock", "space", "tray", "recording", "passwords", "clipboard", "notifications", "dictation", "control_center"]
+
 [launcher]
 # What `inua call launcher toggle` opens: "apps" or "windows".
 # (`launcher apps` and `launcher windows` open a mode directly.)
@@ -118,7 +130,9 @@ url = "https://translate.google.com/?text=%s"
 mru = false
 # Show each display's workspaces on its own overview surface.
 per_monitor = true
-# Show the dock above the workspace overview while it is open.
+# Show the dock above the workspace overview while it is open. With
+# [dock] enable = false the dock appears only there, over the windows
+# without making them smaller, and goes when the overview closes.
 show_dock = true
 # Show the line under the overview's cards: the controls, and the window
 # under the pointer.
@@ -186,6 +200,13 @@ app_style = "inua-objects"
 # ~/.local/share/icons). inua's apps keep app_style; the tray's icons come
 # from each app.
 app_icons = ""
+
+# How app icons are drawn in the dock, its drawer and the launcher:
+#   "squircle"  a square with continuous corners (the default)
+#   "circle"    a circle
+#   "pebble"    a soft, slightly uneven round square
+#   "none"      the icon as its file is, without a shape or light
+icon_shape = "squircle"
 
 # Line icons of the bar, control center, launcher, settings and inua's
 # apps:

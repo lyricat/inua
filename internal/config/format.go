@@ -15,12 +15,12 @@ import (
 func Format(c Config) string {
 	return fmt.Sprintf(template,
 		q(c.Language),
-		c.Bar.Enable, q(c.Bar.Density), c.Bar.IconSize, c.Bar.IconSpacing, q(c.Bar.Clock), q(c.Bar.ClockLanguage), q(c.Bar.Workspaces), c.Bar.Title, c.Bar.Menu, q(c.Bar.TitleMode), c.Bar.TransparentEmpty, c.Bar.Tray, c.Bar.Pass,
+		c.Bar.Enable, q(c.Bar.Density), c.Bar.IconSize, c.Bar.IconSpacing, q(c.Bar.Clock), q(c.Bar.ClockLanguage), q(c.Bar.Workspaces), c.Bar.Title, c.Bar.Menu, q(c.Bar.TitleMode), c.Bar.TransparentEmpty, c.Bar.Tray, c.Bar.Pass, barLayoutLine(c.Bar.Layout),
 		q(c.Launcher.Mode), q(c.Launcher.Terminal), q(c.Launcher.Search), quicklinks(c.Launcher.Quicklinks), c.Overview.MRU, c.Overview.PerMonitor, c.Overview.ShowDock, c.Overview.Hints, c.Overview.LauncherWorkspace,
 		q(c.Control.Lock), q(c.Control.Screenshot),
 		q(c.Screenshot.Folder), c.Screenshot.Copy, q(c.Screenshot.Recordings),
 		c.OSD.Enable, q(c.OSD.Position),
-		q(c.Style.Theme), q(c.Style.AppTheme), q(c.Style.AppStyle), q(c.Style.AppIcons), q(c.Style.Icons), AnimationEnabled(c.Style.Animations), c.Style.EdgeGaps, c.Style.TextScale, c.Style.Transparency, c.Style.Radius, q(c.Style.CSS),
+		q(c.Style.Theme), q(c.Style.AppTheme), q(c.Style.AppStyle), q(c.Style.AppIcons), q(c.Style.IconShape), q(c.Style.Icons), AnimationEnabled(c.Style.Animations), c.Style.EdgeGaps, c.Style.TextScale, c.Style.Transparency, c.Style.Radius, q(c.Style.CSS),
 		c.Background.Enable, q(c.Background.Image), q(c.Background.Fit), q(c.Background.Color),
 		c.Background.Generate,
 		kbOptionsLine(c.Input.KbOptions), touchpadSpeedLine(c.Input.TouchpadSpeed), q(c.Input.TouchpadAccel),
@@ -252,6 +252,18 @@ tray = %t
 # when there is a store. `+"`inua call pass toggle`"+` opens it too.
 pass = %t
 
+# What the bar shows, from the left: "workspaces" (with the widget page's
+# mark), "app_menu", "app_title", "clock", "tray", "recording" (while the
+# screen is recorded), "passwords", "clipboard", "notifications",
+# "dictation", "control_center", each once at most, and any number of
+# "space", which take the room left over: what is between exactly two
+# spaces sits in the middle of the bar, else the spaces share it equally.
+# Left unset (commented out), the bar has the default below with the clock
+# centred on the screen; layout = [] is an empty bar. The settings for each
+# item above still decide whether it shows. Settings, Bar & Dock edits it
+# by dragging.
+%s
+
 [launcher]
 # What `+"`inua call launcher toggle`"+` opens: "apps" or "windows".
 # (`+"`launcher apps`"+` and `+"`launcher windows`"+` open a mode directly.)
@@ -274,7 +286,9 @@ search = %s
 mru = %t
 # Show each display's workspaces on its own overview surface.
 per_monitor = %t
-# Show the dock above the workspace overview while it is open.
+# Show the dock above the workspace overview while it is open. With
+# [dock] enable = false the dock appears only there, over the windows
+# without making them smaller, and goes when the overview closes.
 show_dock = %t
 # Show the line under the overview's cards: the controls, and the window
 # under the pointer.
@@ -342,6 +356,13 @@ app_style = %s
 # ~/.local/share/icons). inua's apps keep app_style; the tray's icons come
 # from each app.
 app_icons = %s
+
+# How app icons are drawn in the dock, its drawer and the launcher:
+#   "squircle"  a square with continuous corners (the default)
+#   "circle"    a circle
+#   "pebble"    a soft, slightly uneven round square
+#   "none"      the icon as its file is, without a shape or light
+icon_shape = %s
 
 # Line icons of the bar, control center, launcher, settings and inua's
 # apps:

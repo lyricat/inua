@@ -938,7 +938,7 @@ func (s *shellUI) overviewDo(action string, do func(ctx context.Context) error) 
 // overviewDockInsets reserves the dock's footprint when it is layered above
 // the overview, leaving the workspace chooser centered in the remaining area.
 func (s *shellUI) overviewDockInsets() (top, bottom, start, end int) {
-	if !s.layer || !s.cfg.Overview.ShowDock || !s.cfg.Dock.Enable {
+	if !s.layer || !s.cfg.Overview.ShowDock {
 		return 0, 0, 0, 0
 	}
 	inset := s.cfg.Dock.Size + 16 // icon size plus the dock island's padding and border

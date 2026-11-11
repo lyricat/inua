@@ -11,12 +11,16 @@ import (
 
 // From is the settings of c for a backend.
 func From(c config.Config) compositor.Settings {
-	animations := config.AnimationEnabled(c.Style.Animations)
 	s := compositor.Settings{
 		KbOptions:     c.Input.KbOptions,
 		TouchpadSpeed: c.Input.TouchpadSpeed,
 		TouchpadAccel: c.Input.TouchpadAccel,
-		Animations:    &animations,
+	}
+	// style.animations as the file has it (on by default); unset leaves
+	// the compositor's own, as hypr/inua.conf does.
+	if c.Style.Animations != nil {
+		on := *c.Style.Animations
+		s.Animations = &on
 	}
 	for _, sc := range c.Shortcuts {
 		// A shortcut with no keys or no command (dictation while it is off)

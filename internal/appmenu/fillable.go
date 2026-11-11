@@ -23,3 +23,17 @@ func FillableMenu(entries []Entry) bool {
 	}
 	return false
 }
+
+// Prefilled is a menu's first level without the sections that get their
+// items only when pressed open, for an application whose sections must
+// never be pressed (a pack's never_press): what is left opens from what
+// was read, and pressing an item never presses a section.
+func Prefilled(entries []Entry) []Entry {
+	var out []Entry
+	for _, e := range entries {
+		if len(e.Children) > 0 {
+			out = append(out, e)
+		}
+	}
+	return out
+}

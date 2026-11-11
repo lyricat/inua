@@ -1,7 +1,9 @@
 package appmenu
 
 import (
+	"errors"
 	"fmt"
+	"io"
 	"io/fs"
 	"log"
 	"os"
@@ -9,6 +11,8 @@ import (
 	"slices"
 	"strings"
 	"sync"
+	"syscall"
+	"unicode"
 
 	"github.com/BurntSushi/toml"
 
@@ -163,21 +167,38 @@ func parseSequenceStroke(raw string) (KeyStroke, error) {
 
 // Packs is the menu packs from the binary and the directories, re-read
 // when a file changes. Later directories override a pack with the same id.
+// Match and Generation only read what was loaded; the files are read by
+// Refresh, which the shell runs off the main thread through Check, so a
+// slow or blocking file never holds the bar.
 type Packs struct {
 	mu       sync.Mutex
 	devDir   string
 	gen      uint64
 	stamp    string
+	loaded   bool
 	list     []Pack
 	problems []string
+	checking bool // a Check's goroutine runs
+	again    bool // a Check was asked for while one ran
+
+	reading sync.Mutex // one Refresh reads at a time
 }
 
-// NewPacks reads the shipped packs and devDir (a checkout's
-// share/inua/menus, empty when there is none).
+// NewPacks is the packs of the binary and the directories, with devDir (a
+// checkout's share/inua/menus, empty when there is none). It reads nothing:
+// none are known until the first Refresh.
 func NewPacks(devDir string) *Packs {
-	p := &Packs{devDir: devDir}
-	p.refresh()
-	return p
+	return &Packs{devDir: devDir}
+}
+
+// Loaded is whether the packs were read at least once.
+func (p *Packs) Loaded() bool {
+	if p == nil {
+		return false
+	}
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	return p.loaded
 }
 
 // Generation is the current reading. It changes when a pack file changes.
@@ -187,7 +208,6 @@ func (p *Packs) Generation() uint64 {
 	}
 	p.mu.Lock()
 	defer p.mu.Unlock()
-	p.refresh()
 	return p.gen
 }
 
@@ -199,7 +219,6 @@ func (p *Packs) Match(appID, desktopID string) (Pack, bool) {
 	}
 	p.mu.Lock()
 	defer p.mu.Unlock()
-	p.refresh()
 	var found Pack
 	ok := false
 	for _, pack := range p.list {
@@ -211,20 +230,64 @@ func (p *Packs) Match(appID, desktopID string) (Pack, bool) {
 	return found, ok
 }
 
-func (p *Packs) refresh() {
-	dirs := packDirs(p.devDir)
-	stamp := packStamp(dirs)
-	if stamp == p.stamp {
+// Check refreshes the packs on a goroutine and calls changed there when
+// they changed. A Check asked for while one runs makes that one look
+// again when it ends, so a burst of calls reads the files once or twice.
+func (p *Packs) Check(changed func()) {
+	if p == nil {
 		return
 	}
+	p.mu.Lock()
+	if p.checking {
+		p.again = true
+		p.mu.Unlock()
+		return
+	}
+	p.checking = true
+	p.mu.Unlock()
+	go func() {
+		for {
+			if p.Refresh() && changed != nil {
+				changed()
+			}
+			p.mu.Lock()
+			if !p.again {
+				p.checking = false
+				p.mu.Unlock()
+				return
+			}
+			p.again = false
+			p.mu.Unlock()
+		}
+	}()
+}
+
+// Refresh reads the pack directories again when a file in them changed,
+// and reports whether the packs changed. It reads files, so it does not
+// run on the main thread.
+func (p *Packs) Refresh() bool {
+	p.reading.Lock()
+	defer p.reading.Unlock()
+	p.mu.Lock()
+	devDir, old, loaded := p.devDir, p.stamp, p.loaded
+	p.mu.Unlock()
+	dirs := packDirs(devDir)
+	stamp := packStamp(dirs)
+	if loaded && stamp == old {
+		return false
+	}
 	list, problems := loadPacks(dirs)
+	p.mu.Lock()
 	p.list = list
 	p.problems = problems
 	p.stamp = stamp
+	p.loaded = true
 	p.gen++
+	p.mu.Unlock()
 	for _, problem := range problems {
 		log.Printf("appmenu: %s", problem)
 	}
+	return true
 }
 
 // packDirs is the on-disk packs, lowest priority first. The shipped
@@ -267,19 +330,12 @@ func packStamp(dirs []string) string {
 	for _, dir := range dirs {
 		b.WriteString(dir)
 		b.WriteByte(0)
-		entries, err := os.ReadDir(dir)
+		names, err := packNames(dir)
 		if err != nil {
 			b.WriteString(err.Error())
 			b.WriteByte(0)
 			continue
 		}
-		names := make([]string, 0, len(entries))
-		for _, e := range entries {
-			if !e.IsDir() && strings.HasSuffix(e.Name(), ".toml") {
-				names = append(names, e.Name())
-			}
-		}
-		slices.Sort(names)
 		for _, name := range names {
 			info, err := os.Stat(filepath.Join(dir, name))
 			fmt.Fprintf(&b, "%s %d %d\n", name, infoSize(info, err), infoMod(info, err))
@@ -331,13 +387,18 @@ func upsertPack(list []Pack, p Pack) []Pack {
 	return append(list, p)
 }
 
-func readDir(dir string) ([]Pack, []string) {
-	entries, err := os.ReadDir(dir)
+// packNames is the .toml files of a pack directory, sorted. The directory
+// is opened without blocking and must be one: a FIFO or a device in its
+// place is refused rather than waited on.
+func packNames(dir string) ([]string, error) {
+	f, err := os.OpenFile(dir, os.O_RDONLY|syscall.O_DIRECTORY|syscall.O_NONBLOCK, 0)
 	if err != nil {
-		if os.IsNotExist(err) {
-			return nil, nil
-		}
-		return nil, []string{fmt.Sprintf("%s: %v", dir, err)}
+		return nil, err
+	}
+	defer f.Close()
+	entries, err := f.ReadDir(-1)
+	if err != nil {
+		return nil, err
 	}
 	names := make([]string, 0, len(entries))
 	for _, e := range entries {
@@ -346,11 +407,22 @@ func readDir(dir string) ([]Pack, []string) {
 		}
 	}
 	slices.Sort(names)
+	return names, nil
+}
+
+func readDir(dir string) ([]Pack, []string) {
+	names, err := packNames(dir)
+	if err != nil {
+		if errors.Is(err, fs.ErrNotExist) {
+			return nil, nil
+		}
+		return nil, []string{fmt.Sprintf("%s: %v", dir, err)}
+	}
 	var packs []Pack
 	var problems []string
 	for _, name := range names {
 		path := filepath.Join(dir, name)
-		data, err := os.ReadFile(path)
+		data, err := readPackFile(path)
 		if err != nil {
 			problems = append(problems, fmt.Sprintf("%s: %v", path, err))
 			continue
@@ -363,6 +435,37 @@ func readDir(dir string) ([]Pack, []string) {
 		packs = append(packs, pack)
 	}
 	return packs, problems
+}
+
+// readPackFile reads one pack file of at most maxPackBytes. It is opened
+// without blocking, so a FIFO named like a pack does not wait for a
+// writer, and anything but a regular file (a FIFO, a device, a socket) is
+// refused before a byte is read. No more than one byte past the limit is
+// ever read, however large the file is or grows.
+func readPackFile(path string) ([]byte, error) {
+	f, err := os.OpenFile(path, os.O_RDONLY|syscall.O_NONBLOCK, 0)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	info, err := f.Stat()
+	if err != nil {
+		return nil, err
+	}
+	if !info.Mode().IsRegular() {
+		return nil, fmt.Errorf("menu pack is not a regular file")
+	}
+	if info.Size() > maxPackBytes {
+		return nil, fmt.Errorf("menu pack is larger than %d bytes", maxPackBytes)
+	}
+	data, err := io.ReadAll(io.LimitReader(f, maxPackBytes+1))
+	if err != nil {
+		return nil, err
+	}
+	if len(data) > maxPackBytes {
+		return nil, fmt.Errorf("menu pack is larger than %d bytes", maxPackBytes)
+	}
+	return data, nil
 }
 
 func readFS(fsys fs.FS, origin string) ([]Pack, error) {
@@ -570,8 +673,17 @@ func validateItem(name, section string, it itemFile, depth int) error {
 			return fail("%q has an empty key", it.Label)
 		}
 	}
+	if len(it.Keys) > 0 {
+		if err := checkKeyName(it.Keys[len(it.Keys)-1]); err != nil {
+			return fail("%q: %v", it.Label, err)
+		}
+	}
 	for _, step := range it.Sequence {
-		if _, err := parseSequenceStroke(step); err != nil {
+		stroke, err := parseSequenceStroke(step)
+		if err == nil {
+			err = checkKeyName(stroke.Key)
+		}
+		if err != nil {
 			return fail("%q sequence stroke %q: %v", it.Label, step, err)
 		}
 	}
@@ -582,6 +694,17 @@ func validateItem(name, section string, it itemFile, depth int) error {
 		if err := validateItem(name, section, child, depth+1); err != nil {
 			return err
 		}
+	}
+	return nil
+}
+
+// checkKeyName refuses a key written as a punctuation character: the
+// compositor looks a key up by its XKB keysym name, and "." names nothing
+// there (it is "period"), so the shortcut would never arrive.
+func checkKeyName(key string) error {
+	r := []rune(strings.TrimSpace(key))
+	if len(r) == 1 && !unicode.IsLetter(r[0]) && !unicode.IsDigit(r[0]) {
+		return fmt.Errorf("key %q is not a keysym name; write it as XKB names it (period, comma, bracketleft, ...)", key)
 	}
 	return nil
 }

@@ -4,86 +4,140 @@ import (
 	"context"
 	"encoding/xml"
 	"os"
+	"path/filepath"
+	"slices"
 	"strconv"
 	"strings"
 
 	"github.com/godbus/dbus/v5"
 )
 
-// firefoxNamePrefix starts the well-known name Firefox publishes
-// ("org.mozilla.firefox.default", "org.mozilla.firefox.ZGVm…").
+// firefoxNamePrefix starts the well-known names Firefox owns on its
+// connection ("org.mozilla.firefox.ZGVmYXVsdA__", and the search
+// provider's on some desktops): several of them may be one connection's.
 const firefoxNamePrefix = "org.mozilla.firefox."
 
-// firefoxMenuRoot is where Firefox's GTK global-menu bridge exports its
-// com.canonical.dbusmenu tree (/com/canonical/menu/0, …). On Wayland
-// Firefox skips the Canonical registrar and leaves the menu on its own bus
-// name.
+// firefoxMenuRoot is where Firefox's GTK global-menu bridge serves its
+// windows' com.canonical.dbusmenu trees (/com/canonical/menu/<window>). On
+// Wayland it registers none of them with the registrar.
 const firefoxMenuRoot = dbus.ObjectPath("/com/canonical/menu")
 
-// Firefox finds the menu Firefox published for pid on its own bus name, the
-// only place its Wayland menu is.
+// maxProcessDepth bounds the walk up from the focused process to the
+// Firefox process that started it.
+const maxProcessDepth = 16
+
+// Firefox finds the menu Firefox's own bridge serves for the focused
+// process pid. The bridge's item ids change each time its layout is read,
+// so the menu is read whole (Registration.Whole).
 func (r *Registrar) Firefox(pid int) (Registration, bool) {
+	reg, ok, _ := r.firefox(pid)
+	return reg, ok
+}
+
+// firefox is Firefox, and whether a Firefox of pid's serves menus at all,
+// even ones it cannot choose between: the connection is then not looked
+// at again as a Chromium-family browser's, whose menus are read in parts.
+//
+// The connections owning a Firefox name are the candidates, each once
+// however many such names it owns. One matches when its process is pid,
+// or the Firefox process pid was started by (firefoxOf); a process that
+// merely started Firefox, a terminal, does not match, nor does another
+// program Firefox started. A matching connection with menus for more than
+// one window, or more than one such connection, gives none: the compositor
+// does not say which of them is the focused window's. One that does not
+// answer in time gives none too.
+func (r *Registrar) firefox(pid int) (reg Registration, ok, seen bool) {
 	if pid <= 0 || r.conn == nil {
-		return Registration{}, false
+		return Registration{}, false, false
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
 	defer cancel()
 	var names []string
 	if err := r.conn.BusObject().CallWithContext(ctx, busInterface+".ListNames", 0).Store(&names); err != nil {
-		return Registration{}, false
+		return Registration{}, false, false
 	}
-	found := Registration{}
+	var owners []string
 	for _, name := range names {
 		if !strings.HasPrefix(name, firefoxNamePrefix) {
 			continue
 		}
-		var owner uint32
-		if r.conn.BusObject().CallWithContext(ctx, busInterface+".GetConnectionUnixProcessID", 0, name).Store(&owner) != nil || !sameProcessTree(int(owner), pid) {
+		var owner string
+		if r.conn.BusObject().CallWithContext(ctx, busInterface+".GetNameOwner", 0, name).Store(&owner) != nil || owner == "" {
 			continue
 		}
-		path, err := menuChildPath(r.conn, name, firefoxMenuRoot)
-		if err != nil || path == "" {
-			continue
+		if !slices.Contains(owners, owner) {
+			owners = append(owners, owner)
 		}
-		if found.Service != "" {
-			return Registration{}, false
-		}
-		found = Registration{PID: uint32(pid), Service: name, Path: path}
 	}
-	return found, found.Service != ""
+	var found Registration
+	for _, owner := range owners {
+		var opid uint32
+		if r.conn.BusObject().CallWithContext(ctx, busInterface+".GetConnectionUnixProcessID", 0, owner).Store(&opid) != nil || !r.firefoxOf(int(opid), pid) {
+			continue
+		}
+		paths, err := menuChildren(ctx, r.conn, owner, firefoxMenuRoot)
+		if err != nil {
+			continue // no menus served, or none in time (below)
+		}
+		for _, path := range paths {
+			if found.Service != "" {
+				return Registration{}, false, true
+			}
+			found = Registration{PID: uint32(pid), Service: owner, Path: path, Whole: true}
+		}
+	}
+	if ctx.Err() != nil {
+		return Registration{}, false, found.Service != ""
+	}
+	return found, found.Service != "", found.Service != ""
 }
 
-// sameProcessTree reports whether a and b are one process tree: Firefox's
-// menu name belongs to its parent process, while its window is a content
-// process, a child of it.
-func sameProcessTree(a, b int) bool {
-	if a == b {
+// firefoxOf reports whether owner, the process owning a Firefox name, is
+// the focused process pid or the one that started it: each process on the
+// way up from pid to owner runs the same program as owner.
+func (r *Registrar) firefoxOf(owner, pid int) bool {
+	if owner <= 0 {
+		return false
+	}
+	if owner == pid {
 		return true
 	}
-	return ancestorOf(a, b) || ancestorOf(b, a)
-}
-
-// ancestorOf reports whether anc is pid or one of its parents.
-func ancestorOf(anc, pid int) bool {
-	for i := 0; i < 16 && pid > 1; i++ {
-		if pid == anc {
-			return true
+	program := r.program(owner)
+	if program == "" {
+		return false
+	}
+	for range maxProcessDepth {
+		if pid <= 1 || r.program(pid) != program {
+			return false
 		}
-		ppid, ok := parentPID(pid)
+		ppid, ok := r.parentPID(pid)
 		if !ok {
 			return false
+		}
+		if ppid == owner {
+			return true
 		}
 		pid = ppid
 	}
 	return false
 }
 
-// parentPID reads a process's parent from /proc/PID/stat.
-func parentPID(pid int) (int, bool) {
-	b, err := os.ReadFile("/proc/" + strconv.Itoa(pid) + "/stat")
+// program is the executable process pid runs, "" when it cannot be read.
+func (r *Registrar) program(pid int) string {
+	exe, err := os.Readlink(filepath.Join(r.proc, strconv.Itoa(pid), "exe"))
+	if err != nil {
+		return ""
+	}
+	return exe
+}
+
+// parentPID reads a process's parent from its stat file.
+func (r *Registrar) parentPID(pid int) (int, bool) {
+	b, err := os.ReadFile(filepath.Join(r.proc, strconv.Itoa(pid), "stat"))
 	if err != nil {
 		return 0, false
 	}
+	// The command name, in parentheses, may itself hold spaces and ')'.
 	s := string(b)
 	i := strings.LastIndexByte(s, ')')
 	if i < 0 {
@@ -94,35 +148,31 @@ func parentPID(pid int) (int, bool) {
 		return 0, false
 	}
 	ppid, err := strconv.Atoi(fields[1])
-	return ppid, err == nil
+	return ppid, err == nil && ppid > 0
 }
 
-// menuChildPath is the first child object under root ("/com/canonical/menu/0"),
-// read from the introspection XML rather than guessed at.
-func menuChildPath(conn *dbus.Conn, service string, root dbus.ObjectPath) (dbus.ObjectPath, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
-	defer cancel()
-	var decoded string
-	call := conn.Object(service, root).CallWithContext(ctx, "org.freedesktop.DBus.Introspectable.Introspect", 0)
-	if call.Err != nil {
-		return "", call.Err
+// menuChildren are the objects service has under root, one menu for each
+// of its windows, as its introspection names them.
+func menuChildren(ctx context.Context, conn *dbus.Conn, service string, root dbus.ObjectPath) ([]dbus.ObjectPath, error) {
+	var text string
+	if err := conn.Object(service, root).CallWithContext(ctx, "org.freedesktop.DBus.Introspectable.Introspect", 0).Store(&text); err != nil {
+		return nil, err
 	}
-	if err := call.Store(&decoded); err != nil {
-		return "", err
-	}
-	var node struct {
-		Children []struct {
+	var doc struct {
+		Nodes []struct {
 			Name string `xml:"name,attr"`
 		} `xml:"node"`
 	}
-	if err := xml.Unmarshal([]byte(decoded), &node); err != nil {
-		return "", err
+	if err := xml.Unmarshal([]byte(text), &doc); err != nil {
+		return nil, err
 	}
-	for _, child := range node.Children {
-		if child.Name == "" || strings.ContainsAny(child.Name, "/<>") {
+	var paths []dbus.ObjectPath
+	for _, n := range doc.Nodes {
+		path := root + "/" + dbus.ObjectPath(n.Name)
+		if n.Name == "" || strings.Contains(n.Name, "/") || !path.IsValid() {
 			continue
 		}
-		return root + "/" + dbus.ObjectPath(child.Name), nil
+		paths = append(paths, path)
 	}
-	return "", nil
+	return paths, nil
 }

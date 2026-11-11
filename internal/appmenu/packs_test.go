@@ -3,7 +3,11 @@ package appmenu
 import (
 	"os"
 	"path/filepath"
+	"slices"
+	"strings"
+	"syscall"
 	"testing"
+	"time"
 )
 
 func isolatePackEnv(t *testing.T) {
@@ -22,6 +26,7 @@ func TestShippedPacks(t *testing.T) {
 		t.Fatalf("shipped packs: %v", problems)
 	}
 	packs := NewPacks("")
+	packs.Refresh()
 	code, ok := packs.Match("code", "")
 	if !ok || !code.SkipA11y || code.When != PackFallback {
 		t.Fatalf("code pack = %+v, ok %v", code, ok)
@@ -120,6 +125,7 @@ keys = ["CTRL", "plus"]
 		t.Fatal(err)
 	}
 	packs := NewPacks("")
+	packs.Refresh()
 	got, ok := packs.Match("code", "com.visualstudio.code")
 	if !ok || got.When != PackReplace || got.SkipA11y {
 		t.Fatalf("override = %+v, ok %v", got, ok)
@@ -231,6 +237,10 @@ func TestPackRejects(t *testing.T) {
 		"id = \"x\"\nmatch = [\"a\"]\nnope = true\n",
 		"id = \"x\"\nmatch = [\"a\"]\n[[section]]\nlabel = \"File\"\n[[section.item]]\nlabel = \"Go\"\naction = \"explode\"\n",
 		"id = \"x\"\nmatch = [\"a\"]\n[[section]]\nlabel = \"File\"\n[[section.item]]\nlabel = \"Go\"\naction = \"close-window\"\nkeys = [\"T\"]\n",
+		// Punctuation is not an XKB keysym name: the key would never arrive.
+		"id = \"x\"\nmatch = [\"a\"]\n[[section]]\nlabel = \"Tabs\"\n[[section.item]]\nlabel = \"Next\"\nkeys = [\"CTRL\", \"SHIFT\", \".\"]\n",
+		"id = \"x\"\nmatch = [\"a\"]\n[[section]]\nlabel = \"Tabs\"\n[[section.item]]\nlabel = \"Next\"\nkeys = [\"CTRL\", \"]\"]\n",
+		"id = \"x\"\nmatch = [\"a\"]\n[[section]]\nlabel = \"Go\"\n[[section.item]]\nlabel = \"Mark\"\nsequence = [\"g\", \"[\"]\n",
 	}
 	for _, body := range cases {
 		if _, err := parsePack("bad.toml", []byte(body)); err == nil {
@@ -246,6 +256,7 @@ func TestPackReloadsWhenTheFileChanges(t *testing.T) {
 		t.Fatal(err)
 	}
 	packs := NewPacks("")
+	packs.Refresh()
 	before := packs.Generation()
 	if _, ok := packs.Match("wezterm", ""); ok {
 		t.Fatal("wezterm matched before a pack existed")
@@ -254,7 +265,7 @@ func TestPackReloadsWhenTheFileChanges(t *testing.T) {
 	if err := os.WriteFile(filepath.Join(config, "wezterm.toml"), []byte(body), 0o644); err != nil {
 		t.Fatal(err)
 	}
-	if packs.Generation() == before {
+	if !packs.Refresh() || packs.Generation() == before {
 		t.Fatal("generation did not change")
 	}
 	got, ok := packs.Match("org.wezfurlong.wezterm", "wezterm")
@@ -264,5 +275,155 @@ func TestPackReloadsWhenTheFileChanges(t *testing.T) {
 	entries := got.Entries("1", 1, []Entry{{Label: "File"}}, nil)
 	if len(entries) != 0 {
 		t.Fatalf("flag-only pack produced %+v", entries)
+	}
+}
+
+// packConfigDir is the user's pack directory of an isolated environment.
+func packConfigDir(t *testing.T) string {
+	t.Helper()
+	dir := filepath.Join(os.Getenv("XDG_CONFIG_HOME"), "inua", "menus")
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	return dir
+}
+
+// refreshWithin runs Refresh and fails the test when it does not return in
+// a few seconds: reading a FIFO or an endless file would hang it.
+func refreshWithin(t *testing.T, packs *Packs) bool {
+	t.Helper()
+	done := make(chan bool, 1)
+	go func() { done <- packs.Refresh() }()
+	select {
+	case changed := <-done:
+		return changed
+	case <-time.After(5 * time.Second):
+		t.Fatal("Refresh blocked")
+		return false
+	}
+}
+
+// A FIFO named like a pack, with no writer, is refused at once instead of
+// holding the reading; the other packs still load.
+func TestPackFIFOIsRefused(t *testing.T) {
+	isolatePackEnv(t)
+	dir := packConfigDir(t)
+	if err := syscall.Mkfifo(filepath.Join(dir, "a-fifo.toml"), 0o644); err != nil {
+		t.Skipf("mkfifo: %v", err)
+	}
+	body := "id = \"wezterm\"\nmatch = [\"wezterm\"]\nskip_a11y = true\n"
+	if err := os.WriteFile(filepath.Join(dir, "wezterm.toml"), []byte(body), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	packs := NewPacks("")
+	refreshWithin(t, packs)
+	if _, ok := packs.Match("wezterm", ""); !ok {
+		t.Fatal("the pack next to the FIFO was not loaded")
+	}
+	if !slices.ContainsFunc(packs.problems, func(p string) bool { return strings.Contains(p, "a-fifo.toml") }) {
+		t.Fatalf("the FIFO was not reported: %q", packs.problems)
+	}
+}
+
+// A FIFO where the pack directory should be is not waited on either.
+func TestPackDirectoryFIFOIsRefused(t *testing.T) {
+	isolatePackEnv(t)
+	parent := filepath.Join(os.Getenv("XDG_CONFIG_HOME"), "inua")
+	if err := os.MkdirAll(parent, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := syscall.Mkfifo(filepath.Join(parent, "menus"), 0o644); err != nil {
+		t.Skipf("mkfifo: %v", err)
+	}
+	packs := NewPacks("")
+	refreshWithin(t, packs)
+	if _, ok := packs.Match("code", ""); !ok {
+		t.Fatal("the shipped packs were not loaded")
+	}
+}
+
+// A pack that is not a regular file is refused before anything is read
+// from it: /dev/zero would otherwise be read without end.
+func TestPackDeviceIsRefused(t *testing.T) {
+	isolatePackEnv(t)
+	if _, err := os.Stat("/dev/zero"); err != nil {
+		t.Skip("no /dev/zero")
+	}
+	dir := packConfigDir(t)
+	if err := os.Symlink("/dev/zero", filepath.Join(dir, "zero.toml")); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := readPackFile(filepath.Join(dir, "zero.toml")); err == nil || !strings.Contains(err.Error(), "not a regular file") {
+		t.Fatalf("read /dev/zero as a pack: %v", err)
+	}
+	refreshWithin(t, NewPacks(""))
+}
+
+// A pack over the limit is refused, and no more than the limit and a byte
+// is read of it.
+func TestPackTooLarge(t *testing.T) {
+	isolatePackEnv(t)
+	dir := packConfigDir(t)
+	path := filepath.Join(dir, "big.toml")
+	big := "id = \"big\"\nmatch = [\"big\"]\n# " + strings.Repeat("x", maxPackBytes) + "\n"
+	if err := os.WriteFile(path, []byte(big), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := readPackFile(path); err == nil {
+		t.Fatal("read a pack over the limit")
+	}
+	exact := "id = \"edge\"\nmatch = [\"edge\"]\n#"
+	exact += strings.Repeat("x", maxPackBytes-len(exact)-1) + "\n"
+	if err := os.WriteFile(path, []byte(exact), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	data, err := readPackFile(path)
+	if err != nil || len(data) != maxPackBytes {
+		t.Fatalf("a pack of exactly the limit: %d bytes, %v", len(data), err)
+	}
+}
+
+// Match and Generation answer from what was read and touch no file; the
+// files are read by Refresh, which Check runs on a goroutine and which
+// reports a change through its callback.
+func TestPackLookupsDoNotRead(t *testing.T) {
+	isolatePackEnv(t)
+	dir := packConfigDir(t)
+	packs := NewPacks("")
+	if packs.Loaded() {
+		t.Fatal("loaded before any reading")
+	}
+	if _, ok := packs.Match("code", ""); ok {
+		t.Fatal("Match read the packs")
+	}
+	if packs.Generation() != 0 {
+		t.Fatal("Generation read the packs")
+	}
+	changed := make(chan struct{}, 4)
+	packs.Check(func() { changed <- struct{}{} })
+	select {
+	case <-changed:
+	case <-time.After(5 * time.Second):
+		t.Fatal("Check did not report the first reading")
+	}
+	if !packs.Loaded() {
+		t.Fatal("not loaded after the first reading")
+	}
+	gen := packs.Generation()
+	body := "id = \"wezterm\"\nmatch = [\"wezterm\"]\n"
+	if err := os.WriteFile(filepath.Join(dir, "wezterm.toml"), []byte(body), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if _, ok := packs.Match("wezterm", ""); ok || packs.Generation() != gen {
+		t.Fatal("a lookup read the new file")
+	}
+	packs.Check(func() { changed <- struct{}{} })
+	select {
+	case <-changed:
+	case <-time.After(5 * time.Second):
+		t.Fatal("Check did not report the new pack")
+	}
+	if _, ok := packs.Match("wezterm", ""); !ok {
+		t.Fatal("the new pack was not read")
 	}
 }

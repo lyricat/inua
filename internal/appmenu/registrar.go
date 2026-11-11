@@ -35,6 +35,11 @@ type Registration struct {
 	Window  uint32
 	Service string
 	Path    dbus.ObjectPath
+	// Whole: the menu is read whole, in one GetLayout, and opened and
+	// clicked from that reading alone. Its application (Firefox's bridge)
+	// gives its items other ids each time the layout is read, so an id
+	// holds only until the next reading.
+	Whole bool
 }
 
 const registrarXML = `<node>
@@ -77,23 +82,19 @@ type Entry struct {
 	Submenu  bool
 	Children []Entry
 	// Action says how to invoke the entry: through the application's
-	// accessibility tree, or its dbusmenu.
+	// accessibility tree, a shortcut sent to the window, or one of the
+	// shell's own window actions.
 	Action Action
 	// PID is the process whose accessibility tree the entry came from,
 	// kept so a section can be found again on that tree after an open and
 	// close has replaced its nodes.
 	PID int
 	// Open is the menus that must be open for Action to work, outermost
-	// first: a section an accessibility application builds only while it
-	// is open answers with items that act while it opens, not after it
-	// closes. Opening them again and pressing the item by label is how such
-	// an item is invoked.
+	// first.
 	Open []OpenStep
 }
 
-// OpenStep is one menu to open before an entry can be pressed: the label
-// that finds it in the level above, and the action that opens it (the
-// first step's action is used as read; later ones are found by label).
+// OpenStep is one menu to open before an entry can be pressed.
 type OpenStep struct {
 	Label  string
 	Action Action
@@ -101,13 +102,18 @@ type OpenStep struct {
 
 // Action says how to invoke an entry.
 type Action struct {
-	Kind  string          // ActionA11y, ActionDbusmenu, ActionKeys, or a shell action; empty when the entry only groups children
-	Bus   string          // the connection that owns the menu, or the window id for a shell action
-	Path  dbus.ObjectPath // the menu or accessible object
-	Index int32           // an action index (AT-SPI) or an item id (dbusmenu)
-	// Mods and Key are the shortcut ActionKeys sends to the window
-	// ("CTRL SHIFT" and "T"). A single letter is uppercased; a longer
-	// key name is sent as written.
+	// Kind is ActionA11y, ActionDbusmenu, ActionKeys, ActionKeySequence or
+	// a shell action; empty when the entry only groups children.
+	Kind string
+	// Bus is the connection that owns an accessibility menu, or the window
+	// id for a shell action or a shortcut.
+	Bus string
+	// Path is the accessible object; unused by packs.
+	Path dbus.ObjectPath
+	// Index is an action index (AT-SPI), an item id (dbusmenu), or the
+	// process id for pack actions.
+	Index int32
+	// Mods and Key are the shortcut ActionKeys sends to the window.
 	Mods string
 	Key  string
 	// Sequence sends several key strokes in order (for Vim-style chords).
@@ -121,10 +127,11 @@ type KeyStroke struct {
 }
 
 const (
-	ActionA11y        = "atspi"
-	ActionDbusmenu    = "dbusmenu"
+	ActionA11y     = "atspi"
+	ActionDbusmenu = "dbusmenu"
+	// ActionKeySequence sends several key strokes in order.
 	ActionKeySequence = "key-sequence"
-	// Actions the shell itself runs for the menu every window has.
+	// Actions the shell itself runs for a menu item.
 	ActionAbout       = "about"
 	ActionCloseWindow = "close-window"
 	ActionQuitApp     = "quit-app"
@@ -145,6 +152,7 @@ type registered struct {
 
 type Registrar struct {
 	conn     *dbus.Conn
+	proc     string // the process table, /proc but in tests
 	mu       sync.RWMutex
 	items    map[string]registered
 	seq      uint64
@@ -167,7 +175,7 @@ func (r *Registrar) changed() {
 }
 
 func New(conn *dbus.Conn) *Registrar {
-	return &Registrar{conn: conn, items: make(map[string]registered)}
+	return &Registrar{conn: conn, proc: "/proc", items: make(map[string]registered)}
 }
 
 // Run owns the registrar name when available and serves the registry.
@@ -227,8 +235,9 @@ func (r *Registrar) handle(sig *dbus.Signal) {
 		if a && b && c && next == "" {
 			r.removeOwner(name)
 		}
-		// A published menu came or went: the focused window's may be it.
-		if a && b && c && strings.HasPrefix(name, nativeMenuPrefix) {
+		// A published menu or a Firefox came or went: the focused window's
+		// menu may be it.
+		if a && b && c && (strings.HasPrefix(name, nativeMenuPrefix) || strings.HasPrefix(name, firefoxNamePrefix)) {
 			r.changed()
 		}
 	case layoutUpdated:
@@ -374,11 +383,12 @@ func (r *Registrar) forPID(pid int) (reg Registration, ok, seen bool) {
 	return found.Registration, found.Service != "", found.Service != ""
 }
 
-// Menu reads the first level of a registration's menu, what a bar shows.
-// With about set, the application is first told the menu is about to show,
-// so one that builds it lazily fills it in; a reading that follows the
-// application's own word of a change leaves that out, as the telling can
-// itself be answered with such a word.
+// Menu reads the first level of a registration's menu, what a bar shows,
+// and the whole tree under it for a menu read whole. With about set, the
+// application is first told the menu is about to show, so one that builds
+// it lazily fills it in; a reading that follows the application's own word
+// of a change leaves that out, as the telling can itself be answered with
+// such a word.
 func (r *Registrar) Menu(reg Registration, about bool) ([]Entry, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
 	defer cancel()
@@ -386,14 +396,20 @@ func (r *Registrar) Menu(reg Registration, about bool) ([]Entry, error) {
 		r.conn.Object(reg.Service, reg.Path).CallWithContext(ctx, menuInterface+".AboutToShow", 0, int32(0))
 	}
 	// Two levels: the second only shows which items of the first open one.
+	levels := int32(2)
+	if reg.Whole {
+		levels = -1
+	}
 	count := 0
 	top := make(map[int32]bool)
-	node, err := r.layout(ctx, reg, 0, 2, 0, &count, top)
+	node, err := r.layout(ctx, reg, 0, levels, 0, &count, top)
 	if err != nil {
 		return nil, err
 	}
-	for i := range node.Children {
-		node.Children[i].Children = nil
+	if !reg.Whole {
+		for i := range node.Children {
+			node.Children[i].Children = nil
+		}
 	}
 	key := registrationKey(reg.Service, reg.Window)
 	r.mu.Lock()
@@ -405,32 +421,15 @@ func (r *Registrar) Menu(reg Registration, about bool) ([]Entry, error) {
 	return node.Children, nil
 }
 
-// MenuFull reads a menu's whole tree in one GetLayout: what Firefox's GTK
-// bridge needs, as its item ids change when the layout is read again.
-func (r *Registrar) MenuFull(reg Registration, about bool) ([]Entry, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
-	defer cancel()
-	if about {
-		r.conn.Object(reg.Service, reg.Path).CallWithContext(ctx, menuInterface+".AboutToShow", 0, int32(0))
-	}
-	count := 0
-	node, err := r.layout(ctx, reg, 0, -1, 0, &count, nil)
-	if err != nil {
-		return nil, err
-	}
-	return node.Children, nil
-}
-
-// IsFirefoxService reports whether reg is Firefox's own GTK menu bridge.
-func IsFirefoxService(reg Registration) bool {
-	return strings.HasPrefix(reg.Service, "org.mozilla.firefox.")
-}
-
 // Submenu reads what item id opens, as it is now: the application and each
 // nested submenu are told that they are about to show before their contents
 // are read. One that stays empty, or that no longer fits the bounds, is left
-// empty.
+// empty. A menu read whole is not read in parts: that would give the
+// items of the reading it was opened from other ids.
 func (r *Registrar) Submenu(reg Registration, id int32) ([]Entry, error) {
+	if reg.Whole {
+		return nil, fmt.Errorf("appmenu: %s %s is read whole", reg.Service, reg.Path)
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), callTimeout)
 	defer cancel()
 	count := 0

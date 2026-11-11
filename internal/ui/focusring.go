@@ -1,6 +1,12 @@
 package ui
 
 import (
+	"context"
+	"encoding/json"
+	"strconv"
+	"strings"
+	"time"
+
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/graphene"
 	"codeberg.org/puregotk/puregotk/v4/gsk"
@@ -11,7 +17,119 @@ import (
 	"github.com/lyricat/inua/internal/layershell"
 )
 
-const focusRingColor = "#89b4faff"
+// focusRingColors is the fallback when the compositor cannot say what its
+// focused border looks like.
+const focusRingColors = "#89b4faff"
+
+// loadFocusRingColor reads the compositor's active window border colour
+// and keeps it, so the ring around another monitor's window reads as the
+// same highlight.
+func (s *shellUI) loadFocusRingColor() {
+	s.setFocusRingColor(s.readFocusRingColor())
+}
+
+// readFocusRingColor asks Hyprland for its active border colour. A gradient
+// uses its first stop; without Hyprland, or an answer, the default blue is
+// used. It touches no GTK state, so it may run off the main thread.
+func (s *shellUI) readFocusRingColor() gdk.RGBA {
+	if s.hypr != nil && s.hypr.Client != nil {
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+		if reply, err := s.hypr.Client.Request(ctx, "j/getoption general:col.active_border"); err == nil {
+			if c, ok := activeBorderColor(reply); ok {
+				return c
+			}
+		}
+	}
+	out := gdk.RGBA{}
+	out.Parse(focusRingColors)
+	return out
+}
+
+// setFocusRingColor keeps the colour and repaints the rings shown with it.
+func (s *shellUI) setFocusRingColor(c gdk.RGBA) {
+	s.focusRingColorValue, s.focusRingColorSet = c, true
+	for _, b := range s.bars {
+		if r := b.focusRing; r != nil {
+			r.color = c
+			r.canvas.QueueDraw()
+		}
+	}
+}
+
+// activeBorderColor reads getoption's reply for general:col.active_border.
+// Hyprland gives a gradient as its custom text, "AARRGGBB AARRGGBB 45deg";
+// the first stop is the colour.
+func activeBorderColor(reply []byte) (gdk.RGBA, bool) {
+	var option struct {
+		Custom string `json:"custom"`
+	}
+	if json.Unmarshal(reply, &option) != nil {
+		return gdk.RGBA{}, false
+	}
+	fields := strings.Fields(option.Custom)
+	if len(fields) == 0 {
+		return gdk.RGBA{}, false
+	}
+	return parseBorderColor(fields[0])
+}
+
+// focusRingColor is the cached active border colour; it is read again when
+// the settings reload.
+func (s *shellUI) focusRingColor() gdk.RGBA {
+	if !s.focusRingColorSet {
+		s.loadFocusRingColor()
+	}
+	return s.focusRingColorValue
+}
+
+// parseBorderColor reads Hyprland's colour spellings: AARRGGBB for a
+// gradient stop, 0xAARRGGBB, or rgba(RRGGBBAA).
+func parseBorderColor(spec string) (gdk.RGBA, bool) {
+	spec = strings.TrimSpace(spec)
+	hex := func(v string, alpha uint64) (gdk.RGBA, bool) {
+		n, err := strconv.ParseUint(v, 16, 32)
+		if err != nil {
+			return gdk.RGBA{}, false
+		}
+		return gdk.RGBA{
+			Red:   float32((n>>16)&0xff) / 255,
+			Green: float32((n>>8)&0xff) / 255,
+			Blue:  float32(n&0xff) / 255,
+			Alpha: float32(alpha) / 255,
+		}, true
+	}
+	switch {
+	case strings.HasPrefix(spec, "rgba(") && strings.HasSuffix(spec, ")"):
+		v := strings.TrimSuffix(strings.TrimPrefix(spec, "rgba("), ")")
+		if len(v) != 8 {
+			return gdk.RGBA{}, false
+		}
+		alpha, err := strconv.ParseUint(v[6:], 16, 8)
+		if err != nil {
+			return gdk.RGBA{}, false
+		}
+		return hex(v[:6], alpha)
+	case strings.HasPrefix(spec, "0x"):
+		spec = spec[2:]
+		if len(spec) != 8 {
+			return gdk.RGBA{}, false
+		}
+		alpha, err := strconv.ParseUint(spec[:2], 16, 8)
+		if err != nil {
+			return gdk.RGBA{}, false
+		}
+		return hex(spec[2:], alpha)
+	case len(spec) == 8:
+		// AARRGGBB, as gradients are written.
+		alpha, err := strconv.ParseUint(spec[:2], 16, 8)
+		if err != nil {
+			return gdk.RGBA{}, false
+		}
+		return hex(spec[2:], alpha)
+	}
+	return gdk.RGBA{}, false
+}
 
 // focusRing is a transparent, input-free layer surface over one monitor.
 // It outlines that monitor's last focused window while another monitor has
@@ -41,7 +159,9 @@ func (b *bar) setFocusRing(s *shellUI, snap compositor.Snapshot, selected compos
 		return
 	}
 	if b.focusRing == nil {
-		b.focusRing = newFocusRing(s.app, b.mon)
+		b.focusRing = newFocusRing(s.app, b.mon, s.focusRingColor())
+	} else {
+		b.focusRing.color = s.focusRingColor()
 	}
 	r := b.focusRing
 	r.rect.Init(float32(left-out.X), float32(top-out.Y), float32(right-left), float32(bottom-top))
@@ -49,17 +169,18 @@ func (b *bar) setFocusRing(s *shellUI, snap compositor.Snapshot, selected compos
 	r.win.SetVisible(true)
 }
 
-func newFocusRing(app *gtk.Application, mon *gdk.Monitor) *focusRing {
-	r := &focusRing{}
-	r.color.Parse(focusRingColor)
+func newFocusRing(app *gtk.Application, mon *gdk.Monitor, color gdk.RGBA) *focusRing {
+	r := &focusRing{color: color}
 	r.canvas = gtkx.NewCanvas(&gtkx.Canvas{
 		Min: 1, Natural: 1,
 		Snapshot: func(_ *gtk.Widget, snap *gtk.Snapshot) {
 			if r.rect.GetWidth() <= 0 || r.rect.GetHeight() <= 0 {
 				return
 			}
+			// Square like the compositor's own border: the last focused
+			// window on another monitor must read as the same highlight.
 			var outline gsk.RoundedRect
-			outline.InitFromRect(&r.rect, 6)
+			outline.InitFromRect(&r.rect, 0)
 			colors := [4]gdk.RGBA{r.color, r.color, r.color, r.color}
 			snap.AppendBorder(&outline, [4]float32{2, 2, 2, 2}, colors)
 		},

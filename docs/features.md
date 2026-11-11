@@ -36,6 +36,32 @@ The Bar settings can make the panel transparent when the bar's current
 workspace has no windows. The panel becomes opaque again when a window
 appears. The controls keep their own look.
 
+What the bar shows, and in which order, is the user's: Settings → Bar &
+Dock → *Layout* is a small bar to drag the items into, along and back out
+of (`bar.layout`). Every item (the workspaces with Engawa's mark, the app
+menu, the app's name, the clock, the tray, the recording's stop button,
+passwords, the clipboard, notifications, dictation, the control center)
+goes on the bar once at most; a *space* as many times as wanted, the
+spaces taking the room the items leave. With exactly two spaces and
+something shown between them, what is between them sits in the middle of
+the bar as one group, however much is beside it either side, the two
+spaces as wide as that takes; where one side is too full for that, the
+group stops beside it, as near the middle as it can, never over another
+item or out of its order. Any other number of spaces (none, one, three or
+more, or two side by side) share the room equally. The small bar in the
+settings places its items by the same rule. A click on an item in the
+palette adds it after the one selected, and the tools under the strip move
+the selected one or take it off, without dragging. Changes apply to every
+bar at once and are saved as the other settings are. Unset, the bar has
+the default layout with the clock in the middle of the screen; once
+arranged, the clock between its two spaces stays there, and *Default* goes back to
+the unset layout. An item on the bar still shows only when its own setting
+and state have it (the tray, passwords with a store, a recording); one
+taken off does not come back when they do. The buttons' reaches run
+across the gaps between buttons side by side and into a corner from the
+first or last thing on the bar; a panel that hangs from the bar goes flush
+with its end only while its button is the last there.
+
 ## Engawa
 
 Engawa (縁側, a veranda at the edge of a house) is the widget page, the
@@ -275,7 +301,10 @@ drag to reorder (the others move aside to make
 room) or off the pinned ones to unpin; a drawer at the end slides up the
 light apps, the Assistant, Settings, the launcher and Screenshot, grouped
 by kind; optional autohide. Starting a light app that is open brings
-its window to the current workspace.
+its window to the current workspace. The overview raises the dock above
+itself (`overview.show_dock`); with the dock off the desktop
+(`dock.enable = false`) it shows only there, over the windows rather than
+making them smaller.
 
 ## Settings
 
