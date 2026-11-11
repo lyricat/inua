@@ -8242,7 +8242,7 @@ msgstr "ロビーに接続できません: %v。再試行しています…"
 
 #: internal/gamesui/lobbywin.go:165
 msgid "Games at %d of %d tables; %d free."
-msgstr "%[1]d テーブル中 %[2]d でゲーム中、空きは %[3]d です。"
+msgstr "%[2]d テーブル中 %[1]d でゲーム中、空きは %[3]d です。"
 
 #: internal/gamesui/lobbywin.go:237
 msgid "Host a game here: it opens set to this table."

@@ -55,7 +55,7 @@ func TestTranslate(t *testing.T) {
 		t.Errorf("Tf, reordered: %q", got)
 	}
 	Use("ja")
-	if got := Tf("Games at %d of %d tables; %d free.", 2, 10, 8); got != "2 テーブル中 10 でゲーム中、空きは 8 です。" {
+	if got := Tf("Games at %d of %d tables; %d free.", 2, 10, 8); got != "10 テーブル中 2 でゲーム中、空きは 8 です。" {
 		t.Errorf("Tf, Japanese indexed arguments: %q", got)
 	}
 	if T("List") != "リスト" || T("Mailing list") != "メーリングリスト" {
