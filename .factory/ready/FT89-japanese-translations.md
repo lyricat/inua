@@ -35,3 +35,21 @@ Merged origin/master at bf807607 into the item branch, resolved generated catalo
 Validation: normal isolated make test passed (18 Python tests, go vet, Go race tests). Long-TMPDIR make test failed on this head but passed on baseline. Isolated Broadway probes reproduced the nil callback panic and wrong-window target. make i18n reproduced catalogs byte-for-byte; Blueprint compilation matched committed UI files. Japanese catalog has 4,920 entries, no empty/fuzzy/duplicate entries. git diff --check passed. Initial PID-isolation failures were environmental and excluded after correcting the test environment.
 
 No installs. No visual UI or real Hyprland session verification. Binary behavior and third-party application shortcuts remain unchecked. Item stays in review/ for owner decision; add a note and move to new/ for fixes.
+
+## factory · review · 2026-11-11 14:18
+head: 38a391c43c7d46aed9d8efb2c7f17b45faa92e49
+verdict: pass
+Updated from fork PR #89 head e3a44a4270b84ab4e0e475e039ce759c347b3c46 at the owner's request. Merged fork (43ddcbd9) and master 7dd6decf (3ac5903e), resolving 32 conflicted files while retaining master's reviewed implementations. Corrected an integration-introduced title-menu action guard in 38a391c4 with regression coverage. Factory branch pushed; contributor fork unchanged.
+
+Both previous P1 findings are fixed: title-button callback no longer panics, and the hyprconf socket test works under long TMPDIR. Four of five previous lower-priority findings are fixed: focused-window targeting, Files Up, Files List, shortcut capture wording. Lobby argument order remains incorrect.
+notes:
+- [P2] internal/i18n/locales/ja.po:8315 and internal/i18n/i18n_test.go:58: Lobby (playing=2,total=10,empty=8) still displays 10 playing out of 2 tables; the new test asserts the wrong text.
+- [P2] internal/ui/appmenu.go:72/90/126,202: syncAppMenus ignores bar.menu=false; menu updates restore hidden menu sections (probe: 0 to 4 sections).
+- [P2] internal/ui/launcher.go:218: branch drops master's 3fdac202 right-click fix, leaking a widget reference and not moving the highlight; static diff verification, not runtime reproduced.
+- [P3] Clock placement differs from Settings/config documentation; renamed Up a folder loses existing es/fr/ko/zh_TW translations.
+
+Validation by Claude Code: make test passed (18 Python tests, go vet, 117 Go packages with race detector), isolated HOME; uncached long-TMPDIR run passed at 175 bytes, and affected UI/hyprconf packages rechecked after final correction. Focused title/pack menu race tests passed; regression test fails under old guard. make i18n and make generate reproduced generated files. Format checks across six catalogs found no errors; Japanese has 4,928 translated and 25 untranslated new-master strings, no fuzzy/duplicate entries. Manager verified clean worktree, diff --check and no changed forbidden paths before push.
+
+Scope: combined branch against master, 88 files before final targeted correction, including 38 backup binaries inspected only as metadata, not executed. No installs, visual UI/manual desktop checks, full Japanese proofread, real third-party menu checks, or niri/Wayfire runtime verification. Existing master's screen-recording wording remains outside introduced findings.
+
+Moved review → ready per factory's no-P0/P1 threshold, not a claim that all defects are fixed. No merge to master, release or deployment.
