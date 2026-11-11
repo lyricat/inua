@@ -52,7 +52,7 @@ falls back, so 0.53 never sees a request it rejects.
 | Moving windows and workspaces in the overview | (no overview) | `hl.dsp.window.move`, `hl.dsp.workspace.move` | `internal/ui/overview_manage.go` |
 | Settings file | `Render`: `input { kb_options = … }`, `device { … }`, `monitor = …` (`, disable`, `, mirror, …`), `bindl = , switch:…`, `unbind =` / `bind =`, `submap =` | `RenderLua`: `hl.config({ input = … })`, `hl.device({ … })`, `hl.monitor({ … })` (`disabled = true`, `mirror = …`), `hl.bind("switch:…", …, { locked = true })`, `hl.unbind` / `hl.bind(…, { description = … })`, `hl.define_submap` | `internal/hyprconf` |
 | Reading the user's config | `source =` lines, `#` comments | `require` (relative to `hyprland.lua`, `.` or `/` between folders), `--` comments outside strings | `internal/bootstrap/hyprland.go` |
-| Applying settings | Write the file; Hyprland reloads by itself, or `reload` if `misc:disable_autoreload` is set | The same | `hyprconf.Apply` |
+| Applying settings | Write the file; Hyprland reloads by itself, or `reload` if `misc:disable_autoreload` is set | Write `inua.lua` and always `reload`: Hyprland only watches a required file once it has loaded it | `hyprconf.Apply` |
 
 A new feature that dispatches should go through `dispatchEither` (or check
 `s.hyprLua` and capture it before starting a goroutine) with both forms.

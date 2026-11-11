@@ -66,18 +66,19 @@ type launcher struct {
 	rates    *convert.Rates
 	fetching bool // exchange rates are being read
 
-	win       *gtk.ApplicationWindow // nil while closed
-	closed    *gtk.ApplicationWindow // the last one, fading away
-	gone      uint32                 // the timer that destroys it
-	mode      gtk.Label
-	query     gtk.Entry
-	scroll    gtk.ScrolledWindow
-	results   gtk.Box
-	highlight gtk.Box
-	foot      gtk.Overlay
-	blur      gtk.Box
-	fade      gtk.Box
-	strips    []blurStrip // the blurred foot, top to bottom
+	win          *gtk.ApplicationWindow // nil while closed
+	fromOverview bool                   // opened from the overview: the next control shortcut goes back
+	closed       *gtk.ApplicationWindow // the last one, fading away
+	gone         uint32                 // the timer that destroys it
+	mode         gtk.Label
+	query        gtk.Entry
+	scroll       gtk.ScrolledWindow
+	results      gtk.Box
+	highlight    gtk.Box
+	foot         gtk.Overlay
+	blur         gtk.Box
+	fade         gtk.Box
+	strips       []blurStrip // the blurred foot, top to bottom
 	// The lines the foot's strips copy (l.lines[footFrom:footTo]), and
 	// where the first is in the results.
 	footFrom, footTo int
@@ -245,6 +246,7 @@ func (s *shellUI) showLauncher(m shell.Mode) {
 }
 
 func (s *shellUI) cancelLauncher() {
+	s.launcher.fromOverview = false
 	a := s.launcher.st.Cancel()
 	s.syncLauncher()
 	if a.Kind == shell.Focus {
@@ -254,6 +256,7 @@ func (s *shellUI) cancelLauncher() {
 
 func (s *shellUI) executeLauncher() {
 	l := &s.launcher
+	l.fromOverview = false
 	a := l.st.Execute()
 	switch a.Kind {
 	case shell.Launch:

@@ -16,12 +16,12 @@ ApplicationWindow settings {
 
   Box {
     // --- index ---
-    Box {
+    Box index_panel {
       styles ["index"]
       orientation: vertical;
       width-request: 220;
 
-      Label {
+      Label index_title {
         styles ["index-title"]
         label:  _("Settings");
         xalign: 0;
@@ -311,6 +311,87 @@ ApplicationWindow settings {
                       hexpand: true;
                       valign: center;
 
+                      Box {
+                        spacing: 12;
+
+                        Label {
+                          styles ["title"]
+                          label:  _("Icon size");
+                          xalign: 0;
+                        }
+                        Label bar_icon_size_val {
+                          styles ["readout"]
+                          xalign: 0;
+                        }
+                      }
+                    }
+
+                    Scale bar_icon_size {
+                      name: "bar_icon_size";
+                      hexpand: true;
+                      valign: center;
+                      draw-value: false;
+
+                      adjustment: Adjustment {
+                        lower: 12;
+                        upper: 24;
+                        step-increment: 1;
+                        page-increment: 4;
+                      };
+                    }
+                  }
+
+                  Separator {}
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+
+                      Box {
+                        spacing: 12;
+
+                        Label {
+                          styles ["title"]
+                          label:  _("Icon spacing");
+                          xalign: 0;
+                        }
+                        Label bar_icon_spacing_val {
+                          styles ["readout"]
+                          xalign: 0;
+                        }
+                      }
+                    }
+
+                    Scale bar_icon_spacing {
+                      name: "bar_icon_spacing";
+                      hexpand: true;
+                      valign: center;
+                      draw-value: false;
+
+                      adjustment: Adjustment {
+                        lower: 2;
+                        upper: 12;
+                        step-increment: 1;
+                        page-increment: 2;
+                      };
+                    }
+                  }
+
+                  Separator {}
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
                       Label {
                         styles ["title"]
                         label:  _("Animations");
@@ -975,6 +1056,36 @@ ApplicationWindow settings {
 
                       Label {
                         styles ["title"]
+                        label:  _("Date language");
+                        xalign: 0;
+                      }
+                      Label {
+                        styles ["sub"]
+                        label:  _("The clock's weekday and month names");
+                        xalign: 0;
+                        wrap: true;
+                      }
+                    }
+
+                    DropDown clock_language {
+                      name: "clock_language";
+                      valign: center;
+                    }
+                  }
+
+                  Separator {}
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+
+                      Label {
+                        styles ["title"]
                         label:  _("Workspaces");
                         xalign: 0;
                       }
@@ -994,6 +1105,7 @@ ApplicationWindow settings {
                         strings [
                           _("This monitor's"),
                           _("All monitors'"),
+                          _("Do not show"),
                         ]
                       };
                     }
@@ -1092,6 +1204,36 @@ ApplicationWindow settings {
 
                     Switch bar_transparent_empty {
                       name: "bar_transparent_empty";
+                      valign: center;
+                    }
+                  }
+
+                  Separator {}
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+
+                      Label {
+                        styles ["title"]
+                        label:  _("Global menu");
+                        xalign: 0;
+                      }
+                      Label {
+                        styles ["sub"]
+                        label:  _("The focused application's menus in the bar, when it publishes them");
+                        xalign: 0;
+                        wrap: true;
+                      }
+                    }
+
+                    Switch bar_menu {
+                      name: "bar_menu";
                       valign: center;
                     }
                   }
@@ -1378,6 +1520,103 @@ ApplicationWindow settings {
 
                     Switch overview_dock {
                       name: "overview_dock";
+                      valign: center;
+                    }
+                  }
+
+                  Separator {}
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+
+                      Label {
+                        styles ["title"]
+                        label:  _("Scope");
+                        xalign: 0;
+                      }
+                      Label {
+                        styles ["sub"]
+                        label:  _("With several displays: this display's windows, or every window");
+                        xalign: 0;
+                        wrap: true;
+                      }
+                    }
+
+                    DropDown overview_scope {
+                      name: "overview_scope";
+                      valign: center;
+
+                      model: StringList {
+                        strings [
+                          _("This display's"),
+                          _("All displays"),
+                        ]
+                      };
+                    }
+                  }
+
+                  Separator {}
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+
+                      Label {
+                        styles ["title"]
+                        label:  _("Overview hints");
+                        xalign: 0;
+                      }
+                      Label {
+                        styles ["sub"]
+                        label:  _("The line under the cards: the controls, and the window under the pointer");
+                        xalign: 0;
+                        wrap: true;
+                      }
+                    }
+
+                    Switch overview_hints {
+                      name: "overview_hints";
+                      valign: center;
+                    }
+                  }
+
+                  Separator {}
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+
+                      Label {
+                        styles ["title"]
+                        label:  _("Overview shortcut");
+                        xalign: 0;
+                      }
+                      Label {
+                        styles ["sub"]
+                        label:  _("The control shortcut in the overview: a new workspace with the launcher, and back");
+                        xalign: 0;
+                        wrap: true;
+                      }
+                    }
+
+                    Switch overview_launcher {
+                      name: "overview_launcher";
                       valign: center;
                     }
                   }

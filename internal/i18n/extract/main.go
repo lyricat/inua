@@ -98,7 +98,7 @@ func main() {
 				switch function {
 				case "Time":
 					add(lit(1), "", where)
-				case "T", "Tf", "M":
+				case "T", "Tf", "M", "Key":
 					add(lit(0), "", where)
 				case "N", "Nf":
 					add(lit(0), lit(1), where)

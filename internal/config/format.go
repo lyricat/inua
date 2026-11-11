@@ -15,8 +15,8 @@ import (
 func Format(c Config) string {
 	return fmt.Sprintf(template,
 		q(c.Language),
-		c.Bar.Enable, q(c.Bar.Density), q(c.Bar.Clock), q(c.Bar.Workspaces), c.Bar.Title, q(c.Bar.TitleMode), c.Bar.TransparentEmpty, c.Bar.Tray, c.Bar.Pass, barLayoutLine(c.Bar.Layout),
-		q(c.Launcher.Mode), q(c.Launcher.Terminal), q(c.Launcher.Search), quicklinks(c.Launcher.Quicklinks), c.Overview.MRU, c.Overview.PerMonitor, c.Overview.ShowDock,
+		c.Bar.Enable, q(c.Bar.Density), c.Bar.IconSize, c.Bar.IconSpacing, q(c.Bar.Clock), q(c.Bar.ClockLanguage), q(c.Bar.Workspaces), c.Bar.Title, c.Bar.Menu, q(c.Bar.TitleMode), c.Bar.TransparentEmpty, c.Bar.Tray, c.Bar.Pass, barLayoutLine(c.Bar.Layout),
+		q(c.Launcher.Mode), q(c.Launcher.Terminal), q(c.Launcher.Search), quicklinks(c.Launcher.Quicklinks), c.Overview.MRU, c.Overview.PerMonitor, c.Overview.ShowDock, c.Overview.Hints, c.Overview.LauncherWorkspace,
 		q(c.Control.Lock), q(c.Control.Screenshot),
 		q(c.Screenshot.Folder), c.Screenshot.Copy, q(c.Screenshot.Recordings),
 		c.OSD.Enable, q(c.OSD.Position),
@@ -213,11 +213,19 @@ enable = %t
 # Bar density: "default" or "compact". Compact saves vertical screen space.
 density = %s
 
+# Size of the right-side bar icons, 12 to 24 px, and the gap between them,
+# 2 to 12 px.
+icon_size = %d
+icon_spacing = %d
+
 # Clock, in strftime format: %%a %%A weekday, %%b %%B month, %%d %%e day, %%m month,
 # %%Y year, %%H %%I hour (24h/12h), %%M minute, %%S second, %%p AM/PM.
 # A '-' drops zero padding (%%-d, %%-H). With seconds, the clock ticks every
 # second.
 clock = %s
+# The clock's date language: "auto" follows the interface, or English,
+# Simplified or Traditional Chinese, Japanese, Korean, Spanish or French.
+clock_language = %s
 
 # "monitor": each bar shows the workspaces of its own monitor.
 # "all": every bar shows every workspace.
@@ -225,6 +233,9 @@ workspaces = %s
 
 # Show the focused application's icon and label.
 title = %t
+
+# Show the focused application's menu in the bar, when it publishes one.
+menu = %t
 
 # The label beside the icon: "app" for the application's name, "window"
 # for the focused window's title.
@@ -279,6 +290,12 @@ per_monitor = %t
 # [dock] enable = false the dock appears only there, over the windows
 # without making them smaller, and goes when the overview closes.
 show_dock = %t
+# Show the line under the overview's cards: the controls, and the window
+# under the pointer.
+hints = %t
+# The control shortcut in the overview: a new workspace with the launcher,
+# and the same shortcut back to the overview.
+launcher_workspace = %t
 
 [control]
 # Shell commands run by the control center's buttons.

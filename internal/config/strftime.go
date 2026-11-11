@@ -20,7 +20,13 @@ import (
 //
 // A '-' after % drops the padding (%-d, %-H, %-I, %-m). Names follow the interface language.
 // Unknown directives are kept as written.
+// Strftime formats with the application's current date language.
 func Strftime(format string, t time.Time) string {
+	return StrftimeIn(format, t, "auto")
+}
+
+// StrftimeIn formats with a clock-specific date language.
+func StrftimeIn(format string, t time.Time, lang string) string {
 	var b strings.Builder
 	for i := 0; i < len(format); i++ {
 		c := format[i]
@@ -47,13 +53,13 @@ func Strftime(format string, t time.Time) string {
 		}
 		switch format[i] {
 		case 'a':
-			b.WriteString(i18n.Time(t, "Mon"))
+			b.WriteString(i18n.TimeIn(lang, t, "Mon"))
 		case 'A':
-			b.WriteString(i18n.Time(t, "Monday"))
+			b.WriteString(i18n.TimeIn(lang, t, "Monday"))
 		case 'b', 'h':
-			b.WriteString(i18n.Time(t, "Jan"))
+			b.WriteString(i18n.TimeIn(lang, t, "Jan"))
 		case 'B':
-			b.WriteString(i18n.Time(t, "January"))
+			b.WriteString(i18n.TimeIn(lang, t, "January"))
 		case 'd':
 			num(t.Day(), 2)
 		case 'e':
@@ -79,7 +85,7 @@ func Strftime(format string, t time.Time) string {
 		case 'S':
 			num(t.Second(), 2)
 		case 'p':
-			b.WriteString(i18n.Time(t, "PM"))
+			b.WriteString(i18n.TimeIn(lang, t, "PM"))
 		case 'Z':
 			b.WriteString(t.Format("MST"))
 		case 'z':

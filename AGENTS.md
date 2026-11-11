@@ -54,6 +54,10 @@ Tests must pass wherever the temporary directory is. A Unix socket's path holds 
 
 Documentation, wording, simple logging, and visual or interaction changes to the UI do not get new automated tests. Check UI changes by hand in a nested session and note the steps. Do not verify an implementation by connecting to a database or starting a PostgreSQL container.
 
+## Branches
+
+Work on the current branch (`master`). Never create, switch, or check out a branch, a feature branch, or a worktree unless the user explicitly asks for one in that turn. Do not "port" work by making a branch: make the change here. Pull requests, when asked for, come from this branch.
+
 ## Commits and Pull Requests
 
 History uses both `fix(dock): ...`, `feat: ...`, `docs: ...` and "Component: what changed". A commit title says briefly what behaviour changed; keep each commit to one topic.

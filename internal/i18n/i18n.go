@@ -126,6 +126,10 @@ func T(msgid string) string {
 	return msgid
 }
 
+// Key returns msgid unchanged for consumers that translate the key later.
+// Keep it visible to make i18n so indirect menu labels stay in the catalogs.
+func Key(msgid string) string { return msgid }
+
 // Tf translates a format and fills it in.
 func Tf(format string, args ...any) string { return fmt.Sprintf(T(format), args...) }
 

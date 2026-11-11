@@ -198,8 +198,13 @@ func (s *shellUI) barPID(b *bar) int {
 // stand in for a real menu that is about to be found. Until the packs are
 // first read the bar shows none either: a pack may replace the published
 // menu. Over an empty desktop the bar shows the system menu, which waits
-// for nothing.
+// for nothing. With bar.menu off the bar shows no menu at all, whatever
+// asks for it again: a focus change, the registrar, a pack or a search.
 func (s *shellUI) syncAppMenu(b *bar) {
+	if !s.cfg.Bar.Menu {
+		s.clearAppMenu(b)
+		return
+	}
 	system := shell.EmptyDesktop(s.snap, b.connector())
 	if s.appmenu.packs == nil && !system {
 		return
@@ -403,6 +408,39 @@ func appMenuTops(entries []appmenu.Entry) []appMenuTop {
 
 func (s *shellUI) bindAppMenuHandlers() {
 	s.onAppAboutClose = closeAppAbout
+	s.onAppTitle = func(btn gtk.Button) {
+		for _, b := range s.bars {
+			if b.appButton.GoPointer() != btn.GoPointer() {
+				continue
+			}
+			if b.appPopover.GoPointer() != 0 {
+				if b.appPopover.GetVisible() {
+					b.appPopover.Popdown()
+					return
+				}
+				b.appPopover.Unparent()
+				b.appPopover = gtk.Popover{}
+			}
+			w, ok := shell.BarWindow(s.snap, b.connector())
+			if !ok {
+				return
+			}
+			sections := genericAppSections(w, s.appNameOf(w))
+			if len(sections) == 0 {
+				return
+			}
+			items := s.titleMenuItems(sections[0].Children)
+			if len(items) == 0 {
+				return
+			}
+			pop := uikit.NewMenu(items, uikit.Below)
+			pop.SetParent(&b.appButton.Widget)
+			pop.Unref()
+			pop.Popup()
+			b.appPopover = *pop
+			return
+		}
+	}
 	s.onAppMenuClicked = func(btn gtk.Button) {
 		i, err := strconv.Atoi(btn.GetName())
 		if err != nil {

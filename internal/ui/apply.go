@@ -253,6 +253,10 @@ func (s *shellUI) applyConfig(c config.Config) {
 		if old.Bar.Density != c.Bar.Density {
 			b.setDensity(c.Bar.Density)
 		}
+		if old.Bar.IconSize != c.Bar.IconSize || old.Bar.IconSpacing != c.Bar.IconSpacing {
+			b.setIconMetrics(c.Bar.IconSize, c.Bar.IconSpacing)
+			s.renderTray(b)
+		}
 		if old.Style.EdgeGaps != c.Style.EdgeGaps {
 			b.setEdgeGap(c.Style.EdgeGaps)
 		}
@@ -265,6 +269,7 @@ func (s *shellUI) applyConfig(c config.Config) {
 		b.clipboard.SetVisible(c.Clipboard.Enable && c.Clipboard.Bar)
 		b.passwords.SetVisible(c.Bar.Pass && s.passwords.hasStore)
 		b.widgetsMark.SetVisible(c.Widgets.Enable)
+		b.setClockAtEnd(c.Bar.Menu)
 		b.setHypr(s, s.snap)
 		s.syncWallpaper(b)
 	}
@@ -299,7 +304,7 @@ func (s *shellUI) applyConfig(c config.Config) {
 	if old.Notify.Enable != c.Notify.Enable {
 		s.syncNotify()
 	}
-	if old.Bar.Clock != c.Bar.Clock {
+	if old.Bar.Clock != c.Bar.Clock || old.Bar.ClockLanguage != c.Bar.ClockLanguage {
 		s.restartClock()
 	}
 	if old.OSD != c.OSD {

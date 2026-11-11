@@ -205,6 +205,19 @@ func appMenuKeyLabel(action appmenu.Action) string {
 
 // packedMenuItems turns pack entries into a menu's lines.
 func (s *shellUI) packedMenuItems(entries []appmenu.Entry) []uikit.Item {
+	return s.windowEntryItems(entries, s.activatePackedEntry)
+}
+
+// titleMenuItems are the lines of the menu the application's name opens.
+// That menu is the window's own, whatever menu the bar shows beside it (a
+// published or an accessibility one), so its items act while the window
+// they were built for has the focus, not only while the pack's menu shows.
+func (s *shellUI) titleMenuItems(entries []appmenu.Entry) []uikit.Item {
+	return s.windowEntryItems(entries, s.activateWindowEntry)
+}
+
+// windowEntryItems turns entries into a menu's lines, each item run by run.
+func (s *shellUI) windowEntryItems(entries []appmenu.Entry, run func(appmenu.Entry)) []uikit.Item {
 	var out []uikit.Item
 	for _, e := range entries {
 		if e.Separator {
@@ -217,11 +230,11 @@ func (s *shellUI) packedMenuItems(entries []appmenu.Entry) []uikit.Item {
 		switch {
 		case e.Submenu || len(e.Children) > 0:
 			if e.Enabled {
-				it.Items = s.packedMenuItems(e.Children)
+				it.Items = s.windowEntryItems(e.Children, run)
 			}
 		case e.Enabled:
 			entry := e
-			it.Run = func() { s.activatePackedEntry(entry) }
+			it.Run = func() { run(entry) }
 		}
 		out = append(out, it)
 	}
@@ -302,6 +315,13 @@ func (s *shellUI) activatePackedEntry(e appmenu.Entry) {
 	if !s.packMenuShown(e.Action.Bus) {
 		return
 	}
+	s.activateWindowEntry(e)
+}
+
+// activateWindowEntry runs an entry built for a window (a pack's, or the
+// generic menu's) while that window still has the focus: one built for a
+// window that lost it, or is gone, runs nothing.
+func (s *shellUI) activateWindowEntry(e appmenu.Entry) {
 	t, ok := packTargetOf(s.snap, e)
 	if !ok {
 		return

@@ -38,6 +38,7 @@ import (
 	"github.com/lyricat/inua/internal/layershell"
 	"github.com/lyricat/inua/internal/portalconf"
 	"github.com/lyricat/inua/internal/shell"
+	"github.com/lyricat/inua/internal/system"
 	"github.com/lyricat/inua/internal/uikit"
 	layouts "github.com/lyricat/inua/ui"
 )
@@ -105,6 +106,7 @@ type shellUI struct {
 	clockGen  uintptr // the running clock timer; see restartClock
 	launcher  launcher
 	overview  workspaceOverview
+	distro    system.Distribution
 	control   control
 	clipboard clipboardPanel
 	passwords passwordsPanel
@@ -176,6 +178,7 @@ type shellUI struct {
 	onTrayPressed          func(gtk.GestureClick, int32, float64, float64)
 	onTrayMenuClosed       func(gtk.Popover)
 	onAppMenuClicked       func(gtk.Button)
+	onAppTitle             func(gtk.Button)
 	onLauncherRight        func(gtk.GestureClick, int32, float64, float64)
 	onAppMenuClosed        func(gtk.Popover)
 	onAppAboutClose        func(gtk.Button) // an About window's Close, one for every opening
@@ -388,7 +391,7 @@ func Run(opts Options) int {
 	// The settings' file choosers through inua's picker, when it is on.
 	restore := gtkx.ForcePortals(portalconf.PickerOn())
 	app := gtk.NewApplication(shell.AppID, gio.GApplicationNonUniqueValue)
-	s := &shellUI{opts: opts, cfg: opts.Config, app: app, bars: map[uintptr]*bar{}}
+	s := &shellUI{opts: opts, cfg: opts.Config, app: app, bars: map[uintptr]*bar{}, distro: system.ReadDistribution("/")}
 	uikit.SetIconShape(uikit.IconShapeFromName(s.cfg.Style.IconShape))
 	s.pass.slot = make(chan struct{}, 1) // before the control socket serves
 	activate := func(gio.Application) {

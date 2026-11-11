@@ -623,6 +623,8 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 			canvas.AddOverlay(&badge.Widget)
 			badge.Unref()
 		}
+		// The card is the monitor itself, so a window at any edge stays whole.
+		// Cropping to the windows' bounds cut the preview when they tiled flat.
 		o.cardWidgets[i] = &overviewCardWidgets{canvas: canvas, board: board, order: overviewWindowOrder(card.Windows), monX: monX, monY: monY, monW: monW, monH: monH, thumbW: thumbW, thumbH: thumbH}
 		// Paint the focused window last, as the topmost window.
 		for wi := len(card.Windows) - 1; wi >= 0; wi-- {
@@ -1008,6 +1010,7 @@ func (s *shellUI) buildOverview(o *workspaceOverview) {
 	gtkx.Append(&o.content, &scroll.Widget)
 	hint := gtk.NewLabel(i18n.T("Type or / to filter windows   Esc · clear / close   Arrows / Tab · select   Middle click · close   Ctrl+Shift+X · kill   Drag · move"))
 	o.hint = hint
+	hint.SetVisible(s.cfg.Overview.Hints)
 	hint.AddCssClass("overview-hint")
 	gtkx.Append(&o.content, &hint.Widget)
 	stage := gtk.NewOverlay()
@@ -1074,20 +1077,22 @@ func (s *shellUI) buildOverview(o *workspaceOverview) {
 	o.win.AddController(&right.EventController)
 }
 
-// overviewWindowLayout maps compositor geometry onto a workspace card. A
-// window that still reports coordinates on another monitor (typical right
-// after a New drop) fills the card so the existing screenshot stays visible.
-func overviewWindowLayout(w compositor.Window, monX, monY, monW, monH, thumbW, thumbH float64) (x, y, pw, ph float64) {
+// overviewWindowLayout maps compositor geometry onto a workspace card. The
+// card is the monitor, so the scale is uniform and the whole workspace shows.
+func overviewWindowLayout(w compositor.Window, boxX, boxY, boxW, boxH, thumbW, thumbH float64) (x, y, pw, ph float64) {
 	if w.Geometry == nil {
 		return 0, 0, thumbW, thumbH
 	}
 	ax, ay := float64(w.Geometry.X), float64(w.Geometry.Y)
 	ww, wh := float64(w.Geometry.W), float64(w.Geometry.H)
-	if ax+ww <= monX || ay+wh <= monY || ax >= monX+monW || ay >= monY+monH {
-		return 0, 0, thumbW, thumbH
-	}
-	scale := thumbW / max(monW, 1)
-	x, y = max(0, (ax-monX)*scale), max(0, (ay-monY)*scale)
-	pw, ph = max(24, min(ww*scale, thumbW-x)), max(24, min(wh*scale, thumbH-y))
+	scale := max(thumbW/max(boxW, 1), thumbH/max(boxH, 1))
+	offsetX := (thumbW - boxW*scale) / 2
+	offsetY := (thumbH - boxH*scale) / 2
+	x, y = (ax-boxX)*scale+offsetX, (ay-boxY)*scale+offsetY
+	pw, ph = max(24, ww*scale), max(24, wh*scale)
+	// A window dragged mostly off the monitor still shows a sliver, so it can
+	// be found and dragged back from the overview.
+	x = max(-pw+24, min(x, thumbW-24))
+	y = max(-ph+24, min(y, thumbH-24))
 	return x, y, pw, ph
 }

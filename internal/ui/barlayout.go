@@ -18,7 +18,7 @@ func (b *bar) item(id string) *gtk.Widget {
 	case "app_menu":
 		return &b.appMenu.Widget
 	case "app_title":
-		return &b.appTitle.Widget
+		return &b.appButton.Widget
 	case "clock":
 		return &b.clockButton.Widget
 	case "tray":
@@ -63,6 +63,12 @@ func (b *bar) arrange(layout []string) {
 	if !b.arranged && layout == nil { // bar.ui's places are the default's
 		b.arranged = true
 		return
+	}
+	// The clock back in the middle, if bar.menu moved it to the end.
+	if b.clockMoved {
+		b.barEnd.Remove(&b.clockButton.Widget)
+		b.centered.SetCenterWidget(&b.clockButton.Widget)
+		b.clockMoved = false
 	}
 	// Off the bar, from where they were; at first, bar.ui's places.
 	if b.arranged && b.layout != nil {
@@ -112,6 +118,7 @@ func (b *bar) arrange(layout []string) {
 				b.barEnd.Append(w)
 			}
 		}
+		b.placeClock()
 		return
 	}
 	b.centered.SetVisible(false)

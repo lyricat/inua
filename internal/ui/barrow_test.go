@@ -79,7 +79,9 @@ func checkBarRows(t *testing.T) {
 	}
 	b.island = box(-1)
 	b.island.AddCssClass("row")
-	b.workspaces, b.appMenu, b.appTitle, b.tray = box(100), box(80), box(60), box(300)
+	b.workspaces, b.appMenu, b.tray = box(100), box(80), box(300)
+	b.appButton = *gtk.NewButton() // the application's icon and name
+	b.appButton.SetSizeRequest(60, 20)
 	b.centered = *gtk.NewCenterBox()
 	b.centered.SetHexpand(true)
 	b.island.Append(&b.centered.Widget)
@@ -144,7 +146,7 @@ func checkBarRows(t *testing.T) {
 		t.Helper()
 		for _, width := range []int32{1024, 1200, 1920} {
 			lay(&b.island.Widget, width)
-			if got, want := middle(&b.island.Widget, &b.appMenu.Widget, &b.appTitle.Widget); math.Abs(got-want) > 0.5 {
+			if got, want := middle(&b.island.Widget, &b.appMenu.Widget, &b.appButton.Widget); math.Abs(got-want) > 0.5 {
 				t.Errorf("%s, %d wide: the group's middle at %v, the bar's at %v", what, width, got, want)
 			}
 		}

@@ -56,16 +56,26 @@ type Bar struct {
 	Enable bool `toml:"enable"`
 	// Density is "default" or "compact"; compact reduces the bar's height and spacing.
 	Density string `toml:"density"`
+	// IconSize and IconSpacing set the right-side bar icons and the gap between them.
+	IconSize    int `toml:"icon_size"`
+	IconSpacing int `toml:"icon_spacing"`
 	// Clock is a strftime format (see Strftime).
 	Clock string `toml:"clock"`
+	// ClockLanguage is the clock's localized date language: "auto" follows
+	// the interface language; explicit values are ClockLanguages.
+	ClockLanguage string `toml:"clock_language"`
 	// Workspaces is "monitor" (each bar shows its monitor's workspaces)
 	// or "all".
 	Workspaces string `toml:"workspaces"`
 	Title      bool   `toml:"title"`
+	// Menu shows the focused application's menu in the bar, when the
+	// application publishes one.
+	Menu bool `toml:"menu"`
 	// TitleMode is "app" for the application's name or "window" for its
 	// focused window's title.
 	TitleMode string `toml:"title_mode"`
-	// TransparentEmpty removes the bar panel on a workspace with no windows.
+	// TransparentEmpty makes the bar transparent on an empty workspace and
+	// opaque when a window is present.
 	TransparentEmpty bool `toml:"transparent_empty"`
 	Tray             bool `toml:"tray"`
 	// Pass shows a button that searches the password store (the Pass
@@ -98,6 +108,12 @@ type Overview struct {
 	MRU        bool `toml:"mru"`
 	PerMonitor bool `toml:"per_monitor"`
 	ShowDock   bool `toml:"show_dock"`
+	// Hints shows the line under the overview's cards: the controls, and
+	// the window under the pointer.
+	Hints bool `toml:"hints"`
+	// LauncherWorkspace makes the control shortcut, while the overview is
+	// open, go to a new workspace with the launcher and back.
+	LauncherWorkspace bool `toml:"launcher_workspace"`
 }
 
 // Quicklink is a site the launcher searches by keyword.
@@ -894,6 +910,10 @@ func (d Displays) WithoutMonitor(output string) []Monitor {
 // center (its own size, centred).
 var Fits = []string{"cover", "contain", "tile", "center"}
 
+// ClockLanguages are the date languages the clock can use: the interface's
+// own, then the catalogs.
+var ClockLanguages = []string{"auto", "en", "zh_CN", "zh_TW", "ja", "ko", "es", "fr"}
+
 // IconShapes are the shapes app icons take in the dock, its drawer and the
 // launcher.
 var IconShapes = []string{"squircle", "circle", "pebble", "none"}
@@ -926,16 +946,20 @@ func Default() Config {
 		Bar: Bar{
 			Enable:           true,
 			Density:          "default",
+			IconSize:         16,
+			IconSpacing:      4,
 			Clock:            "%a %b %-d  %H:%M",
+			ClockLanguage:    "auto",
 			Workspaces:       "monitor",
 			Title:            true,
+			Menu:             true,
 			TitleMode:        "app",
 			TransparentEmpty: false,
 			Tray:             true,
 			Pass:             true,
 		},
 		Launcher: Launcher{Mode: "apps", Search: "https://www.google.com/search?q=%s", Quicklinks: slices.Clone(DefaultQuicklinks)},
-		Overview: Overview{MRU: false, PerMonitor: true, ShowDock: true},
+		Overview: Overview{MRU: false, PerMonitor: true, ShowDock: true, Hints: true, LauncherWorkspace: true},
 		Control: Control{
 			Lock:       "inua call lock now",
 			Screenshot: "inua call screenshot area",
@@ -1027,9 +1051,18 @@ func (c *Config) validate() []string {
 		w = append(w, fmt.Sprintf("%s = %q: want %s; using %q", key, *v, strings.Join(allowed, " or "), def))
 		*v = def
 	}
-	oneOf("bar.workspaces", &c.Bar.Workspaces, d.Bar.Workspaces, "monitor", "all")
+	oneOf("bar.workspaces", &c.Bar.Workspaces, d.Bar.Workspaces, "monitor", "all", "none")
+	oneOf("bar.clock_language", &c.Bar.ClockLanguage, d.Bar.ClockLanguage, ClockLanguages...)
 	oneOf("bar.title_mode", &c.Bar.TitleMode, d.Bar.TitleMode, "app", "window")
 	oneOf("bar.density", &c.Bar.Density, d.Bar.Density, "default", "compact")
+	if c.Bar.IconSize < 12 || c.Bar.IconSize > 24 {
+		w = append(w, fmt.Sprintf("bar.icon_size = %d: want 12 to 24; using %d", c.Bar.IconSize, d.Bar.IconSize))
+		c.Bar.IconSize = d.Bar.IconSize
+	}
+	if c.Bar.IconSpacing < 2 || c.Bar.IconSpacing > 12 {
+		w = append(w, fmt.Sprintf("bar.icon_spacing = %d: want 2 to 12; using %d", c.Bar.IconSpacing, d.Bar.IconSpacing))
+		c.Bar.IconSpacing = d.Bar.IconSpacing
+	}
 	oneOf("launcher.mode", &c.Launcher.Mode, d.Launcher.Mode, "apps", "windows")
 	if !ValidSearchURL(c.Launcher.Search) {
 		w = append(w, fmt.Sprintf("launcher.search = %q: want a web address with %%s for the words; using %q", c.Launcher.Search, d.Launcher.Search))

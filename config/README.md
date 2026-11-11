@@ -321,6 +321,12 @@ On the Bar page, "Show the bar" turns the bar off
 (`bar.enable = false`); Super+Space, Super+A and Super+N still open the
 launcher, control center and notifications.
 
+The bar's application menu is the one the focused window publishes, when
+it publishes one. A window that does not can be given a menu in
+`~/.config/inua/menus/`, one TOML file per application, without
+rebuilding the shell. The format, the shipped files and the actions a
+file can call are in [docs/appmenus.md](../docs/appmenus.md).
+
 ## Notifications
 
 `inua-shell` is the notification server (`org.freedesktop.Notifications`);

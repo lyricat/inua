@@ -150,11 +150,30 @@ func (s *shellUI) bindControlHandlers() {
 }
 
 func (s *shellUI) toggleControl() {
+	if s.cfg.Overview.LauncherWorkspace && s.overview.win != nil {
+		s.newWorkspaceLauncher()
+		return
+	}
+	if s.launcher.win != nil && s.launcher.fromOverview {
+		s.cancelLauncher()
+		s.showOverview()
+		return
+	}
 	if s.control.open {
 		s.closeControl()
 	} else {
 		s.openControl()
 	}
+}
+
+// newWorkspaceLauncher goes from the overview to a new, empty workspace on
+// the current monitor and opens the launcher there. The next control
+// shortcut, while that launcher is open, comes back to the overview.
+func (s *shellUI) newWorkspaceLauncher() {
+	s.closeOverview(true)
+	s.switchWorkspace("empty")
+	s.launcher.fromOverview = true
+	s.showLauncher(shell.Apps)
 }
 
 func (s *shellUI) openControl() {

@@ -35,6 +35,25 @@ type SysInfo struct {
 	DiskFS   string // its type: "ext4", "btrfs" …
 }
 
+// Distribution is what /etc/os-release says this system is: its name, its
+// version and the icon it names.
+type Distribution struct {
+	Name    string
+	Version string
+	Logo    string
+}
+
+// ReadDistribution reads the distribution's identity below root ("/" on
+// the computer itself; a test's folder in tests).
+func ReadDistribution(root string) Distribution {
+	values := keyValues(filepath.Join(root, "/etc/os-release"), "=")
+	name := values["NAME"]
+	if name == "" {
+		name = values["PRETTY_NAME"]
+	}
+	return Distribution{Name: name, Version: values["VERSION_ID"], Logo: values["LOGO"]}
+}
+
 // Packages is how many packages one manager has installed.
 type Packages struct {
 	Manager string

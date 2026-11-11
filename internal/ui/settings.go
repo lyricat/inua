@@ -34,10 +34,17 @@ import (
 // shell at once (applyConfig) and is saved to the settings file shortly
 // after the last one.
 type settings struct {
-	win     *gtk.ApplicationWindow // nil while closed
-	overlay *gtk.Overlay           // over the window's page, for the Benchmark dialog; made on its first use
-	refs    gtkx.Scope
-	menu    *dbusmenu.Published // the menu the bar shows while this window has the focus
+	win               *gtk.ApplicationWindow // nil while closed
+	overlay           *gtk.Overlay           // over the window's page, for the Benchmark dialog; made on its first use
+	refs              gtkx.Scope
+	menu              *dbusmenu.Published // the menu the bar shows while this window has the focus
+	rail              gtk.Box             // the index column, collapsed on a narrow window
+	indexTitle        gtk.Label
+	indexLabels       []*gtk.Label
+	indexHeads        []*gtk.Label
+	narrow            bool
+	onSettingsLayout  func(gdk.Surface, int32, int32)
+	onSettingsRealize func(gtk.Widget)
 
 	status, clockPreview gtk.Label
 	pages                gtk.Stack
@@ -55,29 +62,35 @@ type settings struct {
 	setThemes map[string]*gtk.IconTheme
 	themeMenu string // the theme of yours a right click opened a menu for
 
-	bgGenerate, title, barTransparentEmpty, tray, barPass, tpAccel, notifyOn, critFocus gtk.Switch
-	noteHistory, animations                                                             gtk.Switch
-	bgOwn                                                                               gtk.Box // the image's rows, hidden while inua draws
-	bgAnother                                                                           gtk.Button
-	barOn, dockOn, dockHide, dockDrawer, dockFlushBar, overviewDock                     gtk.Switch
-	clipEnable, clipBar, clipPaste                                                      gtk.Switch
-	dockSize, dockPosition, barDensity                                                  gtk.DropDown
-	dockPinned                                                                          gtk.Box
-	bgImage, bgColor, clock, terminal, lock, screenshot                                 gtk.Entry
-	clipSensitive                                                                       gtk.Entry
-	bgFit, ws, launchMode, swap, caps, icons, appIcons, banner                          gtk.DropDown
-	titleMode                                                                           gtk.DropDown
-	clipLimit                                                                           gtk.DropDown
-	clipLimits                                                                          []int // clipLimit's choices
-	textScale, iconShape                                                                gtk.DropDown
-	textScales                                                                          []int    // textScale's choices
-	iconSets                                                                            []string // icons' choices
-	appIconSets                                                                         []string // appIcons' choices
-	appTheme                                                                            gtk.DropDown
-	appThemes, appThemeLabels                                                           []string // appTheme's choices, "" first
-	tpSpeed, transparency, radius                                                       gtk.Scale
-	transparencyVal, radiusVal, clipStats                                               gtk.Label
-	clipClear, clipReveal                                                               gtk.Button
+	bgGenerate, title, barMenu, barTransparentEmpty, tray, barPass, tpAccel, notifyOn, critFocus gtk.Switch
+	noteHistory, animations                                                                      gtk.Switch
+	bgOwn                                                                                        gtk.Box // the image's rows, hidden while inua draws
+	bgAnother                                                                                    gtk.Button
+	barOn, dockOn, dockHide, dockDrawer, dockFlushBar, overviewDock                              gtk.Switch
+	overviewHints, overviewLauncher                                                              gtk.Switch
+	clipEnable, clipBar, clipPaste                                                               gtk.Switch
+	dockSize, dockPosition, barDensity                                                           gtk.DropDown
+	dockPinned                                                                                   gtk.Box
+	bgImage, bgColor, clock, terminal, lock, screenshot                                          gtk.Entry
+	clipSensitive                                                                                gtk.Entry
+	bgFit, ws, overviewScope, launchMode, swap, caps, icons, appIcons                            gtk.DropDown
+	clockLanguage                                                                                gtk.DropDown
+	clockLanguageNames                                                                           []string
+	banner                                                                                       gtk.DropDown
+	titleMode                                                                                    gtk.DropDown
+	clipLimit                                                                                    gtk.DropDown
+	clipLimits                                                                                   []int // clipLimit's choices
+	textScale, iconShape                                                                         gtk.DropDown
+	textScales                                                                                   []int    // textScale's choices
+	iconSets                                                                                     []string // icons' choices
+	appIconSets                                                                                  []string // appIcons' choices
+	appTheme                                                                                     gtk.DropDown
+	appThemes, appThemeLabels                                                                    []string // appTheme's choices, "" first
+	tpSpeed, transparency, radius                                                                gtk.Scale
+	barIconSize, barIconSpacing                                                                  gtk.Scale
+	transparencyVal, radiusVal, barIconSizeVal, barIconSpacingVal                                gtk.Label
+	clipStats                                                                                    gtk.Label
+	clipClear, clipReveal                                                                        gtk.Button
 
 	// Keyboard and touchpad: where the settings come from, and why they
 	// would do nothing.
@@ -132,7 +145,7 @@ var themeKanji = map[string]string{
 
 var (
 	fitChoices    = config.Fits
-	wsChoices     = []string{"monitor", "all"}
+	wsChoices     = []string{"monitor", "all", "none"}
 	barTitleModes = []string{"app", "window"}
 	barDensities  = []string{"default", "compact"}
 	modeChoices   = []string{"apps", "windows"}
@@ -156,6 +169,8 @@ func (s *shellUI) bindSettingsHandlers() {
 			c.Background.Generate = on
 		case "title":
 			c.Bar.Title = on
+		case "bar_menu":
+			c.Bar.Menu = on
 		case "bar_transparent_empty":
 			c.Bar.TransparentEmpty = on
 		case "tray":
@@ -168,6 +183,10 @@ func (s *shellUI) bindSettingsHandlers() {
 			c.Dock.Enable = on
 		case "overview_dock":
 			c.Overview.ShowDock = on
+		case "overview_hints":
+			c.Overview.Hints = on
+		case "overview_launcher":
+			c.Overview.LauncherWorkspace = on
 		case "dock_drawer":
 			c.Dock.Drawer = on
 		case "dock_autohide":
@@ -219,6 +238,10 @@ func (s *shellUI) bindSettingsHandlers() {
 			c.Background.Fit = pick(fitChoices, i, c.Background.Fit)
 		case "ws":
 			c.Bar.Workspaces = pick(wsChoices, i, c.Bar.Workspaces)
+		case "clock_language":
+			c.Bar.ClockLanguage = pick(s.settings.clockLanguageNames, i, c.Bar.ClockLanguage)
+		case "overview_scope":
+			c.Overview.PerMonitor = i == 0
 		case "title_mode":
 			c.Bar.TitleMode = pick(barTitleModes, i, c.Bar.TitleMode)
 		case "bar_density":
@@ -364,6 +387,20 @@ func (s *shellUI) bindSettingsHandlers() {
 			s.changeSettings(c)
 			return false
 		}
+		if r.GetName() == "bar_icon_size" {
+			val := int(math.Round(v))
+			c.Bar.IconSize = val
+			s.settings.barIconSizeVal.SetText(i18n.Tf("%d px", val))
+			s.changeSettings(c)
+			return false
+		}
+		if r.GetName() == "bar_icon_spacing" {
+			val := int(math.Round(v))
+			c.Bar.IconSpacing = val
+			s.settings.barIconSpacingVal.SetText(i18n.Tf("%d px", val))
+			s.changeSettings(c)
+			return false
+		}
 		v = math.Round(max(-1, min(v, 1))*20) / 20 // the steps of 0.05
 		c.Input.TouchpadSpeed = &v
 		s.changeSettings(c)
@@ -443,20 +480,31 @@ func (s *shellUI) openSettings() {
 	ui.Get("status", &st.status)
 	ui.Get("pages", &st.pages)
 	ui.Get("index", &st.index)
+	ui.Get("index_panel", &st.rail)
+	ui.Get("index_title", &st.indexTitle)
 	ui.Get("themes", &st.themes)
 	ui.Get("clock_preview", &st.clockPreview)
 	ui.Get("title", &st.title)
 	ui.Get("bar_transparent_empty", &st.barTransparentEmpty)
 	ui.Get("tray", &st.tray)
+	ui.Get("bar_menu", &st.barMenu)
+	ui.Get("bar_transparent_empty", &st.barTransparentEmpty)
 	ui.Get("bar_pass", &st.barPass)
 	ui.Get("bg_image", &st.bgImage)
 	ui.Get("bg_color", &st.bgColor)
 	ui.Get("clock", &st.clock)
+	ui.Get("clock_language", &st.clockLanguage)
+	st.clockLanguageNames = slices.Clone(config.ClockLanguages)
+	languageLabels := []string{i18n.T("Follow interface language"), "English", "简体中文", "繁體中文", "日本語", "한국어", "Español", "Français"}
+	languageList := gtk.NewStringList(languageLabels)
+	st.clockLanguage.SetModel(languageList)
+	languageList.Unref()
 	ui.Get("terminal", &st.terminal)
 	ui.Get("lock", &st.lock)
 	ui.Get("screenshot", &st.screenshot)
 	ui.Get("bg_fit", &st.bgFit)
 	ui.Get("ws", &st.ws)
+	ui.Get("overview_scope", &st.overviewScope)
 	ui.Get("title_mode", &st.titleMode)
 	ui.Get("bar_density", &st.barDensity)
 	ui.Get("launch_mode", &st.launchMode)
@@ -471,6 +519,10 @@ func (s *shellUI) openSettings() {
 	ui.Get("transparency_val", &st.transparencyVal)
 	ui.Get("radius", &st.radius)
 	ui.Get("radius_val", &st.radiusVal)
+	ui.Get("bar_icon_size", &st.barIconSize)
+	ui.Get("bar_icon_spacing", &st.barIconSpacing)
+	ui.Get("bar_icon_size_val", &st.barIconSizeVal)
+	ui.Get("bar_icon_spacing_val", &st.barIconSpacingVal)
 	st.textScales = nil // a new dropdown, without its choices
 	st.iconSets, st.appIconSets, st.styleTiles = nil, nil, nil
 	st.appThemes, st.appThemeLabels = nil, nil
@@ -480,6 +532,8 @@ func (s *shellUI) openSettings() {
 	ui.Get("bar_enable", &st.barOn)
 	ui.Get("dock_enable", &st.dockOn)
 	ui.Get("overview_dock", &st.overviewDock)
+	ui.Get("overview_hints", &st.overviewHints)
+	ui.Get("overview_launcher", &st.overviewLauncher)
 	ui.Get("dock_autohide", &st.dockHide)
 	ui.Get("dock_flush_bar", &st.dockFlushBar)
 	ui.Get("dock_drawer", &st.dockDrawer)
@@ -561,11 +615,11 @@ func (s *shellUI) openSettings() {
 		st.entries[e.GoPointer()] = e
 		gtkx.ConnectChanged(e, &s.onSettingsEntry)
 	}
-	for _, d := range []*gtk.DropDown{&st.bgFit, &st.ws, &st.titleMode, &st.barDensity, &st.launchMode, &st.swap, &st.caps, &st.icons, &st.appIcons, &st.iconShape, &st.appTheme, &st.textScale, &st.language, &st.banner, &st.dockSize, &st.dockPosition, &st.clipLimit} {
+	for _, d := range []*gtk.DropDown{&st.bgFit, &st.ws, &st.clockLanguage, &st.overviewScope, &st.titleMode, &st.barDensity, &st.launchMode, &st.swap, &st.caps, &st.icons, &st.appIcons, &st.iconShape, &st.appTheme, &st.textScale, &st.language, &st.banner, &st.dockSize, &st.dockPosition, &st.clipLimit} {
 		st.drops[d.GoPointer()] = d
 		gtkx.ConnectNotify(d, "selected", &s.onSettingsDrop)
 	}
-	for _, sw := range []*gtk.Switch{&st.bgGenerate, &st.title, &st.barTransparentEmpty, &st.tray, &st.barPass, &st.tpAccel, &st.notifyOn, &st.critFocus, &st.noteHistory, &st.animations, &st.barOn, &st.dockOn, &st.dockHide, &st.dockDrawer, &st.dockFlushBar, &st.overviewDock, &st.clipEnable, &st.clipBar, &st.clipPaste, &st.displays.lidOff} {
+	for _, sw := range []*gtk.Switch{&st.bgGenerate, &st.title, &st.barMenu, &st.barTransparentEmpty, &st.tray, &st.barPass, &st.tpAccel, &st.notifyOn, &st.critFocus, &st.noteHistory, &st.animations, &st.barOn, &st.dockOn, &st.dockHide, &st.dockDrawer, &st.dockFlushBar, &st.overviewDock, &st.overviewHints, &st.overviewLauncher, &st.clipEnable, &st.clipBar, &st.clipPaste, &st.displays.lidOff} {
 		sw.ConnectStateSet(&s.onSettingsSwitch)
 	}
 	for _, b := range []*gtk.Button{&choose, &clearImage, &st.bgAnother, &iconPreview, &stylePreview, &st.kbReset, &st.tpReset, &st.langRestart, &st.clipClear, &st.clipReveal} {
@@ -574,6 +628,8 @@ func (s *shellUI) openSettings() {
 	st.tpSpeed.ConnectChangeValue(&s.onSettingsScale)
 	st.transparency.ConnectChangeValue(&s.onSettingsScale)
 	st.radius.ConnectChangeValue(&s.onSettingsScale)
+	st.barIconSize.ConnectChangeValue(&s.onSettingsScale)
+	st.barIconSpacing.ConnectChangeValue(&s.onSettingsScale)
 	s.buildSwatches()
 	st.hyprKb = s.hyprKbOptions()
 	st.sc.binds = s.hyprBinds()
@@ -590,6 +646,7 @@ func (s *shellUI) openSettings() {
 	s.showSettings()
 	s.setStatus("", false)
 	st.win.Present()
+	s.watchSettingsWidth()
 }
 
 // settingsGroups are the index's groups, each a kicker over its pages, in
@@ -789,6 +846,8 @@ func (s *shellUI) showSettings() {
 	st.bgOwn.SetVisible(!c.Background.Generate)
 	st.bgAnother.SetVisible(c.Background.Generate)
 	st.title.SetActive(c.Bar.Title)
+	st.barMenu.SetActive(c.Bar.Menu)
+	st.barTransparentEmpty.SetActive(c.Bar.TransparentEmpty)
 	st.barTransparentEmpty.SetActive(c.Bar.TransparentEmpty)
 	st.titleMode.SetSelected(uint32(max(0, slices.Index(barTitleModes, c.Bar.TitleMode))))
 	st.tray.SetActive(c.Bar.Tray)
@@ -796,6 +855,7 @@ func (s *shellUI) showSettings() {
 	setEntry(&st.bgImage, c.Background.Image)
 	setEntry(&st.bgColor, c.Background.Color)
 	setEntry(&st.clock, c.Bar.Clock)
+	st.clockLanguage.SetSelected(uint32(max(0, slices.Index(st.clockLanguageNames, c.Bar.ClockLanguage))))
 	setEntry(&st.terminal, c.Launcher.Terminal)
 	setEntry(&st.lock, c.Control.Lock)
 	setEntry(&st.screenshot, c.Control.Screenshot)
@@ -805,12 +865,21 @@ func (s *shellUI) showSettings() {
 	}
 	st.bgFit.SetSelected(uint32(max(0, slices.Index(fitChoices, c.Background.Fit))))
 	st.ws.SetSelected(uint32(max(0, slices.Index(wsChoices, c.Bar.Workspaces))))
+	if c.Overview.PerMonitor {
+		st.overviewScope.SetSelected(0)
+	} else {
+		st.overviewScope.SetSelected(1)
+	}
 	st.launchMode.SetSelected(uint32(max(0, slices.Index(modeChoices, c.Launcher.Mode))))
 	st.barDensity.SetSelected(uint32(max(0, slices.Index(barDensities, c.Bar.Density))))
 	st.transparency.SetValue(float64(c.Style.Transparency))
 	st.transparencyVal.SetText(i18n.Tf("%d%%", c.Style.Transparency))
 	st.radius.SetValue(float64(c.Style.Radius))
 	st.radiusVal.SetText(i18n.Tf("%d px", c.Style.Radius))
+	st.barIconSize.SetValue(float64(c.Bar.IconSize))
+	st.barIconSizeVal.SetText(i18n.Tf("%d px", c.Bar.IconSize))
+	st.barIconSpacing.SetValue(float64(c.Bar.IconSpacing))
+	st.barIconSpacingVal.SetText(i18n.Tf("%d px", c.Bar.IconSpacing))
 	st.animations.SetActive(c.Style.Animations == nil || *c.Style.Animations)
 	s.showIconSets()
 	s.showTextScale()
@@ -835,7 +904,7 @@ func (s *shellUI) showSettings() {
 	s.showAboutSettings()
 	st.keyring.notify.SetActive(c.Keyring.Notify)
 	s.showKeyringSettings()
-	st.clockPreview.SetText(config.Strftime(c.Bar.Clock, time.Now()))
+	st.clockPreview.SetText(config.StrftimeIn(c.Bar.Clock, time.Now(), c.Bar.ClockLanguage))
 	for _, e := range st.entries {
 		e.RemoveCssClass("invalid")
 	}
@@ -1008,7 +1077,7 @@ func (s *shellUI) settingsEntryChanged(e *gtk.Entry) {
 	case "clock":
 		valid = strings.TrimSpace(text) != ""
 		c.Bar.Clock = text
-		st.clockPreview.SetText(config.Strftime(text, time.Now()))
+		st.clockPreview.SetText(config.StrftimeIn(text, time.Now(), c.Bar.ClockLanguage))
 	case "terminal":
 		c.Launcher.Terminal = text
 	case "lock":
@@ -1135,6 +1204,8 @@ func (s *shellUI) showDockSettings() {
 	st.barOn.SetActive(c.Bar.Enable)
 	st.dockOn.SetActive(c.Dock.Enable)
 	st.overviewDock.SetActive(c.Overview.ShowDock)
+	st.overviewHints.SetActive(c.Overview.Hints)
+	st.overviewLauncher.SetActive(c.Overview.LauncherWorkspace)
 	st.dockHide.SetActive(c.Dock.Autohide)
 	st.dockFlushBar.SetActive(!c.Style.EdgeGaps)
 	st.dockDrawer.SetActive(c.Dock.Drawer)

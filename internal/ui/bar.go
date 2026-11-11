@@ -32,36 +32,40 @@ type bar struct {
 	island    gtk.Box
 	// The default layout's boxes: the clock centred on the screen between
 	// the start's items and the end's (arrange).
-	centered    gtk.CenterBox
-	barStart    gtk.Box
-	barEnd      gtk.Box
-	appTitle    gtk.Box
-	workspaces  gtk.Box
-	widgetsMark gtk.Button // the widget page's place, before the workspaces
-	appIcon     gtk.Image
-	title       gtk.Label
-	clock       gtk.Label
-	clipboard   gtk.Button
-	passwords   gtk.Button
-	notes       gtk.Button
-	notesIcon   gtk.Image
-	voice       gtk.Button
-	voiceIcon   gtk.Image
-	unread      gtk.Box
-	tray        gtk.Box
-	appMenu     gtk.Box // the focused application's menu (appmenu.go)
-	status      gtk.Button
-	netIcon     gtk.Image
-	btIcon      gtk.Image
-	volIcon     gtk.Image
-	battery     gtk.Box
-	batIcon     gtk.Image
-	batLabel    gtk.Label
-	rec         gtk.Button
-	clockButton gtk.Button // opens the calendar panel
-	recTime     gtk.Label
-	refs        gtkx.Scope
-	focusRing   *focusRing
+	centered      gtk.CenterBox
+	barStart      gtk.Box
+	barEnd        gtk.Box
+	workspaces    gtk.Box
+	widgetsMark   gtk.Button // the widget page's place, before the workspaces
+	appButton     gtk.Button // the application's icon and name; opens the menu every window has
+	appPopover    gtk.Popover
+	appIcon       gtk.Image
+	title         gtk.Label
+	clock         gtk.Label
+	clipboard     gtk.Button
+	passwords     gtk.Button
+	notes         gtk.Button
+	notesIcon     gtk.Image
+	passwordIcon  gtk.Image
+	clipboardIcon gtk.Image
+	voice         gtk.Button
+	voiceIcon     gtk.Image
+	unread        gtk.Box
+	tray          gtk.Box
+	appMenu       gtk.Box // the focused application's menu (appmenu.go)
+	status        gtk.Button
+	statusIcons   gtk.Box
+	netIcon       gtk.Image
+	btIcon        gtk.Image
+	volIcon       gtk.Image
+	battery       gtk.Box
+	batIcon       gtk.Image
+	batLabel      gtk.Label
+	rec           gtk.Button
+	clockButton   gtk.Button // opens the calendar panel
+	recTime       gtk.Label
+	refs          gtkx.Scope
+	focusRing     *focusRing
 
 	appMenuReg     appmenu.Registration // whose menu it shows, if any
 	appMenuWindow  string               // the window whose pack, generic or accessibility menu it shows, if any
@@ -82,6 +86,9 @@ type bar struct {
 	layout   []string
 	arranged bool
 	spaces   []*gtk.Box
+	// clockEnd: bar.menu wants the clock at the end; clockMoved: the
+	// default layout has it there now (placeClock).
+	clockEnd, clockMoved bool
 
 	edgeGaps bool
 	compact  bool
@@ -195,9 +202,9 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	ui.Get("centered", &b.centered)
 	ui.Get("bar_start", &b.barStart)
 	ui.Get("bar_end", &b.barEnd)
-	ui.Get("app_title", &b.appTitle)
 	ui.Get("workspaces", &b.workspaces)
 	ui.Get("widgets", &b.widgetsMark)
+	ui.Get("app_title", &b.appButton)
 	ui.Get("app_icon", &b.appIcon)
 	overviewClick := gtk.NewGestureClick()
 	overviewClick.SetButton(3)
@@ -216,12 +223,15 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	ui.Get("rec_time", &b.recTime)
 	ui.Get("clock_button", &b.clockButton)
 	ui.Get("notes_icon", &b.notesIcon)
+	ui.Get("password_icon", &b.passwordIcon)
+	ui.Get("clipboard_icon", &b.clipboardIcon)
 	ui.Get("voice", &b.voice)
 	ui.Get("voice_icon", &b.voiceIcon)
 	ui.Get("unread", &b.unread)
 	ui.Get("tray", &b.tray)
 	ui.Get("app_menu", &b.appMenu)
 	ui.Get("status", &b.status)
+	ui.Get("status_icons", &b.statusIcons)
 	ui.Get("net_icon", &b.netIcon)
 	ui.Get("bt_icon", &b.btIcon)
 	ui.Get("vol_icon", &b.volIcon)
@@ -233,6 +243,7 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	b.arrange(s.cfg.Bar.Layout)
 	b.setEdgeGap(s.cfg.Style.EdgeGaps)
 	b.setDensity(s.cfg.Bar.Density)
+	b.setIconMetrics(s.cfg.Bar.IconSize, s.cfg.Bar.IconSpacing)
 	b.status.ConnectClicked(&s.onControlButton)
 	b.notes.ConnectClicked(&s.onNotesButton)
 	b.voice.ConnectClicked(&s.onVoiceButton)
@@ -271,9 +282,11 @@ func (s *shellUI) newBar(mon *gdk.Monitor) *bar {
 	if s.control.open && !s.control.closing {
 		b.status.AddCssClass("open")
 	}
+	b.appButton.ConnectClicked(&s.onAppTitle)
 	b.setStatus(&s.sys)
 	b.setHypr(s, s.snap)
 	b.setClock(s, time.Now())
+	b.setClockAtEnd(s.cfg.Bar.Menu)
 	b.tray.SetVisible(s.cfg.Bar.Tray)
 	s.renderTray(b)
 
@@ -418,7 +431,33 @@ func (b *bar) release() {
 }
 
 func (b *bar) setClock(s *shellUI, now time.Time) {
-	b.clock.SetText(config.Strftime(s.cfg.Bar.Clock, now))
+	b.clock.SetText(config.StrftimeIn(s.cfg.Bar.Clock, now, s.cfg.Bar.ClockLanguage))
+}
+
+// setClockAtEnd puts the clock at the bar's right end while the bar shows
+// the focused application's menu, and in the middle otherwise: the menu's
+// titles take the left of the bar. It moves the clock only in the default
+// layout; a layout of the user's (bar.layout) places the clock itself.
+func (b *bar) setClockAtEnd(atEnd bool) {
+	b.clockEnd = atEnd
+	b.placeClock()
+}
+
+// placeClock puts the clock where clockEnd says, in the default layout.
+// The bar's scope keeps the clock's reference while it moves (arrange).
+func (b *bar) placeClock() {
+	want := b.clockEnd && b.layout == nil
+	if b.clockMoved == want {
+		return
+	}
+	if want {
+		b.centered.SetCenterWidget(nil)
+		b.barEnd.Append(&b.clockButton.Widget)
+	} else {
+		b.barEnd.Remove(&b.clockButton.Widget)
+		b.centered.SetCenterWidget(&b.clockButton.Widget)
+	}
+	b.clockMoved = want
 }
 
 func (b *bar) setHypr(s *shellUI, snap compositor.Snapshot) {
@@ -459,13 +498,51 @@ func (b *bar) setHypr(s *shellUI, snap compositor.Snapshot) {
 		}
 		b.title.SetText(label)
 		setIcon(&b.appIcon, icon)
+		b.appIcon.SetVisible(true)
+	} else {
+		// An empty workspace names the system: its icon and version, as the
+		// bar's own menu does.
+		d := s.distro
+		name := d.Name
+		if name == "" {
+			name = i18n.T("System")
+		}
+		if d.Version != "" {
+			name += " " + d.Version
+		}
+		b.title.SetText(name)
+		if d.Logo != "" {
+			setIcon(&b.appIcon, d.Logo)
+		}
+		b.appIcon.SetVisible(d.Logo != "")
 	}
-	b.title.SetVisible(s.cfg.Bar.Title && hasWindow)
-	b.appIcon.SetVisible(s.cfg.Bar.Title && hasWindow)
+	b.title.SetVisible(s.cfg.Bar.Title)
+	b.appButton.SetVisible(s.cfg.Bar.Title)
 	order := s.overview.st
 	order.MRU = s.cfg.Overview.MRU
+	b.workspaces.SetVisible(s.cfg.Bar.Workspaces != "none")
 	b.setWorkspaces(s, order.BarWorkspaces(snap, name, s.cfg.Bar.Workspaces == "all"))
 	s.syncAppMenu(b)
+}
+
+// setIconMetrics keeps the right side's icons and the gap between them
+// uniform: the end's boxes and the status button's icons.
+func (b *bar) setIconMetrics(size, gap int) {
+	gapPx := int32(gap)
+	b.barEnd.SetSpacing(gapPx)
+	b.tray.SetSpacing(gapPx)
+	if b.statusIcons.GoPointer() != 0 {
+		// The icon buttons keep 4 px padding and a 1 px border on each
+		// side; icons inside one status button need that gap added to
+		// match the icons in buttons of their own.
+		b.statusIcons.SetSpacing(gapPx + 10)
+	}
+	px := int32(size)
+	for _, img := range []*gtk.Image{&b.appIcon, &b.passwordIcon, &b.clipboardIcon, &b.notesIcon, &b.voiceIcon, &b.netIcon, &b.btIcon, &b.volIcon, &b.batIcon} {
+		if img.GoPointer() != 0 {
+			img.SetPixelSize(px)
+		}
+	}
 }
 
 // scrollWorkspaces goes n notches' way (down the next, up the previous)

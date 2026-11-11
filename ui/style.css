@@ -308,6 +308,16 @@ button.plain.tight, button.image-button.tight { min-width: 20px; min-height: 20p
 /* The icon buttons among them are as tall as the others and wider, about
    0.618:1: 24px (a 16px icon, 3px padding, 1px border) by 38px. */
 .bar .island button.passwords, .bar .island button.clipboard, .bar .island button.notes, .bar .island button.voice, .bar .island .tray button { padding: 3px 10px; }
+/* The icon buttons sit close: their icons' gap is the setting's, once
+   their own padding and border are accounted for. Text buttons (the clock,
+   the menu) keep their room. */
+.bar .island button.status, .bar .island button.passwords, .bar .island button.clipboard, .bar .island button.notes, .bar .island button.voice, .bar .island .tray button {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+/* The menu's words line up with the application name beside them: no
+   vertical margin, which the box would centre around the words instead. */
+.bar .island .app-menu button { margin: 0; }
 /* .hover: the pointer is in a button's reach past the island (up to the
    screen's edge); see bar.endReach and clockReach. */
 .bar .island button.passwords:hover, .bar .island button.passwords.hover, .bar .island button.clipboard:hover, .bar .island button.clipboard.hover, .bar .island button.status:hover, .bar .island button.status.hover, .bar .island button.notes:hover, .bar .island button.notes.hover, .bar .island button.voice:hover, .bar .island button.voice.hover, .bar .island button.clock-button:hover, .bar .island button.clock-button.hover, .bar .island .app-menu button:hover, .bar .island .tray button:hover { background: alpha(@accent, 0.09); }
@@ -1095,6 +1105,13 @@ window.settings { background: @app; font-size: 14px; }
 .settings .found { background: alpha(@accent, 0.12); box-shadow: inset 2px 0 @accent; }
 
 .settings .page { padding: 18px 32px 32px; }
+/* A narrow window: the index is an icon rail, and the page takes the room
+   its labels and controls need. */
+.settings.narrow .index list { padding: 0 6px; }
+.settings.narrow .index row { padding: 0 6px; }
+.settings.narrow .page { padding: 12px 12px 20px; }
+.settings.narrow .row { padding: 10px 0; }
+.settings.narrow .section-head.sticky { margin: 0 18px; }
 
 .settings .section { margin-bottom: 22px; }
 /* The copy of the current section's head held at the top of the page. */
@@ -2296,8 +2313,8 @@ button.shot-record:checked { background: alpha(@danger, 0.1); border-color: alph
 .overview-workspace.drop-target { border-color: @accent; background: alpha(@accent, 0.16); }
 .overview-workspace-background { padding: 0; margin: 0; border: 0; border-radius: 0; min-width: 0; min-height: 0; background: @sb; color: @accent; font-size: 18px; }
 .overview-new-badge { padding: 5px 10px; color: @t0; background: alpha(@app, 0.88); border: 1px solid alpha(@t1, 0.32); border-radius: 999px; font-size: 11px; font-weight: 600; }
-.overview-window { padding: 0; margin: 0; min-width: 0; min-height: 0; border: 1px solid alpha(@t1, 0.25); border-radius: 0; background: @surface; }
-.overview-window:hover { border-color: @accent; }
+.overview-window { padding: 0; margin: 0; min-width: 0; min-height: 0; border: none; border-radius: 0; background: transparent; }
+.overview-window:hover { background: alpha(@accent, 0.08); }
 .overview-preview { min-width: 0; min-height: 0; border-radius: 0; }
 .overview-window-meta {
   min-width: 0;
@@ -2391,7 +2408,7 @@ button.shot-record:checked { background: alpha(@danger, 0.1); border-color: alph
 
 .overview-window.dragging { opacity: 0.35; }
 .overview-kill-glyph { font-family: "JetBrainsMono Nerd Font Mono";font-size: 28px; color: @accent; }
-.overview.kill-mode .overview-window:hover { border-color: #e05f65; }
+.overview.kill-mode .overview-window:hover { background: alpha(#e05f65, 0.14); }
 
 /* Assistant (cmd/inua-assistant) */
 .as-head { padding: 12px 12px 12px 20px; border-bottom: 1px solid alpha(@line, 0.55); }
