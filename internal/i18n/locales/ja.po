@@ -1474,7 +1474,7 @@ msgid "Checks"
 msgstr "チェック"
 
 #: internal/apps/mail/details.go:64
-msgid "List"
+msgid "Mailing list"
 msgstr "メーリングリスト"
 
 #: internal/apps/mail/details.go:67
@@ -2085,7 +2085,7 @@ msgstr "試してみる"
 #: internal/gamesui/menubar.go:36
 #: internal/mailui/menubar.go:39
 #: internal/remoteui/menubar.go:47
-#: internal/ui/appmenu_packs.go:88
+#: internal/ui/appmenu_packs.go:95
 #: internal/ui/settings_menu.go:25
 #: internal/viewerui/menubar.go:36
 #: internal/vmui/menubar.go:36
@@ -2105,7 +2105,7 @@ msgstr "新しい会話"
 #: internal/mailui/menubar.go:42
 #: internal/remoteui/menubar.go:48
 #: internal/shell/commands.go:46
-#: internal/ui/appmenu_packs.go:89
+#: internal/ui/appmenu_packs.go:96
 #: internal/viewerui/menubar.go:39
 #: internal/vmui/menubar.go:39
 msgid "Close Window"
@@ -2115,7 +2115,7 @@ msgstr "ウィンドウを閉じる"
 #: internal/diskui/menubar.go:38
 #: internal/lightui/clock.go:404
 #: internal/termui/menubar.go:31
-#: internal/ui/appmenu_packs.go:91
+#: internal/ui/appmenu_packs.go:98
 #: internal/viewerui/menubar.go:41
 #: ui/pass.ui:252
 msgid "Edit"
@@ -2132,7 +2132,7 @@ msgstr "会話を消去"
 #: internal/mailui/menubar.go:44
 #: internal/remoteui/menubar.go:56
 #: internal/termui/menubar.go:32
-#: internal/ui/appmenu_packs.go:94
+#: internal/ui/appmenu_packs.go:101
 #: internal/ui/settings_menu.go:28
 #: internal/viewerui/menubar.go:46
 #: internal/vmui/menubar.go:48
@@ -3636,7 +3636,7 @@ msgstr[0] "…ほか %d 件"
 #: internal/termui/keys.go:295
 #: internal/termui/sessionmenu.go:113
 #: internal/termui/wsmenu.go:129
-#: internal/ui/appmenu_packs.go:132
+#: internal/ui/appmenu_packs.go:139
 #: internal/ui/settings_bench.go:132
 #: internal/ui/settings_menu.go:26
 #: internal/ui/settings_wifi_details.go:62
@@ -4057,6 +4057,10 @@ msgstr "フォルダー"
 #: internal/ui/settings_keyring.go:326
 msgid "Program"
 msgstr "プログラム"
+
+#: internal/filesui/menubar.go:82
+msgid "List"
+msgstr "リスト"
 
 #: internal/filesui/openwith.go:107
 #: internal/filesui/openwith.go:112
@@ -8238,7 +8242,7 @@ msgstr "ロビーに接続できません: %v。再試行しています…"
 
 #: internal/gamesui/lobbywin.go:165
 msgid "Games at %d of %d tables; %d free."
-msgstr "全 %d テーブル中 %d でゲーム中、空席は %d です。"
+msgstr "%[1]d テーブル中 %[2]d でゲーム中、空きは %[3]d です。"
 
 #: internal/gamesui/lobbywin.go:237
 msgid "Host a game here: it opens set to this table."
@@ -8250,7 +8254,7 @@ msgstr "ブラウザーを開けませんでした: %v"
 
 #: internal/gamesui/menubar.go:34
 #: internal/ui/appmenu_packs.go:47
-#: internal/ui/appmenu_packs.go:95
+#: internal/ui/appmenu_packs.go:102
 #: internal/viewerui/menubar.go:57
 msgid "Fullscreen"
 msgstr "全画面表示"
@@ -11389,7 +11393,7 @@ msgstr "すべて既読にする"
 
 #: internal/mailui/menubar.go:53
 #: internal/termui/menubar.go:34
-#: internal/ui/appmenu_packs.go:98
+#: internal/ui/appmenu_packs.go:105
 msgid "Help"
 msgstr "ヘルプ"
 
@@ -13195,7 +13199,7 @@ msgstr "フルスクリーンの切り替え"
 
 #: internal/shell/commands.go:49
 #: internal/ui/appmenu_packs.go:49
-#: internal/ui/appmenu_packs.go:97
+#: internal/ui/appmenu_packs.go:104
 msgid "Center Window"
 msgstr "ウィンドウを中央に配置"
 
@@ -14704,28 +14708,28 @@ msgid "Snooze"
 msgstr "スヌーズ"
 
 #: internal/ui/appmenu_packs.go:48
-#: internal/ui/appmenu_packs.go:96
+#: internal/ui/appmenu_packs.go:103
 msgid "Float"
 msgstr "フロート表示"
 
-#: internal/ui/appmenu_packs.go:90
+#: internal/ui/appmenu_packs.go:97
 msgid "Quit %s"
 msgstr "%s を終了"
 
-#: internal/ui/appmenu_packs.go:92
+#: internal/ui/appmenu_packs.go:99
 msgid "Copy Window Title"
 msgstr "ウィンドウタイトルをコピー"
 
-#: internal/ui/appmenu_packs.go:93
+#: internal/ui/appmenu_packs.go:100
 msgid "Copy Window Class"
 msgstr "ウィンドウクラスをコピー"
 
-#: internal/ui/appmenu_packs.go:99
-#: internal/ui/appmenu_packs.go:118
+#: internal/ui/appmenu_packs.go:106
+#: internal/ui/appmenu_packs.go:125
 msgid "About %s"
 msgstr "%s について"
 
-#: internal/ui/appmenu_packs.go:130
+#: internal/ui/appmenu_packs.go:137
 msgid "Process %d"
 msgstr "プロセス %d"
 
@@ -16202,7 +16206,7 @@ msgstr "Inuaで割り当てたショートカット"
 
 #: internal/ui/settings_compositor.go:133
 msgid "Holding other shortcuts back while one is recorded"
-msgstr "録音中は、ほかのショートカットを一時停止"
+msgstr "ショートカット記録中は、ほかのショートカットを保留"
 
 #: internal/ui/settings_compositor.go:134
 msgid "Display settings from inua"

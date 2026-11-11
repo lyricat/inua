@@ -14,6 +14,7 @@ import (
 
 	"github.com/lyricat/inua/internal/config"
 	"github.com/lyricat/inua/internal/hypr"
+	"github.com/lyricat/inua/internal/sockdir"
 )
 
 func ptr[T any](v T) *T { return &v }
@@ -511,7 +512,7 @@ func TestApplyLua(t *testing.T) {
 // from replies and recording each request.
 func fakeHyprlandSocket(t *testing.T, replies map[string]string) (*hypr.Client, func() []string) {
 	t.Helper()
-	sock := filepath.Join(t.TempDir(), "req.sock")
+	sock := filepath.Join(sockdir.New(t), "req.sock")
 	ln, err := net.Listen("unix", sock)
 	if err != nil {
 		t.Fatal(err)

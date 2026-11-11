@@ -54,6 +54,13 @@ func TestTranslate(t *testing.T) {
 	if got := Tf("All %d processes named %s.", 3, "sh"); got != "名为 sh 的全部 3 个进程。" {
 		t.Errorf("Tf, reordered: %q", got)
 	}
+	Use("ja")
+	if got := Tf("Games at %d of %d tables; %d free.", 2, 10, 8); got != "2 テーブル中 10 でゲーム中、空きは 8 です。" {
+		t.Errorf("Tf, Japanese indexed arguments: %q", got)
+	}
+	if T("List") != "リスト" || T("Mailing list") != "メーリングリスト" {
+		t.Errorf("Japanese list labels: %q / %q", T("List"), T("Mailing list"))
+	}
 	Use()
 	if Nf("%d core", "%d cores", 1, 1) != "1 core" || Nf("%d core", "%d cores", 2, 2) != "2 cores" {
 		t.Error("English plurals")
