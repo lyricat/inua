@@ -4,10 +4,12 @@ import (
 	"path/filepath"
 	"slices"
 	"testing"
+	"time"
 
 	"github.com/lyricat/inua/internal/appmenu"
 	"github.com/lyricat/inua/internal/compositor"
 	"github.com/lyricat/inua/internal/compositor/compositortest"
+	"github.com/lyricat/inua/internal/uikit"
 )
 
 // isolatePacks keeps the packs a test reads to the shipped ones.
@@ -95,6 +97,99 @@ func TestPackEntryRefusedForAnotherWindow(t *testing.T) {
 	snap.FocusedWindow = "0xdead"
 	if _, ok := packTargetOf(snap, gone); ok {
 		t.Fatal("an entry ran for a window the snapshot no longer has")
+	}
+}
+
+// runItem runs the menu line labelled label, at any depth.
+func runItem(t *testing.T, items []uikit.Item, label string) {
+	t.Helper()
+	var walk func([]uikit.Item) bool
+	walk = func(items []uikit.Item) bool {
+		for _, it := range items {
+			if it.Label == label && it.Run != nil {
+				it.Run()
+				return true
+			}
+			if walk(it.Items) {
+				return true
+			}
+		}
+		return false
+	}
+	if !walk(items) {
+		t.Fatalf("no line %q to run", label)
+	}
+}
+
+// actionsAfter is what the fake compositor was asked, once want arrived
+// or a moment passed: the shell asks it from a goroutine.
+func actionsAfter(fake *compositortest.Fake, want []string) []string {
+	deadline := time.Now().Add(2 * time.Second)
+	if len(want) == 0 {
+		deadline = time.Now().Add(150 * time.Millisecond)
+	}
+	for time.Now().Before(deadline) {
+		if got := fake.Actions(); len(want) > 0 && slices.Equal(got, want) {
+			return got
+		}
+		time.Sleep(5 * time.Millisecond)
+	}
+	return fake.Actions()
+}
+
+// The menu the application's name opens acts on its window whatever menu
+// the bar shows beside it (the generic one, a published one, an
+// accessibility one or none), while the bar's own pack lines still act
+// only while the bar shows them; and neither acts once the window it was
+// built for has lost the focus or is gone.
+func TestTitleMenuActsBesideAnyBarMenu(t *testing.T) {
+	for _, tc := range []struct {
+		name     string
+		set      func(*bar)
+		packLine bool // the bar's pack line for the window acts too
+	}{
+		{"generic menu", func(b *bar) { b.appMenuWindow = "0xb" }, true},
+		{"published menu", func(b *bar) { b.appMenuReg = appmenu.Registration{Service: ":1.9", Path: "/MenuBar/1"} }, false},
+		{"accessibility menu", func(b *bar) { b.appMenuWindow, b.appMenuPID, b.appMenuA11y = "0xb", 40, true }, false},
+		{"no menu", func(*bar) {}, false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			fake := compositortest.New()
+			b := &bar{}
+			tc.set(b)
+			s := &shellUI{snap: twoBrowserWindows(), comp: fake, bars: map[uintptr]*bar{1: b}}
+			w, _ := s.snap.Window(s.snap.FocusedWindow)
+			file := genericAppSections(w, "Chromium")[0].Children
+
+			runItem(t, s.titleMenuItems(file), "Close Window")
+			want := []string{"close-window 0xb"}
+			if got := actionsAfter(fake, want); !slices.Equal(got, want) {
+				t.Fatalf("title menu's Close Window asked %q, want %q", got, want)
+			}
+
+			runItem(t, s.packedMenuItems(file), "Close Window")
+			if tc.packLine {
+				want = append(want, "close-window 0xb")
+			}
+			if got := actionsAfter(fake, want); !slices.Equal(got, want) {
+				t.Fatalf("pack line's Close Window asked %q, want %q", got, want)
+			}
+
+			// The focus moved to another window of the process: a menu
+			// still open for 0xb closes nothing.
+			title := s.titleMenuItems(file)
+			s.snap.FocusedWindow = "0xa"
+			runItem(t, title, "Close Window")
+			runItem(t, title, "Quit Chromium")
+			// 0xb is gone, the focus with it.
+			s.snap = twoBrowserWindows()
+			s.snap.Windows = slices.DeleteFunc(s.snap.Windows, func(w compositor.Window) bool { return w.ID == "0xb" })
+			s.snap.FocusedWindow = ""
+			runItem(t, title, "Close Window")
+			if got := actionsAfter(fake, nil); !slices.Equal(got, want) {
+				t.Fatalf("a menu built for 0xb acted after it lost the focus: %q, want %q", got, want)
+			}
+		})
 	}
 }
 

@@ -424,7 +424,7 @@ func (s *shellUI) bindAppMenuHandlers() {
 			if len(sections) == 0 {
 				return
 			}
-			items := s.packedMenuItems(sections[0].Children)
+			items := s.titleMenuItems(sections[0].Children)
 			if len(items) == 0 {
 				return
 			}
