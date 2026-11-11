@@ -15238,7 +15238,7 @@ msgstr "hyprland.lua 在載入 inua.lua 之後又設定了這些,會蓋過 inua 
 msgid "hyprland.conf sets these again after loading inua.conf, which wins over inua: %s. Move the source line below them."
 msgstr "hyprland.conf 在載入 inua.conf 後再次設定這些,這贏得了 inua: %s。將原始程式碼行移到它們下方。"
 
-#: internal/ui/launcher.go:562
+#: internal/ui/launcher.go:564
 msgid "inua launcher"
 msgstr "inua發射器"
 
