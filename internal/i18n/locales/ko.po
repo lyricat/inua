@@ -15023,11 +15023,11 @@ msgstr "스크린샷을 위해 숨겨집니다."
 msgid "The passphrases do not match."
 msgstr "암호 문구가 일치하지 않습니다."
 
-#: internal/ui/bar.go:608
+#: internal/ui/bar.go:604
 msgid "Workspace %s"
 msgstr "작업공간 %s"
 
-#: internal/ui/bar.go:621
+#: internal/ui/bar.go:617
 msgid "WORKSPACE"
 msgstr "작업 공간"
 

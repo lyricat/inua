@@ -198,8 +198,13 @@ func (s *shellUI) barPID(b *bar) int {
 // stand in for a real menu that is about to be found. Until the packs are
 // first read the bar shows none either: a pack may replace the published
 // menu. Over an empty desktop the bar shows the system menu, which waits
-// for nothing.
+// for nothing. With bar.menu off the bar shows no menu at all, whatever
+// asks for it again: a focus change, the registrar, a pack or a search.
 func (s *shellUI) syncAppMenu(b *bar) {
+	if !s.cfg.Bar.Menu {
+		s.clearAppMenu(b)
+		return
+	}
 	system := shell.EmptyDesktop(s.snap, b.connector())
 	if s.appmenu.packs == nil && !system {
 		return
