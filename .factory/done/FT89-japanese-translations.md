@@ -67,3 +67,9 @@ Fixed and pushed to factory/FT89-japanese-translations:
 Claude demonstrated each regression test fails without its fix; targeted UI race tests passed five repeated runs. Full make test passed for Claude (isolated HOME, long TMPDIR) and independently for manager with throwaway HOME. make i18n reproduced catalogs; git diff --check passed, worktree clean, no forbidden paths changed. No new P0/P1 found in targeted self-review and manager diff inspection. Previous P3 notes remain outside this request.
 
 No installs, backup binaries executed, real desktop/visual verification, contributor fork changes, master merge, release, or deployment. Menu and launcher tests ran headless, not real third-party applications.
+
+## factory · 2026-11-11 19:27
+Owner approved shipping all ready items: “Ready items, can move on”. FT89 was the only ready item.
+Merged reviewed head cd5761b124be7297856878b5c374058aead0a62f into master without conflicts at 624b5edb515837932214529cd5a3c65abfbaae81. Tagged v0.1.36; master and tag pushed atomically. Closed PR #89 with release reference.
+Validation on merged master: make generate, make i18n and make test passed with throwaway HOME and private D-Bus; generated files unchanged, worktree clean, git diff --check passed. No installs or additional code fixes. Previous P3 notes remain; no visual/real-desktop verification, backup binaries executed, deployment or restart.
+Moved ready → done.
