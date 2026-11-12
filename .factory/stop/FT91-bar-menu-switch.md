@@ -32,3 +32,8 @@ notes:
 - The failing test file is identical to origin/master; this is not attributed to FT91. Reviewer reports 20 subsequent isolated runs passed, consistent with an intermittent failure. No unrelated base fix was made.
 - No confirmed new menu/clock functional defects found. Script tests and go vet passed. Review made no code changes; no installations; UI not visually checked.
 - Remains in review because a required review test failed, despite earlier full test passes. Branch lookup blocker and merge conflicts are resolved.
+
+## factory · 2026-11-12 09:44
+Moved review → stop at the owner's explicit request: “上游 pr 关闭了，ft91 可以 stop 了。”
+Verified GitHub PR #75 is CLOSED (closed at 2026-11-11T12:02:35Z).
+Stop further factory build, review and shipping for this item. Existing code branch retained; no code changes, tests, or merge to master.
