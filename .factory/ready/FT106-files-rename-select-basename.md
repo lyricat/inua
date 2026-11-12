@@ -45,3 +45,14 @@ Built and pushed commits 268c4164 and 02fb7fe7; head: 02fb7fe7. Moved new/ → r
 - Manager independently ran make test successfully with throwaway HOME/XDG directories: Python session tests, go vet, and Go race tests pass. git diff --check passes; protected paths unchanged.
 - Not checked by eye: UI appearance and real keyboard/mouse input; automated Broadway callbacks are not visual inspection. Remote/rclone directory classification was not checked. Existing GTK context-menu finalization warnings were observed by the coder and were not changed.
 - First push could not supply credentials without an HTTP repository path; the one retry succeeded with command-local credential.useHttpPath=true. No credential or user settings changed.
+
+## factory · review · 2026-11-13 01:21
+head: 02fb7fe7ee60b26be5a1e0f0939ecc9440ea3cc6
+verdict: pass
+notes:
+- Claude Code reviewed origin/master...HEAD against the request and plan; base/merge base: 624b5edb515837932214529cd5a3c65abfbaae81. All 13 changed files inspected; no qualifying P0/P1/P2/P3 findings.
+- make test passed under throwaway HOME/XDG/TMPDIR: Python session tests, go vet and Go race tests. TestRenameSelection and TestRenameCardSelectsStem also passed uncached; Broadway was available and the GTK integration test ran, not skipped.
+- Unicode boundaries, final-extension selection, full directory selection including directory symlinks, focus persistence, F2/context-menu entry, cancellation and submission covered. Catalog differences are source references only and were checked against source; make i18n was not rerun during read-only review.
+- Installs: none. Tracked worktree stayed clean; git diff --check passed. Branch merges cleanly with current master. Manager additionally read docs/architecture.md and design/ui.md, which the coder omitted.
+- Not checked by eye: UI appearance or real keyboard/mouse input. Remote/rclone/FUSE directory classification and slow-mount behavior were not exercised; broken symlinks use the planned file fallback.
+- Moved review/ → ready/. Owner should check the rename interaction visually before shipping.
