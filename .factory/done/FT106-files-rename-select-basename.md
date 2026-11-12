@@ -56,3 +56,12 @@ notes:
 - Installs: none. Tracked worktree stayed clean; git diff --check passed. Branch merges cleanly with current master. Manager additionally read docs/architecture.md and design/ui.md, which the coder omitted.
 - Not checked by eye: UI appearance or real keyboard/mouse input. Remote/rclone/FUSE directory classification and slow-mount behavior were not exercised; broken symlinks use the planned file fallback.
 - Moved review/ → ready/. Owner should check the rename interaction visually before shipping.
+
+## factory · 2026-11-13 07:44
+Shipped on the owner's request after confirming the ready head still matches its passing review.
+- Merged into master without conflicts: 1080a04039ec6d1b2a577d201e1b16eab83cfe5c; release tag: v0.1.37. Both pushed atomically.
+- make generate and make i18n passed and left tracked files unchanged. make test passed under throwaway HOME/XDG directories (Python session tests, go vet and Go race tests).
+- Uncached race-enabled TestRenameSelection and TestRenameCardSelectsStem passed on merged master; Broadway GTK integration ran, not skipped.
+- No linked GitHub issues or PRs to close. Factory branch retained (clean is not configured). Installs: none.
+- UI was not checked by eye; no real desktop input, deployment or restart. Remote/rclone/FUSE classification and slow mounts were not exercised.
+- Moved ready/ → done/.
