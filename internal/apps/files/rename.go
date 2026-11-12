@@ -16,6 +16,26 @@ import (
 // (a folder's whole name is its stem); Plan says what each becomes and
 // what stops it; RenameMany does them all at once.
 
+// RenameSelection is how many characters at the start of name renaming
+// selects to be typed over, as GTK counts them (not bytes): all but the
+// last extension and its dot, "archive.tar" of "archive.tar.gz". A
+// folder's name is selected whole, and so is a name with no extension:
+// one whose last dot leads it (".gitignore") or ends it ("notes."), or
+// whose ending holds a space ("Mr. Smith"), which is a sentence's, not a
+// file type's.
+func RenameSelection(name string, isDir bool) int {
+	all := utf8.RuneCountInString(name)
+	i := strings.LastIndexByte(name, '.')
+	if isDir || i < 0 || i == len(name)-1 {
+		return all
+	}
+	stem, ext := name[:i], name[i+1:]
+	if strings.Trim(stem, ".") == "" || strings.IndexFunc(ext, unicode.IsSpace) >= 0 {
+		return all
+	}
+	return utf8.RuneCountInString(stem)
+}
+
 // RenameMode is how a rule renames.
 type RenameMode int
 

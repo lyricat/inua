@@ -372,7 +372,7 @@ msgid "A file from %s"
 msgstr "%s에서 온 파일"
 
 #: internal/apps/connect/share.go:129
-#: internal/filesui/cards.go:682
+#: internal/filesui/cards.go:692
 #: internal/filesui/picker.go:488
 #: internal/filesui/window.go:815
 #: internal/lightui/workshop_blocks.go:431
@@ -2243,12 +2243,12 @@ msgstr "%s에서 페어링을 요청합니다. 이 키가 표시될 때만 페�
 #: internal/filesui/appchooser.go:107
 #: internal/filesui/archive.go:49
 #: internal/filesui/archive.go:309
-#: internal/filesui/cards.go:347
-#: internal/filesui/cards.go:395
-#: internal/filesui/cards.go:438
-#: internal/filesui/cards.go:455
-#: internal/filesui/cards.go:493
-#: internal/filesui/cards.go:592
+#: internal/filesui/cards.go:352
+#: internal/filesui/cards.go:401
+#: internal/filesui/cards.go:448
+#: internal/filesui/cards.go:465
+#: internal/filesui/cards.go:503
+#: internal/filesui/cards.go:602
 #: internal/filesui/picker.go:368
 #: internal/filesui/remote.go:159
 #: internal/filesui/remote.go:219
@@ -3101,7 +3101,7 @@ msgid "Delete %s for good?"
 msgstr "%s을(를) 영구히 삭제할까요?"
 
 #: internal/diskui/details.go:528
-#: internal/filesui/cards.go:439
+#: internal/filesui/cards.go:449
 #: internal/lightui/calculator.go:59
 #: internal/lightui/calculator.go:353
 #: internal/lightui/gpg.go:1611
@@ -3201,7 +3201,7 @@ msgid "Stop Scanning"
 msgstr ""
 
 #: internal/diskui/window.go:333
-#: internal/filesui/cards.go:686
+#: internal/filesui/cards.go:696
 #: internal/filesui/sidebar.go:41
 #: internal/filesui/tabs.go:99
 #: internal/filesui/window.go:324
@@ -3330,7 +3330,7 @@ msgid_plural "%s in %d folders · %s safe to delete"
 msgstr[0] "%s · 폴더 %d개 · %s 안전하게 삭제 가능"
 
 #: internal/filesui/app.go:86
-#: internal/filesui/cards.go:693
+#: internal/filesui/cards.go:703
 #: internal/filesui/remote.go:371
 #: internal/filesui/window.go:111
 #: internal/filesui/window.go:317
@@ -3479,8 +3479,8 @@ msgid "The two passwords differ."
 msgstr "두 비밀번호가 다릅니다."
 
 #: internal/filesui/archive.go:263
-#: internal/filesui/cards.go:360
-#: internal/filesui/cards.go:404
+#: internal/filesui/cards.go:365
+#: internal/filesui/cards.go:410
 msgid "“%s” is taken here."
 msgstr "여기에 “%s”이(가) 이미 있습니다."
 
@@ -3514,69 +3514,69 @@ msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d개 항목"
 
-#: internal/filesui/cards.go:348
-#: internal/filesui/cards.go:368
-#: internal/filesui/cards.go:696
+#: internal/filesui/cards.go:353
+#: internal/filesui/cards.go:373
+#: internal/filesui/cards.go:706
 #: internal/filesui/renamemany.go:38
 #: internal/term/web/strings.go:89
 #: internal/termui/keys.go:423
 msgid "Rename"
 msgstr "이름 바꾸기"
 
-#: internal/filesui/cards.go:375
+#: internal/filesui/cards.go:381
 msgid "A name cannot be empty."
 msgstr "이름은 비워 둘 수 없습니다."
 
-#: internal/filesui/cards.go:377
+#: internal/filesui/cards.go:383
 msgid "“%s” is not a name."
 msgstr "“%s”은(는) 이름으로 쓸 수 없습니다."
 
-#: internal/filesui/cards.go:379
+#: internal/filesui/cards.go:385
 msgid "A name cannot hold “/”."
 msgstr "이름에 “/”를 넣을 수 없습니다."
 
-#: internal/filesui/cards.go:381
+#: internal/filesui/cards.go:387
 msgid "The name is too long."
 msgstr "이름이 너무 깁니다."
 
-#: internal/filesui/cards.go:388
+#: internal/filesui/cards.go:394
 msgid "New file"
 msgstr "새 파일"
 
-#: internal/filesui/cards.go:388
+#: internal/filesui/cards.go:394
 msgid "Untitled"
 msgstr "제목 없음"
 
-#: internal/filesui/cards.go:390
+#: internal/filesui/cards.go:396
 msgid "New folder"
 msgstr "새 폴더"
 
-#: internal/filesui/cards.go:390
+#: internal/filesui/cards.go:396
 msgid "New Folder"
 msgstr "새 폴더"
 
-#: internal/filesui/cards.go:396
+#: internal/filesui/cards.go:402
 msgid "Make"
 msgstr "만들기"
 
-#: internal/filesui/cards.go:419
+#: internal/filesui/cards.go:425
 msgid "In %s"
 msgstr ""
 
-#: internal/filesui/cards.go:433
+#: internal/filesui/cards.go:443
 msgid "Delete %d item for good?"
 msgid_plural "Delete %d items for good?"
 msgstr[0] "%d개 항목을 영구히 삭제할까요?"
 
-#: internal/filesui/cards.go:435
+#: internal/filesui/cards.go:445
 msgid "Delete “%s” for good?"
 msgstr "“%s”을(를) 영구히 삭제할까요?"
 
-#: internal/filesui/cards.go:450
+#: internal/filesui/cards.go:460
 msgid "They do not go to the trash, and this cannot be undone."
 msgstr "휴지통으로 가지 않으며 되돌릴 수 없습니다."
 
-#: internal/filesui/cards.go:456
+#: internal/filesui/cards.go:466
 #: internal/filesui/pathbar.go:91
 #: internal/filesui/sidebar.go:47
 #: internal/filesui/window.go:788
@@ -3587,57 +3587,57 @@ msgstr "휴지통으로 가지 않으며 되돌릴 수 없습니다."
 msgid "Empty Trash"
 msgstr "휴지통 비우기"
 
-#: internal/filesui/cards.go:473
+#: internal/filesui/cards.go:483
 msgid "Empty the trash?"
 msgstr "휴지통을 비울까요?"
 
-#: internal/filesui/cards.go:473
+#: internal/filesui/cards.go:483
 msgid "Everything in it is deleted for good, on every drive."
 msgstr "모든 드라이브에 있는 내용이 영구히 삭제됩니다."
 
-#: internal/filesui/cards.go:490
+#: internal/filesui/cards.go:500
 msgid "There: %s, %s. This one: %s, %s."
 msgstr "기존: %s, %s. 이것: %s, %s."
 
-#: internal/filesui/cards.go:494
+#: internal/filesui/cards.go:504
 #: internal/termui/guide.go:106
 msgid "Skip"
 msgstr "건너뛰기"
 
-#: internal/filesui/cards.go:495
+#: internal/filesui/cards.go:505
 msgid "Keep both"
 msgstr "둘 다 유지"
 
-#: internal/filesui/cards.go:499
+#: internal/filesui/cards.go:509
 msgid "Merge"
 msgstr "병합"
 
-#: internal/filesui/cards.go:501
+#: internal/filesui/cards.go:511
 #: internal/filesui/picker.go:369
 #: internal/lightui/pass_otp.go:180
 msgid "Replace"
 msgstr "바꾸기"
 
-#: internal/filesui/cards.go:504
+#: internal/filesui/cards.go:514
 msgid "“%s” is already in %s"
 msgstr "“%s”이(가) 이미 %s에 있습니다"
 
-#: internal/filesui/cards.go:506
+#: internal/filesui/cards.go:516
 msgid "A folder “%s” is already in %s"
 msgstr "폴더 “%s”이(가) 이미 %s에 있습니다"
 
-#: internal/filesui/cards.go:509
+#: internal/filesui/cards.go:519
 #: ui/files.ui:376
 msgid "Do the same for the rest"
 msgstr "나머지도 똑같이 처리"
 
-#: internal/filesui/cards.go:518
+#: internal/filesui/cards.go:528
 msgid "… and %d more"
 msgid_plural "… and %d more"
 msgstr[0] "… 그 외 %d개"
 
-#: internal/filesui/cards.go:520
-#: internal/filesui/cards.go:720
+#: internal/filesui/cards.go:530
+#: internal/filesui/cards.go:730
 #: internal/mailui/welcome.go:156
 #: internal/shell/launcher_actions.go:53
 #: internal/term/web/strings.go:30
@@ -3657,115 +3657,115 @@ msgstr[0] "… 그 외 %d개"
 msgid "Close"
 msgstr "닫기"
 
-#: internal/filesui/cards.go:521
+#: internal/filesui/cards.go:531
 msgid "Some items could not be done"
 msgstr "일부 항목을 처리하지 못했습니다"
 
-#: internal/filesui/cards.go:530
+#: internal/filesui/cards.go:540
 msgid "Jump to a folder"
 msgstr "폴더로 이동"
 
-#: internal/filesui/cards.go:573
+#: internal/filesui/cards.go:583
 msgid "Mounting %s…"
 msgstr "%s 마운트 중…"
 
-#: internal/filesui/cards.go:593
+#: internal/filesui/cards.go:603
 #: internal/securitykey/unlock.go:57
 msgid "Unlock"
 msgstr "잠금 해제"
 
-#: internal/filesui/cards.go:596
+#: internal/filesui/cards.go:606
 msgid "Unlocking…"
 msgstr "잠금 해제 중…"
 
-#: internal/filesui/cards.go:618
+#: internal/filesui/cards.go:628
 msgid "That passphrase does not open it."
 msgstr "이 암호로는 열 수 없습니다."
 
-#: internal/filesui/cards.go:632
+#: internal/filesui/cards.go:642
 msgid "Unlock %s"
 msgstr "%s 잠금 해제"
 
-#: internal/filesui/cards.go:633
+#: internal/filesui/cards.go:643
 msgid "The drive is encrypted. Its passphrase is not kept."
 msgstr "이 드라이브는 암호화되어 있습니다. 암호는 저장되지 않습니다."
 
-#: internal/filesui/cards.go:643
+#: internal/filesui/cards.go:653
 msgid "Ejecting %s…"
 msgstr "%s 꺼내는 중…"
 
-#: internal/filesui/cards.go:654
+#: internal/filesui/cards.go:664
 msgid "%s can be removed now."
 msgstr "이제 %s을(를) 분리할 수 있습니다."
 
-#: internal/filesui/cards.go:656
+#: internal/filesui/cards.go:666
 msgid "%s is unmounted."
 msgstr "%s의 마운트를 해제했습니다."
 
-#: internal/filesui/cards.go:666
+#: internal/filesui/cards.go:676
 msgid "%s is in use: close the files open on it first."
 msgstr "%s이(가) 사용 중입니다. 먼저 열린 파일을 닫으세요."
 
-#: internal/filesui/cards.go:668
+#: internal/filesui/cards.go:678
 msgid "Not allowed."
 msgstr "허용되지 않습니다."
 
-#: internal/filesui/cards.go:670
+#: internal/filesui/cards.go:680
 #: internal/mailui/assist.go:106
 #: internal/remoteui/stream.go:472
 msgid "%s: %v"
 msgstr "%s: %v"
 
-#: internal/filesui/cards.go:681
+#: internal/filesui/cards.go:691
 msgid "Moving"
 msgstr "이동"
 
-#: internal/filesui/cards.go:683
+#: internal/filesui/cards.go:693
 msgid "Parent folder"
 msgstr "상위 폴더"
 
-#: internal/filesui/cards.go:684
+#: internal/filesui/cards.go:694
 msgid "Back / forward"
 msgstr "뒤로 / 앞으로"
 
-#: internal/filesui/cards.go:685
+#: internal/filesui/cards.go:695
 msgid "In the columns: the folder above, the folder selected"
 msgstr "열 보기에서: 상위 폴더, 선택한 폴더"
 
-#: internal/filesui/cards.go:687
+#: internal/filesui/cards.go:697
 msgid "The sidebar's places"
 msgstr "사이드바의 위치"
 
-#: internal/filesui/cards.go:688
+#: internal/filesui/cards.go:698
 msgid "Type a path or a server"
 msgstr "경로 또는 서버 입력"
 
-#: internal/filesui/cards.go:689
+#: internal/filesui/cards.go:699
 msgid "Jump to a folder used before"
 msgstr "이전에 사용한 폴더로 이동"
 
-#: internal/filesui/cards.go:690
+#: internal/filesui/cards.go:700
 #: ui/filespane.ui:127
 msgid "Search below this folder"
 msgstr "이 폴더 아래 검색"
 
-#: internal/filesui/cards.go:691
+#: internal/filesui/cards.go:701
 msgid "Letters"
 msgstr "글자"
 
-#: internal/filesui/cards.go:691
+#: internal/filesui/cards.go:701
 msgid "Filter this folder; Esc clears"
 msgstr "이 폴더 필터링, Esc로 지우기"
 
-#: internal/filesui/cards.go:694
+#: internal/filesui/cards.go:704
 msgid "Copy / cut / paste"
 msgstr "복사 / 잘라내기 / 붙여넣기"
 
-#: internal/filesui/cards.go:695
+#: internal/filesui/cards.go:705
 msgid "Copy the paths (none selected: the folder's)"
 msgstr "경로 복사(선택 없으면 폴더 경로)"
 
-#: internal/filesui/cards.go:697
+#: internal/filesui/cards.go:707
 #: internal/filesui/window.go:856
 #: internal/lightui/gpg.go:1619
 #: internal/mailui/picker.go:143
@@ -3774,15 +3774,15 @@ msgstr "경로 복사(선택 없으면 폴더 경로)"
 msgid "Move to Trash"
 msgstr "휴지통으로 이동"
 
-#: internal/filesui/cards.go:698
+#: internal/filesui/cards.go:708
 msgid "Delete for good"
 msgstr "영구 삭제"
 
-#: internal/filesui/cards.go:699
+#: internal/filesui/cards.go:709
 msgid "New folder / new file"
 msgstr "새 폴더 / 새 파일"
 
-#: internal/filesui/cards.go:700
+#: internal/filesui/cards.go:710
 #: internal/mailui/compose.go:529
 #: internal/mailui/quick.go:129
 #: internal/mailui/quick.go:142
@@ -3790,91 +3790,91 @@ msgstr "새 폴더 / 새 파일"
 msgid "Undo"
 msgstr "실행 취소"
 
-#: internal/filesui/cards.go:701
+#: internal/filesui/cards.go:711
 msgid "Copy / move to the other pane"
 msgstr "다른 창으로 복사 / 이동"
 
-#: internal/filesui/cards.go:702
+#: internal/filesui/cards.go:712
 #: internal/filesui/window.go:817
 msgid "Open with…"
 msgstr "다른 앱으로 열기…"
 
-#: internal/filesui/cards.go:703
+#: internal/filesui/cards.go:713
 #: internal/filesui/window.go:870
 msgid "Bookmark"
 msgstr "북마크"
 
-#: internal/filesui/cards.go:704
+#: internal/filesui/cards.go:714
 #: internal/filesui/pathbar.go:137
 #: internal/filesui/window.go:803
 msgid "Terminal here"
 msgstr "여기에서 터미널 열기"
 
-#: internal/filesui/cards.go:706
+#: internal/filesui/cards.go:716
 #: internal/termui/menubar.go:33
 #: ui/screenshot.ui:180
 #: ui/shotdrawer.ui:122
 msgid "Window"
 msgstr "창"
 
-#: internal/filesui/cards.go:707
+#: internal/filesui/cards.go:717
 msgid "New tab / close tab"
 msgstr "새 탭 / 탭 닫기"
 
-#: internal/filesui/cards.go:708
+#: internal/filesui/cards.go:718
 msgid "Next / previous tab"
 msgstr "다음 / 이전 탭"
 
-#: internal/filesui/cards.go:709
+#: internal/filesui/cards.go:719
 #: internal/filesui/pathbar.go:89
 #: internal/filesui/window.go:820
 msgid "Middle click"
 msgstr "가운데 클릭"
 
-#: internal/filesui/cards.go:709
+#: internal/filesui/cards.go:719
 msgid "A folder in a new tab"
 msgstr "새 탭에서 폴더 열기"
 
-#: internal/filesui/cards.go:710
+#: internal/filesui/cards.go:720
 msgid "List / grid / columns"
 msgstr "목록 / 격자 / 열"
 
-#: internal/filesui/cards.go:711
+#: internal/filesui/cards.go:721
 #: internal/filesui/picker.go:501
 #: internal/filesui/window.go:808
 msgid "Hidden files"
 msgstr "숨김 파일"
 
-#: internal/filesui/cards.go:712
+#: internal/filesui/cards.go:722
 msgid "Two panes, the other pane"
 msgstr "두 창, 다른 창"
 
-#: internal/filesui/cards.go:713
+#: internal/filesui/cards.go:723
 #: internal/mailui/menubar.go:48
 msgid "Sidebar"
 msgstr "사이드바"
 
-#: internal/filesui/cards.go:714
+#: internal/filesui/cards.go:724
 #: internal/filesui/window.go:862
 #: internal/viewerui/menubar.go:55
 msgid "Details"
 msgstr "세부 정보"
 
-#: internal/filesui/cards.go:715
+#: internal/filesui/cards.go:725
 msgid "Bigger / smaller / normal"
 msgstr "크게 / 작게 / 보통"
 
-#: internal/filesui/cards.go:716
+#: internal/filesui/cards.go:726
 msgid "New window, close it"
 msgstr "새 창, 창 닫기"
 
-#: internal/filesui/cards.go:717
+#: internal/filesui/cards.go:727
 #: internal/filesui/picker.go:502
 #: internal/filesui/window.go:809
 msgid "Reload"
 msgstr "새로 고침"
 
-#: internal/filesui/cards.go:721
+#: internal/filesui/cards.go:731
 #: internal/mailui/picker.go:130
 #: internal/mailui/reader.go:378
 #: internal/termui/palette.go:213

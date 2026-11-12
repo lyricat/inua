@@ -331,9 +331,9 @@ func numbered(name string, n int, dir bool) string {
 	return fmt.Sprintf("%s (%d)%s", stem, n, ext)
 }
 
-// SplitExt splits a name before its extension, as renaming selects it; a
-// leading dot does not start one, and ".tar.gz" and the like stay
-// together.
+// SplitExt splits a name before its extension, which numbered and copied
+// names keep; a leading dot does not start one, and ".tar.gz" and the
+// like stay together. Renaming one item selects by RenameSelection.
 func SplitExt(name string) (stem, ext string) {
 	i := strings.LastIndexByte(name, '.')
 	if i <= 0 || i == len(name)-1 {

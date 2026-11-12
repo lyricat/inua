@@ -146,7 +146,7 @@ Selection and changes
 | Ctrl+A / Ctrl+Shift+A / Ctrl+Shift+I | Select all / none / invert |
 | Ctrl+C / Ctrl+X / Ctrl+V | Copy / cut / paste, interchanged with other file managers (`x-special/gnome-copied-files`, `text/uri-list`) |
 | Ctrl+Shift+C | Copy the paths as text (nothing selected: the folder's) |
-| F2 | Rename (the name without its extension is selected) |
+| F2 | Rename (the name but its last extension is selected: `archive.tar` of `archive.tar.gz`; a folder's name, or one with no extension, whole) |
 | Delete | Move to the trash (in the trash: delete for good) |
 | Shift+Delete | Delete for good (asks first) |
 | Ctrl+Shift+N / Ctrl+Alt+N | New folder / new empty file |

@@ -6,6 +6,7 @@ import (
 	"slices"
 	"strings"
 	"testing"
+	"unicode/utf8"
 )
 
 func TestNewName(t *testing.T) {
@@ -136,6 +137,49 @@ func TestRenameManyTakenMeanwhile(t *testing.T) {
 	for _, e := range es {
 		if strings.HasPrefix(e.Name(), ".") {
 			t.Fatalf("left %s", e.Name())
+		}
+	}
+}
+
+// Renaming one item selects its name but the last extension; positions
+// are characters, as GTK counts them.
+func TestRenameSelection(t *testing.T) {
+	for _, c := range []struct {
+		name string
+		dir  bool
+		want string // what is selected
+	}{
+		{"abc.jpg", false, "abc"},
+		{"archive.tar.gz", false, "archive.tar"},
+		{"a.b.c.d", false, "a.b.c"},
+		{"README", false, "README"},
+		{".gitignore", false, ".gitignore"},
+		{"..hidden", false, "..hidden"},
+		{".config.json", false, ".config"},
+		{"notes.", false, "notes."},
+		{"a.b.", false, "a.b."},
+		{"...", false, "..."},
+		{".", false, "."},
+		{"", false, ""},
+		{"Mr. Smith", false, "Mr. Smith"},
+		{"Mr. Smith.txt", false, "Mr. Smith"},
+		{"my.folder", true, "my.folder"},
+		{"photos.2024.d", true, "photos.2024.d"},
+		{".config", true, ".config"},
+		{"noext", true, "noext"},
+		{"照片.jpg", false, "照片"},
+		{"café.txt", false, "café"}, // e and a combining accent: two characters
+		{"👍🏽 ok.png", false, "👍🏽 ok"}, // an emoji and its skin tone: two characters
+		{"résumé.pdf.zip", false, "résumé.pdf"},
+		{"имя.файл.txt", false, "имя.файл"},
+	} {
+		got := RenameSelection(c.name, c.dir)
+		if want := utf8.RuneCountInString(c.want); got != want {
+			sel := "(past the end)"
+			if r := []rune(c.name); got <= len(r) {
+				sel = string(r[:got])
+			}
+			t.Errorf("%q (folder %v): selects %d characters, %q; want %d, %q", c.name, c.dir, got, sel, want, c.want)
 		}
 	}
 }
