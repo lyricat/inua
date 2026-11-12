@@ -161,7 +161,8 @@ func TestRenameSelection(t *testing.T) {
 		{"...", false, "..."},
 		{".", false, "."},
 		{"", false, ""},
-		{"Mr. Smith", false, "Mr. Smith"},
+		{"a.foo bar", false, "a"}, // the last extension, even with a space
+		{"Mr. Smith", false, "Mr"},
 		{"Mr. Smith.txt", false, "Mr. Smith"},
 		{"my.folder", true, "my.folder"},
 		{"photos.2024.d", true, "photos.2024.d"},
