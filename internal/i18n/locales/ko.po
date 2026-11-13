@@ -13774,8 +13774,8 @@ msgid "Next agent that needs you"
 msgstr "응답이 필요한 다음 에이전트"
 
 #: internal/term/settings/settings.go:115
-msgid "Next agent that needs you or is idle"
-msgstr "응답을 기다리거나 쉬고 있는 다음 에이전트"
+msgid "Next agent that needs you or is working"
+msgstr "응답을 기다리거나 작업 중인 다음 에이전트"
 
 #: internal/term/settings/settings.go:116
 msgid "Every agent"
@@ -13868,7 +13868,7 @@ msgid "Add a snippet"
 msgstr ""
 
 #: internal/term/web/strings.go:20
-#: internal/termui/agents.go:284
+#: internal/termui/agents.go:302
 msgid "Agents"
 msgstr "에이전트"
 
@@ -14268,7 +14268,7 @@ msgstr "종료 %d"
 msgid "Agents that need you"
 msgstr "응답을 기다리는 에이전트"
 
-#: internal/termui/agents.go:291
+#: internal/termui/agents.go:309
 msgid "No agent runs in any workspace."
 msgstr "어느 작업 공간에서도 에이전트가 실행되고 있지 않습니다."
 

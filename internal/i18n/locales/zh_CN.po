@@ -13774,8 +13774,8 @@ msgid "Next agent that needs you"
 msgstr "下一个需要你的智能体"
 
 #: internal/term/settings/settings.go:115
-msgid "Next agent that needs you or is idle"
-msgstr "下一个需要你或空闲的智能体"
+msgid "Next agent that needs you or is working"
+msgstr "下一个需要你或在处理中的智能体"
 
 #: internal/term/settings/settings.go:116
 msgid "Every agent"
@@ -13868,7 +13868,7 @@ msgid "Add a snippet"
 msgstr ""
 
 #: internal/term/web/strings.go:20
-#: internal/termui/agents.go:284
+#: internal/termui/agents.go:302
 msgid "Agents"
 msgstr "智能体"
 
@@ -14268,7 +14268,7 @@ msgstr "已退出 %d"
 msgid "Agents that need you"
 msgstr "需要你的智能体"
 
-#: internal/termui/agents.go:291
+#: internal/termui/agents.go:309
 msgid "No agent runs in any workspace."
 msgstr "没有工作区在运行智能体。"
 

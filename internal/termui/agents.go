@@ -228,14 +228,24 @@ type agentAt struct {
 // pane, in any workspace (Ctrl+Shift+J); then the next one done.
 func (a *App) nextWaiting() { a.nextIn(agent.Blocked, agent.Done) }
 
-// nextIdle is Warcraft's idle worker: the next agent that needs you, then
-// one done, then one idle, after the one shown (Ctrl+`).
-func (a *App) nextIdle() { a.nextIn(agent.Blocked, agent.Done, agent.Idle) }
-
-// nextIn shows the next agent in the first of states any is in, after
-// the pane shown, in column 1 and 2's order.
-func (a *App) nextIn(states ...agent.State) {
+// nextBusy loops through every agent that needs you, is done or is
+// working, one after the other in column 1 and 2's order, from the one
+// shown (Ctrl+`).
+func (a *App) nextBusy() {
 	all := a.agents()
+	cur := a.shownAgent(all)
+	for k := 1; k <= len(all); k++ {
+		x := all[(cur+k+len(all))%len(all)]
+		switch agent.State(a.info[x.pane].State) {
+		case agent.Blocked, agent.Done, agent.Working:
+			a.showPane(x.w.ID, x.s.ID, x.pane)
+			return
+		}
+	}
+}
+
+// shownAgent is the index in all of the pane shown, or -1.
+func (a *App) shownAgent(all []agentAt) int {
 	cur := -1
 	if s := a.shown(); s != nil {
 		for i, x := range all {
@@ -244,6 +254,14 @@ func (a *App) nextIn(states ...agent.State) {
 			}
 		}
 	}
+	return cur
+}
+
+// nextIn shows the next agent in the first of states any is in, after
+// the pane shown, in column 1 and 2's order.
+func (a *App) nextIn(states ...agent.State) {
+	all := a.agents()
+	cur := a.shownAgent(all)
 	for _, want := range states {
 		for k := 1; k <= len(all); k++ {
 			x := all[(cur+k+len(all))%len(all)]

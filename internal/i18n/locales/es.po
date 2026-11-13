@@ -13847,8 +13847,8 @@ msgid "Next agent that needs you"
 msgstr "Siguiente agente que te necesita"
 
 #: internal/term/settings/settings.go:115
-msgid "Next agent that needs you or is idle"
-msgstr "Siguiente agente que te necesita o está inactivo"
+msgid "Next agent that needs you or is working"
+msgstr "Siguiente agente que te necesita o está trabajando"
 
 #: internal/term/settings/settings.go:116
 msgid "Every agent"
@@ -13941,7 +13941,7 @@ msgid "Add a snippet"
 msgstr ""
 
 #: internal/term/web/strings.go:20
-#: internal/termui/agents.go:284
+#: internal/termui/agents.go:302
 msgid "Agents"
 msgstr "Agentes"
 
@@ -14341,7 +14341,7 @@ msgstr "SALIÓ %d"
 msgid "Agents that need you"
 msgstr "Agentes que te necesitan"
 
-#: internal/termui/agents.go:291
+#: internal/termui/agents.go:309
 msgid "No agent runs in any workspace."
 msgstr "No hay ningún agente en ningún espacio de trabajo."
 

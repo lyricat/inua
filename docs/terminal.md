@@ -193,8 +193,8 @@ inua-term report --state done
 When an agent waits for you or finishes in a pane you are not looking at,
 a notification says so; its *Show* brings the window to that pane.
 Ctrl+Shift+J goes to the next agent that needs you, in any workspace;
-Ctrl+` (Warcraft's idle worker) to the next that needs you, is done
-or is idle;
+Ctrl+` loops through every agent that needs you, is done or is
+working, one after another;
 Ctrl+Shift+A lists every agent.
 
 ## What it remembers
@@ -246,7 +246,7 @@ new workspace) to Ctrl+Shift+N for a new session.
 | Alt+1…8 / Alt+9 | Session 1…8 / the last session |
 | Ctrl+Shift+1…9 | Workspace 1…9 |
 | Ctrl+Shift+J / Ctrl+Shift+A | Next agent that needs you / every agent |
-| Ctrl+` | Next agent that needs you or is idle |
+| Ctrl+` | Next agent that needs you or is working |
 | Ctrl+Shift+B / Ctrl+Shift+S | Fold the workspaces / the sessions |
 | Ctrl+Shift+C / Ctrl+Shift+V | Copy / paste |
 | Shift+Insert, middle click | Paste the primary selection |

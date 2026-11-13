@@ -13774,8 +13774,8 @@ msgid "Next agent that needs you"
 msgstr "下一個需要你的代理"
 
 #: internal/term/settings/settings.go:115
-msgid "Next agent that needs you or is idle"
-msgstr "下一個需要你或閒置的代理"
+msgid "Next agent that needs you or is working"
+msgstr "下一個需要你或在處理中的代理"
 
 #: internal/term/settings/settings.go:116
 msgid "Every agent"
@@ -13868,7 +13868,7 @@ msgid "Add a snippet"
 msgstr ""
 
 #: internal/term/web/strings.go:20
-#: internal/termui/agents.go:284
+#: internal/termui/agents.go:302
 msgid "Agents"
 msgstr "代理"
 
@@ -14268,7 +14268,7 @@ msgstr "已結束 %d"
 msgid "Agents that need you"
 msgstr "需要你的代理"
 
-#: internal/termui/agents.go:291
+#: internal/termui/agents.go:309
 msgid "No agent runs in any workspace."
 msgstr "沒有工作區在執行代理。"
 

@@ -140,7 +140,7 @@ func (a *App) do(action string, p *termPane) bool {
 	case "next_waiting":
 		a.nextWaiting()
 	case "next_idle":
-		a.nextIdle()
+		a.nextBusy()
 	case "agents":
 		a.overview()
 	case "fold_workspaces":

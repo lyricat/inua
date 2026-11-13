@@ -13774,8 +13774,8 @@ msgid "Next agent that needs you"
 msgstr "応答を待つ次のエージェント"
 
 #: internal/term/settings/settings.go:115
-msgid "Next agent that needs you or is idle"
-msgstr "対応待ちまたは待機中の次のエージェント"
+msgid "Next agent that needs you or is working"
+msgstr "対応待ちまたは作業中の次のエージェント"
 
 #: internal/term/settings/settings.go:116
 msgid "Every agent"
@@ -13868,7 +13868,7 @@ msgid "Add a snippet"
 msgstr "スニペットを追加"
 
 #: internal/term/web/strings.go:20
-#: internal/termui/agents.go:284
+#: internal/termui/agents.go:302
 msgid "Agents"
 msgstr "エージェント"
 
@@ -14268,7 +14268,7 @@ msgstr "終了 %d"
 msgid "Agents that need you"
 msgstr "応答を待つエージェント"
 
-#: internal/termui/agents.go:291
+#: internal/termui/agents.go:309
 msgid "No agent runs in any workspace."
 msgstr "どのワークスペースでもエージェントは動いていません。"
 
