@@ -1,225 +1,238 @@
-// Weather: one column. A header steps through your places (the squares
-// under the name say which one); Places slides down the list, a search to
-// add one, and the units. Below: the weather now, the next 24 hours, 7
-// days and the details. Go fills the hours, days, details and places.
+// Weather in the settings window's language: your cities in the index (a
+// search adds one, the units at its foot), the chosen city's weather in the
+// page beside it. The page's head has the city and More, where the
+// forecast's source is chosen. Below: the weather now, the next hours, the
+// days and the details. Go fills the cities, the hours, days and details.
 using Gtk 4.0;
 
 ApplicationWindow weather {
-  default-width: 440;
+  default-width: 780;
   default-height: 720;
 
   Box {
     styles ["weatherapp"]
-    orientation: vertical;
 
-    Box {
-      styles ["header"]
+    // The index keeps its width whatever the page beside it asks for.
+    Box index {
+      styles ["index"]
+      orientation: vertical;
+      hexpand: false;
+      width-request: 260;
 
-      Button prev {
-        styles ["plain"]
-        name: "prev";
-        icon-name: "go-previous-symbolic";
-        tooltip-text:  _("Previous place");
-        valign: center;
+      Label {
+        styles ["index-title"]
+        label:  _("Weather");
+        xalign: 0;
+      }
+
+      SearchEntry place_search {
+        styles ["index-search"]
+        placeholder-text:  _("Add a city");
+      }
+
+      ScrolledWindow {
+        vexpand: true;
+        hscrollbar-policy: never;
+
+        Box {
+          orientation: vertical;
+
+          Box place_results {
+            styles ["index-list"]
+            orientation: vertical;
+            visible: false;
+          }
+
+          Box place_list {
+            styles ["index-list"]
+            orientation: vertical;
+          }
+
+          Label places_empty {
+            styles ["index-note"]
+            label:  _("No city yet. Search above to add one.");
+            wrap: true;
+            xalign: 0;
+          }
+        }
       }
 
       Box {
-        orientation: vertical;
-        hexpand: true;
-        valign: center;
-        spacing: 6;
-
-        Label place {
-          styles ["place"]
-          ellipsize: end;
-        }
-
-        Box dots {
-          styles ["dots"]
-          spacing: 5;
-          halign: center;
-        }
-      }
-
-      Button next {
-        styles ["plain"]
-        name: "next";
-        icon-name: "go-next-symbolic";
-        tooltip-text:  _("Next place");
-        valign: center;
-      }
-
-      ToggleButton places_toggle {
-        styles ["plain"]
-        icon-name: "view-list-symbolic";
-        tooltip-text:  _("Places");
-        valign: center;
-      }
-    }
-
-    Revealer places_reveal {
-      transition-type: slide_down;
-      transition-duration: 180;
-
-      Box {
-        styles ["places"]
-        orientation: vertical;
+        styles ["index-foot"]
         spacing: 10;
 
-        SearchEntry place_search {
-          placeholder-text:  _("Add a city");
-        }
-
-        Box place_results {
-          styles ["rows"]
-          orientation: vertical;
-          visible: false;
-        }
-
-        Box place_list {
-          styles ["rows"]
-          orientation: vertical;
+        Label {
+          styles ["kicker"]
+          label:  _("UNITS");
+          hexpand: true;
+          xalign: 0;
         }
 
         Box {
-          Label {
-            styles ["kicker"]
-            label:  _("UNITS");
-            hexpand: true;
-            xalign: 0;
+          styles ["segmented", "linked"]
+
+          ToggleButton unit_c {
+            label:  _("°C");
+            active: true;
           }
 
-          Box {
-            styles ["segmented", "linked"]
-
-            ToggleButton unit_c {
-              label:  _("°C");
-              active: true;
-            }
-
-            ToggleButton unit_f {
-              label:  _("°F");
-              group: unit_c;
-            }
+          ToggleButton unit_f {
+            label:  _("°F");
+            group: unit_c;
           }
         }
       }
     }
 
-    Stack pages {
-      vexpand: true;
-      transition-type: crossfade;
-      transition-duration: 140;
+    Box {
+      orientation: vertical;
+      hexpand: true;
 
-      StackPage {
-        name: "forecast";
+      Box {
+        styles ["header"]
+        spacing: 10;
 
-        child: ScrolledWindow {
-          hscrollbar-policy: never;
+        Box {
+          orientation: vertical;
+          hexpand: true;
+          valign: center;
+          spacing: 2;
 
-          Box {
-            orientation: vertical;
-
-            Box {
-              styles ["hero"]
-              orientation: vertical;
-
-              Image now_icon {
-                styles ["now-icon"]
-                pixel-size: 30;
-              }
-
-              Label now_temp {
-                styles ["hero-temp"]
-              }
-
-              Label now_text {
-                styles ["now-text"]
-              }
-
-              Label now_range {
-                styles ["kicker"]
-              }
-            }
-
-            Box {
-              styles ["block"]
-              orientation: vertical;
-
-              Label {
-                styles ["kicker", "block-title"]
-                label:  _("NEXT 24 HOURS");
-                xalign: 0;
-              }
-
-              ScrolledWindow {
-                vscrollbar-policy: never;
-
-                Box hours {
-                  styles ["hours"]
-                }
-              }
-            }
-
-            Box {
-              styles ["block"]
-              orientation: vertical;
-
-              Label {
-                styles ["kicker", "block-title"]
-                label:  _("7 DAYS");
-                xalign: 0;
-              }
-
-              Box days {
-                styles ["rows"]
-                orientation: vertical;
-              }
-            }
-
-            Box {
-              styles ["block"]
-              orientation: vertical;
-
-              Label {
-                styles ["kicker", "block-title"]
-                label:  _("DETAILS");
-                xalign: 0;
-              }
-
-              Grid details {
-                styles ["details"]
-                column-homogeneous: true;
-              }
-            }
-
-            Label updated {
-              styles ["foot"]
-            }
+          Label place {
+            styles ["place"]
+            ellipsize: end;
+            xalign: 0;
           }
-        };
+
+          Label place_where {
+            styles ["sub"]
+            ellipsize: end;
+            xalign: 0;
+          }
+        }
+
+        Button more {
+          styles ["plain"]
+          icon-name: "view-more-symbolic";
+          tooltip-text:  _("More");
+          valign: center;
+        }
       }
 
-      StackPage {
-        name: "message";
+      Stack pages {
+        vexpand: true;
+        transition-type: crossfade;
+        transition-duration: 140;
 
-        child: Box {
-          orientation: vertical;
-          valign: center;
-          spacing: 14;
+        StackPage {
+          name: "forecast";
 
-          Label message {
-            styles ["empty"]
-            wrap: true;
-            justify: center;
-          }
+          child: ScrolledWindow {
+            hscrollbar-policy: never;
 
-          Button message_action {
-            styles ["outlined"]
-            name: "message";
-            halign: center;
-          }
-        };
+            Box {
+              orientation: vertical;
+
+              Box {
+                styles ["hero"]
+                orientation: vertical;
+
+                Image now_icon {
+                  styles ["now-icon"]
+                  pixel-size: 30;
+                }
+
+                Label now_temp {
+                  styles ["hero-temp"]
+                }
+
+                Label now_text {
+                  styles ["now-text"]
+                }
+
+                Label now_range {
+                  styles ["kicker"]
+                }
+              }
+
+              Box hours_block {
+                styles ["block"]
+                orientation: vertical;
+
+                Label hours_title {
+                  styles ["kicker", "block-title"]
+                  xalign: 0;
+                }
+
+                ScrolledWindow {
+                  vscrollbar-policy: never;
+
+                  Box hours {
+                    styles ["hours"]
+                  }
+                }
+              }
+
+              Box days_block {
+                styles ["block"]
+                orientation: vertical;
+
+                Label days_title {
+                  styles ["kicker", "block-title"]
+                  xalign: 0;
+                }
+
+                Box days {
+                  styles ["rows"]
+                  orientation: vertical;
+                }
+              }
+
+              Box {
+                styles ["block"]
+                orientation: vertical;
+
+                Label {
+                  styles ["kicker", "block-title"]
+                  label:  _("DETAILS");
+                  xalign: 0;
+                }
+
+                Grid details {
+                  styles ["details"]
+                  column-homogeneous: true;
+                }
+              }
+
+              Label updated {
+                styles ["foot"]
+              }
+            }
+          };
+        }
+
+        StackPage {
+          name: "message";
+
+          child: Box {
+            orientation: vertical;
+            valign: center;
+            spacing: 14;
+
+            Label message {
+              styles ["empty"]
+              wrap: true;
+              justify: center;
+              selectable: true;
+            }
+
+            Button message_action {
+              styles ["outlined"]
+              name: "message";
+              halign: center;
+            }
+          };
+        }
       }
     }
   }

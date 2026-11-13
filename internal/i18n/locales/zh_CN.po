@@ -173,7 +173,7 @@ msgstr "周日"
 
 #: internal/apps/clock/clock.go:69
 #: internal/i18n/time.go:12
-#: internal/lightui/weather.go:360
+#: internal/lightui/weather.go:452
 #: internal/mailui/window.go:1444
 #: internal/shell/notify.go:28
 #: internal/ui/agenda.go:371
@@ -224,7 +224,7 @@ msgid "Weekends"
 msgstr "周末"
 
 #: internal/apps/clock/clock.go:112
-#: internal/lightui/weather.go:362
+#: internal/lightui/weather.go:454
 #: internal/ui/widgets.go:1047
 #: ui/agenda.ui:80
 #: ui/calendar.ui:39
@@ -1790,51 +1790,51 @@ msgstr "正在连接……"
 msgid "Not running"
 msgstr "未运行"
 
-#: internal/apps/weather/weather.go:192
+#: internal/apps/weather/weather.go:201
 msgid "Clear sky"
 msgstr "晴朗"
 
-#: internal/apps/weather/weather.go:194
+#: internal/apps/weather/weather.go:203
 msgid "Mostly clear"
 msgstr "大部晴朗"
 
-#: internal/apps/weather/weather.go:196
+#: internal/apps/weather/weather.go:205
 msgid "Partly cloudy"
 msgstr "晴间多云"
 
-#: internal/apps/weather/weather.go:198
+#: internal/apps/weather/weather.go:207
 msgid "Cloudy"
 msgstr "阴天"
 
-#: internal/apps/weather/weather.go:200
+#: internal/apps/weather/weather.go:209
 msgid "Fog"
 msgstr "雾"
 
-#: internal/apps/weather/weather.go:202
+#: internal/apps/weather/weather.go:211
 msgid "Drizzle"
 msgstr "细雨"
 
-#: internal/apps/weather/weather.go:204
+#: internal/apps/weather/weather.go:213
 msgid "Rain"
 msgstr "雨"
 
-#: internal/apps/weather/weather.go:206
+#: internal/apps/weather/weather.go:215
 msgid "Heavy rain"
 msgstr "大雨"
 
-#: internal/apps/weather/weather.go:208
+#: internal/apps/weather/weather.go:217
 msgid "Snow"
 msgstr "雪"
 
-#: internal/apps/weather/weather.go:210
+#: internal/apps/weather/weather.go:219
 msgid "Heavy snow"
 msgstr "大雪"
 
-#: internal/apps/weather/weather.go:212
+#: internal/apps/weather/weather.go:221
 msgid "Thunderstorm"
 msgstr "雷暴"
 
-#: internal/apps/weather/weather.go:214
+#: internal/apps/weather/weather.go:223
 #: internal/lightui/sysmon.go:1083
 #: internal/vmui/window.go:2340
 msgid "Unknown"
@@ -2147,6 +2147,7 @@ msgid "AI settings"
 msgstr "AI设置"
 
 #: internal/connectui/menubar.go:30
+#: internal/lightui/weather.go:223
 #: internal/mailui/menubar.go:45
 #: internal/remoteui/menubar.go:57
 #: internal/vmui/menubar.go:49
@@ -8809,10 +8810,11 @@ msgid "Clock"
 msgstr "时钟"
 
 #: internal/lightui/apps.go:17
-#: internal/lightui/weather.go:226
+#: internal/lightui/weather.go:249
 #: internal/ui/agenda.go:334
 #: internal/ui/widgets.go:584
 #: internal/ui/widgets.go:1066
+#: ui/weather.ui:30
 #: config/apps/io.github.lyricat.Inua.Weather.desktop:3
 msgid "Weather"
 msgstr "天气"
@@ -8960,7 +8962,8 @@ msgid "No city by that name"
 msgstr "没有同名的城市"
 
 #: internal/lightui/clock.go:371
-#: internal/lightui/weather.go:249
+#: internal/lightui/weather.go:224
+#: internal/lightui/weather.go:274
 msgid "Remove %s"
 msgstr "移除%s"
 
@@ -9987,7 +9990,7 @@ msgid "Nothing by that name"
 msgstr "没有任何叫这个名字的东西"
 
 #: internal/lightui/stocks.go:409
-#: internal/lightui/weather.go:475
+#: internal/lightui/weather.go:577
 msgid "Could not search: %s"
 msgstr "无法搜索:%s"
 
@@ -10849,25 +10852,42 @@ msgstr "打开视频"
 msgid "Videos"
 msgstr "视频"
 
-#: internal/lightui/weather.go:258
-msgid "Add a city to see its weather."
-msgstr "添加城市以查看其天气。"
+#: internal/lightui/weather.go:218
+msgid "Forecast from %s"
+msgstr ""
 
-#: internal/lightui/weather.go:258
+#: internal/lightui/weather.go:226
+#: internal/lightui/weather.go:296
 #: ui/clock.ui:122
-#: ui/weather.ui:95
+#: ui/weather.ui:39
 msgid "Add a city"
 msgstr "添加城市"
 
-#: internal/lightui/weather.go:264
-msgid "Reading the weather…"
-msgstr "读取天气……"
+#: internal/lightui/weather.go:296
+msgid "Add a city to see its weather."
+msgstr "添加城市以查看其天气。"
 
-#: internal/lightui/weather.go:276
-msgid "The weather could not be read.\n%s"
-msgstr "无法读取天气。\n%s"
+#: internal/lightui/weather.go:301
+msgid "Weather has no source called “%s”.\nChoose one in More, or use Open-Meteo."
+msgstr ""
 
-#: internal/lightui/weather.go:276
+#: internal/lightui/weather.go:302
+msgid "Use Open-Meteo"
+msgstr ""
+
+#: internal/lightui/weather.go:309
+msgid "Reading the weather in %s from %s…"
+msgstr ""
+
+#: internal/lightui/weather.go:322
+msgid "%s could not be reached. Check the connection.\n%s"
+msgstr ""
+
+#: internal/lightui/weather.go:324
+msgid "%s did not give a forecast just now.\n%s\nTry again, or choose another source in More."
+msgstr ""
+
+#: internal/lightui/weather.go:326
 #: internal/mailui/panel.go:307
 #: internal/ui/passwords.go:534
 #: ui/mail-compose.ui:456
@@ -10875,43 +10895,57 @@ msgstr "无法读取天气。\n%s"
 msgid "Try again"
 msgstr "再试一次"
 
-#: internal/lightui/weather.go:325
+#: internal/lightui/weather.go:405
 msgid "H %s   L %s"
 msgstr "H %[1]s L %[2]s"
 
-#: internal/lightui/weather.go:334
+#: internal/lightui/weather.go:413
+msgid "NEXT %d HOURS · EVERY %d"
+msgstr ""
+
+#: internal/lightui/weather.go:415
+msgid "NEXT %d HOUR"
+msgid_plural "NEXT %d HOURS"
+msgstr[0] ""
+
+#: internal/lightui/weather.go:418
+msgid "%d DAY"
+msgid_plural "%d DAYS"
+msgstr[0] ""
+
+#: internal/lightui/weather.go:426
 msgid "NOW"
 msgstr "现在"
 
-#: internal/lightui/weather.go:397
+#: internal/lightui/weather.go:489
 msgid "FEELS LIKE"
 msgstr "体感温度"
 
-#: internal/lightui/weather.go:398
+#: internal/lightui/weather.go:490
 msgid "HUMIDITY"
 msgstr "湿度"
 
-#: internal/lightui/weather.go:399
+#: internal/lightui/weather.go:491
 msgid "WIND"
 msgstr "风"
 
-#: internal/lightui/weather.go:400
+#: internal/lightui/weather.go:492
 msgid "RAIN"
 msgstr "雨"
 
-#: internal/lightui/weather.go:405
+#: internal/lightui/weather.go:497
 msgid "SUNRISE"
 msgstr "日出"
 
-#: internal/lightui/weather.go:406
+#: internal/lightui/weather.go:498
 msgid "SUNSET"
 msgstr "日落"
 
-#: internal/lightui/weather.go:428
-msgid "UPDATED %s · OPEN-METEO"
-msgstr "更新了 %s·OPEN-METEO"
+#: internal/lightui/weather.go:520
+msgid "UPDATED %s · %s"
+msgstr ""
 
-#: internal/lightui/weather.go:473
+#: internal/lightui/weather.go:575
 msgid "No place by that name"
 msgstr "没有叫这个名字的地方"
 
@@ -11728,6 +11762,7 @@ msgid "Mark as unread (U)"
 msgstr "标为未读 (U)"
 
 #: internal/mailui/reader.go:342
+#: ui/weather.ui:162
 msgid "More"
 msgstr "更多"
 
@@ -21371,39 +21406,23 @@ msgstr "推荐"
 msgid "ALL SYSTEMS"
 msgstr "所有系统"
 
-#: ui/weather.ui:30
-msgid "Previous place"
-msgstr "先前地点"
+#: ui/weather.ui:71
+msgid "No city yet. Search above to add one."
+msgstr ""
 
-#: ui/weather.ui:66
-msgid "Next place"
-msgstr "下一个地方"
-
-#: ui/weather.ui:76
-msgid "Places"
-msgstr "地点"
-
-#: ui/weather.ui:122
+#: ui/weather.ui:91
 msgid "UNITS"
 msgstr "单位"
 
-#: ui/weather.ui:135
+#: ui/weather.ui:104
 msgid "°C"
 msgstr "°C"
 
-#: ui/weather.ui:141
+#: ui/weather.ui:110
 msgid "°F"
 msgstr "°F"
 
-#: ui/weather.ui:216
-msgid "NEXT 24 HOURS"
-msgstr "未来 24 小时"
-
-#: ui/weather.ui:246
-msgid "7 DAYS"
-msgstr "7 天"
-
-#: ui/weather.ui:272
+#: ui/weather.ui:285
 msgid "DETAILS"
 msgstr "详情"
 

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -19,53 +18,69 @@ import (
 	"github.com/lyricat/inua/internal/appui"
 	"github.com/lyricat/inua/internal/gtkx"
 	"github.com/lyricat/inua/internal/i18n"
+	"github.com/lyricat/inua/internal/uikit"
 )
 
 // refreshEvery is how often the forecast is read again.
 const refreshEvery = 15 * time.Minute
 
 type weatherApp struct {
-	c    *appui.Ctx
-	data weather.Data
-	http *http.Client
-	temp map[int]float64 // each place's temperature now, for the list
-
-	pages                      gtk.Stack
-	place, nowTemp, nowText    gtk.Label
-	nowRange, updated, message gtk.Label
-	nowIcon                    gtk.Image
-	dots, hours, days          gtk.Box
-	placeResults, placeList    gtk.Box
-	details                    gtk.Grid
-	prev, next, messageAction  gtk.Button
-	placesToggle               gtk.ToggleButton
-	placesReveal               gtk.Revealer
-	placeSearch                gtk.SearchEntry
-	unitC, unitF               gtk.ToggleButton
-	fetched                    time.Time
-	loading, searchGen         int // the requests whose answers count
-	results                    []weather.Place
-	onButton                   func(gtk.Button)
-	onSearch                   func(gtk.SearchEntry)
-	onSearchEnter              func(gtk.SearchEntry)
-	onUnit, onPlaces           func(gtk.ToggleButton)
-	onTick                     glib.SourceFunc
+	c     *appui.Ctx
+	data  weather.Data
+	http  *http.Client
+	loads weather.Loads // the chosen city's forecast
+	temps weather.Temps // each city's temperature now, for the index
+	// The forecast on the page: a change that leaves the key as it is keeps
+	// it there. Asked is when one was last asked for.
+	shown         weather.Key
+	showing       bool
+	asked         time.Time
+	cancelLoad    context.CancelFunc
+	cancelTemps   context.CancelFunc
+	tempsLoads    weather.Loads // the index's reading, by source and units
+	messageDo     func()        // what the message's button does
+	searchGen     int           // the search whose answer counts
+	results       []weather.Place
+	pages         gtk.Stack
+	place, where  gtk.Label
+	nowTemp       gtk.Label
+	nowText       gtk.Label
+	nowRange      gtk.Label
+	updated       gtk.Label
+	message       gtk.Label
+	hoursTitle    gtk.Label
+	daysTitle     gtk.Label
+	placesEmpty   gtk.Label
+	nowIcon       gtk.Image
+	hours, days   gtk.Box
+	hoursBlock    gtk.Box
+	daysBlock     gtk.Box
+	placeResults  gtk.Box
+	placeList     gtk.Box
+	details       gtk.Grid
+	more          gtk.Button
+	messageAction gtk.Button
+	placeSearch   gtk.SearchEntry
+	unitC, unitF  gtk.ToggleButton
+	onButton      func(gtk.Button)
+	onMore        func(gtk.Button)
+	onMenuClosed  func(gtk.Popover)
+	onSearch      func(gtk.SearchEntry)
+	onSearchEnter func(gtk.SearchEntry)
+	onUnit        func(gtk.ToggleButton)
+	onTick        glib.SourceFunc
 }
 
 func (a *weatherApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	a.c = c
 	a.http = &http.Client{Timeout: 15 * time.Second}
-	a.temp = map[int]float64{}
 	win := &gtk.ApplicationWindow{}
 	ui := c.Load("weather.ui")
 	ui.Get("weather", win)
 	ui.Get("pages", &a.pages)
 	ui.Get("place", &a.place)
-	ui.Get("dots", &a.dots)
-	ui.Get("prev", &a.prev)
-	ui.Get("next", &a.next)
-	ui.Get("places_toggle", &a.placesToggle)
-	ui.Get("places_reveal", &a.placesReveal)
+	ui.Get("place_where", &a.where)
+	ui.Get("more", &a.more)
 	ui.Get("now_temp", &a.nowTemp)
 	ui.Get("now_text", &a.nowText)
 	ui.Get("now_range", &a.nowRange)
@@ -73,27 +88,30 @@ func (a *weatherApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	ui.Get("updated", &a.updated)
 	ui.Get("message", &a.message)
 	ui.Get("message_action", &a.messageAction)
+	ui.Get("hours_block", &a.hoursBlock)
+	ui.Get("hours_title", &a.hoursTitle)
 	ui.Get("hours", &a.hours)
+	ui.Get("days_block", &a.daysBlock)
+	ui.Get("days_title", &a.daysTitle)
 	ui.Get("days", &a.days)
 	ui.Get("details", &a.details)
 	ui.Get("place_results", &a.placeResults)
 	ui.Get("place_list", &a.placeList)
+	ui.Get("places_empty", &a.placesEmpty)
 	ui.Get("place_search", &a.placeSearch)
 	ui.Get("unit_c", &a.unitC)
 	ui.Get("unit_f", &a.unitF)
 	ui.Close()
 
 	a.onButton = func(b gtk.Button) { a.button(b.GetName()) }
+	a.onMore = func(gtk.Button) { a.openMore() }
+	a.onMenuClosed = func(pop gtk.Popover) {
+		gtkx.Post(func() { pop.Unparent() })
+	}
 	a.onSearch = func(e gtk.SearchEntry) { a.search(e.GetText()) }
 	a.onSearchEnter = func(gtk.SearchEntry) {
 		if len(a.results) > 0 {
 			a.button("place-add:0")
-		}
-	}
-	a.onPlaces = func(t gtk.ToggleButton) {
-		a.placesReveal.SetRevealChild(t.GetActive())
-		if t.GetActive() {
-			a.placeSearch.GrabFocus()
 		}
 	}
 	a.onUnit = func(t gtk.ToggleButton) {
@@ -103,20 +121,19 @@ func (a *weatherApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 		if f := a.unitF.GetActive(); f != a.data.Fahrenheit {
 			a.data.Fahrenheit = f
 			a.save()
-			a.temp = map[int]float64{}
-			a.refresh()
+			a.update()
 		}
 	}
 	a.onTick = func(uintptr) bool {
-		if len(a.data.Places) > 0 && time.Since(a.fetched) > refreshEvery {
+		_, ok := a.data.Current()
+		_, known := weather.SourceByID(a.data.SourceID())
+		if ok && known && time.Since(a.asked) > refreshEvery {
 			a.refresh()
 		}
 		return true
 	}
-	for _, b := range []*gtk.Button{&a.prev, &a.next, &a.messageAction} {
-		b.ConnectClicked(&a.onButton)
-	}
-	a.placesToggle.ConnectToggled(&a.onPlaces)
+	a.messageAction.ConnectClicked(&a.onButton)
+	a.more.ConnectClicked(&a.onMore)
 	a.placeSearch.ConnectSearchChanged(&a.onSearch)
 	a.placeSearch.ConnectActivate(&a.onSearchEnter)
 	a.unitC.ConnectToggled(&a.onUnit)
@@ -129,10 +146,10 @@ func (a *weatherApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	a.showPlaces()
 	a.refresh()
 	if len(a.data.Places) == 0 {
-		a.placesToggle.SetActive(true)
+		a.placeSearch.GrabFocus()
 	}
 	glib.TimeoutAdd(30000, &a.onTick, 0)
-	menuWindow(c, win, []appui.MenuGroup{{Title: "View", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{{Name: "weather-refresh", Label: "Refresh", Activate: func(gio.SimpleAction, uintptr) { a.refresh() }}, {Name: "weather-places", Label: "Places", Activate: func(gio.SimpleAction, uintptr) { a.placesToggle.SetActive(true); a.placeSearch.GrabFocus() }}}}}}})
+	menuWindow(c, win, []appui.MenuGroup{{Title: "View", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{{Name: "weather-refresh", Label: "Refresh", Activate: func(gio.SimpleAction, uintptr) { a.refresh() }}, {Name: "weather-places", Label: "Add a city", Activate: func(gio.SimpleAction, uintptr) { a.placeSearch.GrabFocus() }}}}}}})
 	return win
 }
 
@@ -144,186 +161,261 @@ func (a *weatherApp) save() {
 	}
 }
 
-func (a *weatherApp) selected() (weather.Place, bool) {
-	if len(a.data.Places) == 0 {
-		return weather.Place{}, false
-	}
-	a.data.Selected = max(0, min(a.data.Selected, len(a.data.Places)-1))
-	return a.data.Places[a.data.Selected], true
-}
-
 func (a *weatherApp) button(name string) {
 	switch {
-	case name == "prev" || name == "next":
-		if n := len(a.data.Places); n > 1 {
-			step := 1
-			if name == "prev" {
-				step = n - 1
-			}
-			a.data.Selected = (a.data.Selected + step) % n
-			a.save()
-			a.showPlaces()
-			a.refresh()
-		}
 	case name == "message":
-		if len(a.data.Places) == 0 {
-			a.placesToggle.SetActive(true)
-		} else {
-			a.refresh()
+		if a.messageDo != nil {
+			a.messageDo()
 		}
 	case strings.HasPrefix(name, "place-add:"):
 		i, _ := strconv.Atoi(strings.TrimPrefix(name, "place-add:"))
 		if i >= 0 && i < len(a.results) {
-			a.data.Places = append(a.data.Places, a.results[i])
-			a.data.Selected = len(a.data.Places) - 1
+			a.data.Add(a.results[i])
 			a.save()
 			a.placeSearch.SetText("")
-			a.placesToggle.SetActive(false)
-			a.showPlaces()
-			a.refresh()
+			a.update()
 		}
 	case strings.HasPrefix(name, "place-show:"):
-		a.data.Selected, _ = strconv.Atoi(strings.TrimPrefix(name, "place-show:"))
-		a.save()
-		a.placesToggle.SetActive(false)
-		a.showPlaces()
-		a.refresh()
+		i, _ := strconv.Atoi(strings.TrimPrefix(name, "place-show:"))
+		if a.data.Select(i) {
+			a.save()
+			a.update()
+		}
 	case strings.HasPrefix(name, "place-remove:"):
 		i, _ := strconv.Atoi(strings.TrimPrefix(name, "place-remove:"))
-		if i < 0 || i >= len(a.data.Places) {
-			return
-		}
-		a.data.Places = slices.Delete(a.data.Places, i, i+1)
-		if a.data.Selected >= i {
-			a.data.Selected = max(0, a.data.Selected-1)
-		}
-		a.temp = map[int]float64{}
-		a.save()
-		a.showPlaces()
-		a.refresh()
+		a.remove(i)
 	}
 }
 
-// showPlaces shows the header (the place, a square per place) and the list
-// in the places panel.
-func (a *weatherApp) showPlaces() {
-	n := len(a.data.Places)
-	a.prev.SetVisible(n > 1)
-	a.next.SetVisible(n > 1)
-	gtkx.Clear(&a.dots)
-	a.dots.SetVisible(n > 1)
-	for i := range n {
-		d := gtk.NewBox(gtk.OrientationHorizontalValue, 0)
-		d.AddCssClass("dot")
-		if i == a.data.Selected {
-			d.AddCssClass("on")
-		}
-		gtkx.Append(&a.dots, &d.Widget)
+func (a *weatherApp) remove(i int) {
+	if a.data.Remove(i) {
+		a.save()
+		a.update()
 	}
-	if p, ok := a.selected(); ok {
-		a.place.SetText(p.Name)
-	} else {
-		a.place.SetText(i18n.T("Weather"))
-	}
+}
 
+// setSource chooses where the forecast comes from, at once and for good.
+func (a *weatherApp) setSource(id string) {
+	if a.data.Source == id || a.data.Source == "" && id == weather.OpenMeteo {
+		return
+	}
+	a.data.Source = id
+	a.save()
+	a.update()
+}
+
+// openMore opens More: the sources, the chosen one marked, then Refresh and
+// Remove for the chosen city. It is made as it opens, so it shows what is
+// chosen now.
+func (a *weatherApp) openMore() {
+	cur := a.data.SourceID()
+	var items []uikit.Item
+	for _, s := range weather.Sources {
+		mark := "off"
+		if s.ID == cur {
+			mark = "radio"
+		}
+		items = append(items, uikit.Item{Label: i18n.Tf("Forecast from %s", s.Name), Mark: mark, Run: func() { a.setSource(s.ID) }})
+	}
+	items = append(items, uikit.Item{Separator: true})
+	if p, ok := a.data.Current(); ok {
+		items = append(items,
+			uikit.Item{Label: i18n.T("Refresh"), Run: a.refresh},
+			uikit.Item{Label: i18n.Tf("Remove %s", p.Name), Run: func() { a.remove(a.data.Selected) }})
+	} else {
+		items = append(items, uikit.Item{Label: i18n.T("Add a city"), Run: func() { a.placeSearch.GrabFocus() }})
+	}
+	pop := uikit.NewMenu(items, uikit.Below)
+	pop.SetParent(&a.more.Widget)
+	pop.ConnectClosed(&a.onMenuClosed)
+	pop.Unref() // the button holds it
+	pop.Popup()
+}
+
+// update shows what is chosen after a change: the index, and the chosen
+// city's weather, read again unless it is on the page already.
+func (a *weatherApp) update() {
+	a.showPlaces()
+	if p, ok := a.data.Current(); ok && a.showing && a.data.KeyOf(p) == a.shown {
+		return
+	}
+	a.refresh()
+}
+
+// showPlaces shows the cities in the index, the chosen one marked, each
+// with its temperature now from the chosen source in the chosen units.
+func (a *weatherApp) showPlaces() {
+	cur, ok := a.data.Current()
+	a.place.SetText(i18n.T("Weather"))
+	a.where.SetText("")
+	if ok {
+		a.place.SetText(cur.Name)
+		a.where.SetText(cur.Where())
+	}
+	a.placesEmpty.SetVisible(len(a.data.Places) == 0)
 	gtkx.Clear(&a.placeList)
 	for i, p := range a.data.Places {
-		row := gtk.NewBox(gtk.OrientationHorizontalValue, 12)
-		row.AddCssClass("row")
-		if i == a.data.Selected {
-			row.AddCssClass("current")
-		}
-		body := gtk.NewBox(gtk.OrientationHorizontalValue, 12)
+		row := gtk.NewBox(gtk.OrientationHorizontalValue, 4)
+		body := gtk.NewBox(gtk.OrientationHorizontalValue, 10)
 		t := text(p.Name, p.Where())
 		t.SetHexpand(true)
 		gtkx.Append(body, &t.Widget)
-		if v, ok := a.temp[i]; ok {
-			l := gtk.NewLabel(weather.Temp(v))
-			l.AddCssClass("row-temp")
-			gtkx.Append(body, &l.Widget)
+		v := gtk.NewLabel("")
+		v.AddCssClass("index-value")
+		if temp, ok := a.temps.Get(a.data.KeyOf(p)); ok {
+			v.SetText(weather.Temp(temp))
 		}
-		b := rowButton("place-show:"+strconv.Itoa(i), &body.Widget, &a.onButton)
+		gtkx.Append(body, &v.Widget)
+		b := indexItem("place-show:"+strconv.Itoa(i), &body.Widget, i == a.data.Selected, &a.onButton)
 		body.Unref()
 		b.SetHexpand(true)
+		b.SetTooltipText(p.Name)
 		gtkx.Append(row, &b.Widget)
-		gtkx.Append(row, &plainIcon("place-remove:"+strconv.Itoa(i), "window-close-symbolic", i18n.Tf("Remove %s", p.Name), &a.onButton).Widget)
+		x := plainIcon("place-remove:"+strconv.Itoa(i), "window-close-symbolic", i18n.Tf("Remove %s", p.Name), &a.onButton)
+		x.AddCssClass("tight")
+		gtkx.Append(row, &x.Widget)
 		gtkx.Append(&a.placeList, &row.Widget)
 	}
 }
 
-// refresh reads the chosen place's forecast.
+// refresh reads the chosen city's forecast from the chosen source. Until it
+// comes, a forecast of anything else (another city, source or units) gives
+// way to a line saying what is being read; an answer for anything but what
+// is chosen when it comes is dropped.
 func (a *weatherApp) refresh() {
-	p, ok := a.selected()
-	if !ok {
-		a.showMessage(i18n.T("Add a city to see its weather."), i18n.T("Add a city"))
+	if a.cancelLoad != nil {
+		a.cancelLoad()
+		a.cancelLoad = nil
+	}
+	a.stopTemps() // begun again with the forecast
+	p, ok := a.data.Current()
+	src, known := weather.SourceByID(a.data.SourceID())
+	switch {
+	case !ok:
+		a.loads.Stop()
+		a.showMessage(i18n.T("Add a city to see its weather."), i18n.T("Add a city"), func() { a.placeSearch.GrabFocus() })
+		return
+	case !known:
+		// Not read from another source in its place: the user chooses.
+		a.loads.Stop()
+		a.showMessage(i18n.Tf("Weather has no source called “%s”.\nChoose one in More, or use Open-Meteo.", a.data.Source),
+			i18n.T("Use Open-Meteo"), func() { a.setSource(weather.OpenMeteo) })
 		return
 	}
-	a.loading++
-	gen, fahrenheit, idx := a.loading, a.data.Fahrenheit, a.data.Selected
-	if a.pages.GetVisibleChildName() != "forecast" {
-		a.showMessage(i18n.T("Reading the weather…"), "")
+	key := a.data.KeyOf(p)
+	ticket := a.loads.Begin(key)
+	a.asked = time.Now()
+	if !a.showing || a.shown != key {
+		a.showMessage(i18n.Tf("Reading the weather in %s from %s…", p.Name, src.Name), "", nil)
 	}
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+	a.cancelLoad = cancel
 	go func() {
-		ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
-		f, err := weather.Get(ctx, a.http, p, fahrenheit)
+		f, err := src.Get(ctx, a.http, p, key.Fahrenheit)
 		cancel()
 		gtkx.Post(func() {
-			if gen != a.loading {
-				return // a newer request is on its way
+			if !a.loads.Current(ticket) {
+				return // something else is chosen now
 			}
 			if err != nil {
-				log.Printf("weather: %v", err)
-				a.showMessage(i18n.Tf("The weather could not be read.\n%s", shortErr(err)), i18n.T("Try again"))
+				log.Printf("weather: %s: %v", src.Name, err)
+				msg := i18n.Tf("%s could not be reached. Check the connection.\n%s", src.Name, shortErr(err))
+				if weather.Unavailable(err) {
+					msg = i18n.Tf("%s did not give a forecast just now.\n%s\nTry again, or choose another source in More.", src.Name, shortErr(err))
+				}
+				a.showMessage(msg, i18n.T("Try again"), a.refresh)
 				return
 			}
-			a.fetched = time.Now()
-			a.temp[idx] = f.Now.Temp
+			a.temps.Put(key, f.Now.Temp, time.Now())
+			a.shown, a.showing = key, true
+			a.showForecast(f, src)
 			a.showPlaces()
-			a.showForecast(f)
-			a.readTemps()
+			a.readTemps(src)
 		})
 	}()
 }
 
-// readTemps reads the temperature now at the other places, for the list.
-func (a *weatherApp) readTemps() {
-	places, fahrenheit, gen, shown := slices.Clone(a.data.Places), a.data.Fahrenheit, a.loading, a.data.Selected
+// stopTemps drops the index's reading on its way.
+func (a *weatherApp) stopTemps() {
+	if a.cancelTemps != nil {
+		a.cancelTemps()
+		a.cancelTemps = nil
+	}
+	a.tempsLoads.Stop()
+}
+
+// readTemps reads the temperature now at the cities the index has none
+// for, or an old one, from src, the chosen source.
+func (a *weatherApp) readTemps(src weather.Source) {
+	ticket := a.tempsLoads.Begin(weather.Key{Source: src.ID, Fahrenheit: a.data.Fahrenheit})
+	now := time.Now()
+	var todo []weather.Place
+	for _, p := range a.data.Places {
+		if !a.temps.Fresh(a.data.KeyOf(p), now, refreshEvery) {
+			todo = append(todo, p)
+		}
+	}
+	if len(todo) == 0 {
+		return
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	a.cancelTemps = cancel
 	go func() {
-		for i, p := range places {
-			if i == shown {
-				continue
+		for _, p := range todo {
+			if ctx.Err() != nil {
+				return
 			}
-			ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
-			f, err := weather.Get(ctx, a.http, p, fahrenheit)
-			cancel()
+			c, done := context.WithTimeout(ctx, 15*time.Second)
+			f, err := src.Get(c, a.http, p, ticket.Key.Fahrenheit)
+			done()
 			if err != nil {
 				continue
 			}
 			gtkx.Post(func() {
-				if gen == a.loading { // the list and units are as they were
-					a.temp[i] = f.Now.Temp
-					a.showPlaces()
+				if !a.tempsLoads.Current(ticket) {
+					return // another source or units now
 				}
+				k := ticket.Key
+				k.Lat, k.Lon = p.Lat, p.Lon
+				a.temps.Put(k, f.Now.Temp, time.Now())
+				a.showPlaces()
 			})
 		}
 	}()
 }
 
-func (a *weatherApp) showMessage(text, action string) {
+// showMessage puts a line in the forecast's place, and a button doing do
+// under it when action is not "".
+func (a *weatherApp) showMessage(text, action string, do func()) {
+	a.showing = false
 	a.message.SetText(text)
 	a.messageAction.SetLabel(action)
 	a.messageAction.SetVisible(action != "")
+	a.messageDo = do
 	a.pages.SetVisibleChildName("message")
 }
 
-func (a *weatherApp) showForecast(f weather.Forecast) {
+func (a *weatherApp) showForecast(f weather.Forecast, src weather.Source) {
 	desc, icon := weather.Describe(f.Now.Code, f.Now.Day)
 	a.nowTemp.SetText(weather.Temp(f.Now.Temp))
 	a.nowText.SetText(desc)
 	a.nowIcon.SetFromIconName(icon)
+	a.nowRange.SetText("")
 	if len(f.Days) > 0 {
 		a.nowRange.SetText(i18n.Tf("H %s   L %s", weather.Temp(f.Days[0].Max), weather.Temp(f.Days[0].Min)))
 	}
+
+	// What the source has, said as it is: wttr.in's hours are in steps of
+	// three and its days three.
+	span, step := f.HourSpan()
+	a.hoursBlock.SetVisible(span > 0)
+	if step > 1 {
+		a.hoursTitle.SetText(i18n.Tf("NEXT %d HOURS · EVERY %d", span, step))
+	} else {
+		a.hoursTitle.SetText(i18n.Nf("NEXT %d HOUR", "NEXT %d HOURS", span, span))
+	}
+	a.daysBlock.SetVisible(len(f.Days) > 0)
+	a.daysTitle.SetText(i18n.Nf("%d DAY", "%d DAYS", len(f.Days), len(f.Days)))
 
 	gtkx.Clear(&a.hours)
 	for i, h := range f.Hours {
@@ -402,8 +494,8 @@ func (a *weatherApp) showForecast(f weather.Forecast) {
 	if len(f.Days) > 0 {
 		cells[3][1] = fmt.Sprintf("%d%%", f.Days[0].Rain)
 		cells = append(cells,
-			[2]string{i18n.T("SUNRISE"), f.Days[0].Sunrise.Format("15:04")},
-			[2]string{i18n.T("SUNSET"), f.Days[0].Sunset.Format("15:04")})
+			[2]string{i18n.T("SUNRISE"), clockOrDash(f.Days[0].Sunrise)},
+			[2]string{i18n.T("SUNSET"), clockOrDash(f.Days[0].Sunset)})
 	}
 	for i, c := range cells {
 		box := gtk.NewBox(gtk.OrientationVerticalValue, 6)
@@ -425,8 +517,17 @@ func (a *weatherApp) showForecast(f weather.Forecast) {
 		a.details.Attach(&box.Widget, int32(i%2), int32(i/2), 1, 1)
 		box.Unref()
 	}
-	a.updated.SetText(i18n.Tf("UPDATED %s · OPEN-METEO", time.Now().Format("15:04")))
+	a.updated.SetText(i18n.Tf("UPDATED %s · %s", time.Now().Format("15:04"), strings.ToUpper(src.Name)))
 	a.pages.SetVisibleChildName("forecast")
+}
+
+// clockOrDash is a time of day, or a dash for none (no sunrise in a polar
+// night).
+func clockOrDash(t time.Time) string {
+	if t.IsZero() {
+		return "—"
+	}
+	return t.Format("15:04")
 }
 
 // rangeBar draws a day's span of temperatures within the week's.
@@ -452,6 +553,7 @@ func (a *weatherApp) search(q string) {
 	q = strings.TrimSpace(q)
 	a.placeResults.SetVisible(q != "")
 	a.placeList.SetVisible(q == "")
+	a.placesEmpty.SetVisible(q == "" && len(a.data.Places) == 0)
 	a.searchGen++
 	gen := a.searchGen
 	a.results = nil
@@ -475,13 +577,16 @@ func (a *weatherApp) search(q string) {
 					msg = i18n.Tf("Could not search: %s", shortErr(err))
 				}
 				l := gtk.NewLabel(msg)
-				l.AddCssClass("empty")
+				l.AddCssClass("index-note")
 				l.SetWrap(true)
+				l.SetXalign(0)
 				gtkx.Append(&a.placeResults, &l.Widget)
 				return
 			}
 			for i, p := range places {
-				gtkx.Append(&a.placeResults, &rowButton("place-add:"+strconv.Itoa(i), &text(p.Name, p.Where()).Widget, &a.onButton).Widget)
+				t := text(p.Name, p.Where())
+				gtkx.Append(&a.placeResults, &indexItem("place-add:"+strconv.Itoa(i), &t.Widget, false, &a.onButton).Widget)
+				t.Unref()
 			}
 		})
 	}()

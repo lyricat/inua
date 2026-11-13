@@ -173,7 +173,7 @@ msgstr "일"
 
 #: internal/apps/clock/clock.go:69
 #: internal/i18n/time.go:12
-#: internal/lightui/weather.go:360
+#: internal/lightui/weather.go:452
 #: internal/mailui/window.go:1444
 #: internal/shell/notify.go:28
 #: internal/ui/agenda.go:371
@@ -224,7 +224,7 @@ msgid "Weekends"
 msgstr "주말"
 
 #: internal/apps/clock/clock.go:112
-#: internal/lightui/weather.go:362
+#: internal/lightui/weather.go:454
 #: internal/ui/widgets.go:1047
 #: ui/agenda.ui:80
 #: ui/calendar.ui:39
@@ -1790,51 +1790,51 @@ msgstr "연결 중..."
 msgid "Not running"
 msgstr "실행되지 않음"
 
-#: internal/apps/weather/weather.go:192
+#: internal/apps/weather/weather.go:201
 msgid "Clear sky"
 msgstr "맑음"
 
-#: internal/apps/weather/weather.go:194
+#: internal/apps/weather/weather.go:203
 msgid "Mostly clear"
 msgstr "대체로 맑음"
 
-#: internal/apps/weather/weather.go:196
+#: internal/apps/weather/weather.go:205
 msgid "Partly cloudy"
 msgstr "약간 흐림"
 
-#: internal/apps/weather/weather.go:198
+#: internal/apps/weather/weather.go:207
 msgid "Cloudy"
 msgstr "흐림"
 
-#: internal/apps/weather/weather.go:200
+#: internal/apps/weather/weather.go:209
 msgid "Fog"
 msgstr "안개"
 
-#: internal/apps/weather/weather.go:202
+#: internal/apps/weather/weather.go:211
 msgid "Drizzle"
 msgstr "이슬비"
 
-#: internal/apps/weather/weather.go:204
+#: internal/apps/weather/weather.go:213
 msgid "Rain"
 msgstr "비"
 
-#: internal/apps/weather/weather.go:206
+#: internal/apps/weather/weather.go:215
 msgid "Heavy rain"
 msgstr "폭우"
 
-#: internal/apps/weather/weather.go:208
+#: internal/apps/weather/weather.go:217
 msgid "Snow"
 msgstr "눈"
 
-#: internal/apps/weather/weather.go:210
+#: internal/apps/weather/weather.go:219
 msgid "Heavy snow"
 msgstr "폭설"
 
-#: internal/apps/weather/weather.go:212
+#: internal/apps/weather/weather.go:221
 msgid "Thunderstorm"
 msgstr "뇌우"
 
-#: internal/apps/weather/weather.go:214
+#: internal/apps/weather/weather.go:223
 #: internal/lightui/sysmon.go:1083
 #: internal/vmui/window.go:2340
 msgid "Unknown"
@@ -2147,6 +2147,7 @@ msgid "AI settings"
 msgstr "AI 설정"
 
 #: internal/connectui/menubar.go:30
+#: internal/lightui/weather.go:223
 #: internal/mailui/menubar.go:45
 #: internal/remoteui/menubar.go:57
 #: internal/vmui/menubar.go:49
@@ -8809,10 +8810,11 @@ msgid "Clock"
 msgstr "시계"
 
 #: internal/lightui/apps.go:17
-#: internal/lightui/weather.go:226
+#: internal/lightui/weather.go:249
 #: internal/ui/agenda.go:334
 #: internal/ui/widgets.go:584
 #: internal/ui/widgets.go:1066
+#: ui/weather.ui:30
 #: config/apps/io.github.lyricat.Inua.Weather.desktop:3
 msgid "Weather"
 msgstr "날씨"
@@ -8960,7 +8962,8 @@ msgid "No city by that name"
 msgstr "그 이름의 도시는 없습니다"
 
 #: internal/lightui/clock.go:371
-#: internal/lightui/weather.go:249
+#: internal/lightui/weather.go:224
+#: internal/lightui/weather.go:274
 msgid "Remove %s"
 msgstr "%s 제거"
 
@@ -9987,7 +9990,7 @@ msgid "Nothing by that name"
 msgstr "그 이름에는 아무것도 없습니다"
 
 #: internal/lightui/stocks.go:409
-#: internal/lightui/weather.go:475
+#: internal/lightui/weather.go:577
 msgid "Could not search: %s"
 msgstr "검색할 수 없습니다: %s"
 
@@ -10849,25 +10852,42 @@ msgstr "비디오 열기"
 msgid "Videos"
 msgstr "비디오"
 
-#: internal/lightui/weather.go:258
-msgid "Add a city to see its weather."
-msgstr "날씨를 보려면 도시를 추가하세요."
+#: internal/lightui/weather.go:218
+msgid "Forecast from %s"
+msgstr ""
 
-#: internal/lightui/weather.go:258
+#: internal/lightui/weather.go:226
+#: internal/lightui/weather.go:296
 #: ui/clock.ui:122
-#: ui/weather.ui:95
+#: ui/weather.ui:39
 msgid "Add a city"
 msgstr "도시 추가"
 
-#: internal/lightui/weather.go:264
-msgid "Reading the weather…"
-msgstr "날씨를 읽는 중..."
+#: internal/lightui/weather.go:296
+msgid "Add a city to see its weather."
+msgstr "날씨를 보려면 도시를 추가하세요."
 
-#: internal/lightui/weather.go:276
-msgid "The weather could not be read.\n%s"
-msgstr "날씨를 읽을 수 없습니다.\n%s"
+#: internal/lightui/weather.go:301
+msgid "Weather has no source called “%s”.\nChoose one in More, or use Open-Meteo."
+msgstr ""
 
-#: internal/lightui/weather.go:276
+#: internal/lightui/weather.go:302
+msgid "Use Open-Meteo"
+msgstr ""
+
+#: internal/lightui/weather.go:309
+msgid "Reading the weather in %s from %s…"
+msgstr ""
+
+#: internal/lightui/weather.go:322
+msgid "%s could not be reached. Check the connection.\n%s"
+msgstr ""
+
+#: internal/lightui/weather.go:324
+msgid "%s did not give a forecast just now.\n%s\nTry again, or choose another source in More."
+msgstr ""
+
+#: internal/lightui/weather.go:326
 #: internal/mailui/panel.go:307
 #: internal/ui/passwords.go:534
 #: ui/mail-compose.ui:456
@@ -10875,43 +10895,57 @@ msgstr "날씨를 읽을 수 없습니다.\n%s"
 msgid "Try again"
 msgstr "다시 시도해 보세요"
 
-#: internal/lightui/weather.go:325
+#: internal/lightui/weather.go:405
 msgid "H %s   L %s"
 msgstr "H %[1]s L %[2]s"
 
-#: internal/lightui/weather.go:334
+#: internal/lightui/weather.go:413
+msgid "NEXT %d HOURS · EVERY %d"
+msgstr ""
+
+#: internal/lightui/weather.go:415
+msgid "NEXT %d HOUR"
+msgid_plural "NEXT %d HOURS"
+msgstr[0] ""
+
+#: internal/lightui/weather.go:418
+msgid "%d DAY"
+msgid_plural "%d DAYS"
+msgstr[0] ""
+
+#: internal/lightui/weather.go:426
 msgid "NOW"
 msgstr "지금"
 
-#: internal/lightui/weather.go:397
+#: internal/lightui/weather.go:489
 msgid "FEELS LIKE"
 msgstr "체감 온도"
 
-#: internal/lightui/weather.go:398
+#: internal/lightui/weather.go:490
 msgid "HUMIDITY"
 msgstr "습도"
 
-#: internal/lightui/weather.go:399
+#: internal/lightui/weather.go:491
 msgid "WIND"
 msgstr "바람"
 
-#: internal/lightui/weather.go:400
+#: internal/lightui/weather.go:492
 msgid "RAIN"
 msgstr "비"
 
-#: internal/lightui/weather.go:405
+#: internal/lightui/weather.go:497
 msgid "SUNRISE"
 msgstr "일출"
 
-#: internal/lightui/weather.go:406
+#: internal/lightui/weather.go:498
 msgid "SUNSET"
 msgstr "일몰"
 
-#: internal/lightui/weather.go:428
-msgid "UPDATED %s · OPEN-METEO"
-msgstr "업데이트된 %s · OPEN-METEO"
+#: internal/lightui/weather.go:520
+msgid "UPDATED %s · %s"
+msgstr ""
 
-#: internal/lightui/weather.go:473
+#: internal/lightui/weather.go:575
 msgid "No place by that name"
 msgstr "그 이름의 장소는 없습니다"
 
@@ -11728,6 +11762,7 @@ msgid "Mark as unread (U)"
 msgstr "안 읽음으로 표시 (U)"
 
 #: internal/mailui/reader.go:342
+#: ui/weather.ui:162
 msgid "More"
 msgstr "더 보기"
 
@@ -21371,39 +21406,23 @@ msgstr "추천"
 msgid "ALL SYSTEMS"
 msgstr "모든 시스템"
 
-#: ui/weather.ui:30
-msgid "Previous place"
-msgstr "이전 장소"
+#: ui/weather.ui:71
+msgid "No city yet. Search above to add one."
+msgstr ""
 
-#: ui/weather.ui:66
-msgid "Next place"
-msgstr "다음 장소"
-
-#: ui/weather.ui:76
-msgid "Places"
-msgstr "장소"
-
-#: ui/weather.ui:122
+#: ui/weather.ui:91
 msgid "UNITS"
 msgstr "유닛"
 
-#: ui/weather.ui:135
+#: ui/weather.ui:104
 msgid "°C"
 msgstr "°C"
 
-#: ui/weather.ui:141
+#: ui/weather.ui:110
 msgid "°F"
 msgstr "°F"
 
-#: ui/weather.ui:216
-msgid "NEXT 24 HOURS"
-msgstr "다음 24시간"
-
-#: ui/weather.ui:246
-msgid "7 DAYS"
-msgstr "7일"
-
-#: ui/weather.ui:272
+#: ui/weather.ui:285
 msgid "DETAILS"
 msgstr "세부사항"
 

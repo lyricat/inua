@@ -1,10 +1,13 @@
-// Package weather is the Weather app's logic: finding places and reading
-// forecasts from Open-Meteo (https://open-meteo.com, free, no key).
+// Package weather is the Weather app's logic: finding places (Open-Meteo's
+// geocoding) and reading forecasts from one of Sources: Open-Meteo
+// (https://open-meteo.com) or wttr.in (https://wttr.in), both free and
+// without a key.
 package weather
 
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -22,6 +25,9 @@ type Data struct {
 	Places     []Place `json:"places"`
 	Selected   int     `json:"selected"`
 	Fahrenheit bool    `json:"fahrenheit"`
+	// Source is the forecast's source, a Sources ID; "" (a file from before
+	// there was a choice) is Open-Meteo.
+	Source string `json:"source,omitempty"`
 }
 
 // Place is a place to show the weather of.
@@ -106,7 +112,7 @@ type Day struct {
 	Sunset   time.Time
 }
 
-// Get reads the forecast for a place: 24 hours and 7 days.
+// Get reads the forecast for a place from Open-Meteo: 24 hours and 7 days.
 func Get(ctx context.Context, c *http.Client, p Place, fahrenheit bool) (Forecast, error) {
 	q := url.Values{
 		"latitude":       {strconv.FormatFloat(p.Lat, 'f', 4, 64)},
@@ -124,7 +130,7 @@ func Get(ctx context.Context, c *http.Client, p Place, fahrenheit bool) (Forecas
 	}
 	var r struct {
 		Offset  int `json:"utc_offset_seconds"`
-		Current struct {
+		Current *struct {
 			Temp     float64 `json:"temperature_2m"`
 			Feels    float64 `json:"apparent_temperature"`
 			Humidity int     `json:"relative_humidity_2m"`
@@ -151,6 +157,9 @@ func Get(ctx context.Context, c *http.Client, p Place, fahrenheit bool) (Forecas
 	var f Forecast
 	if err := getJSON(ctx, c, ForecastURL+"?"+q.Encode(), &r); err != nil {
 		return f, err
+	}
+	if r.Current == nil {
+		return f, unavailable("open-meteo", errors.New("no current weather in the answer"))
 	}
 	loc := time.FixedZone("", r.Offset) // the place's own time
 	parse := func(layout, s string) time.Time {
@@ -233,11 +242,34 @@ func getJSON(ctx context.Context, c *http.Client, u string, v any) error {
 	}
 	resp, err := c.Do(req)
 	if err != nil {
-		return err
+		return err // the network's: no answer
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("%s: %s", req.URL.Host, resp.Status)
+		return unavailable(req.URL.Host, errors.New(resp.Status))
 	}
-	return json.NewDecoder(resp.Body).Decode(v)
+	if err := json.NewDecoder(resp.Body).Decode(v); err != nil {
+		return unavailable(req.URL.Host, fmt.Errorf("not a forecast: %w", err))
+	}
+	return nil
+}
+
+// UnavailableError is a source that answered, but not with what was asked:
+// an error status (busy, over its limits, down) or an answer that is not a
+// whole forecast. Any other error from Get is the network's.
+type UnavailableError struct {
+	Host string
+	Err  error
+}
+
+func (e *UnavailableError) Error() string { return e.Host + ": " + e.Err.Error() }
+func (e *UnavailableError) Unwrap() error { return e.Err }
+
+func unavailable(host string, err error) error { return &UnavailableError{Host: host, Err: err} }
+
+// Unavailable says whether err is the source's (UnavailableError) rather
+// than the network's.
+func Unavailable(err error) bool {
+	var u *UnavailableError
+	return errors.As(err, &u)
 }

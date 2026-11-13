@@ -173,7 +173,7 @@ msgstr "dim."
 
 #: internal/apps/clock/clock.go:69
 #: internal/i18n/time.go:12
-#: internal/lightui/weather.go:360
+#: internal/lightui/weather.go:452
 #: internal/mailui/window.go:1444
 #: internal/shell/notify.go:28
 #: internal/ui/agenda.go:371
@@ -224,7 +224,7 @@ msgid "Weekends"
 msgstr "Week-ends"
 
 #: internal/apps/clock/clock.go:112
-#: internal/lightui/weather.go:362
+#: internal/lightui/weather.go:454
 #: internal/ui/widgets.go:1047
 #: ui/agenda.ui:80
 #: ui/calendar.ui:39
@@ -1795,51 +1795,51 @@ msgstr "Connexion…"
 msgid "Not running"
 msgstr "Ne fonctionne pas"
 
-#: internal/apps/weather/weather.go:192
+#: internal/apps/weather/weather.go:201
 msgid "Clear sky"
 msgstr "Ciel dégagé"
 
-#: internal/apps/weather/weather.go:194
+#: internal/apps/weather/weather.go:203
 msgid "Mostly clear"
 msgstr "Ciel presque dégagé"
 
-#: internal/apps/weather/weather.go:196
+#: internal/apps/weather/weather.go:205
 msgid "Partly cloudy"
 msgstr "Partiellement nuageux"
 
-#: internal/apps/weather/weather.go:198
+#: internal/apps/weather/weather.go:207
 msgid "Cloudy"
 msgstr "Nuageux"
 
-#: internal/apps/weather/weather.go:200
+#: internal/apps/weather/weather.go:209
 msgid "Fog"
 msgstr "Brouillard"
 
-#: internal/apps/weather/weather.go:202
+#: internal/apps/weather/weather.go:211
 msgid "Drizzle"
 msgstr "Bruine"
 
-#: internal/apps/weather/weather.go:204
+#: internal/apps/weather/weather.go:213
 msgid "Rain"
 msgstr "Pluie"
 
-#: internal/apps/weather/weather.go:206
+#: internal/apps/weather/weather.go:215
 msgid "Heavy rain"
 msgstr "Fortes pluies"
 
-#: internal/apps/weather/weather.go:208
+#: internal/apps/weather/weather.go:217
 msgid "Snow"
 msgstr "Neige"
 
-#: internal/apps/weather/weather.go:210
+#: internal/apps/weather/weather.go:219
 msgid "Heavy snow"
 msgstr "Fortes chutes de neige"
 
-#: internal/apps/weather/weather.go:212
+#: internal/apps/weather/weather.go:221
 msgid "Thunderstorm"
 msgstr "Orage"
 
-#: internal/apps/weather/weather.go:214
+#: internal/apps/weather/weather.go:223
 #: internal/lightui/sysmon.go:1083
 #: internal/vmui/window.go:2340
 msgid "Unknown"
@@ -2153,6 +2153,7 @@ msgid "AI settings"
 msgstr "Paramètres IA"
 
 #: internal/connectui/menubar.go:30
+#: internal/lightui/weather.go:223
 #: internal/mailui/menubar.go:45
 #: internal/remoteui/menubar.go:57
 #: internal/vmui/menubar.go:49
@@ -8847,10 +8848,11 @@ msgid "Clock"
 msgstr "Horloge"
 
 #: internal/lightui/apps.go:17
-#: internal/lightui/weather.go:226
+#: internal/lightui/weather.go:249
 #: internal/ui/agenda.go:334
 #: internal/ui/widgets.go:584
 #: internal/ui/widgets.go:1066
+#: ui/weather.ui:30
 #: config/apps/io.github.lyricat.Inua.Weather.desktop:3
 msgid "Weather"
 msgstr "Météo"
@@ -8998,7 +9000,8 @@ msgid "No city by that name"
 msgstr "Aucune ville de ce nom"
 
 #: internal/lightui/clock.go:371
-#: internal/lightui/weather.go:249
+#: internal/lightui/weather.go:224
+#: internal/lightui/weather.go:274
 msgid "Remove %s"
 msgstr "Supprimer %s"
 
@@ -10037,7 +10040,7 @@ msgid "Nothing by that name"
 msgstr "Rien de ce nom"
 
 #: internal/lightui/stocks.go:409
-#: internal/lightui/weather.go:475
+#: internal/lightui/weather.go:577
 msgid "Could not search: %s"
 msgstr "Impossible de rechercher : %s"
 
@@ -10903,25 +10906,42 @@ msgstr "Ouvrir une vidéo"
 msgid "Videos"
 msgstr "Vidéos"
 
-#: internal/lightui/weather.go:258
-msgid "Add a city to see its weather."
-msgstr "Ajoutez une ville pour voir sa météo."
+#: internal/lightui/weather.go:218
+msgid "Forecast from %s"
+msgstr ""
 
-#: internal/lightui/weather.go:258
+#: internal/lightui/weather.go:226
+#: internal/lightui/weather.go:296
 #: ui/clock.ui:122
-#: ui/weather.ui:95
+#: ui/weather.ui:39
 msgid "Add a city"
 msgstr "Ajouter une ville"
 
-#: internal/lightui/weather.go:264
-msgid "Reading the weather…"
-msgstr "Lire la météo…"
+#: internal/lightui/weather.go:296
+msgid "Add a city to see its weather."
+msgstr "Ajoutez une ville pour voir sa météo."
 
-#: internal/lightui/weather.go:276
-msgid "The weather could not be read.\n%s"
-msgstr "La météo n'a pas pu être lue.\n%s"
+#: internal/lightui/weather.go:301
+msgid "Weather has no source called “%s”.\nChoose one in More, or use Open-Meteo."
+msgstr ""
 
-#: internal/lightui/weather.go:276
+#: internal/lightui/weather.go:302
+msgid "Use Open-Meteo"
+msgstr ""
+
+#: internal/lightui/weather.go:309
+msgid "Reading the weather in %s from %s…"
+msgstr ""
+
+#: internal/lightui/weather.go:322
+msgid "%s could not be reached. Check the connection.\n%s"
+msgstr ""
+
+#: internal/lightui/weather.go:324
+msgid "%s did not give a forecast just now.\n%s\nTry again, or choose another source in More."
+msgstr ""
+
+#: internal/lightui/weather.go:326
 #: internal/mailui/panel.go:307
 #: internal/ui/passwords.go:534
 #: ui/mail-compose.ui:456
@@ -10929,43 +10949,59 @@ msgstr "La météo n'a pas pu être lue.\n%s"
 msgid "Try again"
 msgstr "Réessayez"
 
-#: internal/lightui/weather.go:325
+#: internal/lightui/weather.go:405
 msgid "H %s   L %s"
 msgstr "H %[1]s L %[2]s"
 
-#: internal/lightui/weather.go:334
+#: internal/lightui/weather.go:413
+msgid "NEXT %d HOURS · EVERY %d"
+msgstr ""
+
+#: internal/lightui/weather.go:415
+msgid "NEXT %d HOUR"
+msgid_plural "NEXT %d HOURS"
+msgstr[0] ""
+msgstr[1] ""
+
+#: internal/lightui/weather.go:418
+msgid "%d DAY"
+msgid_plural "%d DAYS"
+msgstr[0] ""
+msgstr[1] ""
+
+#: internal/lightui/weather.go:426
 msgid "NOW"
 msgstr "MAINTENANT"
 
-#: internal/lightui/weather.go:397
+#: internal/lightui/weather.go:489
 msgid "FEELS LIKE"
 msgstr "RESSENTI"
 
-#: internal/lightui/weather.go:398
+#: internal/lightui/weather.go:490
 msgid "HUMIDITY"
 msgstr "HUMIDITÉ"
 
-#: internal/lightui/weather.go:399
+#: internal/lightui/weather.go:491
 msgid "WIND"
 msgstr "VENT"
 
-#: internal/lightui/weather.go:400
+#: internal/lightui/weather.go:492
 msgid "RAIN"
 msgstr "PLUIE"
 
-#: internal/lightui/weather.go:405
+#: internal/lightui/weather.go:497
 msgid "SUNRISE"
 msgstr "LEVER DU SOLEIL"
 
-#: internal/lightui/weather.go:406
+#: internal/lightui/weather.go:498
 msgid "SUNSET"
 msgstr "COUCHER DE SOLEIL"
 
-#: internal/lightui/weather.go:428
-msgid "UPDATED %s · OPEN-METEO"
-msgstr "MISE À JOUR %s · OUVERT-METEO"
+#: internal/lightui/weather.go:520
+msgid "UPDATED %s · %s"
+msgstr ""
 
-#: internal/lightui/weather.go:473
+#: internal/lightui/weather.go:575
 msgid "No place by that name"
 msgstr "Aucun endroit portant ce nom"
 
@@ -11787,6 +11823,7 @@ msgid "Mark as unread (U)"
 msgstr "Marquer comme non lu (U)"
 
 #: internal/mailui/reader.go:342
+#: ui/weather.ui:162
 msgid "More"
 msgstr "Plus"
 
@@ -21475,39 +21512,23 @@ msgstr "RECOMMANDÉS"
 msgid "ALL SYSTEMS"
 msgstr "TOUS LES SYSTÈMES"
 
-#: ui/weather.ui:30
-msgid "Previous place"
-msgstr "Lieu précédent"
+#: ui/weather.ui:71
+msgid "No city yet. Search above to add one."
+msgstr ""
 
-#: ui/weather.ui:66
-msgid "Next place"
-msgstr "Lieu suivant"
-
-#: ui/weather.ui:76
-msgid "Places"
-msgstr "Lieux"
-
-#: ui/weather.ui:122
+#: ui/weather.ui:91
 msgid "UNITS"
 msgstr "UNITÉS"
 
-#: ui/weather.ui:135
+#: ui/weather.ui:104
 msgid "°C"
 msgstr "°C"
 
-#: ui/weather.ui:141
+#: ui/weather.ui:110
 msgid "°F"
 msgstr "°F"
 
-#: ui/weather.ui:216
-msgid "NEXT 24 HOURS"
-msgstr "PROCHAINES 24 HEURES"
-
-#: ui/weather.ui:246
-msgid "7 DAYS"
-msgstr "7 JOURS"
-
-#: ui/weather.ui:272
+#: ui/weather.ui:285
 msgid "DETAILS"
 msgstr "DÉTAILS"
 
