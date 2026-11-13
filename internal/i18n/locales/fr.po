@@ -383,6 +383,7 @@ msgstr "Un fichier de %s"
 #: internal/shell/launcher_actions.go:61
 #: internal/shell/wifi.go:62
 #: internal/term/web/web.go:141
+#: internal/termui/agentlist.go:163
 #: internal/ui/record.go:157
 #: internal/ui/system_ipc.go:241
 #: internal/vmui/window.go:2710
@@ -11838,8 +11839,9 @@ msgid "Hide the details"
 msgstr ""
 
 #: internal/mailui/reader.go:659
+#: internal/termui/agentlist.go:160
 msgid "Fold"
-msgstr ""
+msgstr "Replier"
 
 #: internal/mailui/reader.go:670
 #: internal/mailui/window.go:1337
@@ -13800,7 +13802,7 @@ msgstr "Nouvelle session dans cet espace"
 
 #: internal/term/settings/settings.go:104
 #: internal/term/web/strings.go:70
-#: internal/termui/columns.go:176
+#: internal/termui/columns.go:184
 msgid "New workspace"
 msgstr "Nouvel espace de travail"
 
@@ -13939,7 +13941,7 @@ msgid "Add a snippet"
 msgstr ""
 
 #: internal/term/web/strings.go:20
-#: internal/termui/agents.go:337
+#: internal/termui/agents.go:284
 msgid "Agents"
 msgstr "Agents"
 
@@ -14003,7 +14005,7 @@ msgid "Cursor blinks"
 msgstr "Le curseur clignote"
 
 #: internal/term/web/strings.go:42
-#: internal/termui/agents.go:47
+#: internal/termui/agents.go:46
 msgid "DONE"
 msgstr "TERMINÉ"
 
@@ -14062,7 +14064,7 @@ msgid "Go to a folder or a file"
 msgstr ""
 
 #: internal/term/web/strings.go:59
-#: internal/termui/agents.go:49
+#: internal/termui/agents.go:48
 msgid "IDLE"
 msgstr "INACTIF"
 
@@ -14091,7 +14093,7 @@ msgid "Keys above the keyboard"
 msgstr "Touches au-dessus du clavier"
 
 #: internal/term/web/strings.go:66
-#: internal/termui/agents.go:45
+#: internal/termui/agents.go:44
 msgid "NEEDS YOU"
 msgstr "VOUS ATTEND"
 
@@ -14100,8 +14102,8 @@ msgid "New pane"
 msgstr ""
 
 #: internal/term/web/strings.go:68
-#: internal/termui/columns.go:177
-#: ui/term.ui:235
+#: internal/termui/columns.go:185
+#: ui/term.ui:205
 msgid "New session"
 msgstr "Nouvelle session"
 
@@ -14166,7 +14168,7 @@ msgid "Pinch, or Settings in Overview, to change it."
 msgstr "Pincez, ou passez par Paramètres dans Aperçu, pour la changer."
 
 #: internal/term/web/strings.go:87
-#: internal/termui/agents.go:39
+#: internal/termui/agents.go:38
 msgid "RESTORED"
 msgstr "RESTAURÉ"
 
@@ -14263,7 +14265,7 @@ msgid "WEBGL"
 msgstr "WEBGL"
 
 #: internal/term/web/strings.go:119
-#: internal/termui/agents.go:43
+#: internal/termui/agents.go:42
 msgid "WORKING"
 msgstr "AU TRAVAIL"
 
@@ -14306,31 +14308,40 @@ msgstr ""
 msgid "That token is not right. The link may be an old one, from before New link."
 msgstr ""
 
-#: internal/termui/agents.go:37
+#: internal/termui/agentlist.go:63
+msgid "Needs you"
+msgstr "Vous attend"
+
+#: internal/termui/agentlist.go:63
+#: internal/vmui/window.go:2318
+msgid "Working"
+msgstr "En cours"
+
+#: internal/termui/agentlist.go:63
+msgid "Idle"
+msgstr "Inactif"
+
+#: internal/termui/agentlist.go:65
+msgid "Nobody needs you. Stretch a little."
+msgstr "Personne ne vous attend. Étirez-vous un peu."
+
+#: internal/termui/agentlist.go:66
+msgid "Nothing is cooking."
+msgstr "Rien ne mijote."
+
+#: internal/termui/agentlist.go:67
+msgid "Nobody is slacking off."
+msgstr "Personne ne se tourne les pouces."
+
+#: internal/termui/agents.go:36
 msgid "EXITED %d"
 msgstr "TERMINÉ %d"
 
-#: internal/termui/agents.go:192
+#: internal/termui/agents.go:191
 msgid "Agents that need you"
 msgstr "Agents qui ont besoin de vous"
 
-#: internal/termui/agents.go:299
-msgid "%d agent needs you"
-msgid_plural "%d agents need you"
-msgstr[0] "%d agent a besoin de vous"
-msgstr[1] "%d agents ont besoin de vous"
-
-#: internal/termui/agents.go:302
-msgid "%d agent is idle"
-msgid_plural "%d agents are idle"
-msgstr[0] "%d agent est inactif"
-msgstr[1] "%d agents sont inactifs"
-
-#: internal/termui/agents.go:306
-msgid "%s goes to the next"
-msgstr "%s passe au suivant"
-
-#: internal/termui/agents.go:344
+#: internal/termui/agents.go:291
 msgid "No agent runs in any workspace."
 msgstr "Aucun agent ne tourne dans aucun espace de travail."
 
@@ -14358,15 +14369,15 @@ msgstr "Les terminaux prennent les couleurs de la fenêtre"
 msgid "Your login shell (%s)"
 msgstr "Votre shell de connexion (%s)"
 
-#: internal/termui/columns.go:175
+#: internal/termui/columns.go:183
 msgid "Menu"
 msgstr "Menu"
 
-#: internal/termui/columns.go:178
+#: internal/termui/columns.go:186
 msgid "Hide the sidebar"
 msgstr "Masquer la barre latérale"
 
-#: internal/termui/columns.go:179
+#: internal/termui/columns.go:187
 msgid "Show the sidebar"
 msgstr "Afficher la barre latérale"
 
@@ -18682,10 +18693,6 @@ msgstr "Arrêté"
 #: internal/vmui/window.go:2309
 msgid "%s · no backend in this build"
 msgstr "%s · pas de backend dans cette version"
-
-#: internal/vmui/window.go:2318
-msgid "Working"
-msgstr "En cours"
 
 #: internal/vmui/window.go:2322
 msgid "Needs the host"

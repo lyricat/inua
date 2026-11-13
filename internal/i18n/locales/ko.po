@@ -383,6 +383,7 @@ msgstr "%s에서 온 파일"
 #: internal/shell/launcher_actions.go:61
 #: internal/shell/wifi.go:62
 #: internal/term/web/web.go:141
+#: internal/termui/agentlist.go:163
 #: internal/ui/record.go:157
 #: internal/ui/system_ipc.go:241
 #: internal/vmui/window.go:2710
@@ -11778,8 +11779,9 @@ msgid "Hide the details"
 msgstr ""
 
 #: internal/mailui/reader.go:659
+#: internal/termui/agentlist.go:160
 msgid "Fold"
-msgstr ""
+msgstr "접기"
 
 #: internal/mailui/reader.go:670
 #: internal/mailui/window.go:1337
@@ -13727,7 +13729,7 @@ msgstr "이 작업 공간에 새 세션"
 
 #: internal/term/settings/settings.go:104
 #: internal/term/web/strings.go:70
-#: internal/termui/columns.go:176
+#: internal/termui/columns.go:184
 msgid "New workspace"
 msgstr "새 작업 공간"
 
@@ -13866,7 +13868,7 @@ msgid "Add a snippet"
 msgstr ""
 
 #: internal/term/web/strings.go:20
-#: internal/termui/agents.go:337
+#: internal/termui/agents.go:284
 msgid "Agents"
 msgstr "에이전트"
 
@@ -13930,7 +13932,7 @@ msgid "Cursor blinks"
 msgstr "커서 깜박임"
 
 #: internal/term/web/strings.go:42
-#: internal/termui/agents.go:47
+#: internal/termui/agents.go:46
 msgid "DONE"
 msgstr "완료"
 
@@ -13989,7 +13991,7 @@ msgid "Go to a folder or a file"
 msgstr ""
 
 #: internal/term/web/strings.go:59
-#: internal/termui/agents.go:49
+#: internal/termui/agents.go:48
 msgid "IDLE"
 msgstr "대기"
 
@@ -14018,7 +14020,7 @@ msgid "Keys above the keyboard"
 msgstr "키보드 위의 키"
 
 #: internal/term/web/strings.go:66
-#: internal/termui/agents.go:45
+#: internal/termui/agents.go:44
 msgid "NEEDS YOU"
 msgstr "응답 필요"
 
@@ -14027,8 +14029,8 @@ msgid "New pane"
 msgstr ""
 
 #: internal/term/web/strings.go:68
-#: internal/termui/columns.go:177
-#: ui/term.ui:235
+#: internal/termui/columns.go:185
+#: ui/term.ui:205
 msgid "New session"
 msgstr "새 세션"
 
@@ -14093,7 +14095,7 @@ msgid "Pinch, or Settings in Overview, to change it."
 msgstr "핀치하거나 개요의 설정에서 바꿉니다."
 
 #: internal/term/web/strings.go:87
-#: internal/termui/agents.go:39
+#: internal/termui/agents.go:38
 msgid "RESTORED"
 msgstr "복원됨"
 
@@ -14190,7 +14192,7 @@ msgid "WEBGL"
 msgstr "WEBGL"
 
 #: internal/term/web/strings.go:119
-#: internal/termui/agents.go:43
+#: internal/termui/agents.go:42
 msgid "WORKING"
 msgstr "작업 중"
 
@@ -14233,29 +14235,40 @@ msgstr ""
 msgid "That token is not right. The link may be an old one, from before New link."
 msgstr ""
 
-#: internal/termui/agents.go:37
+#: internal/termui/agentlist.go:63
+msgid "Needs you"
+msgstr "응답 필요"
+
+#: internal/termui/agentlist.go:63
+#: internal/vmui/window.go:2318
+msgid "Working"
+msgstr "작업 중"
+
+#: internal/termui/agentlist.go:63
+msgid "Idle"
+msgstr "대기"
+
+#: internal/termui/agentlist.go:65
+msgid "Nobody needs you. Stretch a little."
+msgstr "찾는 이가 없어요. 기지개 한번 켜세요."
+
+#: internal/termui/agentlist.go:66
+msgid "Nothing is cooking."
+msgstr "끓고 있는 건 없어요."
+
+#: internal/termui/agentlist.go:67
+msgid "Nobody is slacking off."
+msgstr "노는 사람이 없어요."
+
+#: internal/termui/agents.go:36
 msgid "EXITED %d"
 msgstr "종료 %d"
 
-#: internal/termui/agents.go:192
+#: internal/termui/agents.go:191
 msgid "Agents that need you"
 msgstr "응답을 기다리는 에이전트"
 
-#: internal/termui/agents.go:299
-msgid "%d agent needs you"
-msgid_plural "%d agents need you"
-msgstr[0] "에이전트 %d개가 응답을 기다립니다"
-
-#: internal/termui/agents.go:302
-msgid "%d agent is idle"
-msgid_plural "%d agents are idle"
-msgstr[0] "에이전트 %d개가 쉬고 있습니다"
-
-#: internal/termui/agents.go:306
-msgid "%s goes to the next"
-msgstr "%s(으)로 다음으로 이동"
-
-#: internal/termui/agents.go:344
+#: internal/termui/agents.go:291
 msgid "No agent runs in any workspace."
 msgstr "어느 작업 공간에서도 에이전트가 실행되고 있지 않습니다."
 
@@ -14283,15 +14296,15 @@ msgstr "터미널이 창의 색을 씁니다"
 msgid "Your login shell (%s)"
 msgstr "로그인 셸 (%s)"
 
-#: internal/termui/columns.go:175
+#: internal/termui/columns.go:183
 msgid "Menu"
 msgstr "메뉴"
 
-#: internal/termui/columns.go:178
+#: internal/termui/columns.go:186
 msgid "Hide the sidebar"
 msgstr "사이드바 숨기기"
 
-#: internal/termui/columns.go:179
+#: internal/termui/columns.go:187
 msgid "Show the sidebar"
 msgstr "사이드바 보이기"
 
@@ -18578,10 +18591,6 @@ msgstr "중지됨"
 #: internal/vmui/window.go:2309
 msgid "%s · no backend in this build"
 msgstr "%s · 이 빌드에 백엔드 없음"
-
-#: internal/vmui/window.go:2318
-msgid "Working"
-msgstr "작업 중"
 
 #: internal/vmui/window.go:2322
 msgid "Needs the host"

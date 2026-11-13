@@ -86,18 +86,22 @@ from it, or at `$INUA_VT_LIB`.
   workspace button and the menu button. Its menu has the command
   palette (Ctrl+Shift+P) and the settings; the Web Terminal, what it is
   doing and a switch for it; and restarting the terminal host. Each
-  workspace is a name, its folder, and what its agents add up to: a
-  square filled in warn while one waits for you, in the accent while one
-  works, hollow when quiet. Drag a workspace to put it in another place;
+  workspace is a line: its name (its folder shows on hover) and what its
+  agents add up to: a square filled in warn while one waits for you, in
+  the accent while one works, hollow when quiet. Drag a workspace to put it in another place;
   its menu (a right click, or the Menu key) renames it or closes it,
   after asking, since every program in it quits.
   The search (its button in the head) finds workspaces by name, folder
   or pane title. The framed button at the head's start hides the
   column, sliding away (Ctrl+Shift+B); one at the top of column 2 brings
-  it back. At its
-  foot, as Warcraft's idle worker, the finder counts the agents waiting
-  for you (a square in warn) and those done or idle (hollow); a click on
-  it, or Ctrl+`, goes to the next: waiting, then done, then idle.
+  it back. Under the workspaces, as the web terminal's Agents tab, every
+  running agent in three groups that fold as an accordion, one open at a
+  time, taking the column's height under the workspaces: those that need you or are done (open at first), those working,
+  those idle. Each head shows
+  how many it holds, and the first one's square what they are: in warn
+  while all wait for you, in the accent while all are done, in ok for
+  some of each. A row is a pane's row, as in column 2, and a click shows
+  that pane; an open group with no agent in it says so, in a dashed row.
 - **Sessions** (column 2): the shown workspace's sessions, each a section of its
   panes under a head with the same square and a badge counting the
   agents that wait. Right-click a head, or press Menu or Shift+F10 while
@@ -189,7 +193,8 @@ inua-term report --state done
 When an agent waits for you or finishes in a pane you are not looking at,
 a notification says so; its *Show* brings the window to that pane.
 Ctrl+Shift+J goes to the next agent that needs you, in any workspace;
-Ctrl+` (the finder) to the next that needs you or is idle;
+Ctrl+` (Warcraft's idle worker) to the next that needs you, is done
+or is idle;
 Ctrl+Shift+A lists every agent.
 
 ## What it remembers

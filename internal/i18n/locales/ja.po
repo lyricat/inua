@@ -383,6 +383,7 @@ msgstr "%s からのファイル"
 #: internal/shell/launcher_actions.go:61
 #: internal/shell/wifi.go:62
 #: internal/term/web/web.go:141
+#: internal/termui/agentlist.go:163
 #: internal/ui/record.go:157
 #: internal/ui/system_ipc.go:241
 #: internal/vmui/window.go:2710
@@ -11778,6 +11779,7 @@ msgid "Hide the details"
 msgstr "詳細を隠す"
 
 #: internal/mailui/reader.go:659
+#: internal/termui/agentlist.go:160
 msgid "Fold"
 msgstr "折りたたむ"
 
@@ -13727,7 +13729,7 @@ msgstr "このワークスペースに新しいセッション"
 
 #: internal/term/settings/settings.go:104
 #: internal/term/web/strings.go:70
-#: internal/termui/columns.go:176
+#: internal/termui/columns.go:184
 msgid "New workspace"
 msgstr "新しいワークスペース"
 
@@ -13866,7 +13868,7 @@ msgid "Add a snippet"
 msgstr "スニペットを追加"
 
 #: internal/term/web/strings.go:20
-#: internal/termui/agents.go:337
+#: internal/termui/agents.go:284
 msgid "Agents"
 msgstr "エージェント"
 
@@ -13930,7 +13932,7 @@ msgid "Cursor blinks"
 msgstr "カーソルの点滅"
 
 #: internal/term/web/strings.go:42
-#: internal/termui/agents.go:47
+#: internal/termui/agents.go:46
 msgid "DONE"
 msgstr "完了"
 
@@ -13989,7 +13991,7 @@ msgid "Go to a folder or a file"
 msgstr "フォルダーまたはファイルへ移動"
 
 #: internal/term/web/strings.go:59
-#: internal/termui/agents.go:49
+#: internal/termui/agents.go:48
 msgid "IDLE"
 msgstr "待機"
 
@@ -14018,7 +14020,7 @@ msgid "Keys above the keyboard"
 msgstr "キーボードの上のキー"
 
 #: internal/term/web/strings.go:66
-#: internal/termui/agents.go:45
+#: internal/termui/agents.go:44
 msgid "NEEDS YOU"
 msgstr "応答待ち"
 
@@ -14027,8 +14029,8 @@ msgid "New pane"
 msgstr "新しいペイン"
 
 #: internal/term/web/strings.go:68
-#: internal/termui/columns.go:177
-#: ui/term.ui:235
+#: internal/termui/columns.go:185
+#: ui/term.ui:205
 msgid "New session"
 msgstr "新しいセッション"
 
@@ -14093,7 +14095,7 @@ msgid "Pinch, or Settings in Overview, to change it."
 msgstr "ピンチか、概要の設定で変えられます。"
 
 #: internal/term/web/strings.go:87
-#: internal/termui/agents.go:39
+#: internal/termui/agents.go:38
 msgid "RESTORED"
 msgstr "復元"
 
@@ -14190,7 +14192,7 @@ msgid "WEBGL"
 msgstr "WEBGL"
 
 #: internal/term/web/strings.go:119
-#: internal/termui/agents.go:43
+#: internal/termui/agents.go:42
 msgid "WORKING"
 msgstr "作業中"
 
@@ -14233,29 +14235,40 @@ msgstr "コンピューターが表示するリンク内にあります。inua-t
 msgid "That token is not right. The link may be an old one, from before New link."
 msgstr "トークンが正しくありません。「New link」を作成する前の古いリンクかもしれません。"
 
-#: internal/termui/agents.go:37
+#: internal/termui/agentlist.go:63
+msgid "Needs you"
+msgstr "応答待ち"
+
+#: internal/termui/agentlist.go:63
+#: internal/vmui/window.go:2318
+msgid "Working"
+msgstr "処理中"
+
+#: internal/termui/agentlist.go:63
+msgid "Idle"
+msgstr "待機"
+
+#: internal/termui/agentlist.go:65
+msgid "Nobody needs you. Stretch a little."
+msgstr "誰も呼んでいません。ひと伸びどうぞ。"
+
+#: internal/termui/agentlist.go:66
+msgid "Nothing is cooking."
+msgstr "何も煮込んでいません。"
+
+#: internal/termui/agentlist.go:67
+msgid "Nobody is slacking off."
+msgstr "サボっている人はいません。"
+
+#: internal/termui/agents.go:36
 msgid "EXITED %d"
 msgstr "終了 %d"
 
-#: internal/termui/agents.go:192
+#: internal/termui/agents.go:191
 msgid "Agents that need you"
 msgstr "応答を待つエージェント"
 
-#: internal/termui/agents.go:299
-msgid "%d agent needs you"
-msgid_plural "%d agents need you"
-msgstr[0] "%d 個のエージェントが対応を待っています"
-
-#: internal/termui/agents.go:302
-msgid "%d agent is idle"
-msgid_plural "%d agents are idle"
-msgstr[0] "%d 個のエージェントが待機中です"
-
-#: internal/termui/agents.go:306
-msgid "%s goes to the next"
-msgstr "%s で次へ"
-
-#: internal/termui/agents.go:344
+#: internal/termui/agents.go:291
 msgid "No agent runs in any workspace."
 msgstr "どのワークスペースでもエージェントは動いていません。"
 
@@ -14283,15 +14296,15 @@ msgstr "ターミナルはウィンドウの色を使います"
 msgid "Your login shell (%s)"
 msgstr "ログインシェル（%s）"
 
-#: internal/termui/columns.go:175
+#: internal/termui/columns.go:183
 msgid "Menu"
 msgstr "メニュー"
 
-#: internal/termui/columns.go:178
+#: internal/termui/columns.go:186
 msgid "Hide the sidebar"
 msgstr "サイドバーを隠す"
 
-#: internal/termui/columns.go:179
+#: internal/termui/columns.go:187
 msgid "Show the sidebar"
 msgstr "サイドバーを表示"
 
@@ -18578,10 +18591,6 @@ msgstr "停止"
 #: internal/vmui/window.go:2309
 msgid "%s · no backend in this build"
 msgstr "%s · このビルドにバックエンドがありません"
-
-#: internal/vmui/window.go:2318
-msgid "Working"
-msgstr "処理中"
 
 #: internal/vmui/window.go:2322
 msgid "Needs the host"

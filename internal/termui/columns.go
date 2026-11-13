@@ -23,9 +23,13 @@ import (
 
 type columns struct {
 	col1, col2 *gtk.Box
-	list       *gtk.ListBox
-	sessions   *gtk.Box
-	find       *gtk.SearchEntry
+	// wsScroll holds the workspaces: it takes column 1's height while
+	// no agent runs, and its rows' height, to its most, while the agents
+	// take the rest.
+	wsScroll *gtk.ScrolledWindow
+	list     *gtk.ListBox
+	sessions *gtk.Box
+	find     *gtk.SearchEntry
 	// The head's menu and new workspace buttons, and the new session
 	// after the sessions.
 	menu, newWorkspace, newSession *gtk.Button
@@ -61,8 +65,9 @@ type columns struct {
 	// filling is set while the list is made, so selecting a row then
 	// does not show it.
 	filling bool
-	// finder is the foot of column 1: the agents waiting and idle.
-	finder finder
+	// agents is the foot of column 1: every agent, in groups that fold
+	// (agentlist.go).
+	agents agentList
 	// drag and sessionDrag reorder the two lists; rowMenu and
 	// sessionMenu hold their context-menu callbacks.
 	sessionDrag sessionDrag
@@ -102,6 +107,7 @@ func (c *columns) updateTimes(a *App) {
 			t.label.SetText(since(info.Since, now))
 		}
 	}
+	c.agents.updateTimes(a, now)
 }
 
 func (a *App) buildColumns(ui *gtkx.Builder) {
@@ -111,6 +117,8 @@ func (a *App) buildColumns(ui *gtkx.Builder) {
 	ui.Get("workspaces_col", c.col1)
 	ui.Get("sessions_col", c.col2)
 	ui.Get("workspaces", c.list)
+	c.wsScroll = &gtk.ScrolledWindow{}
+	ui.Get("workspaces_scroll", c.wsScroll)
 	ui.Get("sessions", c.sessions)
 	ui.Get("find", c.find)
 	c.menu, c.newWorkspace, c.newSession = &gtk.Button{}, &gtk.Button{}, &gtk.Button{}
@@ -131,7 +139,7 @@ func (a *App) buildColumns(ui *gtkx.Builder) {
 	c.startSessionDrag(a)
 	c.startMenu(a)
 	c.startSessionMenu(a)
-	c.finder.build(a, ui)
+	c.agents.build(a, ui)
 	c.onFind = func(uintptr, uintptr) { c.update(a) }
 	gtkx.ConnectChanged(c.find, &c.onFind)
 	c.onMenu = func(gtk.Button) { a.showHeadMenu() }
@@ -186,7 +194,8 @@ func (c *columns) update(a *App) {
 	}
 	c.fillWorkspaces(a)
 	c.fillSessions(a)
-	c.finder.update(a)
+	c.agents.update(a, strings.ToLower(strings.TrimSpace(c.find.GetText())))
+	c.wsScroll.SetVexpand(!c.agents.scroll.GetVisible())
 }
 
 // The rows stay while the lists keep their shape (the same workspaces,
@@ -196,9 +205,12 @@ func (c *columns) update(a *App) {
 // on the old one and released on the new.
 
 // wsRow is a workspace's row in column 1.
+// Its folder is its tooltip: one line keeps the rows low, for the agents
+// under them.
 type wsRow struct {
-	name, dir *gtk.Label
-	mark      *gtk.Box
+	box  *gtk.Box
+	name *gtk.Label
+	mark *gtk.Box
 }
 
 // sessionHead is a session's head in column 2.
@@ -254,7 +266,7 @@ func (c *columns) fillWorkspaces(a *App) {
 	for i, w := range ws {
 		r := &c.wsRows[i]
 		r.name.SetText(w.Name)
-		r.dir.SetText(shortDir(w.Dir))
+		r.box.SetTooltipText(shortDir(w.Dir))
 		_, l := a.rollup(workspacePanes(w))
 		paint(r.mark, nil, l)
 		if w.ID == m.Shown.Workspace {
@@ -269,19 +281,13 @@ func (c *columns) fillWorkspaces(a *App) {
 func (r *wsRow) make() *gtk.Box {
 	row := gtk.NewBox(gtk.OrientationHorizontalValue, 10)
 	row.AddCssClass("term-ws")
-	text := gtk.NewBox(gtk.OrientationVerticalValue, 2)
-	text.SetHexpand(true)
+	r.box = row
 	r.name = gtk.NewLabel("")
 	r.name.AddCssClass("term-ws-name")
 	r.name.SetXalign(0)
 	r.name.SetEllipsize(3)
-	r.dir = gtk.NewLabel("")
-	r.dir.AddCssClass("term-ws-dir")
-	r.dir.SetXalign(0)
-	r.dir.SetEllipsize(1)
-	text.Append(&r.name.Widget)
-	text.Append(&r.dir.Widget)
-	row.Append(&text.Widget)
+	r.name.SetHexpand(true)
+	row.Append(&r.name.Widget)
 	r.mark = gtk.NewBox(gtk.OrientationHorizontalValue, 0)
 	r.mark.AddCssClass("mark")
 	r.mark.SetValign(gtk.AlignCenterValue)
