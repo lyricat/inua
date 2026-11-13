@@ -48,3 +48,18 @@ Not checked: UI appearance by eye and live requests to either provider. Coder pe
 Push note: first credential-helper attempt lacked a repository path; retry with command-local credential.useHttpPath=true succeeded.
 
 Moved new/ → review/, round 1.
+
+## factory · review · 2026-11-13 18:57
+head: a147f3f1a6e05a48ec49341369e65c8467fbfa2c
+verdict: pass
+notes:
+- [P3] website/privacy.html:115: disclosure omits that agenda/widgets still send the saved city's coordinates to Open-Meteo through weather.Get, even when Weather selects wttr.in. Example: select wttr.in, open agenda -> Open-Meteo receives coordinates. Explicitly disclose these callers.
+- [P3] internal/lightui/weather.go:255: showPlaces shows the empty-city note during an active search after removing the last saved city. Example: search Par with one saved city, then remove that city through More -> the empty note appears alongside results. Apply the same empty-search guard used by search().
+
+Scope: Claude Code reviewed origin/master...HEAD, one commit and all 18 changed files, including affected callers and shared controls. No P0/P1 findings. Manager checked finding locations and clean worktree. No files changed by review; no installs.
+
+Validation: make test ultimately passed (Python session tests, go vet, Go race tests), with a throwaway HOME/TMPDIR/XDG. First run failed in unchanged internal/term/pty: `TestCloseWhileReading: the program did not get SIGHUP`. Targeted race test repeated 10 times passed, then a second full make test passed. This is recorded as an unrelated timing flake, not a blocking introduced defect; master was not independently tested. Compiled weather Blueprint matches committed UI.
+
+Not checked: UI by eye (sidebar keyboard order, narrow-window layout, More selected/hover/focus states and errors), live provider requests, full generated catalog equality, and wttr.in daylight-saving time labels. These are validation limits, not verified defects.
+
+Moved review/ → ready/. Owner should check the two P3 notes and UI before shipping.
