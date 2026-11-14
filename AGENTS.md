@@ -24,6 +24,12 @@ Use Go 1.26 or later; running the UI needs Hyprland, GTK4 and gtk4-layer-shell.
 - `make nested`: runs in a nested Hyprland window; `make run`: runs in the current Hyprland session.
 - `bin/inua-shell -ui-dir ui`: reads layouts and styles from disk.
 
+## Local shell development
+
+For an Inua shell change, build the project shell directly with `CGO_ENABLED=0 go build -o bin/inua-shell ./cmd/inua-shell`. Do not rebuild or switch the NixOS system merely to try a shell change; a system generation is a separate task.
+
+When the user asks to replace the running shell, start the newly built `bin/inua-shell` in the existing desktop session. Use the existing session's Wayland and compositor environment, and carry over the GTK library environment from the system package wrapper (including `PUREGOTK_LIB_FOLDER` and `LD_LIBRARY_PATH` on NixOS). After replacing it, verify the process is still running, inspect its log, and exercise the changed surface (for overview, open it and check `inua call shell state`) before reporting success. A process briefly starting is not sufficient. Prefer the shell's in-place restart when it will execute the intended binary; a store-installed shell's restart otherwise re-executes its old store path. If the user explicitly asks to stop and replace the shell, that authorizes stopping the shell process; do not stop the compositor or other applications.
+
 ## Code Style and Architecture
 
 Format Go with `gofmt` and follow standard naming: exported identifiers start with a capital letter, package names are short and lower case. Blueprint and CSS use two-space indentation, and colours refer to theme tokens.
