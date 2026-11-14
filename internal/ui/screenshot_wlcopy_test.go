@@ -37,7 +37,13 @@ func fakeWlCopy(t *testing.T, tmpdir, runtime, fail string) string {
 	if err := os.WriteFile(filepath.Join(bin, "wl-copy"), []byte(script), 0o755); err != nil {
 		t.Fatal(err)
 	}
-	t.Setenv("PATH", bin+":/usr/bin:/bin")
+	// The script needs the host's tools (readlink, cat): keep its PATH, with
+	// the fake wl-copy first.
+	path := bin + ":/usr/bin:/bin"
+	if p := os.Getenv("PATH"); p != "" {
+		path += ":" + p
+	}
+	t.Setenv("PATH", path)
 	t.Setenv("HOME", filepath.Join(root, "home"))
 	t.Setenv("XDG_CONFIG_HOME", filepath.Join(root, "config"))
 	t.Setenv("XDG_DATA_HOME", filepath.Join(root, "data"))
