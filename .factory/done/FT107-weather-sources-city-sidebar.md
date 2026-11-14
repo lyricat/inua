@@ -63,3 +63,12 @@ Validation: make test ultimately passed (Python session tests, go vet, Go race t
 Not checked: UI by eye (sidebar keyboard order, narrow-window layout, More selected/hover/focus states and errors), live provider requests, full generated catalog equality, and wttr.in daylight-saving time labels. These are validation limits, not verified defects.
 
 Moved review/ → ready/. Owner should check the two P3 notes and UI before shipping.
+
+## factory · 2026-11-15 00:11
+Shipped at the owner's request: “Ready items are fine, If so merge to master and move on.”
+Merge: acaedeafd261e098bd1f6589e3b9501f2bc178e9
+Release: v0.1.39 (pushed atomically with master).
+Review head unchanged and passing; merged without conflicts. make generate, make i18n and isolated make test passed after each item; generated files and catalogs unchanged. Final merged worktree clean; git diff --check passed.
+No linked issues or PRs. Factory branch retained (clean action not configured).
+Existing P2/P3 review notes remain unresolved; no additional bug fixes in this ship run. No UI visual checks, live weather-provider checks, deployment or restart. Installs: none.
+Moved ready/ → done/.

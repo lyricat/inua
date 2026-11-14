@@ -34,3 +34,12 @@ Validation: make test passed independently for merge preparation, manager verifi
 UI was not checked by eye, live or nested. Blur, preview geometry, wallpaper, focus outlines, dock styling and submenu placement still require visual validation. Residual risks: compositor focus-change dismissal of newly opened popovers; pending other-monitor menu click dropped on entry changes or two-second expiry; search placeholder mentions workspaces but no workspace-name matching. These were not promoted to verified findings.
 
 Runner deviations: merge-preparation coder wrote a temporary checker and test log under /tmp, outside the run directory; subsequent review was explicitly constrained to run-local artifacts. Review scratch archive failed with sandbox write errors, then was replaced by a source-directory copy; actual repository never-paths and worktree remained unchanged.
+
+## factory · 2026-11-15 00:11
+Shipped at the owner's request: “Ready items are fine, If so merge to master and move on.”
+Merge: 666724129ece836212f3f9e5d21503be877397d4
+Release: v0.1.39 (pushed atomically with master).
+Review head unchanged and passing; merged without conflicts. make generate, make i18n and isolated make test passed after each item; generated files and catalogs unchanged. Final merged worktree clean; git diff --check passed.
+Linked PR #97 was automatically marked merged by GitHub after the push; explicit close found it already merged. Factory branch retained (clean action not configured).
+Existing P2/P3 review notes remain unresolved; no additional bug fixes in this ship run. No UI visual checks, live weather-provider checks, deployment or restart. Installs: none.
+Moved ready/ → done/.
