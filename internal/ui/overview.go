@@ -478,11 +478,7 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 	}
 	s.renderOverviewSearchResults(o)
 	o.queryClear.SetVisible(o.st.Query != "")
-	if o.st.Query != "" {
-		o.cardsScroll.SetVisible(len(o.st.Cards) > 0)
-	} else {
-		o.cardsScroll.SetVisible(true)
-	}
+	o.cardsScroll.SetVisible(o.st.Query == "")
 	topInset, bottomInset, startInset, endInset := s.overviewDockInsets()
 	o.content.SetMarginTop(int32(topInset))
 	o.content.SetMarginBottom(int32(bottomInset))
@@ -535,7 +531,7 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 	availableH := viewportH - 180 - float64(topInset+bottomInset)
 	groups := []string{}
 	counts := map[string]int{}
-	aspect := 9.0 / 16.0
+	aspect := 0.0
 	for _, item := range cards {
 		card := item.card
 		if counts[card.Workspace.Output] == 0 {
@@ -544,7 +540,12 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 		counts[card.Workspace.Output]++
 	}
 	for _, mon := range s.snap.Outputs {
-		aspect = max(aspect, float64(mon.Height)/float64(mon.Width))
+		if counts[mon.Name] > 0 && mon.Width > 0 {
+			aspect = max(aspect, float64(mon.Height)/float64(mon.Width))
+		}
+	}
+	if aspect == 0 {
+		aspect = 9.0 / 16.0
 	}
 	columns, thumbW := 1, 0.0
 	for c := 1; c <= len(cards); c++ {
@@ -638,13 +639,23 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 		canvas.AddOverlay(&board.Widget)
 		board.Unref()
 		if card.New {
-			badge := gtk.NewLabel(i18n.T("＋  New workspace"))
-			badge.AddCssClass("overview-new-badge")
-			badge.SetHalign(gtk.AlignCenterValue)
-			badge.SetValign(gtk.AlignCenterValue)
-			badge.SetCanTarget(false)
-			canvas.AddOverlay(&badge.Widget)
-			badge.Unref()
+			newTile := gtk.NewBox(gtk.OrientationVerticalValue, 8)
+			newTile.AddCssClass("overview-new-tile")
+			newTile.SetHalign(gtk.AlignFillValue)
+			newTile.SetValign(gtk.AlignFillValue)
+			newTile.SetCanTarget(false)
+			center := gtk.NewBox(gtk.OrientationVerticalValue, 8)
+			center.SetHalign(gtk.AlignCenterValue)
+			center.SetValign(gtk.AlignCenterValue)
+			center.SetVexpand(true)
+			plus := gtk.NewLabel("+")
+			plus.AddCssClass("overview-new-plus")
+			gtkx.Append(center, &plus.Widget)
+			label := gtk.NewLabel(i18n.T("New workspace"))
+			label.AddCssClass("overview-new-label")
+			gtkx.Append(center, &label.Widget)
+			gtkx.Append(newTile, &center.Widget)
+			canvas.AddOverlay(&newTile.Widget)
 		}
 		// The card is the monitor itself, so a window at any edge stays whole.
 		// Cropping to the windows' bounds cut the preview when they tiled flat.
@@ -680,7 +691,7 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 			meta.AddCssClass("overview-window-meta")
 			meta.SetHalign(gtk.AlignFillValue)
 			meta.SetValign(gtk.AlignEndValue)
-			meta.SetSizeRequest(-1, 38)
+			meta.SetSizeRequest(-1, 30)
 			icon := gtk.NewImage()
 			if entry := s.dockState.apps.ForClass(w.AppID); entry != nil && entry.Icon != "" {
 				setIcon(icon, entry.Icon)
@@ -693,9 +704,9 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 			gtkx.Append(meta, &icon.Widget)
 			title := gtk.NewLabel(w.Title)
 			title.AddCssClass("overview-window-title")
-			title.SetWrap(true)
+			title.SetWrap(false)
 			title.SetWrapMode(pango.WrapWordCharValue)
-			title.SetLines(2)
+			title.SetLines(1)
 			title.SetEllipsize(3) // end
 			title.SetJustify(gtk.JustifyLeftValue)
 			title.SetHalign(gtk.AlignFillValue)
@@ -1022,7 +1033,6 @@ func (s *shellUI) buildOverviewSearchRow(index int, selected bool, iconName, tit
 	gtkx.Append(box, &textCol.Widget)
 
 	btn.SetChild(&box.Widget)
-	box.Unref()
 	return btn
 }
 
@@ -1057,7 +1067,6 @@ func (s *shellUI) renderOverviewSearchResults(o *workspaceOverview) {
 		for _, win := range o.st.MatchedWindows {
 			row := s.buildOverviewSearchRow(resultIdx, resultIdx == o.st.SearchSelected, win.Icon, win.Title, win.Detail, "search-window:"+win.Address)
 			gtkx.Append(&o.searchResults, &row.Widget)
-			row.Unref()
 			resultIdx++
 		}
 	}
@@ -1076,7 +1085,6 @@ func (s *shellUI) renderOverviewSearchResults(o *workspaceOverview) {
 			}
 			row := s.buildOverviewSearchRow(resultIdx, resultIdx == o.st.SearchSelected, app.Icon, app.Title, app.Detail, fmt.Sprintf("search-app:%d", appIdx))
 			gtkx.Append(&o.searchResults, &row.Widget)
-			row.Unref()
 			resultIdx++
 		}
 	}
@@ -1128,13 +1136,13 @@ func (s *shellUI) buildOverview(o *workspaceOverview) {
 	o.cardsScroll.SetPolicy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue)
 	o.cardsScroll.SetVexpand(true)
 	o.cardsScroll.SetChild(&o.cards.Widget)
-	o.cards.Unref()
 	gtkx.Append(&o.content, &o.cardsScroll.Widget)
 
 	// GNOME Shell-like search results list
 	searchResults := gtk.NewBox(gtk.OrientationVerticalValue, 6)
 	o.searchResults = *searchResults
 	o.searchResults.SetHalign(gtk.AlignCenterValue)
+	o.searchResults.SetValign(gtk.AlignStartValue)
 	o.searchResults.AddCssClass("overview-search-panel")
 	searchScroll := gtk.NewScrolledWindow()
 	o.searchResultsScroll = *searchScroll
@@ -1142,7 +1150,6 @@ func (s *shellUI) buildOverview(o *workspaceOverview) {
 	o.searchResultsScroll.SetHalign(gtk.AlignCenterValue)
 	o.searchResultsScroll.SetVexpand(true)
 	o.searchResultsScroll.SetChild(&o.searchResults.Widget)
-	o.searchResults.Unref()
 	o.searchResultsScroll.SetVisible(false)
 	gtkx.Append(&o.content, &o.searchResultsScroll.Widget)
 

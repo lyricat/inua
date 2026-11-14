@@ -13730,6 +13730,7 @@ msgstr "在此工作区新建会话"
 #: internal/term/settings/settings.go:104
 #: internal/term/web/strings.go:70
 #: internal/termui/columns.go:184
+#: internal/ui/overview.go:654
 msgid "New workspace"
 msgstr "新建工作区"
 
@@ -15325,39 +15326,35 @@ msgstr "恢复焦点"
 msgid "kill window"
 msgstr "杀掉窗口"
 
-#: internal/ui/overview.go:516
+#: internal/ui/overview.go:512
 msgid "No workspaces"
 msgstr "没有工作区"
 
-#: internal/ui/overview.go:518
+#: internal/ui/overview.go:514
 msgid "No matches"
 msgstr "没有匹配项"
 
-#: internal/ui/overview.go:641
-msgid "＋  New workspace"
-msgstr "＋  新工作区"
-
-#: internal/ui/overview.go:1041
+#: internal/ui/overview.go:1051
 msgid "No matching apps or windows"
 msgstr ""
 
-#: internal/ui/overview.go:1052
+#: internal/ui/overview.go:1062
 msgid "Open Windows"
 msgstr ""
 
-#: internal/ui/overview.go:1067
+#: internal/ui/overview.go:1076
 msgid "Applications"
 msgstr ""
 
-#: internal/ui/overview.go:1108
+#: internal/ui/overview.go:1116
 msgid "Search apps, windows and workspaces…"
 msgstr ""
 
-#: internal/ui/overview.go:1149
+#: internal/ui/overview.go:1156
 msgid "Type to search   Esc · Back / Close   ↑↓ / Tab · Navigate   Enter · Open / Switch   Drag · Move"
 msgstr ""
 
-#: internal/ui/overview.go:1194
+#: internal/ui/overview.go:1201
 msgid "inua overview"
 msgstr "inua概述"
 

@@ -120,6 +120,13 @@ layerrule {
     no_anim = on
 }
 
+# Blur the desktop behind the overview, keeping its previews sharp.
+layerrule {
+    name = inua-overview-blur
+    match:namespace = ^inua-overview$
+    blur = on
+}
+
 # The menus the bar and the dock open (the tray's, an app's in the dock)
 # are their surfaces' popups, which decoration:blur:popups leaves alone:
 # blur behind them too, but their shadows.
@@ -399,6 +406,13 @@ hl.layer_rule({
     name = "inua-bar-still",
     match = { namespace = "^inua-bar$" },
     no_anim = true,
+})
+
+-- Blur the desktop behind the overview, keeping its previews sharp.
+hl.layer_rule({
+    name = "inua-overview-blur",
+    match = { namespace = "^inua-overview$" },
+    blur = true,
 })
 
 -- The menus the bar and the dock open (the tray's, an app's in the dock)

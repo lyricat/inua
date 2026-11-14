@@ -2306,72 +2306,52 @@ button.shot-record:checked { background: alpha(@danger, 0.1); border-color: alph
 
 /* Workspace and window overview */
 .overview-scrim {
-  background: alpha(@app, 0.48);
-  padding: 24px 48px 16px;
+  background: alpha(@app, 0.56);
+  padding: 28px 48px 20px;
 }
-.overview-monitor-group {
-  background: transparent;
-  border: none;
-  padding: 4px 8px 12px;
-}
+.overview-monitor-group { padding: 4px 8px 12px; }
 .overview-monitor {
-  color: alpha(@t0, 0.7);
-  background: alpha(@surface, 0.7);
-  border: 1px solid alpha(@t0, 0.08);
-  border-radius: 999px;
-  padding: 3px 12px;
+  color: @t2;
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.04em;
-  margin-bottom: 6px;
+  letter-spacing: 0.1em;
+  margin: 0 2px 6px;
 }
 .overview-workspace {
-  background: alpha(@surface, 0.6);
-  border: 1px solid alpha(@t0, 0.14);
-  border-radius: 14px;
+  background: @surface;
+  border: 2px solid alpha(@t0, 0.2);
+  border-radius: 2px;
   padding: 0;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-  transition: border-color 140ms ease, box-shadow 140ms ease;
 }
-.overview-workspace.selected {
-  border-color: @accent;
-  box-shadow: 0 0 0 2px @accent, 0 8px 30px alpha(@accent, 0.35);
-}
-.overview-workspace.active {
-  border-color: alpha(@accent, 0.75);
-}
-.overview-workspace.drop-target {
-  border-color: @accent;
-  background: alpha(@accent, 0.2);
-}
+.overview-workspace.selected { border-color: @accent; }
+.overview-workspace.active { border-color: alpha(@accent, 0.7); }
+.overview-workspace.drop-target { border-color: @accent; background: alpha(@accent, 0.2); }
 .overview-workspace-background {
   padding: 0;
   margin: 0;
   border: 0;
-  border-radius: 14px;
+  border-radius: 0;
   min-width: 0;
   min-height: 0;
   background: transparent;
+}
+.overview-workspace.overview-new-card { border-color: alpha(@t0, 0.18); }
+.overview-workspace.overview-new-card:hover { border-color: @accent; }
+.overview-new-tile {
+  background: alpha(@panel, 0.45);
+  color: @t1;
+  padding: 20px;
+}
+.overview-new-plus {
   color: @accent;
-  font-size: 18px;
+  font-size: 42px;
+  font-weight: 300;
 }
-.overview-workspace.overview-new-card {
-  border: 2px dashed alpha(@t1, 0.32);
-  background: alpha(@surface, 0.3);
-}
-.overview-workspace.overview-new-card:hover {
-  border-color: @accent;
-  background: alpha(@accent, 0.08);
-}
-.overview-new-badge {
-  padding: 6px 14px;
-  color: @t0;
-  background: alpha(@surface, 0.85);
-  border: 1px solid alpha(@t0, 0.15);
-  border-radius: 999px;
-  font-size: 11.5px;
+.overview-new-label {
+  color: @t1;
+  font-size: 12px;
   font-weight: 600;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.04em;
 }
 .overview-window {
   padding: 0;
@@ -2379,82 +2359,44 @@ button.shot-record:checked { background: alpha(@danger, 0.1); border-color: alph
   min-width: 0;
   min-height: 0;
   border: none;
-  border-radius: 10px;
+  border-radius: 0;
   background: transparent;
-  transition: background 120ms ease;
 }
-.overview-window:hover {
-  background: alpha(@accent, 0.12);
-}
-.overview-preview {
-  min-width: 0;
-  min-height: 0;
-  border-radius: 10px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.32);
-}
+.overview-window:hover { background: alpha(@accent, 0.12); }
+.overview-preview { min-width: 0; min-height: 0; border-radius: 0; }
 .overview-window-meta {
   min-width: 0;
-  margin: 6px;
-  padding: 4px 10px;
-  border-radius: 8px;
+  margin: 0;
+  padding: 5px 10px;
+  border-radius: 0;
   color: @t0;
-  background: alpha(@app, 0.85);
+  background: alpha(@app, 0.92);
   border: 1px solid alpha(@t0, 0.12);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
-.overview-window-title {
-  min-width: 0;
-  color: @t0;
-  font-size: 11px;
-  font-weight: 500;
-  line-height: 1.15;
-}
+.overview-window-title { min-width: 0; color: @t0; font-size: 11px; font-weight: 500; }
 .overview-mru { min-width: 0; min-height: 0; font-size: 11px; padding: 0 12px; }
-.overview-hint {
-  color: alpha(@t0, 0.6);
-  font-size: 11.5px;
-  letter-spacing: 0.02em;
-  padding: 4px 16px;
-  background: alpha(@surface, 0.5);
-  border: 1px solid alpha(@t0, 0.08);
-  border-radius: 999px;
-  margin-top: 6px;
-}
-
+.overview-hint { color: @t2; font-size: 11px; padding: 6px 16px; }
 .overview-search {
-  min-width: 520px;
-  max-width: 600px;
-  min-height: 44px;
-  padding: 0 14px 0 16px;
-  background: alpha(@surface, 0.75);
-  border: 1px solid alpha(@t0, 0.14);
-  border-radius: 999px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 alpha(@t0, 0.1);
-  transition: border-color 150ms ease, box-shadow 150ms ease, background 150ms ease;
+  min-width: 480px;
+  min-height: 48px;
+  padding: 0 12px 0 16px;
+  background: alpha(@surface, 0.96);
+  border: 1px solid alpha(@t0, 0.16);
+  border-radius: 10px;
+  transition: border-color 150ms ease;
 }
-.overview-search:focus-within {
-  background: alpha(@surface, 0.92);
-  border-color: @accent;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4), 0 0 0 3px alpha(@accent, 0.28);
-}
-.overview-search-icon {
-  color: alpha(@t0, 0.65);
-  opacity: 0.9;
-  transition: color 150ms ease;
-}
-.overview-search:focus-within .overview-search-icon {
-  color: @accent;
-}
+.overview-search:focus-within { border-color: alpha(@accent, 0.8); }
+.overview-search-icon { color: @t2; }
+.overview-search:focus-within .overview-search-icon { color: @accent; }
 .overview entry.overview-query {
-  min-width: 420px;
-  min-height: 34px;
+  min-width: 380px;
+  min-height: 36px;
   padding: 0 6px;
   background: transparent;
   color: @t0;
   border: 0;
   box-shadow: none;
   font-size: 14px;
-  font-weight: 450;
 }
 .overview entry.overview-query:focus { border: 0; outline: none; box-shadow: none; }
 .overview button.overview-search-clear {
@@ -2464,66 +2406,40 @@ button.shot-record:checked { background: alpha(@danger, 0.1); border-color: alph
   color: @t2;
   background: transparent;
   border: 0;
-  border-radius: 999px;
+  border-radius: 6px;
   box-shadow: none;
   font-size: 18px;
-  transition: background 120ms ease, color 120ms ease;
 }
-.overview button.overview-search-clear:hover {
-  color: @t0;
-  background: alpha(@t1, 0.14);
-}
-
-/* GNOME Shell-like unified search results panel */
+.overview button.overview-search-clear:hover { color: @t0; background: alpha(@t1, 0.14); }
 .overview-search-panel {
-  min-width: 580px;
-  max-width: 720px;
-  background: alpha(@surface, 0.88);
+  min-width: 480px;
+  background: alpha(@surface, 0.98);
   border: 1px solid alpha(@t0, 0.12);
-  border-radius: 16px;
-  padding: 10px 12px 14px;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  padding: 10px;
 }
 .overview-search-section-header {
-  color: @accent;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 8px 12px 4px;
+  color: @t2;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  padding: 10px 12px 4px;
 }
 .overview-search-item {
-  min-height: 46px;
+  min-height: 48px;
   padding: 6px 12px;
-  border-radius: 10px;
+  border-radius: 6px;
   border: 1px solid transparent;
   background: transparent;
   box-shadow: none;
-  transition: background 100ms ease, border-color 100ms ease;
 }
 .overview-search-item:hover, .overview-search-item.selected {
-  background: alpha(@accent, 0.14);
-  border-color: alpha(@accent, 0.35);
+  background: alpha(@accent, 0.12);
+  border-color: alpha(@accent, 0.3);
 }
-.overview-search-item-title {
-  color: @t0;
-  font-size: 13.5px;
-  font-weight: 550;
-}
-.overview-search-item-detail {
-  color: @t2;
-  font-size: 11.5px;
-}
-
-.overview-empty {
-  margin: 16px;
-  padding: 18px 28px;
-  color: @t2;
-  background: alpha(@surface, 0.7);
-  border: 1px solid alpha(@line, 0.7);
-  border-radius: 8px;
-  font-size: 13.5px;
-}
+.overview-search-item-title { color: @t0; font-size: 13.5px; font-weight: 600; }
+.overview-search-item-detail { color: @t2; font-size: 11.5px; }
+.overview-empty { margin: 16px; padding: 18px 28px; color: @t2; font-size: 13.5px; }
 
 .overview-window.dragging { opacity: 0.35; }
 .overview-kill-glyph { font-family: "JetBrainsMono Nerd Font Mono";font-size: 28px; color: @accent; }
