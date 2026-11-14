@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/lyricat/inua/internal/compositor"
+	"github.com/lyricat/inua/internal/desktop"
 )
 
 // ws is a numbered workspace on an output.
@@ -311,5 +312,51 @@ func TestOverviewNumberSlotsStayOnFocusedMonitorWithMRUOff(t *testing.T) {
 		if !ok || card.Workspace.ID != want || card.Workspace.Output != "A" {
 			t.Fatalf("A slot %d: %+v %v", slot+1, card, ok)
 		}
+	}
+}
+
+func TestOverviewSearchWindowsAndApps(t *testing.T) {
+	snap := overviewFixture()
+	o := numbered(false)
+	o.Apps = []*desktop.Entry{
+		{ID: "firefox.desktop", Name: "Firefox", GenericName: "Web Browser", ExecString: "firefox"},
+		{ID: "code.desktop", Name: "Visual Studio Code", GenericName: "Text Editor", ExecString: "code"},
+	}
+	o.Show(snap)
+
+	// Initially no search query
+	if len(o.MatchedWindows) != 0 || len(o.MatchedApps) != 0 || o.SearchSelected != -1 {
+		t.Fatalf("expected empty search at start")
+	}
+
+	// Search for "fire" -> should match Firefox in apps
+	o.SetQuery("fire")
+	if len(o.MatchedApps) == 0 || o.MatchedApps[0].Title != "Firefox" {
+		t.Fatalf("expected Firefox app match, got %+v", o.MatchedApps)
+	}
+	if o.SearchSelected != 0 {
+		t.Fatalf("expected search selected 0, got %d", o.SearchSelected)
+	}
+	sel, ok := o.SelectedSearchResult()
+	if !ok || sel.Title != "Firefox" {
+		t.Fatalf("expected selected search result to be Firefox, got %+v %v", sel, ok)
+	}
+
+	// Search for "second" -> should match browser window
+	o.SetQuery("second")
+	if len(o.MatchedWindows) == 0 || o.MatchedWindows[0].Title != "second" {
+		t.Fatalf("expected window match 'second', got %+v", o.MatchedWindows)
+	}
+
+	// Navigation in search
+	o.MoveSearch(1)
+	if o.SearchSelected != 0 { // only 1 result total
+		t.Fatalf("expected search selected 0, got %d", o.SearchSelected)
+	}
+
+	// Clear query
+	o.SetQuery("")
+	if len(o.MatchedWindows) != 0 || len(o.MatchedApps) != 0 || o.SearchSelected != -1 {
+		t.Fatalf("expected empty search after clear")
 	}
 }

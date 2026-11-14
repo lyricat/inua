@@ -2182,6 +2182,48 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
                                                 <style>
                                                   <class name="title"/>
                                                 </style>
+                                                <property name="label" translatable="yes">Most recently used order</property>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <style>
+                                                  <class name="sub"/>
+                                                </style>
+                                                <property name="label" translatable="yes">Order workspaces by recent activity in the overview</property>
+                                                <property name="xalign">0</property>
+                                                <property name="wrap">true</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkSwitch" id="overview_mru">
+                                            <property name="name">overview_mru</property>
+                                            <property name="valign">3</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSeparator"></object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkBox">
+                                        <style>
+                                          <class name="row"/>
+                                        </style>
+                                        <property name="spacing">16</property>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="orientation">1</property>
+                                            <property name="hexpand">true</property>
+                                            <property name="valign">3</property>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <style>
+                                                  <class name="title"/>
+                                                </style>
                                                 <property name="label" translatable="yes">Overview hints</property>
                                                 <property name="xalign">0</property>
                                               </object>

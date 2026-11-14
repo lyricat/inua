@@ -2,12 +2,15 @@ package ui
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
 
 	"github.com/lyricat/inua/internal/compositor"
+	"github.com/lyricat/inua/internal/desktop"
 
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/glib"
@@ -43,8 +46,10 @@ type workspaceOverview struct {
 	root, content, cards gtk.Box
 	query                gtk.Entry
 	queryClear           gtk.Button
-	searchStatus         gtk.Label
-	mru                  gtk.Button
+	searchContainer      gtk.Box
+	searchResults        gtk.Box
+	searchResultsScroll  gtk.ScrolledWindow
+	cardsScroll          gtk.ScrolledWindow
 	images               map[string]*gtk.Picture
 	layoutKey            string
 	cardWidgets          map[int]*overviewCardWidgets
@@ -79,7 +84,6 @@ type workspaceOverview struct {
 	onOverviewRight  func(gtk.GestureClick, int32, float64, float64)
 	onSurfacePress   func(gtk.GestureClick, int32, float64, float64)
 	hint             *gtk.Label
-	scope            gtk.Button
 }
 
 type queuedOverviewFrame struct {
@@ -104,6 +108,7 @@ func (s *shellUI) showOverview() {
 		s.cancelLauncher()
 	}
 	s.overview.st.MRU = s.cfg.Overview.MRU
+	s.overview.st.Apps = s.apps
 	s.overview.st.Show(s.snap)
 	s.overview.activation++
 	s.overview.captureFailed = false
@@ -236,6 +241,15 @@ func (s *shellUI) bindOverviewHandlers() {
 		}
 		switch keyval {
 		case keyUp, keyDown, keyTab, 0xfe20:
+			if o.searchMode && o.st.Query != "" {
+				delta := 1
+				if keyval == keyUp || keyval == 0xfe20 || mods&gdk.ShiftMaskValue != 0 {
+					delta = -1
+				}
+				s.overview.st.MoveSearch(delta)
+				s.renderOverview()
+				return true
+			}
 			if o.searchMode {
 				return false // Keep caret and text navigation inside the entry.
 			}
@@ -257,12 +271,14 @@ func (s *shellUI) bindOverviewHandlers() {
 				delta = -1
 			}
 			s.navigateOverview(delta)
-		case keyReturn, keyKPEnter, keySpace:
+		case keyReturn, keyKPEnter:
+			s.commitOverview()
+			return true
+		case keySpace:
 			if o.searchMode {
 				return false
-			} else {
-				s.commitOverview()
 			}
+			s.commitOverview()
 			return true
 		default:
 			return !o.searchMode && keyval >= 32 && keyval < 0xff00
@@ -290,6 +306,22 @@ func (s *shellUI) bindOverviewHandlers() {
 		if key == "search-clear" {
 			s.overview.query.SetText("")
 			s.overview.query.GrabFocus()
+			return
+		}
+		if strings.HasPrefix(key, "search-window:") {
+			addr := strings.TrimPrefix(key, "search-window:")
+			s.activateOverview(s.overviewWindowMonitor(addr), func(ctx context.Context) error { return s.comp.FocusWindow(ctx, addr) })
+			return
+		}
+		if strings.HasPrefix(key, "search-app:") {
+			idxStr := strings.TrimPrefix(key, "search-app:")
+			if idx, err := strconv.Atoi(idxStr); err == nil && idx >= 0 && idx < len(s.overview.st.MatchedApps) {
+				entry := s.overview.st.MatchedApps[idx].Entry
+				if entry != nil {
+					s.closeOverview(false)
+					_ = desktop.LaunchWith(entry, s.cfg.TerminalCommand())
+				}
+			}
 			return
 		}
 		if strings.HasPrefix(key, "window:") {
@@ -444,23 +476,13 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 		o.query.SetText(o.st.Query)
 		s.overview.syncingQuery = false
 	}
-	o.mru.SetLabel(map[bool]string{true: i18n.T("MRU: ON"), false: i18n.T("MRU: OFF")}[o.st.MRU])
-	o.scope.SetLabel(map[bool]string{true: i18n.T("This monitor"), false: i18n.T("All monitors")}[s.cfg.Overview.PerMonitor])
-	matching := 0
-	for _, card := range o.st.Cards {
-		if s.cfg.Overview.PerMonitor && card.Workspace.Output != o.monitor {
-			continue
-		}
-		matching += len(card.Windows)
-	}
-	if o.st.Query == "" {
-		o.searchStatus.SetText(i18n.T("FILTER"))
-	} else if matching == 0 {
-		o.searchStatus.SetText(i18n.T("NO MATCHES"))
-	} else {
-		o.searchStatus.SetText(i18n.Nf("%d RESULT", "%d RESULTS", matching, matching))
-	}
+	s.renderOverviewSearchResults(o)
 	o.queryClear.SetVisible(o.st.Query != "")
+	if o.st.Query != "" {
+		o.cardsScroll.SetVisible(len(o.st.Cards) > 0)
+	} else {
+		o.cardsScroll.SetVisible(true)
+	}
 	topInset, bottomInset, startInset, endInset := s.overviewDockInsets()
 	o.content.SetMarginTop(int32(topInset))
 	o.content.SetMarginBottom(int32(bottomInset))
@@ -582,6 +604,9 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 		click.ConnectReleased(&s.onOverviewCanvas)
 		canvas.AddController(&click.EventController)
 		canvas.AddCssClass("overview-workspace")
+		if card.New {
+			canvas.AddCssClass("overview-new-card")
+		}
 		if i == o.st.Selected {
 			canvas.AddCssClass("selected")
 		}
@@ -615,10 +640,8 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 		if card.New {
 			badge := gtk.NewLabel(i18n.T("＋  New workspace"))
 			badge.AddCssClass("overview-new-badge")
-			badge.SetHalign(gtk.AlignEndValue)
-			badge.SetValign(gtk.AlignStartValue)
-			badge.SetMarginTop(10)
-			badge.SetMarginEnd(10)
+			badge.SetHalign(gtk.AlignCenterValue)
+			badge.SetValign(gtk.AlignCenterValue)
 			badge.SetCanTarget(false)
 			canvas.AddOverlay(&badge.Widget)
 			badge.Unref()
@@ -955,60 +978,175 @@ func (s *shellUI) overviewDockInsets() (top, bottom, start, end int) {
 	return top, bottom, start, end
 }
 
+func (s *shellUI) buildOverviewSearchRow(index int, selected bool, iconName, title, detail, actionName string) *gtk.Button {
+	btn := gtk.NewButton()
+	btn.SetName(actionName)
+	btn.AddCssClass("overview-search-item")
+	if selected {
+		btn.AddCssClass("selected")
+	}
+	btn.ConnectClicked(&s.onOverviewButton)
+
+	box := gtk.NewBox(gtk.OrientationHorizontalValue, 14)
+	box.SetHalign(gtk.AlignFillValue)
+	box.SetValign(gtk.AlignCenterValue)
+
+	icon := gtk.NewImage()
+	icon.SetPixelSize(30)
+	icon.SetValign(gtk.AlignCenterValue)
+	if iconName != "" {
+		setIcon(icon, iconName)
+	} else {
+		setIcon(icon, "application-x-executable")
+	}
+	gtkx.Append(box, &icon.Widget)
+
+	textCol := gtk.NewBox(gtk.OrientationVerticalValue, 2)
+	textCol.SetHalign(gtk.AlignStartValue)
+	textCol.SetValign(gtk.AlignCenterValue)
+	textCol.SetHexpand(true)
+
+	titleLabel := gtk.NewLabel(title)
+	titleLabel.SetXalign(0)
+	titleLabel.AddCssClass("overview-search-item-title")
+	titleLabel.SetEllipsize(3) // end
+	gtkx.Append(textCol, &titleLabel.Widget)
+
+	if detail != "" {
+		detailLabel := gtk.NewLabel(detail)
+		detailLabel.SetXalign(0)
+		detailLabel.AddCssClass("overview-search-item-detail")
+		detailLabel.SetEllipsize(3) // end
+		gtkx.Append(textCol, &detailLabel.Widget)
+	}
+	gtkx.Append(box, &textCol.Widget)
+
+	btn.SetChild(&box.Widget)
+	box.Unref()
+	return btn
+}
+
+func (s *shellUI) renderOverviewSearchResults(o *workspaceOverview) {
+	if o.st.Query == "" {
+		o.searchResultsScroll.SetVisible(false)
+		return
+	}
+	gtkx.Clear(&o.searchResults)
+	totalResults := len(o.st.MatchedWindows) + len(o.st.MatchedApps)
+	if totalResults == 0 {
+		emptyBox := gtk.NewBox(gtk.OrientationVerticalValue, 8)
+		emptyBox.SetMarginTop(24)
+		emptyBox.SetMarginBottom(24)
+		emptyBox.SetHalign(gtk.AlignCenterValue)
+		emptyLabel := gtk.NewLabel(i18n.T("No matching apps or windows"))
+		emptyLabel.AddCssClass("overview-empty")
+		gtkx.Append(emptyBox, &emptyLabel.Widget)
+		gtkx.Append(&o.searchResults, &emptyBox.Widget)
+		o.searchResultsScroll.SetVisible(true)
+		return
+	}
+
+	resultIdx := 0
+	// 1. Open Windows Section
+	if len(o.st.MatchedWindows) > 0 {
+		header := gtk.NewLabel(i18n.T("Open Windows"))
+		header.SetXalign(0)
+		header.AddCssClass("overview-search-section-header")
+		gtkx.Append(&o.searchResults, &header.Widget)
+
+		for _, win := range o.st.MatchedWindows {
+			row := s.buildOverviewSearchRow(resultIdx, resultIdx == o.st.SearchSelected, win.Icon, win.Title, win.Detail, "search-window:"+win.Address)
+			gtkx.Append(&o.searchResults, &row.Widget)
+			row.Unref()
+			resultIdx++
+		}
+	}
+
+	// 2. Applications Section
+	if len(o.st.MatchedApps) > 0 {
+		header := gtk.NewLabel(i18n.T("Applications"))
+		header.SetXalign(0)
+		header.AddCssClass("overview-search-section-header")
+		gtkx.Append(&o.searchResults, &header.Widget)
+
+		maxApps := 8
+		for appIdx, app := range o.st.MatchedApps {
+			if appIdx >= maxApps {
+				break
+			}
+			row := s.buildOverviewSearchRow(resultIdx, resultIdx == o.st.SearchSelected, app.Icon, app.Title, app.Detail, fmt.Sprintf("search-app:%d", appIdx))
+			gtkx.Append(&o.searchResults, &row.Widget)
+			row.Unref()
+			resultIdx++
+		}
+	}
+
+	o.searchResultsScroll.SetVisible(true)
+}
+
 func (s *shellUI) buildOverview(o *workspaceOverview) {
 	o.win = gtk.NewApplicationWindow(s.app)
 	o.win.AddCssClass("overview")
-	o.root = *gtk.NewBox(gtk.OrientationVerticalValue, 10)
+	o.root = *gtk.NewBox(gtk.OrientationVerticalValue, 14)
 	o.root.AddCssClass("overview-scrim")
 	o.root.SetFocusable(true)
-	o.content = *gtk.NewBox(gtk.OrientationVerticalValue, 10)
+	o.content = *gtk.NewBox(gtk.OrientationVerticalValue, 16)
 	o.content.SetHexpand(true)
 	o.content.SetVexpand(true)
 	gtkx.Append(&o.root, &o.content.Widget)
-	toolbar := gtk.NewBox(gtk.OrientationHorizontalValue, 12)
-	toolbar.SetHalign(gtk.AlignCenterValue)
-	toolbar.AddCssClass("overview-toolbar")
-	o.mru = *gtk.NewButton()
-	o.mru.SetName("mru")
-	o.mru.AddCssClass("overview-mru")
-	o.mru.ConnectClicked(&s.onOverviewButton)
-	gtkx.Append(toolbar, &o.mru.Widget)
-	o.scope = *gtk.NewButton()
-	o.scope.SetName("scope")
-	o.scope.AddCssClass("overview-mru")
-	o.scope.ConnectClicked(&s.onOverviewButton)
-	gtkx.Append(toolbar, &o.scope.Widget)
-	o.query = *gtk.NewEntry()
-	o.query.SetPlaceholderText(i18n.T("Filter by window title or app"))
-	o.query.SetSizeRequest(400, -1)
-	o.query.AddCssClass("overview-query")
-	search := gtk.NewBox(gtk.OrientationHorizontalValue, 8)
-	search.AddCssClass("overview-search")
+
+	// Modern centered search pill
+	o.searchContainer = *gtk.NewBox(gtk.OrientationHorizontalValue, 10)
+	o.searchContainer.SetHalign(gtk.AlignCenterValue)
+	o.searchContainer.AddCssClass("overview-search")
+
 	searchIcon := gtk.NewImageFromIconName("system-search-symbolic")
 	searchIcon.AddCssClass("overview-search-icon")
-	gtkx.Append(search, &searchIcon.Widget)
-	gtkx.Append(search, &o.query.Widget)
+	gtkx.Append(&o.searchContainer, &searchIcon.Widget)
+
+	o.query = *gtk.NewEntry()
+	o.query.SetPlaceholderText(i18n.T("Search apps, windows and workspaces…"))
+	o.query.AddCssClass("overview-query")
+	gtkx.Append(&o.searchContainer, &o.query.Widget)
+
 	o.queryClear = *gtk.NewButton()
 	o.queryClear.SetName("search-clear")
 	o.queryClear.SetLabel("×")
 	o.queryClear.AddCssClass("overview-search-clear")
 	o.queryClear.ConnectClicked(&s.onOverviewButton)
-	gtkx.Append(search, &o.queryClear.Widget)
-	gtkx.Append(toolbar, &search.Widget)
-	o.searchStatus = *gtk.NewLabel(i18n.T("TYPE TO FILTER WINDOWS"))
-	o.searchStatus.AddCssClass("overview-search-status")
-	gtkx.Append(toolbar, &o.searchStatus.Widget)
-	gtkx.Append(&o.content, &toolbar.Widget)
-	o.cards = *gtk.NewBox(gtk.OrientationVerticalValue, 24)
+	gtkx.Append(&o.searchContainer, &o.queryClear.Widget)
+
+	gtkx.Append(&o.content, &o.searchContainer.Widget)
+
+	// Multi-row workspace cards area
+	cards := gtk.NewBox(gtk.OrientationVerticalValue, 24)
+	o.cards = *cards
 	o.cards.SetHalign(gtk.AlignCenterValue)
 	o.cards.SetValign(gtk.AlignCenterValue)
-	scroll := gtk.NewScrolledWindow()
-	scroll.SetPolicy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue)
-	scroll.SetVexpand(true)
-	scroll.SetChild(&o.cards.Widget)
+	cardsScroll := gtk.NewScrolledWindow()
+	o.cardsScroll = *cardsScroll
+	o.cardsScroll.SetPolicy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue)
+	o.cardsScroll.SetVexpand(true)
+	o.cardsScroll.SetChild(&o.cards.Widget)
 	o.cards.Unref()
-	gtkx.Append(&o.content, &scroll.Widget)
-	hint := gtk.NewLabel(i18n.T("Type or / to filter windows   Esc · clear / close   Arrows / Tab · select   Middle click · close   Ctrl+Shift+X · kill   Drag · move"))
+	gtkx.Append(&o.content, &o.cardsScroll.Widget)
+
+	// GNOME Shell-like search results list
+	searchResults := gtk.NewBox(gtk.OrientationVerticalValue, 6)
+	o.searchResults = *searchResults
+	o.searchResults.SetHalign(gtk.AlignCenterValue)
+	o.searchResults.AddCssClass("overview-search-panel")
+	searchScroll := gtk.NewScrolledWindow()
+	o.searchResultsScroll = *searchScroll
+	o.searchResultsScroll.SetPolicy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue)
+	o.searchResultsScroll.SetHalign(gtk.AlignCenterValue)
+	o.searchResultsScroll.SetVexpand(true)
+	o.searchResultsScroll.SetChild(&o.searchResults.Widget)
+	o.searchResults.Unref()
+	o.searchResultsScroll.SetVisible(false)
+	gtkx.Append(&o.content, &o.searchResultsScroll.Widget)
+
+	hint := gtk.NewLabel(i18n.T("Type to search   Esc · Back / Close   ↑↓ / Tab · Navigate   Enter · Open / Switch   Drag · Move"))
 	o.hint = hint
 	hint.SetVisible(s.cfg.Overview.Hints)
 	hint.AddCssClass("overview-hint")
