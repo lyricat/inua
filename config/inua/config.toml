@@ -71,7 +71,7 @@ pass = true
 # centred on the screen; layout = [] is an empty bar. The settings for each
 # item above still decide whether it shows. Settings, Bar & Dock edits it
 # by dragging.
-# layout = ["workspaces", "app_menu", "app_title", "space", "clock", "space", "tray", "recording", "passwords", "clipboard", "notifications", "dictation", "control_center"]
+# layout = ["workspaces", "app_title", "app_menu", "space", "clock", "space", "tray", "recording", "passwords", "clipboard", "notifications", "dictation", "control_center"]
 
 [launcher]
 # What `inua call launcher toggle` opens: "apps" or "windows".
