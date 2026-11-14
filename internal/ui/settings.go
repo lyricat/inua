@@ -66,7 +66,7 @@ type settings struct {
 	noteHistory, animations                                                                                    gtk.Switch
 	bgOwn                                                                                                      gtk.Box // the image's rows, hidden while inua draws
 	bgAnother                                                                                                  gtk.Button
-	barOn, dockOn, dockHide, dockDrawer, dockFlushBar, overviewDock                                            gtk.Switch
+	barOn, dockOn, dockHide, dockBackground, dockDrawer, dockFlushBar, overviewDock                            gtk.Switch
 	overviewMRU, overviewHints, overviewLauncher                                                               gtk.Switch
 	clipEnable, clipBar, clipPaste                                                                             gtk.Switch
 	dockSize, dockPosition, barDensity                                                                         gtk.DropDown
@@ -191,6 +191,8 @@ func (s *shellUI) bindSettingsHandlers() {
 			c.Overview.Hints = on
 		case "overview_launcher":
 			c.Overview.LauncherWorkspace = on
+		case "dock_background":
+			c.Dock.Background = on
 		case "dock_drawer":
 			c.Dock.Drawer = on
 		case "dock_autohide":
@@ -541,6 +543,7 @@ func (s *shellUI) openSettings() {
 	ui.Get("overview_hints", &st.overviewHints)
 	ui.Get("overview_launcher", &st.overviewLauncher)
 	ui.Get("dock_autohide", &st.dockHide)
+	ui.Get("dock_background", &st.dockBackground)
 	ui.Get("dock_flush_bar", &st.dockFlushBar)
 	ui.Get("dock_drawer", &st.dockDrawer)
 	ui.Get("dock_size", &st.dockSize)
@@ -625,7 +628,7 @@ func (s *shellUI) openSettings() {
 		st.drops[d.GoPointer()] = d
 		gtkx.ConnectNotify(d, "selected", &s.onSettingsDrop)
 	}
-	for _, sw := range []*gtk.Switch{&st.bgGenerate, &st.title, &st.barMenu, &st.barTransparentEmpty, &st.barFocusRing, &st.tray, &st.barPass, &st.tpAccel, &st.notifyOn, &st.critFocus, &st.noteHistory, &st.animations, &st.barOn, &st.dockOn, &st.dockHide, &st.dockDrawer, &st.dockFlushBar, &st.overviewDock, &st.overviewMRU, &st.overviewHints, &st.overviewLauncher, &st.clipEnable, &st.clipBar, &st.clipPaste, &st.displays.lidOff} {
+	for _, sw := range []*gtk.Switch{&st.bgGenerate, &st.title, &st.barMenu, &st.barTransparentEmpty, &st.barFocusRing, &st.tray, &st.barPass, &st.tpAccel, &st.notifyOn, &st.critFocus, &st.noteHistory, &st.animations, &st.barOn, &st.dockOn, &st.dockHide, &st.dockBackground, &st.dockDrawer, &st.dockFlushBar, &st.overviewDock, &st.overviewMRU, &st.overviewHints, &st.overviewLauncher, &st.clipEnable, &st.clipBar, &st.clipPaste, &st.displays.lidOff} {
 		sw.ConnectStateSet(&s.onSettingsSwitch)
 	}
 	for _, b := range []*gtk.Button{&choose, &clearImage, &st.bgAnother, &iconPreview, &stylePreview, &st.kbReset, &st.tpReset, &st.langRestart, &st.clipClear, &st.clipReveal} {
@@ -1215,6 +1218,7 @@ func (s *shellUI) showDockSettings() {
 	st.overviewHints.SetActive(c.Overview.Hints)
 	st.overviewLauncher.SetActive(c.Overview.LauncherWorkspace)
 	st.dockHide.SetActive(c.Dock.Autohide)
+	st.dockBackground.SetActive(c.Dock.Background)
 	st.dockFlushBar.SetActive(!c.Style.EdgeGaps)
 	st.dockDrawer.SetActive(c.Dock.Drawer)
 	st.dockSize.SetSelected(uint32(max(0, slices.Index(config.DockSizes, c.Dock.Size))))

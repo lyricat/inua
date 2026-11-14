@@ -371,6 +371,9 @@ func (s *shellUI) renderAppMenu(b *bar, entries []appmenu.Entry) {
 		btn.SetFocusable(false)
 		btn.SetSensitive(t.enabled)
 		btn.ConnectClicked(&s.onAppMenuClicked)
+		motion := gtk.NewEventControllerMotion()
+		motion.ConnectEnter(&s.onAppMenuHover)
+		btn.AddController(&motion.EventController)
 		gtkx.Append(&b.appMenu, &btn.Widget)
 	}
 	b.appMenu.SetVisible(len(b.appMenuTop) > 0)
@@ -441,7 +444,26 @@ func (s *shellUI) bindAppMenuHandlers() {
 			return
 		}
 	}
+	s.onAppMenuHover = func(c gtk.EventControllerMotion, _, _ float64) {
+		w := c.GetWidget()
+		pop := s.appmenu.menu
+		if w == nil || pop == nil || !pop.GetVisible() {
+			return
+		}
+		anchor := pop.GetParent()
+		if anchor == nil || anchor.GoPointer() == w.GoPointer() || anchor.GetParent() == nil || w.GetParent() == nil || anchor.GetParent().GoPointer() != w.GetParent().GoPointer() {
+			return
+		}
+		btn := gtk.ButtonNewFromInternalPtr(w.GoPointer())
+		s.onAppMenuClicked(*btn)
+	}
 	s.onAppMenuClicked = func(btn gtk.Button) {
+		if pop := s.appmenu.menu; pop != nil && pop.GetVisible() {
+			if anchor := pop.GetParent(); anchor != nil && anchor.GoPointer() == btn.GoPointer() {
+				s.closeAppMenu()
+				return
+			}
+		}
 		i, err := strconv.Atoi(btn.GetName())
 		if err != nil {
 			return

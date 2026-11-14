@@ -1670,6 +1670,21 @@ ApplicationWindow settings {
                   Box {
                     styles ["row"]
                     spacing: 16;
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+                      Label { styles ["title"] label: _("Dock background"); xalign: 0; }
+                      Label { styles ["sub"] label: _("Show the dock panel, borders and running indicators"); xalign: 0; wrap: true; }
+                    }
+                    Switch dock_background { name: "dock_background"; valign: center; }
+                  }
+
+                  Separator {}
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
 
                     Box {
                       orientation: vertical;

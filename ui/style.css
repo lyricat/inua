@@ -835,6 +835,11 @@ button.link:hover { color: @t0; }
   border: 1px solid alpha(@line, 0.9);
   border-radius: 6px;
 }
+/* Icons-only mode keeps the layout and input area but removes decoration. */
+.dock.icons-only { background: transparent; border-color: transparent; box-shadow: none; }
+.dock.icons-only separator.dock-sep { opacity: 0; }
+.dock.icons-only .dock-dot { opacity: 0; }
+.dock.icons-only button.dock-drawer .drawer-frame { background: transparent; border-color: transparent; }
 .dock button.dock-item {
   min-width: 0;
   min-height: 0;
@@ -2336,7 +2341,8 @@ button.shot-record:checked { background: alpha(@danger, 0.1); border-color: alph
   background: transparent;
 }
 .overview-workspace.overview-new-card { border-color: alpha(@t0, 0.18); }
-.overview-workspace.overview-new-card:hover { border-color: @accent; }
+.overview-workspace.overview-new-card:hover,
+.overview-workspace.overview-new-card.selected { border-color: @accent; }
 .overview-new-tile {
   background: alpha(@panel, 0.45);
   color: @t1;

@@ -371,6 +371,9 @@ sensitive_sources = ["pass", "gopass", "passmenu", "rofi-pass", "keepassxc", "or
 # right-click to pin, open a new window or quit.
 enable = true
 
+# Show the dock panel, borders and indicators.
+background = true
+
 # Screen edge for the dock: bottom, top, left or right.
 position = "bottom"
 
