@@ -1213,6 +1213,21 @@ ApplicationWindow settings {
                   Box {
                     styles ["row"]
                     spacing: 16;
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+                      Label { styles ["title"] label: _("Focus border on other monitors"); xalign: 0; }
+                      Label { styles ["sub"] label: _("Outline the last focused window on each inactive monitor"); xalign: 0; wrap: true; }
+                    }
+                    Switch bar_focus_ring { name: "bar_focus_ring"; valign: center; }
+                  }
+
+                  Separator {}
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
 
                     Box {
                       orientation: vertical;

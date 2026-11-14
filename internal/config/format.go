@@ -15,7 +15,7 @@ import (
 func Format(c Config) string {
 	return fmt.Sprintf(template,
 		q(c.Language),
-		c.Bar.Enable, q(c.Bar.Density), c.Bar.IconSize, c.Bar.IconSpacing, q(c.Bar.Clock), q(c.Bar.ClockLanguage), q(c.Bar.Workspaces), c.Bar.Title, c.Bar.Menu, q(c.Bar.TitleMode), c.Bar.TransparentEmpty, c.Bar.Tray, c.Bar.Pass, barLayoutLine(c.Bar.Layout),
+		c.Bar.Enable, q(c.Bar.Density), c.Bar.IconSize, c.Bar.IconSpacing, q(c.Bar.Clock), q(c.Bar.ClockLanguage), q(c.Bar.Workspaces), c.Bar.Title, c.Bar.Menu, q(c.Bar.TitleMode), c.Bar.TransparentEmpty, c.Bar.FocusRing, c.Bar.Tray, c.Bar.Pass, barLayoutLine(c.Bar.Layout),
 		q(c.Launcher.Mode), q(c.Launcher.Terminal), q(c.Launcher.Search), quicklinks(c.Launcher.Quicklinks), c.Overview.MRU, c.Overview.PerMonitor, c.Overview.ShowDock, c.Overview.Hints, c.Overview.LauncherWorkspace,
 		q(c.Control.Lock), q(c.Control.Screenshot),
 		q(c.Screenshot.Folder), c.Screenshot.Copy, q(c.Screenshot.Recordings),
@@ -243,6 +243,9 @@ title_mode = %s
 
 # Draw the bar panel transparently when its workspace has no windows.
 transparent_empty = %t
+
+# Outline the last focused window on other monitors.
+focus_ring = %t
 
 # Show tray (StatusNotifierItem) icons.
 tray = %t

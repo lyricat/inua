@@ -53,6 +53,9 @@ title_mode = "app"
 # Draw the bar panel transparently when its workspace has no windows.
 transparent_empty = false
 
+# Outline the last focused window on other monitors.
+focus_ring = true
+
 # Show tray (StatusNotifierItem) icons.
 tray = true
 

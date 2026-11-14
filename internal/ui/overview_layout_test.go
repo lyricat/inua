@@ -34,3 +34,11 @@ func TestOverviewWindowLayoutKeepsWindowsInsideTheCard(t *testing.T) {
 		t.Errorf("maximized window: rect %v,%v %vx%v, want 0,5.33 320x174.67", x, y, pw, ph)
 	}
 }
+
+func TestOverviewWindowLayoutFillsUsableDesktop(t *testing.T) {
+	geom := compositor.Rect{X: 0, Y: 32, W: 1920, H: 1048}
+	x, y, w, h := overviewWindowLayout(compositor.Window{Geometry: &geom}, 0, 32, 1920, 1048, 320, 180)
+	if x != 0 || y != 0 || w != 320 || h != 180 {
+		t.Fatalf("got %v,%v %vx%v; want full 320x180 card", x, y, w, h)
+	}
+}

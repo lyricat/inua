@@ -77,6 +77,7 @@ type Bar struct {
 	// TransparentEmpty makes the bar transparent on an empty workspace and
 	// opaque when a window is present.
 	TransparentEmpty bool `toml:"transparent_empty"`
+	FocusRing        bool `toml:"focus_ring"`
 	Tray             bool `toml:"tray"`
 	// Pass shows a button that searches the password store (the Pass
 	// app's) and copies from it, when there is a store.
@@ -955,6 +956,7 @@ func Default() Config {
 			Menu:             true,
 			TitleMode:        "app",
 			TransparentEmpty: false,
+			FocusRing:        true,
 			Tray:             true,
 			Pass:             true,
 		},

@@ -580,6 +580,26 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 			}
 		}
 		thumbH := thumbW * monH / monW
+		// Map the usable desktop to the preview when the bar reserves its top
+		// edge. Fullscreen and floating windows keep the whole monitor.
+		for _, bar := range s.bars {
+			if bar.connector() != card.Workspace.Output || bar.zone <= 0 || len(card.Windows) == 0 {
+				continue
+			}
+			top := monY + float64(bar.zone)
+			fits := true
+			for _, w := range card.Windows {
+				if w.Geometry == nil || float64(w.Geometry.Y) < top-1 {
+					fits = false
+					break
+				}
+			}
+			if fits && float64(bar.zone) < monH {
+				monY = top
+				monH -= float64(bar.zone)
+			}
+			break
+		}
 		if card.Workspace.Output != lastMonitor {
 			lastMonitor = card.Workspace.Output
 			section := gtk.NewBox(gtk.OrientationVerticalValue, 10)
@@ -1237,11 +1257,9 @@ func overviewWindowLayout(w compositor.Window, boxX, boxY, boxW, boxH, thumbW, t
 	}
 	ax, ay := float64(w.Geometry.X), float64(w.Geometry.Y)
 	ww, wh := float64(w.Geometry.W), float64(w.Geometry.H)
-	scale := max(thumbW/max(boxW, 1), thumbH/max(boxH, 1))
-	offsetX := (thumbW - boxW*scale) / 2
-	offsetY := (thumbH - boxH*scale) / 2
-	x, y = (ax-boxX)*scale+offsetX, (ay-boxY)*scale+offsetY
-	pw, ph = max(24, ww*scale), max(24, wh*scale)
+	scaleX, scaleY := thumbW/max(boxW, 1), thumbH/max(boxH, 1)
+	x, y = (ax-boxX)*scaleX, (ay-boxY)*scaleY
+	pw, ph = max(24, ww*scaleX), max(24, wh*scaleY)
 	// A window dragged mostly off the monitor still shows a sliver, so it can
 	// be found and dragged back from the overview.
 	x = max(-pw+24, min(x, thumbW-24))
