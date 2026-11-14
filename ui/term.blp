@@ -74,31 +74,34 @@ ApplicationWindow term {
               };
             }
 
-            // As tall as its rows, to its most, while the agents show
-            // under it; the whole column while they do not (columns.go).
-            ScrolledWindow workspaces_scroll {
+            // The workspaces and the agents share the rest of the column
+            // half and half; the workspaces take all of it while no agent
+            // runs (the agents hidden, agentlist.go).
+            Box {
+              orientation: vertical;
+              homogeneous: true;
               vexpand: true;
-              hscrollbar-policy: never;
-              propagate-natural-height: true;
-              max-content-height: 280;
 
-              ListBox workspaces {
-                selection-mode: single;
+              ScrolledWindow workspaces_scroll {
+                hscrollbar-policy: never;
+
+                ListBox workspaces {
+                  selection-mode: single;
+                }
               }
-            }
 
-            // Every agent, in three groups that fold as an accordion:
-            // needing you or done, working, idle (agentlist.go). It takes
-            // the rest of the column, its groups at the foot.
-            ScrolledWindow agents_scroll {
-              styles ["term-agents"]
-              visible: false;
-              vexpand: true;
-              hscrollbar-policy: never;
+              // Every agent, in three groups that fold as an accordion:
+              // needing you or done, working, idle (agentlist.go); at the
+              // foot of their half.
+              ScrolledWindow agents_scroll {
+                styles ["term-agents"]
+                visible: false;
+                hscrollbar-policy: never;
 
-              Box agents {
-                orientation: vertical;
-                valign: end;
+                Box agents {
+                  orientation: vertical;
+                  valign: end;
+                }
               }
             }
           }

@@ -13800,7 +13800,7 @@ msgstr ""
 
 #: internal/term/settings/settings.go:104
 #: internal/term/web/strings.go:70
-#: internal/termui/columns.go:184
+#: internal/termui/columns.go:178
 msgid "New workspace"
 msgstr ""
 
@@ -14100,8 +14100,8 @@ msgid "New pane"
 msgstr ""
 
 #: internal/term/web/strings.go:68
-#: internal/termui/columns.go:185
-#: ui/term.ui:205
+#: internal/termui/columns.go:179
+#: ui/term.ui:208
 msgid "New session"
 msgstr ""
 
@@ -14367,15 +14367,15 @@ msgstr ""
 msgid "Your login shell (%s)"
 msgstr ""
 
-#: internal/termui/columns.go:183
+#: internal/termui/columns.go:177
 msgid "Menu"
 msgstr ""
 
-#: internal/termui/columns.go:186
+#: internal/termui/columns.go:180
 msgid "Hide the sidebar"
 msgstr ""
 
-#: internal/termui/columns.go:187
+#: internal/termui/columns.go:181
 msgid "Show the sidebar"
 msgstr ""
 

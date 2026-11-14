@@ -3488,9 +3488,10 @@ window.term .term-col1, window.term .term-col2 { background: @panel; }
 window.term .term-find-row entry { margin: 0; } /* not the settings index's */
 window.term .term-find-entry { min-height: 34px; }
 window.term .term-col1 list row { min-height: 34px; padding: 4px 12px 4px 13px; }
-/* The agents at the foot of column 1, a hairline over them: each group's
+/* The agents, column 1's lower half, a hairline over them: each group's
    head as a session's, its count and caret at the end. */
-window.term .term-agents > viewport > box { padding: 4px 14px 12px; border-top: 1px solid alpha(@line, 0.55); }
+window.term .term-agents { border-top: 1px solid alpha(@line, 0.55); }
+window.term .term-agents > viewport > box { padding: 4px 14px 12px; }
 window.term button.term-agents-head:hover .term-session-label { color: @t1; }
 window.term .term-agents-count {
   font-family: "Geist Mono", "IBM Plex Mono", monospace;

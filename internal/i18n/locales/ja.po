@@ -13729,7 +13729,7 @@ msgstr "このワークスペースに新しいセッション"
 
 #: internal/term/settings/settings.go:104
 #: internal/term/web/strings.go:70
-#: internal/termui/columns.go:184
+#: internal/termui/columns.go:178
 msgid "New workspace"
 msgstr "新しいワークスペース"
 
@@ -14029,8 +14029,8 @@ msgid "New pane"
 msgstr "新しいペイン"
 
 #: internal/term/web/strings.go:68
-#: internal/termui/columns.go:185
-#: ui/term.ui:205
+#: internal/termui/columns.go:179
+#: ui/term.ui:208
 msgid "New session"
 msgstr "新しいセッション"
 
@@ -14296,15 +14296,15 @@ msgstr "ターミナルはウィンドウの色を使います"
 msgid "Your login shell (%s)"
 msgstr "ログインシェル（%s）"
 
-#: internal/termui/columns.go:183
+#: internal/termui/columns.go:177
 msgid "Menu"
 msgstr "メニュー"
 
-#: internal/termui/columns.go:186
+#: internal/termui/columns.go:180
 msgid "Hide the sidebar"
 msgstr "サイドバーを隠す"
 
-#: internal/termui/columns.go:187
+#: internal/termui/columns.go:181
 msgid "Show the sidebar"
 msgstr "サイドバーを表示"
 

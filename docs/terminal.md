@@ -96,7 +96,9 @@ from it, or at `$INUA_VT_LIB`.
   column, sliding away (Ctrl+Shift+B); one at the top of column 2 brings
   it back. Under the workspaces, as the web terminal's Agents tab, every
   running agent in three groups that fold as an accordion, one open at a
-  time, taking the column's height under the workspaces: those that need you or are done (open at first), those working,
+  time, at the foot of the column's lower half (the workspaces have the
+  upper one, and all of it while no agent runs): those that need you or are done
+  (open at first), those working,
   those idle. Each head shows
   how many it holds, and the first one's square what they are: in warn
   while all wait for you, in the accent while all are done, in ok for

@@ -23,13 +23,9 @@ import (
 
 type columns struct {
 	col1, col2 *gtk.Box
-	// wsScroll holds the workspaces: it takes column 1's height while
-	// no agent runs, and its rows' height, to its most, while the agents
-	// take the rest.
-	wsScroll *gtk.ScrolledWindow
-	list     *gtk.ListBox
-	sessions *gtk.Box
-	find     *gtk.SearchEntry
+	list       *gtk.ListBox
+	sessions   *gtk.Box
+	find       *gtk.SearchEntry
 	// The head's menu and new workspace buttons, and the new session
 	// after the sessions.
 	menu, newWorkspace, newSession *gtk.Button
@@ -117,8 +113,6 @@ func (a *App) buildColumns(ui *gtkx.Builder) {
 	ui.Get("workspaces_col", c.col1)
 	ui.Get("sessions_col", c.col2)
 	ui.Get("workspaces", c.list)
-	c.wsScroll = &gtk.ScrolledWindow{}
-	ui.Get("workspaces_scroll", c.wsScroll)
 	ui.Get("sessions", c.sessions)
 	ui.Get("find", c.find)
 	c.menu, c.newWorkspace, c.newSession = &gtk.Button{}, &gtk.Button{}, &gtk.Button{}
@@ -195,7 +189,6 @@ func (c *columns) update(a *App) {
 	c.fillWorkspaces(a)
 	c.fillSessions(a)
 	c.agents.update(a, strings.ToLower(strings.TrimSpace(c.find.GetText())))
-	c.wsScroll.SetVexpand(!c.agents.scroll.GetVisible())
 }
 
 // The rows stay while the lists keep their shape (the same workspaces,
