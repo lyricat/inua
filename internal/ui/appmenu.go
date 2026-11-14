@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"slices"
 	"strconv"
+	"time"
 
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
@@ -21,11 +22,17 @@ import (
 // speaks for: the first level as buttons, what each opens as a menu read
 // when it opens.
 type appMenuState struct {
-	registrar   *appmenu.Registrar
-	a11y        *appmenu.A11y
-	packs       *appmenu.Packs
-	menu        *gtk.Popover // the open one, borrowed from its button
-	menuRequest uint64       // the newest pending submenu read
+	registrar      *appmenu.Registrar
+	a11y           *appmenu.A11y
+	packs          *appmenu.Packs
+	menu           *gtk.Popover // the open one, borrowed from its button
+	menuRequest    uint64       // the newest pending submenu read
+	pendingWindow  string
+	pendingMonitor string
+	pendingIndex   int
+	pendingID      int32
+	pendingLabel   string
+	pendingSeq     uint64
 }
 
 // appMenuSearch is a bar's search for the menu its window published:
@@ -225,7 +232,7 @@ func (s *shellUI) syncAppMenu(b *bar) {
 		if !replace {
 			want, searched = s.barAppMenu(b)
 		}
-		if appMenuSource(want, searched, replace) == appMenuFromPack && w.ID == s.snap.FocusedWindow {
+		if appMenuSource(want, searched, replace) == appMenuFromPack {
 			window = w.ID
 			if appMenuTriesA11y(w.PID, replace, pack, matched) {
 				pid = w.PID
@@ -287,7 +294,7 @@ func appMenuTriesA11y(pid int, replace bool, pack appmenu.Pack, matched bool) bo
 // bar's; what is still being read for it is dropped when it comes.
 func (s *shellUI) clearAppMenu(b *bar) {
 	if b.appMenuReg != (appmenu.Registration{}) || b.appMenuWindow != "" || b.appMenuSystem {
-		s.closeAppMenu()
+		s.closeBarAppMenu(b)
 	}
 	b.appMenuReg = appmenu.Registration{}
 	b.appMenuWindow = ""
@@ -326,7 +333,7 @@ func (s *shellUI) loadAppMenu(b *bar, about bool) {
 // items of the one before have lost their ids.
 func (s *shellUI) readAppMenu(b *bar, about bool, first func()) {
 	if b.appMenuReg.Whole {
-		s.closeAppMenu()
+		s.closeBarAppMenu(b)
 	}
 	if b.appMenuLoading {
 		b.appMenuStale = true
@@ -391,7 +398,7 @@ func (s *shellUI) takeAppMenu(b *bar, entries []appmenu.Entry) bool {
 	if slices.Equal(top, b.appMenuTop) {
 		return false
 	}
-	s.closeAppMenu()
+	s.closeBarAppMenu(b)
 	b.appMenuTop = top
 	return true
 }
@@ -436,7 +443,7 @@ func (s *shellUI) bindAppMenuHandlers() {
 			if len(items) == 0 {
 				return
 			}
-			pop := uikit.NewMenu(items, uikit.Below)
+			pop := uikit.NewCascadeMenu(items)
 			pop.SetParent(&b.appButton.Widget)
 			pop.Unref()
 			pop.Popup()
@@ -477,6 +484,41 @@ func (s *shellUI) bindAppMenuHandlers() {
 			// bar's menu may have a button with the same index.
 			if b.appMenu.GoPointer() != parent.GoPointer() || i < 0 || i >= len(b.appMenuEntries) {
 				continue
+			}
+			// A menu on another monitor belongs to that monitor's window.
+			// Focus it first so accessibility actions and shortcuts cannot
+			// accidentally act on a different application.
+			if w, ok := shell.BarWindow(s.snap, b.connector()); ok && w.ID != s.snap.FocusedWindow {
+				if s.comp == nil {
+					return
+				}
+				s.appmenu.pendingWindow = w.ID
+				s.appmenu.pendingMonitor = b.connector()
+				s.appmenu.pendingIndex = i
+				s.appmenu.pendingID = b.appMenuEntries[i].ID
+				s.appmenu.pendingLabel = b.appMenuEntries[i].Label
+				s.appmenu.pendingSeq++
+				seq := s.appmenu.pendingSeq
+				time.AfterFunc(2*time.Second, func() {
+					gtkx.Post(func() {
+						if s.appmenu.pendingSeq == seq {
+							s.appmenu.pendingWindow = ""
+						}
+					})
+				})
+				go func(id string) {
+					ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+					defer cancel()
+					if err := s.comp.FocusWindow(ctx, id); err != nil {
+						log.Printf("appmenu: focus window: %v", err)
+						gtkx.Post(func() {
+							if s.appmenu.pendingWindow == id && s.appmenu.pendingSeq == seq {
+								s.appmenu.pendingWindow = ""
+							}
+						})
+					}
+				}(w.ID)
+				return
 			}
 			// A menu read whole and being read again has lost its ids.
 			if b.appMenuReg.Whole && b.appMenuLoading {
@@ -522,6 +564,43 @@ func (s *shellUI) bindAppMenuHandlers() {
 	}
 }
 
+// openPendingAppMenu resumes a click after the compositor confirms focus.
+func (s *shellUI) openPendingAppMenu() {
+	id := s.appmenu.pendingWindow
+	if id == "" || s.snap.FocusedWindow != id {
+		return
+	}
+	monitor, index := s.appmenu.pendingMonitor, s.appmenu.pendingIndex
+	entryID, label := s.appmenu.pendingID, s.appmenu.pendingLabel
+	s.appmenu.pendingWindow = ""
+	for _, b := range s.bars {
+		w, ok := shell.BarWindow(s.snap, b.connector())
+		if b.connector() != monitor || !ok || w.ID != id || index < 0 || index >= len(b.appMenuEntries) || b.appMenuEntries[index].ID != entryID || b.appMenuEntries[index].Label != label {
+			continue
+		}
+		for child := b.appMenu.GetFirstChild(); child != nil; child = child.GetNextSibling() {
+			if child.GetName() == strconv.Itoa(index) {
+				btn := gtk.ButtonNewFromInternalPtr(child.GoPointer())
+				s.onAppMenuClicked(*btn)
+				return
+			}
+		}
+	}
+}
+
+// A menu update on one monitor must not dismiss another monitor's menu.
+func (s *shellUI) closeBarAppMenu(b *bar) {
+	p := s.appmenu.menu
+	if p == nil {
+		s.closeAppMenu()
+		return
+	}
+	anchor := p.GetParent()
+	if anchor != nil && anchor.GetParent() != nil && anchor.GetParent().GoPointer() == b.appMenu.GoPointer() {
+		s.closeAppMenu()
+	}
+}
+
 // closeAppMenu takes the open menu down and off its button at once: the
 // button it hangs from is about to go, or another menu to open.
 func (s *shellUI) closeAppMenu() {
@@ -563,7 +642,7 @@ func (s *shellUI) showAppMenu(b *bar, reg appmenu.Registration, entry appmenu.En
 				return
 			}
 			s.closeAppMenu()
-			pop := uikit.NewMenu(items, uikit.Below)
+			pop := uikit.NewCascadeMenu(items)
 			pop.SetParent(w)
 			pop.ConnectClosed(&s.onAppMenuClosed)
 			pop.Unref() // the parent holds it now

@@ -7,7 +7,7 @@ is published. Adding a file does not mean rebuilding the shell.
 
 ## Where a menu comes from
 
-For the focused window, in this order:
+For each bar's window, in this order:
 
 1. The menu the application registered with
    `com.canonical.AppMenu.Registrar` (`com.canonical.dbusmenu`). Qt

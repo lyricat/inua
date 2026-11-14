@@ -118,7 +118,7 @@ func (s *shellUI) showSystemMenu(i int, w *gtk.Widget) {
 		return
 	}
 	s.closeAppMenu()
-	pop := uikit.NewMenu(items, uikit.Below)
+	pop := uikit.NewCascadeMenu(items)
 	pop.SetParent(w)
 	pop.ConnectClosed(&s.onAppMenuClosed)
 	pop.Unref() // the parent holds it now

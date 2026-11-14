@@ -840,11 +840,15 @@ func (s *shellUI) apply(snap compositor.Snapshot) {
 	if s.hypr == nil { // Hyprland says so with events, and keeps its rules itself
 		s.followOutputs(s.snap.Outputs, snap.Outputs)
 	}
+	if s.appmenu.menu != nil && s.snap.FocusedWindow != snap.FocusedWindow {
+		s.closeAppMenu()
+	}
 	s.snap = snap
 	s.overview.st.SetSnapshot(snap)
 	for _, b := range s.bars {
 		b.setHypr(s, snap)
 	}
+	s.openPendingAppMenu()
 	s.renderDocks()
 	s.launcher.st.SetSnapshot(snap)
 	s.syncLauncher()

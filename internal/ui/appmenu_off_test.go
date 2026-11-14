@@ -133,6 +133,21 @@ func checkBarMenuOff(t *testing.T) {
 			s.reloadAppMenu(appmenu.Registration{Service: ":1.9", Path: "/MenuBar/1"})
 		}},
 	}
+	// The bar must keep its own window's menu when another output has focus.
+	background := window
+	background.Outputs = append(background.Outputs, compositor.Output{Name: "other", ActiveWorkspace: "2"})
+	background.FocusedOutput = "other"
+	background.FocusedWindow = "0xc"
+	background.Windows[0].Focused = false
+	background.Windows = append(background.Windows, compositor.Window{ID: "0xc", AppID: "other", Workspace: "2", Output: "other", Focused: true})
+	s.snap = background
+	s.cfg.Bar.Menu = true
+	s.syncAppMenu(b)
+	settle()
+	if b.appMenuWindow != "0xb" || shown() == 0 {
+		t.Errorf("background monitor lost its menu: window %q, %d buttons", b.appMenuWindow, shown())
+	}
+
 	for _, snap := range []struct {
 		name string
 		snap compositor.Snapshot

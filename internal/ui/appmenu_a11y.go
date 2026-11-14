@@ -43,7 +43,7 @@ func (s *shellUI) loadA11yMenu(b *bar, pid int) {
 				return
 			}
 			if !b.appMenuA11y {
-				s.closeAppMenu()
+				s.closeBarAppMenu(b)
 				b.appMenuTop = nil
 			}
 			b.appMenuA11y = true
@@ -62,7 +62,7 @@ func (s *shellUI) renderPackFallback(b *bar) {
 	if b.appMenuA11y {
 		// A menu that reads the same must not keep the accessibility one's
 		// buttons or open menu.
-		s.closeAppMenu()
+		s.closeBarAppMenu(b)
 		b.appMenuTop = nil
 	}
 	b.appMenuA11y = false
@@ -136,7 +136,7 @@ func (s *shellUI) showA11yMenu(b *bar, i int, w *gtk.Widget) {
 				return
 			}
 			s.closeAppMenu()
-			pop := uikit.NewMenu(items, uikit.Below)
+			pop := uikit.NewCascadeMenu(items)
 			pop.SetParent(w)
 			pop.ConnectClosed(&s.onAppMenuClosed)
 			pop.Unref()
