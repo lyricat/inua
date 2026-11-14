@@ -142,7 +142,7 @@ type focusRing struct {
 }
 
 func (b *bar) setFocusRing(s *shellUI, snap compositor.Snapshot, selected compositor.Window, ok bool) {
-	if !s.layer || s.hypr == nil || !ok || selected.ID == snap.FocusedWindow || selected.Geometry == nil {
+	if !s.cfg.Bar.FocusRing || s.overview.st.Open || !s.layer || s.hypr == nil || !ok || selected.ID == snap.FocusedWindow || selected.Geometry == nil {
 		b.hideFocusRing()
 		return
 	}

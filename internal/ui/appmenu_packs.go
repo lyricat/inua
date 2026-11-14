@@ -255,7 +255,7 @@ func (s *shellUI) showPackedMenu(b *bar, i int, w *gtk.Widget) {
 		return
 	}
 	s.closeAppMenu()
-	pop := uikit.NewMenu(items, uikit.Below)
+	pop := uikit.NewCascadeMenu(items)
 	pop.SetParent(w)
 	pop.ConnectClosed(&s.onAppMenuClosed)
 	pop.Unref()

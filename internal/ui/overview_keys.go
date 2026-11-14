@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/lyricat/inua/internal/desktop"
 	"github.com/lyricat/inua/internal/gtkx"
 	"github.com/lyricat/inua/internal/hypr"
 )
@@ -218,6 +219,19 @@ func (s *shellUI) overviewEvent(e hypr.Event) {
 }
 
 func (s *shellUI) commitOverview() {
+	if s.overview.st.Query != "" {
+		if res, ok := s.overview.st.SelectedSearchResult(); ok {
+			if res.Address != "" {
+				s.activateOverview(s.overviewWindowMonitor(res.Address), func(ctx context.Context) error { return s.comp.FocusWindow(ctx, res.Address) })
+				return
+			}
+			if res.Entry != nil {
+				s.closeOverview(false)
+				_ = desktop.LaunchWith(res.Entry, s.cfg.TerminalCommand())
+				return
+			}
+		}
+	}
 	o := &s.overview.st
 	ws, _, ok := o.Select(o.Selected)
 	if !ok {

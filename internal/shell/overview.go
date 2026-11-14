@@ -8,21 +8,26 @@ import (
 	"time"
 
 	"github.com/lyricat/inua/internal/compositor"
+	"github.com/lyricat/inua/internal/desktop"
 )
 
 // Overview is the workspace and window overview shown above the compositor.
 // It owns selection and focus rules; the GTK view only renders Cards and
 // dispatches the returned action.
 type Overview struct {
-	Open       bool
-	Cards      []OverviewCard
-	AllCards   []OverviewCard
-	Selected   int
-	Query      string
-	Previous   string
-	FocusedMon string
-	MRU        bool
-	History    []string // workspace ids, the most recently focused first
+	Open           bool
+	Cards          []OverviewCard
+	AllCards       []OverviewCard
+	Selected       int
+	Query          string
+	Previous       string
+	FocusedMon     string
+	MRU            bool
+	History        []string // workspace ids, the most recently focused first
+	Apps           []*desktop.Entry
+	MatchedWindows []Result
+	MatchedApps    []Result
+	SearchSelected int
 	// NewWorkspace names the workspace a New drop on an output creates
 	// (compositor.WorkspaceMover); nil: no New.
 	NewWorkspace func(snap compositor.Snapshot, output string, unavailable func(id string) bool) (compositor.Workspace, bool)
@@ -54,6 +59,9 @@ func (o *Overview) Show(snap compositor.Snapshot) {
 	o.frozenOrder = nil
 	o.Open = true
 	o.Query = ""
+	o.MatchedWindows = nil
+	o.MatchedApps = nil
+	o.SearchSelected = -1
 	o.snapshot = snap
 	o.Previous = snap.FocusedWindow
 	o.FocusedMon = snap.FocusedOutput
@@ -114,6 +122,19 @@ func (o *Overview) SetQuery(query string) {
 	o.Query = strings.TrimSpace(query)
 	selected := o.SelectedAddress()
 	o.filter()
+	if o.Query == "" {
+		o.MatchedWindows = nil
+		o.MatchedApps = nil
+		o.SearchSelected = -1
+	} else {
+		o.MatchedWindows = searchWindows(o.snapshot, o.Query)
+		o.MatchedApps = searchApps(o.Apps, o.Query)
+		if len(o.MatchedWindows)+len(o.MatchedApps) > 0 {
+			o.SearchSelected = 0
+		} else {
+			o.SearchSelected = -1
+		}
+	}
 	for i, c := range o.Cards {
 		for _, w := range c.Windows {
 			if selected != "" && w.ID == selected {
@@ -123,6 +144,37 @@ func (o *Overview) SetQuery(query string) {
 		}
 	}
 	o.Selected = max(0, min(o.Selected, len(o.Cards)-1))
+}
+
+func (o *Overview) MoveSearch(delta int) {
+	total := len(o.MatchedWindows) + len(o.MatchedApps)
+	if total == 0 {
+		o.SearchSelected = -1
+		return
+	}
+	if o.SearchSelected < 0 {
+		if delta > 0 {
+			o.SearchSelected = 0
+		} else {
+			o.SearchSelected = total - 1
+		}
+		return
+	}
+	o.SearchSelected = ((o.SearchSelected+delta)%total + total) % total
+}
+
+func (o *Overview) SelectedSearchResult() (Result, bool) {
+	if o.SearchSelected < 0 {
+		return Result{}, false
+	}
+	if o.SearchSelected < len(o.MatchedWindows) {
+		return o.MatchedWindows[o.SearchSelected], true
+	}
+	appIdx := o.SearchSelected - len(o.MatchedWindows)
+	if appIdx < len(o.MatchedApps) {
+		return o.MatchedApps[appIdx], true
+	}
+	return Result{}, false
 }
 
 func (o *Overview) refresh(snap compositor.Snapshot) {
@@ -279,6 +331,9 @@ func (o *Overview) Close() {
 	o.Open = false
 	o.frozenOrder = nil
 	o.moves = nil
+	o.MatchedWindows = nil
+	o.MatchedApps = nil
+	o.SearchSelected = -1
 }
 
 // BeginMove records a drop so the destination card shows the window and

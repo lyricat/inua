@@ -53,6 +53,9 @@ title_mode = "app"
 # Draw the bar panel transparently when its workspace has no windows.
 transparent_empty = false
 
+# Outline the last focused window on other monitors.
+focus_ring = true
+
 # Show tray (StatusNotifierItem) icons.
 tray = true
 
@@ -71,7 +74,7 @@ pass = true
 # centred on the screen; layout = [] is an empty bar. The settings for each
 # item above still decide whether it shows. Settings, Bar & Dock edits it
 # by dragging.
-# layout = ["workspaces", "app_menu", "app_title", "space", "clock", "space", "tray", "recording", "passwords", "clipboard", "notifications", "dictation", "control_center"]
+# layout = ["workspaces", "app_title", "app_menu", "space", "clock", "space", "tray", "recording", "passwords", "clipboard", "notifications", "dictation", "control_center"]
 
 [launcher]
 # What `inua call launcher toggle` opens: "apps" or "windows".
@@ -367,6 +370,9 @@ sensitive_sources = ["pass", "gopass", "passmenu", "rofi-pass", "keepassxc", "or
 # windows. Click to open or bring forward (again to cycle through its windows);
 # right-click to pin, open a new window or quit.
 enable = true
+
+# Show the dock panel, borders and indicators.
+background = true
 
 # Screen edge for the dock: bottom, top, left or right.
 position = "bottom"

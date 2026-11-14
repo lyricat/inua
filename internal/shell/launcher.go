@@ -498,7 +498,7 @@ func askResults(question, hint string) []Result {
 func searchApps(apps []*desktop.Entry, q string) []Result {
 	var rs []Result
 	for _, e := range apps {
-		if e.NoDisplay {
+		if e == nil || e.NoDisplay {
 			continue
 		}
 		score := 1

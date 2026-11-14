@@ -114,6 +114,11 @@ func (s *shellUI) syncDock(b *bar) {
 		b.dock = s.newDock(b)
 	}
 	if b.dock != nil {
+		if c.Background {
+			b.dock.island.RemoveCssClass("icons-only")
+		} else {
+			b.dock.island.AddCssClass("icons-only")
+		}
 		s.setDockVisible(b, c.Enable || b.dock.overviewShown)
 		s.renderDock(b)
 	}

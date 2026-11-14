@@ -77,6 +77,7 @@ type Bar struct {
 	// TransparentEmpty makes the bar transparent on an empty workspace and
 	// opaque when a window is present.
 	TransparentEmpty bool `toml:"transparent_empty"`
+	FocusRing        bool `toml:"focus_ring"`
 	Tray             bool `toml:"tray"`
 	// Pass shows a button that searches the password store (the Pass
 	// app's) and copies from it, when there is a store.
@@ -695,6 +696,8 @@ var MCPPolicies = []string{"read", "ask", "allow"}
 // Dock is the app dock along a screen edge of each monitor.
 type Dock struct {
 	Enable bool `toml:"enable"`
+	// Background shows the dock panel and its decorations.
+	Background bool `toml:"background"`
 	// Position is the screen edge the dock occupies.
 	Position string `toml:"position"`
 	// Autohide keeps the dock out of sight until the pointer reaches the
@@ -955,6 +958,7 @@ func Default() Config {
 			Menu:             true,
 			TitleMode:        "app",
 			TransparentEmpty: false,
+			FocusRing:        true,
 			Tray:             true,
 			Pass:             true,
 		},
@@ -971,7 +975,7 @@ func Default() Config {
 		Screenshot: Screenshot{Folder: "~/Pictures/Screenshots", Copy: true, Recordings: "~/Videos/Screencasts"},
 		OSD:        OSD{Enable: true, Position: "bottom-center"},
 		Clipboard:  Clipboard{Enable: true, Bar: true, Limit: 300, PasteOnClick: true, SensitiveSources: slices.Clone(DefaultSensitiveSources)},
-		Dock:       Dock{Enable: true, Position: "bottom", Size: 36, Drawer: true, Pinned: []string{"firefox", "io.github.lyricat.Inua.Files", "kitty"}},
+		Dock:       Dock{Enable: true, Background: true, Position: "bottom", Size: 36, Drawer: true, Pinned: []string{"firefox", "io.github.lyricat.Inua.Files", "kitty"}},
 		Widgets:    Widgets{Enable: true, Swipe: 3, Places: AutoPlaces(WidgetKinds), Apps: []string{"io.github.lyricat.Inua.Files", "io.github.lyricat.Inua.Term", "io.github.lyricat.Inua.Mail", "io.github.lyricat.Inua.Music"}},
 		Voice:      Voice{Enable: false, PushToTalk: true, Engine: "voxtype", Show: "window"},
 		Shortcuts: []Shortcut{

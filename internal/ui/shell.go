@@ -178,6 +178,7 @@ type shellUI struct {
 	onTrayPressed          func(gtk.GestureClick, int32, float64, float64)
 	onTrayMenuClosed       func(gtk.Popover)
 	onAppMenuClicked       func(gtk.Button)
+	onAppMenuHover         func(gtk.EventControllerMotion, float64, float64)
 	onAppTitle             func(gtk.Button)
 	onLauncherRight        func(gtk.GestureClick, int32, float64, float64)
 	onAppMenuClosed        func(gtk.Popover)
@@ -839,11 +840,15 @@ func (s *shellUI) apply(snap compositor.Snapshot) {
 	if s.hypr == nil { // Hyprland says so with events, and keeps its rules itself
 		s.followOutputs(s.snap.Outputs, snap.Outputs)
 	}
+	if s.appmenu.menu != nil && s.snap.FocusedWindow != snap.FocusedWindow {
+		s.closeAppMenu()
+	}
 	s.snap = snap
 	s.overview.st.SetSnapshot(snap)
 	for _, b := range s.bars {
 		b.setHypr(s, snap)
 	}
+	s.openPendingAppMenu()
 	s.renderDocks()
 	s.launcher.st.SetSnapshot(snap)
 	s.syncLauncher()
