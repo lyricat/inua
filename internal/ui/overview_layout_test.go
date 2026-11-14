@@ -42,3 +42,16 @@ func TestOverviewWindowLayoutFillsUsableDesktop(t *testing.T) {
 		t.Fatalf("got %v,%v %vx%v; want full 320x180 card", x, y, w, h)
 	}
 }
+
+func TestOverviewUsableHeight(t *testing.T) {
+	windows := []compositor.Window{{Geometry: &compositor.Rect{Y: 28}}}
+	y, h := overviewUsableHeight(windows, 0, 1080, 26)
+	if y != 26 || h != 1054 {
+		t.Fatalf("got %v, %v", y, h)
+	}
+	windows[0].Geometry.Y = 0
+	y, h = overviewUsableHeight(windows, 0, 1080, 26)
+	if y != 0 || h != 1080 {
+		t.Fatalf("fullscreen got %v, %v", y, h)
+	}
+}

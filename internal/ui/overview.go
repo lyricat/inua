@@ -583,21 +583,16 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 		// Map the usable desktop to the preview when the bar reserves its top
 		// edge. Fullscreen and floating windows keep the whole monitor.
 		for _, bar := range s.bars {
-			if bar.connector() != card.Workspace.Output || bar.zone <= 0 || len(card.Windows) == 0 {
+			if bar.connector() != card.Workspace.Output || !s.cfg.Bar.Enable {
 				continue
 			}
-			top := monY + float64(bar.zone)
-			fits := true
-			for _, w := range card.Windows {
-				if w.Geometry == nil || float64(w.Geometry.Y) < top-1 {
-					fits = false
-					break
-				}
+			height := bar.win.GetHeight()
+			if bar.zone > 0 {
+				height = bar.zone
+			} else if height <= 0 {
+				height = bar.height
 			}
-			if fits && float64(bar.zone) < monH {
-				monY = top
-				monH -= float64(bar.zone)
-			}
+			monY, monH = overviewUsableHeight(card.Windows, monY, monH, float64(height))
 			break
 		}
 		if card.Workspace.Output != lastMonitor {
@@ -1247,6 +1242,21 @@ func (s *shellUI) buildOverview(o *workspaceOverview) {
 	right.SetPropagationPhase(gtk.PhaseCaptureValue)
 	right.ConnectPressed(&s.overview.onOverviewRight)
 	o.win.AddController(&right.EventController)
+}
+
+// overviewUsableHeight removes the bar's reserved band when every window is
+// below it. A fullscreen window keeps the full monitor in the preview.
+func overviewUsableHeight(windows []compositor.Window, y, height, barHeight float64) (float64, float64) {
+	if len(windows) == 0 || barHeight <= 0 || barHeight >= height {
+		return y, height
+	}
+	top := y + barHeight
+	for _, w := range windows {
+		if w.Geometry == nil || float64(w.Geometry.Y) < top-1 {
+			return y, height
+		}
+	}
+	return top, height - barHeight
 }
 
 // overviewWindowLayout maps compositor geometry onto a workspace card. The

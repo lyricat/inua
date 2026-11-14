@@ -13730,7 +13730,7 @@ msgstr "이 작업 공간에 새 세션"
 #: internal/term/settings/settings.go:104
 #: internal/term/web/strings.go:70
 #: internal/termui/columns.go:184
-#: internal/ui/overview.go:681
+#: internal/ui/overview.go:676
 msgid "New workspace"
 msgstr "새 작업 공간"
 
@@ -15334,27 +15334,27 @@ msgstr "작업 공간 없음"
 msgid "No matches"
 msgstr "일치하는 항목이 없습니다."
 
-#: internal/ui/overview.go:1078
+#: internal/ui/overview.go:1073
 msgid "No matching apps or windows"
 msgstr ""
 
-#: internal/ui/overview.go:1089
+#: internal/ui/overview.go:1084
 msgid "Open Windows"
 msgstr ""
 
-#: internal/ui/overview.go:1103
+#: internal/ui/overview.go:1098
 msgid "Applications"
 msgstr ""
 
-#: internal/ui/overview.go:1143
+#: internal/ui/overview.go:1138
 msgid "Search apps, windows and workspaces…"
 msgstr ""
 
-#: internal/ui/overview.go:1183
+#: internal/ui/overview.go:1178
 msgid "Type to search   Esc · Back / Close   ↑↓ / Tab · Navigate   Enter · Open / Switch   Drag · Move"
 msgstr ""
 
-#: internal/ui/overview.go:1228
+#: internal/ui/overview.go:1223
 msgid "inua overview"
 msgstr "이누아 개요"
 
