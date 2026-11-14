@@ -1900,11 +1900,9 @@ progressbar.thin progress { min-height: 2px; border-radius: 1px; background: @ac
 /* Weather */
 .settings .header { padding: 10px 12px 10px; border-bottom: 1px solid alpha(@line, 0.55); }
 .place { font-family: "IBM Plex Sans", "Zen Kaku Gothic New", sans-serif; font-size: 17px; color: @t0; }
-.dots .dot { min-width: 5px; min-height: 5px; border-radius: 1px; background: alpha(@t2, 0.45); }
-.dots .dot.on { background: @accent; }
-.settings .places { padding: 14px 24px 16px; border-bottom: 1px solid alpha(@line, 0.55); background: @panel; }
+/* The chosen city's head over the page, its name in line with the blocks. */
+.weatherapp .header { padding: 18px 16px 12px 24px; }
 .settings .row.current .title { color: @accent; }
-.row-temp { font-family: "IBM Plex Sans", sans-serif; font-size: 18px; font-weight: 300; font-feature-settings: "tnum"; color: @t0; }
 .weatherapp .hero { padding: 30px 24px 26px; }
 .now-icon { color: @accent; }
 .hero-temp { margin: 2px 0 -4px; font-size: 96px; font-weight: 200; }
