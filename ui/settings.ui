@@ -1821,6 +1821,192 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
                                           <class name="section-label"/>
                                         </style>
                                         <property name="use-markup">true</property>
+                                        <property name="label" translatable="yes">&lt;span alpha='55%'&gt;[&lt;/span&gt;LAYOUT&lt;span alpha='55%'&gt;]&lt;/span&gt;</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <style>
+                                          <class name="section-meta"/>
+                                        </style>
+                                        <property name="label" translatable="yes">What the bar shows, in its order</property>
+                                        <property name="hexpand">true</property>
+                                        <property name="xalign">0</property>
+                                        <property name="ellipsize">3</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkButton" id="bar_layout_reset">
+                                        <style>
+                                          <class name="outlined"/>
+                                          <class name="small"/>
+                                        </style>
+                                        <property name="name">bar_layout_reset</property>
+                                        <property name="label" translatable="yes">Default</property>
+                                        <property name="tooltip-text" translatable="yes">The default layout, the clock in the middle of the screen</property>
+                                        <property name="valign">3</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkBox">
+                                    <style>
+                                      <class name="section-body"/>
+                                    </style>
+                                    <property name="orientation">1</property>
+                                    <child>
+                                      <object class="GtkBox">
+                                        <style>
+                                          <class name="field"/>
+                                        </style>
+                                        <property name="orientation">1</property>
+                                        <property name="spacing">8</property>
+                                        <child>
+                                          <object class="GtkLabel">
+                                            <style>
+                                              <class name="label"/>
+                                            </style>
+                                            <property name="label" translatable="yes">Bar layout</property>
+                                            <property name="xalign">0</property>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkOverlay">
+                                            <property name="child">
+                                              <object class="GtkBox" id="bar_layout">
+                                                <style>
+                                                  <class name="bar-layout"/>
+                                                </style>
+                                                <property name="spacing">4</property>
+                                              </object>
+                                            </property>
+                                            <child type="overlay">
+                                              <object class="GtkBox" id="bar_layout_mark">
+                                                <style>
+                                                  <class name="bar-layout-mark"/>
+                                                </style>
+                                                <property name="halign">1</property>
+                                                <property name="visible">false</property>
+                                                <property name="can-target">false</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="spacing">6</property>
+                                            <child>
+                                              <object class="GtkLabel" id="bar_layout_selected">
+                                                <style>
+                                                  <class name="sub"/>
+                                                </style>
+                                                <property name="hexpand">true</property>
+                                                <property name="xalign">0</property>
+                                                <property name="wrap">true</property>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkButton" id="bar_layout_left">
+                                                <style>
+                                                  <class name="tool"/>
+                                                  <class name="small"/>
+                                                </style>
+                                                <property name="name">bar_layout_left</property>
+                                                <property name="icon-name">go-previous-symbolic</property>
+                                                <property name="tooltip-text" translatable="yes">Move earlier</property>
+                                                <property name="valign">3</property>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkButton" id="bar_layout_right">
+                                                <style>
+                                                  <class name="tool"/>
+                                                  <class name="small"/>
+                                                </style>
+                                                <property name="name">bar_layout_right</property>
+                                                <property name="icon-name">go-next-symbolic</property>
+                                                <property name="tooltip-text" translatable="yes">Move later</property>
+                                                <property name="valign">3</property>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkButton" id="bar_layout_remove">
+                                                <style>
+                                                  <class name="tool"/>
+                                                  <class name="small"/>
+                                                </style>
+                                                <property name="name">bar_layout_remove</property>
+                                                <property name="icon-name">list-remove-symbolic</property>
+                                                <property name="tooltip-text" translatable="yes">Remove from the bar</property>
+                                                <property name="valign">3</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel">
+                                            <style>
+                                              <class name="kicker"/>
+                                            </style>
+                                            <property name="label" translatable="yes">Add</property>
+                                            <property name="xalign">0</property>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkFlowBox" id="bar_layout_palette">
+                                            <style>
+                                              <class name="bar-layout-palette"/>
+                                            </style>
+                                            <property name="selection-mode">0</property>
+                                            <property name="homogeneous">false</property>
+                                            <property name="column-spacing">6</property>
+                                            <property name="row-spacing">6</property>
+                                            <property name="max-children-per-line">12</property>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel">
+                                            <style>
+                                              <class name="sub"/>
+                                            </style>
+                                            <property name="label" translatable="yes">Drag items into the bar, along it, or back here to remove them; or click one to add it after the one selected. Spaces share the room left equally. Arranged, the clock sits between its spaces rather than in the screen's middle. Each item still shows only when its own setting has it.</property>
+                                            <property name="xalign">0</property>
+                                            <property name="wrap">true</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <style>
+                                  <class name="section"/>
+                                </style>
+                                <property name="orientation">1</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <style>
+                                      <class name="section-head"/>
+                                    </style>
+                                    <property name="spacing">10</property>
+                                    <child>
+                                      <object class="GtkBox">
+                                        <style>
+                                          <class name="mark"/>
+                                        </style>
+                                        <property name="valign">3</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <style>
+                                          <class name="section-label"/>
+                                        </style>
+                                        <property name="use-markup">true</property>
                                         <property name="label" translatable="yes">&lt;span alpha='55%'&gt;[&lt;/span&gt;DOCK&lt;span alpha='55%'&gt;]&lt;/span&gt;</property>
                                       </object>
                                     </child>

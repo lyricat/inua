@@ -5,6 +5,7 @@ import (
 
 	"github.com/lyricat/inua/internal/apps/files"
 	"github.com/lyricat/inua/internal/appui"
+	"github.com/lyricat/inua/internal/i18n"
 )
 
 // menuBar gives the file manager's commands, also available from its keys
@@ -74,11 +75,11 @@ func (w *window) menuBar() *appui.MenuBar {
 		{Title: "View", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{
 			action("back", "Back"),
 			action("forward", "Forward"),
-			action("up", "Up"),
+			action("up", "Up a folder"),
 			action("reload", "Reload"),
 			action("search", "Search"),
 		}}, {Actions: []appui.MenuAction{
-			action("view-list", "List"),
+			action("view-list", i18n.Key("List")),
 			action("view-grid", "Grid"),
 			action("view-columns", "Columns"),
 		}}, {Actions: []appui.MenuAction{

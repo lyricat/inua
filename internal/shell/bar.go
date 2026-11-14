@@ -70,29 +70,92 @@ func windowOnMonitor(snap compositor.Snapshot, w compositor.Window, connector st
 	return ok && ws.Output == connector
 }
 
+// EmptyDesktop reports whether the bar on a monitor stands over an empty
+// desktop: the monitor has the focus and the workspace it shows, with the
+// special one shown over it, holds no window. A window is never taken for
+// none for what the compositor does not say of it (no process, no
+// workspace), and a focused window the snapshot does not list yet keeps the
+// desktop from being empty; one focused on another monitor is the focus a
+// snapshot has not moved yet.
+func EmptyDesktop(snap compositor.Snapshot, connector string) bool {
+	o, ok := snap.Output(connector)
+	if !ok || connector != snap.FocusedOutput || o.ActiveWorkspace == "" {
+		return false
+	}
+	if snap.FocusedWindow != "" {
+		w, ok := snap.Window(snap.FocusedWindow)
+		if !ok || w.Workspace == "" && w.Output == "" || windowOnMonitor(snap, w, connector) {
+			return false
+		}
+	}
+	for _, w := range snap.Windows {
+		switch {
+		case w.Workspace == o.ActiveWorkspace, o.SpecialWorkspace != "" && w.Workspace == o.SpecialWorkspace:
+			return false
+		case w.Workspace == "" && (w.Output == "" || w.Output == connector):
+			return false
+		}
+	}
+	return true
+}
+
 // BarTitle is the window title the bar on a monitor shows.
 func BarTitle(snap compositor.Snapshot, connector string) string {
 	w, _ := BarWindow(snap, connector)
 	return w.Title
 }
 
-// BarReach finds which of the bar's buttons at its end, left to right, a
-// point in the bar's window is in the reach of, and whether it is on the
-// button itself (which takes its own clicks). Each reaches over the
-// window's full height, up to the screen's edge, and across from halfway
-// over the gap before it to halfway over the gap after it; the first from
-// half of gap before it, the last to the window's right edge, the
-// screen's corner. -1 for none.
-func BarReach(buttons []Rect, gap, x, y float64) (i int, onButton bool) {
-	for i, b := range buttons {
-		left := b.X - gap/2
-		if i > 0 {
-			p := buttons[i-1]
-			left = (p.X + p.W + b.X) / 2
+// BarSpot is a thing shown on the bar, in the bar's order from the left.
+type BarSpot struct {
+	Rect Rect
+	// Reach is a panel's button, whose reach goes past it (BarReach).
+	Reach bool
+	// Break is what the reaches do not run across: a space, and every
+	// item that is not a panel's button (the tray, the clock, the
+	// workspaces, ...), which takes its own pointer.
+	Break bool
+}
+
+// BarReach finds which of the bar's buttons with a reach a point in the
+// bar's window is in the reach of, as an index into spots, and whether
+// it is on the button itself (which takes its own clicks). Each reaches
+// over the window's full height, up to the screen's edge, and across to
+// halfway over the gap to the next button with a reach, when nothing that
+// breaks the reaches is between them; otherwise half the gap past it. A
+// button that is the first thing on the bar reaches to the window's left
+// edge, the last to its right edge: the screen's corners. -1 for none.
+func BarReach(spots []BarSpot, gap, x, y float64) (i int, onButton bool) {
+	// neighbour is the button with a reach that the reach of the one at i
+	// joins in the direction step, -1 for none.
+	neighbour := func(i, step int) int {
+		for j := i + step; j >= 0 && j < len(spots); j += step {
+			switch {
+			case spots[j].Break:
+				return -1
+			case spots[j].Reach:
+				return j
+			}
 		}
-		right := math.Inf(1)
-		if i+1 < len(buttons) {
-			right = (b.X + b.W + buttons[i+1].X) / 2
+		return -1
+	}
+	for i, sp := range spots {
+		if !sp.Reach {
+			continue
+		}
+		b := sp.Rect
+		left := b.X - gap/2
+		switch p := neighbour(i, -1); {
+		case p >= 0:
+			left = (spots[p].Rect.X + spots[p].Rect.W + b.X) / 2
+		case i == 0:
+			left = math.Inf(-1)
+		}
+		right := b.X + b.W + gap/2
+		switch n := neighbour(i, 1); {
+		case n >= 0:
+			right = (b.X + b.W + spots[n].Rect.X) / 2
+		case i == len(spots)-1:
+			right = math.Inf(1)
 		}
 		if x >= left && x < right {
 			return i, b.Contains(x, y)

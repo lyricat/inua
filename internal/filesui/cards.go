@@ -47,17 +47,20 @@ type cardButton struct {
 
 // cardParts says which of the card's parts a card shows.
 type cardParts struct {
-	title, text      string
-	entry, secret    bool
-	entryText        string
-	entryHint        string // the entry's placeholder, and the password's
-	secretHint       string
-	check            string
-	checked          bool // the check is on at first
-	list             bool
-	listHeight       int  // the list's most, when not the usual
-	form             bool // the card fills card_form itself
-	selectStem, mono bool
+	title, text   string
+	entry, secret bool
+	entryText     string
+	entryHint     string // the entry's placeholder, and the password's
+	secretHint    string
+	check         string
+	checked       bool // the check is on at first
+	list          bool
+	listHeight    int  // the list's most, when not the usual
+	form          bool // the card fills card_form itself
+	mono          bool
+	// selectTo is how many characters at the start of entryText are
+	// selected at first, to be typed over; 0 puts the cursor at its end.
+	selectTo int
 }
 
 func (w *window) openCard(c *card, parts cardParts) {
@@ -117,10 +120,9 @@ func (w *window) openCard(c *card, parts cardParts) {
 	switch {
 	case parts.entry:
 		w.cardEntry.SetText(parts.entryText)
-		w.cardEntry.GrabFocus()
-		if parts.selectStem {
-			stem, _ := files.SplitExt(parts.entryText)
-			w.cardEntry.SelectRegion(0, int32(utf8.RuneCountInString(stem)))
+		w.cardEntry.GrabFocusWithoutSelecting()
+		if parts.selectTo > 0 {
+			w.cardEntry.SelectRegion(0, int32(parts.selectTo))
 		} else {
 			w.cardEntry.SetPosition(-1)
 		}
@@ -339,9 +341,12 @@ func text(title, sub string) *gtk.Box {
 
 // --- the cards ---
 
-// askRename renames path, the name without its extension selected.
+// askRename renames path, the name without its extension selected (a
+// folder's whole: when path cannot be read, it is taken for a file).
 func (w *window) askRename(p *pane, path string) {
 	name := filepath.Base(path)
+	fi, err := os.Stat(path) // a link to a folder is renamed as one
+	folder := err == nil && fi.IsDir()
 	var c *card
 	c = &card{def: 1, buttons: []cardButton{
 		{label: i18n.T("Cancel")},
@@ -365,7 +370,8 @@ func (w *window) askRename(p *pane, path string) {
 		}},
 	}}
 	c.edited = func(t string) { w.cardFail(badName(strings.TrimSpace(t))) }
-	w.openCard(c, cardParts{title: i18n.T("Rename"), entry: true, entryText: name, selectStem: true})
+	w.openCard(c, cardParts{title: i18n.T("Rename"), entry: true, entryText: name,
+		selectTo: files.RenameSelection(name, folder)})
 }
 
 // badName says what is wrong with a file name, or "".
@@ -383,9 +389,8 @@ func badName(n string) string {
 	return ""
 }
 
-// askNewName makes a folder or an empty file.
-func (w *window) askNewName(p *pane, folder bool) {
-	dir := p.dir
+// askNewName makes a folder or an empty file in dir.
+func (w *window) askNewName(dir string, folder bool) {
 	title, base := i18n.T("New file"), i18n.T("Untitled")
 	if folder {
 		title, base = i18n.T("New folder"), i18n.T("New Folder")
@@ -414,7 +419,16 @@ func (w *window) askNewName(p *pane, folder bool) {
 		}},
 	}}
 	c.edited = func(t string) { w.cardFail(badName(strings.TrimSpace(t))) }
-	w.openCard(c, cardParts{title: title, entry: true, entryText: suggested, selectStem: !folder})
+	// Made elsewhere than the folder shown (from the path bar): say where.
+	where := ""
+	if p := w.cur(); p.mode != inFolder || p.dir != dir {
+		where = i18n.Tf("In %s", shortHome(dir))
+	}
+	parts := cardParts{title: title, text: where, entry: true, entryText: suggested}
+	if !folder { // a new folder's name has the cursor at its end
+		parts.selectTo = files.RenameSelection(suggested, false)
+	}
+	w.openCard(c, parts)
 }
 
 func (w *window) confirmDelete(p *pane) {

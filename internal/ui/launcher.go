@@ -220,6 +220,7 @@ func (s *shellUI) bindLauncherHandlers() {
 		if w == nil {
 			return
 		}
+		defer w.Unref()
 		var i int
 		if _, err := fmt.Sscanf(w.GetName(), "result:%d", &i); err != nil {
 			return
@@ -229,6 +230,7 @@ func (s *shellUI) bindLauncherHandlers() {
 			return
 		}
 		l.st.Move(i - l.st.Selected)
+		s.renderLauncher()
 		s.showLauncherActions()
 	}
 }

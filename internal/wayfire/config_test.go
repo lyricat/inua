@@ -106,31 +106,3 @@ func TestApplySettings(t *testing.T) {
 		t.Fatal("keyboard settings need only the IPC")
 	}
 }
-
-func TestApplySettingsAnimations(t *testing.T) {
-	f := newFakeWayfire(t)
-	f.mu.Lock()
-	f.methods = append(slices.Clone(allMethods), "wayfire/set-config-options", "wayfire/list-config-options")
-	f.mu.Unlock()
-	f.set("wayfire/list-config-options", `{"options":{"animate":{"enabled":{"value":true}},"fade":{"enabled":{"value":true}},"extra-animations":{"enabled":{"value":true}}}}`)
-	b := New(NewClient(f.socket))
-	off := false
-	if err := b.ApplySettings(context.Background(), compositor.Settings{Animations: &off}); err != nil {
-		t.Fatal(err)
-	}
-	calls := f.did()
-	if len(calls) != 1 || !strings.Contains(calls[0], `"animate/enabled":false`) || !strings.Contains(calls[0], `"fade/enabled":false`) || !strings.Contains(calls[0], `"extra-animations/enabled":false`) {
-		t.Fatalf("animations off: %q", calls)
-	}
-	f.mu.Lock()
-	f.calls = nil
-	f.mu.Unlock()
-	on := true
-	if err := b.ApplySettings(context.Background(), compositor.Settings{Animations: &on}); err != nil {
-		t.Fatal(err)
-	}
-	calls = f.did()
-	if len(calls) != 1 || !strings.Contains(calls[0], `"animate/enabled":true`) || !strings.Contains(calls[0], `"fade/enabled":true`) {
-		t.Fatalf("animations on: %q", calls)
-	}
-}

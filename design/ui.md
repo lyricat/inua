@@ -180,6 +180,22 @@ a `small` one 28 px (`window.files .files-head`, `.files-status`).
 
 They follow `docs/performance.md` for start-up.
 
+### The top bar
+
+**Its height never changes with what it shows.** The bar is 30px (24px
+compact) and windows are tiled under it, so a bar one pixel taller
+moves every window on the monitor. Focus follows the pointer, so the
+title and the app menu change as the pointer crosses windows, and
+anything that can appear on the bar (a label, a button, the tray, the
+recording) must fit inside it:
+
+- A button is 24px tall with its 3px margins inside the bar: a 16px
+  icon or a 16px line, 3px padding, a 1px border.
+- Text in the bar has the clock's 16px `line-height`. A 13px label is
+  19px tall, and a fallback font (Arabic, Thai) taller still, without it.
+- Check a change with the tallest content: an app's menu shown, a title
+  in Arabic, the compact density. The bar's height must not move.
+
 ### Top bar panels
 
 What a top bar button opens (the notification center, the clipboard
@@ -426,13 +442,17 @@ them.
 
 Where an app icon stands for the app (the dock, its drawer, the
 launcher), `uikit.AppIcon` shows it with a light of its own, whatever
-theme drew it, in one shape: a square with continuous corners (radius
-22.4% of the side, eased into the sides as Apple's icons are). An icon
-that is a square or a tile fills it; one of another shape (a circle, a
-figure) sits smaller on a light plate. Over it, a fine bright line along
-the top edge and a fainter one along the bottom, a faint shade from top
-to bottom, and a soft shadow below; the edges' light grows with the
-icon's size. Icon files can be plain squares; they are not changed.
+theme drew it, in one shape for all, `style.icon_shape` (Appearance's
+"App icon shape"): a square with continuous corners (`squircle`, the
+default: radius 22.4% of the side, eased into the sides as Apple's icons
+are), a circle (`circle`), or a round square whose corners differ, plain
+arcs joining straight sides (`pebble`). An icon that is a square or a
+tile fills it; one of another shape (a circle, a figure) sits smaller on
+a light plate. Over it, a fine bright line along the top edge and a
+fainter one along the bottom, a faint shade from top to bottom, and a
+soft shadow below; the edges' light grows with the icon's size. `none`
+leaves all of that out and draws the icon as its file is. Icon files can
+be plain squares; they are not changed.
 
 ## Words
 
@@ -461,6 +481,10 @@ so a style change needs no rebuild. The private bus also means the copy
 cannot see services on the session bus (Mobile Link shows "starting").
 
 ## Known differences
+
+- Settings' bar layout (Bar & Dock, *Layout*) is dragged into and along,
+  but its items do not slide aside yet: a line in the accent marks where
+  the drop goes.
 
 - The settings window and Mobile Link report errors in the index's
   status line, not where they happen.

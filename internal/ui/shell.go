@@ -101,6 +101,7 @@ type shellUI struct {
 	workspaceWheel, dockWheel shell.WheelStep
 
 	bars      map[uintptr]*bar // by GdkMonitor
+	barRows   barRows          // their islands' layout, and the editor's
 	styles    styles
 	clockGen  uintptr // the running clock timer; see restartClock
 	launcher  launcher
@@ -180,6 +181,7 @@ type shellUI struct {
 	onAppTitle             func(gtk.Button)
 	onLauncherRight        func(gtk.GestureClick, int32, float64, float64)
 	onAppMenuClosed        func(gtk.Popover)
+	onAppAboutClose        func(gtk.Button) // an About window's Close, one for every opening
 	onSettingsEntry        func(uintptr, uintptr)
 	onSettingsSwitch       func(gtk.Switch, bool) bool
 	onAIAbility            func(gtk.ToggleButton)
@@ -799,8 +801,12 @@ func (s *shellUI) onHyprEvent(e hypr.Event) {
 		gtkx.Post(h.s.applyHyprland)
 	}
 	if e.Name == "configreloaded" {
+		// col.active_border may have changed: read it here, off the main
+		// thread, and repaint the rings with it there.
+		ring := h.s.readFocusRingColor()
 		// inua.conf may have changed what is in effect.
 		gtkx.Post(func() {
+			h.s.setFocusRingColor(ring)
 			h.s.refreshHyprInput()
 			h.s.installOverviewKeys()
 			if h.s.overview.st.Open {

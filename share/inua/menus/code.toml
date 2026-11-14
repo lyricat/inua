@@ -1,6 +1,7 @@
 # VS Code draws its menu itself and exposes only an overflow item on the
-# accessibility bus, so reading that bus settles on a menu that cannot be
-# used. Skip it and keep the generic window menu.
+# accessibility bus, which would be a menu that cannot be used. skip_a11y
+# keeps the shell off it, and with no sections the bar shows the generic
+# menu.
 id = "code"
 match = ["code", "vscode"]
 suffix = [".code"]

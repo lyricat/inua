@@ -81,6 +81,12 @@ type Bar struct {
 	// Pass shows a button that searches the password store (the Pass
 	// app's) and copies from it, when there is a store.
 	Pass bool `toml:"pass"`
+	// Layout is what the bar shows, in its order from the left: BarItems,
+	// each once at most, and any number of BarSpace. nil (unset) is
+	// DefaultBarLayout with the clock centred on the screen; empty is a
+	// bar with nothing on it. An item placed still shows only when its own
+	// setting has it shown (Tray, Pass, Clipboard.Bar...).
+	Layout []string `toml:"layout"`
 }
 
 type Launcher struct {
@@ -1026,6 +1032,9 @@ func Load(path string) (Config, []string, error) {
 		c.Widgets.Places = AutoPlaces(c.Widgets.Items) // the first version's list
 	}
 	c.Widgets.Items = nil
+	if md.IsDefined("bar", "layout") && c.Bar.Layout == nil {
+		c.Bar.Layout = []string{} // layout = []: nothing, not the default
+	}
 	warnings = append(warnings, c.validate()...)
 	c.AddVoiceShortcut() // voice input turned on in the file
 	return c, warnings, nil
@@ -1249,6 +1258,7 @@ func (c *Config) validate() []string {
 		w = append(w, fmt.Sprintf("bar.clock is empty; using %q", d.Bar.Clock))
 		c.Bar.Clock = d.Bar.Clock
 	}
+	w = append(w, c.validateBarLayout()...)
 	return w
 }
 

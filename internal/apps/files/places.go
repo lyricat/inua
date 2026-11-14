@@ -84,8 +84,9 @@ func UserDirs() map[string]string {
 	return out
 }
 
-// Places are the sidebar's first section: home, the user folders that
-// exist, then the bookmarks.
+// Places are the folders the sidebar lists: home and the user folders
+// that exist (its Places section), then the bookmarks (Kind "bookmark",
+// its Bookmarks section).
 func Places() []Place {
 	home := Home()
 	out := []Place{{Name: "Home", Path: home, Icon: "user-home", Kind: "home"}}

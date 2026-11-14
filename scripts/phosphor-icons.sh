@@ -313,6 +313,10 @@ term-upload                           paperclip
 # inua-term: a pane's checkout, in its head: a branch, a linked worktree's
 term-git-branch                       git-branch
 term-git-worktree                     git-fork
+# inua-term's agent groups with no agent: a break, a cold pot, no fish
+term-empty-waiting                    coffee
+term-empty-working                    cooking-pot
+term-empty-idle                       fish-simple
 # inua-term: agents LobeHub has no mark of
 agent-pi                              pi
 # Mobile Link

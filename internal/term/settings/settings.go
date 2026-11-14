@@ -112,7 +112,7 @@ var Actions = []struct{ Name, Keys, Label string }{
 	{"previous_session", "ctrl+shift+tab", i18n.M("Previous session")},
 	{"next_session", "ctrl+tab", i18n.M("Next session")},
 	{"next_waiting", "ctrl+shift+j", i18n.M("Next agent that needs you")},
-	{"next_idle", "ctrl+grave", i18n.M("Next agent that needs you or is idle")},
+	{"next_idle", "ctrl+grave", i18n.M("Next agent that needs you or is working")},
 	{"agents", "ctrl+shift+a", i18n.M("Every agent")},
 	{"fold_workspaces", "ctrl+shift+b", i18n.M("Fold the workspaces")},
 	{"fold_sessions", "ctrl+shift+s", i18n.M("Fold the sessions")},

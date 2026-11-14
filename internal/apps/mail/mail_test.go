@@ -1395,7 +1395,7 @@ func TestDetails(t *testing.T) {
 	for name, want := range map[string]string{
 		"From": "letters@blog.com", "Sent by": "bounce@mailer.net", "To": "me@example.com", "Cc": "ben@x.org",
 		"Mailed by": "mailer.net", "Signed by": "blog.com", "Checks": "SPF pass · DKIM pass · DMARC pass",
-		"List": "Blog weekly <weekly.blog.com>", "Message-ID": "<n1@blog.com>", "Subject": "This week",
+		"Mailing list": "Blog weekly <weekly.blog.com>", "Message-ID": "<n1@blog.com>", "Subject": "This week",
 	} {
 		if got[name] != want {
 			t.Errorf("%s: %q, want %q", name, got[name], want)

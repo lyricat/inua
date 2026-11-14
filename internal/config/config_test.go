@@ -933,3 +933,87 @@ func TestAppTheme(t *testing.T) {
 		t.Errorf("unknown: apps %q, warnings %v", c.Style.ForApps(), w)
 	}
 }
+
+// bar.layout: unset is the default layout (and written commented out),
+// empty is an empty bar, and a layout keeps its spaces while names not
+// known and repeats are left out, each with a warning.
+func TestBarLayout(t *testing.T) {
+	c, w, err := Load(write(t, "[bar]\ntray = false\n"))
+	if err != nil || len(w) != 0 || c.Bar.Layout != nil {
+		t.Fatalf("unset: %#v %v %v", c.Bar.Layout, w, err)
+	}
+	if !slices.Equal(c.Bar.BarLayout(), DefaultBarLayout) {
+		t.Errorf("unset shows %v", c.Bar.BarLayout())
+	}
+	if f := Format(c); !strings.Contains(f, "\n# layout = [\"workspaces\"") || strings.Contains(f, "\nlayout =") {
+		t.Errorf("unset is not written commented out:\n%s", f)
+	}
+	if again, _, _ := Load(write(t, Format(c))); again.Bar.Layout != nil {
+		t.Errorf("unset, written and read: %#v", again.Bar.Layout)
+	}
+
+	c, w, _ = Load(write(t, "[bar]\nlayout = []\n"))
+	if len(w) != 0 || c.Bar.Layout == nil || len(c.Bar.Layout) != 0 || len(c.Bar.BarLayout()) != 0 {
+		t.Fatalf("empty: %#v %v", c.Bar.Layout, w)
+	}
+	if again, _, _ := Load(write(t, Format(c))); again.Bar.Layout == nil || len(again.Bar.Layout) != 0 {
+		t.Errorf("empty, written and read: %#v", again.Bar.Layout)
+	}
+
+	c, w, _ = Load(write(t, "[bar]\nlayout = [\"space\", \"clock\", \"weather\", \"space\", \"clock\", \"control_center\", \"space\"]\n"))
+	want := []string{"space", "clock", "space", "control_center", "space"}
+	if !slices.Equal(c.Bar.Layout, want) || len(w) != 2 {
+		t.Errorf("normalized: %v %q", c.Bar.Layout, w)
+	}
+	if again, w, _ := Load(write(t, Format(c))); !slices.Equal(again.Bar.Layout, want) || len(w) != 0 {
+		t.Errorf("written and read: %v %q", again.Bar.Layout, w)
+	}
+
+	// Nothing known: an empty bar, not the default one.
+	c, w, _ = Load(write(t, "[bar]\nlayout = [\"weather\"]\n"))
+	if c.Bar.Layout == nil || len(c.Bar.Layout) != 0 || len(w) != 1 {
+		t.Errorf("all unknown: %#v %q", c.Bar.Layout, w)
+	}
+
+	// A layout the user's is that, even when it is the default's list.
+	c, _, _ = Load(write(t, "[bar]\nlayout = "+list(DefaultBarLayout)+"\n"))
+	if c.Bar.Layout == nil || !slices.Equal(c.Bar.Layout, DefaultBarLayout) {
+		t.Errorf("explicit default: %#v", c.Bar.Layout)
+	}
+
+	// Every item of the default is a bar item, each once.
+	if out, dropped := NormalizeBarLayout(DefaultBarLayout); len(dropped) != 0 || !slices.Equal(out, DefaultBarLayout) {
+		t.Errorf("default: %v %v", out, dropped)
+	}
+	for _, id := range BarItems {
+		if !slices.Contains(DefaultBarLayout, id) {
+			t.Errorf("%s is not in the default layout", id)
+		}
+	}
+}
+
+// style.icon_shape: the squircle when the file does not say, each shape
+// kept and saved as it is, anything else the squircle with a warning.
+func TestIconShape(t *testing.T) {
+	c, w, err := Load(write(t, "[style]\ntheme = \"yoru\"\n"))
+	if err != nil || len(w) != 0 || c.Style.IconShape != "squircle" {
+		t.Fatalf("no icon_shape: %q, warnings %v, err %v", c.Style.IconShape, w, err)
+	}
+	for _, shape := range IconShapes {
+		c, w, err := Load(write(t, "[style]\nicon_shape = \""+shape+"\"\n"))
+		if err != nil || len(w) != 0 || c.Style.IconShape != shape {
+			t.Errorf("icon_shape = %q: got %q, warnings %v, err %v", shape, c.Style.IconShape, w, err)
+			continue
+		}
+		saved, w, err := Load(write(t, Format(c)))
+		if err != nil || len(w) != 0 || saved.Style.IconShape != shape {
+			t.Errorf("icon_shape = %q did not survive a save: %q, warnings %v, err %v", shape, saved.Style.IconShape, w, err)
+		}
+	}
+	for _, bad := range []string{"", "Circle", "star"} {
+		c, w, err := Load(write(t, "[style]\nicon_shape = \""+bad+"\"\n"))
+		if err != nil || c.Style.IconShape != "squircle" || len(w) != 1 || !strings.Contains(w[0], "style.icon_shape") {
+			t.Errorf("icon_shape = %q: got %q, warnings %v, err %v", bad, c.Style.IconShape, w, err)
+		}
+	}
+}

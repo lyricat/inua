@@ -15,9 +15,10 @@ import (
 	"github.com/lyricat/inua/internal/gtkx"
 )
 
-// Every app icon has one shape: a square with continuous corners, whose
-// curve eases out of the sides instead of meeting them as a circle's arc
-// does (Apple's icons; Figma's "corner smoothing").
+// App icons share one shape, the setting's (IconShape). The default is a
+// square with continuous corners, whose curve eases out of the sides
+// instead of meeting them as a circle's arc does (Apple's icons; Figma's
+// "corner smoothing").
 const (
 	iconCorner = 0.2237 // the corners' radius
 	iconSmooth = 0.6    // how far they ease into the sides
@@ -39,8 +40,9 @@ const (
 	IconShapeNone
 )
 
-// IconShapeFromName reads a shape's name from the settings: "squircle",
-// "circle", "pebble" or "none".
+// IconShapeFromName reads a shape's name from the settings
+// (config.IconShapes): "squircle", "circle", "pebble" or "none"; any other
+// is the squircle.
 func IconShapeFromName(name string) IconShape {
 	switch name {
 	case "circle":
@@ -54,28 +56,25 @@ func IconShapeFromName(name string) IconShape {
 	}
 }
 
-// IconShapeNames are the settings' names for the shapes, in order.
-var IconShapeNames = []string{"squircle", "circle", "pebble", "none"}
-
-var appIconShape = IconShapeSquircle
-
-// SetIconShape changes the shape every app icon is drawn in, now and for
-// the icons made after it.
+// SetIconShape changes the shape every app icon is drawn in, the icons
+// shown now and those made after; on GTK's thread.
 func SetIconShape(shape IconShape) {
 	appIcons.mu.Lock()
-	appIconShape = shape
+	defer appIcons.mu.Unlock()
+	if shape == appIcons.shape {
+		return
+	}
+	appIcons.shape = shape
 	for _, a := range appIcons.by {
 		a.shape = shape
-		// The outline is cached for the icon's square; a new shape has to
-		// be built now, not when the icon next moves.
+		// The outline is kept for the icon's square; the new one is built
+		// at the next draw, asked for now rather than when the icon moves.
 		if a.path != nil {
 			a.path.Unref()
 			a.path = nil
 		}
-		a.pathAt = [3]float32{}
 		a.canvas.QueueDraw()
 	}
-	appIcons.mu.Unlock()
 }
 
 // An app icon's light, as fractions of the icon's side. Light from above
@@ -114,17 +113,19 @@ type artFit struct {
 }
 
 var appIcons struct {
-	mu sync.Mutex
-	by map[uintptr]*appIcon
+	mu    sync.Mutex
+	by    map[uintptr]*appIcon
+	shape IconShape // SetIconShape's
 }
 
 // AppIcon gives an app's icon the light of the dock and the launcher: a
 // fine bright line along its top edge and a fainter one along its bottom,
 // cut from the icon's own outline (its alpha against itself moved a pixel
 // or two) so they fit any shape, a tile's arcs or a round icon alike, and
-// a soft shadow below it. The icon's
-// file is drawn as it is; the image keeps its own style (classes, CSS
-// transforms and animations), and the light follows it.
+// a soft shadow below it, in the shape SetIconShape gives (IconShapeNone
+// draws the image alone, without them). The icon's file is drawn as it
+// is; the image keeps its own style (classes, CSS transforms and
+// animations), and the light follows it.
 //
 // The image becomes the child of the widget returned, which takes its
 // alignment, expansion, margins and visibility. With box, the image's
@@ -133,14 +134,12 @@ var appIcons struct {
 // to the new image, and the caller owns the widget's, as with a new
 // widget (gtkx.Append): it puts the widget where the image would go.
 func AppIcon(img *gtk.Image, box *gtk.Box) *gtk.Widget {
-	appIcons.mu.Lock()
-	shape := appIconShape
-	appIcons.mu.Unlock()
-	a := &appIcon{img: img, shape: shape}
+	a := &appIcon{img: img}
 	a.canvas = gtkx.NewCanvas(&gtkx.Canvas{Snapshot: a.snapshot, Allocate: a.allocate, Measure: a.measure})
 	(&gobject.Object{Ptr: a.canvas.GoPointer()}).RefSink() // a strong reference, as puregotk's constructors give
 	a.canvas.AddCssClass("app-icon")
 	appIcons.mu.Lock()
+	a.shape = appIcons.shape
 	if appIcons.by == nil {
 		appIcons.by = map[uintptr]*appIcon{}
 	}
@@ -424,17 +423,23 @@ func iconPath(shape IconShape, x, y, side float32) string {
 	return squircle(x, y, side)
 }
 
-// pebble is a round square with corners of slightly different radii, as a
-// stone worn smooth: soft arcs, no continuous-corner easing.
+// pebble is a round square with corners of different radii, as a stone
+// worn smooth: straight sides and plain arcs, without the squircle's
+// easing.
 func pebble(x, y, side float32) string {
 	S := float64(side)
-	r := [4]float64{S * 0.27, S * 0.43, S * 0.31, S * 0.45} // tl, tr, br, bl
+	r := [4]float64{S * 0.27, S * 0.43, S * 0.31, S * 0.45} // top left, top right, bottom right, bottom left
 	X, Y := float64(x), float64(y)
-	return fmt.Sprintf("M %g %g A %g %g 0 0 1 %g %g L %g %g A %g %g 0 0 1 %g %g L %g %g A %g %g 0 0 1 %g %g L %g %g A %g %g 0 0 1 %g %g Z",
-		X+r[0], Y, r[0], r[0], X+S-r[1], Y,
-		X+S, Y+r[1], r[1], r[1], X+S, Y+S-r[2],
-		X+S-r[2], Y+S, r[2], r[2], X+r[3], Y+S,
-		X, Y+S-r[3], r[3], r[3], X, Y+r[0])
+	return fmt.Sprintf("M %g %g "+
+		"L %g %g A %g %g 0 0 1 %g %g "+
+		"L %g %g A %g %g 0 0 1 %g %g "+
+		"L %g %g A %g %g 0 0 1 %g %g "+
+		"L %g %g A %g %g 0 0 1 %g %g Z",
+		X+r[0], Y,
+		X+S-r[1], Y, r[1], r[1], X+S, Y+r[1],
+		X+S, Y+S-r[2], r[2], r[2], X+S-r[2], Y+S,
+		X+r[3], Y+S, r[3], r[3], X, Y+S-r[3],
+		X, Y+r[0], r[0], r[0], X+r[0], Y)
 }
 
 // squircle is the icon's shape in the square at x, y, side long, as an

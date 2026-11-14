@@ -46,21 +46,22 @@ opens a folder in it: `open .`, `open ~/Downloads`.
 │ Desktop  │ ▸ cmd           12 items   14:02     │ name       │
 │ …        │ ▸ docs           9 items   11:40     │ KIND       │
 │ Trash    │   go.mod          3.1 kB   Oct 3     │ SIZE       │
-│ DEVICES  │   README.md      14.2 kB   Oct 14    │ MODIFIED   │
-│ USB    ⏏ │                                      │ …          │
-│ REMOTE   │ /flt · 23 items · 2 sel. · 9 GB free │            │
-│          │ Copying photo.jpg ━━━━━━  38 MB/s  ✕ │            │
+│ BOOKMARKS│   README.md      14.2 kB   Oct 14    │ MODIFIED   │
+│ Code     │                                      │ …          │
+│ DEVICES  │ /flt · 23 items · 2 sel. · 9 GB free │            │
+│ USB    ⏏ │ Copying photo.jpg ━━━━━━  38 MB/s  ✕ │            │
+│ REMOTE   │                                      │            │
 │ ◉ ▥ ⓘ  ⌘ │                                      │            │
 └──────────┴──────────────────────────────────────┴────────────┘
 ```
 
 | Part | What | Key |
 | --- | --- | --- |
-| Sidebar (left) | Its toggle at the top, as Mail's (hidden, the toggle moves to the left pane's head); places, the trash, devices and remote disks; at its foot, framed toggles (as Calculator's) for hidden files, two panes and details, and the keys. A right click on an entry: open it in a new tab or window, and remove a bookmark, empty the trash, eject a drive, or disconnect or forget a remote disk. | F9 slides it in or out |
+| Sidebar (left) | Its toggle at the top, as Mail's (hidden, the toggle moves to the left pane's head); places and the trash, bookmarks, devices and remote disks; at its foot, framed toggles (as Calculator's) for hidden files, two panes and details, and the keys. A right click on an entry: open it in a new tab or window, and remove a bookmark, empty the trash, eject a drive, or disconnect or forget a remote disk. | F9 slides it in or out |
 | Panes (centre) | One pane, or two side by side (commander style). In the list, a pane narrower than the name and the columns scrolls sideways, the column heads with it; the name keeps its width. Each has its own tabs, and each tab its own folder and history; a pane's view, order and selection are its folder's. With two panes, a status square starts each path: filled for the one the keys go to, hollow for the other, whose selection loses the accent. | F3 two panes; Tab the other pane |
 | Tabs | A pane's tabs show above it once it has two: the folder's name, a button that closes it (a middle click too). | Ctrl+T, Ctrl+W, Ctrl+Tab |
-| Details (right) | The selection: a thumbnail or the first lines of a text, its kind (MIME type), size, modified, opened and changed times, permissions, owner, where it is and where a link points; a folder's size and count, added up on a goroutine. Several selected: how many, and their size. In a window too narrow for it beside the panes it stays hidden, the toggle on, until the window widens. | Space, Ctrl+I, Alt+Enter |
-| Path bar | The folder as buttons, one a segment (home as a house), each going to its folder; a click beside them, or the pencil, edits it, the next button copies it, and the last opens a terminal there. Ctrl+L turns it into an entry (`~` is home, Tab completes folder names); a file typed opens its folder with it selected; a remote disk's address (`sftp://host/dir`, `smb://server/share`, `s3://KEY@host/bucket`) connects it; `trash:` is the trash. | Ctrl+L, Esc back |
+| Details (right) | The selection: a thumbnail or the first lines of a text (see [Text preview](#text-preview)), its kind (MIME type), size, modified, opened and changed times, permissions, owner, where it is and where a link points; a folder's size and count, added up on a goroutine. Several selected: how many, and their size. In a window too narrow for it beside the panes it stays hidden, the toggle on, until the window widens. | Space, Ctrl+I, Alt+Enter |
+| Path bar | The folder as buttons, one a segment (home as a house), each going to its folder; a middle click opens a segment's folder in a new tab, and a right click its menu, about that folder alone, the pane staying where it is: open it in a new tab or window or the other pane; make a folder or a file in it, paste into it, a terminal there, tidy it (not the root), copy its path, bookmark it (the trash's: a new tab, Empty Trash; the picker's: a new folder, the path). A folder that is not there any more is said so in the pane's status line. A click beside them, or the pencil, edits it, the next button copies it, and the last opens a terminal there. Ctrl+L turns it into an entry (`~` is home, Tab completes folder names); a file typed opens its folder with it selected; a remote disk's address (`sftp://host/dir`, `smb://server/share`, `s3://KEY@host/bucket`) connects it; `trash:` is the trash. | Ctrl+L, Esc back |
 | Status | The count, the hidden count, the selection and its size, the filter typed, free space, and the zoom (− 100% +); a message for a moment after an action. The operation running shows under the panes, with its speed, time left and a cancel button. | |
 
 ### Views
@@ -70,7 +71,7 @@ grid and a columns icon, chooses the view:
 
 | View | What | Key |
 | --- | --- | --- |
-| List | Rows: icon and name, then the columns chosen: size (a folder's item count), modified, created, opened, kind, permissions, owner, group (size, modified and kind at first). A column head sorts by it, again reverses it; a right click on the heads, or the button at their end, turns columns on and off, for every folder. The heads and the rows share fixed widths, so they line up. | Ctrl+1 |
+| List | Rows: icon and name, then the columns chosen: size (a folder's item count), modified, created, opened, kind, permissions, owner, group (size, modified and kind at first). A column head sorts by it, again reverses it; a right click on the heads, or the button at their end, turns columns on and off, for every folder. The heads and the rows share fixed widths, so they line up. Drag a head's right edge (the pointer turns to a resize arrow) to make its column wider or narrower, the rows following as it moves: the name from 160 px, the others from 48, up to 1600; the drag neither sorts nor selects. Until it is dragged the name takes what the columns leave; once any edge is dragged it keeps the width it has (so the edge follows the pointer), and the list's end takes the rest. A double click on an edge gives the column its own width back (the name: what the columns leave). The widths are the same in every folder, pane and window, kept in `files.json` when a drag ends. | Ctrl+1 |
 | Grid | Icons, thumbnails for images, names below. | Ctrl+2 |
 | Columns | As Finder's: a column for each folder of the path, from the first below the root (`/home/me/a/b`: `/home`, `/home/me`, `a` and `b`), the folder itself last; in the columns before it the next folder of the path is marked, and after it the folder selected shows its contents. The last column is the folder's own view, so selecting, keys and menus are as in the list; a click in another column goes to its folder with that item selected (a middle click opens a folder there in a new tab), → goes into the folder selected, ← to the one above. Browsing keeps the columns and their order from folder to folder; a search shows its results in the list. The columns before and after are read each time they show and do not follow changes. | Ctrl+3 |
 
@@ -84,6 +85,32 @@ buttons) goes from 80% to 150%: rows, text and icons, in every window.
 Order: by name (natural: `file2` before `file10`, case folded), size,
 modified or kind; folders first. Hidden files (dot files and those named in
 a folder's `.hidden`) show with Ctrl+H.
+
+### Text preview
+
+A plain-text file selected alone (a type GIO counts as `text/plain`,
+which takes in CSV, logs and source code, or a name ending in `.txt`,
+`.text`, `.csv`, `.tsv`, `.log`, `.jsonl` or `.ndjson`) shows its start
+in the details, read on a goroutine and shown as plain text, in mono,
+never as markup; CSV is shown as it is written, not as a table. The read
+stops at **200 lines or 64 KiB, whichever comes first**: no more than
+64 KiB is ever read, however long a line is, and not a byte past the
+200th line's end is read either: no read asks for more bytes than lines
+are still wanted. A preview cut short says so under it ("Only the first
+200 lines are shown.", "Only the first 64 KiB are shown."). Whether more
+follows either limit is told by the file's size rather than by reading
+on, so a file whose size says nothing (those in `/proc`) counts as cut
+when it reaches one. A character the byte limit cuts in two is left out.
+
+Instead of text the note says that the file is empty, that it is not
+UTF-8 text (a NUL byte or a sequence that is not UTF-8 in what was read:
+binaries, UTF-16, Latin-1), or, in `danger`, that it is gone or could not
+be read. Only regular files are read, a link's target included: the file
+is checked before it is opened and again on what was opened, and opened
+without blocking, so a FIFO or a device, even one put in its place
+meanwhile, is never waited on or read. Another selection, or closing the
+window, drops a read still out, so an earlier file's text never replaces
+the current one.
 
 Thumbnails follow the freedesktop thumbnail standard
 (`~/.cache/thumbnails/large`, `Thumb::URI` and `Thumb::MTime`), so the
@@ -119,7 +146,7 @@ Selection and changes
 | Ctrl+A / Ctrl+Shift+A / Ctrl+Shift+I | Select all / none / invert |
 | Ctrl+C / Ctrl+X / Ctrl+V | Copy / cut / paste, interchanged with other file managers (`x-special/gnome-copied-files`, `text/uri-list`) |
 | Ctrl+Shift+C | Copy the paths as text (nothing selected: the folder's) |
-| F2 | Rename (the name without its extension is selected) |
+| F2 | Rename (the name but its last extension is selected: `archive.tar` of `archive.tar.gz`; a folder's name, or one with no extension, whole) |
 | Delete | Move to the trash (in the trash: delete for good) |
 | Shift+Delete | Delete for good (asks first) |
 | Ctrl+Shift+N / Ctrl+Alt+N | New folder / new empty file |
@@ -127,7 +154,7 @@ Selection and changes
 | F5 / F6 | Copy / move the selection to the other pane (one pane: F5 reloads) |
 | Ctrl+D | Bookmark this folder, or remove its bookmark |
 | Ctrl+Alt+T | A terminal here (the default terminal, else `xdg-terminal-exec`, `$TERMINAL`, kitty) |
-| Menu, Shift+F10, right click | The selection's menu (or the folder's) |
+| Menu, Shift+F10, right click | The selection's menu (or the folder's); on a path bar segment, the menu of its folder |
 
 Window
 
@@ -154,11 +181,14 @@ The sidebar is the shell's index column, as Pass and Tailscale have:
 
 - **Places**: Home, then the XDG user folders that exist
   (`~/.config/user-dirs.dirs`: Desktop, Documents, Downloads, Music,
-  Pictures, Videos), then the bookmarks. Bookmarks are GTK's
-  (`~/.config/gtk-3.0/bookmarks`), the list GTK's file chooser and
-  Nautilus show; one that repeats a place above is not listed twice.
-  Ctrl+D adds and removes them.
-- **Trash**: the freedesktop trash (below).
+  Pictures, Videos), then the trash: the freedesktop trash (below; the
+  picker leaves it out).
+- **Bookmarks**: GTK's (`~/.config/gtk-3.0/bookmarks`), the list GTK's
+  file chooser and Nautilus show, in the file's order; one that repeats
+  a place above or another bookmark is not listed twice. Ctrl+D adds and
+  removes them, as does an entry's menu. Without bookmarks (none yet,
+  the last one removed, the file missing or unreadable) the section and
+  its head are left out.
 - **Devices**: the computer's root; then drives and partitions with a
   filesystem, from UDisks2 (`org.freedesktop.UDisks2` on the system bus):
   USB sticks, SD cards, other disks' partitions, LUKS volumes, removable

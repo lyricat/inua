@@ -43,7 +43,7 @@ the view uses the tricky parts of puregotk only through `gtkx`.
 | `internal/wayfire` | The Wayfire backend (#68): the plugins' IPC, capabilities probed from the loaded plugins, the workspace grid as workspaces, a view's cell from its place, New as the first empty cell, the display settings as output options, fullscreen and centring | Done, tested on a fake socket and run on Wayfire 0.11 and 0.9 |
 | `internal/wlroutput` | The displays of a wlroots compositor read through wlr-output-management (heads, modes, place, scale), the protocol spoken directly; Wayfire's Displays page lists them with it | Done, tested against a fake compositor and run on Wayfire |
 | `internal/compositors` | Links the backends into a program (`compositor.Detect`) | Done |
-| `internal/compsettings`, `internal/session` | inua's keyboard, touchpad, shortcut and display settings in the form a backend applies; which compositor the login starts (`[session] compositor`, read by `inua-session` through `inua session compositor`), what is installed, the sample configs of niri and Wayfire, the fallback to Hyprland and its note | Done, tested |
+| `internal/compsettings`, `internal/session` | inua's keyboard, touchpad, shortcut, display and animation settings in the form a backend applies; which compositor the login starts (`[session] compositor`, read by `inua-session` through `inua session compositor`), what is installed, the sample configs of niri and Wayfire, the fallback to Hyprland and its note | Done, tested |
 | `internal/hypr` | The Hyprland backend: requests, events, the state store, `Backend` behind the contract (Lua probed at each connection), and what only Hyprland has (Lua listeners, binds, displays, the virtual screen) | Done, tested |
 | `internal/capture/hyprland` | Standalone Wayland client for Hyprland's toplevel export protocol; streams SHM frames to the workspace overview | Implemented; runtime verification needs Hyprland |
 | `internal/desktop` | `.desktop` parsing, Exec expansion, launching | Done, tested |
@@ -85,7 +85,7 @@ the view uses the tricky parts of puregotk only through `gtkx`.
 | `internal/layershell` | purego binding of gtk4-layer-shell and the `LD_PRELOAD` re-exec | Done |
 | `internal/gtkx` | Wrappers for puregotk's ownership, callbacks, main thread and `.ui` loading | Done |
 | `internal/uikit` | design/ui.md's pieces of several widgets, for the shell and the apps alike: a section and its head (`NewSection`, `NewHead`, `Bracketed`), a menu's look and motion (`Menu`) | Done |
-| `internal/shell` | Shell state: the launcher (modes, ranking, selection, focus rules for cancel and execute), each monitor's workspaces and title, the dock (apps and windows, order, click target), screenshot geometry (selections, window stacking, pixels), status icons and text, merging slider values, relative times | Done, tested |
+| `internal/shell` | Shell state: the launcher (modes, ranking, selection, focus rules for cancel and execute), each monitor's workspaces and title, the dock (apps and windows, order, click target), screenshot geometry (selections, window stacking, pixels), the bar layout's edits and its row geometry, status icons and text, merging slider values, relative times | Done, tested |
 | `internal/config` | `~/.config/inua/config.toml` (TOML): defaults, validation (bad values fall back with a warning), strftime clocks, the commented writer | Done, tested |
 | `internal/bootstrap` | `inua init`: writes the embedded samples without overwriting (`-force` keeps a `.bak`); checks that Hyprland starts the shell and loads `inua.conf` (or requires `inua.lua`) | Done, tested |
 | `internal/ui` | GTK4 views: bar and dock (per monitor), wallpaper, launcher, control center, notification banners and center, tray, settings window (with shortcut recording), screenshot tool, lock screen (on the session lock protocol; the screen stays locked if the shell stops, and a restarted shell takes the lock back), the Clock app's alarms, snapshots | Done |
@@ -172,7 +172,7 @@ Creating a window: take the `ApplicationWindow` from its `.ui` →
 | --- | --- | --- | --- | --- | --- |
 | Wallpaper | Background | All edges, exclusive zone -1 | None | `inua-background` | One per monitor |
 | Bar | Top; a panel's while one hangs from it | Top, left, right; automatic exclusive zone | None; Exclusive while a panel hangs from it | `inua-bar` | One per monitor; hidden when `bar.enable` is off. A panel (control center, calendar, passwords) hangs inside its window, grown down over the monitor meanwhile with its exclusive zone kept (until the window has shrunk back), so the compositor blurs the bar and the panel as one surface |
-| Dock | Top | Selected edge; automatic exclusive zone, or 0 with autohide | None | `inua-dock` | One per monitor while `dock.enable` |
+| Dock | Top; Overlay while the overview is open (`overview.show_dock`) | Selected edge; automatic exclusive zone, or 0 with autohide or when only the overview shows it | None | `inua-dock` | One per monitor while `dock.enable` or `overview.show_dock`; with only the latter, unmapped outside the overview |
 | Dock drawer | Overlay | All edges (full screen, zone -1) | Exclusive | `inua-drawer` | Built on every open, destroyed on close; closes on a backdrop click or Esc. Glass with an arrow at its button, growing out of the arrow's tip |
 | Launcher | Overlay | None (centred) | Exclusive | `inua-launcher` | Built on every open, destroyed on close |
 | Control center | Overlay | All edges (full screen, zone -1) | Exclusive | `inua-control` | Built on every open, destroyed on close; closes on a backdrop click or Esc. Its backdrop and card hang in the bar's window; its own window shows only without a bar |
@@ -335,7 +335,12 @@ windows to PNG files for checking layouts without a screenshot tool.
   unknown keys and bad values warn one by one, and bad values fall back. The
   warnings go to the log, and `inua config check` checks without loading GTK.
 - Sections: `[bar]` (shown, clock in a strftime subset, workspace scope,
-  title, tray), `[launcher]`, `[control]` (lock and screenshot commands),
+  title, tray, the layout: `config.BarItems` in order and spaces, unset
+  for the default with the clock centred; edited by `shell.BarLayout*`,
+  arranged on each bar by `bar.arrange` and laid out by `shell.BarRow`, the
+  same on the bar and in the settings' preview: the group between exactly
+  two spaces centred on the bar, as near as the items beside it let it, any
+  other spaces sharing the room equally), `[launcher]`, `[control]` (lock and screenshot commands),
   `[style]` (theme, icon set, extra stylesheet), `[background]`, `[input]`
   (XKB options, touchpad), `[notifications]`, `[dock]` and `[[shortcuts]]`.
 - `[input]` and `[[shortcuts]]` are Hyprland settings: written to
@@ -409,6 +414,13 @@ how errors are shown, is in [design/ui.md](../design/ui.md); in short:
   icons; an icon given as a file, a snap's, by the snap's or the file's
   name, `fileIconNames`), in Files with the files' icons
   (`DesktopIcons`); the tray's stay each app's.
+- App icon shape: `style.icon_shape` (Appearance's "App icon shape"),
+  `squircle` (the default), `circle`, `pebble` or `none`, is the outline
+  `uikit.AppIcon` cuts the dock's, the drawer's and the launcher's icons
+  to, with its light; `none` draws them as their files are.
+  `uikit.SetIconShape` sets it at start and when the setting changes,
+  redrawing the icons shown without loading the styles again; inua's
+  apps set it with their style, for a workshop app's app icons.
 - Text size: `style.text_scale` (80 to 150 percent, the Appearance page's
   "Text size") multiplies the `font-size` pixel values of `ui/style.css` as
   it loads (`style.ScaleText`), in the shell and in inua's apps; icons,

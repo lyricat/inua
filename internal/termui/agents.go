@@ -11,7 +11,6 @@ import (
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
-	"github.com/lyricat/inua/internal/gtkx"
 	"github.com/lyricat/inua/internal/i18n"
 	"github.com/lyricat/inua/internal/term/agent"
 	"github.com/lyricat/inua/internal/term/host"
@@ -229,14 +228,24 @@ type agentAt struct {
 // pane, in any workspace (Ctrl+Shift+J); then the next one done.
 func (a *App) nextWaiting() { a.nextIn(agent.Blocked, agent.Done) }
 
-// nextIdle is Warcraft's idle worker: the next agent that needs you, then
-// one done, then one idle, after the one shown (Ctrl+`, or the finder).
-func (a *App) nextIdle() { a.nextIn(agent.Blocked, agent.Done, agent.Idle) }
-
-// nextIn shows the next agent in the first of states any is in, after
-// the pane shown, in column 1 and 2's order.
-func (a *App) nextIn(states ...agent.State) {
+// nextBusy loops through every agent that needs you, is done or is
+// working, one after the other in column 1 and 2's order, from the one
+// shown (Ctrl+`).
+func (a *App) nextBusy() {
 	all := a.agents()
+	cur := a.shownAgent(all)
+	for k := 1; k <= len(all); k++ {
+		x := all[(cur+k+len(all))%len(all)]
+		switch agent.State(a.info[x.pane].State) {
+		case agent.Blocked, agent.Done, agent.Working:
+			a.showPane(x.w.ID, x.s.ID, x.pane)
+			return
+		}
+	}
+}
+
+// shownAgent is the index in all of the pane shown, or -1.
+func (a *App) shownAgent(all []agentAt) int {
 	cur := -1
 	if s := a.shown(); s != nil {
 		for i, x := range all {
@@ -245,6 +254,14 @@ func (a *App) nextIn(states ...agent.State) {
 			}
 		}
 	}
+	return cur
+}
+
+// nextIn shows the next agent in the first of states any is in, after
+// the pane shown, in column 1 and 2's order.
+func (a *App) nextIn(states ...agent.State) {
+	all := a.agents()
+	cur := a.shownAgent(all)
 	for _, want := range states {
 		for k := 1; k <= len(all); k++ {
 			x := all[(cur+k+len(all))%len(all)]
@@ -254,58 +271,6 @@ func (a *App) nextIn(states ...agent.State) {
 			}
 		}
 	}
-}
-
-// finder is Warcraft's idle worker at the foot of column 1: how many
-// agents wait for you, and how many are done or idle; a click goes to the
-// next (nextIdle). It hides when there are none.
-type finder struct {
-	button               *gtk.Button
-	waiting, idle        *gtk.Box
-	waitCount, idleCount *gtk.Label
-	onClick              func(gtk.Button)
-}
-
-func (f *finder) build(a *App, ui *gtkx.Builder) {
-	f.button, f.waiting, f.idle = &gtk.Button{}, &gtk.Box{}, &gtk.Box{}
-	f.waitCount, f.idleCount = &gtk.Label{}, &gtk.Label{}
-	ui.Get("finder", f.button)
-	ui.Get("finder_waiting", f.waiting)
-	ui.Get("finder_idle", f.idle)
-	ui.Get("finder_waiting_count", f.waitCount)
-	ui.Get("finder_idle_count", f.idleCount)
-	f.onClick = func(gtk.Button) { a.nextIdle() }
-	f.button.ConnectClicked(&f.onClick)
-}
-
-// update counts the agents again.
-func (f *finder) update(a *App) {
-	waiting, idle := 0, 0
-	for _, x := range a.agents() {
-		switch agent.State(a.info[x.pane].State) {
-		case agent.Blocked:
-			waiting++
-		case agent.Done, agent.Idle:
-			idle++
-		}
-	}
-	f.button.SetVisible(waiting+idle > 0)
-	f.waiting.SetVisible(waiting > 0)
-	f.idle.SetVisible(idle > 0)
-	f.waitCount.SetText(fmt.Sprint(waiting))
-	f.idleCount.SetText(fmt.Sprint(idle))
-	var says []string
-	if waiting > 0 {
-		says = append(says, i18n.Nf("%d agent needs you", "%d agents need you", waiting, waiting))
-	}
-	if idle > 0 {
-		says = append(says, i18n.Nf("%d agent is idle", "%d agents are idle", idle, idle))
-	}
-	tip := strings.Join(says, ", ")
-	if k := a.set.Keys["next_idle"]; k != "" {
-		tip += "\n" + i18n.Tf("%s goes to the next", keycaps(k))
-	}
-	f.button.SetTooltipText(tip)
 }
 
 // startTicks counts the times in state up once a second, while the window

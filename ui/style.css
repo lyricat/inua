@@ -1309,6 +1309,27 @@ window.settings { background: @app; font-size: 14px; }
 }
 .settings switch image { opacity: 0; }
 
+/* Bar & Dock's [LAYOUT] (settings_barlayout.go): a strip that is a small
+   bar, its items as tools, its spaces dashed and as wide as their share;
+   an accent line where a drop goes; a lifted item's place left open. */
+.settings .bar-layout {
+  min-height: 34px;
+  padding: 4px;
+  border: 1px solid alpha(@line, 0.9);
+  border-radius: 4px;
+  background: @panel;
+}
+.settings .bar-layout button.space { border-style: dashed; }
+.settings .bar-layout button.space label { color: @t2; }
+.settings .bar-layout button.lifted { opacity: 0.25; }
+.settings .bar-layout-mark {
+  min-width: 2px;
+  margin: 5px 0;
+  border-radius: 1px;
+  background: @accent;
+}
+.settings .bar-layout-palette.drop { border-radius: 4px; background: alpha(@accent, 0.07); box-shadow: inset 0 0 0 1px alpha(@accent, 0.2); }
+
 /* Theme swatches: the theme's own colours (generated from the theme
    files), with the current theme framed in this theme's accent. */
 .settings flowboxchild { padding: 0; background: none; }
@@ -2983,13 +3004,18 @@ window.files button.files-crumb.current { color: @t0; font-weight: 500; }
 window.files .files-crumb-sep { margin: 0 1px; color: @t2; }
 window.files entry.files-location { min-height: 30px; margin: 0 6px; }
 
-/* The heads line up with the rows: the same padding, spacing and fixed
-   column widths (internal/filesui/columns.go). */
+/* The heads line up with the rows: the same padding, the grips in the
+   rows' gaps, and the same column widths (internal/filesui/columns.go). */
 window.files .files-columns { padding: 4px 14px; border-bottom: 1px solid alpha(@line, 0.4); }
 window.files button.files-col { min-height: 20px; min-width: 0; padding: 0; border: none; background: transparent; box-shadow: none; }
 window.files button.files-col:hover .kicker { color: @t0; }
 window.files button.files-col-more { color: @t2; }
 window.files button.files-col-more:hover { color: @t0; }
+/* A head's right edge, where a drag sizes the column: a hairline while
+   the pointer is on it or drags it. */
+window.files .files-col-grip > .files-col-rule { min-width: 1px; margin: 3px 0; }
+window.files .files-col-grip:hover > .files-col-rule,
+window.files .files-col-grip.dragging > .files-col-rule { background: @line; }
 
 window.files listview, window.files gridview { background: transparent; color: @t0; }
 window.files listview { padding: 4px 8px 12px; }
@@ -3093,6 +3119,8 @@ window.files .files-text-preview {
   font-size: 12px;
   color: @t1;
 }
+window.files .files-preview-note { font-size: 12px; color: @t2; }
+window.files .files-preview-note.error { color: @danger; }
 
 /* The picker's footer (docs/picker.md): across the window, as the
    operations' line; its error under it in danger. */
@@ -3459,26 +3487,35 @@ window.term .term-find button.plain:hover { background: alpha(@accent, 0.09); }
 window.term .term-col1, window.term .term-col2 { background: @panel; }
 window.term .term-find-row entry { margin: 0; } /* not the settings index's */
 window.term .term-find-entry { min-height: 34px; }
-window.term .term-col1 list row { min-height: 40px; padding: 6px 12px 6px 13px; }
-/* The finder at the foot of column 1: the agents needing you, and idle. */
-window.term button.term-finder {
-  margin: 6px 14px 12px;
-  padding: 6px 10px;
-  border: 1px solid alpha(@line, 0.9);
-  border-radius: 2px;
-  font-family: "Geist Mono", "IBM Plex Mono", monospace;
-  font-size: 11.5px;
-  color: @t1;
-}
-window.term button.term-finder:hover { border-color: alpha(@accent, 0.2); background: alpha(@accent, 0.06); color: @t0; }
-/* Not the settings index's spacing: a workspace's row as tall as a pane's. */
-window.term .term-col1 list row label { padding: 0; }
-window.term .term-ws-name { font-family: "IBM Plex Sans", "Zen Kaku Gothic New", sans-serif; }
-window.term .term-ws-dir {
+window.term .term-col1 list row { min-height: 34px; padding: 4px 12px 4px 13px; }
+/* The agents at the foot of column 1, a hairline over them: each group's
+   head as a session's, its count and caret at the end. */
+window.term .term-agents > viewport > box { padding: 4px 14px 12px; border-top: 1px solid alpha(@line, 0.55); }
+window.term button.term-agents-head:hover .term-session-label { color: @t1; }
+window.term .term-agents-count {
   font-family: "Geist Mono", "IBM Plex Mono", monospace;
   font-size: 11px;
   color: @t2;
 }
+window.term .term-agents-count.s-warn { color: @warn; }
+window.term .term-agents-count.s-on { color: @accent; }
+window.term .term-agents-count.s-ok { color: @ok; }
+window.term .term-agents-caret { color: @t2; -gtk-icon-size: 12px; }
+window.term .term-agents-rows { padding: 6px 0 8px; }
+/* An open group with no agent: a pane row's shape, dashed as the new
+   session's placeholder, its mark and words where a row's are. */
+window.term .term-agents-empty {
+  min-height: 40px;
+  margin-bottom: 2px;
+  padding: 6px 10px;
+  border: 1px dashed alpha(@line, 0.9);
+  border-radius: 2px;
+  color: @t2;
+}
+window.term .term-agents-empty .empty { font-size: 12.5px; color: @t2; }
+/* Not the settings index's spacing: a workspace's row, one line. */
+window.term .term-col1 list row label { padding: 0; }
+window.term .term-ws-name { font-family: "IBM Plex Sans", "Zen Kaku Gothic New", sans-serif; }
 /* Each column's head: finding a workspace over the workspaces, the shown
    workspace's name over its sessions; the buttons at the right. */
 window.term .term-col-head { min-height: 40px; padding: 12px 14px 10px; }
@@ -3521,7 +3558,7 @@ window.term .term-col-grip:hover { box-shadow: inset -1px 0 alpha(@accent, 0.55)
 /* The search in its own row, opened by its button in the head. */
 window.term .term-find-slot { padding: 0 14px 10px; }
 window.term .term-session { margin-bottom: 14px; }
-window.term button.term-session-head {
+window.term button.term-session-head, window.term button.term-agents-head {
   min-height: 40px;
   margin-bottom: 6px;
   padding: 0;

@@ -245,7 +245,16 @@ shell reload` applies it without a restart. A broken file never stops the
 shell: an unparsable file means all defaults, a bad value means that
 setting's default, and the problems go to the log and to `inua config check`.
 
-Appearance includes `style.animations` (on by default). Turning it off removes inua's GTK and CSS transitions and asks Hyprland, niri, or Wayfire to disable compositor animations where supported. For Wayfire, this covers the common animate, fade, zoom, fire, and extra-animations plugins.
+Appearance includes `style.animations` (on by default). Turning it off
+removes inua's GTK and CSS transitions and turns the compositor's
+animations off: `animations:enabled` in Hyprland's `inua.conf` or
+`inua.lua`, `animations { off }` in niri's `inua.kdl`. Wayfire has no
+single switch, so inua sets, over its IPC, the window animations of
+`animate` (open, close, minimize, and the fade, zoom and fire matchers),
+`grid`'s snapping and `vswitch`'s workspace slide to none; what they were
+is kept in the runtime directory. Turning it on again turns them back on;
+on Wayfire it puts back those values, and leaves an animation that
+`wayfire.ini` itself turns off as it is.
 
 The shell's own icons (bar, control center, launcher, settings) are the
 built-in [Phosphor](https://phosphoricons.com) regular icons (MIT; licence in
