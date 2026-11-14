@@ -2329,7 +2329,6 @@ button.shot-record:checked { background: alpha(@danger, 0.1); border-color: alph
   padding: 0;
 }
 .overview-workspace.selected { border-color: @accent; }
-.overview-workspace.active { border-color: alpha(@accent, 0.7); }
 .overview-workspace.drop-target { border-color: @accent; background: alpha(@accent, 0.2); }
 .overview-workspace-background {
   padding: 0;
@@ -2341,7 +2340,6 @@ button.shot-record:checked { background: alpha(@danger, 0.1); border-color: alph
   background: transparent;
 }
 .overview-workspace.overview-new-card { border-color: alpha(@t0, 0.18); }
-.overview-workspace.overview-new-card:hover,
 .overview-workspace.overview-new-card.selected { border-color: @accent; }
 .overview-new-tile {
   background: alpha(@panel, 0.45);
