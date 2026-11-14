@@ -140,6 +140,9 @@ const (
 	ActionCenter      = "center"
 	ActionCopyTitle   = "copy-title"
 	ActionCopyClass   = "copy-class"
+	// ActionSystem runs one of the shell's own commands: on an empty
+	// workspace the bar's menu is the system's.
+	ActionSystem = "system"
 )
 
 // registered is a registration, when it was made among the others, and the

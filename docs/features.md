@@ -14,16 +14,18 @@ thrown at the edge lands on one. Scrolling on the status button, its
 reach as well, adjusts the volume 5% a notch; on the workspaces, it goes
 to the next workspace the bar shows (down) or the previous one (up), a
 notch a step, stopping at the ends. One per monitor. Each bar follows the
-last focused window on its visible workspace; on Hyprland, that window
-keeps a blue outline when focus moves to another display. The active window
-keeps Hyprland's own outline. The app menu
-stays with the window represented by its bar.
+last focused window on its visible workspace. An optional outline marks
+that window when focus moves to another display; the active window keeps
+Hyprland's own outline. Each bar keeps the menu of its own window.
 
 With the bar's transparency setting on, a bar whose workspace holds no
 window is drawn without its panel, and it turns opaque as soon as a window
 is there. The buttons keep their own look; only the panel behind them goes.
 
-The focused application's menu sits in the bar. A menu the application
+Each bar shows its window's application menu. Click a top-level label to
+open it, then move over another label to switch menus. Submenus open beside
+their parent. Clicking a menu on another monitor first focuses its window.
+A menu the application
 publishes (Qt, a GTK 3 application with `appmenu-gtk-module`, Firefox's
 own exporter, an inua application) is shown as it is. Otherwise the menu
 is read from the accessibility tree. When that has nothing usable, the

@@ -15,7 +15,7 @@ import (
 func Format(c Config) string {
 	return fmt.Sprintf(template,
 		q(c.Language),
-		c.Bar.Enable, q(c.Bar.Density), c.Bar.IconSize, c.Bar.IconSpacing, q(c.Bar.Clock), q(c.Bar.ClockLanguage), q(c.Bar.Workspaces), c.Bar.Title, c.Bar.Menu, q(c.Bar.TitleMode), c.Bar.TransparentEmpty, c.Bar.Tray, c.Bar.Pass, barLayoutLine(c.Bar.Layout),
+		c.Bar.Enable, q(c.Bar.Density), c.Bar.IconSize, c.Bar.IconSpacing, q(c.Bar.Clock), q(c.Bar.ClockLanguage), q(c.Bar.Workspaces), c.Bar.Title, c.Bar.Menu, q(c.Bar.TitleMode), c.Bar.TransparentEmpty, c.Bar.FocusRing, c.Bar.Tray, c.Bar.Pass, barLayoutLine(c.Bar.Layout),
 		q(c.Launcher.Mode), q(c.Launcher.Terminal), q(c.Launcher.Search), quicklinks(c.Launcher.Quicklinks), c.Overview.MRU, c.Overview.PerMonitor, c.Overview.ShowDock, c.Overview.Hints, c.Overview.LauncherWorkspace,
 		q(c.Control.Lock), q(c.Control.Screenshot),
 		q(c.Screenshot.Folder), c.Screenshot.Copy, q(c.Screenshot.Recordings),
@@ -27,7 +27,7 @@ func Format(c Config) string {
 		c.Displays.LidOff, monitors(c.Displays.Monitors),
 		c.Notify.Enable, c.Notify.Banner, c.Notify.CriticalInFocus, c.Notify.Updates, c.Notify.History,
 		c.Clipboard.Enable, c.Clipboard.Bar, c.Clipboard.Limit, c.Clipboard.PasteOnClick, list(c.Clipboard.SensitiveSources),
-		c.Dock.Enable, q(c.Dock.Position), c.Dock.Autohide, c.Dock.Size, c.Dock.Drawer, list(c.Dock.Pinned),
+		c.Dock.Enable, c.Dock.Background, q(c.Dock.Position), c.Dock.Autohide, c.Dock.Size, c.Dock.Drawer, list(c.Dock.Pinned),
 		c.Widgets.Enable, c.Widgets.Swipe, list(c.Widgets.Apps), widgetPlaces(c.Widgets.Places),
 		c.Voice.Enable, c.Voice.PushToTalk, q(c.Voice.Engine), q(c.Voice.Show),
 		c.Assistant.Enable, q(c.Assistant.Profile), list(c.Assistant.Fallback), q(c.Assistant.Decision), q(c.Assistant.Transcription),
@@ -243,6 +243,9 @@ title_mode = %s
 
 # Draw the bar panel transparently when its workspace has no windows.
 transparent_empty = %t
+
+# Outline the last focused window on other monitors.
+focus_ring = %t
 
 # Show tray (StatusNotifierItem) icons.
 tray = %t
@@ -523,6 +526,9 @@ sensitive_sources = %s
 # windows. Click to open or bring forward (again to cycle through its windows);
 # right-click to pin, open a new window or quit.
 enable = %t
+
+# Show the dock panel, borders and indicators.
+background = %t
 
 # Screen edge for the dock: bottom, top, left or right.
 position = %s

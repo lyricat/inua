@@ -29,7 +29,7 @@ var BarItems = []string{
 // the end. Unset, the clock is centred on the screen exactly; a layout of
 // the user's with the clock between two spaces centres it too.
 var DefaultBarLayout = []string{
-	"workspaces", "app_menu", "app_title", BarSpace, "clock", BarSpace,
+	"workspaces", "app_title", "app_menu", BarSpace, "clock", BarSpace,
 	"tray", "recording", "passwords", "clipboard", "notifications", "dictation", "control_center",
 }
 

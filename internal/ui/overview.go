@@ -2,12 +2,15 @@ package ui
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
 
 	"github.com/lyricat/inua/internal/compositor"
+	"github.com/lyricat/inua/internal/desktop"
 
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/glib"
@@ -43,8 +46,10 @@ type workspaceOverview struct {
 	root, content, cards gtk.Box
 	query                gtk.Entry
 	queryClear           gtk.Button
-	searchStatus         gtk.Label
-	mru                  gtk.Button
+	searchContainer      gtk.Box
+	searchResults        gtk.Box
+	searchResultsScroll  gtk.ScrolledWindow
+	cardsScroll          gtk.ScrolledWindow
 	images               map[string]*gtk.Picture
 	layoutKey            string
 	cardWidgets          map[int]*overviewCardWidgets
@@ -79,7 +84,6 @@ type workspaceOverview struct {
 	onOverviewRight  func(gtk.GestureClick, int32, float64, float64)
 	onSurfacePress   func(gtk.GestureClick, int32, float64, float64)
 	hint             *gtk.Label
-	scope            gtk.Button
 }
 
 type queuedOverviewFrame struct {
@@ -104,7 +108,11 @@ func (s *shellUI) showOverview() {
 		s.cancelLauncher()
 	}
 	s.overview.st.MRU = s.cfg.Overview.MRU
+	s.overview.st.Apps = s.apps
 	s.overview.st.Show(s.snap)
+	for _, b := range s.bars {
+		b.hideFocusRing()
+	}
 	s.overview.activation++
 	s.overview.captureFailed = false
 	s.overview.searchMode = false
@@ -150,6 +158,10 @@ func (s *shellUI) closeOverview(restore bool) {
 	// first so that callback cannot rebuild widgets during their destruction.
 	previous := o.st.Previous
 	o.st.Close()
+	for _, b := range s.bars {
+		win, ok := shell.BarWindow(s.snap, b.connector())
+		b.setFocusRing(s, s.snap, win, ok)
+	}
 	o.activation++
 	o.dragging = ""
 	o.movesPending = 0
@@ -236,6 +248,15 @@ func (s *shellUI) bindOverviewHandlers() {
 		}
 		switch keyval {
 		case keyUp, keyDown, keyTab, 0xfe20:
+			if o.searchMode && o.st.Query != "" {
+				delta := 1
+				if keyval == keyUp || keyval == 0xfe20 || mods&gdk.ShiftMaskValue != 0 {
+					delta = -1
+				}
+				s.overview.st.MoveSearch(delta)
+				s.renderOverview()
+				return true
+			}
 			if o.searchMode {
 				return false // Keep caret and text navigation inside the entry.
 			}
@@ -257,12 +278,14 @@ func (s *shellUI) bindOverviewHandlers() {
 				delta = -1
 			}
 			s.navigateOverview(delta)
-		case keyReturn, keyKPEnter, keySpace:
+		case keyReturn, keyKPEnter:
+			s.commitOverview()
+			return true
+		case keySpace:
 			if o.searchMode {
 				return false
-			} else {
-				s.commitOverview()
 			}
+			s.commitOverview()
 			return true
 		default:
 			return !o.searchMode && keyval >= 32 && keyval < 0xff00
@@ -290,6 +313,22 @@ func (s *shellUI) bindOverviewHandlers() {
 		if key == "search-clear" {
 			s.overview.query.SetText("")
 			s.overview.query.GrabFocus()
+			return
+		}
+		if strings.HasPrefix(key, "search-window:") {
+			addr := strings.TrimPrefix(key, "search-window:")
+			s.activateOverview(s.overviewWindowMonitor(addr), func(ctx context.Context) error { return s.comp.FocusWindow(ctx, addr) })
+			return
+		}
+		if strings.HasPrefix(key, "search-app:") {
+			idxStr := strings.TrimPrefix(key, "search-app:")
+			if idx, err := strconv.Atoi(idxStr); err == nil && idx >= 0 && idx < len(s.overview.st.MatchedApps) {
+				entry := s.overview.st.MatchedApps[idx].Entry
+				if entry != nil {
+					s.closeOverview(false)
+					_ = desktop.LaunchWith(entry, s.cfg.TerminalCommand())
+				}
+			}
 			return
 		}
 		if strings.HasPrefix(key, "window:") {
@@ -444,23 +483,9 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 		o.query.SetText(o.st.Query)
 		s.overview.syncingQuery = false
 	}
-	o.mru.SetLabel(map[bool]string{true: i18n.T("MRU: ON"), false: i18n.T("MRU: OFF")}[o.st.MRU])
-	o.scope.SetLabel(map[bool]string{true: i18n.T("This monitor"), false: i18n.T("All monitors")}[s.cfg.Overview.PerMonitor])
-	matching := 0
-	for _, card := range o.st.Cards {
-		if s.cfg.Overview.PerMonitor && card.Workspace.Output != o.monitor {
-			continue
-		}
-		matching += len(card.Windows)
-	}
-	if o.st.Query == "" {
-		o.searchStatus.SetText(i18n.T("FILTER"))
-	} else if matching == 0 {
-		o.searchStatus.SetText(i18n.T("NO MATCHES"))
-	} else {
-		o.searchStatus.SetText(i18n.Nf("%d RESULT", "%d RESULTS", matching, matching))
-	}
+	s.renderOverviewSearchResults(o)
 	o.queryClear.SetVisible(o.st.Query != "")
+	o.cardsScroll.SetVisible(o.st.Query == "")
 	topInset, bottomInset, startInset, endInset := s.overviewDockInsets()
 	o.content.SetMarginTop(int32(topInset))
 	o.content.SetMarginBottom(int32(bottomInset))
@@ -513,7 +538,7 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 	availableH := viewportH - 180 - float64(topInset+bottomInset)
 	groups := []string{}
 	counts := map[string]int{}
-	aspect := 9.0 / 16.0
+	aspect := 0.0
 	for _, item := range cards {
 		card := item.card
 		if counts[card.Workspace.Output] == 0 {
@@ -522,7 +547,12 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 		counts[card.Workspace.Output]++
 	}
 	for _, mon := range s.snap.Outputs {
-		aspect = max(aspect, float64(mon.Height)/float64(mon.Width))
+		if counts[mon.Name] > 0 && mon.Width > 0 {
+			aspect = max(aspect, float64(mon.Height)/float64(mon.Width))
+		}
+	}
+	if aspect == 0 {
+		aspect = 9.0 / 16.0
 	}
 	columns, thumbW := 1, 0.0
 	for c := 1; c <= len(cards); c++ {
@@ -550,6 +580,21 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 			}
 		}
 		thumbH := thumbW * monH / monW
+		// Map the usable desktop to the preview when the bar reserves its top
+		// edge. Fullscreen and floating windows keep the whole monitor.
+		for _, bar := range s.bars {
+			if bar.connector() != card.Workspace.Output || !s.cfg.Bar.Enable {
+				continue
+			}
+			height := bar.win.GetHeight()
+			if bar.zone > 0 {
+				height = bar.zone
+			} else if height <= 0 {
+				height = bar.height
+			}
+			monY, monH = overviewUsableHeight(card.Windows, monY, monH, float64(height))
+			break
+		}
 		if card.Workspace.Output != lastMonitor {
 			lastMonitor = card.Workspace.Output
 			section := gtk.NewBox(gtk.OrientationVerticalValue, 10)
@@ -582,6 +627,9 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 		click.ConnectReleased(&s.onOverviewCanvas)
 		canvas.AddController(&click.EventController)
 		canvas.AddCssClass("overview-workspace")
+		if card.New {
+			canvas.AddCssClass("overview-new-card")
+		}
 		if i == o.st.Selected {
 			canvas.AddCssClass("selected")
 		}
@@ -613,15 +661,23 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 		canvas.AddOverlay(&board.Widget)
 		board.Unref()
 		if card.New {
-			badge := gtk.NewLabel(i18n.T("＋  New workspace"))
-			badge.AddCssClass("overview-new-badge")
-			badge.SetHalign(gtk.AlignEndValue)
-			badge.SetValign(gtk.AlignStartValue)
-			badge.SetMarginTop(10)
-			badge.SetMarginEnd(10)
-			badge.SetCanTarget(false)
-			canvas.AddOverlay(&badge.Widget)
-			badge.Unref()
+			newTile := gtk.NewBox(gtk.OrientationVerticalValue, 8)
+			newTile.AddCssClass("overview-new-tile")
+			newTile.SetHalign(gtk.AlignFillValue)
+			newTile.SetValign(gtk.AlignFillValue)
+			newTile.SetCanTarget(false)
+			center := gtk.NewBox(gtk.OrientationVerticalValue, 8)
+			center.SetHalign(gtk.AlignCenterValue)
+			center.SetValign(gtk.AlignCenterValue)
+			center.SetVexpand(true)
+			plus := gtk.NewLabel("+")
+			plus.AddCssClass("overview-new-plus")
+			gtkx.Append(center, &plus.Widget)
+			label := gtk.NewLabel(i18n.T("New workspace"))
+			label.AddCssClass("overview-new-label")
+			gtkx.Append(center, &label.Widget)
+			gtkx.Append(newTile, &center.Widget)
+			canvas.AddOverlay(&newTile.Widget)
 		}
 		// The card is the monitor itself, so a window at any edge stays whole.
 		// Cropping to the windows' bounds cut the preview when they tiled flat.
@@ -657,7 +713,7 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 			meta.AddCssClass("overview-window-meta")
 			meta.SetHalign(gtk.AlignFillValue)
 			meta.SetValign(gtk.AlignEndValue)
-			meta.SetSizeRequest(-1, 38)
+			meta.SetSizeRequest(-1, 30)
 			icon := gtk.NewImage()
 			if entry := s.dockState.apps.ForClass(w.AppID); entry != nil && entry.Icon != "" {
 				setIcon(icon, entry.Icon)
@@ -670,9 +726,9 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 			gtkx.Append(meta, &icon.Widget)
 			title := gtk.NewLabel(w.Title)
 			title.AddCssClass("overview-window-title")
-			title.SetWrap(true)
+			title.SetWrap(false)
 			title.SetWrapMode(pango.WrapWordCharValue)
-			title.SetLines(2)
+			title.SetLines(1)
 			title.SetEllipsize(3) // end
 			title.SetJustify(gtk.JustifyLeftValue)
 			title.SetHalign(gtk.AlignFillValue)
@@ -955,60 +1011,171 @@ func (s *shellUI) overviewDockInsets() (top, bottom, start, end int) {
 	return top, bottom, start, end
 }
 
+func (s *shellUI) buildOverviewSearchRow(index int, selected bool, iconName, title, detail, actionName string) *gtk.Button {
+	btn := gtk.NewButton()
+	btn.SetName(actionName)
+	btn.AddCssClass("overview-search-item")
+	if selected {
+		btn.AddCssClass("selected")
+	}
+	btn.ConnectClicked(&s.onOverviewButton)
+
+	box := gtk.NewBox(gtk.OrientationHorizontalValue, 14)
+	box.SetHalign(gtk.AlignFillValue)
+	box.SetValign(gtk.AlignCenterValue)
+
+	icon := gtk.NewImage()
+	icon.SetPixelSize(30)
+	icon.SetValign(gtk.AlignCenterValue)
+	if iconName != "" {
+		setIcon(icon, iconName)
+	} else {
+		setIcon(icon, "application-x-executable")
+	}
+	gtkx.Append(box, &icon.Widget)
+
+	textCol := gtk.NewBox(gtk.OrientationVerticalValue, 2)
+	textCol.SetHalign(gtk.AlignStartValue)
+	textCol.SetValign(gtk.AlignCenterValue)
+	textCol.SetHexpand(true)
+
+	titleLabel := gtk.NewLabel(title)
+	titleLabel.SetXalign(0)
+	titleLabel.AddCssClass("overview-search-item-title")
+	titleLabel.SetEllipsize(3) // end
+	gtkx.Append(textCol, &titleLabel.Widget)
+
+	if detail != "" {
+		detailLabel := gtk.NewLabel(detail)
+		detailLabel.SetXalign(0)
+		detailLabel.AddCssClass("overview-search-item-detail")
+		detailLabel.SetEllipsize(3) // end
+		gtkx.Append(textCol, &detailLabel.Widget)
+	}
+	gtkx.Append(box, &textCol.Widget)
+
+	btn.SetChild(&box.Widget)
+	return btn
+}
+
+func (s *shellUI) renderOverviewSearchResults(o *workspaceOverview) {
+	if o.st.Query == "" {
+		o.searchResultsScroll.SetVisible(false)
+		return
+	}
+	gtkx.Clear(&o.searchResults)
+	totalResults := len(o.st.MatchedWindows) + len(o.st.MatchedApps)
+	if totalResults == 0 {
+		emptyBox := gtk.NewBox(gtk.OrientationVerticalValue, 8)
+		emptyBox.SetMarginTop(24)
+		emptyBox.SetMarginBottom(24)
+		emptyBox.SetHalign(gtk.AlignCenterValue)
+		emptyLabel := gtk.NewLabel(i18n.T("No matching apps or windows"))
+		emptyLabel.AddCssClass("overview-empty")
+		gtkx.Append(emptyBox, &emptyLabel.Widget)
+		gtkx.Append(&o.searchResults, &emptyBox.Widget)
+		o.searchResultsScroll.SetVisible(true)
+		return
+	}
+
+	resultIdx := 0
+	// 1. Open Windows Section
+	if len(o.st.MatchedWindows) > 0 {
+		header := gtk.NewLabel(i18n.T("Open Windows"))
+		header.SetXalign(0)
+		header.AddCssClass("overview-search-section-header")
+		gtkx.Append(&o.searchResults, &header.Widget)
+
+		for _, win := range o.st.MatchedWindows {
+			row := s.buildOverviewSearchRow(resultIdx, resultIdx == o.st.SearchSelected, win.Icon, win.Title, win.Detail, "search-window:"+win.Address)
+			gtkx.Append(&o.searchResults, &row.Widget)
+			resultIdx++
+		}
+	}
+
+	// 2. Applications Section
+	if len(o.st.MatchedApps) > 0 {
+		header := gtk.NewLabel(i18n.T("Applications"))
+		header.SetXalign(0)
+		header.AddCssClass("overview-search-section-header")
+		gtkx.Append(&o.searchResults, &header.Widget)
+
+		maxApps := 8
+		for appIdx, app := range o.st.MatchedApps {
+			if appIdx >= maxApps {
+				break
+			}
+			row := s.buildOverviewSearchRow(resultIdx, resultIdx == o.st.SearchSelected, app.Icon, app.Title, app.Detail, fmt.Sprintf("search-app:%d", appIdx))
+			gtkx.Append(&o.searchResults, &row.Widget)
+			resultIdx++
+		}
+	}
+
+	o.searchResultsScroll.SetVisible(true)
+}
+
 func (s *shellUI) buildOverview(o *workspaceOverview) {
 	o.win = gtk.NewApplicationWindow(s.app)
 	o.win.AddCssClass("overview")
-	o.root = *gtk.NewBox(gtk.OrientationVerticalValue, 10)
+	o.root = *gtk.NewBox(gtk.OrientationVerticalValue, 14)
 	o.root.AddCssClass("overview-scrim")
 	o.root.SetFocusable(true)
-	o.content = *gtk.NewBox(gtk.OrientationVerticalValue, 10)
+	o.content = *gtk.NewBox(gtk.OrientationVerticalValue, 16)
 	o.content.SetHexpand(true)
 	o.content.SetVexpand(true)
 	gtkx.Append(&o.root, &o.content.Widget)
-	toolbar := gtk.NewBox(gtk.OrientationHorizontalValue, 12)
-	toolbar.SetHalign(gtk.AlignCenterValue)
-	toolbar.AddCssClass("overview-toolbar")
-	o.mru = *gtk.NewButton()
-	o.mru.SetName("mru")
-	o.mru.AddCssClass("overview-mru")
-	o.mru.ConnectClicked(&s.onOverviewButton)
-	gtkx.Append(toolbar, &o.mru.Widget)
-	o.scope = *gtk.NewButton()
-	o.scope.SetName("scope")
-	o.scope.AddCssClass("overview-mru")
-	o.scope.ConnectClicked(&s.onOverviewButton)
-	gtkx.Append(toolbar, &o.scope.Widget)
-	o.query = *gtk.NewEntry()
-	o.query.SetPlaceholderText(i18n.T("Filter by window title or app"))
-	o.query.SetSizeRequest(400, -1)
-	o.query.AddCssClass("overview-query")
-	search := gtk.NewBox(gtk.OrientationHorizontalValue, 8)
-	search.AddCssClass("overview-search")
+
+	// Modern centered search pill
+	o.searchContainer = *gtk.NewBox(gtk.OrientationHorizontalValue, 10)
+	o.searchContainer.SetHalign(gtk.AlignCenterValue)
+	o.searchContainer.AddCssClass("overview-search")
+
 	searchIcon := gtk.NewImageFromIconName("system-search-symbolic")
 	searchIcon.AddCssClass("overview-search-icon")
-	gtkx.Append(search, &searchIcon.Widget)
-	gtkx.Append(search, &o.query.Widget)
+	gtkx.Append(&o.searchContainer, &searchIcon.Widget)
+
+	o.query = *gtk.NewEntry()
+	o.query.SetPlaceholderText(i18n.T("Search apps, windows and workspaces…"))
+	o.query.AddCssClass("overview-query")
+	gtkx.Append(&o.searchContainer, &o.query.Widget)
+
 	o.queryClear = *gtk.NewButton()
 	o.queryClear.SetName("search-clear")
 	o.queryClear.SetLabel("×")
 	o.queryClear.AddCssClass("overview-search-clear")
 	o.queryClear.ConnectClicked(&s.onOverviewButton)
-	gtkx.Append(search, &o.queryClear.Widget)
-	gtkx.Append(toolbar, &search.Widget)
-	o.searchStatus = *gtk.NewLabel(i18n.T("TYPE TO FILTER WINDOWS"))
-	o.searchStatus.AddCssClass("overview-search-status")
-	gtkx.Append(toolbar, &o.searchStatus.Widget)
-	gtkx.Append(&o.content, &toolbar.Widget)
-	o.cards = *gtk.NewBox(gtk.OrientationVerticalValue, 24)
+	gtkx.Append(&o.searchContainer, &o.queryClear.Widget)
+
+	gtkx.Append(&o.content, &o.searchContainer.Widget)
+
+	// Multi-row workspace cards area
+	cards := gtk.NewBox(gtk.OrientationVerticalValue, 24)
+	o.cards = *cards
 	o.cards.SetHalign(gtk.AlignCenterValue)
 	o.cards.SetValign(gtk.AlignCenterValue)
-	scroll := gtk.NewScrolledWindow()
-	scroll.SetPolicy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue)
-	scroll.SetVexpand(true)
-	scroll.SetChild(&o.cards.Widget)
-	o.cards.Unref()
-	gtkx.Append(&o.content, &scroll.Widget)
-	hint := gtk.NewLabel(i18n.T("Type or / to filter windows   Esc · clear / close   Arrows / Tab · select   Middle click · close   Ctrl+Shift+X · kill   Drag · move"))
+	cardsScroll := gtk.NewScrolledWindow()
+	o.cardsScroll = *cardsScroll
+	o.cardsScroll.SetPolicy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue)
+	o.cardsScroll.SetVexpand(true)
+	o.cardsScroll.SetChild(&o.cards.Widget)
+	gtkx.Append(&o.content, &o.cardsScroll.Widget)
+
+	// GNOME Shell-like search results list
+	searchResults := gtk.NewBox(gtk.OrientationVerticalValue, 6)
+	o.searchResults = *searchResults
+	o.searchResults.SetHalign(gtk.AlignCenterValue)
+	o.searchResults.SetValign(gtk.AlignStartValue)
+	o.searchResults.AddCssClass("overview-search-panel")
+	searchScroll := gtk.NewScrolledWindow()
+	o.searchResultsScroll = *searchScroll
+	o.searchResultsScroll.SetPolicy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue)
+	o.searchResultsScroll.SetHalign(gtk.AlignCenterValue)
+	o.searchResultsScroll.SetVexpand(true)
+	o.searchResultsScroll.SetChild(&o.searchResults.Widget)
+	o.searchResultsScroll.SetVisible(false)
+	gtkx.Append(&o.content, &o.searchResultsScroll.Widget)
+
+	hint := gtk.NewLabel(i18n.T("Type to search   Esc · Back / Close   ↑↓ / Tab · Navigate   Enter · Open / Switch   Drag · Move"))
 	o.hint = hint
 	hint.SetVisible(s.cfg.Overview.Hints)
 	hint.AddCssClass("overview-hint")
@@ -1077,6 +1244,21 @@ func (s *shellUI) buildOverview(o *workspaceOverview) {
 	o.win.AddController(&right.EventController)
 }
 
+// overviewUsableHeight removes the bar's reserved band when every window is
+// below it. A fullscreen window keeps the full monitor in the preview.
+func overviewUsableHeight(windows []compositor.Window, y, height, barHeight float64) (float64, float64) {
+	if len(windows) == 0 || barHeight <= 0 || barHeight >= height {
+		return y, height
+	}
+	top := y + barHeight
+	for _, w := range windows {
+		if w.Geometry == nil || float64(w.Geometry.Y) < top-1 {
+			return y, height
+		}
+	}
+	return top, height - barHeight
+}
+
 // overviewWindowLayout maps compositor geometry onto a workspace card. The
 // card is the monitor, so the scale is uniform and the whole workspace shows.
 func overviewWindowLayout(w compositor.Window, boxX, boxY, boxW, boxH, thumbW, thumbH float64) (x, y, pw, ph float64) {
@@ -1085,11 +1267,9 @@ func overviewWindowLayout(w compositor.Window, boxX, boxY, boxW, boxH, thumbW, t
 	}
 	ax, ay := float64(w.Geometry.X), float64(w.Geometry.Y)
 	ww, wh := float64(w.Geometry.W), float64(w.Geometry.H)
-	scale := max(thumbW/max(boxW, 1), thumbH/max(boxH, 1))
-	offsetX := (thumbW - boxW*scale) / 2
-	offsetY := (thumbH - boxH*scale) / 2
-	x, y = (ax-boxX)*scale+offsetX, (ay-boxY)*scale+offsetY
-	pw, ph = max(24, ww*scale), max(24, wh*scale)
+	scaleX, scaleY := thumbW/max(boxW, 1), thumbH/max(boxH, 1)
+	x, y = (ax-boxX)*scaleX, (ay-boxY)*scaleY
+	pw, ph = max(24, ww*scaleX), max(24, wh*scaleY)
 	// A window dragged mostly off the monitor still shows a sliver, so it can
 	// be found and dragged back from the overview.
 	x = max(-pw+24, min(x, thumbW-24))

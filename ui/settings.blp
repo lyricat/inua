@@ -1213,6 +1213,21 @@ ApplicationWindow settings {
                   Box {
                     styles ["row"]
                     spacing: 16;
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+                      Label { styles ["title"] label: _("Focus border on other monitors"); xalign: 0; }
+                      Label { styles ["sub"] label: _("Outline the last focused window on each inactive monitor"); xalign: 0; wrap: true; }
+                    }
+                    Switch bar_focus_ring { name: "bar_focus_ring"; valign: center; }
+                  }
+
+                  Separator {}
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
 
                     Box {
                       orientation: vertical;
@@ -1574,6 +1589,35 @@ ApplicationWindow settings {
 
                       Label {
                         styles ["title"]
+                        label:  _("Most recently used order");
+                      }
+                      Label {
+                        styles ["sub"]
+                        label:  _("Order workspaces by recent activity in the overview");
+                        xalign: 0;
+                        wrap: true;
+                      }
+                    }
+
+                    Switch overview_mru {
+                      name: "overview_mru";
+                      valign: center;
+                    }
+                  }
+
+                  Separator {}
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+
+                      Label {
+                        styles ["title"]
                         label:  _("Overview hints");
                         xalign: 0;
                       }
@@ -1619,6 +1663,21 @@ ApplicationWindow settings {
                       name: "overview_launcher";
                       valign: center;
                     }
+                  }
+
+                  Separator {}
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+                      Label { styles ["title"] label: _("Dock background"); xalign: 0; }
+                      Label { styles ["sub"] label: _("Show the dock panel, borders and running indicators"); xalign: 0; wrap: true; }
+                    }
+                    Switch dock_background { name: "dock_background"; valign: center; }
                   }
 
                   Separator {}
