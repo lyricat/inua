@@ -13803,7 +13803,7 @@ msgstr "Nouvelle session dans cet espace"
 #: internal/term/settings/settings.go:104
 #: internal/term/web/strings.go:70
 #: internal/termui/columns.go:184
-#: internal/ui/overview.go:654
+#: internal/ui/overview.go:661
 msgid "New workspace"
 msgstr "Nouvel espace de travail"
 
@@ -15399,43 +15399,43 @@ msgstr ""
 msgid "Bluetooth off"
 msgstr ""
 
-#: internal/ui/overview.go:193
+#: internal/ui/overview.go:200
 msgid "restore focus"
 msgstr "restaurer le focus"
 
-#: internal/ui/overview.go:330
+#: internal/ui/overview.go:337
 msgid "kill window"
 msgstr "tuer la fenêtre"
 
-#: internal/ui/overview.go:512
+#: internal/ui/overview.go:519
 msgid "No workspaces"
 msgstr "Aucun espace de travail"
 
-#: internal/ui/overview.go:514
+#: internal/ui/overview.go:521
 msgid "No matches"
 msgstr "Aucune correspondance"
 
-#: internal/ui/overview.go:1051
+#: internal/ui/overview.go:1058
 msgid "No matching apps or windows"
 msgstr ""
 
-#: internal/ui/overview.go:1062
+#: internal/ui/overview.go:1069
 msgid "Open Windows"
 msgstr ""
 
-#: internal/ui/overview.go:1076
+#: internal/ui/overview.go:1083
 msgid "Applications"
 msgstr ""
 
-#: internal/ui/overview.go:1116
+#: internal/ui/overview.go:1123
 msgid "Search apps, windows and workspaces…"
 msgstr ""
 
-#: internal/ui/overview.go:1156
+#: internal/ui/overview.go:1163
 msgid "Type to search   Esc · Back / Close   ↑↓ / Tab · Navigate   Enter · Open / Switch   Drag · Move"
 msgstr ""
 
-#: internal/ui/overview.go:1201
+#: internal/ui/overview.go:1208
 msgid "inua overview"
 msgstr "Aperçu d'Inua"
 

@@ -110,6 +110,9 @@ func (s *shellUI) showOverview() {
 	s.overview.st.MRU = s.cfg.Overview.MRU
 	s.overview.st.Apps = s.apps
 	s.overview.st.Show(s.snap)
+	for _, b := range s.bars {
+		b.hideFocusRing()
+	}
 	s.overview.activation++
 	s.overview.captureFailed = false
 	s.overview.searchMode = false
@@ -155,6 +158,10 @@ func (s *shellUI) closeOverview(restore bool) {
 	// first so that callback cannot rebuild widgets during their destruction.
 	previous := o.st.Previous
 	o.st.Close()
+	for _, b := range s.bars {
+		win, ok := shell.BarWindow(s.snap, b.connector())
+		b.setFocusRing(s, s.snap, win, ok)
+	}
 	o.activation++
 	o.dragging = ""
 	o.movesPending = 0
