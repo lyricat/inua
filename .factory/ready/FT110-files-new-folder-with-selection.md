@@ -46,3 +46,14 @@ Built and pushed e5f32b9a on factory/FT110-files-new-folder-with-selection (roun
 - Installs: none; no dependency manifests changed.
 - Checking: coder make test passed; manager independently reran make test with a throwaway HOME: passed (Python session tests, go vet, race-enabled Go tests). Forbidden paths unchanged; one topical commit only. Initial code push needed per-command credential.useHttpPath=true; retry succeeded without changing settings.
 - Not checked: UI was not checked by eye in a nested session; long-name layout/wrapping and translations need human review. Search/picker exclusion and midway job cancellation lack direct regression coverage. Broadway automated interaction coverage ran according to coder report.
+
+## factory · review · 2026-11-15 20:55
+head: e5f32b9a54787d776baf95070cb26e0832a47b75
+verdict: pass
+notes:
+- [P2] internal/apps/files/ops.go:284: Gather records its folder in Undo.Created, so undo trashes it even when move-backs fail or new files remain. Verified example: gather a.txt/b.txt, recreate a.txt in the parent and add added.txt inside the folder, then undo; b.txt returns but original a.txt and added.txt are silently sent to trash. Prefer removing the folder only if empty after move-backs, retaining it and reporting failures otherwise; add regression coverage.
+- [P3] internal/apps/files/ops.go:281: An already-cancelled Gather still creates its folder before checking cancellation. Verified example: cancelled context, sources a.txt/b.txt and destination NF yields context canceled but leaves NF beside both sources. Check cancellation before Mkdir and add coverage.
+
+Validation: Claude Code reviewed origin/master...HEAD against the request and plan. No P0/P1 findings. make test passed with a throwaway HOME/runtime directory (Python session tests, go vet, race-enabled Go tests). Three throwaway overlay probes verified partial failure/undo and cancellation behavior; exported-copy make i18n matched committed catalogs. Worktree remained clean at the reviewed head. No installs. Branch merges cleanly with origin/master.
+
+Not checked: UI was not checked by eye; long-name layout, rendering, focus and translations need human review. Midway job cancellation and search/picker exclusion lack direct regression tests. The destination Lstat-to-move race was not reproduced; slow-filesystem cost of dialog Lstat calls was not measured. P2/P3 notes are non-blocking under factory policy and should be considered before ship. No linked issues or PRs were declared.
