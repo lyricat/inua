@@ -7,141 +7,108 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
 <interface>
   <requires lib="gtk" version="4.0"/>
   <object class="GtkApplicationWindow" id="weather">
-    <property name="default-width">440</property>
+    <property name="default-width">780</property>
     <property name="default-height">720</property>
     <child>
       <object class="GtkBox">
         <style>
           <class name="weatherapp"/>
         </style>
-        <property name="orientation">1</property>
         <child>
-          <object class="GtkBox">
+          <object class="GtkBox" id="index">
             <style>
-              <class name="header"/>
+              <class name="index"/>
             </style>
+            <property name="orientation">1</property>
+            <property name="hexpand">false</property>
+            <property name="width-request">260</property>
             <child>
-              <object class="GtkButton" id="prev">
+              <object class="GtkLabel">
                 <style>
-                  <class name="plain"/>
+                  <class name="index-title"/>
                 </style>
-                <property name="name">prev</property>
-                <property name="icon-name">go-previous-symbolic</property>
-                <property name="tooltip-text" translatable="yes">Previous place</property>
-                <property name="valign">3</property>
+                <property name="label" translatable="yes">Weather</property>
+                <property name="xalign">0</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSearchEntry" id="place_search">
+                <style>
+                  <class name="index-search"/>
+                </style>
+                <property name="placeholder-text" translatable="yes">Add a city</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkScrolledWindow">
+                <property name="vexpand">true</property>
+                <property name="hscrollbar-policy">2</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">1</property>
+                    <child>
+                      <object class="GtkBox" id="place_results">
+                        <style>
+                          <class name="index-list"/>
+                        </style>
+                        <property name="orientation">1</property>
+                        <property name="visible">false</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="place_list">
+                        <style>
+                          <class name="index-list"/>
+                        </style>
+                        <property name="orientation">1</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="places_empty">
+                        <style>
+                          <class name="index-note"/>
+                        </style>
+                        <property name="label" translatable="yes">No city yet. Search above to add one.</property>
+                        <property name="wrap">true</property>
+                        <property name="xalign">0</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
             </child>
             <child>
               <object class="GtkBox">
-                <property name="orientation">1</property>
-                <property name="hexpand">true</property>
-                <property name="valign">3</property>
-                <property name="spacing">6</property>
-                <child>
-                  <object class="GtkLabel" id="place">
-                    <style>
-                      <class name="place"/>
-                    </style>
-                    <property name="ellipsize">3</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkBox" id="dots">
-                    <style>
-                      <class name="dots"/>
-                    </style>
-                    <property name="spacing">5</property>
-                    <property name="halign">3</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkButton" id="next">
                 <style>
-                  <class name="plain"/>
+                  <class name="index-foot"/>
                 </style>
-                <property name="name">next</property>
-                <property name="icon-name">go-next-symbolic</property>
-                <property name="tooltip-text" translatable="yes">Next place</property>
-                <property name="valign">3</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkToggleButton" id="places_toggle">
-                <style>
-                  <class name="plain"/>
-                </style>
-                <property name="icon-name">view-list-symbolic</property>
-                <property name="tooltip-text" translatable="yes">Places</property>
-                <property name="valign">3</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkRevealer" id="places_reveal">
-            <property name="transition-type">5</property>
-            <property name="transition-duration">180</property>
-            <child>
-              <object class="GtkBox">
-                <style>
-                  <class name="places"/>
-                </style>
-                <property name="orientation">1</property>
                 <property name="spacing">10</property>
                 <child>
-                  <object class="GtkSearchEntry" id="place_search">
-                    <property name="placeholder-text" translatable="yes">Add a city</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkBox" id="place_results">
+                  <object class="GtkLabel">
                     <style>
-                      <class name="rows"/>
+                      <class name="kicker"/>
                     </style>
-                    <property name="orientation">1</property>
-                    <property name="visible">false</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkBox" id="place_list">
-                    <style>
-                      <class name="rows"/>
-                    </style>
-                    <property name="orientation">1</property>
+                    <property name="label" translatable="yes">UNITS</property>
+                    <property name="hexpand">true</property>
+                    <property name="xalign">0</property>
                   </object>
                 </child>
                 <child>
                   <object class="GtkBox">
+                    <style>
+                      <class name="segmented"/>
+                      <class name="linked"/>
+                    </style>
                     <child>
-                      <object class="GtkLabel">
-                        <style>
-                          <class name="kicker"/>
-                        </style>
-                        <property name="label" translatable="yes">UNITS</property>
-                        <property name="hexpand">true</property>
-                        <property name="xalign">0</property>
+                      <object class="GtkToggleButton" id="unit_c">
+                        <property name="label" translatable="yes">°C</property>
+                        <property name="active">true</property>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkBox">
-                        <style>
-                          <class name="segmented"/>
-                          <class name="linked"/>
-                        </style>
-                        <child>
-                          <object class="GtkToggleButton" id="unit_c">
-                            <property name="label" translatable="yes">°C</property>
-                            <property name="active">true</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkToggleButton" id="unit_f">
-                            <property name="label" translatable="yes">°F</property>
-                            <property name="group">unit_c</property>
-                          </object>
-                        </child>
+                      <object class="GtkToggleButton" id="unit_f">
+                        <property name="label" translatable="yes">°F</property>
+                        <property name="group">unit_c</property>
                       </object>
                     </child>
                   </object>
@@ -151,179 +118,228 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
           </object>
         </child>
         <child>
-          <object class="GtkStack" id="pages">
-            <property name="vexpand">true</property>
-            <property name="transition-type">1</property>
-            <property name="transition-duration">140</property>
+          <object class="GtkBox">
+            <property name="orientation">1</property>
+            <property name="hexpand">true</property>
             <child>
-              <object class="GtkStackPage">
-                <property name="name">forecast</property>
-                <property name="child">
-                  <object class="GtkScrolledWindow">
-                    <property name="hscrollbar-policy">2</property>
+              <object class="GtkBox">
+                <style>
+                  <class name="header"/>
+                </style>
+                <property name="spacing">10</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">1</property>
+                    <property name="hexpand">true</property>
+                    <property name="valign">3</property>
+                    <property name="spacing">2</property>
                     <child>
-                      <object class="GtkBox">
-                        <property name="orientation">1</property>
+                      <object class="GtkLabel" id="place">
+                        <style>
+                          <class name="place"/>
+                        </style>
+                        <property name="ellipsize">3</property>
+                        <property name="xalign">0</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="place_where">
+                        <style>
+                          <class name="sub"/>
+                        </style>
+                        <property name="ellipsize">3</property>
+                        <property name="xalign">0</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="more">
+                    <style>
+                      <class name="plain"/>
+                    </style>
+                    <property name="icon-name">view-more-symbolic</property>
+                    <property name="tooltip-text" translatable="yes">More</property>
+                    <property name="valign">3</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkStack" id="pages">
+                <property name="vexpand">true</property>
+                <property name="transition-type">1</property>
+                <property name="transition-duration">140</property>
+                <child>
+                  <object class="GtkStackPage">
+                    <property name="name">forecast</property>
+                    <property name="child">
+                      <object class="GtkScrolledWindow">
+                        <property name="hscrollbar-policy">2</property>
                         <child>
                           <object class="GtkBox">
-                            <style>
-                              <class name="hero"/>
-                            </style>
                             <property name="orientation">1</property>
                             <child>
-                              <object class="GtkImage" id="now_icon">
+                              <object class="GtkBox">
                                 <style>
-                                  <class name="now-icon"/>
+                                  <class name="hero"/>
                                 </style>
-                                <property name="pixel-size">30</property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="now_temp">
-                                <style>
-                                  <class name="hero-temp"/>
-                                </style>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="now_text">
-                                <style>
-                                  <class name="now-text"/>
-                                </style>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="now_range">
-                                <style>
-                                  <class name="kicker"/>
-                                </style>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkBox">
-                            <style>
-                              <class name="block"/>
-                            </style>
-                            <property name="orientation">1</property>
-                            <child>
-                              <object class="GtkLabel">
-                                <style>
-                                  <class name="kicker"/>
-                                  <class name="block-title"/>
-                                </style>
-                                <property name="label" translatable="yes">NEXT 24 HOURS</property>
-                                <property name="xalign">0</property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkScrolledWindow">
-                                <property name="vscrollbar-policy">2</property>
+                                <property name="orientation">1</property>
                                 <child>
-                                  <object class="GtkBox" id="hours">
+                                  <object class="GtkImage" id="now_icon">
                                     <style>
-                                      <class name="hours"/>
+                                      <class name="now-icon"/>
+                                    </style>
+                                    <property name="pixel-size">30</property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="now_temp">
+                                    <style>
+                                      <class name="hero-temp"/>
+                                    </style>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="now_text">
+                                    <style>
+                                      <class name="now-text"/>
+                                    </style>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="now_range">
+                                    <style>
+                                      <class name="kicker"/>
                                     </style>
                                   </object>
                                 </child>
                               </object>
                             </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkBox">
-                            <style>
-                              <class name="block"/>
-                            </style>
-                            <property name="orientation">1</property>
                             <child>
-                              <object class="GtkLabel">
+                              <object class="GtkBox" id="hours_block">
                                 <style>
-                                  <class name="kicker"/>
-                                  <class name="block-title"/>
-                                </style>
-                                <property name="label" translatable="yes">7 DAYS</property>
-                                <property name="xalign">0</property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkBox" id="days">
-                                <style>
-                                  <class name="rows"/>
+                                  <class name="block"/>
                                 </style>
                                 <property name="orientation">1</property>
+                                <child>
+                                  <object class="GtkLabel" id="hours_title">
+                                    <style>
+                                      <class name="kicker"/>
+                                      <class name="block-title"/>
+                                    </style>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkScrolledWindow">
+                                    <property name="vscrollbar-policy">2</property>
+                                    <child>
+                                      <object class="GtkBox" id="hours">
+                                        <style>
+                                          <class name="hours"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
                               </object>
                             </child>
+                            <child>
+                              <object class="GtkBox" id="days_block">
+                                <style>
+                                  <class name="block"/>
+                                </style>
+                                <property name="orientation">1</property>
+                                <child>
+                                  <object class="GtkLabel" id="days_title">
+                                    <style>
+                                      <class name="kicker"/>
+                                      <class name="block-title"/>
+                                    </style>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkBox" id="days">
+                                    <style>
+                                      <class name="rows"/>
+                                    </style>
+                                    <property name="orientation">1</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <style>
+                                  <class name="block"/>
+                                </style>
+                                <property name="orientation">1</property>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <style>
+                                      <class name="kicker"/>
+                                      <class name="block-title"/>
+                                    </style>
+                                    <property name="label" translatable="yes">DETAILS</property>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkGrid" id="details">
+                                    <style>
+                                      <class name="details"/>
+                                    </style>
+                                    <property name="column-homogeneous">true</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="updated">
+                                <style>
+                                  <class name="foot"/>
+                                </style>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkStackPage">
+                    <property name="name">message</property>
+                    <property name="child">
+                      <object class="GtkBox">
+                        <property name="orientation">1</property>
+                        <property name="valign">3</property>
+                        <property name="spacing">14</property>
+                        <child>
+                          <object class="GtkLabel" id="message">
+                            <style>
+                              <class name="empty"/>
+                            </style>
+                            <property name="wrap">true</property>
+                            <property name="justify">2</property>
+                            <property name="selectable">true</property>
                           </object>
                         </child>
                         <child>
-                          <object class="GtkBox">
+                          <object class="GtkButton" id="message_action">
                             <style>
-                              <class name="block"/>
+                              <class name="outlined"/>
                             </style>
-                            <property name="orientation">1</property>
-                            <child>
-                              <object class="GtkLabel">
-                                <style>
-                                  <class name="kicker"/>
-                                  <class name="block-title"/>
-                                </style>
-                                <property name="label" translatable="yes">DETAILS</property>
-                                <property name="xalign">0</property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkGrid" id="details">
-                                <style>
-                                  <class name="details"/>
-                                </style>
-                                <property name="column-homogeneous">true</property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="updated">
-                            <style>
-                              <class name="foot"/>
-                            </style>
+                            <property name="name">message</property>
+                            <property name="halign">3</property>
                           </object>
                         </child>
                       </object>
-                    </child>
+                    </property>
                   </object>
-                </property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkStackPage">
-                <property name="name">message</property>
-                <property name="child">
-                  <object class="GtkBox">
-                    <property name="orientation">1</property>
-                    <property name="valign">3</property>
-                    <property name="spacing">14</property>
-                    <child>
-                      <object class="GtkLabel" id="message">
-                        <style>
-                          <class name="empty"/>
-                        </style>
-                        <property name="wrap">true</property>
-                        <property name="justify">2</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="message_action">
-                        <style>
-                          <class name="outlined"/>
-                        </style>
-                        <property name="name">message</property>
-                        <property name="halign">3</property>
-                      </object>
-                    </child>
-                  </object>
-                </property>
+                </child>
               </object>
             </child>
           </object>

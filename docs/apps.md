@@ -257,8 +257,35 @@ alarms, so they go off with Clock closed.
 
 ### Weather
 
-Now, the next 24 hours and the next 7 days, from
-[Open-Meteo](https://open-meteo.com), for the places you add.
+The weather now, the next hours, the next days and the details for the
+cities you add. The cities are listed in the sidebar: search at its top to
+add one, click one to show it, × to remove it; the units (°C or °F) are at
+its foot. The chosen city, the units and the source are kept for the next
+start.
+
+The forecast comes from one of two sources, chosen in More (⋯, in the
+page's head); the choice holds until it is changed, and Weather never
+turns to the other source by itself. When the chosen one cannot be
+reached or does not answer with a forecast, the page says so with *Try
+again*, and the other source can be chosen there. Both are free and need
+no key or account; neither is asked anything but a city's coordinates.
+
+| Source | What it gives | Limits |
+| --- | --- | --- |
+| [Open-Meteo](https://open-meteo.com) (the default) | 24 hours hour by hour, 7 days, the chance of rain | Free for non-commercial use, about 10,000 calls a day |
+| [wttr.in](https://wttr.in) (`format=j1`, from World Weather Online's data) | 24 hours in steps of 3, 3 days; a day's chance of rain is the highest of its steps' chances of rain or snow | A free service run by one person: it is rate-limited and at times answers "out of queries"; the current conditions change about every half hour |
+
+The page says what the source gives ("NEXT 24 HOURS · EVERY 3", "3
+DAYS") rather than more. Cities are found with Open-Meteo's geocoding
+whatever the source. A source a newer version kept in
+`~/.local/share/inua/weather.json` that this one does not know is shown
+as such, with *Use Open-Meteo*, not replaced silently. The agenda and the
+widget page show the chosen city from Open-Meteo.
+
+MET Norway's Locationforecast was the other candidate; it was left out
+because it has no feels-like temperature, no sunrise and sunset in the
+same answer, and asks every client to identify itself with contact
+details.
 
 ### Stocks
 

@@ -1905,11 +1905,9 @@ progressbar.thin progress { min-height: 2px; border-radius: 1px; background: @ac
 /* Weather */
 .settings .header { padding: 10px 12px 10px; border-bottom: 1px solid alpha(@line, 0.55); }
 .place { font-family: "IBM Plex Sans", "Zen Kaku Gothic New", sans-serif; font-size: 17px; color: @t0; }
-.dots .dot { min-width: 5px; min-height: 5px; border-radius: 1px; background: alpha(@t2, 0.45); }
-.dots .dot.on { background: @accent; }
-.settings .places { padding: 14px 24px 16px; border-bottom: 1px solid alpha(@line, 0.55); background: @panel; }
+/* The chosen city's head over the page, its name in line with the blocks. */
+.weatherapp .header { padding: 18px 16px 12px 24px; }
 .settings .row.current .title { color: @accent; }
-.row-temp { font-family: "IBM Plex Sans", sans-serif; font-size: 18px; font-weight: 300; font-feature-settings: "tnum"; color: @t0; }
 .weatherapp .hero { padding: 30px 24px 26px; }
 .now-icon { color: @accent; }
 .hero-temp { margin: 2px 0 -4px; font-size: 96px; font-weight: 200; }
@@ -3527,9 +3525,10 @@ window.term .term-col1, window.term .term-col2 { background: @panel; }
 window.term .term-find-row entry { margin: 0; } /* not the settings index's */
 window.term .term-find-entry { min-height: 34px; }
 window.term .term-col1 list row { min-height: 34px; padding: 4px 12px 4px 13px; }
-/* The agents at the foot of column 1, a hairline over them: each group's
+/* The agents, column 1's lower half, a hairline over them: each group's
    head as a session's, its count and caret at the end. */
-window.term .term-agents > viewport > box { padding: 4px 14px 12px; border-top: 1px solid alpha(@line, 0.55); }
+window.term .term-agents { border-top: 1px solid alpha(@line, 0.55); }
+window.term .term-agents > viewport > box { padding: 4px 14px 12px; }
 window.term button.term-agents-head:hover .term-session-label { color: @t1; }
 window.term .term-agents-count {
   font-family: "Geist Mono", "IBM Plex Mono", monospace;
