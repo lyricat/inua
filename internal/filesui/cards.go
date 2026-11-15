@@ -389,8 +389,27 @@ func badName(n string) string {
 	return ""
 }
 
-// askNewName makes a folder or an empty file in dir.
+// askNewName makes a folder or an empty file in dir. The name suggested
+// is selected, to be typed over: a folder's whole, a file's but its
+// extension.
 func (w *window) askNewName(dir string, folder bool) {
+	w.askNew(dir, folder, nil)
+}
+
+// askGather makes a folder in dir and moves the items at paths, which are
+// in dir, into it: the card says so and lists them. The folder and the
+// items are the ones there when it was asked, whatever is shown or
+// selected by the time it is answered.
+func (w *window) askGather(dir string, paths []string) {
+	if len(paths) > 0 {
+		w.askNew(dir, true, paths)
+	}
+}
+
+// gatherMost is how many of the items to move the card lists.
+const gatherMost = 200
+
+func (w *window) askNew(dir string, folder bool, gather []string) {
 	title, base := i18n.T("New file"), i18n.T("Untitled")
 	if folder {
 		title, base = i18n.T("New folder"), i18n.T("New Folder")
@@ -411,11 +430,15 @@ func (w *window) askNewName(dir string, folder bool) {
 				return
 			}
 			w.closeCard()
-			kind := files.Create
-			if folder {
-				kind = files.Mkdir
+			switch {
+			case gather != nil:
+				w.queue(queued{job: files.Job{Kind: files.Gather, Sources: gather, Dest: dest},
+					done: func(err error) bool { return w.gatherFailed(n, err) }})
+			case folder:
+				w.app.run(w, files.Job{Kind: files.Mkdir, Dest: dest})
+			default:
+				w.app.run(w, files.Job{Kind: files.Create, Dest: dest})
 			}
-			w.app.run(w, files.Job{Kind: kind, Dest: dest})
 		}},
 	}}
 	c.edited = func(t string) { w.cardFail(badName(strings.TrimSpace(t))) }
@@ -424,11 +447,49 @@ func (w *window) askNewName(dir string, folder bool) {
 	if p := w.cur(); p.mode != inFolder || p.dir != dir {
 		where = i18n.Tf("In %s", shortHome(dir))
 	}
-	parts := cardParts{title: title, text: where, entry: true, entryText: suggested}
-	if !folder { // a new folder's name has the cursor at its end
-		parts.selectTo = files.RenameSelection(suggested, false)
+	parts := cardParts{title: title, text: where, entry: true, entryText: suggested,
+		selectTo: files.RenameSelection(suggested, folder)}
+	if gather != nil {
+		n := len(gather)
+		parts.text = strings.TrimSpace(where + "\n" + i18n.Nf(
+			"The %d selected item is moved into the new folder once it is made:",
+			"The %d selected items are moved into the new folder once it is made:", n, n))
+		parts.list, parts.listHeight = true, 220
 	}
 	w.openCard(c, parts)
+	// What will move, to read: not a list to pick from.
+	for i, path := range gather {
+		if i == gatherMost {
+			more := len(gather) - gatherMost
+			path = i18n.Nf("… and %d more", "… and %d more", more, more)
+		} else if fi, err := os.Lstat(path); err == nil && fi.IsDir() {
+			path = filepath.Base(path) + "/"
+		} else {
+			path = filepath.Base(path)
+		}
+		l := gtk.NewLabel(path)
+		l.AddCssClass("files-rename-row")
+		l.SetXalign(0)
+		l.SetEllipsize(2) // middle
+		gtkx.Append(&w.cardList, &l.Widget)
+		if i == gatherMost {
+			break
+		}
+	}
+}
+
+// gatherFailed says what a new folder for the selection could not do:
+// that it was not made, so nothing moved, or which items stayed.
+func (w *window) gatherFailed(name string, err error) bool {
+	var notMade *files.NotMadeError
+	if errors.As(err, &notMade) {
+		w.errorCard(i18n.Tf("The folder “%s” could not be made", name),
+			i18n.T("Nothing was moved."), err)
+		return true
+	}
+	w.errorCard(i18n.Tf("Some items could not be moved into “%s”", name),
+		i18n.T("They are left where they were; nothing was written over or deleted."), err)
+	return true
 }
 
 func (w *window) confirmDelete(p *pane) {
@@ -522,13 +583,21 @@ func (w *window) askConflict(c files.Conflict, ch chan<- answer) {
 
 // showErrors says what an operation could not do.
 func (w *window) showErrors(j files.Job, err error) {
+	w.errorCard(i18n.T("Some items could not be done"), "", err)
+}
+
+// errorCard is a card of err's lines, the first few, under lead.
+func (w *window) errorCard(title, lead string, err error) {
 	lines := strings.Split(err.Error(), "\n")
 	if len(lines) > 8 {
 		more := len(lines) - 8
 		lines = append(lines[:8], i18n.Nf("… and %d more", "… and %d more", more, more))
 	}
+	if lead != "" {
+		lines = append([]string{lead}, lines...)
+	}
 	w.openCard(&card{def: 0, buttons: []cardButton{{label: i18n.T("Close"), class: "suggested-action"}}},
-		cardParts{title: i18n.T("Some items could not be done"), text: strings.Join(lines, "\n")})
+		cardParts{title: title, text: strings.Join(lines, "\n")})
 }
 
 // --- jump: the folders used, by frecency ---

@@ -372,7 +372,7 @@ msgid "A file from %s"
 msgstr "%s からのファイル"
 
 #: internal/apps/connect/share.go:129
-#: internal/filesui/cards.go:692
+#: internal/filesui/cards.go:761
 #: internal/filesui/picker.go:488
 #: internal/filesui/window.go:815
 #: internal/lightui/workshop_blocks.go:431
@@ -2246,11 +2246,11 @@ msgstr "%s がペアリングを求めています。このキーが表示され
 #: internal/filesui/archive.go:49
 #: internal/filesui/archive.go:309
 #: internal/filesui/cards.go:352
-#: internal/filesui/cards.go:401
-#: internal/filesui/cards.go:448
-#: internal/filesui/cards.go:465
-#: internal/filesui/cards.go:503
-#: internal/filesui/cards.go:602
+#: internal/filesui/cards.go:420
+#: internal/filesui/cards.go:509
+#: internal/filesui/cards.go:526
+#: internal/filesui/cards.go:564
+#: internal/filesui/cards.go:671
 #: internal/filesui/picker.go:368
 #: internal/filesui/remote.go:159
 #: internal/filesui/remote.go:219
@@ -3103,7 +3103,7 @@ msgid "Delete %s for good?"
 msgstr "%s を完全に削除しますか?"
 
 #: internal/diskui/details.go:528
-#: internal/filesui/cards.go:449
+#: internal/filesui/cards.go:510
 #: internal/lightui/calculator.go:59
 #: internal/lightui/calculator.go:353
 #: internal/lightui/gpg.go:1611
@@ -3203,7 +3203,7 @@ msgid "Stop Scanning"
 msgstr "スキャンを停止"
 
 #: internal/diskui/window.go:333
-#: internal/filesui/cards.go:696
+#: internal/filesui/cards.go:765
 #: internal/filesui/sidebar.go:41
 #: internal/filesui/tabs.go:99
 #: internal/filesui/window.go:324
@@ -3332,7 +3332,7 @@ msgid_plural "%s in %d folders · %s safe to delete"
 msgstr[0] "%s · %d 個のフォルダ · 安全に削除可能 %s"
 
 #: internal/filesui/app.go:86
-#: internal/filesui/cards.go:703
+#: internal/filesui/cards.go:772
 #: internal/filesui/remote.go:371
 #: internal/filesui/window.go:111
 #: internal/filesui/window.go:317
@@ -3482,7 +3482,7 @@ msgstr "2 つのパスワードが一致しません。"
 
 #: internal/filesui/archive.go:263
 #: internal/filesui/cards.go:365
-#: internal/filesui/cards.go:410
+#: internal/filesui/cards.go:429
 msgid "“%s” is taken here."
 msgstr "「%s」はここにすでにあります。"
 
@@ -3518,7 +3518,7 @@ msgstr[0] "%d 項目"
 
 #: internal/filesui/cards.go:353
 #: internal/filesui/cards.go:373
-#: internal/filesui/cards.go:706
+#: internal/filesui/cards.go:775
 #: internal/filesui/renamemany.go:38
 #: internal/term/web/strings.go:89
 #: internal/termui/keys.go:423
@@ -3541,44 +3541,71 @@ msgstr "名前に「/」は使えません。"
 msgid "The name is too long."
 msgstr "名前が長すぎます。"
 
-#: internal/filesui/cards.go:394
+#: internal/filesui/cards.go:413
 msgid "New file"
 msgstr "新規ファイル"
 
-#: internal/filesui/cards.go:394
+#: internal/filesui/cards.go:413
 msgid "Untitled"
 msgstr "無題"
 
-#: internal/filesui/cards.go:396
+#: internal/filesui/cards.go:415
 msgid "New folder"
 msgstr "新規フォルダー"
 
-#: internal/filesui/cards.go:396
+#: internal/filesui/cards.go:415
 msgid "New Folder"
 msgstr "新規フォルダー"
 
-#: internal/filesui/cards.go:402
+#: internal/filesui/cards.go:421
 msgid "Make"
 msgstr "作成"
 
-#: internal/filesui/cards.go:425
+#: internal/filesui/cards.go:448
 msgid "In %s"
 msgstr ""
 
-#: internal/filesui/cards.go:443
+#: internal/filesui/cards.go:454
+msgid "The %d selected item is moved into the new folder once it is made:"
+msgid_plural "The %d selected items are moved into the new folder once it is made:"
+msgstr[0] "選択した %d 項目は、フォルダーの作成後にその中へ移動されます:"
+
+#: internal/filesui/cards.go:464
+#: internal/filesui/cards.go:594
+msgid "… and %d more"
+msgid_plural "… and %d more"
+msgstr[0] "…ほか %d 件"
+
+#: internal/filesui/cards.go:486
+msgid "The folder “%s” could not be made"
+msgstr "フォルダー“%s”を作成できませんでした"
+
+#: internal/filesui/cards.go:487
+msgid "Nothing was moved."
+msgstr "何も移動されませんでした。"
+
+#: internal/filesui/cards.go:490
+msgid "Some items could not be moved into “%s”"
+msgstr "一部の項目を“%s”に移動できませんでした"
+
+#: internal/filesui/cards.go:491
+msgid "They are left where they were; nothing was written over or deleted."
+msgstr "それらは元の場所に残っています。上書きや削除は行われていません。"
+
+#: internal/filesui/cards.go:504
 msgid "Delete %d item for good?"
 msgid_plural "Delete %d items for good?"
 msgstr[0] "%d 項目を完全に削除しますか？"
 
-#: internal/filesui/cards.go:445
+#: internal/filesui/cards.go:506
 msgid "Delete “%s” for good?"
 msgstr "「%s」を完全に削除しますか？"
 
-#: internal/filesui/cards.go:460
+#: internal/filesui/cards.go:521
 msgid "They do not go to the trash, and this cannot be undone."
 msgstr "ゴミ箱には移動せず、元に戻せません。"
 
-#: internal/filesui/cards.go:466
+#: internal/filesui/cards.go:527
 #: internal/filesui/pathbar.go:91
 #: internal/filesui/sidebar.go:47
 #: internal/filesui/window.go:788
@@ -3589,57 +3616,56 @@ msgstr "ゴミ箱には移動せず、元に戻せません。"
 msgid "Empty Trash"
 msgstr "ゴミ箱を空にする"
 
-#: internal/filesui/cards.go:483
+#: internal/filesui/cards.go:544
 msgid "Empty the trash?"
 msgstr "ゴミ箱を空にしますか？"
 
-#: internal/filesui/cards.go:483
+#: internal/filesui/cards.go:544
 msgid "Everything in it is deleted for good, on every drive."
 msgstr "すべてのドライブ上の中身が完全に削除されます。"
 
-#: internal/filesui/cards.go:500
+#: internal/filesui/cards.go:561
 msgid "There: %s, %s. This one: %s, %s."
 msgstr "既存：%s、%s。こちら：%s、%s。"
 
-#: internal/filesui/cards.go:504
+#: internal/filesui/cards.go:565
 #: internal/termui/guide.go:106
 msgid "Skip"
 msgstr "スキップ"
 
-#: internal/filesui/cards.go:505
+#: internal/filesui/cards.go:566
 msgid "Keep both"
 msgstr "両方残す"
 
-#: internal/filesui/cards.go:509
+#: internal/filesui/cards.go:570
 msgid "Merge"
 msgstr "統合"
 
-#: internal/filesui/cards.go:511
+#: internal/filesui/cards.go:572
 #: internal/filesui/picker.go:369
 #: internal/lightui/pass_otp.go:180
 msgid "Replace"
 msgstr "置き換え"
 
-#: internal/filesui/cards.go:514
+#: internal/filesui/cards.go:575
 msgid "“%s” is already in %s"
 msgstr "「%s」は %s にすでにあります"
 
-#: internal/filesui/cards.go:516
+#: internal/filesui/cards.go:577
 msgid "A folder “%s” is already in %s"
 msgstr "フォルダー「%s」は %s にすでにあります"
 
-#: internal/filesui/cards.go:519
+#: internal/filesui/cards.go:580
 #: ui/files.ui:376
 msgid "Do the same for the rest"
 msgstr "残りも同じようにする"
 
-#: internal/filesui/cards.go:528
-msgid "… and %d more"
-msgid_plural "… and %d more"
-msgstr[0] "…ほか %d 件"
+#: internal/filesui/cards.go:586
+msgid "Some items could not be done"
+msgstr "一部の項目を処理できませんでした"
 
-#: internal/filesui/cards.go:530
-#: internal/filesui/cards.go:730
+#: internal/filesui/cards.go:599
+#: internal/filesui/cards.go:799
 #: internal/mailui/welcome.go:156
 #: internal/shell/launcher_actions.go:53
 #: internal/term/web/strings.go:30
@@ -3659,116 +3685,112 @@ msgstr[0] "…ほか %d 件"
 msgid "Close"
 msgstr "閉じる"
 
-#: internal/filesui/cards.go:531
-msgid "Some items could not be done"
-msgstr "一部の項目を処理できませんでした"
-
-#: internal/filesui/cards.go:540
+#: internal/filesui/cards.go:609
 msgid "Jump to a folder"
 msgstr "フォルダーへジャンプ"
 
-#: internal/filesui/cards.go:583
+#: internal/filesui/cards.go:652
 msgid "Mounting %s…"
 msgstr "%s をマウントしています…"
 
-#: internal/filesui/cards.go:603
+#: internal/filesui/cards.go:672
 #: internal/securitykey/unlock.go:57
 msgid "Unlock"
 msgstr "ロック解除"
 
-#: internal/filesui/cards.go:606
+#: internal/filesui/cards.go:675
 msgid "Unlocking…"
 msgstr "ロックを解除しています…"
 
-#: internal/filesui/cards.go:628
+#: internal/filesui/cards.go:697
 msgid "That passphrase does not open it."
 msgstr "このパスフレーズでは開けません。"
 
-#: internal/filesui/cards.go:642
+#: internal/filesui/cards.go:711
 msgid "Unlock %s"
 msgstr "%s のロックを解除"
 
-#: internal/filesui/cards.go:643
+#: internal/filesui/cards.go:712
 msgid "The drive is encrypted. Its passphrase is not kept."
 msgstr "このドライブは暗号化されています。パスフレーズは保存されません。"
 
-#: internal/filesui/cards.go:653
+#: internal/filesui/cards.go:722
 msgid "Ejecting %s…"
 msgstr "%s を取り出しています…"
 
-#: internal/filesui/cards.go:664
+#: internal/filesui/cards.go:733
 msgid "%s can be removed now."
 msgstr "%s を取り外せます。"
 
-#: internal/filesui/cards.go:666
+#: internal/filesui/cards.go:735
 msgid "%s is unmounted."
 msgstr "%s をアンマウントしました。"
 
-#: internal/filesui/cards.go:676
+#: internal/filesui/cards.go:745
 msgid "%s is in use: close the files open on it first."
 msgstr "%s は使用中です。先に開いているファイルを閉じてください。"
 
-#: internal/filesui/cards.go:678
+#: internal/filesui/cards.go:747
 msgid "Not allowed."
 msgstr "許可されていません。"
 
-#: internal/filesui/cards.go:680
+#: internal/filesui/cards.go:749
 #: internal/mailui/assist.go:106
 #: internal/remoteui/stream.go:472
 msgid "%s: %v"
 msgstr "%s：%v"
 
-#: internal/filesui/cards.go:691
+#: internal/filesui/cards.go:760
 msgid "Moving"
 msgstr "移動"
 
-#: internal/filesui/cards.go:693
+#: internal/filesui/cards.go:762
 msgid "Parent folder"
 msgstr "親フォルダー"
 
-#: internal/filesui/cards.go:694
+#: internal/filesui/cards.go:763
 msgid "Back / forward"
 msgstr "戻る / 進む"
 
-#: internal/filesui/cards.go:695
+#: internal/filesui/cards.go:764
 msgid "In the columns: the folder above, the folder selected"
 msgstr "カラム表示で：親フォルダー、選択したフォルダー"
 
-#: internal/filesui/cards.go:697
+#: internal/filesui/cards.go:766
 msgid "The sidebar's places"
 msgstr "サイドバーの場所"
 
-#: internal/filesui/cards.go:698
+#: internal/filesui/cards.go:767
 msgid "Type a path or a server"
 msgstr "パスまたはサーバーを入力"
 
-#: internal/filesui/cards.go:699
+#: internal/filesui/cards.go:768
 msgid "Jump to a folder used before"
 msgstr "以前使ったフォルダーへジャンプ"
 
-#: internal/filesui/cards.go:700
+#: internal/filesui/cards.go:769
 #: ui/filespane.ui:127
 msgid "Search below this folder"
 msgstr "このフォルダー以下を検索"
 
-#: internal/filesui/cards.go:701
+#: internal/filesui/cards.go:770
 msgid "Letters"
 msgstr "文字"
 
-#: internal/filesui/cards.go:701
+#: internal/filesui/cards.go:770
 msgid "Filter this folder; Esc clears"
 msgstr "このフォルダーを絞り込む（Esc で解除）"
 
-#: internal/filesui/cards.go:704
+#: internal/filesui/cards.go:773
 msgid "Copy / cut / paste"
 msgstr "コピー / 切り取り / 貼り付け"
 
-#: internal/filesui/cards.go:705
+#: internal/filesui/cards.go:774
 msgid "Copy the paths (none selected: the folder's)"
 msgstr "パスをコピー（未選択ならフォルダーのパス）"
 
-#: internal/filesui/cards.go:707
-#: internal/filesui/window.go:856
+#: internal/filesui/cards.go:776
+#: internal/filesui/window.go:859
 #: internal/lightui/gpg.go:1619
 #: internal/mailui/picker.go:143
 #: internal/ui/settings_custom.go:42
@@ -3776,15 +3798,15 @@ msgstr "パスをコピー（未選択ならフォルダーのパス）"
 msgid "Move to Trash"
 msgstr "ゴミ箱に移動"
 
-#: internal/filesui/cards.go:708
+#: internal/filesui/cards.go:777
 msgid "Delete for good"
 msgstr "完全に削除"
 
-#: internal/filesui/cards.go:709
+#: internal/filesui/cards.go:778
 msgid "New folder / new file"
 msgstr "新規フォルダー / 新規ファイル"
 
-#: internal/filesui/cards.go:710
+#: internal/filesui/cards.go:779
 #: internal/mailui/compose.go:529
 #: internal/mailui/quick.go:129
 #: internal/mailui/quick.go:142
@@ -3792,91 +3814,91 @@ msgstr "新規フォルダー / 新規ファイル"
 msgid "Undo"
 msgstr "元に戻す"
 
-#: internal/filesui/cards.go:711
+#: internal/filesui/cards.go:780
 msgid "Copy / move to the other pane"
 msgstr "もう一方のペインへコピー / 移動"
 
-#: internal/filesui/cards.go:712
+#: internal/filesui/cards.go:781
 #: internal/filesui/window.go:817
 msgid "Open with…"
 msgstr "アプリケーションで開く…"
 
-#: internal/filesui/cards.go:713
-#: internal/filesui/window.go:870
+#: internal/filesui/cards.go:782
+#: internal/filesui/window.go:873
 msgid "Bookmark"
 msgstr "ブックマーク"
 
-#: internal/filesui/cards.go:714
+#: internal/filesui/cards.go:783
 #: internal/filesui/pathbar.go:137
 #: internal/filesui/window.go:803
 msgid "Terminal here"
 msgstr "ここで端末を開く"
 
-#: internal/filesui/cards.go:716
+#: internal/filesui/cards.go:785
 #: internal/termui/menubar.go:33
 #: ui/screenshot.ui:180
 #: ui/shotdrawer.ui:122
 msgid "Window"
 msgstr "窓"
 
-#: internal/filesui/cards.go:717
+#: internal/filesui/cards.go:786
 msgid "New tab / close tab"
 msgstr "新しいタブ / タブを閉じる"
 
-#: internal/filesui/cards.go:718
+#: internal/filesui/cards.go:787
 msgid "Next / previous tab"
 msgstr "次 / 前のタブ"
 
-#: internal/filesui/cards.go:719
+#: internal/filesui/cards.go:788
 #: internal/filesui/pathbar.go:89
 #: internal/filesui/window.go:820
 msgid "Middle click"
 msgstr "中クリック"
 
-#: internal/filesui/cards.go:719
+#: internal/filesui/cards.go:788
 msgid "A folder in a new tab"
 msgstr "フォルダーを新しいタブで"
 
-#: internal/filesui/cards.go:720
+#: internal/filesui/cards.go:789
 msgid "List / grid / columns"
 msgstr "リスト / グリッド / カラム"
 
-#: internal/filesui/cards.go:721
+#: internal/filesui/cards.go:790
 #: internal/filesui/picker.go:501
 #: internal/filesui/window.go:808
 msgid "Hidden files"
 msgstr "隠しファイル"
 
-#: internal/filesui/cards.go:722
+#: internal/filesui/cards.go:791
 msgid "Two panes, the other pane"
 msgstr "2 ペイン、もう一方のペイン"
 
-#: internal/filesui/cards.go:723
+#: internal/filesui/cards.go:792
 #: internal/mailui/menubar.go:48
 msgid "Sidebar"
 msgstr "サイドバー"
 
-#: internal/filesui/cards.go:724
-#: internal/filesui/window.go:862
+#: internal/filesui/cards.go:793
+#: internal/filesui/window.go:865
 #: internal/viewerui/menubar.go:55
 msgid "Details"
 msgstr "詳細"
 
-#: internal/filesui/cards.go:725
+#: internal/filesui/cards.go:794
 msgid "Bigger / smaller / normal"
 msgstr "大きく / 小さく / 標準"
 
-#: internal/filesui/cards.go:726
+#: internal/filesui/cards.go:795
 msgid "New window, close it"
 msgstr "新しいウィンドウ、ウィンドウを閉じる"
 
-#: internal/filesui/cards.go:727
+#: internal/filesui/cards.go:796
 #: internal/filesui/picker.go:502
 #: internal/filesui/window.go:809
 msgid "Reload"
 msgstr "再読み込み"
 
-#: internal/filesui/cards.go:731
+#: internal/filesui/cards.go:800
 #: internal/mailui/picker.go:130
 #: internal/mailui/reader.go:378
 #: internal/termui/palette.go:213
@@ -4306,7 +4328,7 @@ msgid "A file of the same name is in this folder; the app will write over it."
 msgstr "同じ名前のファイルがこのフォルダーにあります。置き換えて保存します。"
 
 #: internal/filesui/picker.go:494
-#: internal/filesui/window.go:851
+#: internal/filesui/window.go:854
 #: internal/termui/sessionmenu.go:81
 #: internal/termui/wsmenu.go:69
 msgid "Rename…"
@@ -4825,7 +4847,7 @@ msgid "Restore"
 msgstr "復元"
 
 #: internal/filesui/window.go:792
-#: internal/filesui/window.go:857
+#: internal/filesui/window.go:860
 msgid "Delete for good…"
 msgstr "完全に削除…"
 
@@ -4865,43 +4887,47 @@ msgstr "もう一方のペインへコピー"
 msgid "Move to the other pane"
 msgstr "もう一方のペインへ移動"
 
-#: internal/filesui/window.go:853
+#: internal/filesui/window.go:851
+msgid "New folder with the selection…"
+msgstr "選択項目から新規フォルダー…"
+
+#: internal/filesui/window.go:856
 msgid "Rename %d item…"
 msgid_plural "Rename %d items…"
 msgstr[0] "%d 項目の名前を変更…"
 
-#: internal/filesui/window.go:868
+#: internal/filesui/window.go:871
 msgid "Remove the bookmark"
 msgstr "ブックマークを削除"
 
-#: internal/filesui/window.go:923
+#: internal/filesui/window.go:926
 msgid "Cut %d item: paste to move it."
 msgid_plural "Cut %d items: paste to move them."
 msgstr[0] "%d 項目を切り取りました。貼り付けると移動します。"
 
-#: internal/filesui/window.go:925
+#: internal/filesui/window.go:928
 msgid "Copied %d item."
 msgid_plural "Copied %d items."
 msgstr[0] "%d 項目をコピーしました。"
 
-#: internal/filesui/window.go:933
+#: internal/filesui/window.go:936
 msgid "Copied %d path."
 msgid_plural "Copied %d paths."
 msgstr[0] "%d 個のパスをコピーしました。"
 
-#: internal/filesui/window.go:1034
+#: internal/filesui/window.go:1041
 msgid "Bookmarked %s."
 msgstr "%s をブックマークしました。"
 
-#: internal/filesui/window.go:1036
+#: internal/filesui/window.go:1043
 msgid "Removed the bookmark of %s."
 msgstr "%s のブックマークを削除しました。"
 
-#: internal/filesui/window.go:1051
+#: internal/filesui/window.go:1058
 msgid "Copied %s."
 msgstr "%s をコピーしました。"
 
-#: internal/filesui/window.go:1080
+#: internal/filesui/window.go:1087
 msgid "No terminal was found: install xdg-terminal-exec or set $TERMINAL."
 msgstr "端末が見つかりません。xdg-terminal-exec をインストールするか $TERMINAL を設定してください。"
 
