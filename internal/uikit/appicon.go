@@ -3,11 +3,14 @@ package uikit
 import (
 	"fmt"
 	"math"
+	"os"
 	"sync"
 	"unsafe"
 
 	"codeberg.org/puregotk/puregotk/v4/gdk"
+	"codeberg.org/puregotk/puregotk/v4/gio"
 	"codeberg.org/puregotk/puregotk/v4/gobject"
+	"codeberg.org/puregotk/puregotk/v4/gobject/types"
 	"codeberg.org/puregotk/puregotk/v4/graphene"
 	"codeberg.org/puregotk/puregotk/v4/gsk"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
@@ -234,7 +237,7 @@ func (a *appIcon) snapshot(w *gtk.Widget, s *gtk.Snapshot) {
 		return
 	}
 	if art := a.showing(); art != a.art {
-		if fit, ok := a.measureArt(w, &square); ok {
+		if fit, ok := a.fitFor(w, &square); ok {
 			a.art, a.fit = art, fit
 		} else {
 			icon()
@@ -326,6 +329,75 @@ func (a *appIcon) showing() any {
 		}
 	}
 	return nil
+}
+
+// artFits remembers how each icon file's art fits, at each size it was
+// measured at. Measuring draws the art off screen and reads its pixels,
+// and a view shows an icon in many widgets, made again and again (the
+// launcher makes its results anew at every key, with copies of them for
+// its foot): each file is measured once, till it changes. Read and
+// written on GTK's thread.
+var artFits = map[artKey]artFit{}
+
+// artKey names an icon file as it is now, and the side it is drawn at.
+type artKey struct {
+	path        string
+	mtime, size int64
+	side        int
+}
+
+// artKeyOf is the key of the icon file at path drawn side pixels wide;
+// false when there is no such file.
+func artKeyOf(path string, side float32) (artKey, bool) {
+	fi, err := os.Stat(path)
+	if path == "" || err != nil {
+		return artKey{}, false
+	}
+	return artKey{path, fi.ModTime().UnixNano(), fi.Size(), int(math.Round(float64(side)))}, true
+}
+
+// isA reports whether the GObject at ptr is of the type or one of its own.
+func isA(ptr uintptr, t types.GType) bool {
+	return ptr != 0 && gobject.TypeCheckInstanceIsA(*(**gobject.TypeInstance)(unsafe.Pointer(&ptr)), t)
+}
+
+// artFile is the file the image's art is read from: "" when it has none
+// (an icon shown by its name, which the theme decides at each draw).
+func (a *appIcon) artFile() string {
+	var file *gio.FileBase
+	switch a.img.GetStorageType() {
+	case gtk.ImageGiconValue:
+		if g := a.img.GetGicon(); g != nil && isA(g.GoPointer(), gio.FileIconGLibType()) {
+			icon := gio.FileIcon{}
+			icon.Ptr = g.GoPointer()
+			file = icon.GetFile()
+		}
+	case gtk.ImagePaintableValue:
+		if p := a.img.GetPaintable(); p != nil && isA(p.GoPointer(), gtk.IconPaintableGLibType()) {
+			icon := gtk.IconPaintable{}
+			icon.Ptr = p.GoPointer()
+			file = icon.GetFile()
+		}
+	}
+	if file == nil {
+		return ""
+	}
+	return file.GetPath()
+}
+
+// fitFor is how the image's art fits the shape in square: what was
+// measured of its file before, else measured now; false when it cannot be
+// drawn yet.
+func (a *appIcon) fitFor(w *gtk.Widget, square *graphene.Rect) (artFit, bool) {
+	key, keyed := artKeyOf(a.artFile(), square.GetWidth())
+	if fit, ok := artFits[key]; ok && keyed {
+		return fit, true
+	}
+	fit, ok := a.measureArt(w, square)
+	if ok && keyed {
+		artFits[key] = fit
+	}
+	return fit, ok
 }
 
 // artRenderer draws an icon's art off screen to measure it.

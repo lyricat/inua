@@ -175,6 +175,43 @@ Kept now: Files (54 MB)                                    [ Quit them ]
 - A kept app quits when a screen reader is turned on, so that its next
   start has accessibility (see above).
 
+## The launcher: from a key to its results
+
+The launcher builds every result again when the results change: at each
+open and each key. With 88 apps in the grid, in a nested Hyprland, the
+medians in milliseconds until the frame with the new results was painted:
+
+| | Before | After |
+| --- | ---: | ---: |
+| Open (not the shell's first) | 242 | 62 |
+| A key leaving 89 apps | 209 | 41 |
+| A key leaving 49 apps | 161 | 34 |
+| A key leaving 20 apps (no foot) | 52 | 15 |
+| A key leaving 4 apps | 12 | 5 |
+
+Building the widgets was never the cost (6 to 10 ms for 88 cells). The
+frame after it was:
+
+- **Every icon decoded again, ~1 ms each.** A cell's image was given the
+  icon's file, which GTK reads and decodes for each new image, the ones
+  scrolled out of sight too. The grid's icons are now paintables looked
+  up once and shared by the cells and the foot's copies, kept from one
+  open to the next and dropped when the icon themes or the apps change
+  (`gridIcon`). The shell's first open still decodes them all, ~180 ms.
+- **Every icon measured again.** `uikit.AppIcon` draws an icon's art off
+  screen and reads its pixels to see how it fits the shape, once for each
+  widget: 330 times a rebuild. The measurement is now kept by the icon's
+  file (its path, time and size) and the side drawn (`artFits`), for the
+  dock and the drawer as well.
+- **The blurred foot, ~70 ms.** Eight strips each held their own copy of
+  the lines below the view, some 240 cells made, laid out and drawn. One
+  copy is now drawn eight times, cut to each strip and blurred
+  (`drawFoot`); the picture is the same to within one level of a colour.
+
+The marks were temporary, as above: a line at each frame the launcher's
+frame clock painted, with the time since the key, and a timer typing the
+queries.
+
 ## Lessons for the next time
 
 - **Time what the user sees.** Mark the first frame and the moment the

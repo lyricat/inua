@@ -432,11 +432,12 @@ how errors are shown, is in [design/ui.md](../design/ui.md); in short:
   query's edges. All results are built, again only when they change
   (`Version`), in a scroll area that follows the selection. Below it,
   under apps, a foot shows the apps that come next, blurred more the
-  lower: strips, each holding copies of the lines just below the view,
-  scrolled to line up and blurred one step more (GTK's CSS has no
-  backdrop filter, and a `GtkWidgetPaintable` of the results is empty
-  below the view: GTK does not draw what is scrolled out of sight),
-  under a fade. Answers, commands, the web search and the assistant
+  lower: one copy of the lines just below the view, drawn once for each
+  of eight strips, moved to line up and blurred one step more (GTK's CSS
+  has no backdrop filter, and a `GtkWidgetPaintable` of the results is
+  empty below the view: GTK does not draw what is scrolled out of
+  sight), under a fade. The grid's icons are decoded once and kept from
+  one open to the next ([performance.md](performance.md)). Answers, commands, the web search and the assistant
   follow the apps (`appsFirst`, the best match still selected), two to a
   line (`RowCols`), and stay below the foot, sharp, in at most half the
   results' height (`Launcher.Pinned`); with no apps they fill the results. The selection is one box over the results (`highlight`)

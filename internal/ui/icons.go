@@ -76,6 +76,7 @@ func (s *shellUI) loadIcons() {
 	}
 	loadIconTheme(&appIcons, s.cfg.Style.AppIconTheme(), "apps")
 	loadIconTheme(&inuaIcons, s.cfg.Style.InuaIconTheme(), "inua's apps")
+	s.dropLauncherIcons()
 }
 
 // loadIconTheme makes *theme a GtkIconTheme of the theme name, nil for

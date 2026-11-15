@@ -141,7 +141,7 @@ type shellUI struct {
 	onLauncherGone         glib.SourceFunc
 	onLauncherScrolled     func(gtk.Adjustment)
 	onLauncherLaidOut      func(gtk.Adjustment)
-	onLauncherFootLaidOut  func(gtk.Adjustment)
+	onLauncherFootGone     func(gtk.Widget)
 	onLauncherTick         gtk.TickCallback
 	onOverviewKey          func(gtk.EventControllerKey, uint32, uint32, gdk.ModifierType) bool
 	onOverviewButton       func(gtk.Button)
@@ -1348,6 +1348,7 @@ func (s *shellUI) scanApps() {
 				s.notes.apps[e.ID] = e
 				s.notes.apps[strings.ToLower(e.ID)] = e
 			}
+			s.dropLauncherIcons() // an app's icon may be another file now
 			s.syncLauncher()
 			log.Printf("desktop: %d entries", len(entries))
 		})

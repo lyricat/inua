@@ -2,6 +2,8 @@ package uikit
 
 import (
 	"math"
+	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"testing"
@@ -136,5 +138,37 @@ func TestCircleOutline(t *testing.T) {
 	}
 	if steps[1].args[5]+steps[2].args[5] != 0 {
 		t.Errorf("the halves do not meet: %v %v", steps[1].args, steps[2].args)
+	}
+}
+
+// An icon's measurement is kept under its file as it is and the size it
+// was drawn at: the same file gives the same key, another size or a
+// changed file another, and no file none.
+func TestArtKeyOf(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "app.png")
+	if _, ok := artKeyOf(path, 64); ok {
+		t.Error("a missing file has a key")
+	}
+	if _, ok := artKeyOf("", 64); ok {
+		t.Error("no file has a key")
+	}
+	if err := os.WriteFile(path, []byte("one"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	a, ok := artKeyOf(path, 64)
+	if !ok {
+		t.Fatal("a file has no key")
+	}
+	if b, _ := artKeyOf(path, 63.6); b != a {
+		t.Errorf("the same file and size: %v, want %v", b, a)
+	}
+	if b, _ := artKeyOf(path, 48); b == a {
+		t.Error("another size has the same key")
+	}
+	if err := os.WriteFile(path, []byte("another"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if b, _ := artKeyOf(path, 64); b == a {
+		t.Error("the file changed and its key did not")
 	}
 }

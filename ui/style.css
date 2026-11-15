@@ -376,14 +376,6 @@ window.launcher { background: transparent; }
    window; edge to edge as the results are, the copies padded as they. */
 .launcher .results-foot { margin: 0; padding: 0; }
 .launcher .results-foot .ghost { padding: 0 18px; }
-.launcher .results-foot .blur1 { filter: blur(0.75px); }
-.launcher .results-foot .blur2 { filter: blur(1.5px); }
-.launcher .results-foot .blur3 { filter: blur(2.25px); }
-.launcher .results-foot .blur4 { filter: blur(3px); }
-.launcher .results-foot .blur5 { filter: blur(3.75px); }
-.launcher .results-foot .blur6 { filter: blur(4.5px); }
-.launcher .results-foot .blur7 { filter: blur(5.25px); }
-.launcher .results-foot .blur8 { filter: blur(6px); }
 .launcher .results-fade { background: linear-gradient(to bottom, alpha(@app, 0), alpha(@app, 0.35)); }
 .launcher .row {
   padding: 7px 10px;

@@ -15395,7 +15395,7 @@ msgstr ""
 msgid "hyprland.conf sets these again after loading inua.conf, which wins over inua: %s. Move the source line below them."
 msgstr ""
 
-#: internal/ui/launcher.go:564
+#: internal/ui/launcher.go:579
 msgid "inua launcher"
 msgstr ""
 

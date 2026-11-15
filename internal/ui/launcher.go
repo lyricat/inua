@@ -40,10 +40,12 @@ const gridCols = 6
 const pageLines = 3
 
 // The blurred foot of the results: blurSteps strips of stripHeight pixels,
-// blurred more the lower (style.css's blur1 to blur8).
+// blurred more the lower, by blurStep each (a blur's standard deviation,
+// as CSS's blur() takes).
 const (
 	blurSteps   = 8
 	stripHeight = 8
+	blurStep    = 0.75
 )
 
 // Moving the selection, the view scrolls and the highlight glides to it,
@@ -78,14 +80,24 @@ type launcher struct {
 	foot         gtk.Overlay
 	blur         gtk.Box
 	fade         gtk.Box
-	strips       []blurStrip // the blurred foot, top to bottom
-	// The lines the foot's strips copy (l.lines[footFrom:footTo]), and
-	// where the first is in the results.
+	// The blurred foot: one copy of the lines just below the view (ghost),
+	// which strips draws once for each strip, blurred more the lower. Not
+	// a picture of the results: GTK leaves what is scrolled out of sight
+	// out of their drawing, so a picture has nothing below the view. And
+	// one copy, not one a strip: making and drawing eight took most of
+	// the time between a key and its results.
+	strips *gtk.Widget
+	ghost  *gtk.Box
+	// The lines the ghost copies (l.lines[footFrom:footTo]), where the
+	// first is in the results, and how far down the ghost the foot starts.
 	footFrom, footTo int
 	footTop          float64
-	// The foot's icons by name, each looked up and decoded once while the
-	// launcher is open and shared by every copy of its cell.
-	footIcons  map[string]*gtk.IconPaintable
+	footShift        float64
+	// The grid's icons, each looked up and decoded once and shared by its
+	// cell and the foot's copies of it, from one open to the next
+	// (dropLauncherIcons): decoding one takes a millisecond or two, and
+	// the grid is made again at every key.
+	icons      map[gridIcon]*gtk.IconPaintable
 	pinned     gtk.Box
 	pinScroll  gtk.ScrolledWindow
 	messageBox gtk.Box
@@ -118,14 +130,11 @@ type launcher struct {
 	follow  bool
 }
 
-// blurStrip is one strip of the blurred foot: copies of the lines just
-// below the view (ghost) in a scrolled window without scrollbars, a strip
-// high whatever their height, scrolled to line up with the results. Not
-// a picture of the results: GTK leaves what is scrolled out of sight out
-// of their drawing, so a picture has nothing below the view.
-type blurStrip struct {
-	view  gtk.ScrolledWindow
-	ghost gtk.Box
+// gridIcon names an icon of the grid: an app's icon (a theme name or a
+// file) at a scale.
+type gridIcon struct {
+	name  string
+	scale int32
 }
 
 // shownLine is a line of results and its widget, a row or a grid line.
@@ -159,8 +168,14 @@ func (s *shellUI) bindLauncherHandlers() {
 		s.placeFoot()
 	}
 	s.onLauncherTick = func(uintptr, uintptr, uintptr) bool { return s.stepLauncher() }
-	// A strip's copy is laid out after the results: place it again.
-	s.onLauncherFootLaidOut = func(gtk.Adjustment) { s.placeFoot() }
+	s.onLauncherFootGone = func(w gtk.Widget) {
+		// The strips let their ghost go; a launcher opened since has its own.
+		if l := &s.launcher; l.strips != nil && l.strips.GoPointer() == w.GoPointer() {
+			l.ghost.Unparent()
+			l.strips, l.ghost = nil, nil
+		}
+		gtkx.ForgetCanvas(&w)
+	}
 	s.onLauncherCatch = func(g gtk.GestureClick, _ int32, x, y float64) {
 		b := s.barUnder(g.GetWidget())
 		s.cancelLauncher()
@@ -584,29 +599,58 @@ func (s *shellUI) buildLauncher() {
 	s.buildFoot()
 }
 
-// buildFoot makes the blurred foot's strips, empty till placeFoot copies
-// lines into them.
+// buildFoot makes the blurred foot: the strips, and their ghost, empty
+// till placeFoot copies lines into it.
 func (s *shellUI) buildFoot() {
 	l := &s.launcher
-	l.strips, l.footFrom, l.footTo = l.strips[:0], -1, -1
-	for _, p := range l.footIcons {
-		p.Unref()
+	l.footFrom, l.footTo, l.footShift = -1, -1, 0
+	l.ghost = gtk.NewBox(gtk.OrientationVerticalValue, 0)
+	l.ghost.AddCssClass("ghost")
+	l.strips = gtkx.NewCanvas(&gtkx.Canvas{Snapshot: s.drawFoot, Allocate: s.allocateFoot, Measure: s.measureFoot})
+	l.strips.ConnectDestroy(&s.onLauncherFootGone)
+	l.ghost.SetParent(l.strips)
+	l.ghost.Unref() // the strips hold it
+	l.blur.Append(l.strips)
+}
+
+// measureFoot is the strips' size: as wide as the ghost, and their own
+// height whatever the ghost's.
+func (s *shellUI) measureFoot(_ *gtk.Widget, o gtk.Orientation, forSize int) (int, int) {
+	if o == gtk.OrientationVerticalValue {
+		return blurSteps * stripHeight, blurSteps * stripHeight
 	}
-	l.footIcons = map[string]*gtk.IconPaintable{}
+	var m, n int32
+	s.launcher.ghost.Measure(o, -1, &m, &n, nil, nil)
+	return int(m), int(n)
+}
+
+// allocateFoot gives the ghost the strips' width and its own height, from
+// their top: drawFoot moves it up into place.
+func (s *shellUI) allocateFoot(_ *gtk.Widget, width, height int) {
+	var m, n int32
+	s.launcher.ghost.Measure(gtk.OrientationVerticalValue, int32(width), &m, &n, nil, nil)
+	s.launcher.ghost.Allocate(int32(width), max(n, int32(height)), -1, nil)
+}
+
+// drawFoot draws the strips: the ghost again for each, moved up by
+// footShift so it lines up with the results, cut to the strip and blurred
+// a step more than the one above.
+func (s *shellUI) drawFoot(w *gtk.Widget, snap *gtk.Snapshot) {
+	l := &s.launcher
+	if l.ghost == nil {
+		return
+	}
 	for i := range blurSteps {
-		ghost := gtk.NewBox(gtk.OrientationVerticalValue, 0)
-		ghost.AddCssClass("ghost")
-		ghost.AddCssClass(fmt.Sprintf("blur%d", i+1))
-		view := gtk.NewScrolledWindow()
-		view.SetPolicy(gtk.PolicyExternalValue, gtk.PolicyExternalValue)
-		view.SetPropagateNaturalHeight(false)
-		view.SetMinContentHeight(stripHeight)
-		view.SetMaxContentHeight(stripHeight)
-		view.SetChild(&ghost.Widget)
-		view.GetVadjustment().ConnectChanged(&s.onLauncherFootLaidOut)
-		l.strips = append(l.strips, blurStrip{view: *view, ghost: *ghost})
-		ghost.Unref()
-		gtkx.Append(&l.blur, &view.Widget)
+		var strip graphene.Rect
+		strip.Init(0, float32(i*stripHeight), float32(w.GetWidth()), stripHeight)
+		snap.PushClip(&strip)
+		snap.PushBlur(2 * blurStep * float64(i+1)) // GSK's radius is twice the deviation
+		snap.Save()
+		snap.Translate(&graphene.Point{Y: -float32(math.Round(l.footShift))})
+		w.SnapshotChild(&l.ghost.Widget, snap)
+		snap.Restore()
+		snap.Pop()
+		snap.Pop()
 	}
 }
 
@@ -822,8 +866,7 @@ func (s *shellUI) stepLauncher() bool {
 	if sel >= l.pin && sel < len(l.items) {
 		s.showPinned(sel)
 	}
-	// The foot's strips take their places once laid out, which no
-	// signal the bindings have tells.
+	// The foot takes its place once the results are laid out.
 	if !s.placeFoot() {
 		busy = true
 	}
@@ -834,13 +877,13 @@ func (s *shellUI) stepLauncher() bool {
 	return busy
 }
 
-// placeFoot copies into the foot's strips the lines just below the view
-// (again only when they change) and scrolls each strip to line up with
-// the results there: blank past their end. It reports whether every strip
-// is in place: one set while it is laid out keeps where it was.
+// placeFoot copies into the foot's ghost the lines just below the view
+// (again only when they change) and moves it to line up with the results
+// there: blank past their end. It reports whether the foot is in place:
+// false while the results are not laid out yet.
 func (s *shellUI) placeFoot() bool {
 	l := &s.launcher
-	if l.win == nil {
+	if l.win == nil || l.ghost == nil {
 		return true
 	}
 	adj := l.scroll.GetVadjustment()
@@ -879,54 +922,65 @@ func (s *shellUI) placeFoot() bool {
 		s.copyFoot(cf, ct)
 		l.footFrom, l.footTo, l.footTop = cf, ct, top
 	}
-	placed := true
-	for i, st := range l.strips {
-		adj := st.view.GetVadjustment()
-		want := foot - l.footTop + float64(i*stripHeight)
-		if from < 0 {
-			want = 0
-		}
-		adj.SetValue(want)
-		end := adj.GetUpper() - adj.GetPageSize()
-		placed = placed && adj.GetUpper() > band && math.Abs(adj.GetValue()-min(want, end)) < 0.5
+	shift := 0.0
+	if from >= 0 {
+		shift = foot - l.footTop
 	}
-	return placed
+	if shift != l.footShift {
+		l.footShift = shift
+		l.strips.QueueDraw()
+	}
+	return true
 }
 
-// copyFoot fills each strip with copies of lines from to to, each as
-// tall as the line, and a blank as tall as the foot below them. Apps are
+// copyFoot fills the ghost with copies of lines from to to, each as tall
+// as the line, and a blank as tall as the foot below them. Apps are
 // copied; a row (not blurred) is left blank.
 func (s *shellUI) copyFoot(from, to int) {
 	l := &s.launcher
-	for _, st := range l.strips {
-		gtkx.Clear(&st.ghost)
-		for n := from; n < to && n >= 0; n++ {
-			ln := l.lines[n]
-			line := gtk.NewBox(gtk.OrientationHorizontalValue, 4)
-			line.SetHalign(gtk.AlignStartValue)
-			if b, ok := s.bounds(&ln.w); ok {
-				line.SetSizeRequest(-1, int32(math.Round(b[3])))
-			}
-			for i := ln.ln.Start; ln.ln.Grid && i < ln.ln.End && l.st.Results[i].Entry != nil; i++ {
-				gtkx.Append(line, s.ghostCell(i))
-			}
-			gtkx.Append(&st.ghost, &line.Widget)
+	gtkx.Clear(l.ghost)
+	for n := from; n < to && n >= 0; n++ {
+		ln := l.lines[n]
+		line := gtk.NewBox(gtk.OrientationHorizontalValue, 4)
+		line.SetHalign(gtk.AlignStartValue)
+		if b, ok := s.bounds(&ln.w); ok {
+			line.SetSizeRequest(-1, int32(math.Round(b[3])))
 		}
-		blank := gtk.NewBox(gtk.OrientationVerticalValue, 0)
-		blank.SetSizeRequest(-1, blurSteps*stripHeight)
-		gtkx.Append(&st.ghost, &blank.Widget)
+		for i := ln.ln.Start; ln.ln.Grid && i < ln.ln.End && l.st.Results[i].Entry != nil; i++ {
+			gtkx.Append(line, s.ghostCell(i))
+		}
+		gtkx.Append(l.ghost, &line.Widget)
 	}
+	blank := gtk.NewBox(gtk.OrientationVerticalValue, 0)
+	blank.SetSizeRequest(-1, blurSteps*stripHeight)
+	gtkx.Append(l.ghost, &blank.Widget)
 }
 
-// footIcon is the icon setIcon would show for name, at the grid's size,
-// from the foot's cache: the same themes in the same order.
-func (s *shellUI) footIcon(name string) *gtk.IconPaintable {
+// dropLauncherIcons forgets the grid's icons: the icon themes or the apps
+// have changed.
+func (s *shellUI) dropLauncherIcons() {
 	l := &s.launcher
-	if p, ok := l.footIcons[name]; ok {
-		return p
+	for _, p := range l.icons {
+		if p != nil {
+			p.Unref()
+		}
 	}
+	l.icons = nil
+}
+
+// gridIcon is the icon setIcon would show for name, at the grid's size,
+// from the launcher's cache: the same themes in the same order.
+func (s *shellUI) gridIcon(name string) *gtk.IconPaintable {
+	l := &s.launcher
 	const size = 64
 	scale := l.win.GetScaleFactor()
+	key := gridIcon{name, scale}
+	if p, ok := l.icons[key]; ok {
+		return p
+	}
+	if l.icons == nil {
+		l.icons = map[gridIcon]*gtk.IconPaintable{}
+	}
 	var p *gtk.IconPaintable
 	display := gtk.IconThemeGetForDisplay(gdk.DisplayGetDefault())
 	defer display.Unref()
@@ -957,7 +1011,7 @@ func (s *shellUI) footIcon(name string) *gtk.IconPaintable {
 			p = display.LookupIcon("application-x-executable", nil, size, scale, gtk.TextDirLtrValue, 0)
 		}
 	}
-	l.footIcons[name] = p
+	l.icons[key] = p
 	return p
 }
 
@@ -970,7 +1024,7 @@ func (s *shellUI) ghostCell(i int) *gtk.Widget {
 	cell.SetSizeRequest(124, -1)
 	cell.SetHexpand(false)
 	icon := gtk.NewImage()
-	if p := s.footIcon(r.Icon); p != nil {
+	if p := s.gridIcon(r.Icon); p != nil {
 		icon.SetFromPaintable(p)
 	}
 	icon.SetPixelSize(64)
@@ -1035,7 +1089,11 @@ func (s *shellUI) launcherCell(cellUI string, i int) *gtk.Widget {
 	ui.Get("icon", &icon)
 	ui.Get("title", &title)
 	ui.Close()
-	setIcon(&icon, r.Icon)
+	if p := s.gridIcon(r.Icon); p != nil {
+		icon.SetFromPaintable(p)
+	} else {
+		setIcon(&icon, r.Icon)
+	}
 	uikit.AppIcon(&icon, &cell)
 	title.SetText(r.Title)
 	cell.SetTooltipText(cmp.Or(r.Detail, r.Title))
