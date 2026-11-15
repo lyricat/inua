@@ -23,3 +23,11 @@ notes:
 - make test passed with throwaway HOME and isolated session environment: 18 Python session tests, go vet ./..., and CGO_ENABLED=1 go test -race ./... (117 packages passed). Earlier command setup errors were corrected before the successful full run.
 - Catalog extraction in a scratch copy matches committed catalogs; changed Go files are gofmt-clean. No installs or tracked-file changes.
 - UI was not visually or interactively checked; PR-author live two-monitor validation remains unverified. Synthetic compositor events, cross-monitor keyboard focus and entering from outside overview were not exercised. No automated test covers the new pointer gating.
+
+## factory · 2026-11-15 21:15
+Shipped to master by the interrupted ship run; completing board bookkeeping after owner-requested fresh Claude Code review.
+Merge: d04821ce7cf1fa80f78f6fc30134d2cfb260a2c4
+Release: v0.1.40 (master c103e6af70910e604a357f13e3fdb7a75c00ee67); remote master and tag verified.
+Claude Code independently reviewed combined range 66672412..c103e6af, all 16 changed files, and found no P0/P1. Isolated make test passed (Python session tests, go vet, race-enabled Go tests, 117 packages); gofmt and diff checks clean. No installs, edits or commits by reviewer.
+Linked PR #98 is already merged.
+UI not checked visually or interactively; no deployment or restart. Factory branches retained (clean not configured).

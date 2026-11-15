@@ -57,3 +57,11 @@ notes:
 Validation: Claude Code reviewed origin/master...HEAD against the request and plan. No P0/P1 findings. make test passed with a throwaway HOME/runtime directory (Python session tests, go vet, race-enabled Go tests). Three throwaway overlay probes verified partial failure/undo and cancellation behavior; exported-copy make i18n matched committed catalogs. Worktree remained clean at the reviewed head. No installs. Branch merges cleanly with origin/master.
 
 Not checked: UI was not checked by eye; long-name layout, rendering, focus and translations need human review. Midway job cancellation and search/picker exclusion lack direct regression tests. The destination Lstat-to-move race was not reproduced; slow-filesystem cost of dialog Lstat calls was not measured. P2/P3 notes are non-blocking under factory policy and should be considered before ship. No linked issues or PRs were declared.
+
+## factory · 2026-11-15 21:15
+Shipped to master by the interrupted ship run; completing board bookkeeping after owner-requested fresh Claude Code review.
+Merge: c103e6af70910e604a357f13e3fdb7a75c00ee67
+Release: v0.1.40 (master c103e6af70910e604a357f13e3fdb7a75c00ee67); remote master and tag verified.
+Claude Code independently reviewed combined range 66672412..c103e6af, all 16 changed files, and found no P0/P1. Isolated make test passed (Python session tests, go vet, race-enabled Go tests, 117 packages); gofmt and diff checks clean. No installs, edits or commits by reviewer.
+No linked issues or PRs. Known non-blocking P2 Gather undo may trash remaining content after move-back failures; P3 cancellation during counting can leave an empty folder. Both retained following fresh review; no fixes made.
+UI not checked visually or interactively; no deployment or restart. Factory branches retained (clean not configured).
