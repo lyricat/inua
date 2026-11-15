@@ -847,6 +847,9 @@ func (w *window) menuItems(p *pane) []menuItem {
 		)
 	}
 	items = append(items, sep)
+	if !one && p.mode == inFolder {
+		items = append(items, w.item("gather", i18n.T("New folder with the selection…"), ""))
+	}
 	if one {
 		items = append(items, w.item("rename", i18n.T("Rename…"), "F2"))
 	} else {
@@ -986,6 +989,10 @@ func (w *window) do(id string) {
 	case "new-folder", "new-file":
 		if p.mode == inFolder {
 			w.askNewName(p.dir, id == "new-folder")
+		}
+	case "gather":
+		if p.mode == inFolder && w.pick == nil && len(sel) > 1 {
+			w.askGather(p.dir, sel)
 		}
 	case "terminal":
 		w.terminal(p.dir)

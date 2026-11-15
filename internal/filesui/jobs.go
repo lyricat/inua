@@ -142,7 +142,7 @@ func describe(j files.Job, pr files.Progress) string {
 	switch j.Kind {
 	case files.Copy:
 		return i18n.Tf("Copying %s to %s", cmp.Or(what, i18n.Nf("%d item", "%d items", n, n)), dest) + count
-	case files.Move:
+	case files.Move, files.Gather:
 		return i18n.Tf("Moving %s to %s", cmp.Or(what, i18n.Nf("%d item", "%d items", n, n)), dest) + count
 	case files.MoveToTrash:
 		return i18n.Tf("Moving %s to the trash", cmp.Or(what, i18n.Nf("%d item", "%d items", n, n))) + count

@@ -149,7 +149,7 @@ Selection and changes
 | F2 | Rename (the name but its last extension is selected: `archive.tar` of `archive.tar.gz`; a folder's name, or one with no extension, whole) |
 | Delete | Move to the trash (in the trash: delete for good) |
 | Shift+Delete | Delete for good (asks first) |
-| Ctrl+Shift+N / Ctrl+Alt+N | New folder / new empty file |
+| Ctrl+Shift+N / Ctrl+Alt+N | New folder / new empty file (the name suggested is selected, to be typed over) |
 | Ctrl+Z | Undo the last operations, one at a time |
 | F5 / F6 | Copy / move the selection to the other pane (one pane: F5 reloads) |
 | Ctrl+D | Bookmark this folder, or remove its bookmark |
@@ -303,6 +303,14 @@ until then.
 - Undo puts back what can be put back: a rename or a move (moved back), a
   trashing (restored), something made or copied (trashed). Deleting for
   good cannot be undone and asks first.
+- **New folder with the selection…**, in the menu of more than one item
+  selected in a folder, asks the new folder's name on a card that lists
+  the items and says they move into it. The folder is made first, in the
+  folder shown: when it cannot be (the name taken, no permission), nothing
+  moves. An item that cannot be moved stays where it was and is listed
+  with the reason, the folder keeping the ones that did; nothing is
+  written over. Cancelling the card does nothing. Undo moves the items
+  back and trashes the folder.
 - Drag and drop: drag items to another pane, onto a folder, or to another
   app (as `text/uri-list`); drop files from other apps. Within a
   filesystem a drop moves, across filesystems it copies; Ctrl copies,

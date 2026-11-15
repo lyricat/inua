@@ -894,3 +894,200 @@ func TestIsLocalURITakesRelativePaths(t *testing.T) {
 		}
 	}
 }
+
+// Gather makes a folder and moves files, folders and links into it; undo
+// puts them back.
+func TestGather(t *testing.T) {
+	root := t.TempDir()
+	t.Setenv("XDG_DATA_HOME", filepath.Join(root, "data"))
+	dir := filepath.Join(root, "dir")
+	tree(t, dir, map[string]string{"a.txt": "a", "b.txt": "b", "d/in.txt": "in", "d/sub/deep.txt": "deep", "stay.txt": "stay"})
+	os.Mkdir(filepath.Join(dir, "empty"), 0o755)
+	os.Symlink("a.txt", filepath.Join(dir, "link"))
+	dest := filepath.Join(dir, "New Folder")
+	var srcs []string
+	for _, n := range []string{"a.txt", "b.txt", "d", "empty", "link"} {
+		srcs = append(srcs, filepath.Join(dir, n))
+	}
+	var last Progress
+	r := Runner{Report: func(p Progress) { last = p }}
+	undo, err := r.Run(context.Background(), Job{Kind: Gather, Sources: srcs, Dest: dest})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, s := range srcs {
+		if exists(s) {
+			t.Errorf("%s was left behind", s)
+		}
+	}
+	if read(t, filepath.Join(dest, "a.txt")) != "a" || read(t, filepath.Join(dest, "b.txt")) != "b" ||
+		read(t, filepath.Join(dest, "d", "sub", "deep.txt")) != "deep" || !exists(filepath.Join(dest, "empty")) {
+		t.Error("the items are not in the new folder as they were")
+	}
+	if target, err := os.Readlink(filepath.Join(dest, "link")); err != nil || target != "a.txt" {
+		t.Errorf("the link: %q, %v", target, err)
+	}
+	if read(t, filepath.Join(dir, "stay.txt")) != "stay" {
+		t.Error("an item not selected was touched")
+	}
+	if last.TotalItems == 0 || last.Items != last.TotalItems {
+		t.Errorf("progress %d of %d", last.Items, last.TotalItems)
+	}
+	if len(undo.Created) != 1 || undo.Created[0] != dest || len(undo.Moves) != len(srcs) {
+		t.Fatalf("undo %+v", undo)
+	}
+	for _, j := range undo.Job() {
+		if _, err := run(t, j, nil); err != nil {
+			t.Fatalf("undo: %v", err)
+		}
+	}
+	if exists(dest) || read(t, filepath.Join(dir, "a.txt")) != "a" || read(t, filepath.Join(dir, "d", "in.txt")) != "in" ||
+		!exists(filepath.Join(dir, "empty")) || !exists(filepath.Join(dir, "link")) {
+		t.Error("undo did not put the items back and take the folder away")
+	}
+}
+
+// A folder that cannot be made moves nothing.
+func TestGatherFolderNotMade(t *testing.T) {
+	root := t.TempDir()
+	tree(t, root, map[string]string{"a.txt": "a", "d/in.txt": "in"})
+	srcs := []string{filepath.Join(root, "a.txt"), filepath.Join(root, "d")}
+	unmoved := func(when string) {
+		t.Helper()
+		if read(t, filepath.Join(root, "a.txt")) != "a" || read(t, filepath.Join(root, "d", "in.txt")) != "in" {
+			t.Errorf("%s: the items moved", when)
+		}
+	}
+	var notMade *NotMadeError
+
+	// The name taken by a folder: not used as the new one.
+	taken := filepath.Join(root, "taken")
+	tree(t, taken, map[string]string{"old.txt": "old"})
+	undo, err := run(t, Job{Kind: Gather, Sources: srcs, Dest: taken}, nil)
+	if !errors.As(err, &notMade) || !errors.Is(err, fs.ErrExist) || !undo.Empty() {
+		t.Errorf("taken by a folder: %v, undo %+v", err, undo)
+	}
+	unmoved("taken by a folder")
+	if es, _ := os.ReadDir(taken); len(es) != 1 || read(t, filepath.Join(taken, "old.txt")) != "old" {
+		t.Error("the folder that was there was changed")
+	}
+
+	// Taken by a file, and by one of the items themselves.
+	for _, dest := range []string{filepath.Join(root, "a.txt"), filepath.Join(root, "d")} {
+		undo, err = run(t, Job{Kind: Gather, Sources: srcs, Dest: dest}, nil)
+		if !errors.As(err, &notMade) || !undo.Empty() {
+			t.Errorf("%s: %v, undo %+v", dest, err, undo)
+		}
+		unmoved(dest)
+	}
+
+	// A parent that is not there.
+	undo, err = run(t, Job{Kind: Gather, Sources: srcs, Dest: filepath.Join(root, "none", "new")}, nil)
+	if !errors.As(err, &notMade) || !undo.Empty() || exists(filepath.Join(root, "none")) {
+		t.Errorf("no parent: %v, undo %+v", err, undo)
+	}
+	unmoved("no parent")
+
+	// A folder that cannot be written in.
+	if os.Getuid() != 0 {
+		locked := filepath.Join(root, "locked")
+		tree(t, locked, map[string]string{"x.txt": "x", "y.txt": "y"})
+		os.Chmod(locked, 0o500)
+		defer os.Chmod(locked, 0o700)
+		undo, err = run(t, Job{Kind: Gather, Sources: []string{filepath.Join(locked, "x.txt"), filepath.Join(locked, "y.txt")}, Dest: filepath.Join(locked, "new")}, nil)
+		if !errors.As(err, &notMade) || !errors.Is(err, fs.ErrPermission) || !undo.Empty() {
+			t.Errorf("no permission: %v, undo %+v", err, undo)
+		}
+		if read(t, filepath.Join(locked, "x.txt")) != "x" || read(t, filepath.Join(locked, "y.txt")) != "y" || exists(filepath.Join(locked, "new")) {
+			t.Error("no permission: something changed")
+		}
+	}
+
+	// Cancelled before it starts.
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	var r Runner
+	dest := filepath.Join(root, "new")
+	if _, err := r.Run(ctx, Job{Kind: Gather, Sources: srcs, Dest: dest}); !errors.Is(err, ErrCancelled) {
+		t.Errorf("cancelled: %v", err)
+	}
+	unmoved("cancelled")
+}
+
+// Items that cannot be moved stay as they were and are named; the rest
+// go in, the folder stays, and nothing is written over.
+func TestGatherSomeNotMoved(t *testing.T) {
+	root := t.TempDir()
+	t.Setenv("XDG_DATA_HOME", filepath.Join(root, "data"))
+	dir := filepath.Join(root, "dir")
+	tree(t, dir, map[string]string{"a.txt": "a", "d/in.txt": "in", "z.txt": "z", "other/a.txt": "another a"})
+	dest := filepath.Join(dir, "new")
+	srcs := []string{
+		filepath.Join(dir, "a.txt"),
+		filepath.Join(dir, "gone.txt"),       // not there any more
+		filepath.Join(dir, "other", "a.txt"), // its name is taken in the folder by then
+		filepath.Join(dir, "d"),
+		filepath.Join(dir, "z.txt"),
+	}
+	if os.Getuid() != 0 {
+		// An item that may not leave its folder.
+		tree(t, filepath.Join(root, "locked"), map[string]string{"held.txt": "held"})
+		os.Chmod(filepath.Join(root, "locked"), 0o500)
+		defer os.Chmod(filepath.Join(root, "locked"), 0o700)
+		srcs = append(srcs, filepath.Join(root, "locked", "held.txt"))
+	}
+	asked := false
+	undo, err := run(t, Job{Kind: Gather, Sources: srcs, Dest: dest}, func(Conflict) (Answer, bool) {
+		asked = true
+		return Replace, true
+	})
+	if err == nil {
+		t.Fatal("no error for the items left")
+	}
+	var notMade *NotMadeError
+	if errors.As(err, &notMade) {
+		t.Errorf("the folder was made: %v", err)
+	}
+	if asked {
+		t.Error("asked whether to replace an item in the new folder")
+	}
+	lines := strings.Split(err.Error(), "\n")
+	if len(lines) != len(srcs)-3 {
+		t.Errorf("errors %q, want one for each item left", lines)
+	}
+	for _, name := range []string{"gone.txt", "other/a.txt", "held.txt"} {
+		if name == "held.txt" && os.Getuid() == 0 {
+			continue
+		}
+		if !strings.Contains(err.Error(), name) {
+			t.Errorf("the errors do not name %s: %v", name, err)
+		}
+	}
+	// Moved: a.txt, d and z.txt, the one after the failures too.
+	if read(t, filepath.Join(dest, "a.txt")) != "a" || read(t, filepath.Join(dest, "d", "in.txt")) != "in" || read(t, filepath.Join(dest, "z.txt")) != "z" {
+		t.Error("the items that could move are not in the folder")
+	}
+	// Left, as they were.
+	if read(t, filepath.Join(dir, "other", "a.txt")) != "another a" {
+		t.Error("the item whose name was taken is not where it was")
+	}
+	if os.Getuid() != 0 && read(t, filepath.Join(root, "locked", "held.txt")) != "held" {
+		t.Error("the item that could not leave is not where it was")
+	}
+	if es, _ := os.ReadDir(dest); len(es) != 3 {
+		t.Errorf("the folder holds %d items, want 3", len(es))
+	}
+	// Undo puts back just what moved.
+	if len(undo.Moves) != 3 || len(undo.Created) != 1 {
+		t.Fatalf("undo %+v", undo)
+	}
+	for _, j := range undo.Job() {
+		if _, err := run(t, j, nil); err != nil {
+			t.Fatalf("undo: %v", err)
+		}
+	}
+	if exists(dest) || read(t, filepath.Join(dir, "a.txt")) != "a" || read(t, filepath.Join(dir, "z.txt")) != "z" || read(t, filepath.Join(dir, "d", "in.txt")) != "in" {
+		t.Error("undo did not put back what moved")
+	}
+
+}

@@ -32,6 +32,7 @@ const (
 	Compress                // Sources into the archive Dest (archive.go)
 	Extract                 // each archive of Sources taken apart in the folder Dest
 	RenameMany              // each of Sources to the path at its place in Dests (rename.go)
+	Gather                  // a new folder at Dest, Sources moved into it
 )
 
 // Job is an operation on files.
@@ -114,6 +115,13 @@ func (u Undo) Job() []Job {
 // ErrCancelled is returned when a job was cancelled.
 var ErrCancelled = context.Canceled
 
+// NotMadeError is a Gather job's folder that could not be made: nothing
+// was moved.
+type NotMadeError struct{ Err error }
+
+func (e *NotMadeError) Error() string { return e.Err.Error() }
+func (e *NotMadeError) Unwrap() error { return e.Err }
+
 // ErrIntoItself is returned for copying or moving a folder into itself.
 var ErrIntoItself = errors.New("a folder cannot go into itself")
 
@@ -146,7 +154,7 @@ func (r *Runner) Run(ctx context.Context, job Job) (Undo, error) {
 	r.allFile, r.allDir = Cancel, Cancel
 	r.p = Progress{Started: time.Now()}
 	switch job.Kind {
-	case Copy, Move:
+	case Copy, Move, Gather:
 		r.count(job.Sources)
 	case Compress:
 		// compress counts, as it starts
@@ -266,6 +274,33 @@ func (r *Runner) run(job Job) error {
 		}
 		r.undo.Created = append(r.undo.Created, job.Dest)
 		r.step(0)
+	case Gather:
+		// The folder is made first, and only by this job: when it cannot
+		// be (the name taken, no permission), nothing moves. It stays when
+		// some items could not go in; nothing in it is ever written over.
+		if err := os.Mkdir(job.Dest, 0o755); err != nil {
+			return &NotMadeError{err}
+		}
+		r.undo.Created = append(r.undo.Created, job.Dest)
+		for _, src := range job.Sources {
+			if err := r.cancelled(); err != nil {
+				return err
+			}
+			src = filepath.Clean(src)
+			dst := filepath.Join(job.Dest, filepath.Base(src))
+			if job.Dest == src || strings.HasPrefix(job.Dest, src+"/") {
+				r.fail(fmt.Errorf("%s: %w", src, ErrIntoItself))
+				continue
+			}
+			if _, err := os.Lstat(dst); err == nil {
+				// Two sources of one name, or someone else's file: left.
+				r.fail(&os.LinkError{Op: "rename", Old: src, New: dst, Err: fs.ErrExist})
+				continue
+			}
+			if err := r.moveTop(src, dst); err != nil {
+				return err
+			}
+		}
 	case Compress:
 		if err := r.compress(job.Sources, job.Dest, job.Archive); err != nil {
 			return err

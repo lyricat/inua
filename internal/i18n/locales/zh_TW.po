@@ -372,7 +372,7 @@ msgid "A file from %s"
 msgstr "來自 %s 的檔案"
 
 #: internal/apps/connect/share.go:129
-#: internal/filesui/cards.go:692
+#: internal/filesui/cards.go:761
 #: internal/filesui/picker.go:488
 #: internal/filesui/window.go:815
 #: internal/lightui/workshop_blocks.go:431
@@ -2246,11 +2246,11 @@ msgstr "%s 請求配對。僅在它顯示此金鑰時才配對："
 #: internal/filesui/archive.go:49
 #: internal/filesui/archive.go:309
 #: internal/filesui/cards.go:352
-#: internal/filesui/cards.go:401
-#: internal/filesui/cards.go:448
-#: internal/filesui/cards.go:465
-#: internal/filesui/cards.go:503
-#: internal/filesui/cards.go:602
+#: internal/filesui/cards.go:420
+#: internal/filesui/cards.go:509
+#: internal/filesui/cards.go:526
+#: internal/filesui/cards.go:564
+#: internal/filesui/cards.go:671
 #: internal/filesui/picker.go:368
 #: internal/filesui/remote.go:159
 #: internal/filesui/remote.go:219
@@ -3103,7 +3103,7 @@ msgid "Delete %s for good?"
 msgstr "永久刪除 %s？"
 
 #: internal/diskui/details.go:528
-#: internal/filesui/cards.go:449
+#: internal/filesui/cards.go:510
 #: internal/lightui/calculator.go:59
 #: internal/lightui/calculator.go:353
 #: internal/lightui/gpg.go:1611
@@ -3203,7 +3203,7 @@ msgid "Stop Scanning"
 msgstr ""
 
 #: internal/diskui/window.go:333
-#: internal/filesui/cards.go:696
+#: internal/filesui/cards.go:765
 #: internal/filesui/sidebar.go:41
 #: internal/filesui/tabs.go:99
 #: internal/filesui/window.go:324
@@ -3332,7 +3332,7 @@ msgid_plural "%s in %d folders · %s safe to delete"
 msgstr[0] "%s，%d 個資料夾 · %s 可安全刪除"
 
 #: internal/filesui/app.go:86
-#: internal/filesui/cards.go:703
+#: internal/filesui/cards.go:772
 #: internal/filesui/remote.go:371
 #: internal/filesui/window.go:111
 #: internal/filesui/window.go:317
@@ -3482,7 +3482,7 @@ msgstr "兩次輸入的密碼不一致。"
 
 #: internal/filesui/archive.go:263
 #: internal/filesui/cards.go:365
-#: internal/filesui/cards.go:410
+#: internal/filesui/cards.go:429
 msgid "“%s” is taken here."
 msgstr "這裡已有「%s」。"
 
@@ -3518,7 +3518,7 @@ msgstr[0] "%d 項"
 
 #: internal/filesui/cards.go:353
 #: internal/filesui/cards.go:373
-#: internal/filesui/cards.go:706
+#: internal/filesui/cards.go:775
 #: internal/filesui/renamemany.go:38
 #: internal/term/web/strings.go:89
 #: internal/termui/keys.go:423
@@ -3541,44 +3541,71 @@ msgstr "名稱不能包含「/」。"
 msgid "The name is too long."
 msgstr "名稱太長。"
 
-#: internal/filesui/cards.go:394
+#: internal/filesui/cards.go:413
 msgid "New file"
 msgstr "新增檔案"
 
-#: internal/filesui/cards.go:394
+#: internal/filesui/cards.go:413
 msgid "Untitled"
 msgstr "未命名"
 
-#: internal/filesui/cards.go:396
+#: internal/filesui/cards.go:415
 msgid "New folder"
 msgstr "新增資料夾"
 
-#: internal/filesui/cards.go:396
+#: internal/filesui/cards.go:415
 msgid "New Folder"
 msgstr "新資料夾"
 
-#: internal/filesui/cards.go:402
+#: internal/filesui/cards.go:421
 msgid "Make"
 msgstr "建立"
 
-#: internal/filesui/cards.go:425
+#: internal/filesui/cards.go:448
 msgid "In %s"
 msgstr ""
 
-#: internal/filesui/cards.go:443
+#: internal/filesui/cards.go:454
+msgid "The %d selected item is moved into the new folder once it is made:"
+msgid_plural "The %d selected items are moved into the new folder once it is made:"
+msgstr[0] "資料夾建立後，選取的 %d 個項目將移入其中："
+
+#: internal/filesui/cards.go:464
+#: internal/filesui/cards.go:594
+msgid "… and %d more"
+msgid_plural "… and %d more"
+msgstr[0] "……還有 %d 項"
+
+#: internal/filesui/cards.go:486
+msgid "The folder “%s” could not be made"
+msgstr "無法建立資料夾「%s」"
+
+#: internal/filesui/cards.go:487
+msgid "Nothing was moved."
+msgstr "沒有移動任何項目。"
+
+#: internal/filesui/cards.go:490
+msgid "Some items could not be moved into “%s”"
+msgstr "部分項目未能移入「%s」"
+
+#: internal/filesui/cards.go:491
+msgid "They are left where they were; nothing was written over or deleted."
+msgstr "它們仍在原處；沒有任何內容被覆寫或刪除。"
+
+#: internal/filesui/cards.go:504
 msgid "Delete %d item for good?"
 msgid_plural "Delete %d items for good?"
 msgstr[0] "永久刪除 %d 項？"
 
-#: internal/filesui/cards.go:445
+#: internal/filesui/cards.go:506
 msgid "Delete “%s” for good?"
 msgstr "永久刪除「%s」？"
 
-#: internal/filesui/cards.go:460
+#: internal/filesui/cards.go:521
 msgid "They do not go to the trash, and this cannot be undone."
 msgstr "它們不會進入垃圾箱，且無法復原。"
 
-#: internal/filesui/cards.go:466
+#: internal/filesui/cards.go:527
 #: internal/filesui/pathbar.go:91
 #: internal/filesui/sidebar.go:47
 #: internal/filesui/window.go:788
@@ -3589,57 +3616,56 @@ msgstr "它們不會進入垃圾箱，且無法復原。"
 msgid "Empty Trash"
 msgstr "清空垃圾箱"
 
-#: internal/filesui/cards.go:483
+#: internal/filesui/cards.go:544
 msgid "Empty the trash?"
 msgstr "清空垃圾箱？"
 
-#: internal/filesui/cards.go:483
+#: internal/filesui/cards.go:544
 msgid "Everything in it is deleted for good, on every drive."
 msgstr "其中所有內容都會被永久刪除，包括所有磁碟上的。"
 
-#: internal/filesui/cards.go:500
+#: internal/filesui/cards.go:561
 msgid "There: %s, %s. This one: %s, %s."
 msgstr "已有的：%s，%s。這個：%s，%s。"
 
-#: internal/filesui/cards.go:504
+#: internal/filesui/cards.go:565
 #: internal/termui/guide.go:106
 msgid "Skip"
 msgstr "略過"
 
-#: internal/filesui/cards.go:505
+#: internal/filesui/cards.go:566
 msgid "Keep both"
 msgstr "保留兩者"
 
-#: internal/filesui/cards.go:509
+#: internal/filesui/cards.go:570
 msgid "Merge"
 msgstr "合併"
 
-#: internal/filesui/cards.go:511
+#: internal/filesui/cards.go:572
 #: internal/filesui/picker.go:369
 #: internal/lightui/pass_otp.go:180
 msgid "Replace"
 msgstr "替換"
 
-#: internal/filesui/cards.go:514
+#: internal/filesui/cards.go:575
 msgid "“%s” is already in %s"
 msgstr "「%s」已在 %s 中"
 
-#: internal/filesui/cards.go:516
+#: internal/filesui/cards.go:577
 msgid "A folder “%s” is already in %s"
 msgstr "資料夾「%s」已在 %s 中"
 
-#: internal/filesui/cards.go:519
+#: internal/filesui/cards.go:580
 #: ui/files.ui:376
 msgid "Do the same for the rest"
 msgstr "其餘的也這樣處理"
 
-#: internal/filesui/cards.go:528
-msgid "… and %d more"
-msgid_plural "… and %d more"
-msgstr[0] "……還有 %d 項"
+#: internal/filesui/cards.go:586
+msgid "Some items could not be done"
+msgstr "部分項目未能完成"
 
-#: internal/filesui/cards.go:530
-#: internal/filesui/cards.go:730
+#: internal/filesui/cards.go:599
+#: internal/filesui/cards.go:799
 #: internal/mailui/welcome.go:156
 #: internal/shell/launcher_actions.go:53
 #: internal/term/web/strings.go:30
@@ -3659,116 +3685,112 @@ msgstr[0] "……還有 %d 項"
 msgid "Close"
 msgstr "關閉"
 
-#: internal/filesui/cards.go:531
-msgid "Some items could not be done"
-msgstr "部分項目未能完成"
-
-#: internal/filesui/cards.go:540
+#: internal/filesui/cards.go:609
 msgid "Jump to a folder"
 msgstr "跳至資料夾"
 
-#: internal/filesui/cards.go:583
+#: internal/filesui/cards.go:652
 msgid "Mounting %s…"
 msgstr "正在掛載 %s……"
 
-#: internal/filesui/cards.go:603
+#: internal/filesui/cards.go:672
 #: internal/securitykey/unlock.go:57
 msgid "Unlock"
 msgstr "解鎖"
 
-#: internal/filesui/cards.go:606
+#: internal/filesui/cards.go:675
 msgid "Unlocking…"
 msgstr "正在解鎖……"
 
-#: internal/filesui/cards.go:628
+#: internal/filesui/cards.go:697
 msgid "That passphrase does not open it."
 msgstr "這個密語無法開啟它。"
 
-#: internal/filesui/cards.go:642
+#: internal/filesui/cards.go:711
 msgid "Unlock %s"
 msgstr "解鎖 %s"
 
-#: internal/filesui/cards.go:643
+#: internal/filesui/cards.go:712
 msgid "The drive is encrypted. Its passphrase is not kept."
 msgstr "該磁碟已加密。密語不會被保存。"
 
-#: internal/filesui/cards.go:653
+#: internal/filesui/cards.go:722
 msgid "Ejecting %s…"
 msgstr "正在退出 %s……"
 
-#: internal/filesui/cards.go:664
+#: internal/filesui/cards.go:733
 msgid "%s can be removed now."
 msgstr "現在可以移除 %s 了。"
 
-#: internal/filesui/cards.go:666
+#: internal/filesui/cards.go:735
 msgid "%s is unmounted."
 msgstr "%s 已卸載。"
 
-#: internal/filesui/cards.go:676
+#: internal/filesui/cards.go:745
 msgid "%s is in use: close the files open on it first."
 msgstr "%s 正在使用：請先關閉其上開啟的檔案。"
 
-#: internal/filesui/cards.go:678
+#: internal/filesui/cards.go:747
 msgid "Not allowed."
 msgstr "不允許。"
 
-#: internal/filesui/cards.go:680
+#: internal/filesui/cards.go:749
 #: internal/mailui/assist.go:106
 #: internal/remoteui/stream.go:472
 msgid "%s: %v"
 msgstr "%s：%v"
 
-#: internal/filesui/cards.go:691
+#: internal/filesui/cards.go:760
 msgid "Moving"
 msgstr "移動"
 
-#: internal/filesui/cards.go:693
+#: internal/filesui/cards.go:762
 msgid "Parent folder"
 msgstr "上層資料夾"
 
-#: internal/filesui/cards.go:694
+#: internal/filesui/cards.go:763
 msgid "Back / forward"
 msgstr "上一步 / 下一步"
 
-#: internal/filesui/cards.go:695
+#: internal/filesui/cards.go:764
 msgid "In the columns: the folder above, the folder selected"
 msgstr "分欄中：上層資料夾，選取的資料夾"
 
-#: internal/filesui/cards.go:697
+#: internal/filesui/cards.go:766
 msgid "The sidebar's places"
 msgstr "側邊欄中的位置"
 
-#: internal/filesui/cards.go:698
+#: internal/filesui/cards.go:767
 msgid "Type a path or a server"
 msgstr "輸入路徑或伺服器"
 
-#: internal/filesui/cards.go:699
+#: internal/filesui/cards.go:768
 msgid "Jump to a folder used before"
 msgstr "跳至用過的資料夾"
 
-#: internal/filesui/cards.go:700
+#: internal/filesui/cards.go:769
 #: ui/filespane.ui:127
 msgid "Search below this folder"
 msgstr "在此資料夾下搜尋"
 
-#: internal/filesui/cards.go:701
+#: internal/filesui/cards.go:770
 msgid "Letters"
 msgstr "字母"
 
-#: internal/filesui/cards.go:701
+#: internal/filesui/cards.go:770
 msgid "Filter this folder; Esc clears"
 msgstr "篩選此資料夾；Esc 清除"
 
-#: internal/filesui/cards.go:704
+#: internal/filesui/cards.go:773
 msgid "Copy / cut / paste"
 msgstr "複製 / 剪下 / 貼上"
 
-#: internal/filesui/cards.go:705
+#: internal/filesui/cards.go:774
 msgid "Copy the paths (none selected: the folder's)"
 msgstr "複製路徑（未選取時複製資料夾路徑）"
 
-#: internal/filesui/cards.go:707
-#: internal/filesui/window.go:856
+#: internal/filesui/cards.go:776
+#: internal/filesui/window.go:859
 #: internal/lightui/gpg.go:1619
 #: internal/mailui/picker.go:143
 #: internal/ui/settings_custom.go:42
@@ -3776,15 +3798,15 @@ msgstr "複製路徑（未選取時複製資料夾路徑）"
 msgid "Move to Trash"
 msgstr "移到垃圾桶"
 
-#: internal/filesui/cards.go:708
+#: internal/filesui/cards.go:777
 msgid "Delete for good"
 msgstr "永久刪除"
 
-#: internal/filesui/cards.go:709
+#: internal/filesui/cards.go:778
 msgid "New folder / new file"
 msgstr "新增資料夾 / 新增檔案"
 
-#: internal/filesui/cards.go:710
+#: internal/filesui/cards.go:779
 #: internal/mailui/compose.go:529
 #: internal/mailui/quick.go:129
 #: internal/mailui/quick.go:142
@@ -3792,91 +3814,91 @@ msgstr "新增資料夾 / 新增檔案"
 msgid "Undo"
 msgstr "復原"
 
-#: internal/filesui/cards.go:711
+#: internal/filesui/cards.go:780
 msgid "Copy / move to the other pane"
 msgstr "複製 / 移動到另一窗格"
 
-#: internal/filesui/cards.go:712
+#: internal/filesui/cards.go:781
 #: internal/filesui/window.go:817
 msgid "Open with…"
 msgstr "開啟方式……"
 
-#: internal/filesui/cards.go:713
-#: internal/filesui/window.go:870
+#: internal/filesui/cards.go:782
+#: internal/filesui/window.go:873
 msgid "Bookmark"
 msgstr "加入書籤"
 
-#: internal/filesui/cards.go:714
+#: internal/filesui/cards.go:783
 #: internal/filesui/pathbar.go:137
 #: internal/filesui/window.go:803
 msgid "Terminal here"
 msgstr "在此開啟終端機"
 
-#: internal/filesui/cards.go:716
+#: internal/filesui/cards.go:785
 #: internal/termui/menubar.go:33
 #: ui/screenshot.ui:180
 #: ui/shotdrawer.ui:122
 msgid "Window"
 msgstr "窗口"
 
-#: internal/filesui/cards.go:717
+#: internal/filesui/cards.go:786
 msgid "New tab / close tab"
 msgstr "新增分頁 / 關閉分頁"
 
-#: internal/filesui/cards.go:718
+#: internal/filesui/cards.go:787
 msgid "Next / previous tab"
 msgstr "下一個 / 上一個分頁"
 
-#: internal/filesui/cards.go:719
+#: internal/filesui/cards.go:788
 #: internal/filesui/pathbar.go:89
 #: internal/filesui/window.go:820
 msgid "Middle click"
 msgstr "中鍵點擊"
 
-#: internal/filesui/cards.go:719
+#: internal/filesui/cards.go:788
 msgid "A folder in a new tab"
 msgstr "在新分頁中開啟資料夾"
 
-#: internal/filesui/cards.go:720
+#: internal/filesui/cards.go:789
 msgid "List / grid / columns"
 msgstr "清單 / 格狀 / 分欄"
 
-#: internal/filesui/cards.go:721
+#: internal/filesui/cards.go:790
 #: internal/filesui/picker.go:501
 #: internal/filesui/window.go:808
 msgid "Hidden files"
 msgstr "隱藏檔案"
 
-#: internal/filesui/cards.go:722
+#: internal/filesui/cards.go:791
 msgid "Two panes, the other pane"
 msgstr "雙窗格，切換窗格"
 
-#: internal/filesui/cards.go:723
+#: internal/filesui/cards.go:792
 #: internal/mailui/menubar.go:48
 msgid "Sidebar"
 msgstr "側邊欄"
 
-#: internal/filesui/cards.go:724
-#: internal/filesui/window.go:862
+#: internal/filesui/cards.go:793
+#: internal/filesui/window.go:865
 #: internal/viewerui/menubar.go:55
 msgid "Details"
 msgstr "詳細資訊"
 
-#: internal/filesui/cards.go:725
+#: internal/filesui/cards.go:794
 msgid "Bigger / smaller / normal"
 msgstr "放大 / 縮小 / 正常"
 
-#: internal/filesui/cards.go:726
+#: internal/filesui/cards.go:795
 msgid "New window, close it"
 msgstr "新視窗，關閉視窗"
 
-#: internal/filesui/cards.go:727
+#: internal/filesui/cards.go:796
 #: internal/filesui/picker.go:502
 #: internal/filesui/window.go:809
 msgid "Reload"
 msgstr "重新載入"
 
-#: internal/filesui/cards.go:731
+#: internal/filesui/cards.go:800
 #: internal/mailui/picker.go:130
 #: internal/mailui/reader.go:378
 #: internal/termui/palette.go:213
@@ -4306,7 +4328,7 @@ msgid "A file of the same name is in this folder; the app will write over it."
 msgstr ""
 
 #: internal/filesui/picker.go:494
-#: internal/filesui/window.go:851
+#: internal/filesui/window.go:854
 #: internal/termui/sessionmenu.go:81
 #: internal/termui/wsmenu.go:69
 msgid "Rename…"
@@ -4825,7 +4847,7 @@ msgid "Restore"
 msgstr "還原"
 
 #: internal/filesui/window.go:792
-#: internal/filesui/window.go:857
+#: internal/filesui/window.go:860
 msgid "Delete for good…"
 msgstr "永久刪除……"
 
@@ -4865,43 +4887,47 @@ msgstr "複製到另一窗格"
 msgid "Move to the other pane"
 msgstr "移動到另一窗格"
 
-#: internal/filesui/window.go:853
+#: internal/filesui/window.go:851
+msgid "New folder with the selection…"
+msgstr "以所選項目新增資料夾……"
+
+#: internal/filesui/window.go:856
 msgid "Rename %d item…"
 msgid_plural "Rename %d items…"
 msgstr[0] "重新命名 %d 個項目……"
 
-#: internal/filesui/window.go:868
+#: internal/filesui/window.go:871
 msgid "Remove the bookmark"
 msgstr "移除書籤"
 
-#: internal/filesui/window.go:923
+#: internal/filesui/window.go:926
 msgid "Cut %d item: paste to move it."
 msgid_plural "Cut %d items: paste to move them."
 msgstr[0] "已剪下 %d 項：貼上即可移動。"
 
-#: internal/filesui/window.go:925
+#: internal/filesui/window.go:928
 msgid "Copied %d item."
 msgid_plural "Copied %d items."
 msgstr[0] "已複製 %d 項。"
 
-#: internal/filesui/window.go:933
+#: internal/filesui/window.go:936
 msgid "Copied %d path."
 msgid_plural "Copied %d paths."
 msgstr[0] "已複製 %d 個路徑。"
 
-#: internal/filesui/window.go:1034
+#: internal/filesui/window.go:1041
 msgid "Bookmarked %s."
 msgstr "已為 %s 加入書籤。"
 
-#: internal/filesui/window.go:1036
+#: internal/filesui/window.go:1043
 msgid "Removed the bookmark of %s."
 msgstr "已移除 %s 的書籤。"
 
-#: internal/filesui/window.go:1051
+#: internal/filesui/window.go:1058
 msgid "Copied %s."
 msgstr "已複製 %s。"
 
-#: internal/filesui/window.go:1080
+#: internal/filesui/window.go:1087
 msgid "No terminal was found: install xdg-terminal-exec or set $TERMINAL."
 msgstr "找不到終端機：請安裝 xdg-terminal-exec 或設定 $TERMINAL。"
 
