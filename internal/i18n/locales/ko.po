@@ -13765,7 +13765,7 @@ msgstr "이 작업 공간에 새 세션"
 #: internal/term/settings/settings.go:104
 #: internal/term/web/strings.go:70
 #: internal/termui/columns.go:178
-#: internal/ui/overview.go:676
+#: internal/ui/overview.go:681
 msgid "New workspace"
 msgstr "새 작업 공간"
 
@@ -15353,63 +15353,63 @@ msgstr ""
 msgid "Bluetooth off"
 msgstr ""
 
-#: internal/ui/overview.go:200
+#: internal/ui/overview.go:205
 msgid "restore focus"
 msgstr "포커스 복원"
 
-#: internal/ui/overview.go:337
+#: internal/ui/overview.go:342
 msgid "kill window"
 msgstr "킬 윈도우"
 
-#: internal/ui/overview.go:519
+#: internal/ui/overview.go:524
 msgid "No workspaces"
 msgstr "작업 공간 없음"
 
-#: internal/ui/overview.go:521
+#: internal/ui/overview.go:526
 msgid "No matches"
 msgstr "일치하는 항목이 없습니다."
 
-#: internal/ui/overview.go:1073
+#: internal/ui/overview.go:1079
 msgid "No matching apps or windows"
 msgstr ""
 
-#: internal/ui/overview.go:1084
+#: internal/ui/overview.go:1090
 msgid "Open Windows"
 msgstr ""
 
-#: internal/ui/overview.go:1098
+#: internal/ui/overview.go:1104
 msgid "Applications"
 msgstr ""
 
-#: internal/ui/overview.go:1138
+#: internal/ui/overview.go:1144
 msgid "Search apps, windows and workspaces…"
 msgstr ""
 
-#: internal/ui/overview.go:1178
+#: internal/ui/overview.go:1184
 msgid "Type to search   Esc · Back / Close   ↑↓ / Tab · Navigate   Enter · Open / Switch   Drag · Move"
 msgstr ""
 
-#: internal/ui/overview.go:1223
+#: internal/ui/overview.go:1230
 msgid "inua overview"
 msgstr "이누아 개요"
 
-#: internal/ui/overview_manage.go:125
+#: internal/ui/overview_manage.go:142
 msgid "close window"
 msgstr "창 닫기"
 
-#: internal/ui/overview_manage.go:165
+#: internal/ui/overview_manage.go:183
 msgid "%s · %s · Middle click: close"
 msgstr "%[1]s · %[2]s · 가운데 클릭: 닫기"
 
-#: internal/ui/overview_manage.go:203
+#: internal/ui/overview_manage.go:223
 msgid "Click a window to force-terminate ONLY that client · Esc / right click cancels"
 msgstr "창을 클릭하면 해당 클라이언트만 강제종료 · Esc / 우클릭 취소"
 
-#: internal/ui/overview_manage.go:207
+#: internal/ui/overview_manage.go:227
 msgid "Arrows / Tab · select    Type or / · search    Middle click · close    Ctrl+Shift+X · kill    Drag · move"
 msgstr "화살표 / 탭 · 선택 유형 또는 / · 검색 가운데 클릭 · 닫기 Ctrl+Shift+X · 종료 드래그 · 이동"
 
-#: internal/ui/overview_manage.go:243
+#: internal/ui/overview_manage.go:263
 msgid "position floating window"
 msgstr "플로팅 윈도우 위치"
 

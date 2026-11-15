@@ -34,6 +34,9 @@ type workspaceOverview struct {
 	killLayer            *gtk.Fixed
 	killGlyph            *gtk.Label
 	onPointer            func(gtk.EventControllerMotion, float64, float64)
+	pointerKnown         bool
+	pointerMoved         bool
+	pointerX, pointerY   float64
 	syncingQuery         bool
 	historyLast          string
 	onQueryFocus         func(gtk.EventControllerFocus)
@@ -117,6 +120,8 @@ func (s *shellUI) showOverview() {
 	s.overview.captureFailed = false
 	s.overview.searchMode = false
 	s.overview.touched = false
+	s.overview.pointerKnown = false
+	s.overview.pointerMoved = false
 	s.overview.killMode = false
 	s.overview.targets = map[uintptr]overviewDropTarget{}
 	s.overview.dragging = ""
@@ -761,6 +766,7 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 			b.AddController(&gesture.EventController)
 			hover := gtk.NewEventControllerMotion()
 			hover.ConnectEnter(&s.overview.onOverviewHover)
+			hover.ConnectMotion(&s.overview.onOverviewHover)
 			b.AddController(&hover.EventController)
 			board.Put(&b.Widget, x, y)
 			b.Unref()
@@ -1195,6 +1201,7 @@ func (s *shellUI) buildOverview(o *workspaceOverview) {
 	o.win.SetChild(&stage.Widget)
 	stage.Unref()
 	pointer := gtk.NewEventControllerMotion()
+	pointer.SetPropagationPhase(gtk.PhaseCaptureValue)
 	pointer.ConnectEnter(&s.overview.onPointer)
 	pointer.ConnectMotion(&s.overview.onPointer)
 	o.win.AddController(&pointer.EventController)

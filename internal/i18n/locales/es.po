@@ -13840,7 +13840,7 @@ msgstr "Nueva sesión en este espacio"
 #: internal/term/settings/settings.go:104
 #: internal/term/web/strings.go:70
 #: internal/termui/columns.go:178
-#: internal/ui/overview.go:676
+#: internal/ui/overview.go:681
 msgid "New workspace"
 msgstr "Nuevo espacio de trabajo"
 
@@ -15436,63 +15436,63 @@ msgstr ""
 msgid "Bluetooth off"
 msgstr ""
 
-#: internal/ui/overview.go:200
+#: internal/ui/overview.go:205
 msgid "restore focus"
 msgstr "restaurar el enfoque"
 
-#: internal/ui/overview.go:337
+#: internal/ui/overview.go:342
 msgid "kill window"
 msgstr "ventana de eliminación"
 
-#: internal/ui/overview.go:519
+#: internal/ui/overview.go:524
 msgid "No workspaces"
 msgstr "Sin espacios de trabajo"
 
-#: internal/ui/overview.go:521
+#: internal/ui/overview.go:526
 msgid "No matches"
 msgstr "No hay coincidencias"
 
-#: internal/ui/overview.go:1073
+#: internal/ui/overview.go:1079
 msgid "No matching apps or windows"
 msgstr ""
 
-#: internal/ui/overview.go:1084
+#: internal/ui/overview.go:1090
 msgid "Open Windows"
 msgstr ""
 
-#: internal/ui/overview.go:1098
+#: internal/ui/overview.go:1104
 msgid "Applications"
 msgstr ""
 
-#: internal/ui/overview.go:1138
+#: internal/ui/overview.go:1144
 msgid "Search apps, windows and workspaces…"
 msgstr ""
 
-#: internal/ui/overview.go:1178
+#: internal/ui/overview.go:1184
 msgid "Type to search   Esc · Back / Close   ↑↓ / Tab · Navigate   Enter · Open / Switch   Drag · Move"
 msgstr ""
 
-#: internal/ui/overview.go:1223
+#: internal/ui/overview.go:1230
 msgid "inua overview"
 msgstr "descripción general de inua"
 
-#: internal/ui/overview_manage.go:125
+#: internal/ui/overview_manage.go:142
 msgid "close window"
 msgstr "cerrar ventana"
 
-#: internal/ui/overview_manage.go:165
+#: internal/ui/overview_manage.go:183
 msgid "%s · %s · Middle click: close"
 msgstr "%[1]s · %[2]s · Clic central: cerrar"
 
-#: internal/ui/overview_manage.go:203
+#: internal/ui/overview_manage.go:223
 msgid "Click a window to force-terminate ONLY that client · Esc / right click cancels"
 msgstr "Haga clic en una ventana para forzar la terminación SÓLO ese cliente · Esc / clic derecho cancela"
 
-#: internal/ui/overview_manage.go:207
+#: internal/ui/overview_manage.go:227
 msgid "Arrows / Tab · select    Type or / · search    Middle click · close    Ctrl+Shift+X · kill    Drag · move"
 msgstr "Flechas / Tabulador · seleccionar Tipo o / · buscar Clic central · cerrar Ctrl+Shift+X · matar Arrastrar · mover"
 
-#: internal/ui/overview_manage.go:243
+#: internal/ui/overview_manage.go:263
 msgid "position floating window"
 msgstr "posición ventana flotante"
 
