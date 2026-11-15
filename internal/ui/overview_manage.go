@@ -42,7 +42,24 @@ func (s *shellUI) bindOverviewManagement() {
 		}
 		for _, view := range views {
 			if view.win != nil && view.win.GoPointer() == widget.GoPointer() {
-				s.selectOverviewInput(view.monitor)
+				// Opening a surface generates enter events even when the pointer
+				// has not moved. Compare global coordinates so crossing monitors
+				// also counts as movement without treating mapping as input.
+				px, py := x, y
+				for _, output := range s.snap.Outputs {
+					if output.Name == view.monitor {
+						px += float64(output.X)
+						py += float64(output.Y)
+						break
+					}
+				}
+				if o.pointerKnown && (px != o.pointerX || py != o.pointerY) {
+					o.pointerMoved = true
+				}
+				o.pointerKnown, o.pointerX, o.pointerY = true, px, py
+				if o.pointerMoved {
+					s.selectOverviewInput(view.monitor)
+				}
 				if o.killMode {
 					view.killLayer.Move(&view.killGlyph.Widget, x+8, y+8)
 				}
@@ -138,7 +155,7 @@ func (s *shellUI) bindOverviewManagement() {
 		return true
 	}
 	o.onOverviewHover = func(c gtk.EventControllerMotion, _, _ float64) {
-		if o.dragging != "" {
+		if o.dragging != "" || !o.pointerMoved {
 			return
 		}
 		widget := c.GetWidget()
@@ -150,6 +167,7 @@ func (s *shellUI) bindOverviewManagement() {
 		for i, card := range o.st.Cards {
 			for _, w := range card.Windows {
 				if w.ID == address {
+					changed := o.st.Selected != i || o.st.FocusedMon != card.Workspace.Output
 					o.st.Selected = i
 					o.st.FocusedMon = card.Workspace.Output
 					for ptr, dest := range o.targets {
@@ -164,7 +182,9 @@ func (s *shellUI) bindOverviewManagement() {
 					if o.hint != nil {
 						o.hint.SetText(i18n.Tf("%s · %s · Middle click: close", w.Title, w.AppID))
 					}
-					s.updateOverviewCapture()
+					if changed {
+						s.updateOverviewCapture()
+					}
 					return
 				}
 			}
