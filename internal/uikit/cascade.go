@@ -60,6 +60,7 @@ func openCascade(b *gtk.Button, line cascadeLine) {
 	}
 	child := cascadeMenu(line.item.Items, line.root, false)
 	child.SetPosition(gtk.PosRightValue)
+	child.SetValign(gtk.AlignStartValue)
 	child.SetParent(&b.Widget)
 	child.Unref()
 	cascades.Lock()
@@ -111,6 +112,8 @@ func cascadeMenu(list []Item, root *gtk.Popover, _ bool) *gtk.Popover {
 	pop := gtk.NewPopover()
 	if root == nil {
 		root = pop
+		// Keep each menu's left edge aligned with its bar button.
+		pop.SetHalign(gtk.AlignStartValue)
 	}
 	pop.AddCssClass("glass-menu")
 	pop.AddCssClass("gtk-frame")
