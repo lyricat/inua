@@ -538,7 +538,13 @@ func (s *shellUI) bindAppMenuHandlers() {
 				go func(id string) {
 					ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 					defer cancel()
-					if err := s.comp.FocusWindow(ctx, id); err != nil {
+					var err error
+					if quiet, ok := s.comp.(compositor.QuietFocuser); ok {
+						err = quiet.FocusWindowQuietly(ctx, id)
+					} else {
+						err = s.comp.FocusWindow(ctx, id)
+					}
+					if err != nil {
 						log.Printf("appmenu: focus window: %v", err)
 						gtkx.Post(func() {
 							if s.appmenu.pendingWindow == id && s.appmenu.pendingSeq == seq {
