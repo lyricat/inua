@@ -8,6 +8,8 @@ import (
 	"strconv"
 	"time"
 
+	"codeberg.org/puregotk/puregotk/v4/glib"
+	"codeberg.org/puregotk/puregotk/v4/graphene"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 
 	"github.com/lyricat/inua/internal/appmenu"
@@ -33,6 +35,9 @@ type appMenuState struct {
 	pendingID      int32
 	pendingLabel   string
 	pendingSeq     uint64
+	tracking       bool
+	querying       bool
+	onTrack        glib.SourceFunc
 }
 
 // appMenuSearch is a bar's search for the menu its window published:
@@ -417,6 +422,30 @@ func appMenuTops(entries []appmenu.Entry) []appMenuTop {
 }
 
 func (s *shellUI) bindAppMenuHandlers() {
+	s.appmenu.onTrack = func(_ uintptr) bool {
+		if s.appmenu.menu == nil || !s.appmenu.menu.GetVisible() {
+			s.appmenu.tracking = false
+			return false
+		}
+		pointer, ok := s.comp.(compositor.Pointer)
+		if !ok || s.appmenu.querying {
+			return true
+		}
+		s.appmenu.querying = true
+		menu := s.appmenu.menu.GoPointer()
+		go func() {
+			ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+			defer cancel()
+			x, y, err := pointer.CursorPos(ctx)
+			gtkx.Post(func() {
+				s.appmenu.querying = false
+				if err == nil && s.appmenu.menu != nil && s.appmenu.menu.GoPointer() == menu {
+					s.trackAppMenuHover(x, y)
+				}
+			})
+		}()
+		return true
+	}
 	s.onAppAboutClose = closeAppAbout
 	s.onAppTitle = func(btn gtk.Button) {
 		for _, b := range s.bars {
@@ -564,6 +593,45 @@ func (s *shellUI) bindAppMenuHandlers() {
 	}
 }
 
+// An autohiding Wayland popup grabs pointer events. Track the pointer while
+// it is open so sliding across the bar still switches top-level menus.
+func (s *shellUI) trackAppMenu() {
+	if !s.appmenu.tracking {
+		s.appmenu.tracking = true
+		glib.TimeoutAdd(80, &s.appmenu.onTrack, 0)
+	}
+}
+
+func (s *shellUI) trackAppMenuHover(x, y int) {
+	pop := s.appmenu.menu
+	if pop == nil || !pop.GetVisible() {
+		return
+	}
+	anchor := pop.GetParent()
+	if anchor == nil || anchor.GetParent() == nil {
+		return
+	}
+	for _, b := range s.bars {
+		if b.appMenu.GoPointer() != anchor.GetParent().GoPointer() {
+			continue
+		}
+		output, ok := s.snap.Output(b.connector())
+		if !ok {
+			return
+		}
+		px, py := float32(x-output.X), float32(y-output.Y)
+		for w := b.appMenu.GetFirstChild(); w != nil; w = w.GetNextSibling() {
+			var r graphene.Rect
+			if w.GoPointer() != anchor.GoPointer() && w.ComputeBounds(&b.win.Widget, &r) && px >= r.GetX() && px < r.GetX()+r.GetWidth() && py >= r.GetY() && py < r.GetY()+r.GetHeight() {
+				btn := gtk.ButtonNewFromInternalPtr(w.GoPointer())
+				s.onAppMenuClicked(*btn)
+				return
+			}
+		}
+		return
+	}
+}
+
 // openPendingAppMenu resumes a click after the compositor confirms focus.
 func (s *shellUI) openPendingAppMenu() {
 	id := s.appmenu.pendingWindow
@@ -648,6 +716,7 @@ func (s *shellUI) showAppMenu(b *bar, reg appmenu.Registration, entry appmenu.En
 			pop.Unref() // the parent holds it now
 			pop.Popup()
 			s.appmenu.menu = pop
+			s.trackAppMenu()
 		})
 	}()
 }

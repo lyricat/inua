@@ -261,6 +261,7 @@ func (s *shellUI) showPackedMenu(b *bar, i int, w *gtk.Widget) {
 	pop.Unref()
 	pop.Popup()
 	s.appmenu.menu = pop
+	s.trackAppMenu()
 }
 
 // packMenuShown is whether a bar shows the pack's menu for window id.
