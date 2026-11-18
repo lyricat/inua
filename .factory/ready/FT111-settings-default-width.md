@@ -44,3 +44,14 @@ Built and pushed commit `6ce7142c` on `factory/FT111-settings-default-width`.
 - No new automated tests: repository guidance excludes purely visual size changes. Source/generated widths were checked for agreement and against the collapse breakpoint.
 - UI not checked by eye; no live windows or nested sessions were started. Manual checks remaining: open Settings on a wide monitor and confirm full sidebar/search and usable content; resize below/above 900px and confirm rail/restoration; open on a narrow monitor and confirm width fitting; exercise search and page selection at both sizes.
 - First branch push failed because gh’s credential helper required a repository path; retried successfully with command-local credential.useHttpPath=true. No credentials were stored.
+
+## factory · review · 2026-11-18 15:22
+head: 6ce7142c88f9525863994883b0030d8a4ee6c243
+verdict: pass
+notes:
+- Claude Code reviewed origin/master...HEAD (merge-base 02a6228d9c0c58385bcd0b0b94387cd247b47c35), all three changed files and affected callers. No verified findings.
+- make test passed with isolated HOME/XDG/cache directories: 18 Python session tests, go vet ./..., and Go race tests. Recompiled Blueprint matches the committed settings.ui. Working tree remained clean; no installs.
+- Verified 1040px default exceeds the 900px narrow breakpoint; 220px sidebar, monitor clamp and resize behavior remain unchanged. Checked other shell windows affected by removing the shared forced-size rule; no concrete regression found.
+- UI not checked by eye. Manually check wide first opening, search/page selection, resizing across 900px, and narrow-monitor fitting (including scaled displays); post-Present monitor clamp behavior was not verified on a live display.
+- Existing copied Hyprland configs retaining the forced 860x620 size still require removing that rule. No user configuration was changed.
+- No linked GitHub issues or PRs in this item. Moved review/ → ready/; no merge or release performed.
