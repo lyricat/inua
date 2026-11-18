@@ -178,6 +178,14 @@ text, a window for each start. A file steps through the files of its kind
 in its folder (← and →), a folder through its images. It registers for
 images, PDFs and Markdown; plain text it opens when asked.
 
+The file fills the window, and the tools float over it on glass: zoom at
+the top left; rotate, edit, details and full screen at the top right.
+A floating window takes a picture's shape, so the picture fills it with
+nothing round it, up to 1440×960; one wider or taller than 2.4 to 1 is
+fitted into a window of that shape, the rest left clear. Zooming and
+turning are eased.
+Open, Copy, Set as Wallpaper and Show in Folder are in the menu bar.
+
 | | |
 | --- | --- |
 | **Images** | Zoom and pan, rotate, animations, EXIF, copy, set as wallpaper. `libturbojpeg0` makes JPEG faster. E edits: arrows, rectangles, a pen, a highlighter, text, numbered steps and pixelating, drawn over the image as it stands; Save (Ctrl+S) asks where each time, Copy (Ctrl+C) puts the edited image on the clipboard, Esc goes back (twice when not saved). |
@@ -185,8 +193,9 @@ images, PDFs and Markdown; plain text it opens when asked.
 | **Markdown** | Laid out to read, with GitHub's tables and task lists; links open, `#heading` links scroll; S shows the source. |
 | **Plain text** | Fixed-width; Ctrl+C copies the selection, or everything. |
 
-I shows the details, F full screen, +/−/0 zoom, Delete moves the file to
-the Trash after a second press.
+I shows the details, F full screen, +/−/0 zoom (the zoom shows for a
+moment), Ctrl+O opens, Ctrl+C copies, Delete moves the file to the Trash
+after a second press.
 
 ## Virtual machines
 

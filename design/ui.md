@@ -335,6 +335,7 @@ All controls are 34 px tall where they sit in a row, framed by a 1 px
 | Icon button | Borderless, 34 px square, `t1`; hover: 9% accent | `plain` |
 | Tool | An icon button in a bar of tools, framed: a 55% hairline, clear; hover as the outlined one's, turned on (`:checked`) in a 9% tint, `.on` in the accent | `tool` |
 | Icon sizes | 44 px (`large`), 34 px, 26 px (`small`), 20 px in a tight row (`tight`), for `plain`, `tool` and any `image-button` | add the size |
+| Round square | An icon button (`plain` or `tool`) cornered as an app icon, 22.37% of its side (10, 8 and 6 px at 44, 34 and 26 px), for tools floating on glass over content, as Viewer's | add `round` |
 | Entry | `surface`, `line` border; focus: accent border and a 3 px ring at 14% | — |
 | Number | An entry's box with the digits in mono; − and + as flat 32 px cells behind hairlines | `spinbutton` (styled for every `.settings` window) |
 | Drop-down | The outlined button's shape, at least 150 px; its list on `app` without GTK's padding | `dropdown` |

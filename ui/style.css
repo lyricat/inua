@@ -198,6 +198,13 @@ button.suggested-action.large, button.destructive-action.large, button.primary.l
 button.plain.large, button.image-button.large, button.tool.large { min-width: 44px; min-height: 44px; }
 button.plain.small, button.image-button.small, button.tool.small { min-width: 26px; min-height: 26px; }
 button.plain.tight, button.image-button.tight { min-width: 20px; min-height: 20px; }
+/* A round square (round): an icon button cornered as an app icon is, at
+   22.37% of its side, for tools floating on glass (Viewer's). */
+button.plain.round, button.tool.round { border-radius: 8px; }
+button.plain.round.large, button.tool.round.large { border-radius: 10px; }
+button.plain.round.small, button.tool.round.small { border-radius: 6px; }
+/* A round toggle turned on, in the tool's tint. */
+button.plain.round:checked { background: alpha(@accent, 0.14); color: @t0; }
 
 /* --- bar ------------------------------------------------------------- */
 
@@ -402,36 +409,34 @@ window.launcher { background: transparent; }
   padding: 6px 0;
 }
 
-/* Viewer: a thin toolbar, the picture on a quiet ground, the
-   details on the panel colour at the right. */
-.viewer-bar {
-  min-height: 46px;
-  padding: 4px 10px 4px 16px;
-  border-bottom: 1px solid alpha(@line, 0.55);
+/* Viewer: the file fills the window, the tools float over it on glass:
+   the stage under them blurred (glass.go draws it, cut to the corners
+   below) under a tint and a hairline. A picture leaves the window clear
+   round it (.clear); a document has the window's ground. */
+window.viewer.clear { background: transparent; }
+window.viewer.clear.fullscreen { background: @sb; }
+.viewer-glass {
+  padding: 4px;
+  /* An app icon's corners, 22.37% of the side: 44 px tall here (glass.go's
+     glassRadius). */
+  border-radius: 10px;
+  border: 1px solid alpha(@t0, 0.1);
+  background: alpha(@app, 0.5);
+  box-shadow: 0 6px 22px alpha(black, 0.28);
 }
-.viewer-name { font-size: 13px; color: @t0; }
-.viewer-meta { margin-top: 1px; font-size: 10.5px; color: @t2; }
-.viewer-status { margin-right: 10px; color: @accent; }
-.viewer-sep { margin: 10px 4px; }
-.viewer button.viewer-zoom { min-width: 76px; }
-.viewer button.viewer-trash label { color: @danger; }
+.viewer-glass.single { padding: 0; }
+.viewer-glass button.plain { color: @t0; }
+.viewer-glass.status { padding: 8px 16px; }
+.viewer-glass.status label { color: @t0; }
 .viewer-stage { background: mix(@app, black, 0.22); }
-.viewer button.viewer-edge {
-  margin: 0 12px;
-  padding: 0;
-  border: 1px solid alpha(@line, 0.7);
-  border-radius: 2px;
-  background: alpha(@app, 0.72);
-  box-shadow: none;
-  color: @t1;
+.viewer box.viewer-edge {
   opacity: 0;
-  transition: opacity 160ms ease-out, color 120ms ease-out;
+  transition: opacity 160ms ease-out;
 }
-.viewer overlay:hover > button.viewer-edge { opacity: 1; }
-.viewer button.viewer-edge:hover { color: @t0; border-color: alpha(@accent, 0.38); }
+.viewer overlay:hover > box.viewer-edge { opacity: 1; }
 .viewer-empty image { color: @t2; }
-.viewer-details { background: @panel; border-left: 1px solid alpha(@line, 0.55); }
-.viewer-details > viewport > box { padding: 4px 20px 20px; }
+.viewer-details, .viewer-details > viewport { background: transparent; }
+.viewer-details > viewport > box { padding: 4px 16px 16px; }
 .viewer-detail-head { margin: 18px 0 2px; }
 .viewer-detail { padding: 8px 0; border-bottom: 1px solid alpha(@line, 0.45); }
 .viewer-detail-key { font-size: 11px; color: @t2; }

@@ -42,19 +42,25 @@ type App struct {
 	c   *appui.Ctx
 	win *gtk.ApplicationWindow
 
-	toolbar                                    gtk.Box
-	name, meta, status, trashLabel, emptyLabel gtk.Label
-	zoomLevel, prev, next, fullscreenB         gtk.Button
-	rotateB, copyB, wallpaperB, editB          gtk.Button
-	stage                                      gtk.Stack
-	scroller                                   gtk.ScrolledWindow
-	canvas                                     gtk.Fixed
-	picture                                    gtk.Picture
-	empty, details                             gtk.Box
-	detailsReveal                              gtk.Revealer
-	detailsToggle, sourceToggle                gtk.ToggleButton
-	hadj, vadj                                 *gtk.Adjustment
-	dialog                                     *gtk.FileDialog
+	// The tools float over the stage on glass (glass.go), in slots.
+	zoomSlot, toolsSlot, prevSlot, nextSlot, statusSlot gtk.Box
+	status, emptyLabel                                  gtk.Label
+	prev, next, fullscreenB, rotateB, editB             gtk.Button
+	stage                                               gtk.Stack
+	imagePage                                           gtk.Overlay
+	scroller                                            gtk.ScrolledWindow
+	canvas                                              gtk.Fixed
+	picture                                             gtk.Picture
+	empty, details                                      gtk.Box
+	detailsReveal                                       gtk.Revealer
+	detailsToggle, sourceToggle                         gtk.ToggleButton
+	hadj, vadj                                          *gtk.Adjustment
+	dialog                                              *gtk.FileDialog
+
+	stagePaint   *gtk.WidgetPaintable // the stage, which the glass blurs
+	glasses      []*gtk.Widget
+	onStageDrawn func(uintptr, uintptr)
+	onGlassGone  func(gtk.Widget)
 
 	files []string
 	index int
@@ -78,6 +84,10 @@ type App struct {
 	texW, texH int // the texture drawn, which may be a smaller preview
 	w, h       int // the image's pixels as shown (oriented, turned)
 	turns      int // quarter turns clockwise asked for
+	spin       int // and counted on, the other way less: the way it turns
+
+	motion motion // the picture zooming or turning (motion.go)
+	shape  shaping
 
 	fit          bool    // follow the window, never above actual size
 	zoom         float64 // screen pixels per image pixel
@@ -113,20 +123,20 @@ func (a *App) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	a.win = &gtk.ApplicationWindow{}
 	ui := c.Load("viewer.ui")
 	ui.Get("viewer", a.win)
-	ui.Get("toolbar", &a.toolbar)
-	ui.Get("name", &a.name)
-	ui.Get("meta", &a.meta)
+	ui.Get("zoom_slot", &a.zoomSlot)
+	ui.Get("tools_slot", &a.toolsSlot)
+	ui.Get("prev_slot", &a.prevSlot)
+	ui.Get("next_slot", &a.nextSlot)
+	ui.Get("status_slot", &a.statusSlot)
 	ui.Get("status", &a.status)
-	ui.Get("zoom_level", &a.zoomLevel)
 	ui.Get("stage", &a.stage)
+	ui.Get("image_page", &a.imagePage)
 	ui.Get("scroller", &a.scroller)
 	ui.Get("picture", &a.picture)
 	ui.Get("canvas", &a.canvas)
 	ui.Get("prev", &a.prev)
 	ui.Get("next", &a.next)
 	ui.Get("rotate", &a.rotateB)
-	ui.Get("copy", &a.copyB)
-	ui.Get("wallpaper", &a.wallpaperB)
 	ui.Get("edit", &a.editB)
 	ui.Get("edit_stage", &a.edit.stage)
 	ui.Get("edit_picture", &a.edit.picture)
@@ -136,19 +146,26 @@ func (a *App) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	ui.Get("details", &a.details)
 	ui.Get("details_toggle", &a.detailsToggle)
 	ui.Get("source", &a.sourceToggle)
-	ui.Get("trash_label", &a.trashLabel)
 	ui.Get("fullscreen", &a.fullscreenB)
 	buttons := map[string]*gtk.Button{}
-	for _, n := range []string{"open", "zoom_out", "zoom_in", "folder", "trash", "open_empty"} {
+	for _, n := range []string{"zoom_out", "zoom_in", "open_empty"} {
 		b := &gtk.Button{}
 		ui.Get(n, b)
 		buttons[n] = b
 	}
+	var glass [6]gtk.Box
+	for i, n := range []string{"zoom_glass", "tools_glass", "prev_glass", "next_glass", "details_glass", "status_glass"} {
+		ui.Get(n, &glass[i])
+	}
 	a.pdf.init(a, ui)
 	a.text.init(a, ui)
 	ui.Close()
-	buttons["zoom_level"], buttons["prev"], buttons["next"], buttons["fullscreen"] = &a.zoomLevel, &a.prev, &a.next, &a.fullscreenB
-	buttons["rotate"], buttons["copy"], buttons["wallpaper"], buttons["edit"] = &a.rotateB, &a.copyB, &a.wallpaperB, &a.editB
+	for i := range glass {
+		a.glassUnder(&glass[i])
+	}
+	a.buildMotion()
+	buttons["prev"], buttons["next"], buttons["fullscreen"] = &a.prev, &a.next, &a.fullscreenB
+	buttons["rotate"], buttons["edit"] = &a.rotateB, &a.editB
 	a.edit.onButton = func(b gtk.Button) { a.editAction(b.GetName()) }
 	a.edit.onSaved = func(_, result, _ uintptr) { a.savedEdit(result) }
 
@@ -157,7 +174,12 @@ func (a *App) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 		b.SetName(n)
 		b.ConnectClicked(&a.onButton)
 	}
-	a.onDetails = func(t gtk.ToggleButton) { a.detailsReveal.SetRevealChild(t.GetActive()) }
+	a.onDetails = func(t gtk.ToggleButton) {
+		on := t.GetActive()
+		a.detailsReveal.SetRevealChild(on)
+		// The arrow at the right goes to the details' left.
+		a.nextSlot.SetMarginEnd(map[bool]int32{true: 12 + detailsWidth + 12, false: 12}[on])
+	}
 	a.detailsToggle.ConnectToggled(&a.onDetails)
 	a.onSource = func(t gtk.ToggleButton) { a.text.showSource(t.GetActive()) }
 	a.sourceToggle.ConnectToggled(&a.onSource)
@@ -183,7 +205,8 @@ func (a *App) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	// Full screen, however it came: the file alone.
 	a.onFullscreened = func(uintptr, uintptr, uintptr) {
 		full := a.win.IsFullscreen()
-		a.toolbar.SetVisible(!full)
+		a.zoomSlot.SetVisible(!full)
+		a.toolsSlot.SetVisible(!full)
 		a.detailsReveal.SetVisible(!full)
 		a.fullscreenB.SetIconName(map[bool]string{true: "view-restore-symbolic", false: "view-fullscreen-symbolic"}[full])
 	}
@@ -204,7 +227,7 @@ func (a *App) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 	}
 	a.onCalm = func(gen uintptr) bool {
 		if gen == a.statusGen {
-			a.status.SetText("")
+			a.setStatus("")
 		}
 		return false
 	}
@@ -258,7 +281,13 @@ func (a *App) bindInput() {
 		if dy == 0 {
 			return true
 		}
-		a.zoomTo(a.zoom*wheelFactor(s, dy), a.px, a.py)
+		z := a.zoom * wheelFactor(s, dy)
+		if s.GetUnit() == gdk.ScrollUnitWheelValue { // a wheel's notch: a step, eased
+			a.animated(func() { a.zoomTo(z, a.px, a.py) })
+		} else {
+			a.zoomTo(z, a.px, a.py)
+		}
+		a.flashZoom()
 		return true
 	}
 	scroll.ConnectScroll(&a.onScroll)
@@ -284,6 +313,7 @@ func (a *App) bindInput() {
 			x, y = a.px, a.py
 		}
 		a.zoomTo(a.pinchZoom*scale, x, y)
+		a.flashZoom()
 	}
 	pinch.ConnectBegin(&a.onPinchBegin)
 	pinch.ConnectScaleChanged(&a.onPinch)
@@ -292,7 +322,8 @@ func (a *App) bindInput() {
 	click := gtk.NewGestureClick()
 	a.onDouble = func(_ gtk.GestureClick, n int32, x, y float64) {
 		if n == 2 {
-			a.toggleActual(x, y)
+			a.animated(func() { a.toggleActual(x, y) })
+			a.flashZoom()
 		}
 	}
 	click.ConnectPressed(&a.onDouble)
@@ -409,8 +440,9 @@ func (a *App) zoomStep(up bool) {
 	case viewer.Markdown, viewer.Text:
 		a.text.step(up)
 	default:
-		a.zoomTo(viewer.StepZoom(a.zoom, up), a.hadj.GetPageSize()/2, a.vadj.GetPageSize()/2)
+		a.animated(func() { a.zoomTo(viewer.StepZoom(a.zoom, up), a.hadj.GetPageSize()/2, a.vadj.GetPageSize()/2) })
 	}
+	a.flashZoom()
 }
 
 // zoomReset fits the file shown to the window, or shows it at its actual
@@ -422,18 +454,37 @@ func (a *App) zoomReset(fit bool) {
 	case viewer.Markdown, viewer.Text:
 		a.text.setZoom(1)
 	default:
-		if fit {
-			a.fitWindow()
-		} else {
-			a.zoomTo(1, a.hadj.GetPageSize()/2, a.vadj.GetPageSize()/2)
-		}
+		a.animated(func() {
+			if fit {
+				a.fitWindow()
+			} else {
+				a.zoomTo(1, a.hadj.GetPageSize()/2, a.vadj.GetPageSize()/2)
+			}
+		})
 	}
+	a.flashZoom()
 }
 
-// setZoomLabel shows the zoom, and what a click on it does.
-func (a *App) setZoomLabel(label, tip string) {
-	a.zoomLevel.SetLabel(label)
-	a.zoomLevel.SetTooltipText(tip)
+// flashZoom shows the zoom for a moment, after a change.
+func (a *App) flashZoom() {
+	var z float64
+	switch a.kind {
+	case viewer.PDF:
+		if a.pdf.doc == nil {
+			return
+		}
+		z = a.pdf.zoom / pt100
+	case viewer.Markdown, viewer.Text:
+		z = a.text.zoom
+	case viewer.Image:
+		if a.w == 0 {
+			return
+		}
+		z = a.zoom
+	default:
+		return
+	}
+	a.flash(viewer.Percent(z))
 }
 
 func (a *App) action(name string) {
@@ -462,8 +513,9 @@ func (a *App) action(name string) {
 		case viewer.Markdown, viewer.Text:
 			a.text.setZoom(1)
 		default:
-			a.toggleActual(a.hadj.GetPageSize()/2, a.vadj.GetPageSize()/2)
+			a.animated(func() { a.toggleActual(a.hadj.GetPageSize()/2, a.vadj.GetPageSize()/2) })
 		}
+		a.flashZoom()
 	case "rotate":
 		a.turn(1)
 	case "edit":
@@ -491,9 +543,9 @@ func (a *App) action(name string) {
 	case "trash":
 		if !a.trashArmed {
 			a.trashArmed = true
-			a.trashLabel.SetVisible(true)
+			a.flashFor(i18n.T("Delete again to move to Trash"), trashWait)
 			a.trashGen++
-			glib.TimeoutAdd(3000, &a.onDisarm, a.trashGen)
+			glib.TimeoutAdd(trashWait, &a.onDisarm, a.trashGen)
 			return
 		}
 		a.disarmTrash()
@@ -575,16 +627,36 @@ func (a *App) current() string {
 	return a.files[a.index]
 }
 
+// detailsWidth is the details' glass: their 280 px, padded and framed
+// (.viewer-glass).
+const detailsWidth = 280 + 2*4 + 2
+
+// trashWait is how long, in milliseconds, a second Delete moves the file
+// to the trash.
+const trashWait = 3000
+
 func (a *App) disarmTrash() {
-	a.trashArmed = false
-	a.trashLabel.SetVisible(false)
+	if a.trashArmed {
+		a.trashArmed = false
+		a.setStatus("")
+	}
 }
 
-// flash says something in the toolbar for a moment.
-func (a *App) flash(text string) {
-	a.status.SetText(text)
+// flash says something on the glass at the foot for a moment.
+func (a *App) flash(text string) { a.flashFor(text, 1800) }
+
+func (a *App) flashFor(text string, ms uint32) {
+	a.setStatus(text)
 	a.statusGen++
-	glib.TimeoutAdd(1800, &a.onCalm, a.statusGen)
+	glib.TimeoutAdd(ms, &a.onCalm, a.statusGen)
+}
+
+// setStatus shows text on the glass at the foot, or takes it away; above
+// the editor's tools while they show.
+func (a *App) setStatus(text string) {
+	a.status.SetText(text)
+	a.statusSlot.SetVisible(text != "")
+	a.statusSlot.SetMarginBottom(map[bool]int32{true: 84, false: 20}[a.edit.on])
 }
 
 // choose asks for a file to open.
@@ -629,7 +701,6 @@ func (a *App) show(i int) {
 	}
 	a.leave(kind)
 	a.index, a.kind = i, kind
-	a.name.SetText(filepath.Base(path))
 	a.win.SetTitle(filepath.Base(path))
 	a.empty.SetVisible(false)
 	a.setTools()
@@ -650,7 +721,7 @@ func (a *App) show(i int) {
 		a.stage.SetVisibleChildName("image")
 		a.showImage(path)
 	}
-	a.showMeta()
+	a.setClear()
 	a.showDetails()
 }
 
@@ -677,24 +748,31 @@ func (a *App) setTools() {
 	image := a.kind == viewer.Image
 	a.rotateB.SetVisible(image)
 	a.editB.SetVisible(image)
-	a.wallpaperB.SetVisible(image)
 	a.sourceToggle.SetVisible(a.kind == viewer.Markdown)
-	many := len(a.files) > 1
-	a.prev.SetVisible(many)
-	a.next.SetVisible(many)
-	switch a.kind {
-	case viewer.PDF:
-		a.copyB.SetTooltipText(i18n.T("Copy the page's text (Ctrl+C)"))
+	a.setEdges(len(a.files) > 1)
+	if a.kind == viewer.PDF {
 		a.prev.SetTooltipText(i18n.T("Previous file (Ctrl+Page Up)"))
 		a.next.SetTooltipText(i18n.T("Next file (Ctrl+Page Down)"))
-	case viewer.Markdown, viewer.Text:
-		a.copyB.SetTooltipText(i18n.T("Copy the text (Ctrl+C)"))
+	} else {
 		a.prev.SetTooltipText(i18n.T("Previous (←)"))
 		a.next.SetTooltipText(i18n.T("Next (→)"))
-	default:
-		a.copyB.SetTooltipText(i18n.T("Copy the image (Ctrl+C)"))
-		a.prev.SetTooltipText(i18n.T("Previous (←)"))
-		a.next.SetTooltipText(i18n.T("Next (→)"))
+	}
+}
+
+// setEdges shows the arrows at the sides, on their glass, or not.
+func (a *App) setEdges(on bool) {
+	a.prevSlot.SetVisible(on)
+	a.nextSlot.SetVisible(on)
+}
+
+// setClear leaves the window clear round a picture: only the picture
+// shows, in a window of its shape (shape.go). A document, the editor and
+// a message have the window's ground.
+func (a *App) setClear() {
+	if a.kind == viewer.Image && !a.empty.GetVisible() {
+		a.win.AddCssClass("clear")
+	} else {
+		a.win.RemoveCssClass("clear")
 	}
 }
 
@@ -715,55 +793,11 @@ func (a *App) failed(path string, err error) {
 func (a *App) showEmpty(text string) {
 	a.emptyLabel.SetText(text)
 	a.empty.SetVisible(true)
+	a.setClear()
 	if len(a.files) == 0 {
-		a.name.SetText(i18n.T("Viewer"))
 		a.win.SetTitle(i18n.T("Viewer"))
-		a.meta.SetText("")
-		a.prev.SetVisible(false)
-		a.next.SetVisible(false)
+		a.setEdges(false)
 	}
-}
-
-func (a *App) position() string {
-	if len(a.files) <= 1 {
-		return ""
-	}
-	return fmt.Sprintf("%d / %d", a.index+1, len(a.files))
-}
-
-// showMeta: where it is in the folder; an image's size, a PDF's page or a
-// text's lines; its file size and type.
-func (a *App) showMeta() {
-	var parts []string
-	if p := a.position(); p != "" {
-		parts = append(parts, p)
-	}
-	size := a.size
-	switch a.kind {
-	case viewer.PDF:
-		if n := a.pdf.pages(); n > 0 {
-			parts = append(parts, i18n.Tf("Page %d of %d", a.pdf.cur+1, n))
-		}
-	case viewer.Markdown, viewer.Text:
-		if lines := a.text.stats[0]; lines > 0 {
-			parts = append(parts, i18n.Nf("%d line", "%d lines", lines, lines))
-		}
-	default:
-		if a.w > 0 {
-			parts = append(parts, fmt.Sprintf("%d × %d", a.w, a.h))
-		}
-		size = 0
-		if a.cur != nil {
-			size = a.cur.size
-		}
-	}
-	if size > 0 {
-		parts = append(parts, viewer.Size(size))
-	}
-	if ext := strings.TrimPrefix(filepath.Ext(a.current()), "."); ext != "" {
-		parts = append(parts, strings.ToUpper(ext))
-	}
-	a.meta.SetText(strings.Join(parts, "  ·  "))
 }
 
 // showDetails fills the details panel: the file, then the camera, the

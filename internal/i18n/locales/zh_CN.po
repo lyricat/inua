@@ -399,7 +399,7 @@ msgstr "打开"
 #: internal/ui/record.go:157
 #: internal/ui/screenshot.go:1173
 #: internal/ui/settings_custom.go:41
-#: internal/viewerui/menubar.go:44
+#: internal/viewerui/menubar.go:42
 msgid "Show in Folder"
 msgstr "在文件夹中显示"
 
@@ -1458,7 +1458,7 @@ msgid "Mon Jan 2, 2006, 15:04:05 -0700"
 msgstr ""
 
 #: internal/apps/mail/details.go:49
-#: internal/viewerui/app.go:824
+#: internal/viewerui/app.go:858
 #: ui/mail-compose.ui:161
 msgid "Subject"
 msgstr "主题"
@@ -2090,7 +2090,7 @@ msgstr "尝试"
 #: internal/remoteui/menubar.go:47
 #: internal/ui/appmenu_packs.go:78
 #: internal/ui/settings_menu.go:25
-#: internal/viewerui/menubar.go:36
+#: internal/viewerui/menubar.go:34
 #: internal/vmui/menubar.go:36
 msgid "File"
 msgid_plural "Files"
@@ -2109,7 +2109,7 @@ msgstr "新对话"
 #: internal/remoteui/menubar.go:48
 #: internal/shell/commands.go:46
 #: internal/ui/appmenu_packs.go:79
-#: internal/viewerui/menubar.go:39
+#: internal/viewerui/menubar.go:37
 #: internal/vmui/menubar.go:39
 msgid "Close Window"
 msgstr "关闭窗口"
@@ -2119,7 +2119,7 @@ msgstr "关闭窗口"
 #: internal/lightui/clock.go:404
 #: internal/termui/menubar.go:31
 #: internal/ui/appmenu_packs.go:81
-#: internal/viewerui/menubar.go:41
+#: internal/viewerui/menubar.go:39
 #: ui/pass.ui:252
 msgid "Edit"
 msgstr "编辑"
@@ -2137,7 +2137,7 @@ msgstr ""
 #: internal/termui/menubar.go:32
 #: internal/ui/appmenu_packs.go:84
 #: internal/ui/settings_menu.go:28
-#: internal/viewerui/menubar.go:46
+#: internal/viewerui/menubar.go:44
 #: internal/vmui/menubar.go:48
 msgid "View"
 msgstr ""
@@ -2327,7 +2327,7 @@ msgstr "已请求 %s 连接。"
 #: internal/lightui/sysmon.go:968
 #: internal/lightui/tailscale.go:632
 #: internal/ui/settings_ai.go:486
-#: internal/viewerui/app.go:810
+#: internal/viewerui/app.go:844
 #: ui/connect.ui:291
 #: ui/files.ui:233
 #: ui/gpg.ui:1445
@@ -2974,9 +2974,9 @@ msgstr "磁盘用量"
 #: internal/diskui/details.go:47
 #: internal/term/web/strings.go:98
 #: internal/termui/prefs.go:146
-#: internal/viewerui/app.go:814
-#: internal/viewerui/app.go:832
-#: internal/viewerui/app.go:847
+#: internal/viewerui/app.go:848
+#: internal/viewerui/app.go:866
+#: internal/viewerui/app.go:881
 msgid "Size"
 msgstr "尺寸"
 
@@ -2985,7 +2985,7 @@ msgid "2006-01-02"
 msgstr "2006年1月2日"
 
 #: internal/diskui/details.go:53
-#: internal/viewerui/app.go:828
+#: internal/viewerui/app.go:862
 msgid "Changed"
 msgstr "更改时间"
 
@@ -3150,8 +3150,8 @@ msgstr "在 %s 中运行。"
 #: internal/mailui/welcome.go:480
 #: internal/term/web/strings.go:35
 #: internal/ui/askpass.go:575
-#: internal/viewerui/app.go:565
-#: internal/viewerui/edit.go:312
+#: internal/viewerui/app.go:617
+#: internal/viewerui/edit.go:314
 #: internal/vmui/window.go:898
 msgid "Copied"
 msgstr "已复制"
@@ -3880,7 +3880,7 @@ msgstr "侧边栏"
 
 #: internal/filesui/cards.go:793
 #: internal/filesui/window.go:865
-#: internal/viewerui/menubar.go:55
+#: internal/viewerui/menubar.go:53
 msgid "Details"
 msgstr "详细信息"
 
@@ -4114,7 +4114,7 @@ msgstr "损坏的链接"
 #: internal/filesui/remotesetup.go:75
 #: internal/filesui/remotesetup.go:83
 #: internal/lightui/sysmon.go:794
-#: internal/viewerui/app.go:811
+#: internal/viewerui/app.go:845
 #: ui/vm.ui:322
 msgid "Folder"
 msgstr "目录"
@@ -8353,7 +8353,7 @@ msgstr ""
 #: internal/gamesui/menubar.go:34
 #: internal/ui/appmenu_packs.go:52
 #: internal/ui/appmenu_packs.go:85
-#: internal/viewerui/menubar.go:57
+#: internal/viewerui/menubar.go:55
 msgid "Fullscreen"
 msgstr ""
 
@@ -9716,7 +9716,7 @@ msgstr "pass 会删除它的文件；git 管理的密码库会在历史中保留
 #: internal/lightui/pass.go:975
 #: internal/mailui/reader.go:549
 #: internal/mailui/reader.go:794
-#: internal/viewerui/app.go:809
+#: internal/viewerui/app.go:843
 msgid "FILE"
 msgstr "文件"
 
@@ -11148,7 +11148,7 @@ msgid "Moved to Spam"
 msgstr "已移到垃圾邮件"
 
 #: internal/mailui/actions.go:216
-#: internal/viewerui/app.go:509
+#: internal/viewerui/app.go:561
 msgid "Moved to Trash"
 msgstr "已移至垃圾箱"
 
@@ -11480,7 +11480,7 @@ msgid "Ask before loading pictures"
 msgstr ""
 
 #: internal/mailui/details.go:157
-#: internal/viewerui/menubar.go:56
+#: internal/viewerui/menubar.go:54
 msgid "Source"
 msgstr ""
 
@@ -12115,7 +12115,6 @@ msgstr "列表中的每个会话"
 #: internal/mailui/settings.go:486
 #: internal/mailui/settings.go:486
 #: internal/mailui/settings.go:486
-#: internal/viewerui/app.go:749
 msgid "%d line"
 msgid_plural "%d lines"
 msgstr[0] "%d 行"
@@ -14572,7 +14571,7 @@ msgid "The colours programs draw with: the window theme's, or a scheme"
 msgstr "程序绘制时使用的颜色：窗口主题的，或一套配色"
 
 #: internal/termui/prefs.go:132
-#: internal/viewerui/app.go:836
+#: internal/viewerui/app.go:870
 msgid "TEXT"
 msgstr "文本"
 
@@ -16277,7 +16276,7 @@ msgid "Save the card"
 msgstr "保存卡片"
 
 #: internal/ui/settings_card.go:291
-#: internal/viewerui/edit.go:280
+#: internal/viewerui/edit.go:282
 msgid "Saved as %s"
 msgstr "已保存为 %s"
 
@@ -17839,179 +17838,162 @@ msgid "No app by that name"
 msgstr "没有这个名字的应用"
 
 #: internal/viewerui/app.go:36
-#: internal/viewerui/app.go:719
-#: internal/viewerui/app.go:720
+#: internal/viewerui/app.go:798
 #: config/apps/io.github.lyricat.Inua.Viewer.desktop:3
 msgid "Viewer"
 msgstr "查看器"
 
-#: internal/viewerui/app.go:502
+#: internal/viewerui/app.go:546
+msgid "Delete again to move to Trash"
+msgstr "再按 Delete 移至垃圾箱"
+
+#: internal/viewerui/app.go:554
 msgid "Could not move to Trash"
 msgstr "无法移至垃圾箱"
 
-#: internal/viewerui/app.go:512
+#: internal/viewerui/app.go:564
 msgid "Nothing left here."
 msgstr "这里什么都没有了。"
 
-#: internal/viewerui/app.go:563
-#: internal/viewerui/edit.go:288
-#: internal/viewerui/edit.go:294
-#: internal/viewerui/edit.go:309
+#: internal/viewerui/app.go:615
+#: internal/viewerui/edit.go:290
+#: internal/viewerui/edit.go:296
+#: internal/viewerui/edit.go:311
 msgid "Could not copy"
 msgstr "无法复制"
 
-#: internal/viewerui/app.go:596
+#: internal/viewerui/app.go:668
 msgid "Open a File"
 msgstr "打开文件"
 
-#: internal/viewerui/app.go:598
+#: internal/viewerui/app.go:670
 msgid "Images, PDFs, Markdown and text"
 msgstr "图片、PDF、Markdown 和文本"
 
-#: internal/viewerui/app.go:621
+#: internal/viewerui/app.go:693
 msgid "Open an image or a document to view it."
 msgstr "打开图片或文档来查看。"
 
-#: internal/viewerui/app.go:687
-msgid "Copy the page's text (Ctrl+C)"
-msgstr "复制本页文字 (Ctrl+C)"
-
-#: internal/viewerui/app.go:688
+#: internal/viewerui/app.go:754
 msgid "Previous file (Ctrl+Page Up)"
 msgstr "上一个文件 (Ctrl+Page Up)"
 
-#: internal/viewerui/app.go:689
+#: internal/viewerui/app.go:755
 msgid "Next file (Ctrl+Page Down)"
 msgstr "下一个文件 (Ctrl+Page Down)"
 
-#: internal/viewerui/app.go:691
-msgid "Copy the text (Ctrl+C)"
-msgstr "复制文字 (Ctrl+C)"
-
-#: internal/viewerui/app.go:692
-#: internal/viewerui/app.go:696
-#: ui/viewer.ui:322
+#: internal/viewerui/app.go:757
+#: ui/viewer.ui:165
 msgid "Previous (←)"
 msgstr "上一页 (←)"
 
-#: internal/viewerui/app.go:693
-#: internal/viewerui/app.go:697
-#: ui/viewer.ui:334
+#: internal/viewerui/app.go:758
+#: ui/viewer.ui:194
 msgid "Next (→)"
 msgstr "下一个 (→)"
 
-#: internal/viewerui/app.go:695
-#: ui/viewer.ui:139
-msgid "Copy the image (Ctrl+C)"
-msgstr "复制图像（Ctrl+C)"
-
-#: internal/viewerui/app.go:705
+#: internal/viewerui/app.go:783
 msgid "%s is locked with a password."
 msgstr "%s 已用密码保护。"
 
-#: internal/viewerui/app.go:707
+#: internal/viewerui/app.go:785
 msgid "%s is not UTF-8 text."
 msgstr "%s 不是 UTF-8 文本。"
 
-#: internal/viewerui/app.go:709
+#: internal/viewerui/app.go:787
 msgid "Install libpoppler-glib8t64 to view PDFs."
 msgstr "安装 libpoppler-glib8t64 即可查看 PDF。"
 
-#: internal/viewerui/app.go:711
-#: internal/viewerui/image.go:80
+#: internal/viewerui/app.go:789
+#: internal/viewerui/image.go:81
 msgid "Could not open %s.\n%v"
 msgstr "无法打开%[1]s。\n%[2]v"
 
-#: internal/viewerui/app.go:745
-msgid "Page %d of %d"
-msgstr "第 %d 页，共 %d 页"
-
-#: internal/viewerui/app.go:807
+#: internal/viewerui/app.go:841
 msgid "Jan 2, 2006  15:04"
 msgstr "2006年1月2日  15:04"
 
-#: internal/viewerui/app.go:815
-#: internal/viewerui/app.go:833
-#: internal/viewerui/app.go:857
+#: internal/viewerui/app.go:849
+#: internal/viewerui/app.go:867
+#: internal/viewerui/app.go:891
 msgid "Type"
 msgstr "类型"
 
-#: internal/viewerui/app.go:816
-#: internal/viewerui/app.go:834
-#: internal/viewerui/app.go:858
+#: internal/viewerui/app.go:850
+#: internal/viewerui/app.go:868
+#: internal/viewerui/app.go:892
 msgid "Modified"
 msgstr "修改"
 
-#: internal/viewerui/app.go:821
+#: internal/viewerui/app.go:855
 msgid "DOCUMENT"
 msgstr "文档"
 
-#: internal/viewerui/app.go:822
+#: internal/viewerui/app.go:856
 msgid "Title"
 msgstr "标题"
 
-#: internal/viewerui/app.go:823
+#: internal/viewerui/app.go:857
 msgid "Author"
 msgstr "作者"
 
-#: internal/viewerui/app.go:825
+#: internal/viewerui/app.go:859
 msgid "Pages"
 msgstr "页数"
 
-#: internal/viewerui/app.go:826
+#: internal/viewerui/app.go:860
 msgid "Page size"
 msgstr "页面尺寸"
 
-#: internal/viewerui/app.go:827
+#: internal/viewerui/app.go:861
 msgid "Created"
 msgstr "创建时间"
 
-#: internal/viewerui/app.go:829
+#: internal/viewerui/app.go:863
 msgid "Made with"
 msgstr "制作工具"
 
-#: internal/viewerui/app.go:837
+#: internal/viewerui/app.go:871
 msgid "Lines"
 msgstr "行数"
 
-#: internal/viewerui/app.go:838
+#: internal/viewerui/app.go:872
 msgid "Words"
 msgstr "词数"
 
-#: internal/viewerui/app.go:839
+#: internal/viewerui/app.go:873
 msgid "Characters"
 msgstr "字符数"
 
-#: internal/viewerui/app.go:856
+#: internal/viewerui/app.go:890
 msgid "Dimensions"
 msgstr "尺寸"
 
-#: internal/viewerui/app.go:860
+#: internal/viewerui/app.go:894
 msgid "CAMERA"
 msgstr "相机"
 
-#: internal/viewerui/app.go:861
+#: internal/viewerui/app.go:895
 msgid "Camera"
 msgstr "相机"
 
-#: internal/viewerui/app.go:862
+#: internal/viewerui/app.go:896
 msgid "Lens"
 msgstr "镜头"
 
-#: internal/viewerui/app.go:863
+#: internal/viewerui/app.go:897
 msgid "Exposure"
 msgstr "曝光"
 
-#: internal/viewerui/app.go:864
+#: internal/viewerui/app.go:898
 msgid "Taken"
 msgstr "拍摄时间"
 
-#: internal/viewerui/app.go:880
+#: internal/viewerui/app.go:914
 msgid "Could not set the wallpaper"
 msgstr "无法设置壁纸"
 
-#: internal/viewerui/app.go:884
-#: ui/viewer.ui:148
+#: internal/viewerui/app.go:918
 msgid "Set as wallpaper"
 msgstr "设置为壁纸"
 
@@ -18043,86 +18025,67 @@ msgstr "完成"
 msgid "Back to viewing (Esc)"
 msgstr "返回查看 (Esc)"
 
-#: internal/viewerui/edit.go:155
+#: internal/viewerui/edit.go:157
 msgid "Not saved: Esc again to leave"
 msgstr "未保存：再按 Esc 离开"
 
-#: internal/viewerui/edit.go:173
+#: internal/viewerui/edit.go:175
 msgid "Not saved: choose it again to leave"
 msgstr ""
 
-#: internal/viewerui/edit.go:248
+#: internal/viewerui/edit.go:250
 msgid "Save the Edited Image"
 msgstr "保存编辑后的图像"
 
-#: internal/viewerui/edit.go:276
+#: internal/viewerui/edit.go:278
 msgid "Could not save"
 msgstr "无法保存"
 
-#: internal/viewerui/image.go:222
-#: internal/viewerui/pdf.go:288
-msgid "Fit · %s"
-msgstr "适合·%s"
-
-#: internal/viewerui/image.go:222
-#: internal/viewerui/pdf.go:288
-#: internal/viewerui/text.go:716
-msgid "Actual size (1)"
-msgstr "实际尺寸(1)"
-
-#: internal/viewerui/image.go:224
-msgid "Fit the window (0)"
-msgstr "适应窗口（0）"
-
-#: internal/viewerui/menubar.go:37
+#: internal/viewerui/menubar.go:35
 msgid "Open…"
 msgstr ""
 
-#: internal/viewerui/menubar.go:42
+#: internal/viewerui/menubar.go:40
 msgid "Copy Image"
 msgstr ""
 
-#: internal/viewerui/menubar.go:43
+#: internal/viewerui/menubar.go:41
 msgid "Set as Wallpaper"
 msgstr ""
 
-#: internal/viewerui/menubar.go:47
+#: internal/viewerui/menubar.go:45
 msgid "Zoom In"
 msgstr ""
 
-#: internal/viewerui/menubar.go:48
+#: internal/viewerui/menubar.go:46
 msgid "Zoom Out"
 msgstr ""
 
-#: internal/viewerui/menubar.go:49
+#: internal/viewerui/menubar.go:47
 msgid "Reset Zoom"
 msgstr ""
 
-#: internal/viewerui/menubar.go:51
+#: internal/viewerui/menubar.go:49
 msgid "Previous File"
 msgstr ""
 
-#: internal/viewerui/menubar.go:52
+#: internal/viewerui/menubar.go:50
 msgid "Next File"
 msgstr ""
 
-#: internal/viewerui/menubar.go:53
+#: internal/viewerui/menubar.go:51
 msgid "Rotate"
 msgstr ""
 
-#: internal/viewerui/pdf.go:188
+#: internal/viewerui/pdf.go:187
 msgid "%s has no pages."
 msgstr "%s 没有页面。"
 
-#: internal/viewerui/pdf.go:290
-msgid "Fit the width (0)"
-msgstr "适应宽度 (0)"
-
-#: internal/viewerui/text.go:670
+#: internal/viewerui/text.go:668
 msgid "Not found"
 msgstr "找不到"
 
-#: internal/viewerui/text.go:682
+#: internal/viewerui/text.go:680
 msgid "Could not open the link"
 msgstr "无法打开链接"
 
@@ -21095,57 +21058,37 @@ msgid "Mute (M)"
 msgstr "静音 (M)"
 
 #: ui/video.ui:273
-#: ui/viewer.ui:208
+#: ui/viewer.ui:297
 msgid "Full screen (F)"
 msgstr "全屏(F)"
 
-#: ui/viewer.ui:61
-msgid "Open… (Ctrl+O)"
-msgstr "打开... (Ctrl+O)"
+#: ui/viewer.ui:137
+msgid "Open a File…"
+msgstr "打开文件…"
 
-#: ui/viewer.ui:77
+#: ui/viewer.ui:220
 msgid "Zoom out (−)"
 msgstr "缩小(-)"
 
-#: ui/viewer.ui:86
-msgid "Fit (0) or actual size (1)"
-msgstr "适合 (0) 或实际尺寸 (1)"
-
-#: ui/viewer.ui:95
+#: ui/viewer.ui:230
 msgid "Zoom in (+)"
 msgstr "放大(+)"
 
-#: ui/viewer.ui:111
+#: ui/viewer.ui:256
 msgid "Show the source (S)"
 msgstr "显示源文本 (S)"
 
-#: ui/viewer.ui:121
+#: ui/viewer.ui:267
 msgid "Rotate (R, Shift+R the other way)"
 msgstr "旋转（R，Shift+R 另一种方式）"
 
-#: ui/viewer.ui:130
+#: ui/viewer.ui:277
 msgid "Edit: draw on the image (E)"
 msgstr "编辑：在图像上绘制 (E)"
 
-#: ui/viewer.ui:157
-msgid "Show in folder"
-msgstr "在文件夹中显示"
-
-#: ui/viewer.ui:166
-msgid "Move to Trash (Delete)"
-msgstr "移至垃圾箱（删除）"
-
-#: ui/viewer.ui:179
-msgid "Trash?"
-msgstr "移至回收站？"
-
-#: ui/viewer.ui:199
+#: ui/viewer.ui:287
 msgid "Details (I)"
 msgstr "详情（I）"
-
-#: ui/viewer.ui:368
-msgid "Open a File…"
-msgstr "打开文件…"
 
 #: ui/vm.ui:52
 msgid "Machines keep running with this window closed."

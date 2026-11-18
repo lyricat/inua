@@ -24,6 +24,7 @@ import (
 const (
 	pageGap    = 16        // between pages, as the layout's spacing
 	pageMargin = 24        // around them
+	pageTop    = 68        // above the first, clear of the tools
 	pt100      = 96.0 / 72 // logical pixels per point at 100%
 	pdfMinZoom = 0.1
 	pdfMaxZoom = 8
@@ -75,7 +76,7 @@ func (p *pdfView) init(a *App, ui *gtkx.Builder) {
 	p.a = a
 	ui.Get("doc_scroller", &p.scroller)
 	ui.Get("pages", &p.box)
-	p.box.SetMarginTop(pageMargin)
+	p.box.SetMarginTop(pageTop)
 	p.box.SetMarginBottom(pageMargin)
 	p.box.SetMarginStart(pageMargin)
 	p.box.SetMarginEnd(pageMargin)
@@ -87,7 +88,6 @@ func (p *pdfView) init(a *App, ui *gtkx.Builder) {
 		}
 		if c := p.middle(); c != p.cur {
 			p.cur = c
-			p.a.showMeta()
 			p.a.showDetails()
 		}
 		p.schedule()
@@ -165,7 +165,6 @@ func (p *pdfView) init(a *App, ui *gtkx.Builder) {
 func (p *pdfView) open(path string) {
 	p.close()
 	gen := p.gen
-	p.a.setZoomLabel("", "")
 	go func() {
 		doc, err := viewer.OpenPDF(path)
 		var info viewer.PDFInfo
@@ -204,7 +203,6 @@ func (p *pdfView) open(path string) {
 			}
 			p.reset(true)
 			p.vadj.SetValue(0)
-			p.a.showMeta()
 			p.a.showDetails()
 		})
 	}()
@@ -244,7 +242,6 @@ func (p *pdfView) reset(fit bool) {
 	p.viewW = int(vw)
 	p.zoomTo(z, p.hadj.GetPageSize()/2, 0)
 	p.fit = fit
-	p.label()
 }
 
 // step zooms in or out to the next stop.
@@ -278,17 +275,8 @@ func (p *pdfView) zoomTo(z, x, y float64) {
 	vv := p.tops[i] + fy*p.shown(p.pg[i].h) - y
 	vh := p.vadj.GetPageSize()
 	p.vadj.Configure(math.Max(0, math.Min(vv, high-vh)), 0, math.Max(high, vh), vh/10, vh*0.9, vh)
-	p.label()
 	p.drawGen++
 	glib.TimeoutAdd(150, &p.onDraw, p.drawGen)
-}
-
-func (p *pdfView) label() {
-	if p.fit {
-		p.a.setZoomLabel(i18n.Tf("Fit · %s", viewer.Percent(p.zoom/pt100)), i18n.T("Actual size (1)"))
-	} else {
-		p.a.setZoomLabel(viewer.Percent(p.zoom/pt100), i18n.T("Fit the width (0)"))
-	}
 }
 
 // shown is a length in points as laid out.
@@ -309,7 +297,7 @@ func (p *pdfView) size() (w, h float64) {
 // layout sizes the pages' frames for the zoom.
 func (p *pdfView) layout() {
 	p.tops = p.tops[:0]
-	y := float64(pageMargin)
+	y := float64(pageTop)
 	for _, pg := range p.pg {
 		p.tops = append(p.tops, y)
 		pg.frame.SetSizeRequest(int32(p.shown(pg.w)), int32(p.shown(pg.h)))

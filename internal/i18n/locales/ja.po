@@ -399,7 +399,7 @@ msgstr "開く"
 #: internal/ui/record.go:157
 #: internal/ui/screenshot.go:1173
 #: internal/ui/settings_custom.go:41
-#: internal/viewerui/menubar.go:44
+#: internal/viewerui/menubar.go:42
 msgid "Show in Folder"
 msgstr "フォルダーで表示"
 
@@ -1458,7 +1458,7 @@ msgid "Mon Jan 2, 2006, 15:04:05 -0700"
 msgstr "Mon Jan 2, 2006, 15:04:05 -0700"
 
 #: internal/apps/mail/details.go:49
-#: internal/viewerui/app.go:824
+#: internal/viewerui/app.go:858
 #: ui/mail-compose.ui:161
 msgid "Subject"
 msgstr "件名"
@@ -2090,7 +2090,7 @@ msgstr "試してみる"
 #: internal/remoteui/menubar.go:47
 #: internal/ui/appmenu_packs.go:78
 #: internal/ui/settings_menu.go:25
-#: internal/viewerui/menubar.go:36
+#: internal/viewerui/menubar.go:34
 #: internal/vmui/menubar.go:36
 msgid "File"
 msgid_plural "Files"
@@ -2109,7 +2109,7 @@ msgstr "新しい会話"
 #: internal/remoteui/menubar.go:48
 #: internal/shell/commands.go:46
 #: internal/ui/appmenu_packs.go:79
-#: internal/viewerui/menubar.go:39
+#: internal/viewerui/menubar.go:37
 #: internal/vmui/menubar.go:39
 msgid "Close Window"
 msgstr "ウィンドウを閉じる"
@@ -2119,7 +2119,7 @@ msgstr "ウィンドウを閉じる"
 #: internal/lightui/clock.go:404
 #: internal/termui/menubar.go:31
 #: internal/ui/appmenu_packs.go:81
-#: internal/viewerui/menubar.go:41
+#: internal/viewerui/menubar.go:39
 #: ui/pass.ui:252
 msgid "Edit"
 msgstr "編集"
@@ -2137,7 +2137,7 @@ msgstr "会話を消去"
 #: internal/termui/menubar.go:32
 #: internal/ui/appmenu_packs.go:84
 #: internal/ui/settings_menu.go:28
-#: internal/viewerui/menubar.go:46
+#: internal/viewerui/menubar.go:44
 #: internal/vmui/menubar.go:48
 msgid "View"
 msgstr "表示"
@@ -2327,7 +2327,7 @@ msgstr "%s に接続を依頼しました。"
 #: internal/lightui/sysmon.go:968
 #: internal/lightui/tailscale.go:632
 #: internal/ui/settings_ai.go:486
-#: internal/viewerui/app.go:810
+#: internal/viewerui/app.go:844
 #: ui/connect.ui:291
 #: ui/files.ui:233
 #: ui/gpg.ui:1445
@@ -2974,9 +2974,9 @@ msgstr "ディスク使用量"
 #: internal/diskui/details.go:47
 #: internal/term/web/strings.go:98
 #: internal/termui/prefs.go:146
-#: internal/viewerui/app.go:814
-#: internal/viewerui/app.go:832
-#: internal/viewerui/app.go:847
+#: internal/viewerui/app.go:848
+#: internal/viewerui/app.go:866
+#: internal/viewerui/app.go:881
 msgid "Size"
 msgstr "サイズ"
 
@@ -2985,7 +2985,7 @@ msgid "2006-01-02"
 msgstr "2006年1月2日"
 
 #: internal/diskui/details.go:53
-#: internal/viewerui/app.go:828
+#: internal/viewerui/app.go:862
 msgid "Changed"
 msgstr "変更"
 
@@ -3150,8 +3150,8 @@ msgstr "%s で実行します。"
 #: internal/mailui/welcome.go:480
 #: internal/term/web/strings.go:35
 #: internal/ui/askpass.go:575
-#: internal/viewerui/app.go:565
-#: internal/viewerui/edit.go:312
+#: internal/viewerui/app.go:617
+#: internal/viewerui/edit.go:314
 #: internal/vmui/window.go:898
 msgid "Copied"
 msgstr "コピーしました"
@@ -3880,7 +3880,7 @@ msgstr "サイドバー"
 
 #: internal/filesui/cards.go:793
 #: internal/filesui/window.go:865
-#: internal/viewerui/menubar.go:55
+#: internal/viewerui/menubar.go:53
 msgid "Details"
 msgstr "詳細"
 
@@ -4114,7 +4114,7 @@ msgstr "壊れたリンク"
 #: internal/filesui/remotesetup.go:75
 #: internal/filesui/remotesetup.go:83
 #: internal/lightui/sysmon.go:794
-#: internal/viewerui/app.go:811
+#: internal/viewerui/app.go:845
 #: ui/vm.ui:322
 msgid "Folder"
 msgstr "フォルダー"
@@ -8353,7 +8353,7 @@ msgstr "ブラウザーを開けませんでした: %v"
 #: internal/gamesui/menubar.go:34
 #: internal/ui/appmenu_packs.go:52
 #: internal/ui/appmenu_packs.go:85
-#: internal/viewerui/menubar.go:57
+#: internal/viewerui/menubar.go:55
 msgid "Fullscreen"
 msgstr "全画面表示"
 
@@ -9716,7 +9716,7 @@ msgstr "pass がファイルを削除します。git のストアでは履歴に
 #: internal/lightui/pass.go:975
 #: internal/mailui/reader.go:549
 #: internal/mailui/reader.go:794
-#: internal/viewerui/app.go:809
+#: internal/viewerui/app.go:843
 msgid "FILE"
 msgstr "ファイル"
 
@@ -11148,7 +11148,7 @@ msgid "Moved to Spam"
 msgstr "迷惑メールへ移動しました"
 
 #: internal/mailui/actions.go:216
-#: internal/viewerui/app.go:509
+#: internal/viewerui/app.go:561
 msgid "Moved to Trash"
 msgstr "ゴミ箱に移動しました"
 
@@ -11480,7 +11480,7 @@ msgid "Ask before loading pictures"
 msgstr "画像の読み込み前に確認"
 
 #: internal/mailui/details.go:157
-#: internal/viewerui/menubar.go:56
+#: internal/viewerui/menubar.go:54
 msgid "Source"
 msgstr "ソース"
 
@@ -12115,7 +12115,6 @@ msgstr "一覧の各会話"
 #: internal/mailui/settings.go:486
 #: internal/mailui/settings.go:486
 #: internal/mailui/settings.go:486
-#: internal/viewerui/app.go:749
 msgid "%d line"
 msgid_plural "%d lines"
 msgstr[0] "%d 行"
@@ -14572,7 +14571,7 @@ msgid "The colours programs draw with: the window theme's, or a scheme"
 msgstr "プログラムが描く色：ウィンドウのテーマの色、または配色"
 
 #: internal/termui/prefs.go:132
-#: internal/viewerui/app.go:836
+#: internal/viewerui/app.go:870
 msgid "TEXT"
 msgstr "テキスト"
 
@@ -16277,7 +16276,7 @@ msgid "Save the card"
 msgstr "カードを保存"
 
 #: internal/ui/settings_card.go:291
-#: internal/viewerui/edit.go:280
+#: internal/viewerui/edit.go:282
 msgid "Saved as %s"
 msgstr "%s として保存しました"
 
@@ -17839,179 +17838,162 @@ msgid "No app by that name"
 msgstr "その名前のアプリはありません"
 
 #: internal/viewerui/app.go:36
-#: internal/viewerui/app.go:719
-#: internal/viewerui/app.go:720
+#: internal/viewerui/app.go:798
 #: config/apps/io.github.lyricat.Inua.Viewer.desktop:3
 msgid "Viewer"
 msgstr "ビューアー"
 
-#: internal/viewerui/app.go:502
+#: internal/viewerui/app.go:546
+msgid "Delete again to move to Trash"
+msgstr "もう一度 Delete でゴミ箱に移動"
+
+#: internal/viewerui/app.go:554
 msgid "Could not move to Trash"
 msgstr "ゴミ箱に移動できませんでした"
 
-#: internal/viewerui/app.go:512
+#: internal/viewerui/app.go:564
 msgid "Nothing left here."
 msgstr "ここにはもう何もありません。"
 
-#: internal/viewerui/app.go:563
-#: internal/viewerui/edit.go:288
-#: internal/viewerui/edit.go:294
-#: internal/viewerui/edit.go:309
+#: internal/viewerui/app.go:615
+#: internal/viewerui/edit.go:290
+#: internal/viewerui/edit.go:296
+#: internal/viewerui/edit.go:311
 msgid "Could not copy"
 msgstr "コピーできませんでした"
 
-#: internal/viewerui/app.go:596
+#: internal/viewerui/app.go:668
 msgid "Open a File"
 msgstr "ファイルを開く"
 
-#: internal/viewerui/app.go:598
+#: internal/viewerui/app.go:670
 msgid "Images, PDFs, Markdown and text"
 msgstr "画像、PDF、Markdown、テキスト"
 
-#: internal/viewerui/app.go:621
+#: internal/viewerui/app.go:693
 msgid "Open an image or a document to view it."
 msgstr "画像か文書を開くと表示します。"
 
-#: internal/viewerui/app.go:687
-msgid "Copy the page's text (Ctrl+C)"
-msgstr "ページのテキストをコピー (Ctrl+C)"
-
-#: internal/viewerui/app.go:688
+#: internal/viewerui/app.go:754
 msgid "Previous file (Ctrl+Page Up)"
 msgstr "前のファイル (Ctrl+Page Up)"
 
-#: internal/viewerui/app.go:689
+#: internal/viewerui/app.go:755
 msgid "Next file (Ctrl+Page Down)"
 msgstr "次のファイル (Ctrl+Page Down)"
 
-#: internal/viewerui/app.go:691
-msgid "Copy the text (Ctrl+C)"
-msgstr "テキストをコピー (Ctrl+C)"
-
-#: internal/viewerui/app.go:692
-#: internal/viewerui/app.go:696
-#: ui/viewer.ui:322
+#: internal/viewerui/app.go:757
+#: ui/viewer.ui:165
 msgid "Previous (←)"
 msgstr "前へ (←)"
 
-#: internal/viewerui/app.go:693
-#: internal/viewerui/app.go:697
-#: ui/viewer.ui:334
+#: internal/viewerui/app.go:758
+#: ui/viewer.ui:194
 msgid "Next (→)"
 msgstr "次へ（→）"
 
-#: internal/viewerui/app.go:695
-#: ui/viewer.ui:139
-msgid "Copy the image (Ctrl+C)"
-msgstr "画像をコピー（Ctrl+C）"
-
-#: internal/viewerui/app.go:705
+#: internal/viewerui/app.go:783
 msgid "%s is locked with a password."
 msgstr "%s はパスワードで保護されています。"
 
-#: internal/viewerui/app.go:707
+#: internal/viewerui/app.go:785
 msgid "%s is not UTF-8 text."
 msgstr "%s は UTF-8 のテキストではありません。"
 
-#: internal/viewerui/app.go:709
+#: internal/viewerui/app.go:787
 msgid "Install libpoppler-glib8t64 to view PDFs."
 msgstr "PDF を表示するには libpoppler-glib8t64 をインストールしてください。"
 
-#: internal/viewerui/app.go:711
-#: internal/viewerui/image.go:80
+#: internal/viewerui/app.go:789
+#: internal/viewerui/image.go:81
 msgid "Could not open %s.\n%v"
 msgstr "%[1]sを開けませんでした。\n%[2]v"
 
-#: internal/viewerui/app.go:745
-msgid "Page %d of %d"
-msgstr "%[2]d ページ中 %[1]d"
-
-#: internal/viewerui/app.go:807
+#: internal/viewerui/app.go:841
 msgid "Jan 2, 2006  15:04"
 msgstr "2006年1月2日  15:04"
 
-#: internal/viewerui/app.go:815
-#: internal/viewerui/app.go:833
-#: internal/viewerui/app.go:857
+#: internal/viewerui/app.go:849
+#: internal/viewerui/app.go:867
+#: internal/viewerui/app.go:891
 msgid "Type"
 msgstr "タイプ"
 
-#: internal/viewerui/app.go:816
-#: internal/viewerui/app.go:834
-#: internal/viewerui/app.go:858
+#: internal/viewerui/app.go:850
+#: internal/viewerui/app.go:868
+#: internal/viewerui/app.go:892
 msgid "Modified"
 msgstr "修正"
 
-#: internal/viewerui/app.go:821
+#: internal/viewerui/app.go:855
 msgid "DOCUMENT"
 msgstr "文書"
 
-#: internal/viewerui/app.go:822
+#: internal/viewerui/app.go:856
 msgid "Title"
 msgstr "タイトル"
 
-#: internal/viewerui/app.go:823
+#: internal/viewerui/app.go:857
 msgid "Author"
 msgstr "作成者"
 
-#: internal/viewerui/app.go:825
+#: internal/viewerui/app.go:859
 msgid "Pages"
 msgstr "ページ数"
 
-#: internal/viewerui/app.go:826
+#: internal/viewerui/app.go:860
 msgid "Page size"
 msgstr "ページサイズ"
 
-#: internal/viewerui/app.go:827
+#: internal/viewerui/app.go:861
 msgid "Created"
 msgstr "作成"
 
-#: internal/viewerui/app.go:829
+#: internal/viewerui/app.go:863
 msgid "Made with"
 msgstr "作成ソフト"
 
-#: internal/viewerui/app.go:837
+#: internal/viewerui/app.go:871
 msgid "Lines"
 msgstr "行数"
 
-#: internal/viewerui/app.go:838
+#: internal/viewerui/app.go:872
 msgid "Words"
 msgstr "単語数"
 
-#: internal/viewerui/app.go:839
+#: internal/viewerui/app.go:873
 msgid "Characters"
 msgstr "文字数"
 
-#: internal/viewerui/app.go:856
+#: internal/viewerui/app.go:890
 msgid "Dimensions"
 msgstr "寸法"
 
-#: internal/viewerui/app.go:860
+#: internal/viewerui/app.go:894
 msgid "CAMERA"
 msgstr "カメラ"
 
-#: internal/viewerui/app.go:861
+#: internal/viewerui/app.go:895
 msgid "Camera"
 msgstr "カメラ"
 
-#: internal/viewerui/app.go:862
+#: internal/viewerui/app.go:896
 msgid "Lens"
 msgstr "レンズ"
 
-#: internal/viewerui/app.go:863
+#: internal/viewerui/app.go:897
 msgid "Exposure"
 msgstr "露出"
 
-#: internal/viewerui/app.go:864
+#: internal/viewerui/app.go:898
 msgid "Taken"
 msgstr "撮影日時"
 
-#: internal/viewerui/app.go:880
+#: internal/viewerui/app.go:914
 msgid "Could not set the wallpaper"
 msgstr "壁紙を設定できませんでした"
 
-#: internal/viewerui/app.go:884
-#: ui/viewer.ui:148
+#: internal/viewerui/app.go:918
 msgid "Set as wallpaper"
 msgstr "壁紙として設定する"
 
@@ -18043,86 +18025,67 @@ msgstr "完了"
 msgid "Back to viewing (Esc)"
 msgstr "表示に戻る (Esc)"
 
-#: internal/viewerui/edit.go:155
+#: internal/viewerui/edit.go:157
 msgid "Not saved: Esc again to leave"
 msgstr "未保存: もう一度 Esc で閉じる"
 
-#: internal/viewerui/edit.go:173
+#: internal/viewerui/edit.go:175
 msgid "Not saved: choose it again to leave"
 msgstr "未保存です: 閉じるにはもう一度選択してください"
 
-#: internal/viewerui/edit.go:248
+#: internal/viewerui/edit.go:250
 msgid "Save the Edited Image"
 msgstr "編集した画像を保存"
 
-#: internal/viewerui/edit.go:276
+#: internal/viewerui/edit.go:278
 msgid "Could not save"
 msgstr "保存できませんでした"
 
-#: internal/viewerui/image.go:222
-#: internal/viewerui/pdf.go:288
-msgid "Fit · %s"
-msgstr "フィット・%s"
-
-#: internal/viewerui/image.go:222
-#: internal/viewerui/pdf.go:288
-#: internal/viewerui/text.go:716
-msgid "Actual size (1)"
-msgstr "実寸サイズ(1)"
-
-#: internal/viewerui/image.go:224
-msgid "Fit the window (0)"
-msgstr "ウィンドウに合わせる (0)"
-
-#: internal/viewerui/menubar.go:37
+#: internal/viewerui/menubar.go:35
 msgid "Open…"
 msgstr "開く…"
 
-#: internal/viewerui/menubar.go:42
+#: internal/viewerui/menubar.go:40
 msgid "Copy Image"
 msgstr "画像をコピー"
 
-#: internal/viewerui/menubar.go:43
+#: internal/viewerui/menubar.go:41
 msgid "Set as Wallpaper"
 msgstr "壁紙に設定"
 
-#: internal/viewerui/menubar.go:47
+#: internal/viewerui/menubar.go:45
 msgid "Zoom In"
 msgstr "拡大"
 
-#: internal/viewerui/menubar.go:48
+#: internal/viewerui/menubar.go:46
 msgid "Zoom Out"
 msgstr "縮小"
 
-#: internal/viewerui/menubar.go:49
+#: internal/viewerui/menubar.go:47
 msgid "Reset Zoom"
 msgstr "拡大率をリセット"
 
-#: internal/viewerui/menubar.go:51
+#: internal/viewerui/menubar.go:49
 msgid "Previous File"
 msgstr "前のファイル"
 
-#: internal/viewerui/menubar.go:52
+#: internal/viewerui/menubar.go:50
 msgid "Next File"
 msgstr "次のファイル"
 
-#: internal/viewerui/menubar.go:53
+#: internal/viewerui/menubar.go:51
 msgid "Rotate"
 msgstr "回転"
 
-#: internal/viewerui/pdf.go:188
+#: internal/viewerui/pdf.go:187
 msgid "%s has no pages."
 msgstr "%s にはページがありません。"
 
-#: internal/viewerui/pdf.go:290
-msgid "Fit the width (0)"
-msgstr "幅に合わせる (0)"
-
-#: internal/viewerui/text.go:670
+#: internal/viewerui/text.go:668
 msgid "Not found"
 msgstr "見つかりません"
 
-#: internal/viewerui/text.go:682
+#: internal/viewerui/text.go:680
 msgid "Could not open the link"
 msgstr "リンクを開けませんでした"
 
@@ -21095,57 +21058,37 @@ msgid "Mute (M)"
 msgstr "ミュート (M)"
 
 #: ui/video.ui:273
-#: ui/viewer.ui:208
+#: ui/viewer.ui:297
 msgid "Full screen (F)"
 msgstr "全画面（F）"
 
-#: ui/viewer.ui:61
-msgid "Open… (Ctrl+O)"
-msgstr "開く… (Ctrl+O)"
+#: ui/viewer.ui:137
+msgid "Open a File…"
+msgstr "ファイルを開く…"
 
-#: ui/viewer.ui:77
+#: ui/viewer.ui:220
 msgid "Zoom out (−)"
 msgstr "ズームアウト（－）"
 
-#: ui/viewer.ui:86
-msgid "Fit (0) or actual size (1)"
-msgstr "フィット (0) または実際のサイズ (1)"
-
-#: ui/viewer.ui:95
+#: ui/viewer.ui:230
 msgid "Zoom in (+)"
 msgstr "拡大（+）"
 
-#: ui/viewer.ui:111
+#: ui/viewer.ui:256
 msgid "Show the source (S)"
 msgstr "ソースを表示 (S)"
 
-#: ui/viewer.ui:121
+#: ui/viewer.ui:267
 msgid "Rotate (R, Shift+R the other way)"
 msgstr "回転（R、Shift+R を逆方向）"
 
-#: ui/viewer.ui:130
+#: ui/viewer.ui:277
 msgid "Edit: draw on the image (E)"
 msgstr "編集: 画像に描く (E)"
 
-#: ui/viewer.ui:157
-msgid "Show in folder"
-msgstr "フォルダ内で表示"
-
-#: ui/viewer.ui:166
-msgid "Move to Trash (Delete)"
-msgstr "ゴミ箱に移動（削除）"
-
-#: ui/viewer.ui:179
-msgid "Trash?"
-msgstr "ゴミ箱に移動しますか？"
-
-#: ui/viewer.ui:199
+#: ui/viewer.ui:287
 msgid "Details (I)"
 msgstr "詳細 (I)"
-
-#: ui/viewer.ui:368
-msgid "Open a File…"
-msgstr "ファイルを開く…"
 
 #: ui/vm.ui:52
 msgid "Machines keep running with this window closed."

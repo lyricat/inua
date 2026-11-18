@@ -16,9 +16,7 @@ func (a *App) menuBar() *appui.MenuBar {
 		case a.edit.on && name != "details" && name != "fullscreen" && name != "folder" && name != "close-window":
 			a.editMenu(name)
 		case name == "details":
-			on := !a.detailsReveal.GetRevealChild()
-			a.detailsReveal.SetRevealChild(on)
-			a.detailsToggle.SetActive(on)
+			a.detailsToggle.SetActive(!a.detailsToggle.GetActive())
 		case name == "source":
 			on := !a.sourceToggle.GetActive()
 			a.sourceToggle.SetActive(on)

@@ -1,292 +1,269 @@
-// Viewer: a thin toolbar over the file shown: a picture, which fits the
-// window until zoomed; a PDF's pages one under another; or Markdown and
-// text laid out to read. Arrows at the sides step through the folder, and
-// the details slide in at the right. Go names the buttons and does the rest.
+// Viewer: the file shown fills the window, the tools float over it on
+// glass: the zoom at the top left, the rest at the top right. A picture
+// fills the window, which takes its shape; a PDF's pages lie one under
+// another; Markdown and text are laid out to read. Arrows at the sides
+// step through the folder, and the details float in at the right. Go
+// puts the glass under each *_glass box (glass.go) and does the rest.
 using Gtk 4.0;
 
 ApplicationWindow viewer {
   default-width: 1100;
   default-height: 760;
 
-  Box {
-    orientation: vertical;
+  Overlay {
+    child: Stack stage {
+      StackPage {
+        name: "image";
 
-    Box toolbar {
-      styles ["viewer-bar"]
-      spacing: 4;
+        // The picture at its own size, scaled as a whole by Go (a
+        // transform): its shape never changes, and the canvas is as big
+        // as the picture shown. While it zooms or turns, Go draws it
+        // moving over the scroller (motion.go).
+        child: Overlay image_page {
+          child: ScrolledWindow scroller {
+            Fixed canvas {
+              halign: center;
+              valign: center;
 
-      Box {
-        orientation: vertical;
-        valign: center;
-        hexpand: true;
-
-        Label name {
-          styles ["viewer-name"]
-          xalign: 0;
-          ellipsize: middle;
-        }
-
-        Label meta {
-          styles ["readout", "viewer-meta"]
-          xalign: 0;
-          ellipsize: end;
-        }
+              Picture picture {
+                can-shrink: false;
+                content-fit: fill;
+              }
+            }
+          };
+        };
       }
 
-      // Says "Copied" and the like for a moment.
-      Label status {
-        styles ["readout", "viewer-status"]
+      // Annotating the image, fitted to the window: the picture, the
+      // annotations' layer over it and their toolbar at the foot, the
+      // last two made in Go (edit.go).
+      StackPage {
+        name: "edit";
+
+        child: Overlay edit_stage {
+          child: Picture edit_picture {
+            content-fit: contain;
+            can-shrink: true;
+          };
+        };
       }
 
-      Button open {
-        styles ["plain"]
-        icon-name: "folder-open-symbolic";
-        tooltip-text:  _("Open… (Ctrl+O)");
-      }
+      // A PDF's pages, each drawn as it comes into view.
+      StackPage {
+        name: "pdf";
 
-      Separator {
-        styles ["viewer-sep"]
-      }
+        child: ScrolledWindow doc_scroller {
+          styles ["viewer-stage"]
 
-      Button zoom_out {
-        styles ["plain"]
-        icon-name: "zoom-out-symbolic";
-        tooltip-text:  _("Zoom out (−)");
-      }
-
-      // The zoom; a click switches between fitting and actual size.
-      Button zoom_level {
-        styles ["link", "viewer-zoom"]
-        tooltip-text:  _("Fit (0) or actual size (1)");
-      }
-
-      Button zoom_in {
-        styles ["plain"]
-        icon-name: "zoom-in-symbolic";
-        tooltip-text:  _("Zoom in (+)");
-      }
-
-      Separator {
-        styles ["viewer-sep"]
-      }
-
-      // Markdown as written, or laid out.
-      ToggleButton source {
-        styles ["plain"]
-        icon-name: "viewer-source-symbolic";
-        tooltip-text:  _("Show the source (S)");
-        visible: false;
-      }
-
-      Button rotate {
-        styles ["plain"]
-        icon-name: "object-rotate-right-symbolic";
-        tooltip-text:  _("Rotate (R, Shift+R the other way)");
-      }
-
-      // Annotating the image: arrows, boxes, text… (edit.go).
-      Button edit {
-        styles ["plain"]
-        icon-name: "annot-pen-symbolic";
-        tooltip-text:  _("Edit: draw on the image (E)");
-      }
-
-      Button copy {
-        styles ["plain"]
-        icon-name: "edit-copy-symbolic";
-        tooltip-text:  _("Copy the image (Ctrl+C)");
-      }
-
-      Button wallpaper {
-        styles ["plain"]
-        icon-name: "preferences-desktop-wallpaper-symbolic";
-        tooltip-text:  _("Set as wallpaper");
-      }
-
-      Button folder {
-        styles ["plain"]
-        icon-name: "folder-symbolic";
-        tooltip-text:  _("Show in folder");
-      }
-
-      // A second click within a few seconds moves the file to the trash.
-      Button trash {
-        styles ["plain", "viewer-trash"]
-        tooltip-text:  _("Move to Trash (Delete)");
-
-        Box {
-          spacing: 6;
-          halign: center;
-
-          Image {
-            icon-name: "user-trash-symbolic";
+          Box pages {
+            styles ["viewer-pages"]
+            orientation: vertical;
+            spacing: 16;
+            halign: center;
           }
+        };
+      }
 
-          Label trash_label {
-            visible: false;
-            label:  _("Trash?");
+      // Markdown laid out, or plain text; Go keeps it to a column.
+      StackPage {
+        name: "text";
+
+        child: ScrolledWindow text_scroller {
+          styles ["viewer-paper"]
+          hscrollbar-policy: never;
+
+          TextView text {
+            styles ["viewer-text"]
+            editable: false;
+            cursor-visible: false;
+            wrap-mode: word_char;
+            top-margin: 72;
+            bottom-margin: 48;
+            pixels-inside-wrap: 3;
           }
-        }
+        };
+      }
+    };
+
+    // Nothing open, or the file could not be read.
+    [overlay]
+    Box empty {
+      styles ["viewer-empty"]
+      orientation: vertical;
+      spacing: 12;
+      halign: center;
+      valign: center;
+      visible: false;
+
+      Image {
+        icon-name: "image-x-generic-symbolic";
+        pixel-size: 48;
       }
 
-      Separator {
-        styles ["viewer-sep"]
+      Label empty_label {
+        styles ["empty"]
+        justify: center;
+        wrap: true;
+        max-width-chars: 40;
       }
 
-      ToggleButton details_toggle {
-        styles ["plain"]
-        icon-name: "dialog-information-symbolic";
-        tooltip-text:  _("Details (I)");
-      }
-
-      Button fullscreen {
-        styles ["plain"]
-        icon-name: "view-fullscreen-symbolic";
-        tooltip-text:  _("Full screen (F)");
+      Button open_empty {
+        styles ["primary"]
+        label:  _("Open a File…");
+        halign: center;
       }
     }
 
-    Box {
-      vexpand: true;
+    [overlay]
+    Box prev_slot {
+      styles ["viewer-edge"]
+      halign: start;
+      valign: center;
+      margin-start: 12;
 
-      Overlay {
-        hexpand: true;
+      Box prev_glass {
+        styles ["viewer-glass", "single"]
 
-        child: Stack stage {
-          StackPage {
-            name: "image";
-
-            child: ScrolledWindow scroller {
-              styles ["viewer-stage"]
-
-              // The picture at its own size, scaled as a whole by Go (a
-              // transform): its shape never changes, and the canvas is as
-              // big as the picture shown.
-              Fixed canvas {
-                halign: center;
-                valign: center;
-
-                Picture picture {
-                  can-shrink: false;
-                  content-fit: fill;
-                }
-              }
-            };
-          }
-
-          // Annotating the image, fitted to the window: the picture, the
-          // annotations' layer over it and their toolbar at the foot, the
-          // last two made in Go (edit.go).
-          StackPage {
-            name: "edit";
-
-            child: Overlay edit_stage {
-              styles ["viewer-stage"]
-
-              child: Picture edit_picture {
-                content-fit: contain;
-                can-shrink: true;
-              };
-            };
-          }
-
-          // A PDF's pages, each drawn as it comes into view.
-          StackPage {
-            name: "pdf";
-
-            child: ScrolledWindow doc_scroller {
-              styles ["viewer-stage"]
-
-              Box pages {
-                styles ["viewer-pages"]
-                orientation: vertical;
-                spacing: 16;
-                halign: center;
-              }
-            };
-          }
-
-          // Markdown laid out, or plain text; Go keeps it to a column.
-          StackPage {
-            name: "text";
-
-            child: ScrolledWindow text_scroller {
-              styles ["viewer-paper"]
-              hscrollbar-policy: never;
-
-              TextView text {
-                styles ["viewer-text"]
-                editable: false;
-                cursor-visible: false;
-                wrap-mode: word_char;
-                top-margin: 32;
-                bottom-margin: 48;
-                pixels-inside-wrap: 3;
-              }
-            };
-          }
-        };
-
-        [overlay]
         Button prev {
-          styles ["viewer-edge", "large"]
-          halign: start;
-          valign: center;
+          styles ["plain", "large", "round"]
           icon-name: "go-previous-symbolic";
           tooltip-text:  _("Previous (←)");
         }
+      }
+    }
 
-        [overlay]
+    [overlay]
+    Box next_slot {
+      styles ["viewer-edge"]
+      halign: end;
+      valign: center;
+      margin-end: 12;
+
+      Box next_glass {
+        styles ["viewer-glass", "single"]
+
         Button next {
-          styles ["viewer-edge", "large"]
-          halign: end;
-          valign: center;
+          styles ["plain", "large", "round"]
           icon-name: "go-next-symbolic";
           tooltip-text:  _("Next (→)");
         }
+      }
+    }
 
-        // Nothing open, or the file could not be read.
-        [overlay]
-        Box empty {
-          styles ["viewer-empty"]
-          orientation: vertical;
-          spacing: 12;
-          halign: center;
-          valign: center;
+    [overlay]
+    Box zoom_slot {
+      halign: start;
+      valign: start;
+      margin-start: 12;
+      margin-top: 12;
+
+      Box zoom_glass {
+        styles ["viewer-glass"]
+        spacing: 2;
+
+        Button zoom_out {
+          styles ["plain", "round"]
+          icon-name: "zoom-out-symbolic";
+          tooltip-text:  _("Zoom out (−)");
+        }
+
+        Button zoom_in {
+          styles ["plain", "round"]
+          icon-name: "zoom-in-symbolic";
+          tooltip-text:  _("Zoom in (+)");
+        }
+      }
+    }
+
+    [overlay]
+    Box tools_slot {
+      halign: end;
+      valign: start;
+      margin-end: 12;
+      margin-top: 12;
+
+      Box tools_glass {
+        styles ["viewer-glass"]
+        spacing: 2;
+
+        // Markdown as written, or laid out.
+        ToggleButton source {
+          styles ["plain", "round"]
+          icon-name: "viewer-source-symbolic";
+          tooltip-text:  _("Show the source (S)");
           visible: false;
+        }
 
-          Image {
-            icon-name: "image-x-generic-symbolic";
-            pixel-size: 48;
-          }
+        Button rotate {
+          styles ["plain", "round"]
+          icon-name: "object-rotate-right-symbolic";
+          tooltip-text:  _("Rotate (R, Shift+R the other way)");
+        }
 
-          Label empty_label {
-            styles ["empty"]
-            justify: center;
-            wrap: true;
-            max-width-chars: 40;
-          }
+        // Annotating the image: arrows, boxes, text… (edit.go).
+        Button edit {
+          styles ["plain", "round"]
+          icon-name: "annot-pen-symbolic";
+          tooltip-text:  _("Edit: draw on the image (E)");
+        }
 
-          Button open_empty {
-            styles ["primary"]
-            label:  _("Open a File…");
-            halign: center;
+        ToggleButton details_toggle {
+          styles ["plain", "round"]
+          icon-name: "dialog-information-symbolic";
+          tooltip-text:  _("Details (I)");
+        }
+
+        Button fullscreen {
+          styles ["plain", "round"]
+          icon-name: "view-fullscreen-symbolic";
+          tooltip-text:  _("Full screen (F)");
+        }
+      }
+    }
+
+    // The details, floating in at the right under the tools.
+    [overlay]
+    Revealer details_reveal {
+      halign: end;
+      valign: fill;
+      margin-end: 12;
+      margin-top: 68;
+      margin-bottom: 12;
+      transition-type: crossfade;
+      transition-duration: 160;
+
+      Box details_slot {
+        Box details_glass {
+          styles ["viewer-glass", "panel"]
+
+          ScrolledWindow {
+            styles ["viewer-details"]
+            hscrollbar-policy: never;
+            width-request: 280;
+            hexpand: true;
+
+            Box details {
+              orientation: vertical;
+            }
           }
         }
       }
+    }
 
-      Revealer details_reveal {
-        transition-type: slide_left;
-        transition-duration: 200;
+    // Says "Copied", the zoom and the like for a moment.
+    [overlay]
+    Box status_slot {
+      halign: center;
+      valign: end;
+      margin-bottom: 20;
+      visible: false;
+      can-target: false;
 
-        ScrolledWindow {
-          styles ["viewer-details"]
-          hscrollbar-policy: never;
-          width-request: 280;
+      Box status_glass {
+        styles ["viewer-glass", "status"]
 
-          Box details {
-            orientation: vertical;
-          }
+        Label status {
+          styles ["readout"]
         }
       }
     }

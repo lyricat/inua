@@ -123,9 +123,9 @@ func (a *App) showEdit(img *image.RGBA, path string) {
 	e.stage.AddOverlay(&bar.Widget)
 
 	a.stage.SetVisibleChildName("edit")
-	a.prev.SetVisible(false)
-	a.next.SetVisible(false)
-	a.status.SetText("")
+	a.setEdges(false)
+	a.setClear()
+	a.setStatus("")
 }
 
 // endEdit goes back to viewing the image, the edits let go of.
@@ -145,6 +145,8 @@ func (a *App) endEdit() {
 	e.tex = nil
 	a.stage.SetVisibleChildName("image")
 	a.setTools()
+	a.setClear()
+	a.setStatus("")
 }
 
 // leaveEdit is Done or Escape: with edits not saved, a first time warns.

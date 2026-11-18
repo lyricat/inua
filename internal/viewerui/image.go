@@ -27,7 +27,8 @@ func (a *App) showImage(path string) {
 	}
 	s := a.shotFor(path)
 	a.cur, a.prefetched = s, false
-	a.turns, a.fit, a.texW, a.texH, a.w, a.h = 0, true, 0, 0, 0, 0
+	a.turns, a.spin, a.fit, a.texW, a.texH, a.w, a.h = 0, 0, true, 0, 0, 0, 0
+	a.stopMotion()
 	a.keep(a.neighbours()...)
 	if s.tex == nil && s.anim == nil {
 		noPaintable(&a.picture)
@@ -79,7 +80,7 @@ func (a *App) display() {
 	case s.err != nil:
 		a.showEmpty(i18n.Tf("Could not open %s.\n%v", filepath.Base(s.path), s.err))
 	}
-	a.showMeta()
+	a.setClear()
 	a.showDetails()
 	if (s.tex != nil || s.anim != nil) && !a.prefetched {
 		a.prefetched = true
@@ -144,20 +145,27 @@ func (a *App) geometry() {
 	} else {
 		a.applyZoom()
 	}
+	a.shapeWindow()
 }
 
-// turn rotates the image by quarter turns clockwise: only the transform
-// changes.
+// turn rotates the image by a quarter turn clockwise (q 1) or the other
+// way (q 3): only the transform changes, eased.
 func (a *App) turn(q int) {
 	if a.w == 0 {
 		return
 	}
-	a.turns = (a.turns + q) % 4
-	a.geometry()
-	a.showMeta()
+	a.animated(func() {
+		if q%4 == 3 {
+			a.spin--
+		} else {
+			a.spin++
+		}
+		a.turns = (a.spin%4 + 4) % 4
+		a.geometry()
+	})
 }
 
-// fitWindow shows the whole image, at most at its actual size.
+// fitWindow fills the window with the image, a small one too (FillZoom).
 func (a *App) fitWindow() {
 	if a.w == 0 {
 		return
@@ -171,7 +179,7 @@ func (a *App) fitWindow() {
 		// and fit it once the stage has a size (refit).
 		a.zoom = viewer.FitZoom(float64(a.w), float64(a.h), 800*s, 600*s)
 	} else {
-		a.zoom = viewer.FitZoom(float64(a.w), float64(a.h), vw*s, vh*s)
+		a.zoom = viewer.FillZoom(float64(a.w), float64(a.h), vw*s, vh*s)
 	}
 	a.applyZoom()
 }
@@ -218,11 +226,6 @@ func (a *App) applyZoom() {
 	a.canvas.SetChildTransform(&a.picture.Widget, t)
 	t.Unref()
 	a.canvas.QueueResize() // its size is the scaled picture's
-	if a.fit {
-		a.setZoomLabel(i18n.Tf("Fit · %s", viewer.Percent(a.zoom)), i18n.T("Actual size (1)"))
-	} else {
-		a.setZoomLabel(viewer.Percent(a.zoom), i18n.T("Fit the window (0)"))
-	}
 }
 
 // zoomTo zooms to z, keeping the image's point under (x, y) on the stage

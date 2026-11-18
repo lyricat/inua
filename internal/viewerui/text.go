@@ -275,7 +275,6 @@ func (t *textView) open(path string, kind viewer.Kind) {
 	t.clear()
 	t.path, t.kind = path, kind
 	gen := t.gen
-	t.label()
 	go func() {
 		src, err := viewer.ReadText(path)
 		var blocks []viewer.Block
@@ -293,7 +292,6 @@ func (t *textView) open(path string, kind viewer.Kind) {
 			}
 			t.src, t.blocks, t.stats = src, blocks, [3]int{l, w, c}
 			t.render()
-			t.a.showMeta()
 			t.a.showDetails()
 		})
 	}()
@@ -709,11 +707,6 @@ func (t *textView) setZoom(z float64) {
 	t.zoom = max(textMinZoom, min(z, textMaxZoom))
 	t.applyZoom()
 	t.fitColumn()
-	t.label()
-}
-
-func (t *textView) label() {
-	t.a.setZoomLabel(viewer.Percent(t.zoom), i18n.T("Actual size (1)"))
 }
 
 // key takes the keys that scroll: the arrows up and down, Page Up and
