@@ -55,3 +55,6 @@ notes:
 - UI not checked by eye. Manually check wide first opening, search/page selection, resizing across 900px, and narrow-monitor fitting (including scaled displays); post-Present monitor clamp behavior was not verified on a live display.
 - Existing copied Hyprland configs retaining the forced 860x620 size still require removing that rule. No user configuration was changed.
 - No linked GitHub issues or PRs in this item. Moved review/ → ready/; no merge or release performed.
+
+## factory · 2026-11-18 16:24
+Shipped on the owner's word. Merged into master as `3a3bc401` (Merge FT111) and tagged `v0.1.41`; `make test` passed on the merged master, and `make generate` and `make i18n` left it unchanged. No linked GitHub issues or PRs to close. The branch `factory/FT111-settings-default-width` was not deleted (`clean` is not in `ship`).
