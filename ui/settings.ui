@@ -11,7 +11,7 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
       <class name="settings"/>
     </style>
     <property name="title" translatable="yes">inua Settings</property>
-    <property name="default-width">860</property>
+    <property name="default-width">1040</property>
     <property name="default-height">620</property>
     <child>
       <object class="GtkBox">
