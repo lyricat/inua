@@ -108,10 +108,23 @@ picker (ScreenCast, below). `inua-files -picker` turns FileChooser and
 AppChooser on (`-picker=false` off). The code is `internal/portalconf`,
 without GTK.
 
-Settings, Default Apps, [DIALOGS] does the same a row at a time: open
-and save (FileChooser, AppChooser), the share picker, the shell's
-interfaces, and Secret, each with a switch; under it a line only when
-it is on from the next inua session, or on and not served.
+Settings, Default Apps, [DIALOGS] chooses a row at a time: open and
+save (FileChooser, AppChooser), the share picker, the shell's
+interfaces, and Secret, each with a drop-down of the backends that serve
+its first interface: inua's, then the system's `.portal` files that list
+it (GTK, GNOME, GNOME Keyring…). A system backend goes first in the
+config's line for each of the row's interfaces it serves, and the others
+go back to the session's config; one the session's config gives already
+writes no line. Under each row is the backend apps get now, worked out
+as the frontend picks one (the config's list, then `UseIn`, then GTK's)
+from the running frontend's environment (`/proc/PID/environ`):
+`XDG_DESKTOP_PORTAL_DIR` and `XDG_CURRENT_DESKTOP`. While that differs
+from what inua's config gives, the line is in `warn` and a notice over
+the rows offers Apply now: the directory written again, the frontend's
+environment set and the frontend restarted, as an inua session does. A
+session started by an older `inua-session`, which did not give the
+frontend the directory, is the usual case. `inua portals status` says
+the same.
 
 `scripts/install.sh` turns them on once, after asking (yes without a
 terminal): all of them, Secret only when `inua keyring replace` made

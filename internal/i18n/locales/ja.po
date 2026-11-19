@@ -10729,6 +10729,7 @@ msgstr "使用中"
 #: internal/termui/prefs.go:347
 #: internal/ui/settings_ai.go:272
 #: internal/ui/settings_keyring.go:572
+#: internal/ui/settings_portals.go:183
 #: internal/ui/shortcuts.go:173
 #: internal/ui/voice_page.go:302
 #: ui/settings.ui:750
@@ -15694,7 +15695,7 @@ msgstr "%.1f KB"
 #: internal/ui/settings.go:1133
 #: internal/ui/settings_apps.go:168
 #: internal/ui/settings_card.go:288
-#: internal/ui/settings_portals.go:177
+#: internal/ui/settings_portals.go:272
 msgid "Not saved: %s"
 msgstr "保存されていません: %s"
 
@@ -16916,43 +16917,51 @@ msgstr "%s が「%s」を読む"
 msgid "Stop allowing it: its programs are asked about again"
 msgstr "許可をやめる：プログラムに再び確認します"
 
-#: internal/ui/settings_portals.go:27
+#: internal/ui/settings_portals.go:28
 msgid "Open and save"
 msgstr "開く・保存する"
 
-#: internal/ui/settings_portals.go:27
-msgid "inua's file chooser and Open With, for every app"
-msgstr "すべてのアプリで使うInuaのファイル選択と「アプリケーションで開く」"
+#: internal/ui/settings_portals.go:28
+msgid "The file chooser and Open With, for every app"
+msgstr ""
 
-#: internal/ui/settings_portals.go:29
+#: internal/ui/settings_portals.go:30
 msgid "Share the screen"
 msgstr "画面を共有する"
 
-#: internal/ui/settings_portals.go:29
-msgid "Choose a screen, a window or an area with inua's screenshot tool"
-msgstr "Inuaのスクリーンショットツールで画面、ウィンドウ、範囲を選択"
+#: internal/ui/settings_portals.go:30
+msgid "What asks which screen, window or area to share"
+msgstr ""
 
-#: internal/ui/settings_portals.go:31
+#: internal/ui/settings_portals.go:32
 msgid "Notifications and the rest"
 msgstr "通知など"
 
-#: internal/ui/settings_portals.go:31
+#: internal/ui/settings_portals.go:32
 msgid "Apps' notifications, screenshots, the theme and more"
 msgstr "アプリの通知、スクリーンショット、テーマなど"
 
-#: internal/ui/settings_portals.go:33
+#: internal/ui/settings_portals.go:34
 msgid "Secrets"
 msgstr "シークレット"
 
-#: internal/ui/settings_portals.go:33
-msgid "Passwords of sandboxed apps, kept by inua-keyring"
-msgstr "サンドボックス化されたアプリのパスワードをInua Keyringで保管"
+#: internal/ui/settings_portals.go:34
+msgid "Passwords of sandboxed apps"
+msgstr ""
 
-#: internal/ui/settings_portals.go:151
-msgid "On from the next inua session"
-msgstr "次回のInuaセッションから有効"
+#: internal/ui/settings_portals.go:76
+msgid "The portal service started before these choices, so apps still get what it read then. Applying restarts it, which stops a screen share in progress."
+msgstr ""
 
-#: internal/ui/settings_portals.go:154
+#: internal/ui/settings_portals.go:81
+msgid "Apply now"
+msgstr ""
+
+#: internal/ui/settings_portals.go:207
+msgid "Now: %s"
+msgstr ""
+
+#: internal/ui/settings_portals.go:212
 msgid "Not served: restart the shell"
 msgstr "提供されていません: シェルを再起動してください"
 

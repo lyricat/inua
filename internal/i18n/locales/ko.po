@@ -10729,6 +10729,7 @@ msgstr "사용 중"
 #: internal/termui/prefs.go:347
 #: internal/ui/settings_ai.go:272
 #: internal/ui/settings_keyring.go:572
+#: internal/ui/settings_portals.go:183
 #: internal/ui/shortcuts.go:173
 #: internal/ui/voice_page.go:302
 #: ui/settings.ui:750
@@ -15694,7 +15695,7 @@ msgstr "%.1f KB"
 #: internal/ui/settings.go:1133
 #: internal/ui/settings_apps.go:168
 #: internal/ui/settings_card.go:288
-#: internal/ui/settings_portals.go:177
+#: internal/ui/settings_portals.go:272
 msgid "Not saved: %s"
 msgstr "저장되지 않음: %s"
 
@@ -16916,43 +16917,51 @@ msgstr "%s이(가) “%s” 읽기"
 msgid "Stop allowing it: its programs are asked about again"
 msgstr "허용 중지: 이 경로의 프로그램에 다시 묻습니다"
 
-#: internal/ui/settings_portals.go:27
+#: internal/ui/settings_portals.go:28
 msgid "Open and save"
 msgstr ""
 
-#: internal/ui/settings_portals.go:27
-msgid "inua's file chooser and Open With, for every app"
+#: internal/ui/settings_portals.go:28
+msgid "The file chooser and Open With, for every app"
 msgstr ""
 
-#: internal/ui/settings_portals.go:29
+#: internal/ui/settings_portals.go:30
 msgid "Share the screen"
 msgstr ""
 
-#: internal/ui/settings_portals.go:29
-msgid "Choose a screen, a window or an area with inua's screenshot tool"
+#: internal/ui/settings_portals.go:30
+msgid "What asks which screen, window or area to share"
 msgstr ""
 
-#: internal/ui/settings_portals.go:31
+#: internal/ui/settings_portals.go:32
 msgid "Notifications and the rest"
 msgstr ""
 
-#: internal/ui/settings_portals.go:31
+#: internal/ui/settings_portals.go:32
 msgid "Apps' notifications, screenshots, the theme and more"
 msgstr ""
 
-#: internal/ui/settings_portals.go:33
+#: internal/ui/settings_portals.go:34
 msgid "Secrets"
 msgstr ""
 
-#: internal/ui/settings_portals.go:33
-msgid "Passwords of sandboxed apps, kept by inua-keyring"
+#: internal/ui/settings_portals.go:34
+msgid "Passwords of sandboxed apps"
 msgstr ""
 
-#: internal/ui/settings_portals.go:151
-msgid "On from the next inua session"
+#: internal/ui/settings_portals.go:76
+msgid "The portal service started before these choices, so apps still get what it read then. Applying restarts it, which stops a screen share in progress."
 msgstr ""
 
-#: internal/ui/settings_portals.go:154
+#: internal/ui/settings_portals.go:81
+msgid "Apply now"
+msgstr ""
+
+#: internal/ui/settings_portals.go:207
+msgid "Now: %s"
+msgstr ""
+
+#: internal/ui/settings_portals.go:212
 msgid "Not served: restart the shell"
 msgstr ""
 

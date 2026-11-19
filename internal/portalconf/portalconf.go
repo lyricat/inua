@@ -119,19 +119,20 @@ const header = "# Written by inua portals (docs/portals.md) from ~/.config/xdg-d
 // Enabled are the interfaces whose config line names inua's backend
 // first, and SharePicker when xdph's config names inua's picker.
 func (d Dirs) Enabled() []string {
-	on := d.enabledLines()
+	on := inuaChosen(d.chosen())
 	if d.Xdph != "" && d.sharePickerOn() {
 		on = append(on, SharePicker)
 	}
 	return on
 }
 
-func (d Dirs) enabledLines() []string {
-	pref, _ := readPreferred(filepath.Join(d.Own, confName))
+// inuaChosen are the interfaces chosen gives to inua's backends, in
+// Backends' order.
+func inuaChosen(chosen map[string]string) []string {
 	var on []string
 	for _, b := range Backends {
 		for _, iface := range b.Interfaces {
-			if first, _, _ := strings.Cut(pref[portal.Prefix+iface], ";"); first == b.Name {
+			if chosen[iface] == b.Name {
 				on = append(on, iface)
 			}
 		}
@@ -143,33 +144,20 @@ func (d Dirs) enabledLines() []string {
 // asks the portal from inua's own apps too (gtkx.ForcePortals).
 func PickerOn() bool { return slices.Contains(Default().Enabled(), "FileChooser") }
 
-// Set turns interfaces on or off and writes the directory again; with
-// none left on, the directory goes. It reports whether any is on.
+// Set turns interfaces on or off (inua's backend, or the session's
+// config's) and writes the directory again; with no interface left to
+// inua's config, the directory goes. It reports whether any is on.
 func (d Dirs) Set(on bool, ifaces ...string) (bool, error) {
-	enabled := d.enabledLines()
-	picker := d.Xdph != "" && d.sharePickerOn()
-	for _, i := range ifaces {
-		if strings.EqualFold(i, SharePicker) {
-			if err := d.setSharePicker(on); err != nil {
-				return false, err
-			}
-			picker = on
-			continue
-		}
-		_, name, ok := BackendOf(i)
-		if !ok {
-			return false, fmt.Errorf("inua serves no portal interface %q (%s)", i, strings.Join(Interfaces(), ", "))
-		}
-		enabled = slices.DeleteFunc(enabled, func(e string) bool { return e == name })
+	return d.change(ifaces, func(own, _ string) string {
 		if on {
-			enabled = append(enabled, name)
+			return own
 		}
-	}
-	if len(enabled) == 0 {
-		return picker, errors.Join(d.services(nil), os.RemoveAll(d.Own))
-	}
-	return true, d.write(enabled)
+		return ""
+	})
 }
+
+// remove takes the directory and the service files away.
+func (d Dirs) remove() error { return errors.Join(d.services(nil), os.RemoveAll(d.Own)) }
 
 // services writes the D-Bus service file of each backend with a program
 // and an interface on, and removes the others'.
@@ -203,17 +191,18 @@ func (d Dirs) services(enabled []string) error {
 const serviceHeader = "# Written by inua portals (docs/portals.md).\n"
 
 // Refresh writes the directory again, with the system's backends as they
-// are now, if any interface is on, and reports whether one is.
+// are now, if inua's config chooses a backend for any interface, and
+// reports whether it does.
 func (d Dirs) Refresh() (bool, error) {
-	enabled := d.enabledLines()
-	if len(enabled) == 0 {
+	chosen := d.chosen()
+	if len(chosen) == 0 {
 		return false, nil
 	}
-	return true, d.write(enabled)
+	return true, d.write(chosen)
 }
 
-func (d Dirs) write(enabled []string) error {
-	if err := d.services(enabled); err != nil {
+func (d Dirs) write(chosen map[string]string) error {
+	if err := d.services(inuaChosen(chosen)); err != nil {
 		return err
 	}
 	if err := os.MkdirAll(d.Own, 0o755); err != nil {
@@ -275,37 +264,32 @@ func (d Dirs) write(enabled []string) error {
 			os.Remove(filepath.Join(d.Own, e.Name()))
 		}
 	}
-	return writeIfChanged(filepath.Join(d.Own, confName), d.conf(enabled))
+	return writeIfChanged(filepath.Join(d.Own, confName), d.conf(chosen))
 }
 
 // conf is the session's config with inua's lines: the user's, else the
-// system's, with each interface on naming inua's backend first and what
-// the config named before it after.
-func (d Dirs) conf(enabled []string) string {
-	var base map[string]string
-	var order []string
-	for _, dir := range append(slices.Clone(d.Configs), d.System) {
-		if pref, keys := readPreferred(filepath.Join(dir, confName)); pref != nil {
-			base, order = pref, keys
-			break
-		}
-	}
-	if base == nil {
-		base, order = map[string]string{"default": "hyprland;gtk"}, []string{"default"}
-	}
+// system's, with each interface chosen naming its backend first and what
+// the config named before after it.
+func (d Dirs) conf(chosen map[string]string) string {
+	base, order := d.baseConfig()
 	lines := map[string]string{}
 	for _, k := range order {
 		lines[k] = base[k]
 	}
-	for _, iface := range enabled {
-		b, _, _ := BackendOf(iface)
-		key := portal.Prefix + iface
-		rest := cmp.Or(base[key], base["default"])
-		next := slices.DeleteFunc(strings.Split(rest, ";"), func(s string) bool { return s == "" || s == b.Name })
-		if _, ok := lines[key]; !ok {
-			order = append(order, key)
+	for _, b := range Backends {
+		for _, iface := range b.Interfaces {
+			first, ok := chosen[iface]
+			if !ok {
+				continue
+			}
+			key := portal.Prefix + iface
+			rest := cmp.Or(base[key], base["default"])
+			next := slices.DeleteFunc(strings.Split(rest, ";"), func(s string) bool { return s == "" || s == first })
+			if _, ok := lines[key]; !ok {
+				order = append(order, key)
+			}
+			lines[key] = strings.Join(append([]string{first}, next...), ";")
 		}
-		lines[key] = strings.Join(append([]string{b.Name}, next...), ";")
 	}
 	var sb strings.Builder
 	sb.WriteString(header + "[preferred]\n")

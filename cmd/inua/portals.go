@@ -1,6 +1,7 @@
 package main
 
 import (
+	"cmp"
 	"fmt"
 	"os"
 	"slices"
@@ -37,7 +38,7 @@ func cmdPortals(args []string) error {
 		} else {
 			fmt.Println("No interface left on; removed", d.Own)
 		}
-		msg, err := d.Apply(on)
+		msg, err := d.Apply(d.Wanted().Dir != "") // not for the share picker alone
 		if err != nil {
 			return err
 		}
@@ -75,6 +76,7 @@ func portalsStatus(d portalconf.Dirs) error {
 	}
 	defer conn.Close()
 	enabled := d.Enabled()
+	now, want := portalconf.ReadFrontend(), d.Wanted()
 	for _, b := range portalconf.Backends {
 		running := "not running"
 		if portalconf.HasOwner(conn, b.Bus) {
@@ -82,19 +84,26 @@ func portalsStatus(d portalconf.Dirs) error {
 		}
 		fmt.Printf("%s (%s, %s)\n", b.Name, b.Bus, running)
 		for _, i := range b.Interfaces {
+			chosen := d.Serving(want, i)
 			state := "off (inua portals enable " + i + ")"
-			if slices.Contains(enabled, i) {
+			switch {
+			case slices.Contains(enabled, i):
 				state = "on"
+			case chosen != "":
+				state = "off, " + portalconf.Label(chosen) + "'s"
+			}
+			if got := d.Serving(now, i); got != chosen {
+				state += "; apps get " + cmp.Or(portalconf.Label(got), "none") + " until the portal service restarts"
 			}
 			fmt.Printf("  %-14s %s\n", i, state)
 		}
 	}
-	switch got := portalconf.SessionDir(); {
-	case len(enabled) == 0:
-	case got == d.Own:
-		fmt.Println("The frontend reads", d.Own)
+	switch {
+	case now.Dir == want.Dir:
+	case want.Dir == "":
+		fmt.Println("The portal service still reads", now.Dir+"; restart it (Settings, Default Apps) for the system's")
 	default:
-		fmt.Println("The frontend does not read", d.Own, "yet; it will in the next inua session")
+		fmt.Println("The portal service does not read", want.Dir, "yet; Settings, Default Apps, Apply now restarts it with it, as an inua session does")
 	}
 	return nil
 }
