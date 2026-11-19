@@ -124,6 +124,7 @@ func (s *shellUI) showSystemMenu(i int, w *gtk.Widget) {
 	pop.Unref() // the parent holds it now
 	pop.Popup()
 	s.appmenu.menu = pop
+	s.trackAppMenu()
 }
 
 // systemItems turns system menu lines into a menu's, with no hairline at

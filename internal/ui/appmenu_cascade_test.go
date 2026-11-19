@@ -144,7 +144,7 @@ func checkTopMenuHover(t *testing.T, app *gtk.Application) {
 	for len(fake.Actions()) == 0 && time.Now().Before(deadline) {
 		time.Sleep(time.Millisecond)
 	}
-	if got := fake.Actions(); len(got) != 1 || got[0] != "focus-window 0x1" {
+	if got := fake.Actions(); len(got) != 1 || got[0] != "focus-window-quietly 0x1" {
 		t.Fatalf("focus requests %v", got)
 	}
 	s.snap.FocusedWindow, s.snap.FocusedOutput = "0x1", output

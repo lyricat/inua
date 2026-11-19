@@ -60,6 +60,7 @@ func openCascade(b *gtk.Button, line cascadeLine) {
 	}
 	child := cascadeMenu(line.item.Items, line.root, false)
 	child.SetPosition(gtk.PosRightValue)
+	child.SetValign(gtk.AlignStartValue)
 	child.SetParent(&b.Widget)
 	child.Unref()
 	cascades.Lock()
@@ -107,16 +108,17 @@ func init() {
 // NewCascadeMenu keeps parent menus open while submenus appear beside rows.
 func NewCascadeMenu(list []Item) *gtk.Popover { return cascadeMenu(list, nil, true) }
 
-func cascadeMenu(list []Item, root *gtk.Popover, _ bool) *gtk.Popover {
+func cascadeMenu(list []Item, root *gtk.Popover, top bool) *gtk.Popover {
 	pop := gtk.NewPopover()
 	if root == nil {
 		root = pop
+		// Keep each menu's left edge aligned with its bar button.
+		pop.SetHalign(gtk.AlignStartValue)
 	}
 	pop.AddCssClass("glass-menu")
 	pop.AddCssClass("gtk-frame")
 	pop.SetHasArrow(false)
-	// The bar must continue receiving pointer motion while a menu is open.
-	pop.SetAutohide(false)
+	pop.SetAutohide(top)
 	box := gtk.NewBox(gtk.OrientationVerticalValue, 0)
 	box.AddCssClass("menu-items")
 	marks := false

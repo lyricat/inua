@@ -142,6 +142,7 @@ func (s *shellUI) showA11yMenu(b *bar, i int, w *gtk.Widget) {
 			pop.Unref()
 			pop.Popup()
 			s.appmenu.menu = pop
+			s.trackAppMenu()
 		})
 	}()
 }
