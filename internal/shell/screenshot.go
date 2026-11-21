@@ -33,6 +33,35 @@ func SpanRect(x0, y0, x1, y1, w, h float64) Rect {
 	return Rect{X: min(x0, x1), Y: min(y0, y1), W: math.Abs(x1 - x0), H: math.Abs(y1 - y0)}
 }
 
+// SpanSquareRect is a square from the drag's starting point toward its end,
+// sized by the larger pointer delta and kept inside the monitor.
+func SpanSquareRect(x0, y0, x1, y1, w, h float64) Rect {
+	clamp := func(v, hi float64) float64 { return max(0, min(v, hi)) }
+	x0, x1 = clamp(x0, w), clamp(x1, w)
+	y0, y1 = clamp(y0, h), clamp(y1, h)
+	dx, dy := x1-x0, y1-y0
+	sx, sy := 1.0, 1.0
+	if dx < 0 || dx == 0 && x0 > w-x0 {
+		sx = -1
+	}
+	if dy < 0 || dy == 0 && y0 > h-y0 {
+		sy = -1
+	}
+	side := max(math.Abs(dx), math.Abs(dy))
+	if sx < 0 {
+		side = min(side, x0)
+	} else {
+		side = min(side, w-x0)
+	}
+	if sy < 0 {
+		side = min(side, y0)
+	} else {
+		side = min(side, h-y0)
+	}
+	x2, y2 := x0+sx*side, y0+sy*side
+	return Rect{X: min(x0, x2), Y: min(y0, y2), W: side, H: side}
+}
+
 // Pixels turns a logical rectangle into the pixels of a capture whose
 // width is scale times the monitor's logical width, kept inside bounds.
 func (r Rect) Pixels(scale float64, bounds image.Rectangle) image.Rectangle {
