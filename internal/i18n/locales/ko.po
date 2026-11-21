@@ -397,7 +397,7 @@ msgstr "열기"
 
 #: internal/apps/connect/share.go:129
 #: internal/ui/record.go:157
-#: internal/ui/screenshot.go:1173
+#: internal/ui/screenshot.go:1177
 #: internal/ui/settings_custom.go:41
 #: internal/viewerui/menubar.go:42
 msgid "Show in Folder"
@@ -13238,7 +13238,7 @@ msgid "Screenshot Area"
 msgstr "스크린샷 영역"
 
 #: internal/shell/commands.go:34
-#: internal/ui/screenshot.go:596
+#: internal/ui/screenshot.go:600
 msgid "Drag out an area"
 msgstr "영역을 드래그하세요."
 
@@ -13247,7 +13247,7 @@ msgid "Screenshot Window"
 msgstr "스크린샷 창"
 
 #: internal/shell/commands.go:35
-#: internal/ui/screenshot.go:597
+#: internal/ui/screenshot.go:601
 #: ui/screenshot.ui:169
 msgid "Click a window"
 msgstr "창을 클릭하세요."
@@ -13257,7 +13257,7 @@ msgid "Screenshot Screen"
 msgstr "스크린샷 화면"
 
 #: internal/shell/commands.go:36
-#: internal/ui/screenshot.go:598
+#: internal/ui/screenshot.go:602
 #: ui/screenshot.ui:194
 msgid "Click a screen"
 msgstr "화면을 클릭하세요."
@@ -13413,7 +13413,7 @@ msgid "Find apps, windows and answers"
 msgstr "앱, 창 및 답변 찾기"
 
 #: internal/shell/dock.go:313
-#: internal/ui/screenshot.go:1167
+#: internal/ui/screenshot.go:1171
 #: internal/ui/systemmenu.go:83
 #: ui/settings.ui:2752
 msgid "Screenshot"
@@ -15567,47 +15567,47 @@ msgstr "녹음이 저장되었습니다."
 msgid "Screen recording"
 msgstr "화면 녹화"
 
-#: internal/ui/screenshot.go:578
+#: internal/ui/screenshot.go:582
 msgid "inua screenshot"
 msgstr "이누아 스크린샷"
 
-#: internal/ui/screenshot.go:599
+#: internal/ui/screenshot.go:603
 msgid "Click to copy a colour"
 msgstr "색상을 복사하려면 클릭하세요."
 
-#: internal/ui/screenshot.go:603
+#: internal/ui/screenshot.go:607
 msgid "Drag out an area to record"
 msgstr "녹화할 영역을 드래그하세요"
 
-#: internal/ui/screenshot.go:604
+#: internal/ui/screenshot.go:608
 msgid "Click a window to record"
 msgstr "녹화할 창을 클릭하세요."
 
-#: internal/ui/screenshot.go:605
+#: internal/ui/screenshot.go:609
 msgid "Click a screen to record"
 msgstr "녹화할 화면을 클릭하세요."
 
-#: internal/ui/screenshot.go:650
+#: internal/ui/screenshot.go:654
 msgid "Drag to adjust · click inside to take"
 msgstr "드래그해서 조정 · 안쪽을 클릭해 캡처"
 
-#: internal/ui/screenshot.go:652
+#: internal/ui/screenshot.go:656
 msgid "Drag to adjust · click inside to record"
 msgstr "드래그해서 조정 · 안쪽을 클릭해 녹화"
 
-#: internal/ui/screenshot.go:1161
+#: internal/ui/screenshot.go:1165
 msgid "Screenshot saved and copied"
 msgstr "스크린샷이 저장되고 복사되었습니다."
 
-#: internal/ui/screenshot.go:1162
+#: internal/ui/screenshot.go:1166
 msgid "Screenshot saved"
 msgstr "스크린샷이 저장되었습니다."
 
-#: internal/ui/screenshot.go:1163
+#: internal/ui/screenshot.go:1167
 msgid "Screenshot copied"
 msgstr "스크린샷이 복사되었습니다."
 
-#: internal/ui/screenshot.go:1164
+#: internal/ui/screenshot.go:1168
 msgid "Screenshot taken"
 msgstr "촬영된 스크린샷"
 
