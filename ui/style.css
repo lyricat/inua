@@ -764,6 +764,24 @@ button.widget-pick { padding: 6px 8px; }
 .osd-card levelbar block { min-height: 2px; border: none; border-radius: 0; }
 .osd-card levelbar block.filled { background: @accent; }
 .osd-card levelbar block.empty { background: transparent; }
+/* The hot corner's wait: rings in the accent that grow out of the corner
+   and fade while the pointer rests there, like water ripples, one after
+   another. The surface takes no input (gtkx.PassInput). */
+.hotcorner { background: transparent; }
+.hotcorner-ripple { background: transparent; }
+.hotcorner-ring {
+  border: 1px solid alpha(@accent, 0.9);
+  background: alpha(@accent, 0.10);
+  border-radius: 999px;
+  animation: hotcorner-wave 900ms ease-out infinite;
+}
+.hotcorner-ring-2 { animation-delay: 300ms; }
+.hotcorner-ring-3 { animation-delay: 600ms; }
+@keyframes hotcorner-wave {
+  0% { transform: scale(0.18); opacity: 0.86; }
+  75% { opacity: 0.2; }
+  100% { transform: scale(1); opacity: 0; }
+}
 /* On the center's card, notes are lifted a step onto the surface. */
 .center .note { background: alpha(@surface, 0.7); }
 /* Cleared: slides out to the right and fades, then its room closes. */

@@ -63,12 +63,15 @@ type settings struct {
 	themeMenu string // the theme of yours a right click opened a menu for
 
 	bgGenerate, title, barMenu, barTransparentEmpty, barFocusRing, tray, barPass, tpAccel, notifyOn, critFocus gtk.Switch
-	noteHistory, animations                                                                                    gtk.Switch
+	noteHistory, animations, appIconsInua                                                                      gtk.Switch
 	bgOwn                                                                                                      gtk.Box // the image's rows, hidden while inua draws
 	bgAnother                                                                                                  gtk.Button
 	barOn, dockOn, dockHide, dockBackground, dockDrawer, dockFlushBar, overviewDock                            gtk.Switch
 	overviewMRU, overviewHints, overviewLauncher                                                               gtk.Switch
 	clipEnable, clipBar, clipPaste                                                                             gtk.Switch
+	hotCornerTopLeft, hotCornerTopRight, hotCornerBottomLeft, hotCornerBottomRight                             gtk.DropDown
+	hotCornerDelay                                                                                             gtk.Scale
+	hotCornerDelayVal                                                                                          gtk.Label
 	dockSize, dockPosition, barDensity                                                                         gtk.DropDown
 	dockPinned                                                                                                 gtk.Box
 	bgImage, bgColor, clock, terminal, lock, screenshot                                                        gtk.Entry
@@ -211,6 +214,8 @@ func (s *shellUI) bindSettingsHandlers() {
 			c.Keyring.Notify = on
 		case "animations":
 			c.Style.Animations = &on
+		case "app_icons_inua":
+			c.Style.AppIconsInua = on
 		case "mcp_enable":
 			c.MCP.Enable = on
 		case "clip_enable":
@@ -248,6 +253,14 @@ func (s *shellUI) bindSettingsHandlers() {
 			c.Bar.ClockLanguage = pick(s.settings.clockLanguageNames, i, c.Bar.ClockLanguage)
 		case "overview_scope":
 			c.Overview.PerMonitor = i == 0
+		case "hot_corner_top_left":
+			c.HotCorners.TopLeft = pick(config.HotCornerActions, i, c.HotCorners.TopLeft)
+		case "hot_corner_top_right":
+			c.HotCorners.TopRight = pick(config.HotCornerActions, i, c.HotCorners.TopRight)
+		case "hot_corner_bottom_left":
+			c.HotCorners.BottomLeft = pick(config.HotCornerActions, i, c.HotCorners.BottomLeft)
+		case "hot_corner_bottom_right":
+			c.HotCorners.BottomRight = pick(config.HotCornerActions, i, c.HotCorners.BottomRight)
 		case "title_mode":
 			c.Bar.TitleMode = pick(barTitleModes, i, c.Bar.TitleMode)
 		case "bar_density":
@@ -407,6 +420,13 @@ func (s *shellUI) bindSettingsHandlers() {
 			s.changeSettings(c)
 			return false
 		}
+		if r.GetName() == "hot_corner_delay" {
+			val := int(math.Round(v/float64(config.HotCornerDelayStep))) * config.HotCornerDelayStep
+			c.HotCorners.Delay = val
+			s.settings.hotCornerDelayVal.SetText(i18n.Tf("%d ms", val))
+			s.changeSettings(c)
+			return false
+		}
 		v = math.Round(max(-1, min(v, 1))*20) / 20 // the steps of 0.05
 		c.Input.TouchpadSpeed = &v
 		s.changeSettings(c)
@@ -542,6 +562,12 @@ func (s *shellUI) openSettings() {
 	ui.Get("overview_mru", &st.overviewMRU)
 	ui.Get("overview_hints", &st.overviewHints)
 	ui.Get("overview_launcher", &st.overviewLauncher)
+	ui.Get("hot_corner_top_left", &st.hotCornerTopLeft)
+	ui.Get("hot_corner_top_right", &st.hotCornerTopRight)
+	ui.Get("hot_corner_bottom_left", &st.hotCornerBottomLeft)
+	ui.Get("hot_corner_bottom_right", &st.hotCornerBottomRight)
+	ui.Get("hot_corner_delay", &st.hotCornerDelay)
+	ui.Get("hot_corner_delay_val", &st.hotCornerDelayVal)
 	ui.Get("dock_autohide", &st.dockHide)
 	ui.Get("dock_background", &st.dockBackground)
 	ui.Get("dock_flush_bar", &st.dockFlushBar)
@@ -575,6 +601,7 @@ func (s *shellUI) openSettings() {
 	ui.Get("clip_sensitive", &st.clipSensitive)
 	st.clipLimits = nil // a new dropdown, without its choices
 	ui.Get("animations", &st.animations)
+	ui.Get("app_icons_inua", &st.appIconsInua)
 	ui.Get("clip_stats", &st.clipStats)
 	ui.Get("clip_clear", &st.clipClear)
 	ui.Get("clip_reveal", &st.clipReveal)
@@ -624,11 +651,11 @@ func (s *shellUI) openSettings() {
 		st.entries[e.GoPointer()] = e
 		gtkx.ConnectChanged(e, &s.onSettingsEntry)
 	}
-	for _, d := range []*gtk.DropDown{&st.bgFit, &st.ws, &st.clockLanguage, &st.overviewScope, &st.titleMode, &st.barDensity, &st.launchMode, &st.swap, &st.caps, &st.icons, &st.appIcons, &st.iconShape, &st.appTheme, &st.textScale, &st.language, &st.banner, &st.dockSize, &st.dockPosition, &st.clipLimit} {
+	for _, d := range []*gtk.DropDown{&st.bgFit, &st.ws, &st.clockLanguage, &st.overviewScope, &st.hotCornerTopLeft, &st.hotCornerTopRight, &st.hotCornerBottomLeft, &st.hotCornerBottomRight, &st.titleMode, &st.barDensity, &st.launchMode, &st.swap, &st.caps, &st.icons, &st.appIcons, &st.iconShape, &st.appTheme, &st.textScale, &st.language, &st.banner, &st.dockSize, &st.dockPosition, &st.clipLimit} {
 		st.drops[d.GoPointer()] = d
 		gtkx.ConnectNotify(d, "selected", &s.onSettingsDrop)
 	}
-	for _, sw := range []*gtk.Switch{&st.bgGenerate, &st.title, &st.barMenu, &st.barTransparentEmpty, &st.barFocusRing, &st.tray, &st.barPass, &st.tpAccel, &st.notifyOn, &st.critFocus, &st.noteHistory, &st.animations, &st.barOn, &st.dockOn, &st.dockHide, &st.dockBackground, &st.dockDrawer, &st.dockFlushBar, &st.overviewDock, &st.overviewMRU, &st.overviewHints, &st.overviewLauncher, &st.clipEnable, &st.clipBar, &st.clipPaste, &st.displays.lidOff} {
+	for _, sw := range []*gtk.Switch{&st.bgGenerate, &st.title, &st.barMenu, &st.barTransparentEmpty, &st.barFocusRing, &st.tray, &st.barPass, &st.tpAccel, &st.notifyOn, &st.critFocus, &st.noteHistory, &st.animations, &st.appIconsInua, &st.barOn, &st.dockOn, &st.dockHide, &st.dockBackground, &st.dockDrawer, &st.dockFlushBar, &st.overviewDock, &st.overviewMRU, &st.overviewHints, &st.overviewLauncher, &st.clipEnable, &st.clipBar, &st.clipPaste, &st.displays.lidOff} {
 		sw.ConnectStateSet(&s.onSettingsSwitch)
 	}
 	for _, b := range []*gtk.Button{&choose, &clearImage, &st.bgAnother, &iconPreview, &stylePreview, &st.kbReset, &st.tpReset, &st.langRestart, &st.clipClear, &st.clipReveal} {
@@ -639,6 +666,7 @@ func (s *shellUI) openSettings() {
 	st.radius.ConnectChangeValue(&s.onSettingsScale)
 	st.barIconSize.ConnectChangeValue(&s.onSettingsScale)
 	st.barIconSpacing.ConnectChangeValue(&s.onSettingsScale)
+	st.hotCornerDelay.ConnectChangeValue(&s.onSettingsScale)
 	s.buildSwatches()
 	st.hyprKb = s.hyprKbOptions()
 	st.sc.binds = s.hyprBinds()
@@ -880,6 +908,12 @@ func (s *shellUI) showSettings() {
 	} else {
 		st.overviewScope.SetSelected(1)
 	}
+	st.hotCornerTopLeft.SetSelected(uint32(max(0, slices.Index(config.HotCornerActions, c.HotCorners.TopLeft))))
+	st.hotCornerTopRight.SetSelected(uint32(max(0, slices.Index(config.HotCornerActions, c.HotCorners.TopRight))))
+	st.hotCornerBottomLeft.SetSelected(uint32(max(0, slices.Index(config.HotCornerActions, c.HotCorners.BottomLeft))))
+	st.hotCornerBottomRight.SetSelected(uint32(max(0, slices.Index(config.HotCornerActions, c.HotCorners.BottomRight))))
+	st.hotCornerDelay.SetValue(float64(c.HotCorners.Delay))
+	st.hotCornerDelayVal.SetText(i18n.Tf("%d ms", c.HotCorners.Delay))
 	st.launchMode.SetSelected(uint32(max(0, slices.Index(modeChoices, c.Launcher.Mode))))
 	st.barDensity.SetSelected(uint32(max(0, slices.Index(barDensities, c.Bar.Density))))
 	st.transparency.SetValue(float64(c.Style.Transparency))
@@ -891,6 +925,7 @@ func (s *shellUI) showSettings() {
 	st.barIconSpacing.SetValue(float64(c.Bar.IconSpacing))
 	st.barIconSpacingVal.SetText(i18n.Tf("%d px", c.Bar.IconSpacing))
 	st.animations.SetActive(c.Style.Animations == nil || *c.Style.Animations)
+	st.appIconsInua.SetActive(c.Style.AppIconsInua)
 	s.showIconSets()
 	s.showTextScale()
 	st.language.SetSelected(uint32(max(0, slices.Index(config.Languages, c.Language))))

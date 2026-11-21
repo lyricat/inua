@@ -144,6 +144,16 @@ hints = true
 # and the same shortcut back to the overview.
 launcher_workspace = true
 
+[hot_corners]
+# The action for each corner of the displays' whole canvas: "off",
+# "overview" or "show-desktop". Each entry alternates with the next.
+top_left = "overview"
+top_right = "show-desktop"
+bottom_left = "off"
+bottom_right = "off"
+# How long the pointer must stay in a corner, in milliseconds (0 to 2000 in 50 ms steps).
+delay = 500
+
 [control]
 # Shell commands run by the control center's buttons.
 lock = "inua call lock now"
@@ -203,6 +213,10 @@ app_style = "inua-objects"
 # ~/.local/share/icons). inua's apps keep app_style; the tray's icons come
 # from each app.
 app_icons = ""
+
+# Replace inua's program icons with the app icon theme too. Programs without
+# a matching icon use a generic icon from the same theme.
+app_icons_inua = false
 
 # How app icons are drawn in the dock, its drawer and the launcher:
 #   "squircle"  a square with continuous corners (the default)
