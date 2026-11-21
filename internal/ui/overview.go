@@ -95,6 +95,13 @@ type queuedOverviewFrame struct {
 }
 
 func (s *shellUI) showOverview() {
+	s.showOverviewOn(s.snap.FocusedOutput)
+}
+
+func (s *shellUI) showOverviewOn(monitor string) {
+	if monitor == "" {
+		monitor = s.snap.FocusedOutput
+	}
 	s.closeClipboard()
 	s.closePasswords()
 	if s.overview.st.Open {
@@ -112,7 +119,7 @@ func (s *shellUI) showOverview() {
 	}
 	s.overview.st.MRU = s.cfg.Overview.MRU
 	s.overview.st.Apps = s.apps
-	s.overview.st.Show(s.snap)
+	s.overview.st.Show(overviewSnapshotOn(s.snap, monitor))
 	for _, b := range s.bars {
 		b.hideFocusRing()
 	}
@@ -125,8 +132,11 @@ func (s *shellUI) showOverview() {
 	s.overview.killMode = false
 	s.overview.targets = map[uintptr]overviewDropTarget{}
 	s.overview.dragging = ""
-	s.overview.monitor = s.snap.FocusedOutput
-	s.overview.inputMonitor = s.snap.FocusedOutput
+	s.overview.monitor = monitor
+	s.overview.inputMonitor = monitor
+	if s.hypr != nil && monitor != "" && monitor != s.snap.FocusedOutput {
+		s.hyprDispatch("focusmonitor "+monitor, fmt.Sprintf(`hl.dsp.focus({monitor=%q})`, monitor))
+	}
 	s.overview.views = map[string]*workspaceOverview{}
 	for _, mon := range s.snap.Outputs {
 		if mon.Name != s.overview.monitor {
@@ -152,6 +162,35 @@ func (s *shellUI) showOverview() {
 	s.syncOverviewDocks()
 	s.guardOverviewMouse(true)
 	log.Printf("overview: open (%d workspaces) wallpaper=%q", len(s.overview.st.Cards), s.cfg.ImagePath())
+}
+
+func overviewSnapshotOn(snap compositor.Snapshot, monitor string) compositor.Snapshot {
+	if monitor == "" || monitor == snap.FocusedOutput {
+		return snap
+	}
+	if _, ok := snap.Output(monitor); !ok {
+		return snap
+	}
+	snap.Outputs = append([]compositor.Output(nil), snap.Outputs...)
+	snap.Workspaces = append([]compositor.Workspace(nil), snap.Workspaces...)
+	snap.FocusedOutput = monitor
+	active := snap.ActiveWorkspace(monitor)
+	for i := range snap.Outputs {
+		snap.Outputs[i].Focused = snap.Outputs[i].Name == monitor
+	}
+	for i := range snap.Workspaces {
+		snap.Workspaces[i].Focused = snap.Workspaces[i].Output == monitor && snap.Workspaces[i].ID == active
+	}
+	bestRank, previous := 0, ""
+	for _, window := range snap.Windows {
+		if window.Output == monitor && window.FocusRank > 0 && (bestRank == 0 || window.FocusRank < bestRank) {
+			bestRank, previous = window.FocusRank, window.ID
+		}
+	}
+	if previous != "" {
+		snap.FocusedWindow = previous
+	}
+	return snap
 }
 
 func (s *shellUI) closeOverview(restore bool) {

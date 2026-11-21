@@ -764,6 +764,108 @@ button.widget-pick { padding: 6px 8px; }
 .osd-card levelbar block { min-height: 2px; border: none; border-radius: 0; }
 .osd-card levelbar block.filled { background: @accent; }
 .osd-card levelbar block.empty { background: transparent; }
+/* Hot corner indicator: subtle, elegant glass HUD at the active corner.
+   Takes no input (gtkx.PassInput). Crossfades smoothly with Revealer. */
+.hotcorner { background: transparent; }
+.hotcorner-revealer { background: transparent; }
+
+.hotcorner-card {
+  background: alpha(@surface, 0.84);
+  border: 1px solid alpha(@line, 0.9);
+  box-shadow: 0 4px 16px alpha(#000, 0.28);
+  padding: 8px 10px;
+  min-width: 46px;
+  min-height: 46px;
+  transition: background 150ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 150ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hotcorner-card.corner-top-left {
+  border-top: none;
+  border-left: none;
+  border-bottom-right-radius: 24px;
+  border-bottom-left-radius: 4px;
+  border-top-right-radius: 4px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
+.hotcorner-card.corner-top-right {
+  border-top: none;
+  border-right: none;
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 4px;
+  border-top-left-radius: 4px;
+  margin-left: 8px;
+  margin-bottom: 8px;
+}
+
+.hotcorner-card.corner-bottom-left {
+  border-bottom: none;
+  border-left: none;
+  border-top-right-radius: 24px;
+  border-top-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  margin-right: 8px;
+  margin-top: 8px;
+}
+
+.hotcorner-card.corner-bottom-right {
+  border-bottom: none;
+  border-right: none;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+  margin-left: 8px;
+  margin-top: 8px;
+}
+
+.hotcorner-icon {
+  color: alpha(@t0, 0.85);
+  transition: color 140ms ease-out, transform 140ms ease-out;
+}
+
+.hotcorner-card.active .hotcorner-icon {
+  color: @accent;
+}
+
+.hotcorner-bar {
+  min-height: 2px;
+  min-width: 26px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+}
+.hotcorner-bar trough {
+  min-height: 2px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: alpha(@line, 0.5);
+}
+.hotcorner-bar block {
+  min-height: 2px;
+  border: none;
+  border-radius: 999px;
+}
+.hotcorner-bar block.filled {
+  background: @accent;
+}
+.hotcorner-bar block.empty {
+  background: transparent;
+}
+
+/* Satisfying accent pulse and pop on trigger */
+.hotcorner-card.triggered {
+  background: alpha(@accent, 0.28);
+  border-color: @accent;
+  transform: scale(1.08);
+}
+.hotcorner-card.triggered .hotcorner-icon {
+  color: @accent;
+  transform: scale(1.12);
+}
 /* On the center's card, notes are lifted a step onto the surface. */
 .center .note { background: alpha(@surface, 0.7); }
 /* Cleared: slides out to the right and fades, then its room closes. */
@@ -3069,6 +3171,15 @@ window.files .files-row .files-icon { color: @t1; }
 window.files .files-row .files-name { color: @t0; }
 window.files .files-row .readout { color: @t2; font-size: 12px; }
 window.files .files-row .files-col-size { color: @t1; }
+window.files .files-group-heading {
+  min-height: 22px;
+  margin: 8px 4px 2px;
+  padding: 3px 2px;
+  border-bottom: 1px solid alpha(@line, 0.4);
+  color: @t2;
+  font-size: 12px;
+  font-weight: 600;
+}
 window.files .hidden .files-name, window.files .hidden .files-icon { opacity: 0.6; }
 window.files .link .files-name { font-style: italic; }
 window.files .cut { opacity: 0.45; }

@@ -721,6 +721,46 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
                                                 <style>
                                                   <class name="title"/>
                                                 </style>
+                                                <property name="label" translatable="yes">Replace inua app icons</property>
+                                                <property name="xalign">0</property>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <style>
+                                                  <class name="sub"/>
+                                                </style>
+                                                <property name="label" translatable="yes">Use the selected app theme for every inua program, including a generic icon when there is no match</property>
+                                                <property name="xalign">0</property>
+                                                <property name="wrap">true</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkSwitch" id="app_icons_inua">
+                                            <property name="name">app_icons_inua</property>
+                                            <property name="valign">3</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkBox">
+                                        <style>
+                                          <class name="row"/>
+                                        </style>
+                                        <property name="spacing">16</property>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="orientation">1</property>
+                                            <property name="hexpand">true</property>
+                                            <property name="valign">3</property>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <style>
+                                                  <class name="title"/>
+                                                </style>
                                                 <property name="label" translatable="yes">App icon shape</property>
                                                 <property name="xalign">0</property>
                                               </object>
@@ -2330,6 +2370,290 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
                                           <object class="GtkSwitch" id="overview_launcher">
                                             <property name="name">overview_launcher</property>
                                             <property name="valign">3</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSeparator"></object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkBox">
+                                        <style>
+                                          <class name="section"/>
+                                        </style>
+                                        <property name="orientation">1</property>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <style>
+                                              <class name="section-head"/>
+                                            </style>
+                                            <property name="spacing">10</property>
+                                            <child>
+                                              <object class="GtkBox">
+                                                <style>
+                                                  <class name="mark"/>
+                                                </style>
+                                                <property name="valign">3</property>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <style>
+                                                  <class name="section-label"/>
+                                                </style>
+                                                <property name="use-markup">true</property>
+                                                <property name="label" translatable="yes">&lt;span alpha='55%'&gt;[&lt;/span&gt;HOT CORNERS&lt;span alpha='55%'&gt;]&lt;/span&gt;</property>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <style>
+                                                  <class name="section-meta"/>
+                                                </style>
+                                                <property name="label" translatable="yes">Actions when the pointer rests in a display corner</property>
+                                                <property name="hexpand">true</property>
+                                                <property name="xalign">0</property>
+                                                <property name="ellipsize">3</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <style>
+                                              <class name="section-body"/>
+                                            </style>
+                                            <property name="orientation">1</property>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <style>
+                                                  <class name="sub"/>
+                                                </style>
+                                                <property name="label" translatable="yes">Hyprland only. The corners are those of all displays together. Leaving a corner cancels its delay; each entry alternates: the overview toggles, and show desktop puts the windows away and the next entry brings them back.</property>
+                                                <property name="xalign">0</property>
+                                                <property name="wrap">true</property>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkSeparator"></object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkBox">
+                                                <style>
+                                                  <class name="row"/>
+                                                </style>
+                                                <property name="spacing">16</property>
+                                                <child>
+                                                  <object class="GtkBox">
+                                                    <property name="orientation">1</property>
+                                                    <property name="hexpand">true</property>
+                                                    <property name="valign">3</property>
+                                                    <child>
+                                                      <object class="GtkLabel">
+                                                        <style>
+                                                          <class name="title"/>
+                                                        </style>
+                                                        <property name="label" translatable="yes">Top left</property>
+                                                        <property name="xalign">0</property>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkDropDown" id="hot_corner_top_left">
+                                                    <property name="name">hot_corner_top_left</property>
+                                                    <property name="valign">3</property>
+                                                    <property name="model">
+                                                      <object class="GtkStringList">
+                                                        <items>
+                                                          <item translatable="yes">Off</item>
+                                                          <item translatable="yes">Workspace overview</item>
+                                                          <item translatable="yes">Show desktop</item>
+                                                        </items>
+                                                      </object>
+                                                    </property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkSeparator"></object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkBox">
+                                                <style>
+                                                  <class name="row"/>
+                                                </style>
+                                                <property name="spacing">16</property>
+                                                <child>
+                                                  <object class="GtkBox">
+                                                    <property name="orientation">1</property>
+                                                    <property name="hexpand">true</property>
+                                                    <property name="valign">3</property>
+                                                    <child>
+                                                      <object class="GtkLabel">
+                                                        <style>
+                                                          <class name="title"/>
+                                                        </style>
+                                                        <property name="label" translatable="yes">Top right</property>
+                                                        <property name="xalign">0</property>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkDropDown" id="hot_corner_top_right">
+                                                    <property name="name">hot_corner_top_right</property>
+                                                    <property name="valign">3</property>
+                                                    <property name="model">
+                                                      <object class="GtkStringList">
+                                                        <items>
+                                                          <item translatable="yes">Off</item>
+                                                          <item translatable="yes">Workspace overview</item>
+                                                          <item translatable="yes">Show desktop</item>
+                                                        </items>
+                                                      </object>
+                                                    </property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkSeparator"></object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkBox">
+                                                <style>
+                                                  <class name="row"/>
+                                                </style>
+                                                <property name="spacing">16</property>
+                                                <child>
+                                                  <object class="GtkBox">
+                                                    <property name="orientation">1</property>
+                                                    <property name="hexpand">true</property>
+                                                    <property name="valign">3</property>
+                                                    <child>
+                                                      <object class="GtkLabel">
+                                                        <style>
+                                                          <class name="title"/>
+                                                        </style>
+                                                        <property name="label" translatable="yes">Bottom left</property>
+                                                        <property name="xalign">0</property>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkDropDown" id="hot_corner_bottom_left">
+                                                    <property name="name">hot_corner_bottom_left</property>
+                                                    <property name="valign">3</property>
+                                                    <property name="model">
+                                                      <object class="GtkStringList">
+                                                        <items>
+                                                          <item translatable="yes">Off</item>
+                                                          <item translatable="yes">Workspace overview</item>
+                                                          <item translatable="yes">Show desktop</item>
+                                                        </items>
+                                                      </object>
+                                                    </property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkSeparator"></object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkBox">
+                                                <style>
+                                                  <class name="row"/>
+                                                </style>
+                                                <property name="spacing">16</property>
+                                                <child>
+                                                  <object class="GtkBox">
+                                                    <property name="orientation">1</property>
+                                                    <property name="hexpand">true</property>
+                                                    <property name="valign">3</property>
+                                                    <child>
+                                                      <object class="GtkLabel">
+                                                        <style>
+                                                          <class name="title"/>
+                                                        </style>
+                                                        <property name="label" translatable="yes">Bottom right</property>
+                                                        <property name="xalign">0</property>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkDropDown" id="hot_corner_bottom_right">
+                                                    <property name="name">hot_corner_bottom_right</property>
+                                                    <property name="valign">3</property>
+                                                    <property name="model">
+                                                      <object class="GtkStringList">
+                                                        <items>
+                                                          <item translatable="yes">Off</item>
+                                                          <item translatable="yes">Workspace overview</item>
+                                                          <item translatable="yes">Show desktop</item>
+                                                        </items>
+                                                      </object>
+                                                    </property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkSeparator"></object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkBox">
+                                                <style>
+                                                  <class name="row"/>
+                                                </style>
+                                                <property name="spacing">16</property>
+                                                <child>
+                                                  <object class="GtkBox">
+                                                    <property name="orientation">1</property>
+                                                    <property name="hexpand">true</property>
+                                                    <property name="valign">3</property>
+                                                    <child>
+                                                      <object class="GtkLabel">
+                                                        <style>
+                                                          <class name="title"/>
+                                                        </style>
+                                                        <property name="label" translatable="yes">Trigger delay</property>
+                                                        <property name="xalign">0</property>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkLabel" id="hot_corner_delay_val">
+                                                        <style>
+                                                          <class name="readout"/>
+                                                        </style>
+                                                        <property name="xalign">0</property>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkScale" id="hot_corner_delay">
+                                                    <property name="name">hot_corner_delay</property>
+                                                    <property name="hexpand">true</property>
+                                                    <property name="valign">3</property>
+                                                    <property name="draw-value">false</property>
+                                                    <property name="adjustment">
+                                                      <object class="GtkAdjustment">
+                                                        <property name="lower">0</property>
+                                                        <property name="upper">2000</property>
+                                                        <property name="step-increment">25</property>
+                                                        <property name="page-increment">100</property>
+                                                      </object>
+                                                    </property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
                                           </object>
                                         </child>
                                       </object>

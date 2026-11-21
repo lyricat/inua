@@ -27,6 +27,7 @@ type Config struct {
 	Bar        Bar        `toml:"bar"`
 	Launcher   Launcher   `toml:"launcher"`
 	Overview   Overview   `toml:"overview"`
+	HotCorners HotCorners `toml:"hot_corners"`
 	Control    Control    `toml:"control"`
 	Style      Style      `toml:"style"`
 	Background Background `toml:"background"`
@@ -117,6 +118,31 @@ type Overview struct {
 	LauncherWorkspace bool `toml:"launcher_workspace"`
 }
 
+// HotCorners maps each display corner to an action and sets the shared dwell delay.
+type HotCorners struct {
+	TopLeft     string `toml:"top_left"`
+	TopRight    string `toml:"top_right"`
+	BottomLeft  string `toml:"bottom_left"`
+	BottomRight string `toml:"bottom_right"`
+	Delay       int    `toml:"delay"` // milliseconds
+}
+
+const (
+	// HotCornerOff disables the action in that corner.
+	HotCornerOff = "off"
+	// HotCornerOverview opens or closes the workspace overview.
+	HotCornerOverview = "overview"
+	// HotCornerShowDesktop switches to an empty workspace and back.
+	HotCornerShowDesktop = "show-desktop"
+	// HotCornerDelayMax is the longest supported dwell delay, in milliseconds.
+	HotCornerDelayMax = 2000
+	// HotCornerDelayStep is the step used by the Settings delay slider.
+	HotCornerDelayStep = 25
+)
+
+// HotCornerActions are the actions offered for a screen corner.
+var HotCornerActions = []string{HotCornerOff, HotCornerOverview, HotCornerShowDesktop}
+
 // Quicklink is a site the launcher searches by keyword.
 type Quicklink struct {
 	Keyword string `toml:"keyword"` // the query's first word: "gh"
@@ -188,10 +214,13 @@ type Style struct {
 	// AppStyle is how inua draws apps, one of InuaThemes: inua's own apps
 	// and the others it draws (the system's while it is not installed).
 	AppStyle string `toml:"app_style"`
-	// AppIcons is where the other apps' icons and files' come from: "",
+	// AppIcons is where other apps' icons and Files' icons come from: "",
 	// the app style; "system", the system's icon theme; or an installed
-	// icon theme (IconThemes). inua's apps keep the app style.
+	// icon theme (IconThemes). AppIconsInua can apply it to inua programs too.
 	AppIcons string `toml:"app_icons"`
+	// AppIconsInua replaces inua programs' app-style icons with icons from
+	// AppIcons, using a generic icon from that theme when there is no match.
+	AppIconsInua bool `toml:"app_icons_inua"`
 	// IconShape is how app icons are drawn in the dock, its drawer and the
 	// launcher: one of IconShapes. "none" draws them as their files are.
 	IconShape string `toml:"icon_shape"`
@@ -962,8 +991,9 @@ func Default() Config {
 			Tray:             true,
 			Pass:             true,
 		},
-		Launcher: Launcher{Mode: "apps", Search: "https://www.google.com/search?q=%s", Quicklinks: slices.Clone(DefaultQuicklinks)},
-		Overview: Overview{MRU: false, PerMonitor: true, ShowDock: true, Hints: true, LauncherWorkspace: true},
+		Launcher:   Launcher{Mode: "apps", Search: "https://www.google.com/search?q=%s", Quicklinks: slices.Clone(DefaultQuicklinks)},
+		Overview:   Overview{MRU: false, PerMonitor: true, ShowDock: true, Hints: true, LauncherWorkspace: true},
+		HotCorners: HotCorners{TopLeft: HotCornerOverview, TopRight: HotCornerShowDesktop, BottomLeft: HotCornerOff, BottomRight: HotCornerOff, Delay: 150},
 		Control: Control{
 			Lock:       "inua call lock now",
 			Screenshot: "inua call screenshot area",
@@ -1068,6 +1098,14 @@ func (c *Config) validate() []string {
 		c.Bar.IconSpacing = d.Bar.IconSpacing
 	}
 	oneOf("launcher.mode", &c.Launcher.Mode, d.Launcher.Mode, "apps", "windows")
+	oneOf("hot_corners.top_left", &c.HotCorners.TopLeft, d.HotCorners.TopLeft, HotCornerActions...)
+	oneOf("hot_corners.top_right", &c.HotCorners.TopRight, d.HotCorners.TopRight, HotCornerActions...)
+	oneOf("hot_corners.bottom_left", &c.HotCorners.BottomLeft, d.HotCorners.BottomLeft, HotCornerActions...)
+	oneOf("hot_corners.bottom_right", &c.HotCorners.BottomRight, d.HotCorners.BottomRight, HotCornerActions...)
+	if c.HotCorners.Delay < 0 || c.HotCorners.Delay > HotCornerDelayMax || c.HotCorners.Delay%HotCornerDelayStep != 0 {
+		w = append(w, fmt.Sprintf("hot_corners.delay = %d: want 0 to %d in %d ms steps; using %d", c.HotCorners.Delay, HotCornerDelayMax, HotCornerDelayStep, d.HotCorners.Delay))
+		c.HotCorners.Delay = d.HotCorners.Delay
+	}
 	if !ValidSearchURL(c.Launcher.Search) {
 		w = append(w, fmt.Sprintf("launcher.search = %q: want a web address with %%s for the words; using %q", c.Launcher.Search, d.Launcher.Search))
 		c.Launcher.Search = d.Launcher.Search
