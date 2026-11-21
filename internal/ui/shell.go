@@ -113,6 +113,7 @@ type shellUI struct {
 	agenda    agenda
 	widgets   widgetPage
 	shot      shooter
+	hotCorner hotCornerState
 	recording recorder
 	lock      locker
 	auth      authAgent   // the polkit agent
@@ -134,6 +135,7 @@ type shellUI struct {
 	onWorkspaceClicked     func(gtk.Button)
 	onWorkspaceSettle      glib.SourceFunc
 	onClock                glib.SourceFunc
+	onHotCornerTick        glib.SourceFunc
 	onKey                  func(gtk.EventControllerKey, uint32, uint32, gdk.ModifierType) bool
 	onLauncherPick         func(gtk.GestureClick, int32, float64, float64)
 	onLauncherCatch        func(gtk.GestureClick, int32, float64, float64)
@@ -493,6 +495,7 @@ func (s *shellUI) start() {
 	s.bindAgendaHandlers()
 	s.bindWidgetsHandlers()
 	s.bindShotHandlers()
+	s.bindHotCornerHandlers()
 	s.bindShotDrawerHandlers()
 	s.bindRecordHandlers()
 	s.bindVoiceHandlers()
@@ -557,6 +560,7 @@ func (s *shellUI) start() {
 	// Bring hypr/inua.conf up to date with config.toml (edited while the
 	// shell was not running); Hyprland reloads only if it changed.
 	s.applyHyprland()
+	s.syncHotCornerPolling() // the compositor is known now
 	s.scanApps()
 	s.restartClock()
 }
@@ -844,6 +848,7 @@ func (s *shellUI) apply(snap compositor.Snapshot) {
 		s.closeAppMenu()
 	}
 	s.snap = snap
+	s.recoverHotDesk(snap)
 	s.overview.st.SetSnapshot(snap)
 	for _, b := range s.bars {
 		b.setHypr(s, snap)
