@@ -1,7 +1,8 @@
 // Package calc evaluates the calculator's expressions: numbers, + − × ÷,
-// ^, %, parentheses, the constants π and e, and the functions sin, cos,
+// ^, %, !, parentheses, the constants π and e, and the functions sin, cos,
 // tan, asin, acos, atan, ln, log, sqrt and abs. Trigonometry works in
-// degrees or radians.
+// degrees or radians. A percentage added to or taken from a value is that
+// much of the value: 200 + 10% is 220.
 package calc
 
 import (
@@ -15,6 +16,13 @@ import (
 
 // ErrSyntax is an expression that is not complete or not well formed.
 var ErrSyntax = errors.New("not a complete expression")
+
+// What an expression that reads well can still fail with.
+var (
+	ErrDivideByZero = errors.New("division by zero")
+	ErrUndefined    = errors.New("no real value") // √−1, tan 90°, ln 0, 2.5!
+	ErrTooLarge     = errors.New("too large")     // past what a float64 holds
+)
 
 // Eval evaluates expr. Missing closing parentheses are closed.
 func Eval(expr string, degrees bool) (float64, error) {
@@ -30,8 +38,11 @@ func Eval(expr string, degrees bool) (float64, error) {
 	if p.pos != len(p.toks) {
 		return 0, ErrSyntax
 	}
-	if math.IsNaN(v) || math.IsInf(v, 0) {
-		return 0, errors.New("not a number")
+	if math.IsNaN(v) {
+		return 0, ErrUndefined
+	}
+	if math.IsInf(v, 0) {
+		return 0, ErrTooLarge
 	}
 	return v, nil
 }
@@ -102,7 +113,7 @@ func lex(s string) ([]token, error) {
 			}
 			out = append(out, token{kind: num, val: v})
 			i = j
-		case strings.ContainsRune("+-*/^%", c):
+		case strings.ContainsRune("+-*/^%!", c):
 			out = append(out, token{kind: op, text: string(c)})
 			i++
 		case c == '(':
@@ -141,12 +152,16 @@ func lex(s string) ([]token, error) {
 //	term   = unary { ("*"|"/") unary | implicit }   implicit: 2π, 3(4), 2sin 30
 //	unary  = ("-"|"+") unary | power
 //	power  = postfix [ "^" unary ]                  right-associative
-//	postfix= atom { "%" }
+//	postfix= atom { "%" | "!" }
 //	atom   = number | "(" expr [")"] | fn atom-or-unary
+//
+// A term that is only a percentage (10%, (5+5)%) is, after + or −, that
+// much of what stands before it.
 type parser struct {
 	toks    []token
 	pos     int
 	degrees bool
+	percent bool // the term just read was only a percentage
 }
 
 func (p *parser) peek() (token, bool) {
@@ -167,7 +182,11 @@ func (p *parser) expr() (float64, error) {
 		o := p.toks[p.pos].text
 		p.pos++
 		var w float64
-		if w, err = p.term(); o == "+" {
+		w, err = p.term()
+		if p.percent {
+			w *= v
+		}
+		if o == "+" {
 			v += w
 		} else {
 			v -= w
@@ -187,10 +206,11 @@ func (p *parser) term() (float64, error) {
 			if w, err = p.unary(); err != nil {
 				break
 			}
+			p.percent = false
 			if t.text == "*" {
 				v *= w
 			} else if w == 0 {
-				err = errors.New("division by zero")
+				err = ErrDivideByZero
 			} else {
 				v /= w
 			}
@@ -199,6 +219,7 @@ func (p *parser) term() (float64, error) {
 			if w, err = p.power(); err == nil {
 				v *= w
 			}
+			p.percent = false
 		default:
 			return v, nil
 		}
@@ -225,19 +246,43 @@ func (p *parser) power() (float64, error) {
 		p.pos++
 		var w float64
 		if w, err = p.unary(); err == nil {
+			if v == 0 && w < 0 {
+				err = ErrDivideByZero
+			}
 			v = math.Pow(v, w)
 		}
+		p.percent = false
 	}
 	return v, err
 }
 
 func (p *parser) postfix() (float64, error) {
 	v, err := p.atom()
-	for err == nil && p.isOp("%") {
+	percent := false
+	for err == nil && (p.isOp("%") || p.isOp("!")) {
+		if percent = p.isOp("%"); percent {
+			v /= 100
+		} else {
+			v, err = factorial(v)
+		}
 		p.pos++
-		v /= 100
 	}
+	p.percent = percent
 	return v, err
+}
+
+func factorial(x float64) (float64, error) {
+	if x < 0 || x != math.Trunc(x) {
+		return 0, ErrUndefined
+	}
+	if x > 170 {
+		return 0, ErrTooLarge
+	}
+	v := 1.0
+	for i := 2.0; i <= x; i++ {
+		v *= i
+	}
+	return v, nil
 }
 
 func (p *parser) atom() (float64, error) {
@@ -297,7 +342,7 @@ func (p *parser) apply(name string, x float64) (float64, error) {
 		return clean(math.Cos(rad(x))), nil
 	case "tan":
 		if c := clean(math.Cos(rad(x))); c == 0 {
-			return 0, errors.New("tan is undefined there")
+			return 0, ErrUndefined
 		}
 		return clean(math.Tan(rad(x))), nil
 	case "asin":
@@ -306,9 +351,13 @@ func (p *parser) apply(name string, x float64) (float64, error) {
 		return deg(math.Acos(x)), nil
 	case "atan":
 		return deg(math.Atan(x)), nil
-	case "ln":
-		return math.Log(x), nil
-	case "log":
+	case "ln", "log":
+		if x <= 0 {
+			return 0, ErrUndefined
+		}
+		if name == "ln" {
+			return math.Log(x), nil
+		}
 		return math.Log10(x), nil
 	case "sqrt":
 		return math.Sqrt(x), nil

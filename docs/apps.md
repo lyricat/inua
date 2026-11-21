@@ -303,7 +303,17 @@ endpoints, which may change without notice.
 
 ### Calculator
 
-A calculator with scientific keys.
+A calculator with scientific keys. The formula and its value are both
+text to edit; the value follows the formula as it is typed, and Enter
+keeps it in the history, where a click takes a result into the formula.
+
+- `*`, `/`, `-` and `x` type ×, ÷, − and ×; `^` is a power, `!` a
+  factorial, and a number before π, a parenthesis or a function
+  multiplies it.
+- A percentage added to or taken from a value is that much of it:
+  `200 + 10%` is 220. Elsewhere it is a hundredth: `200 × 10%` is 20.
+- Scientific, degrees or radians, and the history panel open as they
+  were left.
 
 ### Calendar
 

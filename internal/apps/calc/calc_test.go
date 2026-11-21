@@ -1,6 +1,7 @@
 package calc
 
 import (
+	"errors"
 	"math"
 	"testing"
 )
@@ -31,6 +32,17 @@ func TestEval(t *testing.T) {
 		{"1.5e3 + 1", false, 1501},
 		{"−3 − −3", false, 0},
 		{"1,000 + 1", false, 1001},
+		{"200 + 10%", false, 220}, // of what stands before it
+		{"200 − 10%", false, 180},
+		{"200 + 10% + 10%", false, 242},
+		{"200 + (5 + 5)%", false, 220},
+		{"200 + 5 × 10%", false, 200.5}, // a product is not a percentage
+		{"200 + 2^10%", false, 200 + math.Pow(2, 0.1)},
+		{"10% + 5", false, 5.1},
+		{"5!", false, 120},
+		{"0!", false, 1},
+		{"2 ^ 3!", false, 64},
+		{"−3!", false, -6},
 	} {
 		got, err := Eval(tc.expr, tc.degrees)
 		if err != nil || math.Abs(got-tc.want) > 1e-9 {
@@ -44,6 +56,20 @@ func TestEvalErrors(t *testing.T) {
 		deg := expr == "tan 90"
 		if v, err := Eval(expr, deg); err == nil {
 			t.Errorf("Eval(%q) = %v, want an error", expr, v)
+		}
+	}
+}
+
+func TestEvalErrorKinds(t *testing.T) {
+	for expr, want := range map[string]error{
+		"1 ÷ 0": ErrDivideByZero, "0 ^ −1": ErrDivideByZero,
+		"√(−1)": ErrUndefined, "tan 90": ErrUndefined, "ln 0": ErrUndefined,
+		"log(−1)": ErrUndefined, "2.5!": ErrUndefined, "(−1)!": ErrUndefined,
+		"10 ^ 400": ErrTooLarge, "171!": ErrTooLarge,
+		"1 +": ErrSyntax, "2 ) 3": ErrSyntax,
+	} {
+		if v, err := Eval(expr, true); !errors.Is(err, want) {
+			t.Errorf("Eval(%q) = %v, %v; want %v", expr, v, err, want)
 		}
 	}
 }

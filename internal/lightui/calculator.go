@@ -1,6 +1,7 @@
 package lightui
 
 import (
+	"errors"
 	"strconv"
 	"strings"
 	"unicode/utf8"
@@ -50,8 +51,22 @@ type calcApp struct {
 	onClipText       gio.AsyncReadyCallback
 }
 
-// calcHistory is the history's file in the apps' data.
-const calcHistory = "calc-history"
+// calcHistory is the history's file in the apps' data; calcModesName the
+// file of the modes left on.
+const (
+	calcHistory   = "calc-history"
+	calcModesName = "calc-modes"
+)
+
+// calcModes is what the window opens with again.
+type calcModes struct {
+	Scientific bool `json:"scientific"`
+	Radians    bool `json:"radians"`
+	History    bool `json:"history"`
+}
+
+// calcTyped is how a typed key reads in the formula, as the keypad's.
+var calcTyped = map[rune]string{'x': "×", '*': "×", '/': "÷", '-': "−"}
 
 // The keys: label (or a Phosphor icon from ui/icons, with the label as its
 // tooltip), input, style. Inputs starting with "op:" are commands.
@@ -106,15 +121,31 @@ func (a *calcApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 		a.fillHistory()
 	}
 	a.historyClear.ConnectClicked(&a.onClearHistory)
-	a.onHistory = func(b gtk.ToggleButton) { a.historyReveal.SetRevealChild(b.GetActive()) }
+	// The modes as they were left, set before their handlers so that
+	// opening the window saves nothing.
+	var modes calcModes
+	store.Load(calcModesName, &modes)
+	a.sci.SetActive(modes.Scientific)
+	a.scikeys.SetVisible(modes.Scientific)
+	a.deg.SetActive(!modes.Radians)
+	a.history.SetActive(modes.History)
+	a.historyReveal.SetRevealChild(modes.History)
+	a.onHistory = func(b gtk.ToggleButton) {
+		a.historyReveal.SetRevealChild(b.GetActive())
+		a.saveModes()
+	}
 	a.history.ConnectToggled(&a.onHistory)
 	a.history.SetCanFocus(false)
 	a.historyClear.SetCanFocus(false)
 	a.fillHistory()
 
 	a.onKey = func(b gtk.Button) { a.input(b.GetName()) }
-	a.onSci = func(b gtk.ToggleButton) { a.scikeys.SetVisible(b.GetActive()) }
+	a.onSci = func(b gtk.ToggleButton) {
+		a.scikeys.SetVisible(b.GetActive())
+		a.saveModes()
+	}
 	a.onDegrees = func(gtk.ToggleButton) {
+		a.saveModes()
 		if a.answered {
 			return
 		}
@@ -215,12 +246,40 @@ func (a *calcApp) Build(c *appui.Ctx) *gtk.ApplicationWindow {
 		e.AddController(&keys.EventController)
 	}
 	a.show(nil)
+	menuWindow(c, win, []appui.MenuGroup{{Title: "Edit", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{{Name: "calc-copy", Label: "Copy result", Activate: func(gio.SimpleAction, uintptr) { a.copyResult() }}, {Name: "calc-history", Label: "History", Activate: func(gio.SimpleAction, uintptr) { a.history.SetActive(!a.history.GetActive()) }}}}}}})
+	// After the menu bar took the content in: moving it drops the focus, and
+	// the window would then open with the caret in the value.
 	a.expr.GrabFocusWithoutSelecting()
-	menuWindow(c, win, []appui.MenuGroup{{Title: "Edit", Sections: []appui.MenuSection{{Actions: []appui.MenuAction{{Name: "calc-copy", Label: "Copy result", Activate: func(gio.SimpleAction, uintptr) { a.copy(a.active) }}, {Name: "calc-history", Label: "History", Activate: func(gio.SimpleAction, uintptr) { a.historyReveal.SetRevealChild(true) }}}}}}})
 	return win
 }
 
 func (a *calcApp) ThemeChanged() {}
+
+func (a *calcApp) saveModes() {
+	store.Save(calcModesName, calcModes{Scientific: a.sci.GetActive(), Radians: !a.deg.GetActive(), History: a.history.GetActive()})
+}
+
+// copyResult copies the whole value, whichever field has the caret.
+func (a *calcApp) copyResult() {
+	if text := a.result.GetText(); text != "" {
+		clip := a.result.GetClipboard()
+		clip.SetText(text)
+		clip.Unref()
+	}
+}
+
+// calcError says why an expression has no value.
+func calcError(err error) string {
+	switch {
+	case errors.Is(err, calc.ErrDivideByZero):
+		return i18n.T("Cannot divide by zero.")
+	case errors.Is(err, calc.ErrUndefined):
+		return i18n.T("This has no real value.")
+	case errors.Is(err, calc.ErrTooLarge):
+		return i18n.T("The result is too large.")
+	}
+	return i18n.T("Enter a valid expression.")
+}
 
 // typed handles calculator commands; GTK handles caret movement, selection,
 // deletion, undo and ordinary text input in the focused entry.
@@ -264,16 +323,16 @@ func (a *calcApp) typed(keyval uint32, state gdk.ModifierType) bool {
 		}
 	}
 	r := rune(gdk.KeyvalToUnicode(keyval))
+	if in, ok := calcTyped[r]; ok {
+		a.input(in)
+		return true
+	}
 	if r >= ' ' && a.answered && a.active == &a.expr {
 		start, end := calcSelection(a.active)
 		if start == end && end == utf8.RuneCountInString(a.text) {
 			a.input(string(r))
 			return true
 		}
-	}
-	if r == 'x' { // retain the multiplication shortcut
-		a.input("×")
-		return true
 	}
 	return false
 }
@@ -399,12 +458,7 @@ func (a *calcApp) input(in string) {
 		if a.answered {
 			text = a.answer
 		}
-		switch {
-		case strings.HasPrefix(text, "−(") && strings.HasSuffix(text, ")"):
-			text = text[len("−(") : len(text)-1]
-		case text != "":
-			text = "−(" + text + ")"
-		}
+		text = calc.Negate(text)
 		start = utf8.RuneCountInString(text)
 	case "op:equals":
 		if strings.TrimSpace(a.text) == "" {
@@ -412,7 +466,7 @@ func (a *calcApp) input(in string) {
 		}
 		v, err := calc.Eval(a.text, a.deg.GetActive())
 		if err != nil {
-			a.error.SetText(i18n.T("Enter a valid expression."))
+			a.error.SetText(calcError(err))
 			a.error.SetVisible(true)
 			return
 		}
@@ -427,9 +481,6 @@ func (a *calcApp) input(in string) {
 		a.expr.SetPosition(-1)
 		return
 	default:
-		if in == "x" {
-			in = "×"
-		}
 		text, start = calc.Edit(text, start, end, in, a.answer, a.answered && e == &a.expr)
 	}
 	e.GrabFocusWithoutSelecting()

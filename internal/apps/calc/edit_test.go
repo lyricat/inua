@@ -51,3 +51,21 @@ func TestEditInvalidAndEmpty(t *testing.T) {
 		t.Fatal("empty edit must not evaluate")
 	}
 }
+
+func TestNegate(t *testing.T) {
+	for in, want := range map[string]string{
+		"":         "",
+		"5":        "−5",
+		"−5":       "5",
+		"-1.25":    "1.25", // an answer, as Format writes it
+		"1+2":      "−(1+2)",
+		"−(1+2)":   "1+2",
+		"−(1)+(2)": "−(−(1)+(2))", // not one pair around everything
+		"π":        "−(π)",
+		"−(π)":     "π",
+	} {
+		if got := Negate(in); got != want {
+			t.Errorf("Negate(%q) = %q, want %q", in, got, want)
+		}
+	}
+}

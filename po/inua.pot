@@ -2057,7 +2057,7 @@ msgstr ""
 #: internal/diskui/details.go:581
 #: internal/filesui/window.go:831
 #: internal/gamesui/lobbyhost.go:169
-#: internal/lightui/calculator.go:351
+#: internal/lightui/calculator.go:410
 #: internal/lightui/pass.go:761
 #: internal/lightui/pass.go:786
 #: internal/mailui/details.go:222
@@ -3109,8 +3109,8 @@ msgstr ""
 
 #: internal/diskui/details.go:528
 #: internal/filesui/cards.go:510
-#: internal/lightui/calculator.go:59
-#: internal/lightui/calculator.go:353
+#: internal/lightui/calculator.go:74
+#: internal/lightui/calculator.go:412
 #: internal/lightui/gpg.go:1611
 #: internal/lightui/pass.go:910
 #: internal/term/web/strings.go:43
@@ -4879,7 +4879,7 @@ msgid "Delete for good…"
 msgstr ""
 
 #: internal/filesui/window.go:801
-#: internal/lightui/calculator.go:352
+#: internal/lightui/calculator.go:411
 #: internal/term/settings/settings.go:120
 #: internal/termui/paste.go:339
 msgid "Paste"
@@ -4890,7 +4890,7 @@ msgid "Show in its folder"
 msgstr ""
 
 #: internal/filesui/window.go:830
-#: internal/lightui/calculator.go:350
+#: internal/lightui/calculator.go:409
 msgid "Cut"
 msgstr ""
 
@@ -8927,24 +8927,36 @@ msgstr ""
 msgid "GPG"
 msgstr ""
 
-#: internal/lightui/calculator.go:63
+#: internal/lightui/calculator.go:78
 msgid "Change sign"
 msgstr ""
 
-#: internal/lightui/calculator.go:355
+#: internal/lightui/calculator.go:275
+msgid "Cannot divide by zero."
+msgstr ""
+
+#: internal/lightui/calculator.go:277
+msgid "This has no real value."
+msgstr ""
+
+#: internal/lightui/calculator.go:279
+msgid "The result is too large."
+msgstr ""
+
+#: internal/lightui/calculator.go:281
+msgid "Enter a valid expression."
+msgstr ""
+
+#: internal/lightui/calculator.go:414
 #: internal/term/web/strings.go:94
 msgid "Select all"
 msgstr ""
 
-#: internal/lightui/calculator.go:415
-msgid "Enter a valid expression."
-msgstr ""
-
-#: internal/lightui/calculator.go:445
+#: internal/lightui/calculator.go:496
 msgid "No calculations yet"
 msgstr ""
 
-#: internal/lightui/calculator.go:467
+#: internal/lightui/calculator.go:518
 msgid "Use %s"
 msgstr ""
 
