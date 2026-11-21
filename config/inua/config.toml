@@ -204,6 +204,10 @@ app_style = "inua-objects"
 # from each app.
 app_icons = ""
 
+# Replace inua's program icons with the app icon theme too. Programs without
+# a matching icon use a generic icon from the same theme.
+app_icons_inua = false
+
 # How app icons are drawn in the dock, its drawer and the launcher:
 #   "squircle"  a square with continuous corners (the default)
 #   "circle"    a circle

@@ -230,7 +230,7 @@ func (s *shellUI) applyConfig(c config.Config) {
 	if old.Style.IconShape != c.Style.IconShape {
 		uikit.SetIconShape(uikit.IconShapeFromName(c.Style.IconShape))
 	}
-	if old.Style.AppIcons != c.Style.AppIcons {
+	if old.Style.AppIcons != c.Style.AppIcons || old.Style.AppIconsInua != c.Style.AppIconsInua {
 		for _, b := range s.bars {
 			if b.dock != nil {
 				b.dock.shown = "" // its buttons again, with the icons

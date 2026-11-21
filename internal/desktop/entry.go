@@ -34,6 +34,51 @@ type Entry struct {
 	Actions       []Action // its own actions (Firefox's New Private Window), in order
 }
 
+var inuaIconAliases = map[string][]string{
+	"Assistant":       {"chat", "help-browser"},
+	"Calculator":      {"accessories-calculator", "org.gnome.Calculator"},
+	"Calendar":        {"x-office-calendar", "org.gnome.Calendar"},
+	"ChineseCheckers": {"applications-games"},
+	"Clock":           {"clock", "preferences-system-time"},
+	"ColorPicker":     {"color-picker", "applications-graphics"},
+	"DiskUsage":       {"baobab", "drive-harddisk"},
+	"Files":           {"system-file-manager", "org.gnome.Nautilus"},
+	"GPG":             {"seahorse", "dialog-password"},
+	"GameLobby":       {"applications-games"},
+	"Launcher":        {"system-search"},
+	"Mail":            {"internet-mail", "mail-client"},
+	"Minesweeper":     {"applications-games"},
+	"MobileLink":      {"phone", "phone-symbolic"},
+	"Music":           {"multimedia-player", "audio-player"},
+	"Pass":            {"dialog-password", "password-manager"},
+	"Remote":          {"preferences-desktop-remote", "network-server"},
+	"Screenshot":      {"applets-screenshooter", "org.gnome.Screenshot"},
+	"Settings":        {"preferences-system"},
+	"SmallFortune":    {"applications-games"},
+	"SpacePinball":    {"applications-games"},
+	"Stocks":          {"office-chart-line", "finance"},
+	"SystemMonitor":   {"utilities-system-monitor", "org.gnome.SystemMonitor"},
+	"Tailscale":       {"network-vpn", "network-workgroup"},
+	"Term":            {"utilities-terminal", "org.gnome.Terminal"},
+	"Term.Quick":      {"utilities-terminal", "org.gnome.Terminal"},
+	"Video":           {"multimedia-player", "video-x-generic"},
+	"Viewer":          {"image-viewer", "x-office-document"},
+	"VM":              {"computer", "system-run"},
+	"Weather":         {"weather", "weather-clear"},
+	"Workshop":        {"applications-development", "text-x-script"},
+}
+
+// InuaIconAliases returns standard theme icon names for an inua app icon ID.
+// Third-party themes do not know inua's IDs, so callers use these names to
+// replace inua's app-specific artwork with icons from the selected theme.
+func InuaIconAliases(icon string) []string {
+	id, ok := strings.CutPrefix(icon, "io.github.lyricat.Inua.")
+	if !ok {
+		return nil
+	}
+	return inuaIconAliases[id]
+}
+
 // Action is one of an app's own actions, a [Desktop Action ID] group the
 // Actions key lists.
 type Action struct {

@@ -10,6 +10,7 @@ import (
 
 	"github.com/lyricat/inua/internal/apps/files"
 	"github.com/lyricat/inua/internal/apps/files/chooser"
+	"github.com/lyricat/inua/internal/desktop"
 	"github.com/lyricat/inua/internal/gtkx"
 	"github.com/lyricat/inua/internal/i18n"
 	"github.com/lyricat/inua/internal/portal"
@@ -154,6 +155,7 @@ func (c *appChooser) fill() {
 	c.ptrs = c.ptrs[:c.fixed]
 	gtkx.Clear(c.list)
 	var apps []app
+	useAppThemeForInua := c.a.c.Config().Style.AppIconsInua
 	for _, id := range c.choices {
 		info := appInfo(id + ".desktop")
 		if info == nil {
@@ -178,12 +180,27 @@ func (c *appChooser) fill() {
 		b := gtk.NewButton()
 		b.AddCssClass("files-card-item")
 		row := gtk.NewBox(gtk.OrientationHorizontalValue, 10)
-		if ap.icon != nil && ap.icon.Ptr != 0 {
+		var paintable *gtk.IconPaintable
+		inuaApp := strings.HasPrefix(ap.id, "io.github.lyricat.Inua.")
+		if useAppThemeForInua && inuaApp {
+			names := append(slices.Clone(desktop.InuaIconAliases(ap.id)), "applications-other", "application-x-executable")
+			for _, name := range names {
+				if c.a.icons.theme.HasIcon(name) {
+					paintable = c.a.icons.theme.LookupIcon(name, nil, 24, c.win.GetScaleFactor(), gtk.TextDirLtrValue, regular)
+					if paintable != nil {
+						break
+					}
+				}
+			}
+		}
+		if paintable == nil && ap.icon != nil && ap.icon.Ptr != 0 && !(useAppThemeForInua && inuaApp) {
+			paintable = c.a.icons.theme.LookupByGicon(ap.icon, 24, c.win.GetScaleFactor(), gtk.TextDirLtrValue, regular)
+		}
+		if paintable != nil {
 			img := gtk.NewImage()
 			img.SetPixelSize(24)
-			p := c.a.icons.theme.LookupByGicon(ap.icon, 24, img.GetScaleFactor(), gtk.TextDirLtrValue, regular)
-			img.SetFromPaintable(p)
-			p.Unref()
+			img.SetFromPaintable(paintable)
+			paintable.Unref()
 			gtkx.Append(row, &img.Widget)
 		}
 		t := text(ap.name, ap.id)
