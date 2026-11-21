@@ -188,10 +188,13 @@ type Style struct {
 	// AppStyle is how inua draws apps, one of InuaThemes: inua's own apps
 	// and the others it draws (the system's while it is not installed).
 	AppStyle string `toml:"app_style"`
-	// AppIcons is where the other apps' icons and files' come from: "",
+	// AppIcons is where other apps' icons and Files' icons come from: "",
 	// the app style; "system", the system's icon theme; or an installed
-	// icon theme (IconThemes). inua's apps keep the app style.
+	// icon theme (IconThemes). AppIconsInua can apply it to inua programs too.
 	AppIcons string `toml:"app_icons"`
+	// AppIconsInua replaces inua programs' app-style icons with icons from
+	// AppIcons, using a generic icon from that theme when there is no match.
+	AppIconsInua bool `toml:"app_icons_inua"`
 	// IconShape is how app icons are drawn in the dock, its drawer and the
 	// launcher: one of IconShapes. "none" draws them as their files are.
 	IconShape string `toml:"icon_shape"`

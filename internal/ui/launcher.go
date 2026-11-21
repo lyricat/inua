@@ -991,24 +991,50 @@ func (s *shellUI) gridIcon(name string) *gtk.IconPaintable {
 		p = gtk.NewIconPaintableForFile(f, size, scale)
 		unref(f)
 	} else {
-		var themes []*gtk.IconTheme
-		if strings.HasPrefix(name, "io.github.lyricat.Inua.") && inuaIcons != nil {
-			themes = append(themes, inuaIcons)
-		}
-		if appIcons != nil {
-			themes = append(themes, appIcons)
-		}
-	find:
-		for _, t := range append(themes, display) {
-			for _, n := range []string{name, strings.ToLower(name)} {
-				if n != "" && t.HasIcon(n) {
-					p = t.LookupIcon(n, nil, size, scale, gtk.TextDirLtrValue, 0)
-					break find
+		inuaApp := strings.HasPrefix(name, "io.github.lyricat.Inua.")
+		if inuaApp && s.cfg.Style.AppIconsInua {
+			theme := appIcons
+			if theme == nil {
+				theme = display
+			}
+			for _, n := range desktop.InuaIconAliases(name) {
+				if theme.HasIcon(n) {
+					p = theme.LookupIcon(n, nil, size, scale, gtk.TextDirLtrValue, 0)
+					if p != nil {
+						break
+					}
 				}
 			}
-		}
-		if p == nil {
-			p = display.LookupIcon("application-x-executable", nil, size, scale, gtk.TextDirLtrValue, 0)
+			if p == nil {
+				for _, n := range []string{"applications-other", "application-x-executable"} {
+					if theme.HasIcon(n) {
+						p = theme.LookupIcon(n, nil, size, scale, gtk.TextDirLtrValue, 0)
+						if p != nil {
+							break
+						}
+					}
+				}
+			}
+		} else {
+			var themes []*gtk.IconTheme
+			if inuaApp && inuaIcons != nil {
+				themes = append(themes, inuaIcons)
+			}
+			if appIcons != nil {
+				themes = append(themes, appIcons)
+			}
+		find:
+			for _, t := range append(themes, display) {
+				for _, n := range []string{name, strings.ToLower(name)} {
+					if n != "" && t.HasIcon(n) {
+						p = t.LookupIcon(n, nil, size, scale, gtk.TextDirLtrValue, 0)
+						break find
+					}
+				}
+			}
+			if p == nil {
+				p = display.LookupIcon("application-x-executable", nil, size, scale, gtk.TextDirLtrValue, 0)
+			}
 		}
 	}
 	l.icons[key] = p
@@ -1128,7 +1154,12 @@ func setIcon(img *gtk.Image, name string) {
 		img.SetFromFile(name)
 		return
 	}
-	if strings.HasPrefix(name, "io.github.lyricat.Inua.") && setFromTheme(img, inuaIcons, name) {
+	inuaApp := strings.HasPrefix(name, "io.github.lyricat.Inua.")
+	if inuaApp && preferAppIconsForInua {
+		setInuaAppIcon(img, name)
+		return // the selected theme owns these icons, even when no icon is found
+	}
+	if inuaApp && setFromTheme(img, inuaIcons, name) {
 		return
 	}
 	if setFromTheme(img, appIcons, name) {
@@ -1143,6 +1174,25 @@ func setIcon(img *gtk.Image, name string) {
 		}
 	}
 	img.SetFromIconName("application-x-executable")
+}
+
+func setInuaAppIcon(img *gtk.Image, name string) bool {
+	theme := appIcons
+	if theme == nil {
+		theme = gtk.IconThemeGetForDisplay(gdk.DisplayGetDefault())
+		defer theme.Unref()
+	}
+	for _, icon := range desktop.InuaIconAliases(name) {
+		if setFromTheme(img, theme, icon) {
+			return true
+		}
+	}
+	for _, icon := range []string{"applications-other", "application-x-executable"} {
+		if setFromTheme(img, theme, icon) {
+			return true
+		}
+	}
+	return false
 }
 
 // themedFile is the name, in the theme app icons come from, of an app's

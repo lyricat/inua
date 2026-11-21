@@ -534,6 +534,34 @@ ApplicationWindow settings {
 
                       Label {
                         styles ["title"]
+                        label:  _("Replace inua app icons");
+                        xalign: 0;
+                      }
+                      Label {
+                        styles ["sub"]
+                        label:  _("Use the selected app theme for every inua program, including a generic icon when there is no match");
+                        xalign: 0;
+                        wrap: true;
+                      }
+                    }
+
+                    Switch app_icons_inua {
+                      name: "app_icons_inua";
+                      valign: center;
+                    }
+                  }
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+
+                      Label {
+                        styles ["title"]
                         label:  _("App icon shape");
                         xalign: 0;
                       }

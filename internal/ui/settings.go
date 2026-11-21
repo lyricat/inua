@@ -63,7 +63,7 @@ type settings struct {
 	themeMenu string // the theme of yours a right click opened a menu for
 
 	bgGenerate, title, barMenu, barTransparentEmpty, barFocusRing, tray, barPass, tpAccel, notifyOn, critFocus gtk.Switch
-	noteHistory, animations                                                                                    gtk.Switch
+	noteHistory, animations, appIconsInua                                                                      gtk.Switch
 	bgOwn                                                                                                      gtk.Box // the image's rows, hidden while inua draws
 	bgAnother                                                                                                  gtk.Button
 	barOn, dockOn, dockHide, dockBackground, dockDrawer, dockFlushBar, overviewDock                            gtk.Switch
@@ -211,6 +211,8 @@ func (s *shellUI) bindSettingsHandlers() {
 			c.Keyring.Notify = on
 		case "animations":
 			c.Style.Animations = &on
+		case "app_icons_inua":
+			c.Style.AppIconsInua = on
 		case "mcp_enable":
 			c.MCP.Enable = on
 		case "clip_enable":
@@ -575,6 +577,7 @@ func (s *shellUI) openSettings() {
 	ui.Get("clip_sensitive", &st.clipSensitive)
 	st.clipLimits = nil // a new dropdown, without its choices
 	ui.Get("animations", &st.animations)
+	ui.Get("app_icons_inua", &st.appIconsInua)
 	ui.Get("clip_stats", &st.clipStats)
 	ui.Get("clip_clear", &st.clipClear)
 	ui.Get("clip_reveal", &st.clipReveal)
@@ -628,7 +631,7 @@ func (s *shellUI) openSettings() {
 		st.drops[d.GoPointer()] = d
 		gtkx.ConnectNotify(d, "selected", &s.onSettingsDrop)
 	}
-	for _, sw := range []*gtk.Switch{&st.bgGenerate, &st.title, &st.barMenu, &st.barTransparentEmpty, &st.barFocusRing, &st.tray, &st.barPass, &st.tpAccel, &st.notifyOn, &st.critFocus, &st.noteHistory, &st.animations, &st.barOn, &st.dockOn, &st.dockHide, &st.dockBackground, &st.dockDrawer, &st.dockFlushBar, &st.overviewDock, &st.overviewMRU, &st.overviewHints, &st.overviewLauncher, &st.clipEnable, &st.clipBar, &st.clipPaste, &st.displays.lidOff} {
+	for _, sw := range []*gtk.Switch{&st.bgGenerate, &st.title, &st.barMenu, &st.barTransparentEmpty, &st.barFocusRing, &st.tray, &st.barPass, &st.tpAccel, &st.notifyOn, &st.critFocus, &st.noteHistory, &st.animations, &st.appIconsInua, &st.barOn, &st.dockOn, &st.dockHide, &st.dockBackground, &st.dockDrawer, &st.dockFlushBar, &st.overviewDock, &st.overviewMRU, &st.overviewHints, &st.overviewLauncher, &st.clipEnable, &st.clipBar, &st.clipPaste, &st.displays.lidOff} {
 		sw.ConnectStateSet(&s.onSettingsSwitch)
 	}
 	for _, b := range []*gtk.Button{&choose, &clearImage, &st.bgAnother, &iconPreview, &stylePreview, &st.kbReset, &st.tpReset, &st.langRestart, &st.clipClear, &st.clipReveal} {
@@ -891,6 +894,7 @@ func (s *shellUI) showSettings() {
 	st.barIconSpacing.SetValue(float64(c.Bar.IconSpacing))
 	st.barIconSpacingVal.SetText(i18n.Tf("%d px", c.Bar.IconSpacing))
 	st.animations.SetActive(c.Style.Animations == nil || *c.Style.Animations)
+	st.appIconsInua.SetActive(c.Style.AppIconsInua)
 	s.showIconSets()
 	s.showTextScale()
 	st.language.SetSelected(uint32(max(0, slices.Index(config.Languages, c.Language))))

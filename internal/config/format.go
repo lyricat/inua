@@ -20,7 +20,7 @@ func Format(c Config) string {
 		q(c.Control.Lock), q(c.Control.Screenshot),
 		q(c.Screenshot.Folder), c.Screenshot.Copy, q(c.Screenshot.Recordings),
 		c.OSD.Enable, q(c.OSD.Position),
-		q(c.Style.Theme), q(c.Style.AppTheme), q(c.Style.AppStyle), q(c.Style.AppIcons), q(c.Style.IconShape), q(c.Style.Icons), AnimationEnabled(c.Style.Animations), c.Style.EdgeGaps, c.Style.TextScale, c.Style.Transparency, c.Style.Radius, q(c.Style.CSS),
+		q(c.Style.Theme), q(c.Style.AppTheme), q(c.Style.AppStyle), q(c.Style.AppIcons), c.Style.AppIconsInua, q(c.Style.IconShape), q(c.Style.Icons), AnimationEnabled(c.Style.Animations), c.Style.EdgeGaps, c.Style.TextScale, c.Style.Transparency, c.Style.Radius, q(c.Style.CSS),
 		c.Background.Enable, q(c.Background.Image), q(c.Background.Fit), q(c.Background.Color),
 		c.Background.Generate,
 		kbOptionsLine(c.Input.KbOptions), touchpadSpeedLine(c.Input.TouchpadSpeed), q(c.Input.TouchpadAccel),
@@ -359,6 +359,10 @@ app_style = %s
 # ~/.local/share/icons). inua's apps keep app_style; the tray's icons come
 # from each app.
 app_icons = %s
+
+# Replace inua's program icons with the app icon theme too. Programs without
+# a matching icon use a generic icon from the same theme.
+app_icons_inua = %t
 
 # How app icons are drawn in the dock, its drawer and the launcher:
 #   "squircle"  a square with continuous corners (the default)
