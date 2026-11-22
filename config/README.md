@@ -260,10 +260,14 @@ The shell's own icons (bar, control center, launcher, settings) are the
 built-in [Phosphor](https://phosphoricons.com) regular icons (MIT; licence in
 `ui/icons/LICENSE`), for inua's windows only; `style.icons = "system"` or the
 Appearance page switches back to the system icon theme. App icons in the
-launcher, dock and tray always come from the system theme. To change or add
-an icon, edit the table in `scripts/phosphor-icons.sh` and run it again (its
-argument is the `@phosphor-icons/core` directory), then once more with `bold`
-as a second argument for the sample icon set.
+launcher and dock use `style.app_icons`; the Appearance switch
+**Replace inua app icons** uses that theme for inua programs too, matching them
+to standard icon names and using the theme's
+generic app icon when it has no match. The tray continues to use each item's
+icon. To change or add a line icon, edit the table
+in `scripts/phosphor-icons.sh` and run it again (its argument is the
+`@phosphor-icons/core` directory), then once more with `bold` as a second
+argument for the sample icon set.
 
 Themes and icon sets of your own live next to `config.toml`:
 

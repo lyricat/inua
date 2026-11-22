@@ -24,8 +24,9 @@ import (
 // The other apps' icons come from a GtkIconTheme of their own (appIcons):
 // style.app_icons, else the app style, whatever the line icons are; a
 // theme inheriting it could not keep the two apart, the first theme in the
-// chain having both. inua's apps' icons come from the app style
-// (inuaIcons, style.app_style), before appIcons.
+// chain having both. Inua apps' icons come from the app style (inuaIcons,
+// style.app_style), unless style.app_icons_inua replaces them with standard
+// app aliases and a generic app icon from appIcons.
 
 // iconThemeName names inua's icon theme.
 const iconThemeName = "inua-phosphor"
@@ -40,6 +41,7 @@ type icons struct {
 // theme of inua's apps' icons when style.icons is one of inua's sets.
 // Main thread only.
 var appIcons, inuaIcons *gtk.IconTheme
+var preferAppIconsForInua bool
 
 // loadIcons switches the icon theme to follow style.icons. GTK redraws
 // every icon on its own when the theme changes.
@@ -76,6 +78,7 @@ func (s *shellUI) loadIcons() {
 	}
 	loadIconTheme(&appIcons, s.cfg.Style.AppIconTheme(), "apps")
 	loadIconTheme(&inuaIcons, s.cfg.Style.InuaIconTheme(), "inua's apps")
+	preferAppIconsForInua = s.cfg.Style.AppIconsInua
 	s.dropLauncherIcons()
 }
 

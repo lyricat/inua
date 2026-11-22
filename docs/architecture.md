@@ -391,9 +391,12 @@ how errors are shown, is in [design/ui.md](../design/ui.md); in short:
   themes of those names; inua's apps' own icons come from it
   (`inuaIcons`, `Style.InuaIconTheme`), and the other apps' too unless
   `style.app_icons` ("Other apps") names the system's or an installed
-  theme (`appIcons`, `Style.AppIconTheme`); elsewhere inua's apps' icons
-  are hicolor's, the objects. The line icons (`style.icons`, "Line
-  icons"): Phosphor's regular icons (`ui/icons`, MIT), written as an icon
+  theme (`appIcons`, `Style.AppIconTheme`); `style.app_icons_inua` makes
+  inua's programs use standard app icon names in that theme, falling back to
+  its generic app icon rather than inua's artwork. Files' Open With chooser
+  uses the same aliases. Elsewhere inua's apps' icons are hicolor's,
+  the objects. The line icons (`style.icons`, "Line icons") are Phosphor's
+  regular icons (`ui/icons`, MIT), written as an icon
   theme for the shell's process that inherits the system's; inua's apps
   write one that inherits Adwaita, set before they start
   (docs/performance.md). An inua set in `style.icons`, as it held the app

@@ -2246,7 +2246,7 @@ msgstr "%s 请求配对。仅当它显示此密钥时才配对："
 
 #: internal/connectui/window.go:433
 #: internal/diskui/dialog.go:92
-#: internal/filesui/appchooser.go:107
+#: internal/filesui/appchooser.go:108
 #: internal/filesui/archive.go:49
 #: internal/filesui/archive.go:309
 #: internal/filesui/cards.go:352
@@ -3358,24 +3358,24 @@ msgstr "剪贴板上没有文件。"
 msgid "Nothing to undo."
 msgstr "没有可撤销的操作。"
 
-#: internal/filesui/appchooser.go:63
+#: internal/filesui/appchooser.go:64
 msgid "Choose an app"
 msgstr ""
 
-#: internal/filesui/appchooser.go:65
+#: internal/filesui/appchooser.go:66
 #: internal/filesui/openwith.go:166
 msgid "Open “%s” with"
 msgstr "用以下应用打开“%s”"
 
-#: internal/filesui/appchooser.go:67
+#: internal/filesui/appchooser.go:68
 msgid "Open the link with"
 msgstr ""
 
-#: internal/filesui/appchooser.go:81
+#: internal/filesui/appchooser.go:82
 msgid "%s asks which app to use."
 msgstr ""
 
-#: internal/filesui/appchooser.go:87
+#: internal/filesui/appchooser.go:88
 #: internal/filesui/openwith.go:175
 msgid "Find an app"
 msgstr "查找应用"
@@ -19890,11 +19890,11 @@ msgstr "非 inua 的应用和文件：跟随应用风格、系统的或已安装
 
 #: ui/settings.ui:724
 msgid "Replace inua app icons"
-msgstr ""
+msgstr "替换 inua 应用图标"
 
 #: ui/settings.ui:733
 msgid "Use the selected app theme for every inua program, including a generic icon when there is no match"
-msgstr ""
+msgstr "inua 自带程序全部使用所选图标主题；没有匹配项时使用该主题的通用图标"
 
 #: ui/settings.ui:764
 msgid "App icon shape"

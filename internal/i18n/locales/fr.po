@@ -2252,7 +2252,7 @@ msgstr "%s demande à s'appairer. N'appairez que s'il affiche cette clé :"
 
 #: internal/connectui/window.go:433
 #: internal/diskui/dialog.go:92
-#: internal/filesui/appchooser.go:107
+#: internal/filesui/appchooser.go:108
 #: internal/filesui/archive.go:49
 #: internal/filesui/archive.go:309
 #: internal/filesui/cards.go:352
@@ -3368,24 +3368,24 @@ msgstr "Il n’y a pas de fichiers dans le presse-papiers."
 msgid "Nothing to undo."
 msgstr "Rien à annuler."
 
-#: internal/filesui/appchooser.go:63
+#: internal/filesui/appchooser.go:64
 msgid "Choose an app"
 msgstr ""
 
-#: internal/filesui/appchooser.go:65
+#: internal/filesui/appchooser.go:66
 #: internal/filesui/openwith.go:166
 msgid "Open “%s” with"
 msgstr "Ouvrir « %s » avec"
 
-#: internal/filesui/appchooser.go:67
+#: internal/filesui/appchooser.go:68
 msgid "Open the link with"
 msgstr ""
 
-#: internal/filesui/appchooser.go:81
+#: internal/filesui/appchooser.go:82
 msgid "%s asks which app to use."
 msgstr ""
 
-#: internal/filesui/appchooser.go:87
+#: internal/filesui/appchooser.go:88
 #: internal/filesui/openwith.go:175
 msgid "Find an app"
 msgstr "Chercher une application"
