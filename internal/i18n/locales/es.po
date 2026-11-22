@@ -397,7 +397,7 @@ msgstr "Abrir"
 
 #: internal/apps/connect/share.go:129
 #: internal/ui/record.go:157
-#: internal/ui/screenshot.go:1173
+#: internal/ui/screenshot.go:1177
 #: internal/ui/settings_custom.go:41
 #: internal/viewerui/menubar.go:42
 msgid "Show in Folder"
@@ -13324,7 +13324,7 @@ msgid "Screenshot Area"
 msgstr "Área de captura de pantalla"
 
 #: internal/shell/commands.go:34
-#: internal/ui/screenshot.go:596
+#: internal/ui/screenshot.go:600
 msgid "Drag out an area"
 msgstr "Arrastrar un área"
 
@@ -13333,7 +13333,7 @@ msgid "Screenshot Window"
 msgstr "Ventana de captura de pantalla"
 
 #: internal/shell/commands.go:35
-#: internal/ui/screenshot.go:597
+#: internal/ui/screenshot.go:601
 #: ui/screenshot.ui:169
 msgid "Click a window"
 msgstr "Haga clic en una ventana"
@@ -13343,7 +13343,7 @@ msgid "Screenshot Screen"
 msgstr "Pantalla de captura de pantalla"
 
 #: internal/shell/commands.go:36
-#: internal/ui/screenshot.go:598
+#: internal/ui/screenshot.go:602
 #: ui/screenshot.ui:194
 msgid "Click a screen"
 msgstr "Haga clic en una pantalla"
@@ -13499,7 +13499,7 @@ msgid "Find apps, windows and answers"
 msgstr "Encuentra aplicaciones, ventanas y respuestas"
 
 #: internal/shell/dock.go:313
-#: internal/ui/screenshot.go:1167
+#: internal/ui/screenshot.go:1171
 #: internal/ui/systemmenu.go:83
 #: ui/settings.ui:2752
 msgid "Screenshot"
@@ -15666,47 +15666,47 @@ msgstr "Grabación guardada"
 msgid "Screen recording"
 msgstr "Grabación de pantalla"
 
-#: internal/ui/screenshot.go:578
+#: internal/ui/screenshot.go:582
 msgid "inua screenshot"
 msgstr "captura de pantalla de inua"
 
-#: internal/ui/screenshot.go:599
+#: internal/ui/screenshot.go:603
 msgid "Click to copy a colour"
 msgstr "Haga clic para copiar un color"
 
-#: internal/ui/screenshot.go:603
+#: internal/ui/screenshot.go:607
 msgid "Drag out an area to record"
 msgstr "Arrastra un área para grabarla"
 
-#: internal/ui/screenshot.go:604
+#: internal/ui/screenshot.go:608
 msgid "Click a window to record"
 msgstr "Haga clic en una ventana para grabar"
 
-#: internal/ui/screenshot.go:605
+#: internal/ui/screenshot.go:609
 msgid "Click a screen to record"
 msgstr "Haga clic en una pantalla para grabar"
 
-#: internal/ui/screenshot.go:650
+#: internal/ui/screenshot.go:654
 msgid "Drag to adjust · click inside to take"
 msgstr "Arrastra para ajustar · haz clic dentro para capturar"
 
-#: internal/ui/screenshot.go:652
+#: internal/ui/screenshot.go:656
 msgid "Drag to adjust · click inside to record"
 msgstr "Arrastra para ajustar · haz clic dentro para grabar"
 
-#: internal/ui/screenshot.go:1161
+#: internal/ui/screenshot.go:1165
 msgid "Screenshot saved and copied"
 msgstr "Captura de pantalla guardada y copiada"
 
-#: internal/ui/screenshot.go:1162
+#: internal/ui/screenshot.go:1166
 msgid "Screenshot saved"
 msgstr "Captura de pantalla guardada"
 
-#: internal/ui/screenshot.go:1163
+#: internal/ui/screenshot.go:1167
 msgid "Screenshot copied"
 msgstr "Captura de pantalla copiada"
 
-#: internal/ui/screenshot.go:1164
+#: internal/ui/screenshot.go:1168
 msgid "Screenshot taken"
 msgstr "Captura de pantalla tomada"
 

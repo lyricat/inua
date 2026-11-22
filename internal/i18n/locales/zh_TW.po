@@ -397,7 +397,7 @@ msgstr "開啟"
 
 #: internal/apps/connect/share.go:129
 #: internal/ui/record.go:157
-#: internal/ui/screenshot.go:1173
+#: internal/ui/screenshot.go:1177
 #: internal/ui/settings_custom.go:41
 #: internal/viewerui/menubar.go:42
 msgid "Show in Folder"
@@ -13250,7 +13250,7 @@ msgid "Screenshot Area"
 msgstr "截圖區"
 
 #: internal/shell/commands.go:34
-#: internal/ui/screenshot.go:596
+#: internal/ui/screenshot.go:600
 msgid "Drag out an area"
 msgstr "拖出一個區域"
 
@@ -13259,7 +13259,7 @@ msgid "Screenshot Window"
 msgstr "截圖窗口"
 
 #: internal/shell/commands.go:35
-#: internal/ui/screenshot.go:597
+#: internal/ui/screenshot.go:601
 #: ui/screenshot.ui:169
 msgid "Click a window"
 msgstr "點選視窗"
@@ -13269,7 +13269,7 @@ msgid "Screenshot Screen"
 msgstr "螢幕截圖"
 
 #: internal/shell/commands.go:36
-#: internal/ui/screenshot.go:598
+#: internal/ui/screenshot.go:602
 #: ui/screenshot.ui:194
 msgid "Click a screen"
 msgstr "點選螢幕"
@@ -13425,7 +13425,7 @@ msgid "Find apps, windows and answers"
 msgstr "尋找應用程式、視窗和答案"
 
 #: internal/shell/dock.go:313
-#: internal/ui/screenshot.go:1167
+#: internal/ui/screenshot.go:1171
 #: internal/ui/systemmenu.go:83
 #: ui/settings.ui:2752
 msgid "Screenshot"
@@ -15579,47 +15579,47 @@ msgstr "錄影已儲存"
 msgid "Screen recording"
 msgstr "螢幕錄製"
 
-#: internal/ui/screenshot.go:578
+#: internal/ui/screenshot.go:582
 msgid "inua screenshot"
 msgstr "inua截圖"
 
-#: internal/ui/screenshot.go:599
+#: internal/ui/screenshot.go:603
 msgid "Click to copy a colour"
 msgstr "點選複製顏色"
 
-#: internal/ui/screenshot.go:603
+#: internal/ui/screenshot.go:607
 msgid "Drag out an area to record"
 msgstr "拖出要錄製的區域"
 
-#: internal/ui/screenshot.go:604
+#: internal/ui/screenshot.go:608
 msgid "Click a window to record"
 msgstr "點選視窗進行錄製"
 
-#: internal/ui/screenshot.go:605
+#: internal/ui/screenshot.go:609
 msgid "Click a screen to record"
 msgstr "點選螢幕進行錄製"
 
-#: internal/ui/screenshot.go:650
+#: internal/ui/screenshot.go:654
 msgid "Drag to adjust · click inside to take"
 msgstr "拖曳以調整 · 點擊區域內截圖"
 
-#: internal/ui/screenshot.go:652
+#: internal/ui/screenshot.go:656
 msgid "Drag to adjust · click inside to record"
 msgstr "拖曳以調整 · 點擊區域內錄製"
 
-#: internal/ui/screenshot.go:1161
+#: internal/ui/screenshot.go:1165
 msgid "Screenshot saved and copied"
 msgstr "螢幕截圖已儲存並複製"
 
-#: internal/ui/screenshot.go:1162
+#: internal/ui/screenshot.go:1166
 msgid "Screenshot saved"
 msgstr "螢幕截圖已儲存"
 
-#: internal/ui/screenshot.go:1163
+#: internal/ui/screenshot.go:1167
 msgid "Screenshot copied"
 msgstr "螢幕截圖已複製"
 
-#: internal/ui/screenshot.go:1164
+#: internal/ui/screenshot.go:1168
 msgid "Screenshot taken"
 msgstr "截圖"
 

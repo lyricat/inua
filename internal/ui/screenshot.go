@@ -133,7 +133,11 @@ func (s *shellUI) bindShotHandlers() {
 			if math.Hypot(dx, dy) < 4 { // not yet a drag: the area stays
 				return
 			}
-			sh.sel, sh.selOn = shell.SpanRect(sh.x0, sh.y0, sh.x0+dx, sh.y0+dy, sf.w, sf.h), sf
+			r := shell.SpanRect(sh.x0, sh.y0, sh.x0+dx, sh.y0+dy, sf.w, sf.h)
+			if g.GetCurrentEventState()&gdk.ShiftMaskValue != 0 {
+				r = shell.SpanSquareRect(sh.x0, sh.y0, sh.x0+dx, sh.y0+dy, sf.w, sf.h)
+			}
+			sh.sel, sh.selOn = r, sf
 		} else {
 			sh.sel = shell.AdjustArea(sh.from, sh.part, dx, dy, sf.w, sf.h)
 		}
