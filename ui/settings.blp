@@ -534,6 +534,34 @@ ApplicationWindow settings {
 
                       Label {
                         styles ["title"]
+                        label:  _("Replace inua app icons");
+                        xalign: 0;
+                      }
+                      Label {
+                        styles ["sub"]
+                        label:  _("Use the selected app theme for every inua program, including a generic icon when there is no match");
+                        xalign: 0;
+                        wrap: true;
+                      }
+                    }
+
+                    Switch app_icons_inua {
+                      name: "app_icons_inua";
+                      valign: center;
+                    }
+                  }
+
+                  Box {
+                    styles ["row"]
+                    spacing: 16;
+
+                    Box {
+                      orientation: vertical;
+                      hexpand: true;
+                      valign: center;
+
+                      Label {
+                        styles ["title"]
                         label:  _("App icon shape");
                         xalign: 0;
                       }
@@ -1667,6 +1695,154 @@ ApplicationWindow settings {
 
                   Separator {}
 
+                  // [HOT CORNERS]
+                  Box {
+                    styles ["section"]
+                    orientation: vertical;
+
+                    Box {
+                      styles ["section-head"]
+                      spacing: 10;
+
+                      Box { styles ["mark"] valign: center; }
+                      Label {
+                        styles ["section-label"]
+                        use-markup: true;
+                        label: _("<span alpha='55%'>[</span>HOT CORNERS<span alpha='55%'>]</span>");
+                      }
+                      Label {
+                        styles ["section-meta"]
+                        label: _("Actions when the pointer rests in a display corner");
+                        hexpand: true;
+                        xalign: 0;
+                        ellipsize: end;
+                      }
+                    }
+
+                    Box {
+                      styles ["section-body"]
+                      orientation: vertical;
+
+                      Label {
+                        styles ["sub"]
+                        label: _("Hyprland only. The corners are those of all displays together. Leaving a corner cancels its delay; each entry alternates: the overview toggles, and show desktop puts the windows away and the next entry brings them back.");
+                        xalign: 0;
+                        wrap: true;
+                      }
+
+                      Separator {}
+
+                      Box {
+                        styles ["row"]
+                        spacing: 16;
+                        Box {
+                          orientation: vertical;
+                          hexpand: true;
+                          valign: center;
+                          Label { styles ["title"] label:  _("Top left"); xalign: 0; }
+                        }
+                        DropDown hot_corner_top_left {
+                          name: "hot_corner_top_left";
+                          valign: center;
+                          model: StringList {
+                            strings [ _("Off"), _("Workspace overview"), _("Show desktop") ]
+                          };
+                        }
+                      }
+
+                      Separator {}
+
+                      Box {
+                        styles ["row"]
+                        spacing: 16;
+                        Box {
+                          orientation: vertical;
+                          hexpand: true;
+                          valign: center;
+                          Label { styles ["title"] label:  _("Top right"); xalign: 0; }
+                        }
+                        DropDown hot_corner_top_right {
+                          name: "hot_corner_top_right";
+                          valign: center;
+                          model: StringList {
+                            strings [ _("Off"), _("Workspace overview"), _("Show desktop") ]
+                          };
+                        }
+                      }
+
+                      Separator {}
+
+                      Box {
+                        styles ["row"]
+                        spacing: 16;
+                        Box {
+                          orientation: vertical;
+                          hexpand: true;
+                          valign: center;
+                          Label { styles ["title"] label:  _("Bottom left"); xalign: 0; }
+                        }
+                        DropDown hot_corner_bottom_left {
+                          name: "hot_corner_bottom_left";
+                          valign: center;
+                          model: StringList {
+                            strings [ _("Off"), _("Workspace overview"), _("Show desktop") ]
+                          };
+                        }
+                      }
+
+                      Separator {}
+
+                      Box {
+                        styles ["row"]
+                        spacing: 16;
+                        Box {
+                          orientation: vertical;
+                          hexpand: true;
+                          valign: center;
+                          Label { styles ["title"] label:  _("Bottom right"); xalign: 0; }
+                        }
+                        DropDown hot_corner_bottom_right {
+                          name: "hot_corner_bottom_right";
+                          valign: center;
+                          model: StringList {
+                            strings [ _("Off"), _("Workspace overview"), _("Show desktop") ]
+                          };
+                        }
+                      }
+
+                      Separator {}
+
+                      Box {
+                        styles ["row"]
+                        spacing: 16;
+                        Box {
+                          orientation: vertical;
+                          hexpand: true;
+                          valign: center;
+                          Label { styles ["title"] label:  _("Trigger delay"); xalign: 0; }
+                          Label hot_corner_delay_val {
+                            styles ["readout"]
+                            xalign: 0;
+                          }
+                        }
+                        Scale hot_corner_delay {
+                          name: "hot_corner_delay";
+                          hexpand: true;
+                          valign: center;
+                          draw-value: false;
+                          adjustment: Adjustment {
+                            lower: 0;
+                            upper: 2000;
+                            step-increment: 25;
+                            page-increment: 100;
+                          };
+                        }
+                      }
+                    }
+                  }
+
+                  Separator {}
+
                   Box {
                     styles ["row"]
                     spacing: 16;
@@ -1674,7 +1850,7 @@ ApplicationWindow settings {
                       orientation: vertical;
                       hexpand: true;
                       valign: center;
-                      Label { styles ["title"] label: _("Dock background"); xalign: 0; }
+                      Label { styles ["title"] label:  _("Dock background"); xalign: 0; }
                       Label { styles ["sub"] label: _("Show the dock panel, borders and running indicators"); xalign: 0; wrap: true; }
                     }
                     Switch dock_background { name: "dock_background"; valign: center; }

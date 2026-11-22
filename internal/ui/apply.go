@@ -200,6 +200,9 @@ func (s *shellUI) setAnimations(on bool) {
 func (s *shellUI) applyConfig(c config.Config) {
 	old := s.cfg
 	s.cfg = c
+	if old.HotCorners != c.HotCorners {
+		s.hotCornerSettingsChanged(c.HotCorners)
+	}
 	if config.AnimationEnabled(old.Style.Animations) != config.AnimationEnabled(c.Style.Animations) {
 		s.setAnimations(config.AnimationEnabled(c.Style.Animations))
 		if cf := s.configurer(); cf != nil {
@@ -230,7 +233,7 @@ func (s *shellUI) applyConfig(c config.Config) {
 	if old.Style.IconShape != c.Style.IconShape {
 		uikit.SetIconShape(uikit.IconShapeFromName(c.Style.IconShape))
 	}
-	if old.Style.AppIcons != c.Style.AppIcons {
+	if old.Style.AppIcons != c.Style.AppIcons || old.Style.AppIconsInua != c.Style.AppIconsInua {
 		for _, b := range s.bars {
 			if b.dock != nil {
 				b.dock.shown = "" // its buttons again, with the icons
@@ -310,6 +313,7 @@ func (s *shellUI) applyConfig(c config.Config) {
 	if old.OSD != c.OSD {
 		s.reanchorOSD() // the position the settings now ask for
 	}
+	s.syncHotCornerPolling()
 	s.applyLauncherWeb()
 	s.overview.st.SetMRU(c.Overview.MRU)
 	s.renderOverview()

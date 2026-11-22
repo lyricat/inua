@@ -169,6 +169,18 @@ filter the overview to windows whose title or app class matches the query. MRU
 and per-monitor scope are saved settings. Win+number always follows the focused display's slots; the slots use MRU
 order when MRU is on and ascending workspace IDs when it is off. Right-click the workspace bar to open.
 
+Hot corners are configured in Settings → Bar & Dock. Each corner of a
+display can open the overview or show the desktop after the pointer rests
+there for the configured delay (defaulting to a snappy 150 ms); leaving
+early cancels it. A subtle glass corner HUD shows the upcoming action with a
+dwell progress indicator and confirms with an accent pulse when triggered.
+The defaults are overview at top left and show desktop at top right.
+
+As on a Mac, each entry in a corner does one thing and the next does its
+opposite: the overview opens and closes, and show desktop puts the windows
+of the current workspaces into a hidden workspace and the next trigger
+brings them back where they were. The workspaces themselves never change.
+
 Every query ends with a web search (`launcher.search`). A quicklink's
 keyword searches its site: `gh inua`, `yt`, `wiki`, `maps`, `tr` … (your
 own in `launcher.quicklinks`); the keyword alone fills itself in. A web
