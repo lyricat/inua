@@ -55,3 +55,16 @@ func TestOverviewUsableHeight(t *testing.T) {
 		t.Fatalf("fullscreen got %v, %v", y, h)
 	}
 }
+
+func TestOverviewDockBand(t *testing.T) {
+	windows := []compositor.Window{{Geometry: &compositor.Rect{X: 2, Y: 28, W: 1916, H: 1002}}}
+	x, y, w, h := overviewWithoutDock(windows, 0, 26, 1920, 1054, "bottom", 48)
+	if x != 0 || y != 26 || w != 1920 || h != 1006 {
+		t.Fatalf("usable area: %v %v %v %v", x, y, w, h)
+	}
+	windows[0].Geometry = &compositor.Rect{X: 0, Y: 0, W: 1920, H: 1080}
+	_, _, _, h = overviewWithoutDock(windows, 0, 0, 1920, 1080, "bottom", 48)
+	if h != 1080 {
+		t.Fatalf("fullscreen cropped: %v", h)
+	}
+}
