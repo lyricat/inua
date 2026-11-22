@@ -39,3 +39,11 @@ notes:
 Validation: Claude Code reviewed origin/master...HEAD. make test passed (18 Python session tests, go vet and go test -race ./...). make generate and make i18n passed in an isolated copy with no generated-file drift. No unpinned installs; worktree unchanged. Branch merges cleanly with origin/master. No P0/P1 findings.
 
 Limits: UI was not checked by eye or in a nested session. Papirus and Numix-Circle were unavailable for icon probes. Lookup probes do not verify drawing quality or live redraw. Theme inheritance can select installed GNOME app icons from hicolor; this is recorded as behavior, not a confirmed defect. Chooser config-read latency was not measured.
+
+## factory · 2026-11-22 18:05
+Shipped on owner request: ship ready items.
+Merged into master at 702ac2f9; release tag v0.1.42 (702ac2f9). Master and tag pushed atomically.
+Linked PR #102 closed with release comment. Factory branch retained (clean not configured).
+Validation: make generate, make i18n, make test (18 Python session tests, go vet, Go race tests), and git diff --check passed; final combined master make test passed.
+Translation-catalog merge conflicts resolved by regeneration, preserving both sides translations. No source conflicts.
+Existing P2/P3 review notes remain; no UI checked by eye or live/nested session interaction performed. No unpinned installs.

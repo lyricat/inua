@@ -51,3 +51,10 @@ Reviewed by Claude Code on origin/master...HEAD (base 10802f2873b1a95b21af180f46
 Validation: make test passed (18 Python session tests, go vet ./..., go test -race ./...). Worktree unchanged. No unpinned installs or dependency changes. Generated layout and translation output were checked by the reviewer.
 
 Not checked: UI by eye or in a nested session; live lock-screen interaction, HUD animation/input pass-through, tiled order/focus after restore, visible scratchpads and fullscreen interaction. Lock-state and coordinate findings are code-path examples, not live-session reproduction. Runtime recovery and show/restore integration lack dedicated tests; polling idle cost was not measured.
+
+## factory · 2026-11-22 18:05
+Shipped on owner request: ship ready items.
+Merged into master at 0bb2afa4; release tag v0.1.42 (702ac2f9). Master and tag pushed atomically.
+Linked PR #101 closed with release comment. Factory branch retained (clean not configured).
+Validation: make generate, make i18n, make test (18 Python session tests, go vet, Go race tests), and git diff --check passed; final combined master make test passed.
+Existing P2/P3 review notes remain; no UI checked by eye or live/nested session interaction performed. No unpinned installs.

@@ -28,3 +28,10 @@ notes:
 - Validation: make test exited 0: 18 Python session tests, go vet, and Go race tests passed. Formatting checks passed. Scratch-copy make i18n reproduced catalogs. Branch merges cleanly with origin/master.
 - No P0/P1 findings; moved to ready/ under factory policy. P2 notes remain for owner review before shipping.
 - No installs; tracked code unchanged. UI not checked by eye; no nested session or live application interaction performed. Modifier-state delivery remains unverified at runtime.
+
+## factory · 2026-11-22 18:05
+Shipped on owner request: ship ready items.
+Merged into master at 0d472b15; release tag v0.1.42 (702ac2f9). Master and tag pushed atomically.
+Linked PR #100 closed with release comment. Factory branch retained (clean not configured).
+Validation: make generate, make i18n, make test (18 Python session tests, go vet, Go race tests), and git diff --check passed; final combined master make test passed.
+Existing P2/P3 review notes remain; no UI checked by eye or live/nested session interaction performed. No unpinned installs.
