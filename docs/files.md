@@ -77,14 +77,22 @@ grid and a columns icon, chooses the view:
 
 All are GTK's recycling `ListView` and `GridView`: only the rows on
 screen have widgets, so the size of a folder does not matter. Each folder
-remembers its view and order (kept in `~/.local/share/inua/files.json`,
-the last 500 folders); a new folder takes the last one used. The zoom
-(Ctrl++, Ctrl+−, Ctrl+0, Ctrl with the wheel, or the status line's
-buttons) goes from 80% to 150%: rows, text and icons, in every window.
+remembers its view, order and grouping (kept in
+`~/.local/share/inua/files.json`, the last 500 folders); a new folder takes
+the last one used. The zoom (Ctrl++, Ctrl+−, Ctrl+0, Ctrl with the wheel, or
+the status line's buttons) goes from 80% to 150%: rows, text and icons, in
+every window.
 
 Order: by name (natural: `file2` before `file10`, case folded), size,
-modified or kind; folders first. Hidden files (dot files and those named in
-a folder's `.hidden`) show with Ctrl+H.
+modified or kind; folders first. Right-click empty space and choose **Group
+by type**, **Group by date modified** or **Group by size** to show labelled
+sections with counts in the list and columns views; folders stay in their own
+section first, and the chosen sort order applies inside each section. Grouping does
+not change the current view. In the grid, each group has a header band and
+starts on a new row. Modified dates group into
+today, yesterday, this week, last week, this month, last month, this year,
+older and unknown. **No grouping** returns to a flat list. Hidden files (dot
+files and those named in a folder's `.hidden`) show with Ctrl+H.
 
 ### Text preview
 

@@ -35,7 +35,7 @@ func (w *window) menuBar() *appui.MenuBar {
 		case "toggle-details":
 			w.setDetails(!w.detailsReveal.GetRevealChild())
 		case "select-all":
-			p.sel.SelectAll()
+			p.selectAllFiles()
 		case "invert-selection":
 			w.invertSelection()
 		case "keys":

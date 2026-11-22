@@ -72,6 +72,14 @@ type pane struct {
 	rows       map[uintptr]*row // by list item
 	rowOf      map[uintptr]*row // by the row's own widget, for picking
 	names      []string         // what the model holds
+	groupIDs   []string         // grouped folder entries, aligned with all
+	groupNames []string         // the displayed name of each group, aligned with all
+	groupCount map[string]int   // visible items in each group
+	gridSlots  []int            // model position to shown position (-1 for layout cells)
+	gridFiles  []uint32         // shown position to model position
+	gridCols   uint32           // fixed while grouped; zero uses GTK's automatic layout
+	gridResize bool
+	destroyed  bool
 	menu       *popMenu
 	crumbPtr   []uintptr
 	tabs       []*tab
@@ -104,15 +112,17 @@ type pane struct {
 // row is the widgets of a list row, a grid cell or a column's row.
 type row struct {
 	box     gtk.Box
+	group   *gtk.Label
 	icon    gtk.Image
 	name    gtk.Label
 	cols    [len(columns)]*gtk.Label // the list's columns, in columns' order
 	end     *gtk.Box                 // a list row's, under the columns button
 	arrow   gtk.Image                // a column's: shown for a folder
 	grid    bool
-	compact bool // a column's row: the icon, the name and the arrow
-	pos     uint32
-	path    string // bound to, for thumbnails arriving later
+	compact bool    // a column's row: the icon, the name and the arrow
+	pos     uint32  // used by trail columns
+	item    uintptr // the pane’s recycled list item
+	path    string  // bound to, for thumbnails arriving later
 }
 
 // sizeCol is the size's column in columns.
@@ -217,7 +227,8 @@ func newPane(w *window, n int) *pane {
 	p.grid = gtk.NewGridView(noModel, &gf.ListItemFactory)
 	p.grid.AddCssClass("files-grid")
 	p.grid.SetEnableRubberband(true)
-	p.grid.SetMaxColumns(64)
+	p.grid.SetMaxColumns(maxGridColumns)
+	w.notify(p.gridScroll.GetHadjustment(), "page-size", p.queueGridResize)
 	w.activate(p.grid.GoPointer(), func(pos uint32) { p.activate(pos) })
 	p.grid.ConnectActivate(&w.app.h.onGridAct)
 	p.gridScroll.SetChild(&p.grid.Widget)
@@ -230,8 +241,8 @@ func newPane(w *window, n int) *pane {
 			case 3:
 				p.contextMenu(v, x, y)
 			case 2: // a folder in a new tab, behind this one
-				if r, ok := p.pick(v, x, y); ok && int(r.pos) < len(p.shown) && p.all[p.shown[r.pos]].Dir && p.mode != inTrash {
-					p.newTab(p.path(p.shown[r.pos]), false)
+				if _, i, ok := p.pickEntry(v, x, y); ok && p.all[i].Dir && p.mode != inTrash {
+					p.newTab(p.path(i), false)
 				}
 			}
 		})
@@ -256,6 +267,8 @@ func (p *pane) destroy() {
 		p.stop()
 	}
 	p.gen++
+	p.fills++
+	p.destroyed = true
 	p.menu.destroy()
 	p.w.app.h.forget(p.tabPtrs)
 	p.sel.Unref()
@@ -265,7 +278,15 @@ func (p *pane) destroy() {
 
 func (p *pane) setupRow(item uintptr) {
 	li := gtk.ListItemNewFromInternalPtr(item)
-	r := &row{}
+	r := &row{item: item}
+	r.group = gtk.NewLabel("")
+	r.group.AddCssClass("files-group-heading")
+	r.group.SetXalign(0)
+	r.group.SetHexpand(true)
+	r.group.SetMaxWidthChars(48)
+	r.group.SetEllipsize(3)
+	r.group.SetCanTarget(false)
+	r.group.SetVisible(false)
 	r.box = *gtk.NewBox(gtk.OrientationHorizontalValue, gap)
 	r.box.AddCssClass("files-row")
 	r.icon = *gtk.NewImage()
@@ -288,15 +309,18 @@ func (p *pane) setupRow(item uintptr) {
 	r.end.SetSizeRequest(trailing, -1)
 	gtkx.Append(&r.box, &r.end.Widget)
 	p.sizeRow(r) // the widths chosen, a row made during a drag too
-	li.SetChild(&r.box.Widget)
-	r.box.Unref()
+	outer := gtk.NewBox(gtk.OrientationVerticalValue, 0)
+	gtkx.Append(outer, &r.group.Widget)
+	gtkx.Append(outer, &r.box.Widget)
+	li.SetChild(&outer.Widget)
+	outer.Unref()
 	p.rows[item] = r
 	p.rowOf[r.box.GoPointer()] = r
 }
 
 func (p *pane) setupCell(item uintptr) {
 	li := gtk.ListItemNewFromInternalPtr(item)
-	r := &row{grid: true}
+	r := &row{grid: true, item: item}
 	r.box = *gtk.NewBox(gtk.OrientationVerticalValue, 6)
 	r.box.AddCssClass("files-cell")
 	r.icon = *gtk.NewImage()
@@ -311,8 +335,16 @@ func (p *pane) setupCell(item uintptr) {
 	r.name.SetJustify(gtk.JustifyCenterValue)
 	r.name.SetMaxWidthChars(16)
 	gtkx.Append(&r.box, &r.name.Widget)
-	li.SetChild(&r.box.Widget)
-	r.box.Unref()
+	outer := gtk.NewBox(gtk.OrientationVerticalValue, 0)
+	r.group = gtk.NewLabel("")
+	r.group.AddCssClass("files-grid-heading")
+	r.group.SetXalign(0)
+	r.group.SetEllipsize(3)
+	r.group.SetVisible(false)
+	gtkx.Append(outer, &r.group.Widget)
+	gtkx.Append(outer, &r.box.Widget)
+	li.SetChild(&outer.Widget)
+	outer.Unref()
 	p.rows[item] = r
 	p.rowOf[r.box.GoPointer()] = r
 }
@@ -330,14 +362,24 @@ func (p *pane) bindRow(item uintptr) {
 		return
 	}
 	li := gtk.ListItemNewFromInternalPtr(item)
-	r.pos = li.GetPosition()
-	if int(r.pos) >= len(p.shown) {
+	pos := li.GetPosition()
+	shown, ok := p.shownPosition(pos)
+	if r.grid {
+		p.bindGridSlot(li, r, pos, ok)
+	}
+	if !ok {
+		r.path = ""
 		return
 	}
-	i := p.shown[r.pos]
+	i := p.shown[shown]
 	e := &p.all[i]
 	k := p.w.app.kinds.of(e)
 	r.path = p.path(i)
+	if r.group != nil && !r.grid {
+		heading := p.groupHeading(uint32(shown), i)
+		r.group.SetText(heading)
+		r.group.SetVisible(heading != "")
+	}
 	r.name.SetText(e.Name)
 	zoom := p.w.app.settings.Zoom
 	if r.compact {
@@ -503,7 +545,7 @@ func (p *pane) load(sel []string) {
 	p.updateNav()
 	go func() {
 		es, err := files.ReadDir(dir)
-		files.Sort(es, order)
+		groupIDs, groupNames := sortGroupedEntries(es, order, time.Now())
 		free := ""
 		if sp, err := files.SpaceOf(dir); err == nil && sp.Total > 0 {
 			free = i18n.Tf("%s free", sizeText(int64(sp.Free)))
@@ -513,7 +555,7 @@ func (p *pane) load(sel []string) {
 				return
 			}
 			p.free = free
-			p.loaded(es, err, sel, true)
+			p.loaded(es, groupIDs, groupNames, order, err, sel, true)
 		})
 	}()
 	reload := func() {
@@ -555,10 +597,10 @@ func (p *pane) reload() {
 		sel := p.selectedNames()
 		go func() {
 			es, err := files.ReadDir(dir)
-			files.Sort(es, order)
+			groupIDs, groupNames := sortGroupedEntries(es, order, time.Now())
 			gtkx.Post(func() {
 				if gen == p.gen {
-					p.loaded(es, err, sel, false)
+					p.loaded(es, groupIDs, groupNames, order, err, sel, false)
 				}
 			})
 		}()
@@ -569,16 +611,20 @@ func (p *pane) reload() {
 // for a selection that is new (the folder came from, files pasted), not
 // for a reload: one runs each time the folder changes, many times while a
 // file is copied in, and must leave the view where the user put it.
-func (p *pane) loaded(es []files.Entry, err error, sel []string, reveal bool) {
+func (p *pane) loaded(es []files.Entry, groupIDs, groupNames []string, order files.Order, err error, sel []string, reveal bool) {
+	if p.mode == inFolder && order != p.fv.Order {
+		groupIDs, groupNames = sortGroupedEntries(es, p.fv.Order, time.Now())
+	}
 	p.err = err
 	p.all, p.dirs, p.trash = es, nil, nil
+	p.groupIDs, p.groupNames = groupIDs, groupNames
 	p.w.app.counts.forget(p.dir)
 	p.reveal = reveal
 	p.refill(sel, true)
 	if p.selectFirst {
 		p.selectFirst = false
 		if len(sel) == 0 && len(p.shown) > 0 {
-			p.sel.SelectItem(0, true)
+			p.sel.SelectItem(p.modelPosition(0), true)
 		}
 	}
 }
@@ -611,10 +657,22 @@ func (p *pane) refill(sel []string, keepPlace bool) {
 			}
 		}
 	}
+	p.groupCount = nil
+	if p.mode == inFolder && p.fv.Order.GroupBy != files.GroupNone {
+		p.groupCount = make(map[string]int)
+		for _, i := range p.shown {
+			if i < len(p.groupIDs) {
+				p.groupCount[p.groupIDs[i]]++
+			}
+		}
+	}
 	names := make([]string, len(p.shown))
 	for k, i := range p.shown {
 		names[k] = p.all[i].Name
 	}
+	wasGrouped := p.gridSlots != nil
+	changed := p.changedSince(names)
+	names = p.layoutGrid(names)
 	p.fills++
 	view := p.view()
 	n := p.model.GetNItems()
@@ -622,10 +680,13 @@ func (p *pane) refill(sel []string, keepPlace bool) {
 	switch {
 	case parts:
 		p.model.Splice(0, 0, names[:fillPart])
-	case !keepPlace || n != uint32(len(p.names)):
+	case !keepPlace || wasGrouped != (p.gridSlots != nil) || n != uint32(len(p.names)):
 		p.model.Splice(0, n, names)
 	default:
-		at, removed, added := diffNames(p.names, names, p.changedSince(names))
+		at, removed, added := diffNames(p.names, names, func(pos int) bool {
+			shown, ok := p.shownPosition(uint32(pos))
+			return ok && changed(shown)
+		})
 		p.model.Splice(uint32(at), uint32(removed), added)
 	}
 	p.names = names
@@ -633,7 +694,7 @@ func (p *pane) refill(sel []string, keepPlace bool) {
 	selectThem := func() {
 		switch {
 		case p.filter != "" && best >= 0:
-			p.sel.SelectItem(uint32(best), true)
+			p.sel.SelectItem(p.modelPosition(best), true)
 			p.scrollTo(uint32(best))
 		case len(sel) > 0:
 			p.selectNames(sel, reveal)
@@ -685,9 +746,16 @@ const fillPart = 48
 func (p *pane) changedSince(names []string) func(i int) bool {
 	old := p.boundInfo
 	p.boundInfo = make(map[string]entryInfo, len(p.shown))
-	for _, i := range p.shown {
+	for pos, i := range p.shown {
 		e := &p.all[i]
-		p.boundInfo[e.Name] = entryInfo{e.Size, e.ModTime, e.Mode}
+		group := ""
+		if i < len(p.groupIDs) {
+			group = p.groupIDs[i]
+		}
+		p.boundInfo[e.Name] = entryInfo{
+			size: e.Size, mod: e.ModTime, mode: e.Mode,
+			group: group, header: p.groupHeading(uint32(pos), i),
+		}
 	}
 	return func(k int) bool {
 		was, ok := old[names[k]]
@@ -696,9 +764,11 @@ func (p *pane) changedSince(names []string) func(i int) bool {
 }
 
 type entryInfo struct {
-	size int64
-	mod  time.Time
-	mode os.FileMode
+	size   int64
+	mod    time.Time
+	mode   os.FileMode
+	group  string
+	header string
 }
 
 // diffNames finds the one stretch that differs between the model's
@@ -724,9 +794,14 @@ func (p *pane) setView(v files.View) {
 		p.syncView() // the columns chosen in a search: its list stays
 		return
 	}
+	sel := p.selectedNames()
 	p.fv.View = v
 	p.saveView()
-	p.syncView()
+	if p.gridSlots != nil || p.groupedGrid() {
+		p.refill(sel, false)
+	} else {
+		p.syncView()
+	}
 	p.syncTrail()
 	p.focus()
 }
@@ -777,9 +852,13 @@ func (p *pane) syncView() {
 	case files.GridView:
 		p.grid.SetModel(p.sel)
 	case files.ColumnView:
-		p.col.SetModel(p.sel)
+		if p.gridSlots == nil {
+			p.col.SetModel(p.sel)
+		}
 	default:
-		p.list.SetModel(p.sel)
+		if p.gridSlots == nil {
+			p.list.SetModel(p.sel)
+		}
 	}
 	p.emptyTrash.SetVisible(p.mode == inTrash && len(p.all) > 0)
 	empty := p.emptyText()
@@ -831,11 +910,26 @@ func (p *pane) sortBy(by files.SortBy) {
 	}
 	p.saveView()
 	sel := p.selectedNames()
-	files.Sort(p.all, p.fv.Order)
+	p.groupIDs, p.groupNames = sortGroupedEntries(p.all, p.fv.Order, time.Now())
 	p.names = nil
 	p.refill(sel, false)
 	if p.columnsShown() {
 		p.syncTrail() // the columns before and after in the same order
+	}
+}
+
+func (p *pane) setGroup(by files.GroupBy) {
+	if p.mode != inFolder || !by.Valid() || p.fv.Order.GroupBy == by {
+		return
+	}
+	p.fv.Order.GroupBy = by
+	p.saveView()
+	sel := p.selectedNames()
+	p.groupIDs, p.groupNames = sortGroupedEntries(p.all, p.fv.Order, time.Now())
+	p.names = nil
+	p.refill(sel, false)
+	if p.columnsShown() {
+		p.syncTrail()
 	}
 }
 
@@ -851,7 +945,7 @@ func (p *pane) toggleHidden() {
 func (p *pane) scrollTo(pos uint32) {
 	switch p.shownView() {
 	case files.GridView:
-		p.grid.ScrollTo(pos, gtk.ListScrollFocusValue, nil)
+		p.grid.ScrollTo(p.modelPosition(int(pos)), gtk.ListScrollFocusValue, nil)
 	case files.ColumnView:
 		p.col.ScrollTo(pos, gtk.ListScrollFocusValue, nil)
 	default:
@@ -877,7 +971,7 @@ func (p *pane) selected() []int {
 	n := bs.GetSize()
 	out := make([]int, 0, n)
 	for k := range uint32(n) {
-		if pos := bs.GetNth(k); int(pos) < len(p.shown) {
+		if pos, ok := p.shownPosition(bs.GetNth(k)); ok {
 			out = append(out, p.shown[pos])
 		}
 	}
@@ -900,17 +994,38 @@ func (p *pane) selectedNames() []string {
 	return out
 }
 
+func (p *pane) selectAllFiles() {
+	if p.gridSlots == nil {
+		p.sel.SelectAll()
+		return
+	}
+	p.selectMatching(func(uint32) bool { return true })
+}
+
+func (p *pane) selectMatching(want func(uint32) bool) {
+	n := p.model.GetNItems()
+	bs, mask := gtk.NewBitsetEmpty(), gtk.NewBitsetRange(0, n)
+	defer bs.Unref()
+	defer mask.Unref()
+	for i := range p.shown {
+		if pos := p.modelPosition(i); pos < n && want(pos) {
+			bs.Add(pos)
+		}
+	}
+	p.sel.SetSelection(bs, mask)
+}
+
 // selectNames selects the entries named; reveal brings the first in view.
 func (p *pane) selectNames(names []string, reveal bool) {
 	want := map[string]bool{}
 	for _, n := range names {
 		want[n] = true
 	}
-	bs, mask := gtk.NewBitsetEmpty(), gtk.NewBitsetRange(0, uint32(len(p.shown)))
+	bs, mask := gtk.NewBitsetEmpty(), gtk.NewBitsetRange(0, p.model.GetNItems())
 	first := -1
 	for k, i := range p.shown {
 		if want[p.all[i].Name] {
-			bs.Add(uint32(k))
+			bs.Add(p.modelPosition(k))
 			if first < 0 {
 				first = k
 			}
@@ -951,10 +1066,11 @@ func (p *pane) setFilter(f string) {
 // --- opening ---
 
 func (p *pane) activate(pos uint32) {
-	if int(pos) >= len(p.shown) {
+	shown, ok := p.shownPosition(pos)
+	if !ok {
 		return
 	}
-	i := p.shown[pos]
+	i := p.shown[shown]
 	e := &p.all[i]
 	switch {
 	case p.mode == inTrash:
@@ -1191,6 +1307,7 @@ func (p *pane) startSearch() {
 	p.mode, p.filter, p.query = inSearch, "", ""
 	p.filterLabel.SetVisible(false)
 	p.all, p.dirs, p.trash = nil, nil, nil
+	p.groupIDs, p.groupNames = nil, nil
 	p.refill(nil, false)
 	p.showCrumbs()
 	p.search.SetText("")
@@ -1336,6 +1453,7 @@ func (p *pane) showTrash(record bool) {
 			}
 			p.err, p.free = nil, ""
 			p.all, p.trash, p.dirs = ses, sitems, nil
+			p.groupIDs, p.groupNames = nil, nil
 			p.refill(sel, true)
 		})
 		reload := func() {
@@ -1353,9 +1471,18 @@ func (p *pane) showTrash(record bool) {
 
 // --- the menu of the items under the pointer ---
 
-// pick finds the row under x, y of view v, if any.
-func (p *pane) pick(v *gtk.Widget, x, y float64) (*row, bool) {
-	return pickRow(p.rowOf, v, x, y)
+// pickEntry returns the model position and entry index under the pointer.
+func (p *pane) pickEntry(v *gtk.Widget, x, y float64) (uint32, int, bool) {
+	r, ok := pickRow(p.rowOf, v, x, y)
+	if !ok {
+		return 0, 0, false
+	}
+	pos := gtk.ListItemNewFromInternalPtr(r.item).GetPosition()
+	shown, ok := p.shownPosition(pos)
+	if !ok {
+		return 0, 0, false
+	}
+	return pos, p.shown[shown], true
 }
 
 // pickRow finds the row under x, y of view v among rowOf's.
@@ -1381,9 +1508,9 @@ func pickRow(rowOf map[uintptr]*row, v *gtk.Widget, x, y float64) (*row, bool) {
 
 func (p *pane) contextMenu(v *gtk.Widget, x, y float64) {
 	p.w.setActive(p)
-	if r, ok := p.pick(v, x, y); ok {
-		if !p.sel.IsSelected(r.pos) {
-			p.sel.SelectItem(r.pos, true)
+	if pos, _, ok := p.pickEntry(v, x, y); ok {
+		if !p.sel.IsSelected(pos) {
+			p.sel.SelectItem(pos, true)
 		}
 	} else {
 		p.sel.UnselectAll()
@@ -1399,7 +1526,8 @@ func (p *pane) menuAtSelection() {
 	x, y := float64(40), float64(80)
 	if sel := p.selected(); len(sel) > 0 {
 		for _, r := range p.rows {
-			if int(r.pos) < len(p.shown) && p.shown[r.pos] == sel[0] && r.box.GetMapped() {
+			pos, ok := p.shownPosition(gtk.ListItemNewFromInternalPtr(r.item).GetPosition())
+			if ok && p.shown[pos] == sel[0] && r.box.GetMapped() {
 				r.box.TranslateCoordinates(&p.box.Widget, 48, float64(r.box.GetHeight()), &x, &y)
 				break
 			}
@@ -1419,12 +1547,12 @@ func (p *pane) showMenu(x, y int32) {
 // dragContent offers the selection (with the row under the pointer) as
 // text/uri-list, which GTK apps take as files and browsers as uploads.
 func (p *pane) dragContent(v *gtk.Widget, x, y float64) uintptr {
-	r, ok := p.pick(v, x, y)
+	pos, _, ok := p.pickEntry(v, x, y)
 	if !ok {
 		return 0 // on empty space: the rubber band, not a drag
 	}
-	if !p.sel.IsSelected(r.pos) {
-		p.sel.SelectItem(r.pos, true)
+	if !p.sel.IsSelected(pos) {
+		p.sel.SelectItem(pos, true)
 	}
 	paths := p.selectedPaths()
 	if len(paths) == 0 {
@@ -1444,10 +1572,8 @@ func (p *pane) dropped(v *gtk.Widget, paths []string, x, y float64, state gdk.Mo
 		return
 	}
 	dest := p.dir
-	if r, ok := p.pick(v, x, y); ok && int(r.pos) < len(p.shown) {
-		if i := p.shown[r.pos]; p.all[i].Dir {
-			dest = p.path(i)
-		}
+	if _, i, ok := p.pickEntry(v, x, y); ok && p.all[i].Dir {
+		dest = p.path(i)
 	}
 	kind := files.Copy
 	switch {

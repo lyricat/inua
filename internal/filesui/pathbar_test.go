@@ -136,7 +136,7 @@ func TestCrumbMenuActsOnItsFolder(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		p.loaded(es, nil, []string{"note.txt"}, false)
+		p.loaded(es, nil, nil, p.fv.Order, nil, []string{"note.txt"}, false)
 		run := func(dir, label string) {
 			t.Helper()
 			for _, it := range w.crumbItems(p, dir) {

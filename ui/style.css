@@ -3192,6 +3192,36 @@ window.files gridview > child {
   border-radius: 3px;
 }
 window.files gridview > child:hover { background: alpha(@accent, 0.05); }
+window.files gridview.grouped > child {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  outline: none;
+}
+window.files gridview.grouped .files-cell {
+  margin: 3px;
+  padding: 10px 6px 8px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+}
+window.files gridview.grouped > child:hover .files-cell { background: alpha(@accent, 0.05); }
+window.files gridview.grouped > child:selected .files-cell {
+  background: alpha(@accent, 0.12);
+  border-color: alpha(@accent, 0.3);
+}
+window.files gridview.grouped > child:focus-visible .files-cell {
+  outline: 1px solid alpha(@accent, 0.6);
+  outline-offset: -1px;
+}
+window.files .files-grid-heading {
+  margin: 8px 0 2px;
+  padding: 3px 4px;
+  border-bottom: 1px solid alpha(@line, 0.4);
+  color: @t2;
+  font-size: 12px;
+  font-weight: 600;
+}
 window.files .files-cell .files-icon { color: @t1; }
 window.files .files-cell .files-name { font-size: 13px; }
 

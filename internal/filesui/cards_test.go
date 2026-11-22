@@ -96,7 +96,7 @@ func TestRenameCardSelectsStem(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		p.loaded(es, nil, nil, false)
+		p.loaded(es, nil, nil, p.fv.Order, nil, nil, false)
 		// spin lets GTK draw and settle for a while, as after a key.
 		spin := func() {
 			ctx := glib.MainContextDefault()
@@ -281,7 +281,7 @@ func TestNewFolderCard(t *testing.T) {
 				t.Fatal(err)
 			}
 			files.Sort(es, p.fv.Order)
-			p.loaded(es, nil, nil, false)
+			p.loaded(es, nil, nil, p.fv.Order, nil, nil, false)
 			spin()
 			p.selectNames(names, true)
 			got := p.selectedNames()
