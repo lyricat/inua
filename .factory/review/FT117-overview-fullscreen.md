@@ -1,7 +1,7 @@
 ---
 source: pr #105
 branch: factory/FT117-overview-fullscreen
-round: 0
+round: 1
 ---
 # fix(overview): remove dock space below workspace previews
 
@@ -37,3 +37,19 @@ notes:
 Claude Code reviewed origin/master...HEAD. make test passed: 18 Python session tests, go vet ./..., and CGO_ENABLED=1 go test -race ./... (117 packages with tests). Changed Go files passed gofmt. No installs or manifest changes; worktree remains clean. The branch merges cleanly with the fetched master. UI was not checked by eye. Live preview distortion, mapping refresh during dock-setting changes, and non-bottom-dock coverage remain unverified risks, not additional confirmed findings.
 
 Round 0 is below max_rounds 3; moved review/ → new/ for a fix round. Documentation-only suggestion omitted because it did not establish an observable defect.
+
+## factory · plan · 2026-11-23 16:05
+Fix round 1 supplement.
+
+Behaviour: preserve Overview layout and its empty, error and first-run states; regenerate translation source references without changing messages or translated text.
+Scope: repair the latest review's P1 by regenerating po/inua.pot and all six catalogs. No UI code or coordinate-mapping changes.
+Decisions: the review's P2 is informational and remains unchanged; this round addresses the required fix list only. No base merge needed because origin/master is already an ancestor.
+Checking: make i18n; verify a second extraction leaves no diff after commit; make test. No new logic tests needed for reference-only changes.
+
+## factory · 2026-11-23 16:05
+Claude Code completed fix round 1 at 22dc0e6490c5c15bcfa7c64f4e8cecde9134d124 (i18n: update overview source references after dock space removal).
+Regenerated po/inua.pot and internal/i18n/locales/{es,fr,ja,ko,zh_CN,zh_TW}.po: only overview.go line references changed, 63 insertions and 63 deletions; messages and translations are unchanged.
+Installs: none; no manifests or lockfiles changed.
+Verification: coder and manager independently ran make test successfully (18 Python session tests, go vet ./..., CGO_ENABLED=1 go test -race ./...). Manager reran make i18n and git diff --exit-code successfully. Tests used an isolated HOME and caches under this run's TMPDIR.
+The existing P2 cropped-preview drop-coordinate issue remains unchanged. UI was not checked by eye and no nested session was run; this round changed no UI code.
+Branch pushed; moved new/ → review/ for another review. Initial push needed a command-local credential.useHttpPath=true setting; retry succeeded without changing user configuration.
