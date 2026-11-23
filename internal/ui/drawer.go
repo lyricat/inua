@@ -385,7 +385,7 @@ func (s *shellUI) openDrawer(b *bar, kind string, button *gtk.Widget, content *g
 	var cardSize, contentSize gtk.Requisition
 	card.GetPreferredSize(nil, &cardSize)
 	content.GetPreferredSize(nil, &contentSize)
-	if cardSize.Height > room { // scroll the rest
+	if kind == drawerMenu || cardSize.Height > room { // menu groups can expand later
 		scroll.SetMaxContentHeight(max(120, room-(cardSize.Height-contentSize.Height)))
 	}
 	var r graphene.Rect

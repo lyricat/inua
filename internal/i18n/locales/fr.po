@@ -10096,7 +10096,7 @@ msgstr "Impossible de rechercher : %s"
 #: internal/lightui/sysmon.go:55
 #: internal/shell/launcher_actions.go:45
 #: internal/termui/menubar.go:27
-#: internal/ui/dock.go:595
+#: internal/ui/dock.go:596
 #: internal/ui/portal_ask.go:80
 msgid "Quit"
 msgstr "Quitter"
@@ -13616,22 +13616,22 @@ msgid "%s · workspace %s"
 msgstr "%[1]s · espace de travail %[2]s"
 
 #: internal/shell/launcher_actions.go:33
-#: internal/ui/dock.go:586
+#: internal/ui/dock.go:587
 msgid "New Window"
 msgstr "Nouvelle fenêtre"
 
 #: internal/shell/launcher_actions.go:39
-#: internal/ui/dock.go:589
+#: internal/ui/dock.go:590
 msgid "Remove from Dock"
 msgstr "Supprimer du Dock"
 
 #: internal/shell/launcher_actions.go:41
-#: internal/ui/dock.go:591
+#: internal/ui/dock.go:592
 msgid "Keep in Dock"
 msgstr "Épingler au dock"
 
 #: internal/shell/launcher_actions.go:47
-#: internal/ui/dock.go:597
+#: internal/ui/dock.go:598
 msgid "Quit (%d windows)"
 msgstr "Quitter (fenêtres %d)"
 
@@ -15201,6 +15201,7 @@ msgid "The passphrases do not match."
 msgstr "Les phrases secrètes ne correspondent pas."
 
 #: internal/ui/bar.go:604
+#: internal/ui/dock_move.go:32
 msgid "Workspace %s"
 msgstr "Espace de travail %s"
 
@@ -15360,6 +15361,14 @@ msgstr "Le Bluetooth est désactivé."
 #: internal/ui/settings_bluetooth.go:250
 msgid "No devices paired yet"
 msgstr "Aucun appareil associé pour l’instant"
+
+#: internal/ui/dock_move.go:47
+msgid "Untitled Window"
+msgstr ""
+
+#: internal/ui/dock_move.go:59
+msgid "Move to Workspace"
+msgstr ""
 
 #: internal/ui/drawer.go:218
 #: internal/ui/settings.go:699
