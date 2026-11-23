@@ -219,10 +219,10 @@ func (p *pane) reloadSelecting(names []string) {
 	dir, order := p.dir, p.fv.Order
 	go func() {
 		es, err := files.ReadDir(dir)
-		files.Sort(es, order)
+		groupIDs, groupNames := sortGroupedEntries(es, order, time.Now())
 		gtkx.Post(func() {
 			if gen == p.gen {
-				p.loaded(es, err, names, true)
+				p.loaded(es, groupIDs, groupNames, order, err, names, true)
 				p.focus()
 			}
 		})

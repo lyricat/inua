@@ -817,6 +817,29 @@ func TestToggleColumn(t *testing.T) {
 	}
 }
 
+func TestGroupByValidation(t *testing.T) {
+	for _, g := range []GroupBy{GroupNone, GroupType, GroupModified, GroupSize} {
+		if !g.Valid() {
+			t.Errorf("%q is not valid", g)
+		}
+	}
+	if GroupBy("colour").Valid() {
+		t.Error("an unknown grouping is valid")
+	}
+	s := &Settings{Folders: map[string]*FolderView{
+		"/a": {Order: Order{GroupBy: GroupType}},
+		"/b": {Order: Order{GroupBy: "colour"}},
+	}}
+	s.Last.Order.GroupBy = GroupSize
+	s.checkGroups()
+	if s.Last.Order.GroupBy != GroupSize || s.Folders["/a"].Order.GroupBy != GroupType {
+		t.Error("valid grouping changed")
+	}
+	if s.Folders["/b"].Order.GroupBy != GroupNone || !s.modified {
+		t.Error("invalid grouping kept")
+	}
+}
+
 func TestColumnWidthsAreHeldToWhatAColumnNeeds(t *testing.T) {
 	s := &Settings{}
 	if s.ColumnWidth(ByName) != 0 || s.ColumnWidth(BySize) != 0 {

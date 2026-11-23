@@ -8,6 +8,20 @@ import (
 // SortBy is what a folder is sorted by.
 type SortBy string
 
+// GroupBy separates a folder's entries into labelled sections.
+type GroupBy string
+
+const (
+	GroupNone     GroupBy = ""
+	GroupType     GroupBy = "type"
+	GroupModified GroupBy = "modified"
+	GroupSize     GroupBy = "size"
+)
+
+func (g GroupBy) Valid() bool {
+	return g == GroupNone || g == GroupType || g == GroupModified || g == GroupSize
+}
+
 const (
 	ByName     SortBy = "name"
 	BySize     SortBy = "size"
@@ -20,12 +34,13 @@ const (
 	ByGroup    SortBy = "group"
 )
 
-// Order is how a folder is sorted.
+// Order is how a folder is sorted and grouped.
 type Order struct {
-	By          SortBy `json:"by"`
-	Reverse     bool   `json:"reverse,omitempty"`
-	FilesFirst  bool   `json:"files_first,omitempty"` // folders are first unless set
-	ShowsHidden bool   `json:"hidden,omitempty"`
+	By          SortBy  `json:"by"`
+	GroupBy     GroupBy `json:"group_by,omitempty"` // view grouping, after sorting
+	Reverse     bool    `json:"reverse,omitempty"`
+	FilesFirst  bool    `json:"files_first,omitempty"` // folders are first unless set
+	ShowsHidden bool    `json:"hidden,omitempty"`
 }
 
 // Sort sorts entries in place. Folders come first (unless FilesFirst),

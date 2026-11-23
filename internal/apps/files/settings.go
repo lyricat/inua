@@ -146,6 +146,21 @@ func (s *Settings) checkWidths() {
 	}
 }
 
+func (s *Settings) checkGroups() {
+	check := func(order *Order) {
+		if !order.GroupBy.Valid() {
+			order.GroupBy = GroupNone
+			s.modified = true
+		}
+	}
+	check(&s.Last.Order)
+	for _, view := range s.Folders {
+		if view != nil {
+			check(&view.Order)
+		}
+	}
+}
+
 // maxFolders is how many folders keep their own view; the oldest set
 // are forgotten past it (they then take the last used).
 const maxFolders = 500
@@ -158,6 +173,7 @@ func LoadSettings() *Settings {
 		s.Folders = map[string]*FolderView{}
 	}
 	s.checkWidths()
+	s.checkGroups()
 	s.adoptServers()
 	return s
 }

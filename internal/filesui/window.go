@@ -567,6 +567,11 @@ func (w *window) key(keyval uint32, state gdk.ModifierType) bool {
 			p.startSearch()
 		case 'p':
 			w.openJump()
+		case 'a':
+			if p.gridSlots == nil || !w.focusIn(&p.grid.Widget) {
+				return false
+			}
+			p.selectAllFiles()
 		case 'h':
 			w.do("hidden")
 		case '1':
@@ -740,16 +745,7 @@ func (w *window) focusIn(widget *gtk.Widget) bool {
 
 func (w *window) invertSelection() {
 	p := w.cur()
-	n := uint32(len(p.shown))
-	bs, mask := gtk.NewBitsetEmpty(), gtk.NewBitsetRange(0, n)
-	for i := range n {
-		if !p.sel.IsSelected(i) {
-			bs.Add(i)
-		}
-	}
-	p.sel.SetSelection(bs, mask)
-	bs.Unref()
-	mask.Unref()
+	p.selectMatching(func(pos uint32) bool { return !p.sel.IsSelected(pos) })
 }
 
 func (w *window) zoom(d int) {
@@ -807,6 +803,20 @@ func (w *window) menuItems(p *pane) []menuItem {
 			sep,
 			w.item("hidden", i18n.T("Hidden files"), "Ctrl+H"),
 			w.item("reload", i18n.T("Reload"), "Ctrl+R"),
+		}
+		if p.mode == inFolder {
+			group := func(label string, by files.GroupBy) menuItem {
+				return menuItem{
+					label: label, check: true, on: p.fv.Order.GroupBy == by,
+					run: func() { p.setGroup(by) },
+				}
+			}
+			items = append(items, sep,
+				group(i18n.T("Group by type"), files.GroupType),
+				group(i18n.T("Group by date modified"), files.GroupModified),
+				group(i18n.T("Group by size"), files.GroupSize),
+				group(i18n.T("No grouping"), files.GroupNone),
+			)
 		}
 		return items
 	}

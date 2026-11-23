@@ -47,6 +47,7 @@ func (p *pane) buildColumnView() {
 	w := p.w
 	f := w.factory(func(item uintptr) {
 		r := p.columnRow(item)
+		r.item = item
 		p.rows[item] = r
 		p.rowOf[r.box.GoPointer()] = r
 	}, p.bindRow, p.teardownRow)
@@ -84,6 +85,14 @@ func (p *pane) buildColumnView() {
 func (p *pane) columnRow(item uintptr) *row {
 	li := gtk.ListItemNewFromInternalPtr(item)
 	r := &row{compact: true}
+	r.group = gtk.NewLabel("")
+	r.group.AddCssClass("files-group-heading")
+	r.group.SetXalign(0)
+	r.group.SetHexpand(true)
+	r.group.SetMaxWidthChars(18)
+	r.group.SetEllipsize(3)
+	r.group.SetCanTarget(false)
+	r.group.SetVisible(false)
 	r.box = *gtk.NewBox(gtk.OrientationHorizontalValue, 8)
 	r.box.AddCssClass("files-row")
 	r.icon = *gtk.NewImage()
@@ -99,8 +108,11 @@ func (p *pane) columnRow(item uintptr) *row {
 	r.arrow.AddCssClass("files-column-arrow")
 	r.arrow.SetPixelSize(12)
 	gtkx.Append(&r.box, &r.arrow.Widget)
-	li.SetChild(&r.box.Widget)
-	r.box.Unref()
+	outer := gtk.NewBox(gtk.OrientationVerticalValue, 0)
+	gtkx.Append(outer, &r.group.Widget)
+	gtkx.Append(outer, &r.box.Widget)
+	li.SetChild(&outer.Widget)
+	outer.Unref()
 	return r
 }
 
@@ -165,6 +177,7 @@ func (p *pane) bindTrailRow(c *trailColumn, item uintptr) {
 	e := &c.shown[r.pos]
 	r.path = filepath.Join(c.dir, e.Name)
 	r.name.SetText(e.Name)
+	r.group.SetVisible(false)
 	p.kindIcon(p.w.app.kinds.of(e), e, r, listIcon(p.w.app.settings.Zoom))
 	r.arrow.SetVisible(e.Dir)
 	setClass(&r.box.Widget, "hidden", e.Hidden)
