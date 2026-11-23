@@ -731,7 +731,8 @@ type Dock struct {
 	Position string `toml:"position"`
 	// Autohide keeps the dock out of sight until the pointer reaches the
 	// selected edge; otherwise windows make room for it.
-	Autohide bool `toml:"autohide"`
+	Autohide   bool `toml:"autohide"`
+	PerMonitor bool `toml:"per_monitor"` // show running windows on this display only
 	// Size is the icons' size in pixels, one of DockSizes.
 	Size int `toml:"size"`
 	// Drawer shows a button at the dock's end that opens inua's light apps.

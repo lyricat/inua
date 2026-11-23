@@ -51,6 +51,7 @@ type dock struct {
 	reveal              gtk.Revealer
 	island              gtk.Box
 	items               gtk.Box
+	visibleItems        []shell.DockItem
 	edge                gtk.Box
 	refs                gtkx.Scope
 	shown               string                 // the apps and icons shown (dockSignature)
@@ -92,10 +93,11 @@ type dockState struct {
 	items      []shell.DockItem
 	launching  map[string]bool // apps started from the dock, bouncing until a window shows
 	menuKey    string          // the app whose menu is open (drawerMenu)
-	menuMoves  []dockMove      // destinations in the open app menu
-	gapTicking bool            // onDockGapTick is running
-	drawer     *drawerPanel    // the open drawer, nil when closed
-	programs   map[int]string  // /proc/PID/comm of windows' processes, by PID
+	menuDock   *dock
+	menuMoves  []dockMove     // destinations in the open app menu
+	gapTicking bool           // onDockGapTick is running
+	drawer     *drawerPanel   // the open drawer, nil when closed
+	programs   map[int]string // /proc/PID/comm of windows' processes, by PID
 
 	// The workshop apps installed, read again when their folder changes.
 	workshopStamp string
@@ -383,6 +385,18 @@ func (s *shellUI) renderDock(b *bar) {
 			delete(s.dockState.launching, it.Key) // it is up
 		}
 	}
+	if s.cfg.Dock.PerMonitor && len(s.snap.Outputs) > 1 {
+		snap := s.snap
+		snap.Windows = nil
+		output := b.connector()
+		for _, w := range s.snap.Windows {
+			if w.Output == output {
+				snap.Windows = append(snap.Windows, w)
+			}
+		}
+		items = shell.Dock(s.cfg.Dock.Pinned, s.dockState.apps, snap, s.inputMethodWindow)
+	}
+	d.visibleItems = items
 	drawer := s.cfg.Dock.Drawer
 	withWorkshop := drawer && len(s.installedWorkshop()) > 0
 	if sig := dockSignature(items, d.size, drawer) + fmt.Sprint(withWorkshop); sig != d.shown {
@@ -516,10 +530,10 @@ func (s *shellUI) updateDockButton(db *dockButton, it shell.DockItem) {
 // scrollDock goes n notches' way (down the next, up the previous) through
 // the running apps in the dock's order, bringing the app's latest window
 // forward as a click on its icon does.
-func (s *shellUI) scrollDock(n int) {
+func (s *shellUI) scrollDock(d *dock, n int) {
 	var keys []string
 	current := ""
-	for _, it := range s.dockState.items {
+	for _, it := range d.visibleItems {
 		if len(it.Windows) == 0 {
 			continue
 		}
@@ -532,18 +546,33 @@ func (s *shellUI) scrollDock(n int) {
 	if !ok {
 		return
 	}
-	if it, ok := s.dockItem(key); ok {
+	if it, ok := findDockItem(d.visibleItems, key); ok {
 		s.focusWindowHere(it.Windows[0].ID)
 	}
 }
 
 func (s *shellUI) dockItem(key string) (shell.DockItem, bool) {
-	for _, it := range s.dockState.items {
+	return findDockItem(s.dockState.items, key)
+}
+
+func findDockItem(items []shell.DockItem, key string) (shell.DockItem, bool) {
+	for _, it := range items {
 		if it.Key == key {
 			return it, true
 		}
 	}
 	return shell.DockItem{}, false
+}
+
+func (s *shellUI) dockAt(w *gtk.Widget) *dock {
+	if w != nil {
+		for _, b := range s.bars {
+			if d := b.dock; d != nil && (w.GoPointer() == d.win.GoPointer() || w.IsAncestor(&d.win.Widget)) {
+				return d
+			}
+		}
+	}
+	return nil
 }
 
 func (s *shellUI) launchApp(e *desktop.Entry) {
@@ -606,13 +635,17 @@ func (s *shellUI) showDockMenu(btn *gtk.Widget, it shell.DockItem) {
 	}
 	s.dropDrawer()
 	s.dockState.menuKey = it.Key
+	s.dockState.menuDock = b.dock
 	s.dockState.menuMoves = moves
 	s.openDrawer(b, drawerMenu, btn, menu)
 }
 
 // dockMenuAction carries out a dock menu's item for its app.
 func (s *shellUI) dockMenuAction(name string) {
-	it, ok := s.dockItem(s.dockState.menuKey)
+	if s.dockState.menuDock == nil {
+		return
+	}
+	it, ok := findDockItem(s.dockState.menuDock.visibleItems, s.dockState.menuKey)
 	if !ok {
 		return
 	}
@@ -639,7 +672,11 @@ func (s *shellUI) dockMenuAction(name string) {
 
 func (s *shellUI) bindDockHandlers() {
 	s.onDockClicked = func(b gtk.Button) {
-		it, ok := s.dockItem(strings.TrimPrefix(b.GetName(), "dock:"))
+		d := s.dockAt(&b.Widget)
+		if d == nil {
+			return
+		}
+		it, ok := findDockItem(d.visibleItems, strings.TrimPrefix(b.GetName(), "dock:"))
 		if !ok {
 			return
 		}
@@ -655,16 +692,19 @@ func (s *shellUI) bindDockHandlers() {
 			s.focusWindowHere(addr)
 		}
 	}
-	s.onDockScroll = func(_ gtk.EventControllerScroll, _, dy float64) bool {
-		s.scrollDock(int(dy))
+	s.onDockScroll = func(c gtk.EventControllerScroll, _, dy float64) bool {
+		if d := s.dockAt(c.GetWidget()); d != nil {
+			s.scrollDock(d, int(dy))
+		}
 		return true
 	}
 	s.onDockMenu = func(g gtk.GestureClick, _ int32, _, _ float64) {
 		w := g.GetWidget()
-		if w == nil {
+		d := s.dockAt(w)
+		if d == nil {
 			return
 		}
-		if it, ok := s.dockItem(strings.TrimPrefix(w.GetName(), "dock:")); ok {
+		if it, ok := findDockItem(d.visibleItems, strings.TrimPrefix(w.GetName(), "dock:")); ok {
 			s.showDockMenu(w, it)
 		}
 	}
