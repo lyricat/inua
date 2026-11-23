@@ -32,3 +32,15 @@ PR description (author-reported behavior and verification, not independently ver
 > | --- | --- |
 > | ![Grid grouped by modification date](https://raw.githubusercontent.com/iamcheyan/inua/4ad29d47efdc0f4458fb8eb56e72321b383c68a1/docs/evidence/files-grouping/grid-by-modified-date.png) | ![List grouped by file type](https://raw.githubusercontent.com/iamcheyan/inua/4ad29d47efdc0f4458fb8eb56e72321b383c68a1/docs/evidence/files-grouping/list-by-type.png) |
 > 
+
+## factory · review · 2026-11-23 15:30
+head: df589b49179a6fdb62a197689acb4d0a69977ecf
+verdict: pass
+notes:
+- [P2] internal/filesui/groupgrid.go:117: grouped-grid heading/spacer cells refuse focus, blocking keyboard navigation into later groups. In a three-column GTK Broadway probe with Today containing a.txt/b.txt and Older containing c.txt/d.txt/e.txt, ChildFocus(DOWN) moved a.txt to b.txt, then repeated DOWN/RIGHT returned false and stayed on b.txt; the ungrouped control navigated normally. Skip non-file slots explicitly during keyboard movement and add regression coverage. Physical arrow-key input was not exercised.
+
+Validation: Claude Code reviewed origin/master...HEAD (702ac2f9..df589b49), all 24 changed files. make test passed (18 Python tests, go vet, Go race tests including GTK Broadway tests). gofmt clean; isolated i18n regeneration matched committed catalogs. Grouped selection returned only the five files despite twelve selected model slots. No new installs. No P0/P1 findings; factory policy therefore moves this item to ready/ with the P2 noted.
+
+Not checked: UI by eye, nested Hyprland/Wayland, narrow-column clipping and selected-list heading appearance. Resize scroll behavior was inconclusive. Date groups are recomputed on folder load, not automatically at midnight. A style-only P3 suggestion was excluded from actionable findings.
+
+Execution exception: the coder reported that the repository socket helper fell back to /tmp for its long TMPDIR, and that it deleted two scratch socket directories there, violating factory temporary-file rules. The manager performed no /tmp deletion. Future tests need a short temporary socket path inside the run directory. The coder also used a read-only config symlink in an isolated translation-check copy. Worktree remained clean; no source changes or commits were made during review.
