@@ -395,6 +395,9 @@ position = "bottom"
 # make room for it.
 autohide = false
 
+# Show running windows only on their display; pinned apps stay on every dock.
+per_monitor = false
+
 # Icon size in pixels (24 to 96).
 size = 36
 
