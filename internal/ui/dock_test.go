@@ -38,28 +38,3 @@ func TestDockWantedAndExclusive(t *testing.T) {
 		})
 	}
 }
-
-// The overview leaves room for the dock it raises, whether or not the
-// desktop shows the dock.
-func TestOverviewDockInsets(t *testing.T) {
-	c := config.Default()
-	c.Dock.Size = 40
-	c.Dock.Position = "left"
-	for _, enable := range []bool{true, false} {
-		c.Dock.Enable = enable
-		c.Overview.ShowDock = true
-		s := &shellUI{cfg: c, layer: true}
-		if top, bottom, start, end := s.overviewDockInsets(); top != 0 || bottom != 0 || start != 56 || end != 0 {
-			t.Errorf("dock.enable=%v: insets %d %d %d %d, want 0 0 56 0", enable, top, bottom, start, end)
-		}
-		s.cfg.Overview.ShowDock = false
-		if top, bottom, start, end := s.overviewDockInsets(); top|bottom|start|end != 0 {
-			t.Errorf("dock.enable=%v, show_dock off: insets %d %d %d %d, want none", enable, top, bottom, start, end)
-		}
-	}
-	s := &shellUI{cfg: c}
-	s.cfg.Overview.ShowDock = true
-	if top, bottom, start, end := s.overviewDockInsets(); top|bottom|start|end != 0 {
-		t.Errorf("without layer shell: insets %d %d %d %d, want none", top, bottom, start, end)
-	}
-}

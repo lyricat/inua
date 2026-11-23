@@ -530,12 +530,7 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 	s.renderOverviewSearchResults(o)
 	o.queryClear.SetVisible(o.st.Query != "")
 	o.cardsScroll.SetVisible(o.st.Query == "")
-	topInset, bottomInset, startInset, endInset := s.overviewDockInsets()
-	o.content.SetMarginTop(int32(topInset))
-	o.content.SetMarginBottom(int32(bottomInset))
-	o.content.SetMarginStart(int32(startInset))
-	o.content.SetMarginEnd(int32(endInset))
-	key := overviewLayoutKey(o.st.Cards, s.snap.Outputs, s.cfg.Overview.PerMonitor, o.monitor, int(o.root.GetScaleFactor()), o.st.Query != "", topInset, bottomInset, startInset, endInset)
+	key := overviewLayoutKey(o.st.Cards, s.snap.Outputs, s.cfg.Overview.PerMonitor, o.monitor, int(o.root.GetScaleFactor()), o.st.Query != "")
 	if o.layoutKey == key {
 		s.updateOverviewWidgets(o)
 		return
@@ -578,8 +573,8 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 			viewportW, viewportH = float64(mon.Width)/scale, float64(mon.Height)/scale
 		}
 	}
-	availableW := viewportW - 120 - float64(startInset+endInset)
-	availableH := viewportH - 180 - float64(topInset+bottomInset)
+	availableW := viewportW - 120
+	availableH := viewportH - 180
 	groups := []string{}
 	counts := map[string]int{}
 	aspect := 0.0
@@ -638,6 +633,16 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 			}
 			monY, monH = overviewUsableHeight(card.Windows, monY, monH, float64(height))
 			break
+		}
+		for _, bar := range s.bars {
+			if d := bar.dock; bar.connector() == card.Workspace.Output && d != nil && d.exclusive {
+				edge := float64(d.win.GetHeight())
+				if d.vertical {
+					edge = float64(d.win.GetWidth())
+				}
+				monX, monY, monW, monH = overviewWithoutDock(card.Windows, monX, monY, monW, monH, d.position, edge)
+				break
+			}
 		}
 		if card.Workspace.Output != lastMonitor {
 			lastMonitor = card.Workspace.Output
@@ -1036,26 +1041,6 @@ func (s *shellUI) overviewDo(action string, do func(ctx context.Context) error) 
 	}()
 }
 
-// overviewDockInsets reserves the dock's footprint when it is layered above
-// the overview, leaving the workspace chooser centered in the remaining area.
-func (s *shellUI) overviewDockInsets() (top, bottom, start, end int) {
-	if !s.layer || !s.cfg.Overview.ShowDock {
-		return 0, 0, 0, 0
-	}
-	inset := s.cfg.Dock.Size + 16 // icon size plus the dock island's padding and border
-	switch s.cfg.Dock.Position {
-	case "top":
-		top = inset
-	case "left":
-		start = inset
-	case "right":
-		end = inset
-	default:
-		bottom = inset
-	}
-	return top, bottom, start, end
-}
-
 func (s *shellUI) buildOverviewSearchRow(index int, selected bool, iconName, title, detail, actionName string) *gtk.Button {
 	btn := gtk.NewButton()
 	btn.SetName(actionName)
@@ -1303,6 +1288,34 @@ func overviewUsableHeight(windows []compositor.Window, y, height, barHeight floa
 		}
 	}
 	return top, height - barHeight
+}
+
+// Exclude only the dock's reserved edge, never a window occupying that edge.
+func overviewWithoutDock(windows []compositor.Window, x, y, width, height float64, position string, edge float64) (float64, float64, float64, float64) {
+	if len(windows) == 0 || edge <= 0 {
+		return x, y, width, height
+	}
+	nx, ny, nw, nh := x, y, width, height
+	switch position {
+	case "left":
+		nx, nw = x+edge, width-edge
+	case "right":
+		nw = width - edge
+	case "top":
+		ny, nh = y+edge, height-edge
+	default:
+		nh = height - edge
+	}
+	if nw <= 0 || nh <= 0 {
+		return x, y, width, height
+	}
+	for _, w := range windows {
+		g := w.Geometry
+		if g == nil || float64(g.X) < nx-1 || float64(g.Y) < ny-1 || float64(g.X+g.W) > nx+nw+1 || float64(g.Y+g.H) > ny+nh+1 {
+			return x, y, width, height
+		}
+	}
+	return nx, ny, nw, nh
 }
 
 // overviewWindowLayout maps compositor geometry onto a workspace card. The

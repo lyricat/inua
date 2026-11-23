@@ -27,9 +27,9 @@ type overviewWindowWidgets struct {
 	title  string
 }
 
-func overviewLayoutKey(cards []shell.OverviewCard, monitors []compositor.Output, perMonitor bool, monitor string, scale int, searching bool, top, bottom, start, end int) string {
+func overviewLayoutKey(cards []shell.OverviewCard, monitors []compositor.Output, perMonitor bool, monitor string, scale int, searching bool) string {
 	var key strings.Builder
-	fmt.Fprintf(&key, "%t/%q/%d/%t/%d/%d/%d/%d;", perMonitor, monitor, scale, searching, top, bottom, start, end)
+	fmt.Fprintf(&key, "%t/%q/%d/%t;", perMonitor, monitor, scale, searching)
 	for _, mon := range monitors {
 		fmt.Fprintf(&key, "%q/%d/%d/%d/%d/%g;", mon.Name, mon.X, mon.Y, mon.Width, mon.Height, mon.Scale)
 	}

@@ -13966,7 +13966,7 @@ msgstr "Nouvelle session dans cet espace"
 #: internal/term/settings/settings.go:104
 #: internal/term/web/strings.go:70
 #: internal/termui/columns.go:178
-#: internal/ui/overview.go:720
+#: internal/ui/overview.go:725
 msgid "New workspace"
 msgstr "Nouvel espace de travail"
 
@@ -15570,35 +15570,35 @@ msgstr "restaurer le focus"
 msgid "kill window"
 msgstr "tuer la fenêtre"
 
-#: internal/ui/overview.go:563
+#: internal/ui/overview.go:558
 msgid "No workspaces"
 msgstr "Aucun espace de travail"
 
-#: internal/ui/overview.go:565
+#: internal/ui/overview.go:560
 msgid "No matches"
 msgstr "Aucune correspondance"
 
-#: internal/ui/overview.go:1118
+#: internal/ui/overview.go:1103
 msgid "No matching apps or windows"
 msgstr ""
 
-#: internal/ui/overview.go:1129
+#: internal/ui/overview.go:1114
 msgid "Open Windows"
 msgstr ""
 
-#: internal/ui/overview.go:1143
+#: internal/ui/overview.go:1128
 msgid "Applications"
 msgstr ""
 
-#: internal/ui/overview.go:1183
+#: internal/ui/overview.go:1168
 msgid "Search apps, windows and workspaces…"
 msgstr ""
 
-#: internal/ui/overview.go:1223
+#: internal/ui/overview.go:1208
 msgid "Type to search   Esc · Back / Close   ↑↓ / Tab · Navigate   Enter · Open / Switch   Drag · Move"
 msgstr ""
 
-#: internal/ui/overview.go:1269
+#: internal/ui/overview.go:1254
 msgid "inua overview"
 msgstr "Aperçu d'Inua"
 
