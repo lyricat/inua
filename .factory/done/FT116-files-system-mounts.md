@@ -24,3 +24,9 @@ notes:
 - make test passed: 18 Python session tests, go vet ./..., and CGO_ENABLED=1 go test -race ./... (117 packages passed, 32 without tests). Tests used an isolated HOME and caches.
 - No unpinned tools installed; only pinned Go modules restored. Worktree unchanged.
 - UI was not checked by eye. Other sandbox bind-mount paths and the separate UDisks2 volume list were not exercised.
+
+## factory · 2026-11-23 19:28
+Shipped into master: ac2f21cd1d25a2588e5102a697d7955f6cbcafe7. Release: v0.1.43; master and annotated tag pushed atomically.
+Latest passing Claude review matched the branch head before merge. make generate and make i18n passed after each merge; final regeneration left no diff. Targeted package race tests and final make test passed (18 Python tests, go vet and Go race tests).
+PR #104 already marked MERGED after push; no close needed. Branch retained (clean not configured). No new installs.
+Existing P2/P3 findings remain unchanged. UI not checked by eye; no nested compositor session, deployment or restart.

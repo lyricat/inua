@@ -64,3 +64,9 @@ Claude Code reviewed the entire origin/master...HEAD range (merge-base 702ac2f9)
 Validation: make test passed (18 Python session tests, go vet ./..., Go race tests: 117 packages passed, 32 with no test files). Tests used an isolated HOME, caches and TMPDIR. No installs or manifest changes. Worktree stayed clean at the reviewed head; branch merges cleanly with the fetched master.
 UI was not checked by eye; no nested session was run. Live dock-window size versus exclusive-zone size, multi-monitor compositor coordinate semantics, and immediate crop refresh after changing dock configuration remain unverified.
 Moved review/ → ready/. Owner should inspect the layout visually and consider the P2 floating-window drop offset before shipping.
+
+## factory · 2026-11-23 19:28
+Shipped into master: b4210261f3daddc17501b23ed52202cb1016657f. Release: v0.1.43; master and annotated tag pushed atomically.
+Latest passing Claude review matched the branch head before merge. make generate and make i18n passed after each merge; final regeneration left no diff. Targeted package race tests and final make test passed (18 Python tests, go vet and Go race tests).
+PR #105 already marked MERGED after push; no close needed. Branch retained (clean not configured). No new installs.
+Existing P2/P3 findings remain unchanged. UI not checked by eye; no nested compositor session, deployment or restart.

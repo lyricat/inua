@@ -30,3 +30,9 @@ notes:
 Reviewed by Claude Code on origin/master...HEAD against the imported PR request. No P0/P1 findings. make test passed: 18 Python tests, go vet, and all 117 Go packages with the race detector. Initial test invocation lacked XDG_RUNTIME_DIR and failed Hyprland config checks; a rerun with a private scratch runtime directory passed. make i18n in a scratch copy matched committed catalogs; gofmt reported no changed Go files. No tracked code changes or commits; no unpinned installations (only pinned Go module restoration).
 
 The UI was not checked by eye. No nested session, compositor interaction, live Wi-Fi or user-service manipulation. Wayfire and niri behavior was inspected statically only; the new GTK menu logic has no dedicated tests. Same-title windows remain indistinguishable by title. Moved review/ → ready/; no merge or shipping performed.
+
+## factory · 2026-11-23 19:28
+Shipped into master: 97dacffc8db130db01c6d7b94438eca3fbc831bb. Release: v0.1.43; master and annotated tag pushed atomically.
+Latest passing Claude review matched the branch head before merge. make generate and make i18n passed after each merge; final regeneration left no diff. Targeted package race tests and final make test passed (18 Python tests, go vet and Go race tests).
+PR #106 already marked MERGED after push; no close needed. Branch retained (clean not configured). No new installs.
+Existing P2/P3 findings remain unchanged. UI not checked by eye; no nested compositor session, deployment or restart.

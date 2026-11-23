@@ -44,3 +44,9 @@ Validation: Claude Code reviewed origin/master...HEAD (702ac2f9..df589b49), all 
 Not checked: UI by eye, nested Hyprland/Wayland, narrow-column clipping and selected-list heading appearance. Resize scroll behavior was inconclusive. Date groups are recomputed on folder load, not automatically at midnight. A style-only P3 suggestion was excluded from actionable findings.
 
 Execution exception: the coder reported that the repository socket helper fell back to /tmp for its long TMPDIR, and that it deleted two scratch socket directories there, violating factory temporary-file rules. The manager performed no /tmp deletion. Future tests need a short temporary socket path inside the run directory. The coder also used a read-only config symlink in an isolated translation-check copy. Worktree remained clean; no source changes or commits were made during review.
+
+## factory · 2026-11-23 19:28
+Shipped into master: 66c86383d3336beeeb71adc85486e13c4cea35a1. Release: v0.1.43; master and annotated tag pushed atomically.
+Latest passing Claude review matched the branch head before merge. make generate and make i18n passed after each merge; final regeneration left no diff. Targeted package race tests and final make test passed (18 Python tests, go vet and Go race tests).
+PR #103 closed after push (GitHub had not marked it merged). Branch retained (clean not configured). No new installs.
+Existing P2/P3 findings remain unchanged. UI not checked by eye; no nested compositor session, deployment or restart.
