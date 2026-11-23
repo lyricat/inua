@@ -53,3 +53,14 @@ Installs: none; no manifests or lockfiles changed.
 Verification: coder and manager independently ran make test successfully (18 Python session tests, go vet ./..., CGO_ENABLED=1 go test -race ./...). Manager reran make i18n and git diff --exit-code successfully. Tests used an isolated HOME and caches under this run's TMPDIR.
 The existing P2 cropped-preview drop-coordinate issue remains unchanged. UI was not checked by eye and no nested session was run; this round changed no UI code.
 Branch pushed; moved new/ → review/ for another review. Initial push needed a command-local credential.useHttpPath=true setting; retry succeeded without changing user configuration.
+
+## factory · review · 2026-11-23 16:38
+head: 22dc0e6490c5c15bcfa7c64f4e8cecde9134d124
+verdict: pass
+notes:
+- [P2] internal/ui/overview.go:700: dock-cropped previews still lack the inverse drop mapping in overview_manage.go:261-262. Verified using the real layout helpers in an isolated copy: on a 1920x1080 monitor with a 72px left dock and an 800px card, a floating window at (996,300) displays at (400,125), but dropping in place sends it to (924,288); with a bottom dock, (960,504) drops to (960,540). Store the cropped origin and separate horizontal/vertical scales in overviewDropTarget and invert both axes. Only same-workspace floating-window drops are affected; non-blocking under factory policy.
+
+Claude Code reviewed the entire origin/master...HEAD range (merge-base 702ac2f9), including the original layout change and translation-reference fix. No P0/P1 findings. The previous P1 is fixed: an isolated extraction left po/inua.pot and all six catalogs unchanged.
+Validation: make test passed (18 Python session tests, go vet ./..., Go race tests: 117 packages passed, 32 with no test files). Tests used an isolated HOME, caches and TMPDIR. No installs or manifest changes. Worktree stayed clean at the reviewed head; branch merges cleanly with the fetched master.
+UI was not checked by eye; no nested session was run. Live dock-window size versus exclusive-zone size, multi-monitor compositor coordinate semantics, and immediate crop refresh after changing dock configuration remain unverified.
+Moved review/ → ready/. Owner should inspect the layout visually and consider the P2 floating-window drop offset before shipping.
