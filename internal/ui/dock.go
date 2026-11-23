@@ -92,6 +92,7 @@ type dockState struct {
 	items      []shell.DockItem
 	launching  map[string]bool // apps started from the dock, bouncing until a window shows
 	menuKey    string          // the app whose menu is open (drawerMenu)
+	menuMoves  []dockMove      // destinations in the open app menu
 	gapTicking bool            // onDockGapTick is running
 	drawer     *drawerPanel    // the open drawer, nil when closed
 	programs   map[int]string  // /proc/PID/comm of windows' processes, by PID
@@ -598,12 +599,14 @@ func (s *shellUI) showDockMenu(btn *gtk.Widget, it shell.DockItem) {
 		}
 		add(label, "quit")
 	}
+	moves := s.addDockMoveMenu(menu, it)
 	if menu.GetFirstChild() == nil {
 		menu.Unref()
 		return
 	}
 	s.dropDrawer()
 	s.dockState.menuKey = it.Key
+	s.dockState.menuMoves = moves
 	s.openDrawer(b, drawerMenu, btn, menu)
 }
 
@@ -611,6 +614,10 @@ func (s *shellUI) showDockMenu(btn *gtk.Widget, it shell.DockItem) {
 func (s *shellUI) dockMenuAction(name string) {
 	it, ok := s.dockItem(s.dockState.menuKey)
 	if !ok {
+		return
+	}
+	if index, ok := strings.CutPrefix(name, "move:"); ok {
+		s.moveDockWindow(it, index)
 		return
 	}
 	switch name {

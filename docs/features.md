@@ -320,6 +320,11 @@ itself (`overview.show_dock`); with the dock off the desktop
 (`dock.enable = false`) it shows only there, over the windows rather than
 making them smaller.
 
+On compositors that support moving without following, right-click a running
+app and expand **Move to Workspace**. If the app has several windows, expand
+the window by its title first. Choose an existing workspace; the current
+view stays put. On multiple displays, destinations include the output name.
+
 ## Settings
 
 A two-column settings window for everything, its index grouped by what is

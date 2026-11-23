@@ -10124,7 +10124,7 @@ msgstr "検索できませんでした: %s"
 #: internal/lightui/sysmon.go:55
 #: internal/shell/launcher_actions.go:45
 #: internal/termui/menubar.go:27
-#: internal/ui/dock.go:595
+#: internal/ui/dock.go:596
 #: internal/ui/portal_ask.go:80
 msgid "Quit"
 msgstr "やめる"
@@ -13619,22 +13619,22 @@ msgid "%s · workspace %s"
 msgstr "%[1]s · ワークスペース %[2]s"
 
 #: internal/shell/launcher_actions.go:33
-#: internal/ui/dock.go:586
+#: internal/ui/dock.go:587
 msgid "New Window"
 msgstr "新しい窓"
 
 #: internal/shell/launcher_actions.go:39
-#: internal/ui/dock.go:589
+#: internal/ui/dock.go:590
 msgid "Remove from Dock"
 msgstr "ドックから取り外す"
 
 #: internal/shell/launcher_actions.go:41
-#: internal/ui/dock.go:591
+#: internal/ui/dock.go:592
 msgid "Keep in Dock"
 msgstr "ドックに固定"
 
 #: internal/shell/launcher_actions.go:47
-#: internal/ui/dock.go:597
+#: internal/ui/dock.go:598
 msgid "Quit (%d windows)"
 msgstr "終了 (%d Windows)"
 
@@ -15198,6 +15198,7 @@ msgid "The passphrases do not match."
 msgstr "パスフレーズが一致しません。"
 
 #: internal/ui/bar.go:604
+#: internal/ui/dock_move.go:32
 msgid "Workspace %s"
 msgstr "ワークスペース%s"
 
@@ -15355,6 +15356,14 @@ msgstr "Bluetooth はオフです。"
 #: internal/ui/settings_bluetooth.go:250
 msgid "No devices paired yet"
 msgstr "ペアリング済みのデバイスはまだありません"
+
+#: internal/ui/dock_move.go:47
+msgid "Untitled Window"
+msgstr ""
+
+#: internal/ui/dock_move.go:59
+msgid "Move to Workspace"
+msgstr ""
 
 #: internal/ui/drawer.go:218
 #: internal/ui/settings.go:699
