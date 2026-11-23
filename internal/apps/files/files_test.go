@@ -308,22 +308,27 @@ func TestMountinfo(t *testing.T) {
 41 22 0:50 / /home/ann/remote rw master:3 - fuse.sshfs ann@box:/srv rw
 42 22 0:51 / /run/user/1000/gvfs rw - fuse.gvfsd-fuse gvfsd-fuse rw
 43 22 8:33 / /mnt/data ro - btrfs /dev/sdc1 ro
+44 22 259:2 /nix/store/orca-rootfs/etc/X11 /etc/X11 rw - btrfs /dev/nvme0n1p2 rw
+45 22 259:2 /etc /etc rw - btrfs /dev/nvme0n1p2 rw
+46 22 259:2 /etc /etc/pam.d rw - btrfs /dev/nvme0n1p2 rw
+47 22 259:2 /etc /.host-etc rw - btrfs /dev/nvme0n1p2 rw
+48 22 259:2 /data /data rw - btrfs /dev/nvme0n1p2 rw
 `
 	ms := parseMountinfo(strings.NewReader(info))
-	if len(ms) != 7 || ms[3].Point != "/media/ann/USB STICK" || !ms[6].ReadOnly {
+	if len(ms) != 12 || ms[3].Point != "/media/ann/USB STICK" || !ms[6].ReadOnly {
 		t.Fatalf("parsed %+v", ms)
 	}
 	var points []string
 	for _, m := range UserMounts(ms, false) {
 		points = append(points, m.Point)
 	}
-	if !slices.Equal(points, []string{"/home/ann/remote", "/mnt/data"}) {
+	if !slices.Equal(points, []string{"/home/ann/remote", "/mnt/data", "/data"}) {
 		t.Fatalf("user mounts %v", points)
 	}
 	if m, _ := MountOf(ms, "/media/ann/USB STICK/photos/a.jpg"); m.FSType != "vfat" {
 		t.Fatalf("mount of a path: %+v", m)
 	}
-	if m, _ := MountOf(ms, "/etc/hosts"); m.Point != "/" {
+	if m, _ := MountOf(ms, "/usr/lib/x"); m.Point != "/" {
 		t.Fatalf("root: %+v", m)
 	}
 }

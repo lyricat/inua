@@ -115,7 +115,10 @@ func UserMounts(ms []Mount, includeMedia bool) []Mount {
 			strings.HasPrefix(p, "/dev"), strings.HasPrefix(p, "/run/") && !strings.HasPrefix(p, "/run/media/"),
 			strings.HasPrefix(p, "/snap/"), strings.HasPrefix(p, "/var/"),
 			strings.HasPrefix(p, "/usr"), strings.HasPrefix(p, "/nix"),
-			strings.HasPrefix(p, "/tmp"), p == "/home" || p == "/root" || p == "/opt" || p == "/srv":
+			strings.HasPrefix(p, "/tmp"), p == "/home" || p == "/root" || p == "/opt" || p == "/srv",
+			// The system's own files and the bind mounts a sandbox (Orca's
+			// fhsenv: /etc/X11, /etc/pam.d …, /.host-etc) makes into it.
+			p == "/etc" || strings.HasPrefix(p, "/etc/") || p == "/.host-etc" || strings.HasPrefix(p, "/.host-etc/"):
 			continue
 		case !includeMedia && (strings.HasPrefix(p, "/media/") || strings.HasPrefix(p, "/run/media/")):
 			continue
