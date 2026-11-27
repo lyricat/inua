@@ -2409,7 +2409,7 @@ button.shot-record:checked { background: alpha(@danger, 0.1); border-color: alph
 /* Workspace and window overview */
 .overview-scrim {
   background: alpha(@app, 0.56);
-  padding: 28px 48px 20px;
+  padding: 24px 48px 56px;
 }
 .overview-monitor-group { padding: 4px 8px 12px; }
 .overview-monitor {
@@ -2424,9 +2424,17 @@ button.shot-record:checked { background: alpha(@danger, 0.1); border-color: alph
   border: 2px solid alpha(@t0, 0.2);
   border-radius: 2px;
   padding: 0;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
 }
-.overview-workspace.selected { border-color: @accent; }
-.overview-workspace.drop-target { border-color: @accent; background: alpha(@accent, 0.2); }
+.overview-workspace.selected {
+  border-color: @accent;
+  box-shadow: 0 8px 26px alpha(@accent, 0.4);
+}
+.overview-workspace.drop-target {
+  border-color: @accent;
+  background: alpha(@accent, 0.2);
+  box-shadow: 0 8px 28px alpha(@accent, 0.45);
+}
 .overview-workspace-background {
   padding: 0;
   margin: 0;
@@ -2436,10 +2444,16 @@ button.shot-record:checked { background: alpha(@danger, 0.1); border-color: alph
   min-height: 0;
   background: transparent;
 }
-.overview-workspace.overview-new-card { border-color: alpha(@t0, 0.18); }
-.overview-workspace.overview-new-card.selected { border-color: @accent; }
+.overview-workspace.overview-new-card {
+  border: 2px solid alpha(@t0, 0.18);
+  border-radius: 2px;
+}
+.overview-workspace.overview-new-card.selected {
+  border-color: @accent;
+}
 .overview-new-tile {
   background: alpha(@panel, 0.45);
+  border-radius: 0;
   color: @t1;
   padding: 20px;
 }
@@ -2478,46 +2492,52 @@ button.shot-record:checked { background: alpha(@danger, 0.1); border-color: alph
 .overview-mru { min-width: 0; min-height: 0; font-size: 11px; padding: 0 12px; }
 .overview-hint { color: @t2; font-size: 11px; padding: 6px 16px; }
 .overview-search {
-  min-width: 480px;
-  min-height: 48px;
-  padding: 0 12px 0 16px;
-  background: alpha(@surface, 0.96);
-  border: 1px solid alpha(@t0, 0.16);
-  border-radius: 10px;
-  transition: border-color 150ms ease;
+  min-width: 320px;
+  min-height: 36px;
+  padding: 0 12px;
+  background: alpha(@surface, 0.88);
+  border: 1px solid alpha(@t0, 0.12);
+  border-radius: 18px;
+  box-shadow: 0 4px 16px alpha(black, 0.2);
+  transition: all 180ms ease;
 }
-.overview-search:focus-within { border-color: alpha(@accent, 0.8); }
-.overview-search-icon { color: @t2; }
+.overview-search:focus-within {
+  border-color: @accent;
+  background: alpha(@surface, 0.96);
+  box-shadow: 0 6px 22px alpha(@accent, 0.28);
+}
+.overview-search-icon { color: @t2; margin-right: 2px; }
 .overview-search:focus-within .overview-search-icon { color: @accent; }
 .overview entry.overview-query {
-  min-width: 380px;
-  min-height: 36px;
-  padding: 0 6px;
+  min-width: 240px;
+  min-height: 28px;
+  padding: 0 4px;
   background: transparent;
   color: @t0;
   border: 0;
   box-shadow: none;
-  font-size: 14px;
+  font-size: 13px;
 }
 .overview entry.overview-query:focus { border: 0; outline: none; box-shadow: none; }
 .overview button.overview-search-clear {
-  min-width: 26px;
-  min-height: 26px;
+  min-width: 20px;
+  min-height: 20px;
   padding: 0;
   color: @t2;
   background: transparent;
   border: 0;
-  border-radius: 6px;
+  border-radius: 4px;
   box-shadow: none;
-  font-size: 18px;
+  font-size: 15px;
 }
 .overview button.overview-search-clear:hover { color: @t0; background: alpha(@t1, 0.14); }
 .overview-search-panel {
-  min-width: 480px;
+  min-width: 500px;
   background: alpha(@surface, 0.98);
   border: 1px solid alpha(@t0, 0.12);
-  border-radius: 10px;
+  border-radius: 14px;
   padding: 10px;
+  box-shadow: 0 12px 36px alpha(black, 0.3);
 }
 .overview-search-section-header {
   color: @t2;
@@ -2529,13 +2549,14 @@ button.shot-record:checked { background: alpha(@danger, 0.1); border-color: alph
 .overview-search-item {
   min-height: 48px;
   padding: 6px 12px;
-  border-radius: 6px;
+  border-radius: 8px;
   border: 1px solid transparent;
   background: transparent;
   box-shadow: none;
+  transition: all 140ms ease;
 }
 .overview-search-item:hover, .overview-search-item.selected {
-  background: alpha(@accent, 0.12);
+  background: alpha(@accent, 0.14);
   border-color: alpha(@accent, 0.3);
 }
 .overview-search-item-title { color: @t0; font-size: 13.5px; font-weight: 600; }
