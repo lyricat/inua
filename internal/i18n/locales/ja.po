@@ -13890,7 +13890,7 @@ msgstr "このワークスペースに新しいセッション"
 #: internal/term/settings/settings.go:104
 #: internal/term/web/strings.go:70
 #: internal/termui/columns.go:178
-#: internal/ui/overview.go:725
+#: internal/ui/overview.go:808
 msgid "New workspace"
 msgstr "新しいワークスペース"
 
@@ -15487,43 +15487,43 @@ msgstr "Bluetooth オン"
 msgid "Bluetooth off"
 msgstr "Bluetooth オフ"
 
-#: internal/ui/overview.go:244
+#: internal/ui/overview.go:265
 msgid "restore focus"
 msgstr "フォーカスを復元する"
 
-#: internal/ui/overview.go:381
+#: internal/ui/overview.go:425
 msgid "kill window"
 msgstr "ウィンドウをキルする"
 
-#: internal/ui/overview.go:558
+#: internal/ui/overview.go:609
 msgid "No workspaces"
 msgstr "ワークスペースがない"
 
-#: internal/ui/overview.go:560
+#: internal/ui/overview.go:611
 msgid "No matches"
 msgstr "一致しない"
 
-#: internal/ui/overview.go:1103
+#: internal/ui/overview.go:1192
 msgid "No matching apps or windows"
 msgstr ""
 
-#: internal/ui/overview.go:1114
+#: internal/ui/overview.go:1203
 msgid "Open Windows"
 msgstr ""
 
-#: internal/ui/overview.go:1128
+#: internal/ui/overview.go:1217
 msgid "Applications"
 msgstr ""
 
-#: internal/ui/overview.go:1168
-msgid "Search apps, windows and workspaces…"
+#: internal/ui/overview.go:1258
+msgid "Type to search…"
 msgstr ""
 
-#: internal/ui/overview.go:1208
+#: internal/ui/overview.go:1366
 msgid "Type to search   Esc · Back / Close   ↑↓ / Tab · Navigate   Enter · Open / Switch   Drag · Move"
 msgstr ""
 
-#: internal/ui/overview.go:1254
+#: internal/ui/overview.go:1412
 msgid "inua overview"
 msgstr "イヌアの概要"
 
@@ -15531,19 +15531,19 @@ msgstr "イヌアの概要"
 msgid "close window"
 msgstr "ウィンドウを閉じる"
 
-#: internal/ui/overview_manage.go:183
+#: internal/ui/overview_manage.go:197
 msgid "%s · %s · Middle click: close"
 msgstr "%[1]s・%[2]s・中クリック:閉じる"
 
-#: internal/ui/overview_manage.go:223
+#: internal/ui/overview_manage.go:237
 msgid "Click a window to force-terminate ONLY that client · Esc / right click cancels"
 msgstr "ウィンドウをクリックしてそのクライアントのみを強制終了・Esc / 右クリックでキャンセル"
 
-#: internal/ui/overview_manage.go:227
+#: internal/ui/overview_manage.go:241
 msgid "Arrows / Tab · select    Type or / · search    Middle click · close    Ctrl+Shift+X · kill    Drag · move"
 msgstr "矢印 / タブ · タイプの選択 または / · 検索 中クリック · 閉じる Ctrl+Shift+X · キル ドラッグ · 移動"
 
-#: internal/ui/overview_manage.go:263
+#: internal/ui/overview_manage.go:277
 msgid "position floating window"
 msgstr "フローティングウィンドウの位置"
 

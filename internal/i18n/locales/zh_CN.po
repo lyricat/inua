@@ -13890,7 +13890,7 @@ msgstr "在此工作区新建会话"
 #: internal/term/settings/settings.go:104
 #: internal/term/web/strings.go:70
 #: internal/termui/columns.go:178
-#: internal/ui/overview.go:725
+#: internal/ui/overview.go:808
 msgid "New workspace"
 msgstr "新建工作区"
 
@@ -15487,43 +15487,43 @@ msgstr "蓝牙开"
 msgid "Bluetooth off"
 msgstr "蓝牙关"
 
-#: internal/ui/overview.go:244
+#: internal/ui/overview.go:265
 msgid "restore focus"
 msgstr "恢复焦点"
 
-#: internal/ui/overview.go:381
+#: internal/ui/overview.go:425
 msgid "kill window"
 msgstr "杀掉窗口"
 
-#: internal/ui/overview.go:558
+#: internal/ui/overview.go:609
 msgid "No workspaces"
 msgstr "没有工作区"
 
-#: internal/ui/overview.go:560
+#: internal/ui/overview.go:611
 msgid "No matches"
 msgstr "没有匹配项"
 
-#: internal/ui/overview.go:1103
+#: internal/ui/overview.go:1192
 msgid "No matching apps or windows"
 msgstr ""
 
-#: internal/ui/overview.go:1114
+#: internal/ui/overview.go:1203
 msgid "Open Windows"
 msgstr ""
 
-#: internal/ui/overview.go:1128
+#: internal/ui/overview.go:1217
 msgid "Applications"
 msgstr ""
 
-#: internal/ui/overview.go:1168
-msgid "Search apps, windows and workspaces…"
+#: internal/ui/overview.go:1258
+msgid "Type to search…"
 msgstr ""
 
-#: internal/ui/overview.go:1208
+#: internal/ui/overview.go:1366
 msgid "Type to search   Esc · Back / Close   ↑↓ / Tab · Navigate   Enter · Open / Switch   Drag · Move"
 msgstr ""
 
-#: internal/ui/overview.go:1254
+#: internal/ui/overview.go:1412
 msgid "inua overview"
 msgstr "inua概述"
 
@@ -15531,19 +15531,19 @@ msgstr "inua概述"
 msgid "close window"
 msgstr "关闭窗口"
 
-#: internal/ui/overview_manage.go:183
+#: internal/ui/overview_manage.go:197
 msgid "%s · %s · Middle click: close"
 msgstr "%[1]s·%[2]s·中键:关闭"
 
-#: internal/ui/overview_manage.go:223
+#: internal/ui/overview_manage.go:237
 msgid "Click a window to force-terminate ONLY that client · Esc / right click cancels"
 msgstr "单击窗口仅强制终止该客户端 · Esc/右键单击取消"
 
-#: internal/ui/overview_manage.go:227
+#: internal/ui/overview_manage.go:241
 msgid "Arrows / Tab · select    Type or / · search    Middle click · close    Ctrl+Shift+X · kill    Drag · move"
 msgstr "箭头/选项卡·选择类型或/·搜索中键单击·关闭Ctrl+Shift+X·删除拖动·移动"
 
-#: internal/ui/overview_manage.go:263
+#: internal/ui/overview_manage.go:277
 msgid "position floating window"
 msgstr "定位浮动窗口"
 

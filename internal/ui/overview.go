@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"slices"
 	"strconv"
 	"strings"
 	"sync"
@@ -30,6 +31,17 @@ import (
 // Hyprland toplevel frames arrive from the capture worker and are painted by
 // GTK on the main thread.
 type workspaceOverview struct {
+	compact              bool
+	appsBox              *gtk.Box
+	appsStack            *gtk.Stack
+	appsDots             *gtk.Box
+	appsPage             int
+	appsTotalPages       int
+	lastPageScroll       time.Time
+	onAppsScroll         func(gtk.EventControllerScroll, float64, float64) bool
+	onCardsScroll        func(gtk.EventControllerScroll, float64, float64) bool
+	appsPopulated        bool
+	appsStamp            string
 	mouseGuard           bool
 	killLayer            *gtk.Fixed
 	killGlyph            *gtk.Label
@@ -95,10 +107,14 @@ type queuedOverviewFrame struct {
 }
 
 func (s *shellUI) showOverview() {
-	s.showOverviewOn(s.snap.FocusedOutput)
+	s.showOverviewMode(s.snap.FocusedOutput, false)
 }
 
 func (s *shellUI) showOverviewOn(monitor string) {
+	s.showOverviewMode(monitor, false)
+}
+
+func (s *shellUI) showOverviewMode(monitor string, compact bool) {
 	if monitor == "" {
 		monitor = s.snap.FocusedOutput
 	}
@@ -117,6 +133,7 @@ func (s *shellUI) showOverviewOn(monitor string) {
 	if s.launcher.st.Open {
 		s.cancelLauncher()
 	}
+	s.overview.compact = compact
 	s.overview.st.MRU = s.cfg.Overview.MRU
 	s.overview.st.Apps = s.apps
 	s.overview.st.Show(overviewSnapshotOn(s.snap, monitor))
@@ -140,7 +157,7 @@ func (s *shellUI) showOverviewOn(monitor string) {
 	s.overview.views = map[string]*workspaceOverview{}
 	for _, mon := range s.snap.Outputs {
 		if mon.Name != s.overview.monitor {
-			s.overview.views[mon.Name] = &workspaceOverview{monitor: mon.Name}
+			s.overview.views[mon.Name] = &workspaceOverview{monitor: mon.Name, compact: compact}
 		}
 	}
 	if s.overview.textures == nil {
@@ -359,6 +376,21 @@ func (s *shellUI) bindOverviewHandlers() {
 			s.overview.query.GrabFocus()
 			return
 		}
+		if strings.HasPrefix(key, "dot:") {
+			pageStr := strings.TrimPrefix(key, "dot:")
+			if page, err := strconv.Atoi(pageStr); err == nil {
+				views := []*workspaceOverview{&s.overview}
+				for _, v := range s.overview.views {
+					views = append(views, v)
+				}
+				for _, v := range views {
+					if v.win != nil && v.appsDots != nil {
+						s.switchOverviewAppsPage(v, page)
+					}
+				}
+			}
+			return
+		}
 		if strings.HasPrefix(key, "search-window:") {
 			addr := strings.TrimPrefix(key, "search-window:")
 			s.activateOverview(s.overviewWindowMonitor(addr), func(ctx context.Context) error { return s.comp.FocusWindow(ctx, addr) })
@@ -372,6 +404,14 @@ func (s *shellUI) bindOverviewHandlers() {
 					s.closeOverview(false)
 					_ = desktop.LaunchWith(entry, s.cfg.TerminalCommand())
 				}
+			}
+			return
+		}
+		if strings.HasPrefix(key, "app:") {
+			appID := strings.TrimPrefix(key, "app:")
+			if entry := s.findAppEntry(appID); entry != nil {
+				s.closeOverview(false)
+				_ = desktop.LaunchWith(entry, s.cfg.TerminalCommand())
 			}
 			return
 		}
@@ -530,9 +570,15 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 	s.renderOverviewSearchResults(o)
 	o.queryClear.SetVisible(o.st.Query != "")
 	o.cardsScroll.SetVisible(o.st.Query == "")
-	key := overviewLayoutKey(o.st.Cards, s.snap.Outputs, s.cfg.Overview.PerMonitor, o.monitor, int(o.root.GetScaleFactor()), o.st.Query != "")
+	key := overviewLayoutKey(o.st.Cards, s.snap.Outputs, s.cfg.Overview.PerMonitor, o.monitor, int(o.root.GetScaleFactor()), o.st.Query != "", o.compact)
 	if o.layoutKey == key {
 		s.updateOverviewWidgets(o)
+		if o.appsBox != nil {
+			o.appsBox.SetVisible(!o.compact && o.st.Query == "")
+			if !o.compact && o.st.Query == "" {
+				s.renderOverviewApps(o)
+			}
+		}
 		return
 	}
 	for _, ptr := range o.renderedTargets {
@@ -540,6 +586,7 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 	}
 	o.renderedTargets = nil
 	o.layoutKey = key
+	o.appsPopulated = false
 	o.images = make(map[string]*gtk.Picture)
 	o.cardWidgets = make(map[int]*overviewCardWidgets)
 	o.windowWidgets = make(map[string]*overviewWindowWidgets)
@@ -562,6 +609,12 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 		label := gtk.NewLabel(message)
 		label.AddCssClass("overview-empty")
 		gtkx.Append(&o.cards, &label.Widget)
+		if o.appsBox != nil {
+			o.appsBox.SetVisible(!o.compact && o.st.Query == "")
+			if !o.compact && o.st.Query == "" {
+				s.renderOverviewApps(o)
+			}
+		}
 		return
 	}
 	// Match the original overview: monitor groups contain proportional
@@ -575,6 +628,13 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 	}
 	availableW := viewportW - 120
 	availableH := viewportH - 180
+	if !o.compact {
+		availableH = min(viewportH*0.48, viewportH-340)
+	}
+	o.cardsScroll.SetVexpand(true)
+	if o.appsBox != nil {
+		o.appsBox.SetVexpand(false)
+	}
 	groups := []string{}
 	counts := map[string]int{}
 	aspect := 0.0
@@ -599,12 +659,29 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 		for _, name := range groups {
 			rows += (counts[name] + c - 1) / c
 		}
-		w := min((availableW-float64(c-1)*18-28)/float64(c), (availableH-float64(len(groups))*52-float64(rows-1)*18)/float64(rows)/aspect)
+		headerH := 0.0
+		if len(groups) > 1 {
+			headerH = float64(len(groups)) * 36
+		}
+		gapH := float64(rows - 1) * 18
+		w := min((availableW-float64(c-1)*18-28)/float64(c), (availableH-headerH-gapH)/float64(rows)/aspect)
 		if w > thumbW {
 			columns, thumbW = c, w
 		}
 	}
 	thumbW = max(180, thumbW)
+	totalRows := 0
+	for _, name := range groups {
+		totalRows += (counts[name] + columns - 1) / columns
+	}
+	headerH := 0.0
+	if len(groups) > 1 {
+		headerH = float64(len(groups)) * 36
+	}
+	gapH := float64(totalRows - 1) * 18
+	if maxAllowedW := (availableH - headerH - gapH) / float64(totalRows) / aspect; maxAllowedW > 0 && thumbW > maxAllowedW {
+		thumbW = maxAllowedW
+	}
 	o.columns = columns
 	var grid *gtk.Grid
 	lastMonitor := ""
@@ -648,10 +725,12 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 			lastMonitor = card.Workspace.Output
 			section := gtk.NewBox(gtk.OrientationVerticalValue, 10)
 			section.AddCssClass("overview-monitor-group")
-			label := gtk.NewLabel(lastMonitor)
-			label.SetXalign(0)
-			label.AddCssClass("overview-monitor")
-			gtkx.Append(section, &label.Widget)
+			if len(groups) > 1 {
+				label := gtk.NewLabel(lastMonitor)
+				label.SetXalign(0)
+				label.AddCssClass("overview-monitor")
+				gtkx.Append(section, &label.Widget)
+			}
 			grid = gtk.NewGrid()
 			grid.SetHalign(gtk.AlignCenterValue)
 			grid.SetValign(gtk.AlignStartValue)
@@ -818,6 +897,12 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 		grid.Attach(&canvas.Widget, int32(slot%columns), int32(slot/columns), 1, 1)
 		canvas.Unref()
 		slot++
+	}
+	if o.appsBox != nil {
+		o.appsBox.SetVisible(!o.compact && o.st.Query == "")
+		if !o.compact && o.st.Query == "" {
+			s.renderOverviewApps(o)
+		}
 	}
 }
 
@@ -1150,22 +1235,23 @@ func (s *shellUI) buildOverview(o *workspaceOverview) {
 	o.root = *gtk.NewBox(gtk.OrientationVerticalValue, 14)
 	o.root.AddCssClass("overview-scrim")
 	o.root.SetFocusable(true)
-	o.content = *gtk.NewBox(gtk.OrientationVerticalValue, 16)
+	o.content = *gtk.NewBox(gtk.OrientationVerticalValue, 20)
 	o.content.SetHexpand(true)
 	o.content.SetVexpand(true)
 	gtkx.Append(&o.root, &o.content.Widget)
 
 	// Modern centered search pill
-	o.searchContainer = *gtk.NewBox(gtk.OrientationHorizontalValue, 10)
+	o.searchContainer = *gtk.NewBox(gtk.OrientationHorizontalValue, 8)
 	o.searchContainer.SetHalign(gtk.AlignCenterValue)
 	o.searchContainer.AddCssClass("overview-search")
 
 	searchIcon := gtk.NewImageFromIconName("system-search-symbolic")
+	searchIcon.SetPixelSize(14)
 	searchIcon.AddCssClass("overview-search-icon")
 	gtkx.Append(&o.searchContainer, &searchIcon.Widget)
 
 	o.query = *gtk.NewEntry()
-	o.query.SetPlaceholderText(i18n.T("Search apps, windows and workspaces…"))
+	o.query.SetPlaceholderText(i18n.T("Type to search…"))
 	o.query.AddCssClass("overview-query")
 	gtkx.Append(&o.searchContainer, &o.query.Widget)
 
@@ -1185,9 +1271,28 @@ func (s *shellUI) buildOverview(o *workspaceOverview) {
 	o.cards.SetValign(gtk.AlignCenterValue)
 	cardsScroll := gtk.NewScrolledWindow()
 	o.cardsScroll = *cardsScroll
+	o.cardsScroll.AddCssClass("overview-cards-scroll")
 	o.cardsScroll.SetPolicy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue)
 	o.cardsScroll.SetVexpand(true)
 	o.cardsScroll.SetChild(&o.cards.Widget)
+
+	cardsScrollCtrl := gtk.NewEventControllerScroll(gtk.EventControllerScrollVerticalValue | gtk.EventControllerScrollDiscreteValue)
+	cardsScrollCtrl.SetPropagationPhase(gtk.PhaseCaptureValue)
+	o.onCardsScroll = func(_ gtk.EventControllerScroll, _, dy float64) bool {
+		if o.searchMode || o.dragging != "" {
+			return false
+		}
+		delta := 1
+		if dy < 0 {
+			delta = -1
+		}
+		s.navigateOverview(delta)
+		s.renderOverview()
+		return true
+	}
+	cardsScrollCtrl.ConnectScroll(&o.onCardsScroll)
+	o.cardsScroll.AddController(&cardsScrollCtrl.EventController)
+
 	gtkx.Append(&o.content, &o.cardsScroll.Widget)
 
 	// GNOME Shell-like search results list
@@ -1204,6 +1309,55 @@ func (s *shellUI) buildOverview(o *workspaceOverview) {
 	o.searchResultsScroll.SetChild(&o.searchResults.Widget)
 	o.searchResultsScroll.SetVisible(false)
 	gtkx.Append(&o.content, &o.searchResultsScroll.Widget)
+
+	// Floating paginated applications area at bottom (iPad / GNOME style)
+	appsBox := gtk.NewBox(gtk.OrientationVerticalValue, 6)
+	o.appsBox = appsBox
+	appsBox.AddCssClass("overview-apps-container")
+	appsBox.SetHalign(gtk.AlignCenterValue)
+	appsBox.SetValign(gtk.AlignCenterValue)
+
+	appsStack := gtk.NewStack()
+	o.appsStack = appsStack
+	appsStack.SetTransitionType(gtk.StackTransitionTypeSlideLeftRightValue)
+	appsStack.SetTransitionDuration(250)
+	appsStack.SetHhomogeneous(true)
+	appsStack.SetVhomogeneous(true)
+	appsStack.SetHalign(gtk.AlignCenterValue)
+	appsStack.SetValign(gtk.AlignCenterValue)
+	gtkx.Append(appsBox, &appsStack.Widget)
+
+	appsDots := gtk.NewBox(gtk.OrientationHorizontalValue, 6)
+	o.appsDots = appsDots
+	appsDots.AddCssClass("overview-apps-dots")
+	appsDots.SetHalign(gtk.AlignCenterValue)
+	appsDots.SetValign(gtk.AlignCenterValue)
+	gtkx.Append(appsBox, &appsDots.Widget)
+
+	// Wheel/touchpad scroll controller for horizontal page switching
+	scrollCtrl := gtk.NewEventControllerScroll(gtk.EventControllerScrollVerticalValue | gtk.EventControllerScrollHorizontalValue | gtk.EventControllerScrollDiscreteValue)
+	scrollCtrl.SetPropagationPhase(gtk.PhaseCaptureValue)
+	thisOverview := o
+	o.onAppsScroll = func(_ gtk.EventControllerScroll, dx, dy float64) bool {
+		now := time.Now()
+		if now.Sub(thisOverview.lastPageScroll) < 160*time.Millisecond {
+			return true
+		}
+		if dx != 0 || dy != 0 {
+			delta := 1
+			if dx < 0 || dy < 0 {
+				delta = -1
+			}
+			s.switchOverviewAppsPage(thisOverview, thisOverview.appsPage+delta)
+			thisOverview.lastPageScroll = now
+			return true
+		}
+		return true
+	}
+	scrollCtrl.ConnectScroll(&o.onAppsScroll)
+	appsBox.AddController(&scrollCtrl.EventController)
+
+	gtkx.Append(&o.content, &appsBox.Widget)
 
 	hint := gtk.NewLabel(i18n.T("Type to search   Esc · Back / Close   ↑↓ / Tab · Navigate   Enter · Open / Switch   Drag · Move"))
 	o.hint = hint
@@ -1264,8 +1418,8 @@ func (s *shellUI) buildOverview(o *workspaceOverview) {
 	o.query.AddController(&queryFocus.EventController)
 	o.win.Present()
 	o.root.GrabFocus()
-	scrollKeys := gtk.NewEventControllerScroll(gtk.EventControllerScrollVerticalValue | gtk.EventControllerScrollDiscreteValue)
-	scrollKeys.SetPropagationPhase(gtk.PhaseCaptureValue)
+	scrollKeys := gtk.NewEventControllerScroll(gtk.EventControllerScrollVerticalValue | gtk.EventControllerScrollHorizontalValue | gtk.EventControllerScrollDiscreteValue)
+	scrollKeys.SetPropagationPhase(gtk.PhaseBubbleValue)
 	scrollKeys.ConnectScroll(&s.overview.onOverviewScroll)
 	o.win.AddController(&scrollKeys.EventController)
 	right := gtk.NewGestureClick()
@@ -1334,4 +1488,211 @@ func overviewWindowLayout(w compositor.Window, boxX, boxY, boxW, boxH, thumbW, t
 	x = max(-pw+24, min(x, thumbW-24))
 	y = max(-ph+24, min(y, thumbH-24))
 	return x, y, pw, ph
+}
+
+func (s *shellUI) switchOverviewAppsPage(o *workspaceOverview, page int) {
+	if o.appsStack == nil || o.appsTotalPages <= 1 {
+		return
+	}
+	if page < 0 {
+		page = 0
+	}
+	if page >= o.appsTotalPages {
+		page = o.appsTotalPages - 1
+	}
+	if page == o.appsPage {
+		return
+	}
+	prev := o.appsPage
+	o.appsPage = page
+	trans := gtk.StackTransitionTypeSlideLeftValue
+	if page < prev {
+		trans = gtk.StackTransitionTypeSlideRightValue
+	}
+	o.appsStack.SetVisibleChildFull(fmt.Sprintf("page-%d", page), trans)
+	s.updateOverviewAppsDots(o)
+}
+
+func (s *shellUI) updateOverviewAppsDots(o *workspaceOverview) {
+	if o.appsDots == nil {
+		return
+	}
+	idx := 0
+	for child := o.appsDots.GetFirstChild(); child != nil; child = child.GetNextSibling() {
+		if idx == o.appsPage {
+			child.AddCssClass("active")
+		} else {
+			child.RemoveCssClass("active")
+		}
+		idx++
+	}
+}
+
+func (s *shellUI) renderOverviewApps(o *workspaceOverview) {
+	if o.appsBox == nil {
+		return
+	}
+	if o.appsPopulated && s.appsStamp != "" && s.appsStamp == o.appsStamp {
+		return
+	}
+	var valid []*desktop.Entry
+	seen := make(map[string]bool)
+	for _, app := range s.apps {
+		if app == nil || app.NoDisplay || app.Name == "" || len(app.Command) == 0 {
+			continue
+		}
+		if seen[app.Name] {
+			continue
+		}
+		seen[app.Name] = true
+		valid = append(valid, app)
+	}
+	if len(valid) == 0 {
+		return
+	}
+	slices.SortFunc(valid, func(a, b *desktop.Entry) int {
+		return strings.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))
+	})
+
+	gtkx.Clear(o.appsBox)
+
+	appsStack := gtk.NewStack()
+	o.appsStack = appsStack
+	appsStack.SetTransitionType(gtk.StackTransitionTypeSlideLeftRightValue)
+	appsStack.SetTransitionDuration(250)
+	appsStack.SetHhomogeneous(true)
+	appsStack.SetVhomogeneous(true)
+	appsStack.SetHalign(gtk.AlignCenterValue)
+	appsStack.SetValign(gtk.AlignCenterValue)
+	gtkx.Append(o.appsBox, &appsStack.Widget)
+
+	appsDots := gtk.NewBox(gtk.OrientationHorizontalValue, 6)
+	o.appsDots = appsDots
+	appsDots.AddCssClass("overview-apps-dots")
+	appsDots.SetHalign(gtk.AlignCenterValue)
+	appsDots.SetValign(gtk.AlignCenterValue)
+	gtkx.Append(o.appsBox, &appsDots.Widget)
+
+	rows := 3
+	cols := 8
+	btnW, btnH := 102, 78
+	iconPx := 42
+	colSpacing, rowSpacing := 22, 10
+	if o.monitor != "" {
+		for _, mon := range s.snap.Outputs {
+			if mon.Name == o.monitor {
+				w := float64(mon.Width) / max(mon.Scale, 1)
+				if w >= 2560 {
+					cols = 10
+					colSpacing = 26
+				} else if w >= 1800 {
+					cols = 8
+					colSpacing = 22
+				} else if w < 1400 {
+					cols = 6
+					btnW, btnH = 98, 76
+					iconPx = 40
+					colSpacing, rowSpacing = 18, 10
+				}
+				break
+			}
+		}
+	}
+
+	pageSize := rows * cols
+	totalPages := (len(valid) + pageSize - 1) / pageSize
+	o.appsTotalPages = totalPages
+	if o.appsPage >= totalPages {
+		o.appsPage = 0
+	}
+
+	for p := 0; p < totalPages; p++ {
+		pageGrid := gtk.NewGrid()
+		pageGrid.AddCssClass("overview-apps-page")
+		pageGrid.SetColumnSpacing(uint32(colSpacing))
+		pageGrid.SetRowSpacing(uint32(rowSpacing))
+		pageGrid.SetHalign(gtk.AlignCenterValue)
+		pageGrid.SetValign(gtk.AlignCenterValue)
+
+		start := p * pageSize
+		end := min(start+pageSize, len(valid))
+		for idx := start; idx < end; idx++ {
+			app := valid[idx]
+			offset := idx - start
+			col := int32(offset % cols)
+			row := int32(offset / cols)
+
+			btn := gtk.NewButton()
+			btn.AddCssClass("overview-app-item")
+			btn.SetName("app:" + app.ID)
+			btn.SetTooltipText(app.Name)
+
+			box := gtk.NewBox(gtk.OrientationVerticalValue, 4)
+			box.SetHalign(gtk.AlignCenterValue)
+			box.SetValign(gtk.AlignCenterValue)
+			box.SetSizeRequest(int32(btnW), int32(btnH))
+
+			icon := gtk.NewImage()
+			icon.SetPixelSize(int32(iconPx))
+			setIcon(icon, app.Icon)
+			icon.SetCanTarget(false)
+			gtkx.Append(box, &icon.Widget)
+
+			title := gtk.NewLabel(app.Name)
+			title.AddCssClass("overview-app-title")
+			title.SetEllipsize(3) // pango ellipsize end
+			title.SetLines(1)
+			title.SetMaxWidthChars(12)
+			title.SetHalign(gtk.AlignCenterValue)
+			title.SetCanTarget(false)
+			gtkx.Append(box, &title.Widget)
+
+			btn.SetChild(&box.Widget)
+			btn.ConnectClicked(&s.onOverviewButton)
+
+			pageGrid.Attach(&btn.Widget, col, row, 1, 1)
+			btn.Unref()
+		}
+
+		pageName := fmt.Sprintf("page-%d", p)
+		o.appsStack.AddNamed(&pageGrid.Widget, pageName)
+		pageGrid.Unref()
+	}
+
+	if totalPages > 1 {
+		for p := 0; p < totalPages; p++ {
+			dot := gtk.NewButton()
+			dot.AddCssClass("overview-dot")
+			dot.SetName(fmt.Sprintf("dot:%d", p))
+			if p == o.appsPage {
+				dot.AddCssClass("active")
+			}
+			dot.ConnectClicked(&s.onOverviewButton)
+			gtkx.Append(o.appsDots, &dot.Widget)
+		}
+		o.appsDots.SetVisible(true)
+	} else {
+		o.appsDots.SetVisible(false)
+	}
+
+	o.appsStack.SetVisibleChildName(fmt.Sprintf("page-%d", o.appsPage))
+	o.appsPopulated = true
+	o.appsStamp = s.appsStamp
+}
+
+func (s *shellUI) findAppEntry(id string) *desktop.Entry {
+	if s.notes.apps != nil {
+		if e := s.notes.apps[id]; e != nil {
+			return e
+		}
+		if e := s.notes.apps[strings.ToLower(id)]; e != nil {
+			return e
+		}
+	}
+	for _, e := range s.apps {
+		if e.ID == id || strings.EqualFold(e.ID, id) {
+			return e
+		}
+	}
+	return nil
 }
