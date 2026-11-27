@@ -165,6 +165,10 @@ workspace to move it, including across monitors. Enter switches to the selected
 workspace (or focuses its first window); Escape restores the window that was
 focused before opening. Click a workspace or window to switch directly.
 
+Drag an app from the application grid or Dock onto a workspace preview to
+launch it after switching there. Dropping on New workspace creates a target
+workspace first; window placement still follows compositor and app rules.
+
 Window thumbnails are captured from Hyprland's toplevel-export protocol.
 Drag onto an existing or new workspace on either display; floating windows
 can also be repositioned inside their workspace. Middle click closes a client.

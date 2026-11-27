@@ -102,8 +102,13 @@ func (s *shellUI) bindOverviewManagement() {
 			return
 		}
 		defer widget.Unref()
-		o.dragging = strings.TrimPrefix(widget.GetName(), "window:")
-		log.Printf("overview: drag begin address=%s", o.dragging)
+		name := widget.GetName()
+		if strings.HasPrefix(name, "app:") {
+			o.dragging = name
+		} else {
+			o.dragging = strings.TrimPrefix(name, "window:")
+		}
+		log.Printf("overview: drag begin target=%s", o.dragging)
 		preview := gtk.NewWidgetPaintable(widget)
 		still := preview.GetCurrentImage()
 		preview.Unref()

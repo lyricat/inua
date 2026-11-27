@@ -502,6 +502,13 @@ func (s *shellUI) bindOverviewHandlers() {
 		if !ok || address == "" {
 			return false
 		}
+		if strings.HasPrefix(address, "app:") {
+			appID := strings.TrimPrefix(address, "app:")
+			return s.launchOverviewAppOnTarget(appID, dest)
+		}
+		if entry := s.findAppEntry(address); entry != nil {
+			return s.launchOverviewAppOnTarget(address, dest)
+		}
 		return s.moveOverviewWindow(address, dest, x, y)
 	}
 	// The entry taking the focus means a search, when the user put it
@@ -663,7 +670,7 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 		if len(groups) > 1 {
 			headerH = float64(len(groups)) * 36
 		}
-		gapH := float64(rows - 1) * 18
+		gapH := float64(rows-1) * 18
 		w := min((availableW-float64(c-1)*18-28)/float64(c), (availableH-headerH-gapH)/float64(rows)/aspect)
 		if w > thumbW {
 			columns, thumbW = c, w
@@ -678,7 +685,7 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 	if len(groups) > 1 {
 		headerH = float64(len(groups)) * 36
 	}
-	gapH := float64(totalRows - 1) * 18
+	gapH := float64(totalRows-1) * 18
 	if maxAllowedW := (availableH - headerH - gapH) / float64(totalRows) / aspect; maxAllowedW > 0 && thumbW > maxAllowedW {
 		thumbW = maxAllowedW
 	}
@@ -778,7 +785,7 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 		{
 			s.overview.targets[canvas.GoPointer()] = overviewDropTarget{ID: card.Workspace.ID, Monitor: card.Workspace.Output, New: card.New, Scale: thumbW / monW}
 			o.renderedTargets = append(o.renderedTargets, canvas.GoPointer())
-			drop := gtk.NewDropTarget(types.GType(gobject.TypeStringVal), gdk.ActionMoveValue)
+			drop := gtk.NewDropTarget(types.GType(gobject.TypeStringVal), gdk.ActionMoveValue|gdk.ActionCopyValue)
 			drop.ConnectMotion(&s.onOverviewMotion)
 			drop.ConnectLeave(&s.onOverviewLeave)
 			drop.ConnectDrop(&s.onOverviewDrop)
@@ -1650,6 +1657,20 @@ func (s *shellUI) renderOverviewApps(o *workspaceOverview) {
 			btn.SetChild(&box.Widget)
 			btn.ConnectClicked(&s.onOverviewButton)
 
+			var val gobject.Value
+			val.Init(gobject.TypeStringVal)
+			val.SetString("app:" + app.ID)
+			content := gdk.NewContentProviderForValue(&val)
+			val.Unset()
+			drag := gtk.NewDragSource()
+			drag.SetActions(gdk.ActionCopyValue | gdk.ActionMoveValue)
+			drag.SetContent(content)
+			content.Unref()
+			drag.ConnectPrepare(&s.overview.onDragPrepare)
+			drag.ConnectDragBegin(&s.overview.onDragBegin)
+			drag.ConnectDragEnd(&s.overview.onDragEnd)
+			btn.AddController(&drag.EventController)
+
 			pageGrid.Attach(&btn.Widget, col, row, 1, 1)
 			btn.Unref()
 		}
@@ -1678,6 +1699,42 @@ func (s *shellUI) renderOverviewApps(o *workspaceOverview) {
 	o.appsStack.SetVisibleChildName(fmt.Sprintf("page-%d", o.appsPage))
 	o.appsPopulated = true
 	o.appsStamp = s.appsStamp
+}
+
+func (s *shellUI) launchOverviewAppOnTarget(appID string, dest overviewDropTarget) bool {
+	entry := s.findAppEntry(appID)
+	if entry == nil {
+		log.Printf("overview launch drop: app not found: %s", appID)
+		return false
+	}
+	targetID := dest.ID
+	if dest.New {
+		newID, ok := s.nextOverviewWorkspaceID(dest.Monitor)
+		if !ok {
+			return false
+		}
+		targetID = newID
+	}
+	if targetID == "" {
+		return false
+	}
+	log.Printf("overview launch drop: app=%s targetWorkspace=%s monitor=%s new=%v", appID, targetID, dest.Monitor, dest.New)
+	mover, _ := s.comp.(compositor.WorkspaceMover)
+	steps := []func(ctx context.Context) error{
+		func(ctx context.Context) error {
+			return s.comp.FocusWorkspace(ctx, targetID)
+		},
+	}
+	if dest.New && mover != nil {
+		steps = append(steps, func(ctx context.Context) error {
+			return mover.MoveWorkspace(ctx, targetID, dest.Monitor)
+		})
+	}
+	steps = append(steps, func(ctx context.Context) error {
+		return desktop.LaunchWith(entry, s.cfg.TerminalCommand())
+	})
+	s.activateOverview(dest.Monitor, steps...)
+	return true
 }
 
 func (s *shellUI) findAppEntry(id string) *desktop.Entry {
