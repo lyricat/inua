@@ -2486,13 +2486,14 @@ button.shot-record:checked { background: alpha(@danger, 0.1); border-color: alph
   border-radius: 0;
   color: @t0;
   background: alpha(@app, 0.92);
-  border: 1px solid alpha(@t0, 0.12);
+  border: 0;
 }
 .overview-window-title { min-width: 0; color: @t0; font-size: 11px; font-weight: 500; }
 .overview-mru { min-width: 0; min-height: 0; font-size: 11px; padding: 0 12px; }
 .overview-hint { color: @t2; font-size: 11px; padding: 6px 16px; }
 .overview-search {
   min-width: 320px;
+  max-width: 360px;
   min-height: 36px;
   padding: 0 12px;
   background: alpha(@surface, 0.88);

@@ -13890,7 +13890,7 @@ msgstr "이 작업 공간에 새 세션"
 #: internal/term/settings/settings.go:104
 #: internal/term/web/strings.go:70
 #: internal/termui/columns.go:178
-#: internal/ui/overview.go:811
+#: internal/ui/overview.go:815
 msgid "New workspace"
 msgstr "새 작업 공간"
 
@@ -15487,43 +15487,43 @@ msgstr ""
 msgid "Bluetooth off"
 msgstr ""
 
-#: internal/ui/overview.go:261
+#: internal/ui/overview.go:265
 msgid "restore focus"
 msgstr "포커스 복원"
 
-#: internal/ui/overview.go:421
+#: internal/ui/overview.go:425
 msgid "kill window"
 msgstr "킬 윈도우"
 
-#: internal/ui/overview.go:612
+#: internal/ui/overview.go:616
 msgid "No workspaces"
 msgstr "작업 공간 없음"
 
-#: internal/ui/overview.go:614
+#: internal/ui/overview.go:618
 msgid "No matches"
 msgstr "일치하는 항목이 없습니다."
 
-#: internal/ui/overview.go:1195
+#: internal/ui/overview.go:1199
 msgid "No matching apps or windows"
 msgstr ""
 
-#: internal/ui/overview.go:1206
+#: internal/ui/overview.go:1210
 msgid "Open Windows"
 msgstr ""
 
-#: internal/ui/overview.go:1220
+#: internal/ui/overview.go:1224
 msgid "Applications"
 msgstr ""
 
-#: internal/ui/overview.go:1261
+#: internal/ui/overview.go:1265
 msgid "Type to search…"
 msgstr ""
 
-#: internal/ui/overview.go:1370
+#: internal/ui/overview.go:1374
 msgid "Type to search   Esc · Back / Close   ↑↓ / Tab · Navigate   Enter · Open / Switch   Drag · Move"
 msgstr ""
 
-#: internal/ui/overview.go:1416
+#: internal/ui/overview.go:1420
 msgid "inua overview"
 msgstr "이누아 개요"
 

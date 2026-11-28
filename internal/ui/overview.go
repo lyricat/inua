@@ -110,6 +110,10 @@ func (s *shellUI) showOverview() {
 	s.showOverviewMode(s.snap.FocusedOutput, false)
 }
 
+func (s *shellUI) showOverviewCompact() {
+	s.showOverviewMode(s.snap.FocusedOutput, true)
+}
+
 func (s *shellUI) showOverviewOn(monitor string) {
 	s.showOverviewMode(monitor, false)
 }
