@@ -1,6 +1,7 @@
 package appmenu
 
 import (
+	"cmp"
 	"context"
 	"encoding/xml"
 	"os"
@@ -43,9 +44,9 @@ func (r *Registrar) Firefox(pid int) (Registration, bool) {
 // or the Firefox process pid was started by (firefoxOf); a process that
 // merely started Firefox, a terminal, does not match, nor does another
 // program Firefox started. A matching connection with menus for more than
-// one window, or more than one such connection, gives none: the compositor
-// does not say which of them is the focused window's. One that does not
-// answer in time gives none too.
+// one window picks the latest created window so menus remain available
+// during multi-window browsing; more than one matching connection gives
+// none. One that does not answer in time gives none too.
 func (r *Registrar) firefox(pid int) (reg Registration, ok, seen bool) {
 	if pid <= 0 || r.conn == nil {
 		return Registration{}, false, false
@@ -76,15 +77,25 @@ func (r *Registrar) firefox(pid int) (reg Registration, ok, seen bool) {
 			continue
 		}
 		paths, err := menuChildren(ctx, r.conn, owner, firefoxMenuRoot)
-		if err != nil {
+		if err != nil || len(paths) == 0 {
 			continue // no menus served, or none in time (below)
 		}
-		for _, path := range paths {
-			if found.Service != "" {
-				return Registration{}, false, true
-			}
-			found = Registration{PID: uint32(pid), Service: owner, Path: path, Whole: true}
+		if found.Service != "" && found.Service != owner {
+			return Registration{}, false, true
 		}
+		bestPath := paths[0]
+		if len(paths) > 1 {
+			slices.SortFunc(paths, func(a, b dbus.ObjectPath) int {
+				na, erra := strconv.Atoi(filepath.Base(string(a)))
+				nb, errb := strconv.Atoi(filepath.Base(string(b)))
+				if erra == nil && errb == nil {
+					return cmp.Compare(na, nb)
+				}
+				return strings.Compare(string(a), string(b))
+			})
+			bestPath = paths[len(paths)-1]
+		}
+		found = Registration{PID: uint32(pid), Service: owner, Path: bestPath, Whole: true}
 	}
 	if ctx.Err() != nil {
 		return Registration{}, false, found.Service != ""

@@ -286,15 +286,15 @@ func TestFirefoxMenuByProcessTree(t *testing.T) {
 	}
 }
 
-// Menus the focused window's cannot be told among give none: a Firefox
-// with menus for two windows, or two Firefoxes of the process. The one
-// left is found once the other goes.
+// Menus for two windows of one Firefox pick the newest window, while two
+// different Firefoxes of the process give none until one goes.
 func TestFirefoxMenuAmbiguous(t *testing.T) {
 	f := start(t)
 	f.fakeProc(t, map[int]fakeProcess{f.pid: {"firefox", firefoxExe, 1}})
 	conn, _ := f.serveFirefox(t, []string{firefoxProfile}, "1", "2")
-	if reg, ok := f.focused(t); ok {
-		t.Fatalf("two windows' menus must show none: registration=%+v", reg)
+	reg, ok := f.focused(t)
+	if !ok || reg.Path != firefoxMenuRoot+"/2" {
+		t.Fatalf("two windows' menus must pick newest: registration=%+v ok=%v", reg, ok)
 	}
 	conn.Close()
 
