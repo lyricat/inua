@@ -15519,11 +15519,11 @@ msgstr ""
 msgid "Type to search…"
 msgstr ""
 
-#: internal/ui/overview.go:1369
+#: internal/ui/overview.go:1370
 msgid "Type to search   Esc · Back / Close   ↑↓ / Tab · Navigate   Enter · Open / Switch   Drag · Move"
 msgstr ""
 
-#: internal/ui/overview.go:1415
+#: internal/ui/overview.go:1416
 msgid "inua overview"
 msgstr "이누아 개요"
 

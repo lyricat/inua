@@ -151,8 +151,10 @@ installed. Everything that differs between the two versions:
 
 Tap Win to toggle the full Overview: workspace previews above a paginated
 application grid. Click an app to launch it; scroll the app area or use its
-page indicators to browse installed apps. Search replaces the app grid with
-matching windows and applications.
+page indicators to browse installed apps. The grid follows directly below the
+previews, with at least three rows; each monitor adds rows when its remaining
+logical height allows, reserving space for pagination and the dock. Search
+replaces the app grid with matching windows and applications.
 
 Win+Tab and Win+Shift+Tab open the compact workspace chooser without the
 application grid and cycle workspaces; releasing Win commits the selection. It groups Hyprland's current

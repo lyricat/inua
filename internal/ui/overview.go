@@ -638,7 +638,7 @@ func (s *shellUI) renderOverviewView(o *workspaceOverview) {
 	if !o.compact {
 		availableH = min(viewportH*0.48, viewportH-340)
 	}
-	o.cardsScroll.SetVexpand(true)
+	o.cardsScroll.SetMaxContentHeight(int32(availableH + 64))
 	if o.appsBox != nil {
 		o.appsBox.SetVexpand(false)
 	}
@@ -1242,7 +1242,7 @@ func (s *shellUI) buildOverview(o *workspaceOverview) {
 	o.root = *gtk.NewBox(gtk.OrientationVerticalValue, 14)
 	o.root.AddCssClass("overview-scrim")
 	o.root.SetFocusable(true)
-	o.content = *gtk.NewBox(gtk.OrientationVerticalValue, 20)
+	o.content = *gtk.NewBox(gtk.OrientationVerticalValue, 24)
 	o.content.SetHexpand(true)
 	o.content.SetVexpand(true)
 	gtkx.Append(&o.root, &o.content.Widget)
@@ -1280,7 +1280,8 @@ func (s *shellUI) buildOverview(o *workspaceOverview) {
 	o.cardsScroll = *cardsScroll
 	o.cardsScroll.AddCssClass("overview-cards-scroll")
 	o.cardsScroll.SetPolicy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue)
-	o.cardsScroll.SetVexpand(true)
+	o.cardsScroll.SetPropagateNaturalHeight(true)
+	o.cardsScroll.SetVexpand(false)
 	o.cardsScroll.SetChild(&o.cards.Widget)
 
 	cardsScrollCtrl := gtk.NewEventControllerScroll(gtk.EventControllerScrollVerticalValue | gtk.EventControllerScrollDiscreteValue)
@@ -1535,6 +1536,28 @@ func (s *shellUI) updateOverviewAppsDots(o *workspaceOverview) {
 	}
 }
 
+func overviewAppsRows(o *workspaceOverview, viewportW, viewportH float64, buttonHeight, rowSpacing int) int {
+	contentWidth := int32(max(viewportW-96, 1))
+	var cardsHeight, searchHeight, appsFooterHeight, hintHeight int32
+	o.cardsScroll.Measure(gtk.OrientationVerticalValue, contentWidth, nil, &cardsHeight, nil, nil)
+	o.searchContainer.Measure(gtk.OrientationVerticalValue, contentWidth, nil, &searchHeight, nil, nil)
+	o.appsBox.Measure(gtk.OrientationVerticalValue, contentWidth, nil, &appsFooterHeight, nil, nil)
+	spacings := int32(2) // search, previews, apps
+	if o.hint.GetVisible() {
+		o.hint.Measure(gtk.OrientationVerticalValue, contentWidth, nil, &hintHeight, nil, nil)
+		spacings++
+	}
+	const overviewVerticalPadding = 80 // .overview-scrim: 24px top, 56px bottom
+	const appItemVerticalChrome = 10   // .overview-app-item: 4px padding and 1px border
+	const appPageVerticalPadding = 4   // .overview-apps-page: 2px top and bottom
+	appBoxMargins := int(o.appsBox.GetMarginTop() + o.appsBox.GetMarginBottom())
+	fixedHeight := overviewVerticalPadding + appBoxMargins + int(cardsHeight+searchHeight+appsFooterHeight+hintHeight) +
+		int(spacings*o.content.GetSpacing()) + appPageVerticalPadding
+	rowHeight := buttonHeight + appItemVerticalChrome
+	rows := (int(viewportH) - fixedHeight + rowSpacing) / (rowHeight + rowSpacing)
+	return max(3, rows)
+}
+
 func (s *shellUI) renderOverviewApps(o *workspaceOverview) {
 	if o.appsBox == nil {
 		return
@@ -1589,6 +1612,7 @@ func (s *shellUI) renderOverviewApps(o *workspaceOverview) {
 		for _, mon := range s.snap.Outputs {
 			if mon.Name == o.monitor {
 				w := float64(mon.Width) / max(mon.Scale, 1)
+				h := float64(mon.Height) / max(mon.Scale, 1)
 				if w >= 2560 {
 					cols = 10
 					colSpacing = 26
@@ -1601,6 +1625,7 @@ func (s *shellUI) renderOverviewApps(o *workspaceOverview) {
 					iconPx = 40
 					colSpacing, rowSpacing = 18, 10
 				}
+				rows = overviewAppsRows(o, w, h, btnH, rowSpacing)
 				break
 			}
 		}
