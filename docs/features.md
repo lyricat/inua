@@ -149,8 +149,15 @@ opens the launcher's windows instead, and none of its key bindings are
 installed. Everything that differs between the two versions:
 [hyprland-versions.md](hyprland-versions.md).
 
-Tap Win to toggle a full-screen workspace chooser. Win+Tab and Win+Shift+Tab
-cycle workspaces; releasing Win commits the selection. It groups Hyprland's current
+Tap Win to toggle the full Overview: workspace previews above a paginated
+application grid. Click an app to launch it; scroll the app area or use its
+page indicators to browse installed apps. The grid follows directly below the
+previews, with at least three rows; each monitor adds rows when its remaining
+logical height allows, reserving space for pagination and the dock. Search
+replaces the app grid with matching windows and applications.
+
+Win+Tab and Win+Shift+Tab open the compact workspace chooser without the
+application grid and cycle workspaces; releasing Win commits the selection. It groups Hyprland's current
 workspaces by monitor, shows live window thumbnails at their real positions, and lets you move
 between workspaces with the arrow keys. Search filters workspace names,
 monitor names, app classes and window titles; the MRU button toggles recent
@@ -160,11 +167,16 @@ workspace to move it, including across monitors. Enter switches to the selected
 workspace (or focuses its first window); Escape restores the window that was
 focused before opening. Click a workspace or window to switch directly.
 
+Drag an app from the application grid or Dock onto a workspace preview to
+launch it after switching there. Dropping on New workspace creates a target
+workspace first; window placement still follows compositor and app rules.
+
 Window thumbnails are captured from Hyprland's toplevel-export protocol.
 Drag onto an existing or new workspace on either display; floating windows
 can also be repositioned inside their workspace. Middle click closes a client.
 Ctrl+Shift+X arms addressed-client force termination; Escape/right click cancels.
-Arrows, Tab/Shift+Tab and the wheel navigate. Press / or start typing to
+Arrows, Tab/Shift+Tab and the wheel over workspace cards navigate workspaces.
+Scrolling the app area turns application pages. Press / or start typing to
 filter the overview to windows whose title or app class matches the query. MRU
 and per-monitor scope are saved settings. Win+number always follows the focused display's slots; the slots use MRU
 order when MRU is on and ascending workspace IDs when it is off. Right-click the workspace bar to open.

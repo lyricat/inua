@@ -102,8 +102,13 @@ func (s *shellUI) bindOverviewManagement() {
 			return
 		}
 		defer widget.Unref()
-		o.dragging = strings.TrimPrefix(widget.GetName(), "window:")
-		log.Printf("overview: drag begin address=%s", o.dragging)
+		name := widget.GetName()
+		if strings.HasPrefix(name, "app:") {
+			o.dragging = name
+		} else {
+			o.dragging = strings.TrimPrefix(name, "window:")
+		}
+		log.Printf("overview: drag begin target=%s", o.dragging)
 		preview := gtk.NewWidgetPaintable(widget)
 		still := preview.GetCurrentImage()
 		preview.Unref()
@@ -142,16 +147,30 @@ func (s *shellUI) bindOverviewManagement() {
 		s.overviewDo(i18n.T("close window"), func(ctx context.Context) error { return s.comp.CloseWindow(ctx, address) })
 		g.SetState(gtk.EventSequenceClaimedValue)
 	}
-	o.onOverviewScroll = func(_ gtk.EventControllerScroll, _, dy float64) bool {
+	o.onOverviewScroll = func(c gtk.EventControllerScroll, dx, dy float64) bool {
 		if o.searchMode || o.dragging != "" {
 			return false
 		}
+		target := o
+		if w := c.GetWidget(); w != nil {
+			defer w.Unref()
+			for _, v := range o.views {
+				if v.win != nil && v.win.GoPointer() == w.GoPointer() {
+					target = v
+					break
+				}
+			}
+		}
+		now := time.Now()
+		if now.Sub(target.lastPageScroll) < 160*time.Millisecond {
+			return true
+		}
 		delta := 1
-		if dy < 0 {
+		if dx < 0 || dy < 0 {
 			delta = -1
 		}
-		s.navigateOverview(delta)
-		s.renderOverview()
+		s.switchOverviewAppsPage(target, target.appsPage+delta)
+		target.lastPageScroll = now
 		return true
 	}
 	o.onOverviewHover = func(c gtk.EventControllerMotion, _, _ float64) {

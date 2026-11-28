@@ -499,7 +499,7 @@ func (s *shellUI) newDockButton(it shell.DockItem, size int) *dockButton {
 		// Drag to reorder (or pin): the drag carries the app's key.
 		var v gobject.Value
 		v.Init(gobject.TypeStringVal)
-		v.SetString(it.Key)
+		v.SetString("app:" + it.Key)
 		content := gdk.NewContentProviderForValue(&v)
 		v.Unset()
 		drag := gtk.NewDragSource()
@@ -807,7 +807,7 @@ func (s *shellUI) bindDockHandlers() {
 		if d == nil || v == nil {
 			return false
 		}
-		key := v.GetString()
+		key := strings.TrimPrefix(v.GetString(), "app:")
 		if _, ok := s.dockItem(key); !ok {
 			return false
 		}

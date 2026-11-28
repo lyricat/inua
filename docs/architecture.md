@@ -247,10 +247,14 @@ Control from outside: Hyprland shortcuts run `inua call …` (`internal/ipc`,
 one socket per instance, named by `-n`, default `$INUA_INSTANCE` or
 `default`). `inua show` lists the targets:
 
-`launcher toggle|apps|windows|close`, `overview toggle|open|close`, `control toggle|open|close`,
+`launcher toggle|apps|windows|close`, `overview toggle|open [compact]|close`, `control toggle|open|close`,
 `settings toggle|open [PAGE]|close`,
 `notifications toggle|open|close|clear|focus [on|off]`,
 `shell state|close|reload|restart|snapshot DIR|tray-menu N`.
+
+`overview open` shows workspace previews and paginated application pages;
+`overview open compact` shows only the workspace chooser, as Super+Tab does.
+Both leave an already-open Overview in its current mode.
 
 `shell restart` re-executes the shell in place (same PID, arguments,
 environment and log; a rebuilt binary runs the new version).

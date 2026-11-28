@@ -199,10 +199,14 @@ func (s *shellUI) overviewEvent(e hypr.Event) {
 		}
 		switch action {
 		case "toggle":
-			s.showOverview()
+			if s.overview.st.Open {
+				s.closeOverview(false)
+			} else {
+				s.showOverviewMode(s.snap.FocusedOutput, false)
+			}
 		case "next", "previous":
 			if !s.overview.st.Open {
-				s.showOverview()
+				s.showOverviewMode(s.snap.FocusedOutput, true)
 			}
 			delta := 1
 			if strings.HasSuffix(e.Data, ",previous") {

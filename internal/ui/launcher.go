@@ -973,7 +973,10 @@ func (s *shellUI) dropLauncherIcons() {
 func (s *shellUI) gridIcon(name string) *gtk.IconPaintable {
 	l := &s.launcher
 	const size = 64
-	scale := l.win.GetScaleFactor()
+	scale := int32(1)
+	if l.win != nil {
+		scale = l.win.GetScaleFactor()
+	}
 	key := gridIcon{name, scale}
 	if p, ok := l.icons[key]; ok {
 		return p

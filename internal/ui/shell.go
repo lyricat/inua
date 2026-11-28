@@ -1126,10 +1126,15 @@ func (s *shellUI) request(req ipc.Request) ipc.Response {
 	case "overview":
 		switch req.Function {
 		case "toggle":
-			s.showOverview()
+			if s.overview.st.Open {
+				s.closeOverview(false)
+			} else {
+				s.showOverviewMode(s.snap.FocusedOutput, false)
+			}
 		case "open":
+			compact := len(req.Args) > 0 && req.Args[0] == "compact"
 			if !s.overview.st.Open {
-				s.showOverview()
+				s.showOverviewMode(s.snap.FocusedOutput, compact)
 			}
 		case "close":
 			s.closeOverview(true)
@@ -1358,6 +1363,10 @@ func (s *shellUI) scanApps() {
 			}
 			s.dropLauncherIcons() // an app's icon may be another file now
 			s.syncLauncher()
+			if s.overview.st.Open {
+				s.overview.appsPopulated = false
+				s.renderOverview()
+			}
 			log.Printf("desktop: %d entries", len(entries))
 		})
 	}()
