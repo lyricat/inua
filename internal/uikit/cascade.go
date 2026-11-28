@@ -7,122 +7,181 @@ import (
 	"github.com/lyricat/inua/internal/gtkx"
 )
 
-// cascadeLine binds one row to its root menu and the submenu at its level.
-type cascadeLine struct {
-	root, parent *gtk.Popover
-	item         Item
+type cascadeItemInfo struct {
+	pop  *gtk.Popover
+	root *gtk.Popover
+	item Item
+	btn  *gtk.Button
 }
 
 var cascades struct {
 	sync.Mutex
-	lines    map[uintptr]cascadeLine
-	rows     map[uintptr][]uintptr
-	children map[uintptr]*gtk.Popover
+	items    map[uintptr]*cascadeItemInfo
+	children map[uintptr]*gtk.Popover // parent popover ptr -> active child popover
 }
 
-var onCascadeDestroy = func(w gtk.Widget) {
-	cascades.Lock()
-	for _, ptr := range cascades.rows[w.GoPointer()] {
-		delete(cascades.lines, ptr)
-	}
-	delete(cascades.rows, w.GoPointer())
-	delete(cascades.children, w.GoPointer())
-	cascades.Unlock()
-}
-
-// A popover owns its submenu; remove it before the parent is unparented.
-var onCascadeClosed = func(pop gtk.Popover) {
-	cascades.Lock()
-	child := cascades.children[pop.GoPointer()]
-	delete(cascades.children, pop.GoPointer())
-	cascades.Unlock()
-	if child != nil {
-		child.Popdown()
-		child.Unparent()
-	}
-}
-
-func openCascade(b *gtk.Button, line cascadeLine) {
-	cascades.Lock()
-	old := cascades.children[line.parent.GoPointer()]
-	if old != nil && old.GetParent() != nil && old.GetParent().GoPointer() == b.GoPointer() {
-		cascades.Unlock()
-		return
-	}
-	delete(cascades.children, line.parent.GoPointer())
-	cascades.Unlock()
-	if old != nil {
-		old.Popdown()
-		old.Unparent()
-	}
-	if len(line.item.Items) == 0 {
-		return
-	}
-	child := cascadeMenu(line.item.Items, line.root, false)
-	child.SetPosition(gtk.PosRightValue)
-	child.SetParent(&b.Widget)
-	child.Unref()
-	cascades.Lock()
-	cascades.children[line.parent.GoPointer()] = child
-	cascades.Unlock()
-	child.Popup()
-}
-
-var onCascadeHover func(gtk.EventControllerMotion, float64, float64)
 var onCascadeClick func(gtk.Button)
+var onCascadeEnter func(gtk.EventControllerMotion, float64, float64)
+var onCascadeClosed func(gtk.Popover)
+var onCascadeDestroy func(gtk.Widget)
 
 func init() {
-	onCascadeHover = func(c gtk.EventControllerMotion, _, _ float64) {
+	cascades.items = map[uintptr]*cascadeItemInfo{}
+	cascades.children = map[uintptr]*gtk.Popover{}
+
+	onCascadeClick = func(b gtk.Button) {
+		cascades.Lock()
+		info := cascades.items[b.GoPointer()]
+		cascades.Unlock()
+		if info == nil {
+			return
+		}
+
+		// Leaf item
+		if len(info.item.Items) == 0 {
+			if info.item.Run != nil {
+				run := info.item.Run
+				info.root.Popdown()
+				gtkx.Post(run)
+			}
+			return
+		}
+
+		// Submenu item
+		cascades.Lock()
+		activeChild := cascades.children[info.pop.GoPointer()]
+		cascades.Unlock()
+
+		if activeChild != nil && activeChild.GetParent() != nil && activeChild.GetParent().GoPointer() == b.GoPointer() {
+			closeCascadeChild(info.pop)
+			b.RemoveCssClass("active")
+			return
+		}
+
+		openCascadeSubmenu(b, info)
+	}
+
+	onCascadeEnter = func(c gtk.EventControllerMotion, _, _ float64) {
 		w := c.GetWidget()
 		if w == nil {
 			return
 		}
 		cascades.Lock()
-		line, ok := cascades.lines[w.GoPointer()]
+		info := cascades.items[w.GoPointer()]
 		cascades.Unlock()
-		if ok {
-			openCascade(gtk.ButtonNewFromInternalPtr(w.GoPointer()), line)
+		if info == nil {
+			return
 		}
-	}
 
-	onCascadeClick = func(b gtk.Button) {
 		cascades.Lock()
-		line, ok := cascades.lines[b.GoPointer()]
+		activeChild := cascades.children[info.pop.GoPointer()]
 		cascades.Unlock()
-		if !ok {
-			return
-		}
-		if len(line.item.Items) > 0 {
-			openCascade(&b, line)
-			return
-		}
-		if line.item.Run != nil {
-			line.root.Popdown()
-			gtkx.Post(line.item.Run)
+
+		// Only track on hover if a child submenu is already open in this popover
+		if activeChild != nil && activeChild.GetParent() != nil && activeChild.GetParent().GoPointer() != w.GoPointer() {
+			if len(info.item.Items) > 0 {
+				b := gtk.ButtonNewFromInternalPtr(w.GoPointer())
+				openCascadeSubmenu(*b, info)
+			}
 		}
 	}
 
+	onCascadeClosed = func(pop gtk.Popover) {
+		closeCascadeChild(&pop)
+	}
+
+	onCascadeDestroy = func(w gtk.Widget) {
+		popPtr := w.GoPointer()
+		cascades.Lock()
+		child := cascades.children[popPtr]
+		delete(cascades.children, popPtr)
+		for btnPtr, info := range cascades.items {
+			if info.pop.GoPointer() == popPtr {
+				delete(cascades.items, btnPtr)
+			}
+		}
+		cascades.Unlock()
+
+		if child != nil {
+			closeCascadeChild(child)
+		}
+	}
 }
 
-// NewCascadeMenu keeps parent menus open while submenus appear beside rows.
-func NewCascadeMenu(list []Item) *gtk.Popover { return cascadeMenu(list, nil, true) }
+func openCascadeSubmenu(b gtk.Button, info *cascadeItemInfo) {
+	closeCascadeChild(info.pop)
 
-func cascadeMenu(list []Item, root *gtk.Popover, _ bool) *gtk.Popover {
+	b.AddCssClass("active")
+
+	child := buildCascadeMenu(info.item.Items, info.root, false)
+	child.SetPosition(gtk.PosRightValue)
+	child.SetParent(&b.Widget)
+
+	cascades.Lock()
+	cascades.children[info.pop.GoPointer()] = child
+	cascades.Unlock()
+
+	child.Popup()
+}
+
+func closeCascadeChild(pop *gtk.Popover) {
+	cascades.Lock()
+	child := cascades.children[pop.GoPointer()]
+	delete(cascades.children, pop.GoPointer())
+	cascades.Unlock()
+
+	if child != nil {
+		closeCascadeChild(child)
+
+		if parentBtn := child.GetParent(); parentBtn != nil {
+			btn := gtk.ButtonNewFromInternalPtr(parentBtn.GoPointer())
+			btn.RemoveCssClass("active")
+		}
+
+		child.Popdown()
+		gtkx.DetachPopoverLater(child)
+	}
+}
+
+// NewSideMenu displays adjacent parent and child panels.
+func NewSideMenu(list []Item, at MenuAt) *gtk.Popover {
+	pop := buildCascadeMenu(list, nil, true)
+	switch at {
+	case Below:
+		pop.SetPosition(gtk.PosBottomValue)
+	case Above:
+		pop.AddCssClass("above")
+		pop.SetPosition(gtk.PosTopValue)
+	case AtPointer:
+		pop.AddCssClass("at-pointer")
+	}
+	return pop
+}
+
+// NewCascadeMenu creates cascading popovers.
+func NewCascadeMenu(list []Item) *gtk.Popover {
+	return NewSideMenu(list, Below)
+}
+
+func buildCascadeMenu(list []Item, root *gtk.Popover, isRoot bool) *gtk.Popover {
 	pop := gtk.NewPopover()
-	if root == nil {
+	if isRoot {
 		root = pop
+		pop.SetHalign(gtk.AlignStartValue) // Keep root menu's left edge aligned with bar button
 	}
 	pop.AddCssClass("glass-menu")
 	pop.AddCssClass("gtk-frame")
 	pop.SetHasArrow(false)
-	// The bar must continue receiving pointer motion while a menu is open.
-	pop.SetAutohide(false)
+	pop.SetAutohide(true)
+
 	box := gtk.NewBox(gtk.OrientationVerticalValue, 0)
 	box.AddCssClass("menu-items")
+
 	marks := false
 	for _, it := range list {
 		marks = marks || it.Mark != ""
 	}
+
 	for _, it := range list {
 		if it.Separator {
 			sep := gtk.NewSeparator(gtk.OrientationHorizontalValue)
@@ -138,39 +197,46 @@ func cascadeMenu(list []Item, root *gtk.Popover, _ bool) *gtk.Popover {
 			mark.SetSizeRequest(14, -1)
 			gtkx.Append(row, &mark.Widget)
 		}
-		label := gtk.NewLabel(it.Label)
-		label.SetXalign(0)
-		label.SetHexpand(true)
-		gtkx.Append(row, &label.Widget)
+		l := gtk.NewLabel(it.Label)
+		l.SetXalign(0)
+		l.SetHexpand(true)
+		gtkx.Append(row, &l.Widget)
 		if len(it.Items) > 0 {
 			img := gtk.NewImageFromIconName("go-next-symbolic")
 			gtkx.Append(row, &img.Widget)
 		} else if it.Keys != "" {
-			key := gtk.NewLabel(it.Keys)
-			key.AddCssClass("menu-key")
-			gtkx.Append(row, &key.Widget)
+			k := gtk.NewLabel(it.Keys)
+			k.AddCssClass("menu-key")
+			gtkx.Append(row, &k.Widget)
 		}
 		b.SetChild(&row.Widget)
 		row.Unref()
 		b.SetSensitive(it.Run != nil || len(it.Items) > 0)
 		b.ConnectClicked(&onCascadeClick)
+
 		motion := gtk.NewEventControllerMotion()
-		motion.ConnectEnter(&onCascadeHover)
+		motion.ConnectEnter(&onCascadeEnter)
 		b.AddController(&motion.EventController)
-		cascades.Lock()
-		if cascades.lines == nil {
-			cascades.lines = map[uintptr]cascadeLine{}
-			cascades.rows = map[uintptr][]uintptr{}
-			cascades.children = map[uintptr]*gtk.Popover{}
+
+		info := &cascadeItemInfo{
+			pop:  pop,
+			root: root,
+			item: it,
+			btn:  b,
 		}
-		cascades.lines[b.GoPointer()] = cascadeLine{root: root, parent: pop, item: it}
-		cascades.rows[pop.GoPointer()] = append(cascades.rows[pop.GoPointer()], b.GoPointer())
+
+		cascades.Lock()
+		cascades.items[b.GoPointer()] = info
 		cascades.Unlock()
+
 		gtkx.Append(box, &b.Widget)
 	}
+
 	pop.SetChild(&box.Widget)
 	box.Unref()
+
 	pop.ConnectClosed(&onCascadeClosed)
 	pop.ConnectDestroy(&onCascadeDestroy)
+
 	return pop
 }

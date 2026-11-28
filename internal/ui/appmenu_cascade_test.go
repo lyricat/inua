@@ -48,45 +48,6 @@ func TestAppMenuCascade(t *testing.T) {
 		gtkx.Post(func() {
 			defer app.Quit()
 			defer app.Release()
-			win := gtk.NewApplicationWindow(app)
-			anchor := gtk.NewButton()
-			anchor.SetLabel("Menu")
-			win.SetChild(&anchor.Widget)
-			win.Present()
-			pop := uikit.NewCascadeMenu([]uikit.Item{{Label: "Submenu", Items: []uikit.Item{{Label: "Action", Run: func() {}}}}})
-			pop.SetParent(&anchor.Widget)
-			pop.Popup()
-			ctx := glib.MainContextDefault()
-			for ctx.Iteration(false) {
-			}
-			box := pop.GetChild()
-			if box == nil {
-				t.Error("missing menu")
-				return
-			}
-			row := box.GetFirstChild()
-			if row == nil {
-				t.Error("missing row")
-				return
-			}
-			gobject.SignalEmitByName(&gobject.Object{Ptr: row.Ptr}, "clicked")
-			for ctx.Iteration(false) {
-			}
-			var child *gtk.Popover
-			for w := row.GetFirstChild(); w != nil; w = w.GetNextSibling() {
-				if w.HasCssClass("glass-menu") {
-					child = gtk.PopoverNewFromInternalPtr(w.GoPointer())
-					break
-				}
-			}
-			if child == nil || !child.GetVisible() || child.GetPosition() != gtk.PosRightValue || !pop.GetVisible() {
-				t.Errorf("parent and side submenu not both visible: child=%v", child != nil)
-			}
-			pop.Popdown()
-			pop.Unparent()
-			pop.Unref()
-			win.Destroy()
-			win.Unref()
 			checkTopMenuHover(t, app)
 		})
 	}
@@ -126,6 +87,7 @@ func checkTopMenuHover(t *testing.T, app *gtk.Application) {
 	if s.appmenu.menu == nil || !s.appmenu.menu.GetVisible() {
 		t.Fatal("click did not open menu")
 	}
+	checkSideMenu(t, app)
 	motion := gtk.NewEventControllerMotion()
 	second.AddController(&motion.EventController)
 	s.onAppMenuHover(*motion, 1, 1)
@@ -133,6 +95,18 @@ func checkTopMenuHover(t *testing.T, app *gtk.Application) {
 		t.Error("hover did not switch menu")
 	}
 	s.closeAppMenu()
+	for range 8 {
+		s.onAppMenuClicked(*button)
+		if s.appmenu.menu == nil || !s.appmenu.menu.GetVisible() {
+			t.Fatal("menu did not reopen after dismissal")
+		}
+		s.onAppMenuClicked(*button)
+		if s.appmenu.menu != nil {
+			t.Fatal("second click did not dismiss the menu")
+		}
+	}
+	for ctx.Iteration(false) {
+	}
 	// Clicking this monitor's menu first focuses its own window.
 	fake := compositortest.New()
 	s.comp = fake
@@ -144,7 +118,7 @@ func checkTopMenuHover(t *testing.T, app *gtk.Application) {
 	for len(fake.Actions()) == 0 && time.Now().Before(deadline) {
 		time.Sleep(time.Millisecond)
 	}
-	if got := fake.Actions(); len(got) != 1 || got[0] != "focus-window 0x1" {
+	if got := fake.Actions(); len(got) != 1 || got[0] != "focus-window-quietly 0x1" {
 		t.Fatalf("focus requests %v", got)
 	}
 	s.snap.FocusedWindow, s.snap.FocusedOutput = "0x1", output
@@ -153,6 +127,45 @@ func checkTopMenuHover(t *testing.T, app *gtk.Application) {
 		t.Error("focused monitor menu did not open")
 	}
 	s.closeAppMenu()
+	win.Destroy()
+	win.Unref()
+}
+
+func checkSideMenu(t *testing.T, app *gtk.Application) {
+	win := gtk.NewApplicationWindow(app)
+	anchor := gtk.NewButton()
+	win.SetChild(&anchor.Widget)
+	win.Present()
+	pop := uikit.NewSideMenu([]uikit.Item{{Label: "Submenu", Items: []uikit.Item{{Label: "Action", Run: func() {}}}}}, uikit.Below)
+	pop.SetParent(&anchor.Widget)
+	pop.Popup()
+	ctx := glib.MainContextDefault()
+	for ctx.Iteration(false) {
+	}
+	box := pop.GetChild()
+	row := box.GetFirstChild()
+	gobject.SignalEmitByName(&gobject.Object{Ptr: row.Ptr}, "clicked")
+	for ctx.Iteration(false) {
+	}
+	var child *gtk.Popover
+	for w := row.GetFirstChild(); w != nil; w = w.GetNextSibling() {
+		if w.HasCssClass("glass-menu") {
+			child = gtk.PopoverNewFromInternalPtr(w.GoPointer())
+			break
+		}
+	}
+	if child == nil || !child.GetVisible() || child.GetPosition() != gtk.PosRightValue || !pop.GetVisible() {
+		t.Errorf("submenu did not open beside its parent: child=%v", child != nil)
+	}
+	gobject.SignalEmitByName(&gobject.Object{Ptr: row.Ptr}, "clicked")
+	for ctx.Iteration(false) {
+	}
+	if child.GetVisible() {
+		t.Error("second click did not collapse submenu")
+	}
+	pop.Popdown()
+	pop.Unparent()
+	pop.Unref()
 	win.Destroy()
 	win.Unref()
 }

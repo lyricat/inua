@@ -136,12 +136,13 @@ func (s *shellUI) showA11yMenu(b *bar, i int, w *gtk.Widget) {
 				return
 			}
 			s.closeAppMenu()
-			pop := uikit.NewCascadeMenu(items)
+			pop := uikit.NewSideMenu(items, uikit.Below)
 			pop.SetParent(w)
 			pop.ConnectClosed(&s.onAppMenuClosed)
 			pop.Unref()
 			pop.Popup()
 			s.appmenu.menu = pop
+			s.trackAppMenu()
 		})
 	}()
 }

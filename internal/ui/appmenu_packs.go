@@ -255,12 +255,13 @@ func (s *shellUI) showPackedMenu(b *bar, i int, w *gtk.Widget) {
 		return
 	}
 	s.closeAppMenu()
-	pop := uikit.NewCascadeMenu(items)
+	pop := uikit.NewSideMenu(items, uikit.Below)
 	pop.SetParent(w)
 	pop.ConnectClosed(&s.onAppMenuClosed)
 	pop.Unref()
 	pop.Popup()
 	s.appmenu.menu = pop
+	s.trackAppMenu()
 }
 
 // packMenuShown is whether a bar shows the pack's menu for window id.
