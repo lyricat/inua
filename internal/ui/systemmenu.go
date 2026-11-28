@@ -118,12 +118,13 @@ func (s *shellUI) showSystemMenu(i int, w *gtk.Widget) {
 		return
 	}
 	s.closeAppMenu()
-	pop := uikit.NewCascadeMenu(items)
+	pop := uikit.NewSideMenu(items, uikit.Below)
 	pop.SetParent(w)
 	pop.ConnectClosed(&s.onAppMenuClosed)
 	pop.Unref() // the parent holds it now
 	pop.Popup()
 	s.appmenu.menu = pop
+	s.trackAppMenu()
 }
 
 // systemItems turns system menu lines into a menu's, with no hairline at
