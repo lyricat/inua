@@ -16,6 +16,7 @@
 package gtkx
 
 import (
+	"context"
 	"fmt"
 	"runtime"
 	"sync"
@@ -64,15 +65,21 @@ func Post(f func()) {
 	}
 }
 
-// Call runs f on the main loop thread and waits for its result, giving up
-// after timeout.
+// Call waits for f on the main loop. A call that has not started by its
+// deadline is skipped; a callback already running cannot be interrupted.
 func Call[T any](timeout time.Duration, f func() T) (T, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
 	ch := make(chan T, 1)
-	Post(func() { ch <- f() })
+	Post(func() {
+		if ctx.Err() == nil {
+			ch <- f()
+		}
+	})
 	select {
 	case v := <-ch:
 		return v, nil
-	case <-time.After(timeout):
+	case <-ctx.Done():
 		var zero T
 		return zero, fmt.Errorf("gtkx: main loop did not respond within %v", timeout)
 	}
